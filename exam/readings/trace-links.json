@@ -33,14 +33,6 @@
       "measured": "the short name is said in plain words, \"dot link or dot to\", and the board shows it written: qh.link, a slash, 4CQMZu"
     },
     {
-      "criterion": "C7",
-      "step": 1,
-      "pass": false,
-      "what": "Every spoken piece is a whole sentence",
-      "measured": "the second answer opens \"I'd pick something tiny and cheap.\" and goes on \"Like a two or three letter name on a short ending such as dot link or dot to.\" The second piece is not a sentence on its own: one sentence was cut in two at a comma",
-      "limit": "C7: the answer comes sentence by sentence"
-    },
-    {
       "criterion": "C8",
       "step": 1,
       "pass": true,

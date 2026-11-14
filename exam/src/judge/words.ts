@@ -15,6 +15,11 @@ const plain = (text: string) => text.toLowerCase().replace(/[−–—]/g, "-").
 const HIM_AS_SOMEONE_ELSE = /\b(the|a) (student|user|learner)('s| is| has| was| wants| asked| needs| should| can)\b/i;
 const WORKINGS = [/\bNONE\b/, /\bI.ll say\b/i, HIM_AS_SOMEONE_ELSE, /\bas an AI\b/i, /\bmy (instructions|prompt)\b/i];
 
+// Signs of a piece that was cut off from its sentence. Each was said aloud on film in the passes of 13:00 on
+// 11-14, where a long sentence had been cut at a comma: "Which is 13.", "Like a two or three letter name on a short
+// ending." and "Take y minus 4 equals 9: to clear the minus 4." A reader still judges the rest.
+const CUT_OFF = [/^Which\b.*\.$/, /^Like (a|an|the|when|if)\b/, /:\s+to(\s+\S+){1,5}\.$/i];
+
 export function spoken(ask: Ask, expect: Expect, truth: Truth[]): Verdict[] {
   const s = ask.index;
   const says = of(ask.moments, "say");
@@ -47,6 +52,11 @@ export function spoken(ask: Ask, expect: Expect, truth: Truth[]): Verdict[] {
   if (says.length > 0) {
     out.push(twice.length === 0 ? yes("C7", s, "A sentence is said once, never twice", `${says.length} lines, each said once`)
       : no("C7", s, "A sentence is said once, never twice", `said twice: "${twice[0].slice(0, 70)}"`));
+  }
+  const pieces = sentences.filter((m) => CUT_OFF.some((sign) => sign.test(m.text.trim())));
+  if (sentences.length > 0) {
+    out.push(pieces.length === 0 ? yes("C7", s, "No piece is cut off from its sentence", `${sentences.length} sentences, none shows a sign of it`)
+      : no("C7", s, "No piece is cut off from its sentence", `it said, as a sentence: "${pieces[0].text.slice(0, 70)}"`));
   }
   // An ask that ends in the failed look was not answered. If it must fail, it says so in plain words, never as an error's own text.
   const failed = of(ask.moments, "look").find((m) => m.name === "failed");

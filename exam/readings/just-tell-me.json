@@ -17,14 +17,6 @@
       "measured": "every line speaks of his line and his six"
     },
     {
-      "criterion": "C7",
-      "step": 3,
-      "pass": false,
-      "what": "Every spoken piece is a whole sentence",
-      "measured": "the fourth ask said \"Take y minus 4 equals 9: to clear the minus 4.\" then \"You add 4 to both sides, so y equals 9 plus 4.\" then \"Which is 13.\" The first and the third piece are not sentences on their own. The cut is made at a comma to keep each piece short",
-      "limit": "C7: the answer comes sentence by sentence"
-    },
-    {
       "criterion": "C16",
       "step": 4,
       "pass": null,
