@@ -3,6 +3,7 @@ import { join } from "node:path";
 import { anthropic } from "./adapters/anthropic.ts";
 import { silenced } from "./adapters/fault.ts";
 import { ink } from "./adapters/ink.ts";
+import { kept } from "./adapters/kept.ts";
 import { raea } from "./adapters/raea.ts";
 import { sonic } from "./adapters/sonic.ts";
 import { tape } from "./adapters/tape.ts";
@@ -25,11 +26,24 @@ if (!PARAL_TAPE && ANTHROPIC_API_KEY) {
   spent.usd = claude.spentUsd;
   using.push(`brain ${settings.brainModel.value} (cap $${settings.spendCapUsd.value})`);
 }
-if (!PARAL_TAPE && CARTESIA_API_KEY) {
-  ports = { ...ports, ear: ink(CARTESIA_API_KEY, settings, spent.credits, log), voice: sonic(CARTESIA_API_KEY, settings, spent.credits, log) };
-  using.push(`ear ${settings.earModel.value}, voice ${settings.voiceModel.value} (cap ${settings.cartesiaCreditCap.value} credits)`);
-}
 const warming = new AbortController();
+if (!PARAL_TAPE && CARTESIA_API_KEY) {
+  // The lines whose words never change are spoken from kept sound. They are made once, under tmp/, which is not committed.
+  const fixed = [
+    settings.openerFallback.value,
+    settings.openerInLesson.value,
+    ...settings.stallLines.value,
+    settings.stallShort.value,
+    ...settings.ladder.value.map((rung) => rung.safe),
+    settings.heldBackLine.value,
+    settings.circleNoWordsLine.value,
+  ];
+  const voiceName = () => `cartesia ${settings.voiceModel.value} ${settings.voiceId.value} pcm_s16le 24000`;
+  const voice = kept(sonic(CARTESIA_API_KEY, settings, spent.credits, log), fixed, voiceName, join(here, "..", "tmp", "voice"), log);
+  ports = { ...ports, ear: ink(CARTESIA_API_KEY, settings, spent.credits, log), voice };
+  using.push(`ear ${settings.earModel.value}, voice ${settings.voiceModel.value} (cap ${settings.cartesiaCreditCap.value} credits), ${fixed.length} fixed lines from kept sound`);
+  void voice.ahead(warming.signal);
+}
 if (!PARAL_TAPE && ANTHROPIC_API_KEY) {
   // The clip takes the board's colours: chalk on the dark card.
   const lessons = raea(() => {

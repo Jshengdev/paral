@@ -1,0 +1,79 @@
+{
+ "name": "kept: a fixed line is spoken live once and kept; after that it is said from the kept sound with no call, and the silence at its start is gone; a line that is not fixed is always spoken live; and when the voice changes the kept sound is not used",
+ "run": "kept",
+ "in": {
+  "fixed": [
+   "Okay, let me look."
+  ],
+  "says": [
+   {
+    "text": "Okay, let me look.",
+    "voice": "voice A"
+   },
+   {
+    "text": "Okay, let me look.",
+    "voice": "voice A"
+   },
+   {
+    "text": "Almost all the length is the domain.",
+    "voice": "voice A"
+   },
+   {
+    "text": "Almost all the length is the domain.",
+    "voice": "voice A"
+   },
+   {
+    "text": "Okay, let me look.",
+    "voice": "voice B"
+   },
+   {
+    "text": "Okay, let me look.",
+    "voice": "voice A"
+   }
+  ]
+ },
+ "out": [
+  {
+   "text": "Okay, let me look.",
+   "voice": "voice A",
+   "calledTheLiveVoice": true,
+   "bytes": 72000,
+   "firstWordAt": 0.5
+  },
+  {
+   "text": "Okay, let me look.",
+   "voice": "voice A",
+   "calledTheLiveVoice": false,
+   "bytes": 48480,
+   "firstWordAt": 0.01
+  },
+  {
+   "text": "Almost all the length is the domain.",
+   "voice": "voice A",
+   "calledTheLiveVoice": true,
+   "bytes": 72000,
+   "firstWordAt": 0.5
+  },
+  {
+   "text": "Almost all the length is the domain.",
+   "voice": "voice A",
+   "calledTheLiveVoice": true,
+   "bytes": 72000,
+   "firstWordAt": 0.5
+  },
+  {
+   "text": "Okay, let me look.",
+   "voice": "voice B",
+   "calledTheLiveVoice": true,
+   "bytes": 72000,
+   "firstWordAt": 0.5
+  },
+  {
+   "text": "Okay, let me look.",
+   "voice": "voice A",
+   "calledTheLiveVoice": false,
+   "bytes": 48480,
+   "firstWordAt": 0.01
+  }
+ ]
+}

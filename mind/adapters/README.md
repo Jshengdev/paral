@@ -9,6 +9,8 @@ Promises: one file per vendor per port, and a tape for each port. Nothing outsid
 | `claude-shape.ts` | (Brain) | the words of one request to Claude and the shape its reply must have, in the order the model writes it |
 | `ink.ts` | Ear | Cartesia Ink over a socket: sound in, words out as he talks, final words at the release |
 | `sonic.ts` | Voice | Cartesia Sonic over one warm socket: one sentence in, sound and each word's time out |
+| `kept.ts` | Voice | wraps the live voice: a line whose words never change is made once, kept under `tmp/voice/`, and after that said from the kept sound with no call. Named by the service, model, voice and words, so a change of any makes it afresh |
+| `fault.ts` | Voice | a voice that fails on purpose, for the outside judge's voice-fails scenario |
 | `raea.ts` | Lessons | a lesson clip rendered by raea through `lessons/render.ts`, in the look's colours, once per example |
 
 Keys are read from the environment only; the start scripts load them from a file outside this folder

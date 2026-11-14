@@ -80,7 +80,7 @@ Do these in order. Each step has a row before the next one starts.
    `body/Sources/ParalBody/Seen.swift` (or write it in `Lines.swift`), and describe it in `seam/README.md`. The wire
    only grows: never change or remove a field.
 2. **Core.** Put the decision in a pure function in `mind/cores/`: values in, values out, no settings import. Add a
-   runner in `test/main.test.ts` and a row. Look at `cores/circle.ts` and `test/rows/circle-names-the-lines.json`.
+   runner to the table in `test/main.test.ts` and a row. Look at `cores/circle.ts` and `test/rows/circle-names-the-lines.json`.
 3. **Setting.** Every number or fixed line goes in `mind/settings/`, in the file for what it governs, with `why` and
    `measured`. "Not measured" is an honest value.
 4. **Port.** A new outside service is one interface in `mind/ports.ts`, one adapter in `mind/adapters/`, and a tape

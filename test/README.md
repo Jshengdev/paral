@@ -10,7 +10,9 @@ matches no row fails, so a misspelling cannot pass by checking nothing.
 { "name": "what must be true, in a sentence", "run": "which runner", "in": { }, "out": { } }
 ```
 
-The name is the claim. `run` picks a runner in `main.test.ts`; the runner gets `in` and must return exactly `out`.
+The name is the claim. `run` picks a runner from the table in `main.test.ts`; the runner gets `in` and must return
+exactly `out`. A runner that needs more than a line lives in `runners/` (the Mac side, the turn, the adapters);
+those are helpers, not test files.
 
 | runner | what it runs |
 |---|---|
@@ -20,6 +22,7 @@ The name is the claim. `run` picks a runner in `main.test.ts`; the runner gets `
 | `turn` | the real mind on a tape: lines in over a socket, lines out |
 | `stop` | the mind stops inside its limit while a body is linked |
 | `live.standin` | the live Claude adapter against a stand-in client: the request's shape, the cap, a broken reply |
+| `kept` | the kept voice over a counting stand-in: which lines call the live voice |
 | `body.landing` | pages drawn, read by the Mac, and each quoted line found again |
 | `body.filmed` | a whole run on a tape through `./flow` and `./film`, read back from the film's record |
 
