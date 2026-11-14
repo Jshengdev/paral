@@ -47,6 +47,8 @@ export const FromMind = z.discriminatedUnion("type", [
     earGraceMs: z.number().nonnegative(),
     markPad: z.number().nonnegative(),
     pictureLongEdge: z.number().int().positive(),
+    /** The room kept round what he drew around when the picture is cut down to that part. */
+    cropAround: z.object({ share: z.number().nonnegative(), points: z.number().nonnegative() }),
   }),
   z.object({ v, type: z.literal("state"), name: z.enum(["idle", "listening", "thinking", "failed"]), detail: z.string().optional() }),
   z.object({ v, type: z.literal("heard"), text: z.string(), final: z.boolean() }),

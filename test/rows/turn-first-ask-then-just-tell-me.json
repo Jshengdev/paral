@@ -124,7 +124,11 @@
    "drawKey": "shift",
    "earGraceMs": 300,
    "markPad": 4,
-   "pictureLongEdge": 1280
+   "pictureLongEdge": 1280,
+   "cropAround": {
+    "share": 1,
+    "points": 200
+   }
   },
   {
    "v": 1,

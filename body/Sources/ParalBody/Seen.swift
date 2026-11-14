@@ -7,6 +7,8 @@ public struct BodySettings: Equatable {
     public var holdKey: String
     public var drawKey: String
     public var earGraceMs, markPad, pictureLongEdge: Double
+    /// The room kept round what he drew around when the picture is cut down: a share of the loop's size, or points.
+    public var cropShare = 1.0, cropPoints = 200.0
 }
 
 /// Everything the scene can be told, from either side of the seam. The windows and the film feed it the same way.
@@ -51,7 +53,12 @@ public enum Seen {
             guard let key = s("holdKey"), let grace = n("earGraceMs"), let pad = n("markPad"), let edge = n("pictureLongEdge") else {
                 return .failure(Refused("ready: holdKey, earGraceMs, markPad and pictureLongEdge are needed"))
             }
-            return .success(.ready(BodySettings(holdKey: key, drawKey: s("drawKey") ?? "shift", earGraceMs: grace, markPad: pad, pictureLongEdge: edge)))
+            var settings = BodySettings(holdKey: key, drawKey: s("drawKey") ?? "shift", earGraceMs: grace, markPad: pad, pictureLongEdge: edge)
+            if let crop = f["cropAround"] as? [String: Any], let share = n("share", crop), let points = n("points", crop) {
+                settings.cropShare = share
+                settings.cropPoints = points
+            }
+            return .success(.ready(settings))
         case "key.down": return .success(.keyDown)
         case "key.up": return .success(.keyUp)
         case "close": return .success(.close)

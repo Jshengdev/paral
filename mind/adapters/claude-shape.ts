@@ -31,7 +31,8 @@ export function asking(asked: Asked): string {
   const { lesson, rung } = asked;
   return [
     `What the student just said: "${asked.words}"`,
-    `Lines read from the screen:\n${asked.lines.map((line, index) => `${index}: ${line}`).join("\n") || "(none were read)"}`,
+    // A line with no words is one outside the part he drew around: its words never left his Mac. The numbers stay the same.
+    `Lines read from the screen:\n${asked.lines.flatMap((line, index) => (line ? [`${index}: ${line}`] : [])).join("\n") || "(none were read)"}`,
     ...(asked.circled.length > 0
       ? [`As they spoke, the student drew around line${asked.circled.length === 1 ? "" : "s"} ${asked.circled.join(", ")}; the path is drawn on the picture. "This", "that" and "here" mean what they drew around.`]
       : []),

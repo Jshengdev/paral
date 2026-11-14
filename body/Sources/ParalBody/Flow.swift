@@ -96,10 +96,11 @@ public final class Flow {
             send(.keyDown(at: stamp()), as: .keyDown)
             let reading = Task.detached { try Screen.read(image) }
             pictureSent = false
-            let picture: @MainActor ([ReadLine], String) -> Void = { [weak self] lines, path in
+            // The scene is given every line, for laying things out. The mind is given what it may pass on to the model.
+            let picture: @MainActor ([ReadLine], [ReadLine], String) -> Void = { [weak self] all, forTheMind, path in
                 guard let self, !self.pictureSent else { return }
                 self.pictureSent = true
-                self.send(.screen(at: self.stamp(), display: display, path: path, w: image.width, h: image.height, lines: lines), as: .screen(display: display, lines: lines))
+                self.send(.screen(at: self.stamp(), display: display, path: path, w: image.width, h: image.height, lines: forTheMind), as: .screen(display: display, lines: all))
             }
 
             var pcm = Data()
@@ -110,7 +111,7 @@ public final class Flow {
             }
             let trail = (ask["trail"] as? [[NSNumber]] ?? []).map { $0.map(\.doubleValue) }.filter { $0.count == 3 }
             // With no circle the picture is the one taken as he starts; with a circle it is taken at the release, the path on it.
-            if trail.isEmpty { Task { @MainActor in if let lines = try? await reading.value { picture(lines, small) } } }
+            if trail.isEmpty { Task { @MainActor in if let lines = try? await reading.value { picture(lines, lines, small) } } }
             let chunk = 3200, chunkMs = 100.0
             var sent = 0, drawn = 0
             let holdMs = max(Double(pcm.count) / Double(chunk) * chunkMs, trail.last?[0] ?? 0)
@@ -131,13 +132,16 @@ public final class Flow {
             scene.take(.keyUp, at: clock())
             await pause(settings?.earGraceMs ?? 0)
             wire.send(.keyUp(at: released))
-            var shown = small
+            let lines = try await reading.value
             if trail.count > 1 {
                 let path = trail.map { CGPoint(x: $0[1], y: $0[2]) }
-                shown = dir.appendingPathComponent("page-with-his-path.jpg").path
-                try Screen.saveSmaller(Screen.withPath(image, path, on: display, color: color(tokens.accent), width: tokens.mark.width + 1), to: shown, longEdge: settings?.pictureLongEdge ?? 2000)
+                let part = Screen.around(image, lines: lines, path: path, on: display, share: settings?.cropShare ?? 1, points: settings?.cropPoints ?? 200, color: color(tokens.accent), width: tokens.mark.width + 1)
+                let shown = dir.appendingPathComponent("page-with-his-path.jpg").path
+                try Screen.saveSmaller(part.image, to: shown, longEdge: settings?.pictureLongEdge ?? 2000)
+                picture(lines, part.lines, shown)
+            } else {
+                picture(lines, lines, small)
             }
-            picture(try await reading.value, shown)
         }
         try await settled(from: seenTo)
         await pause(300)

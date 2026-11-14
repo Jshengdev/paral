@@ -44,6 +44,12 @@ export const wire = {
     measured: "same real ask, two runs each: at 1280 the first field came at 2.6 to 2.8 s and an ask cost about $0.022; at 2000 it came at 2.7 to 2.9 s and cost about $0.030. No speed difference seen, about a quarter cheaper (2026-11-14)",
   } satisfies Setting<number>,
 
+  cropAround: {
+    value: { share: 1, points: 200 },
+    why: "When he draws around something, the body sends only that part of the picture, and the words of the lines in it: the loop, and room on every side of this share of the loop's own size or this many points, whichever is more. The rest of his screen never leaves the Mac. The room is there so the lines around what he circled, such as the problem above his working, still reach the model.",
+    measured: "not measured on real pages; on the exam's pages the lines of one problem sit within 200 points of each other",
+  } satisfies Setting<{ share: number; points: number }>,
+
   markPad: {
     value: 4,
     why: "Points of air between the read line and the highlight drawn round it, so the ring does not sit on the letters.",

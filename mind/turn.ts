@@ -40,7 +40,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
   let written: Draft | null = null;
 
   const openWith = (opener: Opener, said: string, signal: AbortSignal) => {
-    const line = opener.open(said, screen?.lines.map((read) => read.text) ?? [], signal);
+    const line = opener.open(said, screen?.lines.map((read) => read.text).filter(Boolean) ?? [], signal);
     // A draft may never be used. Whoever does use this line hears its failure there; this keeps an unused one quiet.
     line.catch(() => {});
     return line;
@@ -148,6 +148,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
             earGraceMs: settings.earGraceMs.value,
             markPad: settings.markPad.value,
             pictureLongEdge: settings.pictureLongEdge.value,
+            cropAround: settings.cropAround.value,
           });
         case "key.down":
           return down(line.at);

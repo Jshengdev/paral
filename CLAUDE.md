@@ -116,7 +116,8 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
 - The real windows are compiled and bundled and have never been started. The key, the microphone, the screen picture
   and the overlay over real apps are unproven until a person runs `./run`.
 - What leaves the Mac with the live services: on each ask, the sound of the question goes to the ear's API; one scaled
-  picture of the main display, the lines read from it, his words and the lesson so far go to the model's API; each
+  picture of the main display, the lines read from it, his words and the lesson so far go to the model's API (when he
+  draws around something, only that part of the picture and the words of the lines in it); each
   sentence of the answer goes to the voice's API. With a tape nothing leaves. paral keeps one temporary picture file,
   overwritten on each ask.
 - The lesson lives for one connection. Restarting the body or the mind starts it over.

@@ -142,10 +142,13 @@ final class App: NSObject, NSApplicationDelegate {
     private func sendShot() {
         guard let shot else { return }
         let path = NSTemporaryDirectory() + "paral-screen.jpg"
-        let image = trail.count > 1 ? Screen.withPath(shot.image, trail, on: shot.place, color: painter.accent, width: painter.tokens.mark.width + 1) : shot.image
+        // When he drew around something, the mind gets only that part of the picture and the words of the lines in it.
+        let part = trail.count > 1
+            ? Screen.around(shot.image, lines: shot.lines, path: trail, on: shot.place, share: settings?.cropShare ?? 1, points: settings?.cropPoints ?? 200, color: painter.accent, width: painter.tokens.mark.width + 1)
+            : (image: shot.image, lines: shot.lines)
         do {
-            try Screen.saveSmaller(image, to: path, longEdge: settings?.pictureLongEdge ?? 1280)
-            wire.send(.screen(at: stamp(), display: shot.place, path: path, w: shot.image.width, h: shot.image.height, lines: shot.lines))
+            try Screen.saveSmaller(part.image, to: path, longEdge: settings?.pictureLongEdge ?? 1280)
+            wire.send(.screen(at: stamp(), display: shot.place, path: path, w: shot.image.width, h: shot.image.height, lines: part.lines))
         } catch {
             failed("the picture could not be saved (\((error as? Screen.Failed)?.why ?? error.localizedDescription))")
         }

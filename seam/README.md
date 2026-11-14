@@ -11,7 +11,7 @@ Promises: one schema for every line between body and mind (`schema.ts`), newline
 | `key.down` | he pressed the hold key |
 | `mic` | a chunk of sound, 16-bit PCM at 16 kHz mono, base64 |
 | `trail` | where the pointer is while he draws, in screen points |
-| `screen` | the picture (a smaller copy's path, and the size the lines were read at), its display, and the lines read from it. With a path drawn, the picture has it on it. It may arrive after `key.up`, and may be sent twice |
+| `screen` | the picture (a smaller copy's path, and the size the lines were read at), its display, and the lines read from it. With a path drawn, the picture has it on it and is cut down to the part he drew around, and a line outside that part comes with its place and no words. It may arrive after `key.up`, and may be sent twice |
 | `key.up` | he let go; carries the true moment of release |
 | `close` | he closed it: the conversation ends and the ink goes |
 

@@ -1,0 +1,57 @@
+{
+ "name": "body: a filmed run on a long page where he draws around the second line: the mind is given the words of the lines near what he drew around and none of the words further down the page, with every line still in its place",
+ "run": "body.filmed",
+ "in": {
+  "lines": [
+   "Problem set 3",
+   "Solve for x: 2(x + 3) = 14",
+   "2x + 6 = 14",
+   "2x + 6 = 14, so x = 10",
+   "My notes for Friday",
+   "Call the bank about the fee",
+   "Grade so far: 71 percent",
+   "Rent is due on the first"
+  ],
+  "display": {
+   "x": 0,
+   "y": 0
+  },
+  "tape": "filmed.json",
+  "asks": [
+   "why is this wrong"
+  ],
+  "onLine": 3,
+  "drawsAround": 1
+ },
+ "out": {
+  "frames": true,
+  "bareFirstFrame": true,
+  "linesSkipped": 0,
+  "marks": 1,
+  "markCoversTheLine": true,
+  "capsuleRestsAt": {
+   "h": 18,
+   "w": 18,
+   "x": 791,
+   "y": 927
+  },
+  "voiceSeconds": 7.5,
+  "trailDrawn": true,
+  "hisLoopComesBackAsARing": true,
+  "pathOnThePicture": true,
+  "wordsTheMindWasGiven": [
+   "Problem set 3",
+   "Solve for x: 2(x + 3) = 14",
+   "2x + 6 = 14",
+   "2x + 6 = 14, s0 x = 10",
+   "(no words)",
+   "(no words)",
+   "(no words)",
+   "(no words)"
+  ],
+  "said": [
+   "Read the highlighted line again, slowly.",
+   "Read the last line again: what did you do to the 6?"
+  ]
+ }
+}

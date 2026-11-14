@@ -34,6 +34,11 @@
   "trailDrawn": true,
   "hisLoopComesBackAsARing": true,
   "pathOnThePicture": true,
+  "wordsTheMindWasGiven": [
+   "Solve for x: 2(x + 3) = 14",
+   "2x + 6 = 14",
+   "2x + 6 = 14, s0 x = 10"
+  ],
   "said": [
    "Read the highlighted line again, slowly.",
    "You drew around the problem; the slip is two lines down. What happened to the 6?"

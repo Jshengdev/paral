@@ -92,6 +92,25 @@ public enum Screen {
         return ctx.makeImage() ?? image
     }
 
+    /// What the mind is given when he drew around something: the picture with his path on it, cut down to the part
+    /// he drew around and some room on every side, and the lines with the words of every line outside that part
+    /// taken out. The lines keep their places and their order, so a mark still lands and a number still means the
+    /// same line. The room is `share` of the loop's own size or `points`, whichever is more.
+    public static func around(_ image: CGImage, lines: [ReadLine], path: [CGPoint], on display: DisplayPlace, share: Double, points: Double, color: CGColor, width: Double) -> (image: CGImage, lines: [ReadLine]) {
+        let marked = withPath(image, path, on: display, color: color, width: width)
+        let xs = path.map { (Double($0.x) - display.x) * display.scale }, ys = path.map { (Double($0.y) - display.y) * display.scale }
+        guard let left = xs.min(), let right = xs.max(), let top = ys.min(), let bottom = ys.max() else { return (marked, lines) }
+        let roomX = max(share * (right - left), points * display.scale), roomY = max(share * (bottom - top), points * display.scale)
+        let part = CGRect(x: left - roomX, y: top - roomY, width: right - left + 2 * roomX, height: bottom - top + 2 * roomY)
+            .intersection(CGRect(x: 0, y: 0, width: image.width, height: image.height)).integral
+        guard !part.isEmpty, let cut = marked.cropping(to: part) else { return (marked, lines) }
+        let kept = lines.map { line -> ReadLine in
+            let box = CGRect(x: line.box.x, y: line.box.y, width: line.box.w, height: line.box.h)
+            return box.intersects(part) ? line : ReadLine(text: "", box: line.box)
+        }
+        return (cut, kept)
+    }
+
     public static func load(_ path: String) throws -> CGImage {
         guard let source = CGImageSourceCreateWithURL(URL(fileURLWithPath: path) as CFURL, nil),
               let image = CGImageSourceCreateImageAtIndex(source, 0, nil)

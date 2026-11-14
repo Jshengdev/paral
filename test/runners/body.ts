@@ -127,6 +127,7 @@ export function filmed(input: { lines: string[]; display: { x: number; y: number
           trailDrawn: drawn.some((item) => item.what === "trail"),
           hisLoopComesBackAsARing: drawn.some((item) => item.what === "echo"),
           pathOnThePicture: !readFileSync(join(dir, "page-with-his-path.jpg")).equals(readFileSync(join(dir, "page-for-the-brain.jpg"))),
+          wordsTheMindWasGiven: session(dir).findLast((line) => line.type === "screen").lines.map((line: { text: string }) => (line.text === "" ? "(no words)" : line.text)),
           said: session(dir).filter((line) => line.type === "say" && line.beat >= 0).map((line) => line.text),
         }),
   };

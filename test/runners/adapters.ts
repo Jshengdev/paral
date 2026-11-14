@@ -21,6 +21,7 @@ export async function standIn(input: { asked: any; picture: boolean; brainReply:
       signal: options?.signal instanceof AbortSignal,
       numbered: text.includes("1: 2x + 6 = 14, so x = 10"),
       namesRung: text.includes("Write the hint for this rung: look."),
+      ...(input.asked.lines?.includes("") ? { hiddenLinesAreLeftOutAndNumbersKept: !/^\d+: $/m.test(text) && text.includes(`${input.asked.lines.length - 1}: ${input.asked.lines.at(-1)}`) } : {}),
       ...(input.asked.circled ? { namesWhatHeDrewAround: text.includes(`drew around lines ${input.asked.circled.join(", ")}`) } : {}),
       ...(input.asked.lesson?.drawn ? { namesWhatIsDrawn: text.includes(`still on their screen: ${input.asked.lesson.drawn.join("; ")}`) } : {}),
     });
