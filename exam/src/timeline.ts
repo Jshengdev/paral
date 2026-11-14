@@ -7,7 +7,7 @@ export type Moment = { at: number } & (
   | { kind: "heard"; text: string }
   | { kind: "trail"; x: number; y: number }
   | { kind: "look"; name: string; detail?: string }
-  | { kind: "say"; id: string; text: string; opener: boolean; hint: boolean }
+  | { kind: "say"; id: string; text: string; opener: boolean; hint: boolean; top: boolean }   // top: a hint on the last rung of the ladder
   | { kind: "mark"; id: string; mark: string; box: Box; label?: string }
   | { kind: "echo"; box: Box }
   | { kind: "board"; text: string }

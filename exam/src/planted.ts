@@ -22,7 +22,7 @@ const UP = 3000;
 const DISPLAY = { id: 1, scale: 2, x: 0, y: 0, w: 1728, h: 1117 };
 const box = { x: 100, y: 80, w: 200, h: 20 };
 const PAGE = [{ id: "work", text: "My work", box }, { id: "limiter", text: "The rate limiter keeps its buckets in memory", box }];
-const say = (id: string, at: number, text: string, extra: Partial<{ opener: boolean; hint: boolean }> = {}): Moment => ({ at, kind: "say", id, text, opener: extra.opener ?? false, hint: extra.hint ?? false });
+const say = (id: string, at: number, text: string, extra: Partial<{ opener: boolean; hint: boolean; top: boolean }> = {}): Moment => ({ at, kind: "say", id, text, opener: extra.opener ?? false, hint: extra.hint ?? false, top: extra.top ?? false });
 const voice = (of: string, at: number, ms: number): Moment => ({ at, kind: "voice", of, ms });
 const mark = (id: string, at: number): Moment => ({ at, kind: "mark", id, mark: "underline", box });
 const drawn = (at: number): Placed[] => [{ at, what: "mark", id: "t1/0", box }];
@@ -86,6 +86,8 @@ const CASES: Case[] = [
   { name: "only the new ask speaks after his second press", check: "Nothing of the ask he took back", mustPass: true, verdicts: () => pressedAgain(cutting([say("t2:0", 24000, "Passwords are on the eighth line.")]), SILENT, { takesBackTheAskBefore: true }) },
   { name: "a worked example with a wrong sum", check: "A sum it says aloud", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "Adding 3 to both sides gives k equals 8 plus 3.", { hint: true }), say("t1:1", 9000, "So k is 12.", { hint: true })]), {}, []) },
   { name: "a worked example with a right sum", check: "A sum it says aloud", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "Adding 4 to both sides gives y equals 9 plus 4, which is 13.", { hint: true })]), {}, []) },
+  { name: "the top rung's example says what it comes to", check: "On the last rung", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "Adding 4 to both sides gives y equals 9 plus 4, which is 13.", { hint: true, top: true })]), {}, []) },
+  { name: "the top rung's example stops at the move", check: "On the last rung", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "Adding 4 to both sides gives y equals 9 plus 4.", { hint: true, top: true })]), {}, []) },
   { name: "a hint on a plain question", check: "A plain question gets an answer", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "Read the highlighted line again, slowly.", { hint: true })]), { plain: true }, []) },
   { name: "his number in a worked example", check: "It never gives the result", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "So a equals 2 plus 9, which is 11.")]), { never: ["11", "eleven"] }, []) },
   { name: "an ask that ends in the failed look", check: "The ask is answered", mustPass: false, verdicts: () => spoken(ask([{ at: 5000, kind: "look", name: "failed", detail: "I lost that answer on my side. Ask me again." }]), {}, []) },

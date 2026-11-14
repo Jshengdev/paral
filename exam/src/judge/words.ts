@@ -45,6 +45,16 @@ function sumsRight(ask: Ask): Verdict[] {
   return [wrong.length === 0 ? yes("C16", ask.index, what, `${sums.length} sums, each right`) : no("C16", ask.index, what, `it said "${wrong[0].said}", and that is ${wrong[0].is}`)];
 }
 
+// The last rung works a step on other numbers and stops at the line that shows the move. It leaves the total to him:
+// a total said there has twice been a wrong one, said to keep from saying his own answer.
+function topRungStops(ask: Ask): Verdict[] {
+  const top = of(ask.moments, "say").filter((m) => m.top);
+  if (top.length === 0) return [];
+  const totals = [...top.map((m) => m.text).join(" ").matchAll(SUM)];
+  const what = "On the last rung the example stops before its total";
+  return [totals.length === 0 ? yes("C16", ask.index, what, `${top.length} lines, no total said`) : no("C16", ask.index, what, `it said "${totals[0][0]}"`)];
+}
+
 export function spoken(ask: Ask, expect: Expect, truth: Truth[]): Verdict[] {
   const s = ask.index;
   const says = of(ask.moments, "say");
@@ -72,7 +82,7 @@ export function spoken(ask: Ask, expect: Expect, truth: Truth[]): Verdict[] {
   const leaks = says.filter((m) => WORKINGS.some((sign) => sign.test(m.text)));
   out.push(leaks.length === 0 ? yes("U6", s, "No line talks about its own workings, or about him as someone else", `${says.length} lines, none does`)
     : no("U6", s, "No line talks about its own workings, or about him as someone else", `it said: "${leaks[0].text.slice(0, 80)}"`));
-  out.push(...sumsRight(ask));
+  out.push(...sumsRight(ask), ...topRungStops(ask));
   // DuckyHelper's own notes for the tutor in the video (version 0.10.32): "a sentence is said once, never twice".
   const twice = says.map((m) => plain(m.text).trim()).filter((text, at, all) => all.indexOf(text) !== at);
   if (says.length > 0) {
