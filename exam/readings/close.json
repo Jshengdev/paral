@@ -1,5 +1,5 @@
 {
-  "session": "bb975d393af4",
+  "session": "81eaefd7afd3",
   "by": "the judge's reader, 2026-11-14",
   "verdicts": [
     {
@@ -7,7 +7,7 @@
       "step": 0,
       "pass": true,
       "what": "It answers what he asked",
-      "measured": "he asked which line is the riskiest. It names the rate limiter and says why: its buckets live in memory on one server"
+      "measured": "he asked for the riskiest line in the file layout; it names one, the rate limiter's in-memory Map, and gives two reasons: it resets on a restart and is not shared between servers, and its keys never expire"
     },
     {
       "criterion": "U6",

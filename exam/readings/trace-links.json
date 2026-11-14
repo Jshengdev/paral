@@ -1,5 +1,5 @@
 {
-  "session": "aaac1c43befb",
+  "session": "da5d11fdb9b4",
   "by": "the judge's reader, 2026-11-14",
   "verdicts": [
     {
@@ -7,14 +7,14 @@
       "step": 1,
       "pass": true,
       "what": "The follow-up builds on the first answer",
-      "measured": "it keeps the first answer's idea, a short domain of his own, and shows his first link on it: https://, qhd.io, /4CQMZu"
+      "measured": "the first answer said to put the app on a short domain he owns; the follow-up picks one kind (a two or three letter name on dot link or dot to) and shows his own code on it: qh.link, a slash, 4CQMZu"
     },
     {
       "criterion": "C5",
       "step": 0,
       "pass": true,
       "what": "The opener is short and names the act",
-      "measured": "8 words: \"Let's look at how these links are built.\" The second ask opened with the fixed line",
+      "measured": "9 words: \"Let's look at how a short link is built.\" The second ask opened with the fixed line",
       "limit": "about ten words (the video: nine)"
     },
     {
@@ -22,7 +22,7 @@
       "step": 0,
       "pass": true,
       "what": "An answer is two to four sentences",
-      "measured": "three sentences in each answer",
+      "measured": "three sentences in the first answer, four in the second",
       "limit": "the video: two to four"
     },
     {
@@ -30,21 +30,29 @@
       "step": 1,
       "pass": true,
       "what": "A link reads well in the capsule",
-      "measured": "it spells only the short made-up name, \"q h d dot io\", and says what the link becomes in plain words. The board shows it written: https://, qhd.io, /4CQMZu"
+      "measured": "the short name is said in plain words, \"dot link or dot to\", and the board shows it written: qh.link, a slash, 4CQMZu"
+    },
+    {
+      "criterion": "C7",
+      "step": 1,
+      "pass": false,
+      "what": "Every spoken piece is a whole sentence",
+      "measured": "the second answer opens \"I'd pick something tiny and cheap.\" and goes on \"Like a two or three letter name on a short ending such as dot link or dot to.\" The second piece is not a sentence on its own: one sentence was cut in two at a comma",
+      "limit": "C7: the answer comes sentence by sentence"
     },
     {
       "criterion": "C8",
       "step": 1,
       "pass": true,
       "what": "The board reads cleanly",
-      "measured": "two rows of two or three boxes in each ask, and no box begins or ends with an arrow"
+      "measured": "two rows of three boxes in each ask, and no box begins or ends with an arrow. Two boxes in the second board hold only \"+ slash\" and \"/\""
     },
     {
       "criterion": "U6",
       "step": 1,
       "pass": true,
       "what": "It speaks to him about his page, never about its own workings",
-      "measured": "every line says \"you\" or \"your\", and speaks only of his links, his domain and his server"
+      "measured": "every line speaks of his links, his domain and his app"
     }
   ]
 }

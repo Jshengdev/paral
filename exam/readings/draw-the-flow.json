@@ -1,5 +1,5 @@
 {
-  "session": "50fe4eaf1c44",
+  "session": "7de2515d58be",
   "by": "the judge's reader, 2026-11-14",
   "verdicts": [
     {
@@ -7,7 +7,7 @@
       "step": 0,
       "pass": true,
       "what": "The drawing shows what he asked for",
-      "measured": "two rows of three boxes: sign up or log in, session cookie set, dashboard; then create short link, click recorded and redirect, stats page totals"
+      "measured": "he asked how sign in, creating a link and the click stats connect; the board has two rows of three boxes: sign up or log in, dashboard, create short link; then open short link, click recorded, stats page totals"
     },
     {
       "criterion": "C5",
@@ -22,7 +22,7 @@
       "step": 0,
       "pass": true,
       "what": "It speaks to him about his page, never about its own workings",
-      "measured": "every line is about his build"
+      "measured": "three sentences about his sign-in, his links and his stats page"
     }
   ]
 }

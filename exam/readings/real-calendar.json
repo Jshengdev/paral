@@ -1,0 +1,27 @@
+{
+  "session": "0780a82f9aac",
+  "by": "the judge's reader, 2026-11-14",
+  "verdicts": [
+    {
+      "criterion": "C13",
+      "step": 0,
+      "pass": true,
+      "what": "The dates it gives are the page's own",
+      "measured": "exams from Wednesday, December 9 through the 16th; four study days, Saturday December 5 through Tuesday December 8; classes end Friday, December 4. Each matches the calendar's rows for fall 2026"
+    },
+    {
+      "criterion": "C13",
+      "step": 1,
+      "pass": true,
+      "what": "It says where on the page the holidays are found",
+      "measured": "it points to the link in the intro paragraph at the top and says it opens a policy in the USC Employee Gateway. The page's intro paragraph holds the words Paid University Holidays, followed by \"policies in USC Employee Gateway.\", and the underline is on that line"
+    },
+    {
+      "criterion": "U6",
+      "step": 1,
+      "pass": true,
+      "what": "It speaks to him about his page, never about its own workings",
+      "measured": "five sentences about the calendar's dates and its links"
+    }
+  ]
+}

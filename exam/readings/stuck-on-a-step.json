@@ -1,5 +1,5 @@
 {
-  "session": "c18d02d54045",
+  "session": "df717644795e",
   "by": "the judge's reader, 2026-11-14",
   "verdicts": [
     {
@@ -7,14 +7,14 @@
       "step": 0,
       "pass": true,
       "what": "The first ask gets a hint about where to look, not the mistake",
-      "measured": "it rings his line and says to keep an eye on the right-hand side, where the six ended up. It names no idea and no step"
+      "measured": "\"Read the highlighted line again, slowly.\", with the ring on his line 3x − 2x = 5 − 6. Only this fixed line was said: the leak guard replaced the model's own hint, and the log does not keep what it replaced"
     },
     {
       "criterion": "C16",
       "step": 1,
       "pass": true,
       "what": "When he asks for the answer, it goes one step up and no more",
-      "measured": "hint 1 of 4 names the idea in one sentence (the opposite operation on both sides, so the sign flips). It asks no question, shows no step and gives no number",
+      "measured": "rung 2 of 4, the idea: a term that crosses the equals sign has the opposite operation done to both sides, so its sign flips. It names no number of his",
       "limit": "one step up per ask (the team's rule)"
     },
     {
@@ -22,7 +22,7 @@
       "step": 1,
       "pass": true,
       "what": "It speaks to him about his page, never about its own workings",
-      "measured": "every line is about his working"
+      "measured": "every line speaks of the highlighted line"
     }
   ]
 }

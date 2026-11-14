@@ -1,5 +1,5 @@
 {
-  "session": "5b98ddc38c26",
+  "session": "180d7db0d59b",
   "by": "the judge's reader, 2026-11-14",
   "verdicts": [
     {
@@ -7,14 +7,14 @@
       "step": 0,
       "pass": true,
       "what": "With no voice, the words alone still answer",
-      "measured": "three sentences are shown: 307 is a temporary redirect, the browser follows it to Wikipedia, and it is not cached, so every click is counted"
+      "measured": "three sentences in the capsule say what status 307 is, what his short link did with it, and why temporary matters for his click counts"
     },
     {
       "criterion": "U6",
       "step": 0,
       "pass": true,
       "what": "It speaks to him about his page, never about its own workings",
-      "measured": "every line is about his test run"
+      "measured": "three sentences about his short link and his server"
     }
   ]
 }
