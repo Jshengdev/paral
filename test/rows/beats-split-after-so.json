@@ -1,0 +1,40 @@
+{
+ "name": "beats: after a comma, \"so\" opens a sentence of its own whatever its subject (\"..., so undoing a subtraction means ...\"), except in \"so that\", \"so as to\" and \"so far as\", which stay whole; a sentence under the limit is not cut even where it could be",
+ "run": "beats.split",
+ "in": {
+  "limits": {
+   "plain": 22,
+   "withNumbers": 14
+  },
+  "sentences": {
+   "the judge's 8.2 s": "The rule here is that whatever you do to one side, you do to the other, so undoing a subtraction means adding the same amount to both sides.",
+   "the judge's 8.0 s": "When a term moves from one side of the equals sign to the other you are really doing something to both sides, so moving a term across means undoing it with the opposite operation.",
+   "so that": "You add the same amount to both sides of the equation every single time, so that the two sides stay equal and the answer does not change.",
+   "so as to": "You move every term with x to the left side of the equals sign first, so as to have the plain numbers alone on the right.",
+   "so far as": "Nothing on the page says which of the two files is loaded first when the app starts, so far as the lines I can read go.",
+   "20 words, under the limit": "That Map resets on every restart and isn't shared between server instances, so limits leak on serverless or multiple processes."
+  }
+ },
+ "out": {
+  "the judge's 8.2 s": [
+   "The rule here is that whatever you do to one side, you do to the other.",
+   "So undoing a subtraction means adding the same amount to both sides."
+  ],
+  "the judge's 8.0 s": [
+   "When a term moves from one side of the equals sign to the other you are really doing something to both sides.",
+   "So moving a term across means undoing it with the opposite operation."
+  ],
+  "so that": [
+   "You add the same amount to both sides of the equation every single time, so that the two sides stay equal and the answer does not change."
+  ],
+  "so as to": [
+   "You move every term with x to the left side of the equals sign first, so as to have the plain numbers alone on the right."
+  ],
+  "so far as": [
+   "Nothing on the page says which of the two files is loaded first when the app starts, so far as the lines I can read go."
+  ],
+  "20 words, under the limit": [
+   "That Map resets on every restart and isn't shared between server instances, so limits leak on serverless or multiple processes."
+  ]
+ }
+}
