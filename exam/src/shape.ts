@@ -29,7 +29,9 @@ const Expect = z.object({
 export type Expect = z.infer<typeof Expect>;
 
 const Step = z.union([
-  z.object({ say: z.string(), circle: z.string().nullable(), cutInAfterMs: z.number().positive().optional(), expect: Expect }),
+  // A step may cut in on the ask before it: `cutInAfterMs` after its first line of any kind, or
+  // `cutInAnswerAfterMs` after the first sentence of the answer itself.
+  z.object({ say: z.string(), circle: z.string().nullable(), cutInAfterMs: z.number().positive().optional(), cutInAnswerAfterMs: z.number().positive().optional(), expect: Expect }),
   z.object({ close: z.literal(true), expect: Expect.optional() }),
 ]);
 export type Step = z.infer<typeof Step>;
@@ -47,7 +49,7 @@ export const Scenario = z.object({
 });
 export type Scenario = z.infer<typeof Scenario>;
 
-const StartAfter = z.union([z.literal("idle"), z.object({ firstSayPlusMs: z.number().positive() })]);
+const StartAfter = z.union([z.literal("idle"), z.object({ firstSayPlusMs: z.number().positive() }), z.object({ firstAnswerPlusMs: z.number().positive() })]);
 
 export const Flow = z.object({
   v: z.literal(1),

@@ -74,6 +74,11 @@ only when the builder says the tree is frozen, and the builder edits again only 
   little on purpose, and the ring on his line is what ties it to the page.
 - **The cut-in** comes one second after the first line of the answer before it. At a second and a half the key
   once fell in the pause between two lines, and that run could prove nothing.
+- **A cut-in in the middle of an answer** is its own scenario. The key goes down one second after the first sentence
+  of the answer itself (`cutInAnswerAfterMs`). Besides the voice stopping, nothing more of the old answer may come
+  after the press: no sentence of it and no mark of it.
+- **A piece cut off from its sentence.** A long sentence cut at a comma once left "Which is 13." said on its own.
+  The judge holds three signs of that, each heard on film. A reader judges the rest.
 - A verdict is `works`, `fails` or `not shown`. `not shown` means this run could not prove it either way.
 - **From a reader:** some things only a reader can judge, such as whether a follow-up built on the answer before it.
   Whoever reads a run writes `readings/<scenario>.json`. A reading names the run it read by a mark made from the

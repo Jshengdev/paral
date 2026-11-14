@@ -1,0 +1,12 @@
+{
+  "v": 1,
+  "id": "cut-in-answer",
+  "title": "He holds the key again in the middle of an answer",
+  "criteria": ["C11"],
+  "page": "milestone",
+  "steps": [
+    { "say": "Which of these six checks should I try first, and why?", "circle": null, "expect": { "plain": true } },
+    { "say": "Stop. Which line here is about the stats page?", "circle": null, "cutInAnswerAfterMs": 1000,
+      "expect": { "stopsVoiceWithinMs": 300, "sentences": 1, "plain": true, "mark": { "on": "step-stats" } } }
+  ]
+}

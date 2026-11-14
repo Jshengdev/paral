@@ -1,6 +1,7 @@
 import { board } from "./judge/board.ts";
 import { drawnIn } from "./judge/motion.ts";
 import { onlyThePart } from "./judge/picture.ts";
+import { cutIn } from "./judge/ending.ts";
 import { timing } from "./judge/timing.ts";
 import { spoken } from "./judge/words.ts";
 import type { Placed } from "./session.ts";
@@ -9,6 +10,9 @@ import type { Verdict } from "./verdict.ts";
 
 // A check that cannot fail proves nothing. Each case here is a made-up ask with one fault planted in it, or with
 // none, and names the check that must fail or pass on it. `node exam/run.ts planted` runs them all, with no service.
+// The ask that cut in on the one before it: its key went down at 20 s on the run's clock.
+const cutting = (extra: Moment[]): Ask => ({ index: 1, down: 20000, up: 22000, moments: [{ at: 20000, kind: "key-down" }, { at: 20010, kind: "look", name: "listening" }, { at: 22000, kind: "key-up" }, ...extra] });
+
 type Case = { name: string; check: string; mustPass: boolean; verdicts: () => Verdict[] | Promise<Verdict[]> };
 
 const UP = 3000;
@@ -69,6 +73,8 @@ const CASES: Case[] = [
   { name: "an answer that names the page's limiter", check: "The answer is about the page", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "The rate limiter is the one to worry about.")]), { sentences: 1 }, PAGE) },
   { name: "a sentence cut at a comma into a piece", check: "No piece is cut off", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "You add 4 to both sides, so y equals 9 plus 4."), say("t1:1", 9000, "Which is 13.")]), {}, []) },
   { name: "a whole sentence that begins with Like", check: "No piece is cut off", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "Like terms go together on one side.")]), {}, []) },
+  { name: "the old answer goes on after he cuts in", check: "Nothing more of the old answer", mustPass: false, verdicts: () => cutIn(cutting([say("t1:1", 21000, "And the second step is this one.")]), ask([...sentence]), { stopsVoiceWithinMs: 300 }, null) },
+  { name: "only the new answer after he cuts in", check: "Nothing more of the old answer", mustPass: true, verdicts: () => cutIn(cutting([say("t2:0", 24000, "A forged cookie is a faked one.")]), ask([...sentence]), { stopsVoiceWithinMs: 300 }, null) },
   { name: "a hint on a plain question", check: "A plain question gets an answer", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "Read the highlighted line again, slowly.", { hint: true })]), { plain: true }, []) },
   { name: "his number in a worked example", check: "It never gives the result", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "So a equals 2 plus 9, which is 11.")]), { never: ["11", "eleven"] }, []) },
   { name: "an ask that ends in the failed look", check: "The ask is answered", mustPass: false, verdicts: () => spoken(ask([{ at: 5000, kind: "look", name: "failed", detail: "I lost that answer on my side. Ask me again." }]), {}, []) },
