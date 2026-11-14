@@ -89,6 +89,6 @@ export const opener = {
   surfaceMaxWords: {
     value: 12,
     why: "With its opener the fast model may give one line that states something anyone can read straight off the page. It is held until the deep answer says there is no wrong line, then said at once, so the wait for the first deep sentence is not silent. On a page with a wrong line it is never said: only the ladder speaks there. A line longer than this is dropped and the log says so, since a long one holds the answer back. Zero turns it off.",
-    measured: "nine live scenarios (2026-11-14, the outside judge): said in 2 asks, dropped for length in 4 (19 to 38 words), not given in 3. One that was said took 6.1 s and held the answer back by 5 s; the limit was 16 words then",
+    measured: "at 16 words, nine live scenarios (2026-11-14, the outside judge): said in 2 asks, dropped for length in 4 (19 to 38 words), not given in 3; one that was said took 6.1 s and held the answer back by 5 s. At 12 words, 17 live asks with no wrong line: said in none, dropped for length in 11 (14 to 37 words), not given in the rest; on his own working not given 15 times of 15, as meant. So in live use this line is not heard",
   } satisfies Setting<number>,
 };

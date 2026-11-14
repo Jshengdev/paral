@@ -124,6 +124,9 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
 - The lesson lives for one connection. Restarting the body or the mind starts it over.
 - A line he edits is treated as the same wrong line, still wrong, even when the model has moved to a later line.
 - A follow-up that the model words as a new problem wipes the marks of the one before.
-- The board comes with the end of the answer, since it is the last field of the reply.
+- The board comes before the sentences, three to five seconds after he lets go in the runs so far; nothing of the
+  answer comes sooner than the reply's first fields.
+- The fast model's line about the page has not been heard in a live run. It writes the line longer than the limit
+  (`surfaceMaxWords`), and a long line is dropped and logged. The opener is what is heard first.
 - One lesson exists (`balance`), with three fixed examples.
 - Landing a mark on the right line is measured on generated pages only, not on real course pages.
