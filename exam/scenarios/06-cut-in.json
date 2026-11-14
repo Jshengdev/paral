@@ -17,7 +17,7 @@
     {
       "say": "Wait. What does a forged cookie mean?",
       "circle": "extra-cookie",
-      "cutInAfterMs": 1500,
+      "cutInAfterMs": 1000,
       "expect": {
         "stopsVoiceWithinMs": 300,
         "sentences": 1,

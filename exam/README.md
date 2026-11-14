@@ -67,6 +67,13 @@ only when the builder says the tree is frozen, and the builder edits again only 
   opens the picture file itself: it counts pixels of the pen's colour, and compares the picture's shape with the
   display's. Lines that came with a place and no words are a second sign of a part. The exam's circles are small, so
   the whole display sent with a circle is a fault here.
+- **A sentence is said once, never twice.** DuckyHelper's own notes say so for the tutor in the video (0.10.32). It is
+  held within one answer.
+- **About the page.** An answer must share words with the page. Only the answer's own sentences, labels and board
+  count: a waiting line that happens to hold a word of the page proves nothing. A hint is not held to this. It says
+  little on purpose, and the ring on his line is what ties it to the page.
+- **The cut-in** comes one second after the first line of the answer before it. At a second and a half the key
+  once fell in the pause between two lines, and that run could prove nothing.
 - A verdict is `works`, `fails` or `not shown`. `not shown` means this run could not prove it either way.
 - **From a reader:** some things only a reader can judge, such as whether a follow-up built on the answer before it.
   Whoever reads a run writes `readings/<scenario>.json`. A reading names the run it read by a mark made from the

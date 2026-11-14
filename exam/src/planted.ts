@@ -14,6 +14,7 @@ type Case = { name: string; check: string; mustPass: boolean; verdicts: () => Ve
 const UP = 3000;
 const DISPLAY = { id: 1, scale: 2, x: 0, y: 0, w: 1728, h: 1117 };
 const box = { x: 100, y: 80, w: 200, h: 20 };
+const PAGE = [{ id: "work", text: "My work", box }, { id: "limiter", text: "The rate limiter keeps its buckets in memory", box }];
 const say = (id: string, at: number, text: string, extra: Partial<{ opener: boolean; hint: boolean }> = {}): Moment => ({ at, kind: "say", id, text, opener: extra.opener ?? false, hint: extra.hint ?? false });
 const voice = (of: string, at: number, ms: number): Moment => ({ at, kind: "voice", of, ms });
 const mark = (id: string, at: number): Moment => ({ at, kind: "mark", id, mark: "underline", box });
@@ -62,6 +63,10 @@ const CASES: Case[] = [
   { name: "a line that says NONE", check: "No line talks about its own workings", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "This is a student's own summary, so I'll say NONE.")]), {}, []) },
   { name: "an opener that speaks of him as the student", check: "No line talks about its own workings", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "Let's sort out what the student is asking about the domain.")]), {}, []) },
   { name: "a line about the student calendar on the page", check: "No line talks about its own workings", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "That policy covers faculty and staff, not the student calendar below.")]), {}, []) },
+  { name: "the rung's fixed line said twice in one answer", check: "A sentence is said once", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "Read the highlighted line again, slowly.", { hint: true }), say("t1:1", 9000, "Read the highlighted line again, slowly.", { hint: true })]), {}, []) },
+  { name: "an answer that names nothing on the page", check: "The answer is about the page", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "Bananas are yellow and grow in bunches.")]), { sentences: 1 }, PAGE) },
+  { name: "only a waiting line shares a word with the page", check: "The answer is about the page", mustPass: false, verdicts: () => spoken(ask([say("t1:-2", 5000, "Give me a moment to work it out.", { opener: true }), say("t1:0", 6000, "Bananas are yellow and grow in bunches.")]), { sentences: 1 }, PAGE) },
+  { name: "an answer that names the page's limiter", check: "The answer is about the page", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "The rate limiter is the one to worry about.")]), { sentences: 1 }, PAGE) },
   { name: "a hint on a plain question", check: "A plain question gets an answer", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "Read the highlighted line again, slowly.", { hint: true })]), { plain: true }, []) },
   { name: "his number in a worked example", check: "It never gives the result", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "So a equals 2 plus 9, which is 11.")]), { never: ["11", "eleven"] }, []) },
   { name: "an ask that ends in the failed look", check: "The ask is answered", mustPass: false, verdicts: () => spoken(ask([{ at: 5000, kind: "look", name: "failed", detail: "I lost that answer on my side. Ask me again." }]), {}, []) },

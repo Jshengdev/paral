@@ -28,15 +28,26 @@ export function spoken(ask: Ask, expect: Expect, truth: Truth[]): Verdict[] {
   if (expect.sentences !== undefined) {
     const measured = `${sentences.length} sentences`;
     out.push(sentences.length >= expect.sentences ? yes("C7", s, `The answer comes in at least ${expect.sentences} sentences`, measured) : no("C7", s, `The answer comes in at least ${expect.sentences} sentences`, measured));
+    // Shared words are counted in the answer itself: a waiting line that happens to hold a word of the page proves
+    // nothing. A hint is not held to this. It says little on purpose, and the ring on his line ties it to the page.
+    const answer = [...sentences.map((m) => m.text), ...of(ask.moments, "mark").map((m) => m.label ?? ""), ...of(ask.moments, "board").map((m) => m.text)].join(" ");
     const pageWords = new Set(truth.flatMap((t) => words(t.text)).filter((w) => w.length > 3 && !SMALL_WORDS.has(w)));
-    const shared = [...new Set(words(everything))].filter((w) => pageWords.has(w));
+    const shared = [...new Set(words(answer))].filter((w) => pageWords.has(w));
     const need = sentences.length >= 2 ? 2 : 1;
-    out.push(shared.length >= need ? yes("C13", s, "The answer is about the page in front of him", `it names: ${shared.slice(0, 6).join(", ")}`)
-      : no("C13", s, "The answer is about the page in front of him", `it shares ${shared.length} words with the page`));
+    if (!sentences.every((m) => m.hint)) {
+      out.push(shared.length >= need ? yes("C13", s, "The answer is about the page in front of him", `it names: ${shared.slice(0, 6).join(", ")}`)
+        : no("C13", s, "The answer is about the page in front of him", `it shares ${shared.length} words with the page`));
+    }
   }
   const leaks = says.filter((m) => WORKINGS.some((sign) => sign.test(m.text)));
   out.push(leaks.length === 0 ? yes("U6", s, "No line talks about its own workings, or about him as someone else", `${says.length} lines, none does`)
     : no("U6", s, "No line talks about its own workings, or about him as someone else", `it said: "${leaks[0].text.slice(0, 80)}"`));
+  // DuckyHelper's own notes for the tutor in the video (version 0.10.32): "a sentence is said once, never twice".
+  const twice = says.map((m) => plain(m.text).trim()).filter((text, at, all) => all.indexOf(text) !== at);
+  if (says.length > 0) {
+    out.push(twice.length === 0 ? yes("C7", s, "A sentence is said once, never twice", `${says.length} lines, each said once`)
+      : no("C7", s, "A sentence is said once, never twice", `said twice: "${twice[0].slice(0, 70)}"`));
+  }
   // An ask that ends in the failed look was not answered. If it must fail, it says so in plain words, never as an error's own text.
   const failed = of(ask.moments, "look").find((m) => m.name === "failed");
   out.push(failed ? no("C7", s, "The ask is answered, not failed", `it failed: ${(failed.detail ?? "").replace(/\s+/g, " ").slice(0, 80)}`) : yes("C7", s, "The ask is answered, not failed", "no failure"));
