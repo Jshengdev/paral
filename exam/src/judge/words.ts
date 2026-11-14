@@ -8,10 +8,12 @@ const SMALL_WORDS = new Set("the a an and or of to in on is it this that with fo
 const words = (text: string) => text.toLowerCase().match(/[a-z0-9]+/g)?.map((w) => (w.length > 4 ? w.replace(/s$/, "") : w)) ?? [];
 const plain = (text: string) => text.toLowerCase().replace(/[−–—]/g, "-").replace(/\s+/g, " ");
 
-// Signs that a line is about its own workings, or speaks of him in the third person. Each was said aloud once on film:
-// "the student" (the second pass), and a line that ended "so I will say NONE" in its short form (the seventh).
+// Signs that a line is about its own workings, or speaks of him as someone else. Each was said aloud once on film:
+// "what the student is asking" (the second pass), and a line that ended "so I will say NONE" in its short form (the
+// seventh). "The student calendar" on a university's own page is not one: there the word names a thing on the page.
 // A reader still judges the rest.
-const WORKINGS = [/\bNONE\b/, /\bI.ll say\b/i, /\b(the|a) (student|user|learner)\b/i, /\bas an AI\b/i, /\bmy (instructions|prompt)\b/i];
+const HIM_AS_SOMEONE_ELSE = /\b(the|a) (student|user|learner)('s| is| has| was| wants| asked| needs| should| can)\b/i;
+const WORKINGS = [/\bNONE\b/, /\bI.ll say\b/i, HIM_AS_SOMEONE_ELSE, /\bas an AI\b/i, /\bmy (instructions|prompt)\b/i];
 
 export function spoken(ask: Ask, expect: Expect, truth: Truth[]): Verdict[] {
   const s = ask.index;
