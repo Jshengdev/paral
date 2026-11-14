@@ -1,0 +1,30 @@
+{
+ "name": "body: he lets go and presses again inside the microphone's grace: the first hold's key-up still reaches the mind ahead of the second key-down, the first ask is dropped and the second is heard and answered",
+ "run": "body.pressedAgain",
+ "in": {
+  "lines": [
+   "Solve for x: 2(x + 3) = 14",
+   "2x + 6 = 14",
+   "2x + 6 = 14, so x = 10"
+  ],
+  "tape": "filmed.json",
+  "asks": [
+   "why is this wrong",
+   "why is this wrong"
+  ],
+  "againMs": 60
+ },
+ "out": {
+  "keys": [
+   "key.down",
+   "key.up",
+   "key.down",
+   "key.up"
+  ],
+  "secondPressInsideTheGrace": true,
+  "heard": [
+   "why is this wrong"
+  ],
+  "asksAnswered": 1
+ }
+}

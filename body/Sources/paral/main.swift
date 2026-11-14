@@ -21,8 +21,11 @@ final class App: NSObject, NSApplicationDelegate {
     private var trail: [CGPoint] = []
     private var cut: Set<String> = []
     private var holds = 0
-    /// A hold he has let go of that is not yet ended: the microphone stays open for the ear's grace after the release.
-    private var ending: (released: Double, timer: DispatchWorkItem)?
+    /// Ends each hold: the microphone closes and the mind is told when the key came up.
+    private lazy var release = Release { [weak self] released in
+        self?.mic.stop()
+        self?.wire.send(.keyUp(at: released))
+    }
     private let began = Date()
 
     init(socket: String, tokens: Tokens, tokensPath: String, screen: NSScreen) {
@@ -108,7 +111,7 @@ final class App: NSObject, NSApplicationDelegate {
 
     private func down() {
         // A press inside the grace of the hold before ends that hold first, so its key-up goes out ahead of this key-down.
-        end()
+        release.now()
         hush()
         shot = nil
         trail = []
@@ -164,20 +167,11 @@ final class App: NSObject, NSApplicationDelegate {
     }
 
     private func up() {
-        let timer = DispatchWorkItem { [weak self] in self?.end() }
-        ending = (stamp(), timer)
+        let released = stamp()
         tell(.keyUp)
         if trail.count > 1 { sendShot() }
-        DispatchQueue.main.asyncAfter(deadline: .now() + (settings?.earGraceMs ?? 0) / 1000, execute: timer)
-    }
-
-    /// Ends the hold he let go of: the microphone closes, and the mind is told when the key came up.
-    private func end() {
-        guard let ending else { return }
-        self.ending = nil
-        ending.timer.cancel()
-        mic.stop()
-        wire.send(.keyUp(at: ending.released))
+        // The microphone stays open for the ear's grace after the release, so his last word is heard.
+        release.letGo(at: released, graceMs: settings?.earGraceMs ?? 0)
     }
 
     @objc private func close() {

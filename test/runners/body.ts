@@ -146,3 +146,30 @@ export function capsule(input: { rows: { at: number; line: Record<string, unknow
   writeFileSync(join(dir, "session.jsonl"), input.rows.map((row) => JSON.stringify({ at: row.at, line: { v: 1, ...row.line } })).join("\n") + "\n");
   return body("capsule", dir, join(root, "body", "tokens.json"), ...input.at.map(String));
 }
+
+/**
+ * A scripted run on a tape with no film, where each later ask presses the key `againMs` after the release before it.
+ * Gives back the key lines in the order the mind got them, how soon the second press came, and what was heard and answered.
+ */
+export function pressedAgain(input: { lines: string[]; tape: string; asks: string[]; againMs: number }) {
+  const dir = fresh("again");
+  mkdirSync(dir, { recursive: true });
+  const page = join(dir, "page.png");
+  body("page", page, ...input.lines);
+  const asks = input.asks.map((words, index) => {
+    const wav = join(dir, `ask-${index + 1}.wav`);
+    fakeWav(wav, words);
+    return { wav, trail: [], startAfter: index === 0 ? "idle" : { releasePlusMs: input.againMs } };
+  });
+  writeFileSync(join(dir, "flow.json"), JSON.stringify({ v: 1, display: { id: 2, scale: 1, x: 0, y: 0, w: 1600, h: 1000 }, page, asks }));
+  execFileSync("./flow", [join(dir, "flow.json")], { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], env: { ...process.env, PARAL_TAPE: join(root, "test", "tapes", input.tape) } });
+  const lines = session(dir);
+  const keys = lines.filter((line) => line.type === "key.down" || line.type === "key.up");
+  const grace = lines.find((line) => line.type === "ready").earGraceMs;
+  return {
+    keys: keys.map((line) => line.type),
+    secondPressInsideTheGrace: keys.filter((line) => line.type === "key.down")[1].at - keys.find((line) => line.type === "key.up").at < grace,
+    heard: lines.filter((line) => line.type === "heard" && line.final).map((line) => line.text),
+    asksAnswered: new Set(lines.filter((line) => line.type === "say").map((line) => line.id)).size,
+  };
+}

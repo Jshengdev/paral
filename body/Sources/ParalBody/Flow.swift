@@ -15,6 +15,11 @@ public final class Flow {
     private var settings: BodySettings?
     private var pictureSent = false
     private let began = Date()
+    /// Holds end the way they do in the app: after the microphone's grace, or at once when the key is pressed again.
+    private lazy var release: Release = {
+        let wire = self.wire
+        return Release { released in wire.send(.keyUp(at: released)) }
+    }()
 
     public init(file path: String, socket: String, tokens: Tokens) throws {
         guard let file = try JSONSerialization.jsonObject(with: Data(contentsOf: URL(fileURLWithPath: path))) as? [String: Any],
@@ -75,10 +80,15 @@ public final class Flow {
         try Screen.saveSmaller(image, to: small, longEdge: settings?.pictureLongEdge ?? 2000)
 
         var first = true
+        var releasedAt = 0.0
+        var readings: [Task<[ReadLine], Error>] = []
         for ask in asks {
             if !first {
                 let after = ask["startAfter"] as? [String: Any]
-                if let plus = (after?["firstSayPlusMs"] as? NSNumber)?.doubleValue {
+                if let plus = (after?["releasePlusMs"] as? NSNumber)?.doubleValue {
+                    // A second press this soon after the release before it: inside the microphone's grace when it is short.
+                    await pause(plus - (clock() - releasedAt))
+                } else if let plus = (after?["firstSayPlusMs"] as? NSNumber)?.doubleValue {
                     _ = try await until("a first sentence", limit: 60_000, from: seenTo) { if case .say = $0 { return true } else { return false } }
                     await pause(plus)
                 } else if let plus = (after?["firstAnswerPlusMs"] as? NSNumber)?.doubleValue {
@@ -97,9 +107,12 @@ public final class Flow {
                 continue
             }
             seenTo = got.count
+            // A press inside the grace of the hold before ends that hold first, as the app does.
+            release.now()
             let down = clock()
             send(.keyDown(at: stamp()), as: .keyDown)
             let reading = Task.detached { try Screen.read(image) }
+            readings.append(reading)
             pictureSent = false
             // The scene is given every line, for laying things out. The mind is given what it may pass on to the model.
             let picture: @MainActor ([ReadLine], [ReadLine], String) -> Void = { [weak self] all, forTheMind, path in
@@ -133,21 +146,21 @@ public final class Flow {
                 if t >= holdMs { break }
                 await pause(8)
             }
-            let released = stamp()
-            scene.take(.keyUp, at: clock())
-            await pause(settings?.earGraceMs ?? 0)
-            wire.send(.keyUp(at: released))
-            let lines = try await reading.value
+            releasedAt = clock()
+            scene.take(.keyUp, at: releasedAt)
+            release.letGo(at: stamp(), graceMs: settings?.earGraceMs ?? 0)
+            // With a circle the picture goes now, ahead of the key-up line, as in the app. Without one it went, or goes, when the page is read.
             if trail.count > 1 {
+                let lines = try await reading.value
                 let path = trail.map { CGPoint(x: $0[1], y: $0[2]) }
                 let part = Screen.around(image, lines: lines, path: path, on: display, share: settings?.cropShare ?? 1, points: settings?.cropPoints ?? 200, color: color(tokens.accent), width: tokens.mark.width + 1)
                 let shown = dir.appendingPathComponent("page-with-his-path.jpg").path
                 try Screen.saveSmaller(part.image, to: shown, longEdge: settings?.pictureLongEdge ?? 2000)
                 picture(lines, part.lines, shown)
-            } else {
-                picture(lines, lines, small)
             }
         }
+        // A page that could not be read stops the run here, with its reason.
+        for reading in readings { _ = try await reading.value }
         try await settled(from: seenTo)
         await pause(300)
     }
