@@ -9,12 +9,13 @@ import { EXAM, run } from "./tools.ts";
 
 const CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 
-// `page` is one of the exam's own pages, or "real:NAME" for a saved public page. `at` is a place on it to scroll to.
-export async function renderPage(page: string, display: Display, png: string, at = ""): Promise<Truth[]> {
+// `page` is one of the exam's own pages, or "real:NAME" for a saved public page.
+export async function renderPage(page: string, display: Display, png: string): Promise<Truth[]> {
   const file = page.startsWith("real:") ? realPage(page.slice(5)) : join(EXAM, "pages", `${page}.html`);
-  const url = pathToFileURL(file).href + at;
+  const url = pathToFileURL(file).href;
   const profile = await mkdtemp(join(tmpdir(), "paral-exam-chrome-"));
-  const shared = ["--headless=new", "--hide-scrollbars", "--no-first-run", `--user-data-dir=${profile}`,
+  // The time budget lets a real page's styles arrive before the picture is taken. It is the browser's own clock, not a wait.
+  const shared = ["--headless=new", "--hide-scrollbars", "--no-first-run", "--virtual-time-budget=9000", `--user-data-dir=${profile}`,
     `--window-size=${display.w},${display.h}`, `--force-device-scale-factor=${display.scale}`];
   try {
     await run(CHROME, [...shared, `--screenshot=${png}`, url]);

@@ -5,8 +5,6 @@
 //   a scenario can circle.
 // - Only text that can be seen in the window counts: a real page holds much more than the picture shows.
 addEventListener("load", () => {
-  const place = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
-  if (place) place.scrollIntoView();
   const seen = (r) => r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth;
   const truth = [];
   const box = (r) => ({ x: r.x, y: r.y, w: r.width, h: r.height });

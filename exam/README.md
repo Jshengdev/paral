@@ -80,6 +80,13 @@ his real screen, and the real windows.
 2. Write the scenario in `scenarios/`: its steps, and for each what must be true (`src/shape.ts`, `Expect`).
 3. Run the full pass above for that scenario.
 
+## A scenario on a real page
+
+A scenario may name a public page with `source` (its address, and a place on it). `prepare` saves a copy under
+`tmp/real/`, which is never committed: the page belongs to its publisher. The copy keeps the page's styles, drops
+its scripts, uses system fonts and shifts the named place to the top, because a capture with no window does not
+finish web fonts or follow a scroll. On such a page a scenario names its target by words that stand on it.
+
 ## Borrowed from
 
 - An earlier project's main test: a check is a small data file, and the judge is outside the thing it judges.

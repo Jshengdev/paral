@@ -26,8 +26,8 @@ export async function prepare(scenario: Scenario): Promise<string> {
   const dir = runDir(scenario.id);
   await mkdir(dir, { recursive: true });
   const png = join(dir, "page.png");
-  if (scenario.source) await fetchReal(scenario.page.slice(5), scenario.source.url);
-  const truth = await renderPage(scenario.page, DISPLAY, png, scenario.source?.at);
+  if (scenario.source) await fetchReal(scenario.page.slice(5), scenario.source.url, scenario.source.at);
+  const truth = await renderPage(scenario.page, DISPLAY, png);
   const boxOf = (name: string) => {
     const found = findNamed(truth, name);
     if (!found) throw new Error(`${scenario.id}: the page "${scenario.page}" has nothing named "${name}"`);

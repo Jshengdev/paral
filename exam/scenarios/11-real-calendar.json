@@ -1,0 +1,12 @@
+{
+  "v": 1,
+  "id": "real-calendar",
+  "title": "A student asks the real USC academic calendar when finals start",
+  "criteria": ["C6", "C7", "C13"],
+  "page": "real:academic-calendar",
+  "source": { "url": "https://www.usc.edu/academic-calendar/", "at": "#academic-calendar-2026-2027" },
+  "steps": [
+    { "say": "When do final exams start this semester, and how many study days do I get before them?", "circle": null,
+      "expect": { "opener": true, "plain": true, "sentences": 2, "mark": { "on": "December 9-16" } } }
+  ]
+}
