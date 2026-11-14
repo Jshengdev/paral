@@ -149,7 +149,9 @@ export function capsule(input: { rows: { at: number; line: Record<string, unknow
 
 /**
  * A scripted run on a tape with no film, where each later ask presses the key `againMs` after the release before it.
- * Gives back the key lines in the order the mind got them, how soon the second press came, and what was heard and answered.
+ * Gives back the key lines in the order the mind got them, how soon the second press came, and what became of each
+ * ask. How far the first ask gets before the second press cuts it is a matter of timing, so only what must hold
+ * whatever the timing is given back: nothing of it is said after that press, and the second ask is the one answered.
  */
 export function pressedAgain(input: { lines: string[]; tape: string; asks: string[]; againMs: number }) {
   const dir = fresh("again");
@@ -166,10 +168,14 @@ export function pressedAgain(input: { lines: string[]; tape: string; asks: strin
   const lines = session(dir);
   const keys = lines.filter((line) => line.type === "key.down" || line.type === "key.up");
   const grace = lines.find((line) => line.type === "ready").earGraceMs;
+  const secondPress = lines.findLastIndex((line) => line.type === "key.down");
+  const said = (from: number, to: number) => lines.slice(from, to).filter((line) => line.type === "say");
+  const oldAsk = new Set(said(0, secondPress).map((line) => line.id));
   return {
     keys: keys.map((line) => line.type),
     secondPressInsideTheGrace: keys.filter((line) => line.type === "key.down")[1].at - keys.find((line) => line.type === "key.up").at < grace,
-    heard: lines.filter((line) => line.type === "heard" && line.final).map((line) => line.text),
-    asksAnswered: new Set(lines.filter((line) => line.type === "say").map((line) => line.id)).size,
+    heardLast: lines.findLast((line) => line.type === "heard" && line.final).text,
+    firstAskSaidAfterTheSecondPress: said(secondPress, lines.length).some((line) => oldAsk.has(line.id)),
+    secondAskAnswered: said(secondPress, lines.length).some((line) => !oldAsk.has(line.id)),
   };
 }

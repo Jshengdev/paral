@@ -15,7 +15,7 @@ import { settled } from "../mind/cores/partial.ts";
 import { locate } from "../mind/cores/ground.ts";
 import { pick, seconds } from "../mind/cores/lesson.ts";
 import { next, type Happened } from "../mind/cores/teach.ts";
-import { judge, type Judged } from "../mind/cores/push.ts";
+import { judge, wrongSum, type Judged } from "../mind/cores/push.ts";
 import { empty, fold, NO_RUNG } from "../mind/cores/hold.ts";
 import { FromBody, FromMind, read, write } from "../seam/schema.ts";
 import { settings } from "../mind/settings.ts";
@@ -91,6 +91,7 @@ const runs: Record<string, (input: any) => unknown> = {
     return { bodySawTheEnd: await closed, insideTheLimit: Date.now() - began < settings.stopLimitMs.value };
   },
   push: (input) => judge(input),
+  "push.sums": (input) => input.lines.map((line: string) => wrongSum(line)),
   "push.count": (input) => {
     const verdicts = input.lines.map((line: Judged & { leaks: boolean }) => ({ leaks: line.leaks, caught: judge(line).verdict === "leak" }));
     return {

@@ -1,6 +1,7 @@
 export type Verdict =
   | { verdict: "show"; line: string }
-  | { verdict: "leak"; line: string; why: "result" | "second-look" };
+  | { verdict: "leak"; line: string; why: "result" | "second-look" }
+  | { verdict: "wrong"; line: string; why: string };
 
 /** `onHisLine` is the text of the line the hint is about: a number that stands there may be spoken of. */
 export type Judged = { line: string; result: string | null; secondLook: boolean | null; safe: string; onHisLine?: string };
@@ -47,7 +48,42 @@ export function holdsValue(line: string, result: string, onHisLine: string): boo
   return [...numbers(result)].some((value) => !there.has(value) && said.has(value));
 }
 
+/** The text with its number words written as digits: "eight plus three" becomes "8 plus 3". */
+function inDigits(text: string): string {
+  const unit = UNITS.slice(1, 10).join("|");
+  return tidy(text)
+    .replace(new RegExp(`\\b(${TENS.slice(2).join("|")})(?:[ -](${unit}))?\\b`, "g"), (_, tens, after) => String(TENS.indexOf(tens) * 10 + (after ? UNITS.indexOf(after) : 0)))
+    .replace(new RegExp(`\\b(${UNITS.join("|")})\\b`, "g"), (word) => String(UNITS.indexOf(word)));
+}
+
+const SUM = /(?<![\p{L}\p{N}.])(\d+) (plus|minus|times) (\d+)(?![\p{L}\p{N}]|\.\d)/gu;
+const TOTAL = "(-|minus |negative )?(\\d+)(?![\\p{L}\\p{N}]|\\.\\d)";
+/** "..., which is 13" straight after the sum, or "so k is 12" where a letter or "it" stands for it. */
+const STATED = [new RegExp(`^,? ?(?:which )?(?:is|equals|makes|comes to) ${TOTAL}`, "u"), new RegExp(`\\b(?:which|that|it|[a-z]) (?:is|equals|comes to) ${TOTAL}`, "u")];
+
+/**
+ * A sum the line says aloud together with what it comes to, where the two do not agree: "8 plus 3 ... so k is 12".
+ * The total is looked for only right after the sum, in the rest of its sentence and the sentence after it. A sum
+ * with no total, and a term with a letter ("7m minus 2"), are not sums to check.
+ */
+export function wrongSum(line: string): { sum: string; comesTo: number; said: number } | null {
+  const text = inDigits(line);
+  for (const found of text.matchAll(SUM)) {
+    const [sum, a, op, b] = found;
+    const comesTo = op === "plus" ? Number(a) + Number(b) : op === "minus" ? Number(a) - Number(b) : Number(a) * Number(b);
+    const after = text.slice(found.index + sum.length).split(/(?<=[.!?]) /).slice(0, 2).join(" ");
+    const stated = STATED.map((shape) => after.match(shape)).find(Boolean);
+    if (!stated) continue;
+    const said = Number(stated[2]) * (stated[1] ? -1 : 1);
+    if (said !== comesTo) return { sum, comesTo, said };
+  }
+  return null;
+}
+
 export function judge({ line, result, secondLook, safe, onHisLine = "" }: Judged): Verdict {
+  // A hint may be kept from naming his answer; it may never get there by saying a sum that is not true.
+  const wrong = wrongSum(line);
+  if (wrong) return { verdict: "wrong", line: safe, why: `${wrong.sum} is ${wrong.comesTo}, not ${wrong.said}` };
   if (result !== null && (holdsResult(line, result) || holdsValue(line, result, onHisLine))) return { verdict: "leak", line: safe, why: "result" };
   if (secondLook === true) return { verdict: "leak", line: safe, why: "second-look" };
   return { verdict: "show", line };

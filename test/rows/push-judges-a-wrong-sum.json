@@ -1,0 +1,16 @@
+{
+ "name": "push: a hint that says a wrong sum is never shown: the rung's safe line stands in, and the reason names the sum",
+ "run": "push",
+ "in": {
+  "line": "Say you have k minus 3 equals 8. Adding 3 to both sides gives k equals 8 plus 3. So k is 12. The 3 was subtracted on the left, so it shows up added on the right; check whether your 6 did the same.",
+  "result": "x = 11",
+  "secondLook": false,
+  "safe": "Try the same move on a simpler case, then come back to this line.",
+  "onHisLine": "3x - 2x = 5 - 6"
+ },
+ "out": {
+  "verdict": "wrong",
+  "line": "Try the same move on a simpler case, then come back to this line.",
+  "why": "8 plus 3 is 11, not 12"
+ }
+}

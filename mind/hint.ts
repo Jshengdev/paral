@@ -3,7 +3,7 @@ import type { lessonClip } from "./clip.ts";
 import { fitted, hint, WHOLE } from "./cores/beats.ts";
 import type { Found } from "./cores/ground.ts";
 import type { HoldEvent } from "./cores/hold.ts";
-import { holdsResult, holdsValue, judge } from "./cores/push.ts";
+import { holdsResult, holdsValue, judge, wrongSum } from "./cores/push.ts";
 import type { Answered } from "./ports.ts";
 import { SEAM_VERSION } from "../seam/schema.ts";
 
@@ -52,8 +52,9 @@ export function ladderHint({ ports, settings, send, log }: Hands, asking: Asking
       led = true;
     },
     /**
-     * The whole answer is here: the hint is cut to the rung's length and judged. A hint that gives his result away
-     * is swapped for the rung's fixed line; when that line was already said with the ring, nothing more is said.
+     * The whole answer is here: the hint is cut to the rung's length and judged. A hint that gives his result away,
+     * or says a sum that does not add up, is swapped for the rung's fixed line; when that line was already said with
+     * the ring, nothing more is said.
      */
     async finish(answered: Answered, place: Found, rung: number) {
       const { safe } = ladder[rung];
@@ -62,15 +63,17 @@ export function ladderHint({ ports, settings, send, log }: Hands, asking: Asking
       // Numbers that stand on his own wrong line may be spoken of; any other number of his result may not.
       const onHisLine = [answered.breakLine, place.found ? place.line : "", asking.lesson.breakRead ?? ""].join(" ");
       const codeSaysLeak = answered.result !== null && (holdsResult(line, answered.result) || holdsValue(line, answered.result, onHisLine));
-      const secondLook = codeSaysLeak ? null : await ports.secondLook.leaks(line, answered.problem, signal);
+      // The second look is asked only about a hint that code has not already ruled out.
+      const secondLook = codeSaysLeak || wrongSum(line) ? null : await ports.secondLook.leaks(line, answered.problem, signal);
       if (signal.aborted) return;
       const verdict = judge({ line, result: answered.result, secondLook, safe, onHisLine });
-      const leak = verdict.verdict === "leak";
-      if (verdict.verdict === "leak") {
-        log(`${id}: push swapped a leaked hint for the safe line of rung ${rung} (${verdict.why}); the hint it replaced was: "${line}"`);
+      const swapped = verdict.verdict !== "show";
+      if (verdict.verdict !== "show") {
+        const what = verdict.verdict === "leak" ? "a leaked hint" : "a hint with a wrong sum";
+        log(`${id}: push swapped ${what} for the safe line of rung ${rung} (${verdict.why}); the hint it replaced was: "${line}"`);
         clip.drop();
       }
-      const shown = !leak ? sentences : led ? [] : [safe];
+      const shown = !swapped ? sentences : led ? [] : [safe];
       const from = led ? 1 : 0;
       shown.forEach((text, index) => say(lead.count() + from + index, index === 0 && !place.found ? `${settings.notFoundLine.value} ${text}` : text, rung));
       told = from + shown.length;
@@ -79,7 +82,7 @@ export function ladderHint({ ports, settings, send, log }: Hands, asking: Asking
       drew({ type: "break.found", line: answered.breakLine!, read: place.found ? place.line : null });
       drew({ type: "rung.given", rung });
       for (const text of shown) drew({ type: "line.shown", text });
-      log(`${id}: rung ${rung}; hint at ${since()} ms from the release${leak ? "; LEAK CAUGHT" : ""}`);
+      log(`${id}: rung ${rung}; hint at ${since()} ms from the release${verdict.verdict === "leak" ? "; LEAK CAUGHT" : verdict.verdict === "wrong" ? "; WRONG SUM CAUGHT" : ""}`);
     },
   };
 }

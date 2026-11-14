@@ -49,6 +49,19 @@
      }
     ]
    }
+  ],
+  "try another one": [
+   {
+    "problem": "Solve for x: 2(x + 3) = 14",
+    "breakLine": "2x + 6 = 14, so x = 10",
+    "result": "x = 4",
+    "beats": [
+     {
+      "say": "Say k minus 3 equals 8. Adding 3 to both sides gives k equals 8 plus 3. So k is 12.",
+      "mark": null
+     }
+    ]
+   }
   ]
  },
  "leaks": []

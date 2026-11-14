@@ -16,7 +16,7 @@ those are helpers, not test files.
 
 | runner | what it runs |
 |---|---|
-| `catch`, `catch.fits`, `circle`, `ground`, `happened`, `teach`, `push`, `push.count`, `hold`, `hold.drawn`, `beats.*`, `partial`, `lesson` | one core, with values |
+| `catch`, `catch.fits`, `circle`, `ground`, `happened`, `teach`, `push`, `push.count`, `push.sums`, `hold`, `hold.drawn`, `beats.*`, `partial`, `lesson` | one core, with values |
 | `seam.read`, `seam.write` | one line through the schema |
 | `settings`, `prompts`, `size` | every setting carries its reason; no prompt changed unseen; no source file too long |
 | `turn` | the real mind on a tape: lines in over a socket, lines out |

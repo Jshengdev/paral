@@ -1,0 +1,40 @@
+{
+ "name": "push: a sum said aloud with what it comes to must add up: \"8 plus 3 ... so k is 12\" is caught, in digits or in words; a right sum, a sum with no total, and a letter's term (\"7m minus 2\") are left alone",
+ "run": "push.sums",
+ "in": {
+  "lines": [
+   "Say you have k minus 3 equals 8. Adding 3 to both sides gives k equals 8 plus 3. So k is 12. The 3 was subtracted on the left, so it shows up added on the right; check whether your 6 did the same.",
+   "Take y minus 4 equals 9. To clear the minus 4 you add 4 to both sides. So y equals 9 plus 4, which is 13. Now compare what happened to the 4 there with what you did to the 6 on your line.",
+   "Picture n minus 9 equals 10: you add 9 to both sides. So n equals 10 plus 9, which is 19. Do your 6 the same way on that line, then work out x and check it in the original equation yourself.",
+   "Picture 7m minus 2 equals 3m plus 9. Adding 2 to each side leaves 7m minus 3m equals 9 plus 2. The 2 lands on the right as a plus, so hold your six up against that.",
+   "Picture 4m minus 8 equals 3m plus 2. Adding 8 to both sides leaves m equals 2 plus 8. So m is 10.",
+   "Seven plus five is thirteen.",
+   "So 3 times 4 is 14.",
+   "Start from 5 minus 8, which is minus 3.",
+   "Moving the 6 over leaves 5 plus 6 on the right. Your line is 2 short of that."
+  ]
+ },
+ "out": [
+  {
+   "sum": "8 plus 3",
+   "comesTo": 11,
+   "said": 12
+  },
+  null,
+  null,
+  null,
+  null,
+  {
+   "sum": "7 plus 5",
+   "comesTo": 12,
+   "said": 13
+  },
+  {
+   "sum": "3 times 4",
+   "comesTo": 12,
+   "said": 14
+  },
+  null,
+  null
+ ]
+}
