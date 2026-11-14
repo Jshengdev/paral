@@ -132,3 +132,17 @@ export function filmed(input: { lines: string[]; display: { x: number; y: number
         }),
   };
 }
+
+/**
+ * What the capsule shows at given moments of a hand-written run: each line with the time it arrived. No mind and no
+ * service; the same scene the real window and the films use.
+ */
+export function capsule(input: { rows: { at: number; line: Record<string, unknown> }[]; at: number[] }) {
+  const dir = fresh("capsule");
+  mkdirSync(dir, { recursive: true });
+  const page = join(dir, "page.png");
+  body("page", page, "a page");
+  writeFileSync(join(dir, "flow.json"), JSON.stringify({ v: 1, display: { id: 2, scale: 1, x: 0, y: 0, w: 1600, h: 1000 }, page, asks: [] }));
+  writeFileSync(join(dir, "session.jsonl"), input.rows.map((row) => JSON.stringify({ at: row.at, line: { v: 1, ...row.line } })).join("\n") + "\n");
+  return body("capsule", dir, join(root, "body", "tokens.json"), ...input.at.map(String));
+}

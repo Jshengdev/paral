@@ -25,6 +25,7 @@ those are helpers, not test files.
 | `kept` | the kept voice over a counting stand-in: which lines call the live voice |
 | `body.landing` | pages drawn, read by the Mac, and each quoted line found again |
 | `body.filmed` | a whole run on a tape through `./flow` and `./film`, read back from the film's record |
+| `body.capsule` | what the capsule shows at given moments of a hand-written run: its look and its note |
 
 Tapes in `tapes/` are recorded answers, so no row needs a key, a microphone or a screen. A tape answer keyed
 `"his words @ 1,2"` is the one for those words when he drew around lines 1 and 2.

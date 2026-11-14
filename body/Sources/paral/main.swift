@@ -21,6 +21,8 @@ final class App: NSObject, NSApplicationDelegate {
     private var trail: [CGPoint] = []
     private var cut: Set<String> = []
     private var holds = 0
+    /// A hold he has let go of that is not yet ended: the microphone stays open for the ear's grace after the release.
+    private var ending: (released: Double, timer: DispatchWorkItem)?
     private let began = Date()
 
     init(socket: String, tokens: Tokens, tokensPath: String, screen: NSScreen) {
@@ -32,6 +34,9 @@ final class App: NSObject, NSApplicationDelegate {
         scene.reduceMotion = NSWorkspace.shared.accessibilityDisplayShouldReduceMotion
         painter = Painter(tokens: tokens, width: size.width, height: size.height)
     }
+
+    private static let micOff = "the microphone is not allowed: switch paral on under Privacy & Security, Microphone"
+    private static let screenOff = "the screen is not allowed: switch paral on under Privacy & Security, Screen Recording, then start it again"
 
     private func clock() -> Double { Date().timeIntervalSince(began) * 1000 }
     private func stamp() -> Double { (Date().timeIntervalSince1970 * 1000).rounded() }
@@ -59,7 +64,7 @@ final class App: NSObject, NSApplicationDelegate {
         wire.onLine = { [weak self] seen in self?.took(seen) }
         wire.onRefused = { [weak self] why in self?.failed("the body refused a line from the mind (\(why))") }
         wire.onUp = { [weak self] up in if !up { self?.failed("the mind is not running; start it with ./run") } }
-        Mic.ask { [weak self] allowed in if !allowed { self?.failed("the microphone is not allowed for paral in System Settings") } }
+        Mic.ask { [weak self] allowed in if !allowed { self?.failed(Self.micOff) } }
         if !Screen.allowed { Screen.ask() }
         wire.start()
     }
@@ -102,6 +107,8 @@ final class App: NSObject, NSApplicationDelegate {
     }
 
     private func down() {
+        // A press inside the grace of the hold before ends that hold first, so its key-up goes out ahead of this key-down.
+        end()
         hush()
         shot = nil
         trail = []
@@ -109,6 +116,8 @@ final class App: NSObject, NSApplicationDelegate {
         let mine = holds
         tell(.keyDown)
         wire.send(.keyDown(at: stamp()))
+        // A missing grant is said on every press, in the capsule, since that is where he is looking.
+        if !Mic.allowed { failed(Self.micOff) }
         mic.start()
         Task { [weak self] in
             guard let self else { return }
@@ -124,7 +133,7 @@ final class App: NSObject, NSApplicationDelegate {
                 }
             } catch {
                 let why = (error as? Screen.Failed)?.why ?? error.localizedDescription
-                await MainActor.run { self.failed("the screen could not be read (\(why))") }
+                await MainActor.run { self.failed(Screen.allowed ? "the screen could not be read (\(why))" : Self.screenOff) }
             }
         }
     }
@@ -155,13 +164,20 @@ final class App: NSObject, NSApplicationDelegate {
     }
 
     private func up() {
-        let released = stamp()
+        let timer = DispatchWorkItem { [weak self] in self?.end() }
+        ending = (stamp(), timer)
         tell(.keyUp)
         if trail.count > 1 { sendShot() }
-        DispatchQueue.main.asyncAfter(deadline: .now() + (settings?.earGraceMs ?? 0) / 1000) { [weak self] in
-            self?.mic.stop()
-            self?.wire.send(.keyUp(at: released))
-        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + (settings?.earGraceMs ?? 0) / 1000, execute: timer)
+    }
+
+    /// Ends the hold he let go of: the microphone closes, and the mind is told when the key came up.
+    private func end() {
+        guard let ending else { return }
+        self.ending = nil
+        ending.timer.cancel()
+        mic.stop()
+        wire.send(.keyUp(at: ending.released))
     }
 
     @objc private func close() {

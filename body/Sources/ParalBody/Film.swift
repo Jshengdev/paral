@@ -60,6 +60,17 @@ public enum Film {
         return whole.end
     }
 
+    /// What the capsule shows at each of the given moments of a recorded run: its look and its note.
+    public static func capsule(run: String, tokens: Tokens, at moments: [Double]) throws -> [(look: String, note: String?)] {
+        let run = try load(URL(fileURLWithPath: run))
+        return moments.map { moment in
+            var scene = Scene(width: run.w, height: run.h, tokens: tokens)
+            for event in run.events where event.at <= moment { scene.take(event.seen, at: event.at) }
+            let capsule = scene.picture(at: moment).capsule
+            return (capsule.look.rawValue, capsule.note)
+        }
+    }
+
     public static func make(run: String, tokens: Tokens, fps: Double = 30) throws -> Made {
         let dir = URL(fileURLWithPath: run)
         let loaded = try load(dir)

@@ -12,20 +12,25 @@ extension Scene {
 
     func capsule(at t: Double) -> CapsulePicture {
         let m = tokens.motion
-        guard let hold = holds.last(where: { $0.down <= t }) else { return CapsulePicture(look: .rest, open: 0, words: [], note: nil) }
+        let grown = { (since: Double) in self.still ? 1 : Motion.spring((t - since) / self.ms(m.openMs), bounce: m.bounce) }
+        guard let hold = holds.last(where: { $0.down <= t }) else {
+            // Before the first press a failure still shows: a grant not given, or the mind not running.
+            if let failed, t >= failed.at { return CapsulePicture(look: .failed, open: grown(failed.at), words: [], note: failed.detail) }
+            return CapsulePicture(look: .rest, open: 0, words: [], note: nil)
+        }
         func open(_ look: Look, _ words: [Word] = [], _ note: String? = nil) -> CapsulePicture {
-            let grown = still ? 1 : Motion.spring((t - hold.down) / ms(m.openMs), bounce: m.bounce)
-            return CapsulePicture(look: look, open: grown, words: words, note: note)
+            CapsulePicture(look: look, open: grown(hold.down), words: words, note: note)
         }
         func rest(since: Double) -> CapsulePicture {
             CapsulePicture(look: .rest, open: still ? 0 : 1 - Motion.ease((t - since) / ms(m.openMs)), words: [], note: nil)
         }
         if let closed = closedAt, closed >= hold.down, t >= closed { return rest(since: closed) }
+        // A failure since this press shows at once, while the key is still down too, and stays until the next press.
+        if let failed, failed.at >= hold.down, t >= failed.at { return open(.failed, [], failed.detail) }
         guard let up = hold.up, t >= up else {
             let words = heard.filter { $0.at <= t }.map { Word(text: $0.word, bright: t - $0.at < m.wordMs ? 1 : 0.7) }
             return open(.listening, words, words.isEmpty ? tokens.strings.listening : nil)
         }
-        if let failed, failed.at >= up, t >= failed.at { return open(.failed, [], failed.detail) }
         let done = idleAt.map { $0 >= up && $0 <= t } ?? false
         if let ask = asks.last(where: { $0.beganAt >= hold.down }), let now = times(ask).last(where: { $0.start <= t }) {
             let said = ask.beats[now.beat]!

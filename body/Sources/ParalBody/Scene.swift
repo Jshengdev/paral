@@ -53,7 +53,8 @@ public struct Scene {
             origin = (display.x, display.y)
             texts = lines.map { Box(x: $0.box.x / display.scale, y: $0.box.y / display.scale, w: $0.box.w / display.scale, h: $0.box.h / display.scale) }
         case .state(let name, let detail):
-            if name == "failed" { failed = (detail ?? "", at) }
+            // The first failure since the last press is the cause; one that follows it is its consequence.
+            if name == "failed", failed == nil { failed = (detail ?? "", at) }
             if name == "idle" { idleAt = at }
         case .heard(let text, _):
             let words = text.split(separator: " ").map(String.init)
@@ -105,7 +106,10 @@ public struct Scene {
             closedAt = at
             for i in asks.indices where asks[i].cutAt == nil { asks[i].cutAt = at }
             if let last = holds.indices.last, holds[last].up == nil { holds[last].up = at }
-        case .ready, .other:
+        case .ready:
+            // The mind is linked. A failure from before the first press (the mind was not running) no longer stands.
+            if holds.isEmpty { failed = nil }
+        case .other:
             break
         }
     }

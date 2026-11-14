@@ -10,6 +10,8 @@ public final class Mic {
 
     public init() {}
 
+    public static var allowed: Bool { AVCaptureDevice.authorizationStatus(for: .audio) == .authorized }
+
     public static func ask(_ done: @escaping (Bool) -> Void) {
         AVCaptureDevice.requestAccess(for: .audio) { allowed in DispatchQueue.main.async { done(allowed) } }
     }

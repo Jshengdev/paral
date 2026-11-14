@@ -27,7 +27,7 @@ Three programs come from one package: `ParalBody` (everything), `paral` (the app
 
 | file | job |
 |---|---|
-| `Key.swift` | the hold key and the draw key, read by asking the system for the keys' state. No event tap |
+| `Key.swift` | the hold key and the draw key, read by asking the system for the keys' state. No event tap. A press inside the 0.3 s after a release ends that hold first (`paral/main.swift`) |
 | `Mic.swift` | the microphone as 16 kHz chunks, only while the key is held |
 | `Speaker.swift` | plays the voice as it arrives; drops what is waiting at the next key press |
 | `Screen.swift` | one picture of a display without paral's own window, the lines read from it, his path drawn on it |
@@ -43,7 +43,8 @@ Three programs come from one package: `ParalBody` (everything), `paral` (the app
 | `Page.swift` | draws a page of text lines, for rows |
 
 `paral-headless` commands: `read`, `smaller`, `page`, `lines`, `keys SECONDS NAME` (watch a key), `flow`, `film`,
-`frame RUN TOKENS MS OUT.png` (one moment of a run, for the dials page).
+`frame RUN TOKENS MS OUT.png` (one moment of a run, for the dials page), `capsule RUN TOKENS MS...` (what the capsule
+shows at those moments).
 
-Checked by: `body.landing` and `body.filmed` rows, with no window. The hosts are compiled and have never been run:
+Checked by: `body.landing`, `body.filmed` and `body.capsule` rows, with no window. The hosts are compiled and have never been run:
 the key, the microphone, the screen picture and the overlay wait for a person and their grants (`./run`).

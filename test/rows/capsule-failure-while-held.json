@@ -1,0 +1,74 @@
+{
+  "name": "body: a failure that comes while the key is held is shown at once and after he lets go, and a later failure of the same press does not take its place",
+  "run": "body.capsule",
+  "in": {
+    "rows": [
+      {
+        "at": 100,
+        "line": {
+          "type": "key.down",
+          "at": 1000100
+        }
+      },
+      {
+        "at": 300,
+        "line": {
+          "type": "state",
+          "name": "failed",
+          "detail": "the screen could not be read (not allowed)"
+        }
+      },
+      {
+        "at": 1500,
+        "line": {
+          "type": "key.up",
+          "at": 1001500
+        }
+      },
+      {
+        "at": 3600,
+        "line": {
+          "type": "state",
+          "name": "failed",
+          "detail": "no picture of the screen arrived with this ask"
+        }
+      },
+      {
+        "at": 6000,
+        "line": {
+          "type": "key.down",
+          "at": 1006000
+        }
+      }
+    ],
+    "at": [
+      200,
+      400,
+      2000,
+      4000,
+      6100
+    ]
+  },
+  "out": [
+    {
+      "look": "listening",
+      "note": "Listening"
+    },
+    {
+      "look": "failed",
+      "note": "the screen could not be read (not allowed)"
+    },
+    {
+      "look": "failed",
+      "note": "the screen could not be read (not allowed)"
+    },
+    {
+      "look": "failed",
+      "note": "the screen could not be read (not allowed)"
+    },
+    {
+      "look": "listening",
+      "note": "Listening"
+    }
+  ]
+}

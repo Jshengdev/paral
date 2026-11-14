@@ -18,7 +18,9 @@ public final class Key {
     public static func isDown(_ which: Which) -> Bool {
         let flags = CGEventSource.flagsState(.combinedSessionState)
         switch which {
-        case .rightOption: return CGEventSource.keyState(.combinedSessionState, key: 61)
+        // Asked two ways, since neither has been tried in the real app yet: the key's own state, and the Option flag
+        // with the bit that says it is the right-hand one (0x40, NX_DEVICERALTKEYMASK).
+        case .rightOption: return CGEventSource.keyState(.combinedSessionState, key: 61) || (flags.contains(.maskAlternate) && flags.rawValue & 0x40 != 0)
         case .fn: return flags.contains(.maskSecondaryFn)
         case .controlOption: return flags.contains(.maskControl) && flags.contains(.maskAlternate)
         case .shift: return flags.contains(.maskShift)

@@ -20,7 +20,7 @@ import { empty, fold, NO_RUNG } from "../mind/cores/hold.ts";
 import { FromBody, FromMind, read, write } from "../seam/schema.ts";
 import { settings } from "../mind/settings.ts";
 import { keptVoice, standIn } from "./runners/adapters.ts";
-import { filmed, landing } from "./runners/body.ts";
+import { capsule, filmed, landing } from "./runners/body.ts";
 import { fresh } from "./runners/temp.ts";
 import { playTurn } from "./runners/turn.ts";
 
@@ -50,6 +50,7 @@ const runs: Record<string, (input: any) => unknown> = {
   turn: playTurn,
   "body.landing": landing,
   "body.filmed": filmed,
+  "body.capsule": capsule,
   catch: (input) => input.events.reduce(hear, silence),
   "catch.drawing": (input) => Object.fromEntries(input.asks.map((words: string) => [words, asksForDrawing(words, input.phrases)])),
   "catch.fits": (input) => input.cases.map(([drafted, final]: [string, string]) => fits(drafted, final, input.share)),

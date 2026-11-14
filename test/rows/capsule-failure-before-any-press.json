@@ -1,0 +1,51 @@
+{
+  "name": "body: a failure that comes before any key is pressed is shown in the capsule, and is taken away when the mind is linked",
+  "run": "body.capsule",
+  "in": {
+    "rows": [
+      {
+        "at": 100,
+        "line": {
+          "type": "state",
+          "name": "failed",
+          "detail": "the mind is not running; start it with ./run"
+        }
+      },
+      {
+        "at": 3000,
+        "line": {
+          "type": "ready",
+          "mind": "paral",
+          "holdKey": "rightOption",
+          "drawKey": "shift",
+          "earGraceMs": 300,
+          "markPad": 4,
+          "pictureLongEdge": 1280,
+          "cropAround": {
+            "share": 1,
+            "points": 200
+          }
+        }
+      }
+    ],
+    "at": [
+      50,
+      2000,
+      3500
+    ]
+  },
+  "out": [
+    {
+      "look": "rest",
+      "note": ""
+    },
+    {
+      "look": "failed",
+      "note": "the mind is not running; start it with ./run"
+    },
+    {
+      "look": "rest",
+      "note": ""
+    }
+  ]
+}
