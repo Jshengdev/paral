@@ -37,24 +37,30 @@ export type Limits = { plain: number; withNumbers: number };
 /** No limit: a lesson's one sentence is never cut. */
 export const WHOLE: Limits = { plain: Infinity, withNumbers: Infinity };
 
+/** Words that can open a sentence of their own after "so", "and" or "but": a subject, or "then" before one. */
+const SUBJECT = /^(i|you|he|she|it|we|they|the|a|an|this|that|these|those|your|its|their|there|each|every|both|all|then|[a-z])$/i;
+
 /**
- * A spoken sentence over its limit is cut at its last clause break at or before the limit (after a comma, a semicolon
- * or a colon, or before "and"), and the rest becomes the next sentence. With no such break it is left whole.
+ * A spoken sentence over its limit is cut into two only where both parts stand as sentences: after a colon or a
+ * semicolon, or at a comma before "so", "and" or "but" when a subject follows ("..., so y equals 13"). It is cut at
+ * the last such place at or before the limit, or failing that the first one after it; the rest is said next. A
+ * comma alone is no place to cut ("..., which is 13" stays whole), and with no place at all the sentence is left as it is.
  */
 export function split(sentence: string, limits: Limits): string[] {
   const words = sentence.trim().split(/\s+/);
   // "With numbers" means a worked step: three numbers or more. One number, or the word "equals", does not count.
   const limit = (sentence.match(/\d+/g)?.length ?? 0) >= 3 ? limits.withNumbers : limits.plain;
   if (words.length <= limit) return [sentence.trim()];
-  // A sentence that opens with a clause that cannot stand alone ("When a term moves across, ...") is not cut after it.
-  const opensDependent = /^(when|if|while|because|since|although|though|once|after|before|as|unless|until)$/i.test(words[0]);
-  for (let first = Math.min(limit, words.length - 3); first >= 4; first--) {
-    if (!/[,;:]$/.test(words[first - 1]) && words[first].toLowerCase() !== "and") continue;
-    if (opensDependent && !words.slice(0, first - 1).some((word) => /[,;:]$/.test(word))) continue;
-    const rest = words.slice(first).join(" ");
-    return [words.slice(0, first).join(" ").replace(/[,;:]$/, "") + ".", ...split(rest[0].toUpperCase() + rest.slice(1), limits)];
+  const places: number[] = [];
+  for (let first = 4; first <= words.length - 3; first++) {
+    const before = words[first - 1];
+    const joins = /,$/.test(before) && /^(so|and|but)$/i.test(words[first]) && SUBJECT.test(words[first + 1] ?? "");
+    if (/[;:]$/.test(before) || joins) places.push(first);
   }
-  return [sentence.trim()];
+  const first = places.filter((place) => place <= limit).at(-1) ?? places[0];
+  if (first === undefined) return [sentence.trim()];
+  const rest = words.slice(first).join(" ");
+  return [words.slice(0, first).join(" ").replace(/[,;:]$/, "") + ".", ...split(rest[0].toUpperCase() + rest.slice(1), limits)];
 }
 
 export function hint(reply: Reply, maxBeats: number, maxWords: Limits): string[] {

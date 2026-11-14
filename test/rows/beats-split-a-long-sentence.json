@@ -1,5 +1,5 @@
 {
- "name": "beats: a sentence over its limit is cut at its last clause break at or before the limit and the rest is said next; a worked step with three numbers or more has a lower limit, and a colon is a clause break; a sentence is not cut right after an opening clause that cannot stand alone; a short one, and a long one with no break, are left whole",
+ "name": "beats: a sentence over its limit is cut only where both parts stand as sentences: after a colon or semicolon, or at a comma before so, and or but with a subject after it; a comma alone is no place to cut, so no piece like 'Which is 13.' is left; a worked step with three numbers or more has a lower limit; a short sentence, and a long one with no place to cut, stay whole",
  "run": "beats.split",
  "in": {
   "sentences": {
@@ -11,7 +11,12 @@
    "a worked example with numbers": "Take y minus 4 equals 9: to get y alone you add 4 to both sides, so y equals 9 plus 4.",
    "a short one with numbers": "Add 4 to both sides, so y equals 13.",
    "one number in a plain sentence": "You drew around the problem; the slip is two lines down, so what happened to the 6?",
-   "opens with a clause that cannot stand alone": "When a term moves across the equals sign, you undo it by doing the opposite operation to both sides, so its sign flips."
+   "opens with a clause that cannot stand alone": "When a term moves across the equals sign, you undo it by doing the opposite operation to both sides, so its sign flips.",
+   "the reader's first": "Picture n minus 7 equals 2: to clear the minus 7, add 7 to both sides, so n equals 2 plus 7, which is 9.",
+   "the reader's second": "The idea here is that whatever you do to one side of an equation, you must do the very same thing to the other side.",
+   "the reader's third": "Take y minus 4 equals 9: to clear the minus 4, you add 4 to both sides, so y equals 9 plus 4, which is 13.",
+   "the reader's fourth": "I'd pick something tiny and cheap, like a two or three letter name on a short ending such as dot link or dot to.",
+   "and with no subject after it": "Try y plus 5 equals 12 by taking 5 from both sides of the equation you wrote, and see what is left over at the end."
   },
   "limits": {
    "plain": 18,
@@ -20,8 +25,7 @@
  },
  "out": {
   "28 words": [
-   "Pick something very short and cheap, like a five or six letter name on a two-letter ending.",
-   "Such as a dot co or dot io name you like."
+   "Pick something very short and cheap, like a five or six letter name on a two-letter ending, such as a dot co or dot io name you like."
   ],
   "at the limit": [
    "Almost all the length is the domain, the temporary tunnel address Cloudflare gave you, not your six-character code."
@@ -30,12 +34,10 @@
    "This sentence simply keeps going without any pause at all for far longer than anybody would ever want to hear it said"
   ],
   "break before and": [
-   "Something short you own works best for links people will type by hand.",
-   "And then your first link would read much shorter than the one you have now"
+   "Something short you own works best for links people will type by hand and then your first link would read much shorter than the one you have now"
   ],
   "cut twice": [
-   "First find the term that moved, then look at its sign on the line above.",
-   "Then compare it with its sign on this line, then ask what operation takes it across.",
+   "First find the term that moved, then look at its sign on the line above, then compare it with its sign on this line, then ask what operation takes it across.",
    "And then check the other side too."
   ],
   "a worked example with numbers": [
@@ -50,7 +52,27 @@
    "You drew around the problem; the slip is two lines down, so what happened to the 6?"
   ],
   "opens with a clause that cannot stand alone": [
-   "When a term moves across the equals sign, you undo it by doing the opposite operation to both sides, so its sign flips."
+   "When a term moves across the equals sign, you undo it by doing the opposite operation to both sides.",
+   "So its sign flips."
+  ],
+  "the reader's first": [
+   "Picture n minus 7 equals 2.",
+   "To clear the minus 7, add 7 to both sides.",
+   "So n equals 2 plus 7, which is 9."
+  ],
+  "the reader's second": [
+   "The idea here is that whatever you do to one side of an equation, you must do the very same thing to the other side."
+  ],
+  "the reader's third": [
+   "Take y minus 4 equals 9.",
+   "To clear the minus 4, you add 4 to both sides.",
+   "So y equals 9 plus 4, which is 13."
+  ],
+  "the reader's fourth": [
+   "I'd pick something tiny and cheap, like a two or three letter name on a short ending such as dot link or dot to."
+  ],
+  "and with no subject after it": [
+   "Try y plus 5 equals 12 by taking 5 from both sides of the equation you wrote, and see what is left over at the end."
   ]
  }
 }
