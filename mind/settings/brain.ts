@@ -50,6 +50,12 @@ export const brain = {
     measured: "one live ask showed a raw shape error in the capsule (2026-11-14, the outside judge's reading)",
   } satisfies Setting<string>,
 
+  replyLoggedChars: {
+    value: 3000,
+    why: "When a reply cannot be used, this much of its own text is written to the log, so the failure explains itself. A whole reply is about a thousand characters.",
+    measured: "not measured",
+  } satisfies Setting<number>,
+
   declinedLine: {
     value: "I can't help with that one.",
     why: "What he sees when the model declines an ask.",

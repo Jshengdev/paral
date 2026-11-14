@@ -70,6 +70,7 @@ export function sonic(key: string, settings: Settings, credits: Credits, log: Lo
             voice: { mode: "id", id: settings.voiceId.value },
             language: "en",
             context_id: context,
+            // The voice as the seam carries it: 16-bit sound at 24 kHz, one channel (seam/README.md).
             output_format: { container: "raw", encoding: "pcm_s16le", sample_rate: 24000 },
             add_timestamps: true,
             continue: false,

@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import type Anthropic from "@anthropic-ai/sdk";
+import Anthropic from "@anthropic-ai/sdk";
 import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import { z } from "zod";
@@ -16,7 +16,8 @@ type Log = (line: string) => void;
 export type Prompts = { answer: string; secondLook: string; opener: string };
 
 
-export function anthropic(client: Anthropic, settings: Settings, prompts: Prompts, log: Log): { brain: Brain; secondLook: SecondLook; opener: Opener; spentUsd(): number } {
+/** Claude behind three ports. The client is built here; a row may hand in a stand-in instead. */
+export function anthropic(settings: Settings, prompts: Prompts, log: Log, client: Anthropic = new Anthropic()): { brain: Brain; secondLook: SecondLook; opener: Opener; spentUsd(): number } {
   const prices = settings.pricesUsdPerMTok.value;
   let spentUsd = 0;
 
@@ -71,6 +72,8 @@ export function anthropic(client: Anthropic, settings: Settings, prompts: Prompt
             model,
             max_tokens: settings.brainMaxTokens.value,
             system: prompts.answer,
+            // Opted in on purpose: when the model will not take a request, the API may answer from its fallback model
+            // instead of failing the ask.
             betas: ["server-side-fallback-2026-07-01"],
             fallbacks: "default",
             output_config: { effort: settings.brainEffort.value, format: betaZodOutputFormat(Reply) },
@@ -107,13 +110,11 @@ export function anthropic(client: Anthropic, settings: Settings, prompts: Prompt
         const whole = settled(text);
         const parsed = whole?.whole ? Reply.safeParse(whole) : null;
         const answered = parsed?.success ? Answered.safeParse(tidy(parsed.data)) : null;
-        if (!answered?.success) {
-          // The reason and the reply's own text are kept, so the log explains a failure by itself. He sees plain words.
-          const why = !parsed?.success ? `it did not fit the contract (it stopped with "${reply.stop_reason}")` : answered!.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`).join("; ");
-          log(`the model's reply could not be used: ${why}. It wrote: ${text.slice(0, 3000)}`);
-          throw new Error(settings.lostAnswerLine.value);
-        }
-        return answered.data;
+        if (answered?.success) return answered.data;
+        // The reason and the reply's own text are kept, so the log explains a failure by itself. He sees plain words.
+        const why = answered ? answered.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`).join("; ") : `it did not fit the contract (it stopped with "${reply.stop_reason}")`;
+        log(`the model's reply could not be used: ${why}. It wrote: ${text.slice(0, settings.replyLoggedChars.value)}`);
+        throw new Error(settings.lostAnswerLine.value);
       },
     },
     opener: {
@@ -123,11 +124,11 @@ export function anthropic(client: Anthropic, settings: Settings, prompts: Prompt
         const stream = client.messages.stream(
           {
             model,
-            max_tokens: 1000,
+            max_tokens: settings.openerMaxTokens.value,
             thinking: { type: "disabled" },
-            output_config: { effort: "low" },
+            output_config: { effort: settings.openerEffort.value },
             system: prompts.opener,
-            messages: [{ role: "user", content: `What they just said to you: "${words}"\n\nLines on their screen:\n${lines.slice(0, 40).join("\n")}` }],
+            messages: [{ role: "user", content: `What they just said to you: "${words}"\n\nLines on their screen:\n${lines.slice(0, settings.openerPageLines.value).join("\n")}` }],
           },
           { signal },
         );
@@ -137,6 +138,8 @@ export function anthropic(client: Anthropic, settings: Settings, prompts: Prompt
           return written(reply.content.flatMap((block) => (block.type === "text" ? [block.text] : [])).join("\n"));
         });
         const seen = whole.then(([, second = ""]) => (second === "" || /^none\b/i.test(second) ? null : second));
+        // If the call fails, the caller hears it through `line` below; this only keeps the second line's promise from
+        // being reported as unhandled when nobody is waiting on it yet.
         seen.catch(() => {});
         // The first line is handed over the moment it is complete, so it is not held back by the second.
         const line = await new Promise<string>((resolve, reject) => {

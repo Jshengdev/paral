@@ -5,7 +5,9 @@ import type { Settings } from "../settings.ts";
 export type Credits = { used: number };
 type Log = (line: string) => void;
 
+/** His voice as the seam carries it: 16-bit sound at 16 kHz, one channel (seam/README.md). */
 const RATE = 16000;
+/** What a second of listening is counted at against the credit cap. From Cartesia's price page on 2026-11-14; an estimate, not a bill. */
 const CREDITS_A_SECOND = 3;
 
 /** The live ear: Cartesia's speech-to-text socket, one connection per ask, opened when the key goes down. */

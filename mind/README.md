@@ -11,6 +11,7 @@ Every decision is a pure function in `cores/`; every outside service is behind `
 | `turn.ts` | one hold of the key: his words, his path, the picture, then one ask |
 | `ask.ts` | one ask, acted on while the answer is still arriving: ring, lines, marks, board, clip |
 | `card.ts` | the board of one ask: an empty card opened when his words ask for a drawing, filled when the board arrives, taken away when none comes |
+| `clip.ts` | the lesson clip of one ask: the example picked on other numbers than his, the clip started early and sent after the words |
 | `fast.ts` | the fast lines of one ask: the opener, its deadline and fixed stand-in, and the fast model's line about the page |
 | `speech.ts` | the voice for one ask: sentences one after another; a failure turns the rest to words only |
 | `ports.ts` | the interfaces: Brain, SecondLook, Opener, Ear, Voice, Lessons |

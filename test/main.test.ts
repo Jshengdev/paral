@@ -260,7 +260,7 @@ async function standIn(input: { asked: any; picture: boolean; brainReply: any; l
   if (input.picture) writeFileSync(picturePath, "not a real picture");
   const capped = { ...settings, spendCapUsd: { ...settings.spendCapUsd, value: input.capUsd ?? settings.spendCapUsd.value } };
   const logged: string[] = [];
-  const live = anthropic(client, capped, { answer: "answer prompt", secondLook: "second look prompt", opener: "opener prompt" }, (line) => logged.push(line));
+  const live = anthropic(capped, { answer: "answer prompt", secondLook: "second look prompt", opener: "opener prompt" }, (line) => logged.push(line), client);
   const signal = new AbortController().signal;
   const asked = { circled: [], leadIn: null, lessons: [], ...input.asked, lesson: { ...empty, ...input.asked.lesson }, picturePath: input.picture ? picturePath : null, rung: settings.ladder.value[0] };
   try {

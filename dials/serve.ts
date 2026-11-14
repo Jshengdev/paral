@@ -25,16 +25,16 @@ function runs(): string[] {
 }
 
 /** Why a new look is refused, or null when it may be saved: it must have the same keys as the one on disk, each the same kind of value. */
-function refusal(now: unknown, was: unknown, path = "tokens"): string | null {
-  if (typeof now !== typeof was || now === null) return `${path}: expected a ${typeof was}`;
-  if (typeof was === "number" && !Number.isFinite(now)) return `${path}: not a number`;
-  if (typeof was === "string" && /^#/.test(was) && !/^#[0-9a-fA-F]{6}$/.test(now as string)) return `${path}: a colour is six hex digits, like #FF4D1C`;
-  if (typeof was !== "object") return null;
-  const keys = Object.keys(was as object);
+function refusal(now: unknown, onDisk: unknown, path = "tokens"): string | null {
+  if (typeof now !== typeof onDisk || now === null) return `${path}: expected a ${typeof onDisk}`;
+  if (typeof onDisk === "number" && !Number.isFinite(now)) return `${path}: not a number`;
+  if (typeof onDisk === "string" && /^#/.test(onDisk) && !/^#[0-9a-fA-F]{6}$/.test(now as string)) return `${path}: a colour is six hex digits, like #FF4D1C`;
+  if (typeof onDisk !== "object") return null;
+  const keys = Object.keys(onDisk as object);
   const extra = Object.keys(now as object).find((key) => !keys.includes(key));
   if (extra) return `${path}.${extra}: not a token`;
   for (const key of keys) {
-    const why = refusal((now as Record<string, unknown>)[key], (was as Record<string, unknown>)[key], `${path}.${key}`);
+    const why = refusal((now as Record<string, unknown>)[key], (onDisk as Record<string, unknown>)[key], `${path}.${key}`);
     if (why) return why;
   }
   return null;

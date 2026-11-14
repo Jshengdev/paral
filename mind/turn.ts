@@ -5,7 +5,7 @@ import { fitted } from "./cores/beats.ts";
 import { circled, drew, echo, type Point } from "./cores/circle.ts";
 import { showable } from "./cores/fit.ts";
 import { empty, type Lesson } from "./cores/hold.ts";
-import type { Listening, Opened, Ports } from "./ports.ts";
+import type { Listening, Opened, Opener, Ports } from "./ports.ts";
 import type { Settings } from "./settings.ts";
 import { speech } from "./speech.ts";
 import { SEAM_VERSION, type FromBody, type FromMind } from "../seam/schema.ts";
@@ -39,8 +39,9 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
   let drafted: Draft | null = null;
   let written: Draft | null = null;
 
-  const openWith = (said: string, signal: AbortSignal) => {
-    const line = ports.opener!.open(said, screen?.lines.map((read) => read.text) ?? [], signal);
+  const openWith = (opener: Opener, said: string, signal: AbortSignal) => {
+    const line = opener.open(said, screen?.lines.map((read) => read.text) ?? [], signal);
+    // A draft may never be used. Whoever does use this line hears its failure there; this keeps an unused one quiet.
     line.catch(() => {});
     return line;
   };
@@ -64,8 +65,9 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
         send({ v, type: "heard", text: words.text, final: false });
         const due = drafted === null || Date.now() - drafted.at >= settings.openerDraftEveryMs.value;
         if (ports.opener && lesson.breakLine === null && due && words.text.split(" ").length >= settings.openerDraftWords.value) {
-          const draft: Draft = { words: words.text, line: openWith(words.text, mine.signal), at: Date.now() };
+          const draft: Draft = { words: words.text, line: openWith(ports.opener, words.text, mine.signal), at: Date.now() };
           drafted = draft;
+          // A draft that fails is simply never "written"; the ask then waits for a newer one or asks afresh.
           draft.line.then(() => mine.signal.aborted || (written !== null && written.at > draft.at) || (written = draft)).catch(() => {});
         }
       }, mine.signal);
@@ -120,7 +122,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
           ? null
           : lesson.breakLine !== null
             ? Promise.resolve({ line: settings.openerInLesson.value, seen: Promise.resolve(null) })
-            : (pick(written) ?? pick(drafted) ?? openWith(words.text, mine.signal));
+            : (pick(written) ?? pick(drafted) ?? openWith(ports.opener, words.text, mine.signal));
       const around = circled(path, screen.lines, screen.display, settings.circleLeast.value);
       const asking = { id, words: words.text, seen: screen, circled: around, lesson, markUp, releasedAt: at, opener, signal: mine.signal };
       await ask({ ports, settings, send, log }, asking, (kept) => (lesson = kept));

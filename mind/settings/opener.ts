@@ -8,6 +8,24 @@ export const opener = {
     measured: "one live call: the opener came back in 1,260 ms (2026-11-14, one run)",
   } satisfies Setting<string>,
 
+  openerMaxTokens: {
+    value: 1000,
+    why: "The most the fast model may write for its two lines. They are about thirty words; the cap is far above that so a line is never cut, and low enough that a runaway reply ends quickly.",
+    measured: "not measured; no opener has come near it",
+  } satisfies Setting<number>,
+
+  openerEffort: {
+    value: "low",
+    why: "The fast lines name an act and state one visible thing. They need no working out, and he is waiting.",
+    measured: "not compared with other efforts",
+  } satisfies Setting<"low" | "medium" | "high">,
+
+  openerPageLines: {
+    value: 40,
+    why: "How many of the lines read from his screen the fast model is given. Enough to see what the page is; fewer lines mean a faster first word.",
+    measured: "not measured; the exam's pages have 12 to 30 read lines",
+  } satisfies Setting<number>,
+
   openerMaxWords: {
     value: 12,
     why: "An opener longer than this is not said. While a long opener is spoken, the answer waits behind it.",

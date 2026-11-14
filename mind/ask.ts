@@ -1,13 +1,13 @@
 import { explain, fitted, givesAway, hint, WHOLE, wipes, type Planned } from "./cores/beats.ts";
 import { card } from "./card.ts";
+import { lessonClip } from "./clip.ts";
 import { fast } from "./fast.ts";
 import { alike, locate, type Found } from "./cores/ground.ts";
 import { happened } from "./cores/happened.ts";
 import { fold, type Lesson } from "./cores/hold.ts";
-import { pick, type Example } from "./cores/lesson.ts";
 import { holdsResult, holdsValue, judge } from "./cores/push.ts";
 import { next } from "./cores/teach.ts";
-import type { Answered, Clip, Opened, Part, Ports } from "./ports.ts";
+import type { Answered, Opened, Part, Ports } from "./ports.ts";
 import type { Settings } from "./settings.ts";
 import { speech } from "./speech.ts";
 import { SEAM_VERSION, type FromBody, type FromMind } from "../seam/schema.ts";
@@ -37,12 +37,9 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
   /** The first sentence's mark, once it has gone out ahead of its sentence. */
   let markOut = false;
   const board = card(hands, asking, (event) => (draft = fold(draft, event)));
-  /** The lesson clip this answer will show, being made while the words go out. */
-  let showing: { name: string; making: Promise<Clip> } | null = null;
-  const known: Record<string, { idea: string; examples: Example[] }> = ports.lessons === null ? {} : settings.lessons.value;
-  const catalogue = Object.entries(known).map(([name, lesson]) => ({ name, idea: lesson.idea }));
+  const clip = lessonClip(hands, asking, (event) => (draft = fold(draft, event)));
 
-  const lead = fast(hands, asking, talk, { nothingSaid: () => told === 0, explains: () => !showing && headed?.explains === true, arriving: () => headed !== null, shown: () => board.filled() || markOut || headed?.place?.found === true });
+  const lead = fast(hands, asking, talk, { nothingSaid: () => told === 0, explains: () => !clip.on() && headed?.explains === true, arriving: () => headed !== null, shown: () => board.filled() || markOut || headed?.place?.found === true });
   /** How many lines were said before the answer (the line about the page, stall lines): the answer is numbered after them. */
   const base = () => lead.count();
 
@@ -68,20 +65,12 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
       send({ v, type: "clear" });
       draft = fold(draft, { type: "wiped" });
     }
-    // A lesson the model named is shown on an example that is not his. The clip is started now, so it is ready by the time the words are out.
-    const example = part.lesson && ports.lessons && known[part.lesson] ? pick(known[part.lesson].examples, lines, part.result ?? null) : null;
-    if (part.lesson && ports.lessons && example) {
-      const making = ports.lessons.render(part.lesson, example, signal);
-      making.catch(() => {});
-      showing = { name: part.lesson, making };
-    } else if (part.lesson) {
-      log(`${id}: the model named the lesson "${part.lesson}", and there is no example of it that may be shown; words only`);
-    }
+    clip.start(part.lesson, part.result ?? null);
     if (place?.found) {
       const kind = fitted("ring", place.line, seen.lines, settings.ringReach.value, seen.display.scale);
       send({ v, type: "mark", id, beat: base(), kind, box: place.box });
       draft = fold(draft, { type: "mark.drawn", kind, line: place.line });
-      const lead = showing ? null : leadIn(move.rung);
+      const lead = clip.on() ? null : leadIn(move.rung);
       if (lead !== null) {
         send({ v, type: "say", id, beat: base(), text: lead, rung: move.rung, of: ladder.length });
         talk.speak(base(), lead);
@@ -110,22 +99,8 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
     }
   };
   const mapped = (reply: { result?: string | null; beats: Answered["beats"] }) =>
-    explain({ result: reply.result ?? null, beats: reply.beats }, seen.lines, seen.display, settings.groundMinScore.value, showing ? 1 : settings.maxBeats.value, settings.ringReach.value, showing ? WHOLE : settings.sentenceMaxWords.value);
+    explain({ result: reply.result ?? null, beats: reply.beats }, seen.lines, seen.display, settings.groundMinScore.value, clip.on() ? 1 : settings.maxBeats.value, settings.ringReach.value, clip.on() ? WHOLE : settings.sentenceMaxWords.value);
 
-  /** After the words, the lesson's clip. If it cannot be made the answer stays words only, and the log says why. */
-  const show = async () => {
-    if (!showing) return;
-    try {
-      const made = await showing.making;
-      if (signal.aborted) return;
-      send({ v, type: "clip", id, name: showing.name, ...made });
-      draft = fold(draft, { type: "clip.drawn", name: showing.name });
-      keep(draft);
-      log(`${id}: the ${showing.name} clip went out at ${since()} ms from the release`);
-    } catch (error) {
-      if (!signal.aborted) log(`${id}: the ${showing.name} clip could not be made (${error instanceof Error ? error.message : error}); the answer stays words only`);
-    }
-  };
   /** The first sentence's mark goes out the moment it is whole, ahead of the sentence. Later marks keep to their sentences. */
   const markNow = (part: Part) => {
     if (markOut || told > 0 || part.beats.length > 0 || !part.nextMark) return;
@@ -139,13 +114,13 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
   const arriving = (part: Part) => {
     head(part);
     if (!headed?.explains) return;
-    if (!showing) board.fill(part.board);
+    if (!clip.on()) board.fill(part.board);
     if (part.board === null) board.close("the answer has no board");
     markNow(part);
     tell(mapped(part));
   };
   const think = (from: Lesson, rung: { rung: number; fresh: boolean }, onPart?: (part: Part) => void): Promise<Answered> =>
-    ports.brain.answer({ words, picturePath: seen.picture.path, lines, circled: asking.circled, leadIn: leadIn(rung.rung), lessons: catalogue, lesson: from, rung: ladder[rung.rung], fresh: rung.fresh }, signal, onPart);
+    ports.brain.answer({ words, picturePath: seen.picture.path, lines, circled: asking.circled, leadIn: leadIn(rung.rung), lessons: clip.catalogue, lesson: from, rung: ladder[rung.rung], fresh: rung.fresh }, signal, onPart);
 
   let answered = await think(draft, move, arriving).catch((error) => {
     board.close("the ask failed");
@@ -162,6 +137,7 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
     }
     head({ ...answered, lesson: answered.lesson ?? null, beats: [], whole: true });
   }
+  // head() has run by here, in the stream or just above. It sets `headed` from inside a closure, which is why the "!".
   const place = headed!.place;
   draft = fold(draft, { type: "he.tried", words });
 
@@ -173,8 +149,8 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
       log(`${id}: push held back an explanation that gave the result away`);
     }
     tell(planned);
-    const rows = leak || showing ? null : answered.board;
-    if (leak) showing = null;
+    if (leak) clip.drop();
+    const rows = leak || clip.on() ? null : answered.board;
     board.fill(rows);
     board.close("no board came");
     draft = fold(draft, { type: "break.fixed" });
@@ -183,11 +159,11 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
     for (const { say } of planned) draft = fold(draft, { type: "line.shown", text: say });
     keep(draft);
     log(`${id}: ${planned.length} sentence${planned.length === 1 ? "" : "s"}, all sent at ${since()} ms from the release`);
-    await show();
+    if (await clip.show()) keep(draft);
     return void (await talk.finished());
   }
 
-  const sentences = hint(answered, showing ? 1 : ladder[move.rung].sentences, showing ? WHOLE : settings.sentenceMaxWords.value);
+  const sentences = hint(answered, clip.on() ? 1 : ladder[move.rung].sentences, clip.on() ? WHOLE : settings.sentenceMaxWords.value);
   const line = sentences.join(" ");
   const safe = ladder[move.rung].safe;
   // Numbers that stand on his own wrong line may be spoken of; any other number of his result may not.
@@ -207,11 +183,12 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
   });
   told = from + shown.length;
   if (led) draft = fold(draft, { type: "line.shown", text: safe });
+  // The hint road is only reached with a wrong line named, so breakLine is there.
   draft = fold(draft, { type: "break.found", line: answered.breakLine!, read: place.found ? place.line : null });
   draft = fold(draft, { type: "rung.given", rung: move.rung });
   for (const text of shown) draft = fold(draft, { type: "line.shown", text });
   keep(draft);
   log(`${id}: rung ${move.rung}; hint at ${since()} ms from the release${verdict.verdict === "leak" ? "; LEAK CAUGHT" : ""}`);
-  if (verdict.verdict !== "leak") await show();
+  if (verdict.verdict !== "leak" && (await clip.show())) keep(draft);
   await talk.finished();
 }

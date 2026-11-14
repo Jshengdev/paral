@@ -14,7 +14,9 @@ const Tape = z.object({
 });
 
 const plain = (words: string) => words.toLowerCase().replace(/[^\p{L}\p{N} ]/gu, "").replace(/\s+/g, " ").trim();
+/** The tape voice's pace: about how fast the live voice speaks, so a taped film is paced like a live one. */
 const SECONDS_A_WORD = 0.3;
+/** The voice as the seam carries it: 16-bit sound at 24 kHz, one channel. The tape's sound is silence of the right length. */
 const RATE = 24000;
 
 /**

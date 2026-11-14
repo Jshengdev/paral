@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import Anthropic from "@anthropic-ai/sdk";
 import { anthropic } from "./adapters/anthropic.ts";
+import { silenced } from "./adapters/fault.ts";
 import { ink } from "./adapters/ink.ts";
 import { raea } from "./adapters/raea.ts";
 import { sonic } from "./adapters/sonic.ts";
@@ -20,7 +20,7 @@ let ports: Ports = tape(PARAL_TAPE ?? join(here, "..", "test", "tapes", "algebra
 const using: string[] = [];
 const spent = { usd: () => 0, credits: { used: 0 } };
 if (!PARAL_TAPE && ANTHROPIC_API_KEY) {
-  const claude = anthropic(new Anthropic(), settings, { answer: prompt("answer"), secondLook: prompt("second-look"), opener: prompt("opener") }, log);
+  const claude = anthropic(settings, { answer: prompt("answer"), secondLook: prompt("second-look"), opener: prompt("opener") }, log);
   ports = { ...ports, brain: claude.brain, secondLook: claude.secondLook, opener: claude.opener };
   spent.usd = claude.spentUsd;
   using.push(`brain ${settings.brainModel.value} (cap $${settings.spendCapUsd.value})`);
@@ -52,7 +52,7 @@ if (!PARAL_TAPE && ANTHROPIC_API_KEY) {
   })();
 }
 if (PARAL_FAULT === "voice") {
-  ports = { ...ports, voice: { say: async () => Promise.reject(new Error("the voice was switched off for this run (PARAL_FAULT=voice)")) } };
+  ports = { ...ports, voice: silenced };
   using.push("FAULT: the voice fails on purpose");
 }
 const socket = PARAL_SOCKET ?? settings.socketPath.value;
