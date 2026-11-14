@@ -1,5 +1,5 @@
 {
- "name": "turn: when the brain finds no break the mark is cleared, and the next break starts at the first rung; a fixed line he has already heard is not said again",
+ "name": "turn: when the brain finds no break the mark is cleared, and the next break starts at the first rung, with that rung's fixed line said with the ring again",
  "run": "turn",
  "in": {
   "tape": "algebra.json",
@@ -308,7 +308,7 @@
    "type": "say",
    "id": "t3",
    "beat": 0,
-   "text": "Whatever you do to one side of an equation, you do to the other.",
+   "text": "Read the highlighted line again, slowly.",
    "rung": 0,
    "of": 4
   },
@@ -317,6 +317,15 @@
    "type": "mute",
    "id": "t3",
    "why": "no voice is set up"
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t3",
+   "beat": 1,
+   "text": "Whatever you do to one side of an equation, you do to the other.",
+   "rung": 0,
+   "of": 4
   },
   {
    "v": 1,

@@ -1,0 +1,66 @@
+{
+ "answers": {
+  "why is this wrong": [
+   {
+    "problem": "Solve for x: 2(x + 3) = 14",
+    "breakLine": "2x + 6 = 14, so x = 10",
+    "result": "x = 4",
+    "beats": [
+     {
+      "say": "Read the last line again: what did you do to the 6?",
+      "mark": null
+     }
+    ]
+   }
+  ],
+  "just tell me": [
+   {
+    "problem": "Solve for x: 2(x + 3) = 14",
+    "breakLine": "2x + 6 = 14, so x = 10",
+    "result": "x = 4",
+    "beats": [
+     {
+      "say": "The rule is: whatever you do to one side, you do to the other.",
+      "mark": null
+     }
+    ]
+   },
+   {
+    "problem": "Solve for x: 2(x + 3) = 14",
+    "breakLine": "2x + 6 = 14, so x = 10",
+    "result": "x = 4",
+    "beats": [
+     {
+      "say": "What has to happen to both sides to clear the plus six?",
+      "mark": null
+     }
+    ]
+   },
+   {
+    "problem": "Solve for x: 2(x + 3) = 14",
+    "breakLine": "2x + 6 = 14, so x = 10",
+    "result": "x = 4",
+    "beats": [
+     {
+      "say": "Take y plus 2 equals 9: subtract 2 from both sides.",
+      "mark": null
+     }
+    ]
+   },
+   {
+    "problem": "Solve for x: 2(x + 3) = 14",
+    "breakLine": "2x + 6 = 14, so x = 10",
+    "result": "x = 4",
+    "beats": [
+     {
+      "say": "Try y plus 5 equals 12 and take 5 from both sides.",
+      "mark": null
+     }
+    ]
+   }
+  ]
+ },
+ "leaks": [
+  "Try y plus 5 equals 12 and take 5 from both sides."
+ ]
+}

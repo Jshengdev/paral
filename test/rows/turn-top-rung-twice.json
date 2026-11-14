@@ -1,0 +1,577 @@
+{
+ "name": "turn: the top rung asked a second time: its fixed line is said with the ring again, the hint is swapped by the second look, and the safe line is not said a second time, so the ask ends on the fixed line it already said",
+ "run": "turn",
+ "in": {
+  "tape": "top-rung.json",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Solve for x: 2(x + 3) = 14",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 48
+       }
+      },
+      {
+       "text": "2x + 6 = 14, so x = 10",
+       "box": {
+        "x": 200,
+        "y": 460,
+        "w": 700,
+        "h": 48
+       }
+      }
+     ]
+    },
+    {
+     "say": "why is this wrong"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 2100
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Solve for x: 2(x + 3) = 14",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 48
+       }
+      },
+      {
+       "text": "2x + 6 = 14, so x = 10",
+       "box": {
+        "x": 200,
+        "y": 460,
+        "w": 700,
+        "h": 48
+       }
+      }
+     ]
+    },
+    {
+     "say": "just tell me"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 2100
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Solve for x: 2(x + 3) = 14",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 48
+       }
+      },
+      {
+       "text": "2x + 6 = 14, so x = 10",
+       "box": {
+        "x": 200,
+        "y": 460,
+        "w": 700,
+        "h": 48
+       }
+      }
+     ]
+    },
+    {
+     "say": "just tell me"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 2100
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Solve for x: 2(x + 3) = 14",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 48
+       }
+      },
+      {
+       "text": "2x + 6 = 14, so x = 10",
+       "box": {
+        "x": 200,
+        "y": 460,
+        "w": 700,
+        "h": 48
+       }
+      }
+     ]
+    },
+    {
+     "say": "just tell me"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 2100
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Solve for x: 2(x + 3) = 14",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 48
+       }
+      },
+      {
+       "text": "2x + 6 = 14, so x = 10",
+       "box": {
+        "x": 200,
+        "y": 460,
+        "w": 700,
+        "h": 48
+       }
+      }
+     ]
+    },
+    {
+     "say": "just tell me"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 2100
+    }
+   ]
+  ]
+ },
+ "out": [
+  {
+   "v": 1,
+   "type": "state",
+   "name": "listening"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "why is this wrong",
+   "final": false
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "thinking"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "why is this wrong",
+   "final": true
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "t1",
+   "beat": 0,
+   "kind": "ring",
+   "box": {
+    "x": 100,
+    "y": 230,
+    "w": 350,
+    "h": 24
+   }
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t1",
+   "beat": 0,
+   "text": "Read the highlighted line again, slowly.",
+   "rung": 0,
+   "of": 4
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "t1",
+   "why": "no voice is set up"
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t1",
+   "beat": 1,
+   "text": "Read the last line again: what did you do to the 6?",
+   "rung": 0,
+   "of": 4
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "idle"
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "listening"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "just tell me",
+   "final": false
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "thinking"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "just tell me",
+   "final": true
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "t2",
+   "beat": 0,
+   "kind": "ring",
+   "box": {
+    "x": 100,
+    "y": 230,
+    "w": 350,
+    "h": 24
+   }
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t2",
+   "beat": 0,
+   "text": "Ask which rule the highlighted line has to obey.",
+   "rung": 1,
+   "of": 4
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "t2",
+   "why": "no voice is set up"
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t2",
+   "beat": 1,
+   "text": "The rule is: whatever you do to one side, you do to the other.",
+   "rung": 1,
+   "of": 4
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "idle"
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "listening"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "just tell me",
+   "final": false
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "thinking"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "just tell me",
+   "final": true
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "t3",
+   "beat": 0,
+   "kind": "ring",
+   "box": {
+    "x": 100,
+    "y": 230,
+    "w": 350,
+    "h": 24
+   }
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t3",
+   "beat": 0,
+   "text": "What must be true on the highlighted line before the next line can follow?",
+   "rung": 2,
+   "of": 4
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "t3",
+   "why": "no voice is set up"
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t3",
+   "beat": 1,
+   "text": "What has to happen to both sides to clear the plus six?",
+   "rung": 2,
+   "of": 4
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "idle"
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "listening"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "just tell me",
+   "final": false
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "thinking"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "just tell me",
+   "final": true
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "t4",
+   "beat": 0,
+   "kind": "ring",
+   "box": {
+    "x": 100,
+    "y": 230,
+    "w": 350,
+    "h": 24
+   }
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t4",
+   "beat": 0,
+   "text": "Try the same move on a simpler case, then come back to this line.",
+   "rung": 3,
+   "of": 4
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "t4",
+   "why": "no voice is set up"
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t4",
+   "beat": 1,
+   "text": "Take y plus 2 equals 9: subtract 2 from both sides.",
+   "rung": 3,
+   "of": 4
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "idle"
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "listening"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "just tell me",
+   "final": false
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "thinking"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "just tell me",
+   "final": true
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "t5",
+   "beat": 0,
+   "kind": "ring",
+   "box": {
+    "x": 100,
+    "y": 230,
+    "w": 350,
+    "h": 24
+   }
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t5",
+   "beat": 0,
+   "text": "Try the same move on a simpler case, then come back to this line.",
+   "rung": 3,
+   "of": 4
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "t5",
+   "why": "no voice is set up"
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "idle"
+  }
+ ]
+}

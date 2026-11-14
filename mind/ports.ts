@@ -9,7 +9,7 @@ export type Asked = {
   lines: string[];
   /** The numbers of the lines he drew around as he asked; empty when he drew nothing. */
   circled: number[];
-  /** A fixed line he hears with the ring, just before the hint, when his work has a wrong line; null when none will be said. */
+  /** The fixed line he hears with the ring, just before the hint, when his work has a wrong line. */
   leadIn: string | null;
   /** The lessons that can be shown as a clip, each with the idea it shows; empty when none can. */
   lessons: { name: string; idea: string }[];

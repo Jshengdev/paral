@@ -50,8 +50,11 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
       ladder.length,
     );
   let move = plan(draft);
-  /** The rung's fixed line, unless he has heard it before. It is said with the ring, so the wait for the hint is not silent. */
-  const leadIn = (rung: number) => (asking.lesson.shown.includes(ladder[rung].safe) ? null : ladder[rung].safe);
+  /**
+   * The rung's fixed line. It is said with the ring every time, heard before or not: the ring is a new stage and gets
+   * its line, so the wait for the hint is never silent. If Push then swaps the hint for this same line, it is not said twice.
+   */
+  const leadIn = (rung: number) => ladder[rung].safe;
 
   /** The problem and the broken line are known: wipe what no longer applies, and ring the line. */
   const head = (part: Part) => {
@@ -70,8 +73,8 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
       const kind = fitted("ring", place.line, seen.lines, settings.ringReach.value, seen.display.scale);
       send({ v, type: "mark", id, beat: base(), kind, box: place.box });
       draft = fold(draft, { type: "mark.drawn", kind, line: place.line });
-      const lead = clip.on() ? null : leadIn(move.rung);
-      if (lead !== null) {
+      if (!clip.on()) {
+        const lead = leadIn(move.rung);
         send({ v, type: "say", id, beat: base(), text: lead, rung: move.rung, of: ladder.length });
         talk.speak(base(), lead);
         told = 1;

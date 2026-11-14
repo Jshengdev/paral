@@ -62,7 +62,7 @@ Scene → Picture → Painter                                    cores/    the l
    picture of the screen with the lines read from it. The mind sends his words back as they are heard.
 2. Key up: "thinking" at once. If he drew, his loop comes back as a ring (`echo`), with no model asked. If his words ask for
    a drawing, an empty card opens, to be filled by the board or taken away.
-3. The opener, one short line from the fast model, as soon as it is written. If none is out one second after release, a fixed line is said first and the opener follows. If the deep answer has not begun to arrive 1.3 s after that has been heard, a fixed stall line, and up to two more.
+3. The opener, one short line from the fast model, as soon as it is written. If none is out 0.8 s after release, a fixed line is said first and the opener follows. If the deep answer has not begun to arrive 1.3 s after that has been heard, a fixed stall line, and up to two more.
 4. When the deep answer's first fields arrive, it is one of two things. **A wrong line in his work:** a ring on that
    line, the rung's fixed line said with it, then the model's hint once Push has passed it. One rung per ask, one sentence
    for the first three rungs. Where lines sit close the ring is a box that hugs the line.
