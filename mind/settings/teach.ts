@@ -8,10 +8,10 @@ export const teach = {
       { name: "look", may: "Says where to look. Names no idea, asks nothing and shows no step.", sentences: 1, safe: "Read the highlighted line again, slowly." },
       { name: "idea", may: "Names the idea that applies and stops there. Asks no question and shows no step.", sentences: 1, safe: "Ask which rule the highlighted line has to obey." },
       { name: "question", may: "Asks one leading question about the step. Shows no step.", sentences: 1, safe: "What must be true on the highlighted line before the next line can follow?" },
-      { name: "parallel", may: "Works a step of the same kind on other numbers. No number of the example, and above all not what it comes out to, may be the student's own answer or any number of it.", sentences: 2, safe: "Try the same move on a simpler case, then come back to this line." },
+      { name: "parallel", may: "Works a step of the same kind on other numbers. No number of the example, and above all not what it comes out to, may be the student's own answer or any number of it. Stop at the line that shows the move: do not say what the example comes to.", sentences: 2, safe: "Try the same move on a simpler case, then come back to this line." },
     ],
-    why: "Four fixed rungs, none holding the result, so the answer is never one rung away. One rung is given per ask, and each rung has one move: the first three get one sentence, since a second sentence is where a hint slid into the next rung's move.",
-    measured: "one live hint on the second rung named the idea and then asked the third rung's leading question in its second sentence (2026-11-14, the outside judge). The one-sentence rungs have not been judged live",
+    why: "Four fixed rungs, none holding the result, so the answer is never one rung away. One rung is given per ask, and each rung has one move: the first three get one sentence, since a second sentence is where a hint slid into the next rung's move. The top rung's example stops at the move and says no total: a total is where it once said a sum that was not true (\"k equals 8 plus 3. So k is 12\"), to keep from saying his answer.",
+    measured: "one live hint on the second rung named the idea and then asked the third rung's leading question in its second sentence (2026-11-14, the outside judge). The one-sentence rungs have not been judged live. The top rung, 20 asks of the deep model on one page before and after \"stop at the line that shows the move\" was added (2026-11-14): a total said in 11 of 20 before and 0 of 20 after; an example that adds up to his answer without saying so in 5 of 20 both times, nearly all on a repeat visit (\"8 plus 3\")",
   } satisfies Setting<Rung[]>,
 
   justTellMe: {
