@@ -1,28 +1,41 @@
 import { existsSync } from "node:fs";
-import { pixels } from "../pixels.ts";
-import type { Box, Display } from "../shape.ts";
+import { pixels, sizeOf, type Size } from "../pixels.ts";
+import type { Display } from "../shape.ts";
 import { of, type Ask } from "../timeline.ts";
 import { no, unseen, yes, type Verdict } from "../verdict.ts";
 
-const ROOM = 60;   // points round the thing he circles in which his path is looked for
-const FEW = 60;    // pixels of the pen's colour below this are noise
+const LOOK_WIDE = 640;   // the picture is looked at this wide: a pen stroke is still two pixels across
+const FEW = 60;          // pixels of the pen's colour below this are noise
+const SAME_SHAPE = 0.03; // a part of the screen has another shape than the whole; this much apart counts as another
 
-// The tutor gets one picture, and where he circled, his path is drawn on it. The pen is the one strong orange on
-// these pages, so the judge counts orange near the thing he circled, in the picture that was really sent.
-export async function pathInPicture(ask: Ask, circled: Box | null, display: Display): Promise<Verdict[]> {
-  if (circled === null) return [];
-  const what = "The picture sent to the tutor holds his path";
+// The pen is a strong orange-red. A page's own reds and golds are darker or yellower, so they are not counted.
+const isPen = (r: number, g: number, b: number) => r > 200 && g > 50 && g < 130 && b < 90;
+
+// What the tutor is sent when he circles: one picture with his path on it, and only the part of the screen round it.
+// A run keeps one picture file, written again on each ask he circles in, so every ask is judged on the last of them.
+export async function pictureSent(ask: Ask, circled: boolean, display: Display): Promise<Verdict[]> {
+  if (!circled) return [];
   const sent = of(ask.moments, "picture").at(-1);
-  if (!sent || !existsSync(sent.path)) return [unseen("C3", ask.index, what, "the run names no picture, or its file is gone")];
-  const size = { w: display.w, h: display.h };
-  const picture = await pixels(sent.path, size);
-  let orange = 0;
-  const x0 = Math.max(0, Math.floor(circled.x - ROOM)), x1 = Math.min(size.w, Math.ceil(circled.x + circled.w + ROOM));
-  const y0 = Math.max(0, Math.floor(circled.y - ROOM)), y1 = Math.min(size.h, Math.ceil(circled.y + circled.h + ROOM));
-  for (let y = y0; y < y1; y++) for (let x = x0; x < x1; x++) {
-    const i = (y * size.w + x) * 3;
-    if (picture[i] > 180 && picture[i] - picture[i + 2] > 90 && picture[i] - picture[i + 1] > 40) orange++;
-  }
-  const measured = `${orange} pixels of the pen's colour round the thing he circled`;
-  return [orange > FEW ? yes("C3", ask.index, what, measured) : no("C3", ask.index, what, measured)];
+  if (!sent || !existsSync(sent.path)) return [unseen("C3", ask.index, "The picture sent to the tutor holds his path", "the run names no picture, or its file is gone")];
+  const size = await sizeOf(sent.path);
+  return [await holdsHisPath(ask.index, sent.path, size), onlyThePart(ask.index, size, sent, display)];
+}
+
+async function holdsHisPath(s: number, path: string, picture: Size): Promise<Verdict> {
+  const size = { w: LOOK_WIDE, h: Math.round((LOOK_WIDE * picture.h) / picture.w) };
+  const seen = await pixels(path, size);
+  let pen = 0;
+  for (let i = 0; i < size.w * size.h; i++) if (isPen(seen[i * 3], seen[i * 3 + 1], seen[i * 3 + 2])) pen++;
+  const measured = `${pen} pixels of the pen's colour in it`;
+  return pen > FEW ? yes("C3", s, "The picture sent to the tutor holds his path", measured) : no("C3", s, "The picture sent to the tutor holds his path", measured);
+}
+
+// A part shows in two ways: the picture has another shape than the display, or some lines came with a place and no
+// words. The exam's circles are small, so the whole display sent here is a fault.
+export function onlyThePart(s: number, picture: Size, sent: { lines: number; unread: number }, display: Display): Verdict {
+  const whole = display.w / display.h;
+  const shapeApart = Math.abs(picture.w / picture.h - whole) / whole;
+  const measured = `the picture is ${picture.w} by ${picture.h}; the display's shape is ${display.w} by ${display.h}; ${sent.unread} of ${sent.lines} lines came with no words`;
+  const part = shapeApart > SAME_SHAPE || sent.unread > 0;
+  return part ? yes("C3", s, "When he circles, only that part of the screen is sent", measured) : no("C3", s, "When he circles, only that part of the screen is sent", measured);
 }

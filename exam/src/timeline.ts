@@ -14,7 +14,7 @@ export type Moment = { at: number } & (
   | { kind: "clip"; path: string; seconds: number }
   | { kind: "voice"; of: string; ms: number }
   | { kind: "voiced"; of: string; words: string[] }
-  | { kind: "picture"; path: string }
+  | { kind: "picture"; path: string; lines: number; unread: number }
   | { kind: "board-closed" }
   | { kind: "clear" }
   | { kind: "close" }

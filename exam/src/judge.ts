@@ -8,7 +8,7 @@ import { board, lesson } from "./judge/board.ts";
 import { closing, cutIn, ending } from "./judge/ending.ts";
 import { atEnd, atRest, inked, look, thinkingShown, trail } from "./judge/frames.ts";
 import { marks } from "./judge/marks.ts";
-import { pathInPicture } from "./judge/picture.ts";
+import { pictureSent } from "./judge/picture.ts";
 import { drawnIn } from "./judge/motion.ts";
 import { thinkingSaid, timing } from "./judge/timing.ts";
 import { spoken, voiced } from "./judge/words.ts";
@@ -73,7 +73,7 @@ export async function judge(scenario: Scenario): Promise<Judged> {
       // With no voice there is no last word to wait for, so the ask is looked at just before the next one, or at the end.
       const lastWords = aloud(ask).at(-1)?.end ?? Infinity;
       const settledAt = Math.min(lastWords + 500, (all[index + 1]?.down ?? Infinity) - 200);
-      verdicts.push(...await trail(seen, ask, circled, where), ...await pathInPicture(ask, circled, flow.display), ...await inked(seen, ask, step.expect, truth, settledAt, where, all[index + 1]?.down ?? Infinity),
+      verdicts.push(...await trail(seen, ask, circled, where), ...await pictureSent(ask, circled !== null, flow.display), ...await inked(seen, ask, step.expect, truth, settledAt, where, all[index + 1]?.down ?? Infinity),
         ...await drawnIn(seen, ask, where, all[index + 1]?.down ?? Infinity));
     }
   }

@@ -11,6 +11,17 @@ export function pixels(png: string, size: Size): Promise<Buffer> {
   });
 }
 
+// How many pixels wide and high a picture file is.
+export function sizeOf(png: string): Promise<Size> {
+  return new Promise((resolve, reject) => {
+    execFile("ffprobe", ["-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height", "-of", "csv=p=0", png], (error, out) => {
+      const [w, h] = out.trim().split(",").map(Number);
+      if (error || !(w > 0) || !(h > 0)) reject(error ?? new Error(`${png}: no size could be read from it`));
+      else resolve({ w, h });
+    });
+  });
+}
+
 const DIFFERENT = 40;
 
 // The pixels where a frame differs from the bare page: everything the app drew.

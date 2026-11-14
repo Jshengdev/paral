@@ -29,7 +29,10 @@ function moment(at: number, line: Record<string, unknown> & { type: string }): M
     case "echo": return { at, kind: "echo", box: Box.parse(line.box) };
     case "board": return { at, kind: "board", text: (line.rows as string[][]).map((row) => row.join(" → ")).join(" | ") };
     case "clip": return { at, kind: "clip", path: String(line.clip), seconds: Number(line.seconds) };
-    case "screen": return { at, kind: "picture", path: String((line.picture as { path: string }).path) };
+    case "screen": {
+      const lines = line.lines as { text: string }[];
+      return { at, kind: "picture", path: (line.picture as { path: string }).path, lines: lines.length, unread: lines.filter((read) => read.text === "").length };
+    }
     case "board.close": return { at, kind: "board-closed" };
     case "clear": return { at, kind: "clear" };
     case "close": return { at, kind: "close" };

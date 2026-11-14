@@ -1,5 +1,6 @@
 import { board } from "./judge/board.ts";
 import { drawnIn } from "./judge/motion.ts";
+import { onlyThePart } from "./judge/picture.ts";
 import { timing } from "./judge/timing.ts";
 import { spoken } from "./judge/words.ts";
 import type { Placed } from "./session.ts";
@@ -11,6 +12,7 @@ import type { Verdict } from "./verdict.ts";
 type Case = { name: string; check: string; mustPass: boolean; verdicts: () => Verdict[] | Promise<Verdict[]> };
 
 const UP = 3000;
+const DISPLAY = { id: 1, scale: 2, x: 0, y: 0, w: 1728, h: 1117 };
 const box = { x: 100, y: 80, w: 200, h: 20 };
 const say = (id: string, at: number, text: string, extra: Partial<{ opener: boolean; hint: boolean }> = {}): Moment => ({ at, kind: "say", id, text, opener: extra.opener ?? false, hint: extra.hint ?? false });
 const voice = (of: string, at: number, ms: number): Moment => ({ at, kind: "voice", of, ms });
@@ -64,6 +66,8 @@ const CASES: Case[] = [
   { name: "his number in a worked example", check: "It never gives the result", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "So a equals 2 plus 9, which is 11.")]), { never: ["11", "eleven"] }, []) },
   { name: "an ask that ends in the failed look", check: "The ask is answered", mustPass: false, verdicts: () => spoken(ask([{ at: 5000, kind: "look", name: "failed", detail: "I lost that answer on my side. Ask me again." }]), {}, []) },
   { name: "a failure told as an error's own text", check: "A failure is told in plain words", mustPass: false, verdicts: () => spoken(ask([{ at: 5000, kind: "look", name: "failed", detail: '[{"code":"too_small"}]' }]), {}, []) },
+  { name: "he circles and the whole display is sent", check: "When he circles, only that part", mustPass: false, verdicts: () => [onlyThePart(0, { w: 1280, h: 827 }, { lines: 20, unread: 0 }, DISPLAY)] },
+  { name: "he circles and a part is sent", check: "When he circles, only that part", mustPass: true, verdicts: () => [onlyThePart(0, { w: 1136, h: 948 }, { lines: 20, unread: 6 }, DISPLAY)] },
   { name: "a mark that pops in", check: "Each mark is drawn by a pen", mustPass: false, verdicts: () => drawnIn(film((ms) => (ms >= 1000 ? 1 : 0)), ask([]), [{ at: 1000, what: "mark", id: "t1/0", box }], Infinity) },
   { name: "a mark drawn in 400 ms", check: "Each mark is drawn by a pen", mustPass: true, verdicts: () => drawnIn(film((ms) => (ms - 1000) / 400), ask([]), [{ at: 1000, what: "mark", id: "t1/0", box }], Infinity) },
 ];
