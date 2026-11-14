@@ -94,7 +94,7 @@ function deadAir(ask: Ask, placed: Placed[]): Verdict {
   if (ask.up === null) return unseen("U3", ask.index, what, "the key was never released");
   const said = spoken(ask).length > 0 ? spoken(ask) : shown(ask);
   if (said.length === 0) return unseen("U3", ask.index, what, "nothing was said in this ask");
-  const until = said.at(-1)!.end;
+  const until = said[said.length - 1].end;   // said is not empty: checked just above
   const ink = placed.filter((p) => ["mark", "echo", "board"].includes(p.what) && p.at >= ask.up! && p.at <= until).map((p) => ({ start: p.at, end: p.at + INK_HOLDS_MS }));
   let longest = 0;
   let quietFrom = ask.up;

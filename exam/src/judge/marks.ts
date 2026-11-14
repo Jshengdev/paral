@@ -23,7 +23,7 @@ export function marks(ask: Ask, expect: Expect, truth: Truth[]): Verdict[] {
     return [drawn.length === 0 ? yes("C12", s, "No mark is drawn when he says nothing", "no mark") : no("C12", s, "No mark is drawn when he says nothing", `${drawn.length} drawn`)];
   }
   if (expect.mark === undefined) return [];
-  const want = findNamed(truth, expect.mark!.on);
+  const want = findNamed(truth, expect.mark.on);
   if (!want) throw new Error(`the page has no "${expect.mark.on}" to mark`);
   if (drawn.length === 0) return [no("C6", s, `A mark lands on "${want.text.slice(0, 40)}"`, "no mark was drawn")];
   const hits = drawn.filter((m) => inside(m.box, grow(want.box, GROWN)) >= 0.6 || inside(want.box, grow(m.box, GROWN)) >= 0.6);

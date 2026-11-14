@@ -18,6 +18,8 @@ a run leaves on disk.
   `run.mp4` from the frames and the voice, and prints what fails.
 - `node exam/run.ts explain` writes `tmp/runs/index.html`: one page of what works, with each film.
 - `node exam/run.ts sheet <scenario> <fromMs> <everyMs>` tiles twelve frames into one picture, to look at by eye.
+- `node exam/run.ts planted` is the judge's own test. It runs made-up asks with one fault planted in each, and
+  says whether each check fails where it must. It calls no service.
 
 ## The order of a full pass
 

@@ -16,7 +16,7 @@ import { runDir } from "./prepare.ts";
 import { readings } from "./readings.ts";
 import { moments, placed } from "./session.ts";
 import { sound } from "./sound.ts";
-import { Flow, Truth, findNamed, type Scenario } from "./shape.ts";
+import { Flow, Truth, findNamed, type Box, type Scenario } from "./shape.ts";
 import { asks, first, of, spoken as aloud, type Ask } from "./timeline.ts";
 import type { Verdict } from "./verdict.ts";
 
@@ -44,6 +44,12 @@ async function stills(dir: string, all: Ask[], frames: number): Promise<Judged["
   return out;
 }
 
+function boxOf(truth: Truth[], name: string, scenario: string): Box {
+  const found = findNamed(truth, name);
+  if (!found) throw new Error(`${scenario}: the page has nothing named "${name}" to circle`);
+  return found.box;
+}
+
 export async function judge(scenario: Scenario): Promise<Judged> {
   const dir = runDir(scenario.id);
   const truth = await read(join(dir, "truth.json"), z.array(Truth));
@@ -63,7 +69,7 @@ export async function judge(scenario: Scenario): Promise<Judged> {
     verdicts.push(...marks(ask, step.expect, truth), ...spoken(ask, step.expect, truth), ...voiced(ask, step.expect, all[index + 1]?.down ?? null),
       ...board(ask, step.expect, truth, where), ...lesson(ask, step.expect), ...cutIn(ask, all[index - 1] ?? null, step.expect, voice));
     if (seen) {
-      const circled = step.circle === null ? null : findNamed(truth, step.circle)!.box;
+      const circled = step.circle === null ? null : boxOf(truth, step.circle, scenario.id);
       // With no voice there is no last word to wait for, so the ask is looked at just before the next one, or at the end.
       const lastWords = aloud(ask).at(-1)?.end ?? Infinity;
       const settledAt = Math.min(lastWords + 500, (all[index + 1]?.down ?? Infinity) - 200);
@@ -71,7 +77,7 @@ export async function judge(scenario: Scenario): Promise<Judged> {
         ...await drawnIn(seen, ask, where, all[index + 1]?.down ?? Infinity));
     }
   }
-  const last = all.at(-1)!;
+  const last = all[all.length - 1];   // the loop above threw if the run held fewer asks than the scenario
   const closed = of(last.moments, "close").length > 0;
   verdicts.push(...(closed ? closing(last) : ending(last, true)));
   if (seen) verdicts.push(...await atEnd(seen, last, closed));

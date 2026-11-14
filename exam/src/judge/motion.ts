@@ -18,9 +18,10 @@ async function penTime(seen: Seen, mark: Placed): Promise<number | null> {
   const samples: { ms: number; ink: number }[] = [];
   for (let ms = mark.at - BEFORE_MS; ms <= mark.at + AFTER_MS; ms += STEP_MS) samples.push({ ms, ink: count(await seen.ink(ms), seen.size, box) });
   const grown = samples.map((s) => ({ ms: s.ms, ink: s.ink - samples[0].ink }));
-  const full = grown.at(-1)!.ink;
+  const full = grown[grown.length - 1].ink;   // the window always holds at least one sample
   if (full < FEW) return null;
-  const reached = (share: number) => grown.find((s) => s.ink >= full * share)!.ms;
+  // The last sample holds all the ink, so some sample always reaches any share of it.
+  const reached = (share: number) => (grown.find((s) => s.ink >= full * share) ?? grown[grown.length - 1]).ms;
   return reached(0.9) - reached(0.1);
 }
 

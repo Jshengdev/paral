@@ -5,6 +5,7 @@ import { CRITERIA, NOT_LIVE, WAITING } from "./criteria.ts";
 import { explain, type Judged } from "./src/explain.ts";
 import { sheet } from "./src/film.ts";
 import { judge } from "./src/judge.ts";
+import { planted } from "./src/planted.ts";
 import { prepare, runDir, scenarios } from "./src/prepare.ts";
 
 const [command, only, from, every] = process.argv.slice(2);
@@ -35,6 +36,14 @@ const commands: Record<string, () => Promise<void>> = {
   async sheet() {
     if (!only) throw new Error("sheet needs a scenario");
     console.log(await sheet(runDir(only), Number(from ?? 0), Number(every ?? 500), `sheet-${from ?? 0}`));
+  },
+  // The judge's own test: made-up asks with one fault planted in each. A check that cannot fail proves nothing.
+  async planted() {
+    const cases = await planted();
+    for (const c of cases) console.log(`${c.ok ? "ok  " : "BAD "} ${c.name}: ${c.why}`);
+    const bad = cases.filter((c) => !c.ok).length;
+    console.log(`${cases.length - bad} of ${cases.length} planted cases behave as they must`);
+    if (bad > 0) process.exitCode = 1;
   },
   // One page of what works, from the verdicts already written.
   async explain() {

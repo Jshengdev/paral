@@ -27,8 +27,7 @@ const overlap = (a: Box, b: Box) => Math.max(0, Math.min(a.x + a.w, b.x + b.w) -
 // to its first box, and the old check, "it is not empty", passed it. The last board line is the one he is left with.
 const BOXES = 2;
 
-function drawing(ask: Ask): Verdict {
-  const last = of(ask.moments, "board").at(-1)!;
+function drawing(ask: Ask, last: { text: string }): Verdict {
   const boxes = last.text.split(/ → | \| /).filter((cell) => cell.trim() !== "").length;
   const measured = `${boxes} ${boxes === 1 ? "box" : "boxes"}: ${last.text.slice(0, 80)}`;
   return boxes >= BOXES ? yes("C8", ask.index, "The board is a drawing of two boxes or more", measured) : no("C8", ask.index, "The board is a drawing of two boxes or more", measured);
@@ -36,8 +35,7 @@ function drawing(ask: Ask): Verdict {
 
 // The painter draws the arrow between two boxes. A box whose own words start or end with an arrow sign shows two
 // in a row. Seen once in fifteen boards over three passes ("→ most of length").
-function plainBoxes(ask: Ask): Verdict {
-  const last = of(ask.moments, "board").at(-1)!;
+function plainBoxes(ask: Ask, last: { text: string }): Verdict {
   const cells = last.text.split(/ \| /).flatMap((row) => row.split(" → ")).map((cell) => cell.trim());
   const marked = cells.filter((cell) => /^(→|->|=>)|(→|->|=>)$/.test(cell));
   return marked.length === 0 ? yes("C8", ask.index, "No box carries an arrow sign of its own", `${cells.length} boxes, none does`)
@@ -53,19 +51,18 @@ export function board(ask: Ask, expect: Expect, truth: Truth[], placed: Placed[]
   const leftEmpty = lastBoard !== undefined && lastBoard.text.trim() === "" && !closed;
   if (leftEmpty) return [no("C8", s, "An empty card is filled or taken away", "the card opened and stayed empty")];
   if (lastBoard !== undefined && lastBoard.text.trim() === "") return expect.board ? [no("C8", s, "A board opens", "a card opened and was taken away with no drawing")] : [yes("C8", s, "An empty card is filled or taken away", "it opened empty and was taken away")];
-  if (expect.board === undefined) return opened ? [drawing(ask), plainBoxes(ask)] : [];
+  if (expect.board === undefined) return lastBoard ? [drawing(ask, lastBoard), plainBoxes(ask, lastBoard)] : [];
   if (!expect.board) return [opened ? no("C8", s, "No board opens here", "one opened") : yes("C8", s, "No board opens here", "none")];
-  if (!opened) return [no("C8", s, "A board opens", "none opened")];
+  if (!opened || !lastBoard) return [no("C8", s, "A board opens", "none opened")];
   const firstWords = first(ask.moments, "say");
-  const last = of(ask.moments, "board").at(-1)!;
   const openers = new Set(of(ask.moments, "say").filter((m) => m.opener).map((m) => m.id));
   const answer = spoken(ask).find((sentence) => !openers.has(sentence.of));
   const early = "The board opens while the answer begins, not after it";
   const measured = `${firstWords ? Math.round(opened.at - firstWords.at) : "?"} ms after its first words${answer ? `, ${Math.round(answer.end - opened.at)} ms before the answer's first sentence ends` : ""}`;
   const out = [
     !answer ? unseen("C8", s, early, "nothing was voiced after the opener") : opened.at <= answer.end ? yes("C8", s, early, measured, "by the end of the first sentence after the opener (the video's order)") : no("C8", s, early, measured, "by the end of the first sentence after the opener (the video's order)"),
-    drawing(ask),
-    plainBoxes(ask),
+    drawing(ask, lastBoard),
+    plainBoxes(ask, lastBoard),
     // His choice of 2026-11-14: the board opens within two seconds of the first words. The board's
     // card may open empty and fill; its opening is the first board line of the ask.
     within("C8", s, "The board opens within two seconds of the first words", firstWords ? opened.at - firstWords.at : null, 2000, "his click of 11-14, from the 04:30 page"),
