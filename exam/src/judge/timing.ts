@@ -72,7 +72,8 @@ export function timing(ask: Ask, expect: Expect, placed: Placed[], nextDown: num
   const firstInk = Math.min(mark ? shownAt(ask, mark.id, mark.at, placed) : Infinity, echo ? echo.at : Infinity);
   const circled = of(ask.moments, "trail").length > 0;
   if (circled && firstInk !== Infinity && ask.up !== null) out.push(within("C6", s, "After he circles, a mark is on screen about two seconds after release", firstInk - ask.up, FIRST_MARK_MS, "the video: release 21:49, ring 21:51"));
-  out.push(...withItsSentence(ask, placed), ...brief(ask), deadAir(ask, placed));
+  out.push(...withItsSentence(ask, placed), ...brief(ask));
+  if (answers) out.push(deadAir(ask, placed));
   return out;
 }
 

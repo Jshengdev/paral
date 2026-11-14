@@ -32,6 +32,19 @@ export function heardWhole(ask: Ask, said: string): Verdict[] {
 // ending." and "Take y minus 4 equals 9: to clear the minus 4." A reader still judges the rest.
 const CUT_OFF = [/^Which\b.*\.$/, /^Like (a|an|the|when|if)\b/, /:\s+to(\s+\S+){1,5}\.$/i];
 
+// A sum said aloud with what it comes to, as "9 plus 4, which is 13" or "8 plus 3. So k is 11". On film on 11-14 a
+// worked example said "k equals 8 plus 3. So k is 12": eleven was his own answer, which it may not say.
+const SUM = /\b(\d+) (plus|minus) (\d+)\b(?:,? which is| really is| is|\. So \w+ is|\. So \w+ equals|, so \w+ is|, so \w+ equals|, and \w+ is|, giving \w+ equals) (\d+)\b/g;
+
+function sumsRight(ask: Ask): Verdict[] {
+  const text = of(ask.moments, "say").filter((m) => !m.opener).map((m) => m.text).join(" ");
+  const sums = [...text.matchAll(SUM)].map((m) => ({ said: m[0], is: m[2] === "plus" ? Number(m[1]) + Number(m[3]) : Number(m[1]) - Number(m[3]), given: Number(m[4]) }));
+  if (sums.length === 0) return [];
+  const wrong = sums.filter((sum) => sum.is !== sum.given);
+  const what = "A sum it says aloud comes out right";
+  return [wrong.length === 0 ? yes("C16", ask.index, what, `${sums.length} sums, each right`) : no("C16", ask.index, what, `it said "${wrong[0].said}", and that is ${wrong[0].is}`)];
+}
+
 export function spoken(ask: Ask, expect: Expect, truth: Truth[]): Verdict[] {
   const s = ask.index;
   const says = of(ask.moments, "say");
@@ -59,6 +72,7 @@ export function spoken(ask: Ask, expect: Expect, truth: Truth[]): Verdict[] {
   const leaks = says.filter((m) => WORKINGS.some((sign) => sign.test(m.text)));
   out.push(leaks.length === 0 ? yes("U6", s, "No line talks about its own workings, or about him as someone else", `${says.length} lines, none does`)
     : no("U6", s, "No line talks about its own workings, or about him as someone else", `it said: "${leaks[0].text.slice(0, 80)}"`));
+  out.push(...sumsRight(ask));
   // DuckyHelper's own notes for the tutor in the video (version 0.10.32): "a sentence is said once, never twice".
   const twice = says.map((m) => plain(m.text).trim()).filter((text, at, all) => all.indexOf(text) !== at);
   if (says.length > 0) {

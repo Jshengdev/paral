@@ -83,6 +83,8 @@ only when the builder says the tree is frozen, and the builder edits again only 
   first words.
 - **His whole question is heard.** The words the ear ends with are counted against the words said; seven in ten is
   the bar, since the ear mishears a word now and then. A hold cut short leaves a word or two.
+- **A sum said aloud comes out right.** A worked example once said "k equals 8 plus 3. So k is 12": eleven was his
+  own answer, which it may not say. The judge reads each sum that is said with what it comes to and adds it up.
 - **A piece cut off from its sentence.** A long sentence cut at a comma once left "Which is 13." said on its own.
   The judge holds three signs of that, each heard on film. A reader judges the rest.
 - A verdict is `works`, `fails` or `not shown`. `not shown` means this run could not prove it either way.
