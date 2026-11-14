@@ -47,7 +47,8 @@ public final class Overlay {
         let timer = Timer(timeInterval: 1.0 / 60, repeats: true) { [weak self] _ in
             guard let self else { return }
             var now = picture()
-            if now.capsule.look != .thinking { now.clock = 0 }
+            // The clock only matters while something pulses: the thinking dots, or the dots in an empty card.
+            if now.capsule.look != .thinking && !(now.board?.rows.isEmpty ?? false) { now.clock = 0 }
             let over = now.capsule.closes && self.cross.contains(self.pointer)
             if self.window.ignoresMouseEvents == over { self.window.ignoresMouseEvents = !over }
             guard now != self.shown || self.stale else { return }

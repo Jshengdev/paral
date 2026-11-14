@@ -44,7 +44,7 @@ public struct Painter {
         for mark in picture.marks {
             if let box = self.mark(mark, avoiding: picture.avoid, ctx) { drawn.append(Drawn(what: "mark", id: mark.key, box: box)) }
         }
-        if let board = picture.board { drawn.append(Drawn(what: "board", id: board.id, box: self.board(board, ctx))) }
+        if let board = picture.board { drawn.append(Drawn(what: "board", id: board.id, box: self.board(board, clock: picture.clock, ctx))) }
         if let clip = picture.clip { drawn.append(Drawn(what: "clip", id: clip.id, box: self.clip(clip, ctx))) }
         if let pointer = picture.pointer { drawn.append(Drawn(what: "pointer", id: nil, box: self.pointer(pointer, ctx))) }
         drawn.append(Drawn(what: "capsule", id: nil, box: capsule(picture.capsule, clock: picture.clock, ctx)))

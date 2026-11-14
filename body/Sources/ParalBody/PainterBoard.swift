@@ -1,9 +1,22 @@
 import AppKit
 
 extension Painter {
+    static let waitingGap = 12.0
+
+    /// Three chalk dots that brighten in turn: something is on its way. The capsule shows them while it thinks, and
+    /// an empty card while its board is being made.
+    func waiting(at centre: CGPoint, clock: Double, _ ctx: CGContext) {
+        for dot in 0..<3 {
+            let alpha = 0.35 + 0.65 * (0.5 + 0.5 * sin(clock / 180 - Double(dot) * 0.9))
+            ctx.setFillColor(paper.copy(alpha: alpha) ?? paper)
+            ctx.fillEllipse(in: CGRect(x: centre.x + Double(dot - 1) * Painter.waitingGap - 3, y: centre.y - 3, width: 6, height: 6))
+        }
+    }
+
     /// A dark card of chalk boxes joined by arrows, one row at a time, shrunk to fit the room it was given. With no
-    /// rows yet it is an empty card; when the rows come the card grows from that size to theirs and they fade in.
-    func board(_ board: BoardPicture, _ ctx: CGContext) -> Box {
+    /// rows yet it is an empty card with the waiting dots in it; when the rows come the card grows from that size
+    /// to theirs and they fade in.
+    func board(_ board: BoardPicture, clock: Double, _ ctx: CGContext) -> Box {
         let b = tokens.board
         let chalk = paper
         let sized = board.rows.map { row in row.map { text -> (NSAttributedString, CGSize) in
@@ -29,6 +42,7 @@ extension Painter {
         ctx.addPath(card)
         ctx.setFillColor(ink.copy(alpha: 0.96) ?? ink)
         ctx.fillPath()
+        if sized.isEmpty { waiting(at: CGPoint(x: cardW / 2, y: cardH / 2), clock: clock, ctx) }
         // The rows are laid out for the full card and shown through the card as it grows.
         ctx.addPath(card)
         ctx.clip()

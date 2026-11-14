@@ -36,16 +36,10 @@ extension Painter {
         case .thinking:
             let tag = inked((c.note ?? "").uppercased(), size: tokens.capsule.tagType, color: paper.copy(alpha: 0.7) ?? paper, weight: .semibold)
             let size = tag.size()
-            let dots = 3, gap = 12.0
-            let total = Double(dots) * gap + 10 + size.width
-            var x = inner.midX - total / 2
-            for dot in 0..<dots {
-                let alpha = 0.35 + 0.65 * (0.5 + 0.5 * sin(clock / 180 - Double(dot) * 0.9))
-                ctx.setFillColor(paper.copy(alpha: alpha) ?? paper)
-                ctx.fillEllipse(in: CGRect(x: x, y: inner.midY - 3, width: 6, height: 6))
-                x += gap
-            }
-            tag.draw(at: CGPoint(x: x + 10, y: inner.midY - size.height / 2))
+            let gap = Painter.waitingGap
+            let x = inner.midX - (3 * gap + 10 + size.width) / 2
+            waiting(at: CGPoint(x: x + gap + 3, y: inner.midY), clock: clock, ctx)
+            tag.draw(at: CGPoint(x: x + 3 * gap + 10, y: inner.midY - size.height / 2))
         case .failed:
             let head = inked(tokens.strings.failed + "  ", size: tokens.capsule.type, color: accent, weight: .bold)
             let rest = c.note ?? ""
