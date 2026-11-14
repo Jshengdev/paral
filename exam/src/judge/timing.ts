@@ -11,7 +11,7 @@ const OPENER_MS = 1500;
 const FIRST_MARK_MS = 2500;
 // DuckyHelper's own page: "The spoken sentence starts with its mark", and a first mark may land before any word.
 const MARK_LATE_MS = 1000;
-// His click of 2026-11-14 11:20 (pickje2 spec 0040): his first words within about 2 s of the press. The half second is
+// His choice of 2026-11-14: his first words within about 2 s of the press. The half second is
 // the allowance every bar taken from the video's whole-second times gets.
 const FIRST_WORDS_MS = 2500;
 // The video's one uncut turn shows something new every one to two seconds: 21:49, 21:50, 21:51, 21:53.

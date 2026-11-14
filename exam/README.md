@@ -9,7 +9,7 @@ a run leaves on disk.
 ## What it promises
 
 - `criteria.ts` is the list: seventeen things paral must do (C1 to C17), and six checks of use (U2 to U7).
-- Two bars are his by click (2026-11-14 11:20, pickje2 spec 0040): the board opens within two seconds of the first
+- Two bars were chosen by the person this is built for (2026-11-14): the board opens within two seconds of the first
   words, and his first words show within about 2 s of the press (2.5 s in the judge).
 - Each file in `scenarios/` is one scripted situation: a page, what he says, what he circles, and what must be true.
 - `node exam/run.ts prepare [scenario]` makes, under `tmp/runs/<scenario>/`: the page as a picture, `truth.json` (where
@@ -18,7 +18,6 @@ a run leaves on disk.
   `run.mp4` from the frames and the voice, and prints what fails.
 - `node exam/run.ts explain` writes `tmp/runs/index.html`: one page of what works, with each film.
 - `node exam/run.ts sheet <scenario> <fromMs> <everyMs>` tiles twelve frames into one picture, to look at by eye.
-- `node exam/run.ts stand "<note>"` counts the tree and adds a line to `../side/paral-standing.md`.
 
 ## The order of a full pass
 
@@ -83,7 +82,7 @@ his real screen, and the real windows.
 
 ## Borrowed from
 
-- pickje2's main test: a check is a small data file, and the judge is outside the thing it judges.
-- pickje's exams: scripted situations run end to end and graded, with the receipts kept.
+- An earlier project's main test: a check is a small data file, and the judge is outside the thing it judges.
+- An earlier project's exams: scripted situations run end to end and graded, with the receipts kept.
 - SWE-bench: a run that could not be judged is never counted as a pass.
 - DialKit (dialkit.dev, MIT) in `vendor/dialkit/`, for the explainer's live controls.

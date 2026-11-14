@@ -66,7 +66,7 @@ export function board(ask: Ask, expect: Expect, truth: Truth[], placed: Placed[]
     !answer ? unseen("C8", s, early, "nothing was voiced after the opener") : opened.at <= answer.end ? yes("C8", s, early, measured, "by the end of the first sentence after the opener (the video's order)") : no("C8", s, early, measured, "by the end of the first sentence after the opener (the video's order)"),
     drawing(ask),
     plainBoxes(ask),
-    // His click of 2026-11-14 11:20 (pickje2 spec 0040): the two seconds he was shown at 04:30 stand. The board's
+    // His choice of 2026-11-14: the board opens within two seconds of the first words. The board's
     // card may open empty and fill; its opening is the first board line of the ask.
     within("C8", s, "The board opens within two seconds of the first words", firstWords ? opened.at - firstWords.at : null, 2000, "his click of 11-14, from the 04:30 page"),
   ];

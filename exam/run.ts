@@ -6,7 +6,6 @@ import { explain, type Judged } from "./src/explain.ts";
 import { sheet } from "./src/film.ts";
 import { judge } from "./src/judge.ts";
 import { prepare, runDir, scenarios } from "./src/prepare.ts";
-import { stand } from "./src/stand.ts";
 
 const [command, only, from, every] = process.argv.slice(2);
 
@@ -36,10 +35,6 @@ const commands: Record<string, () => Promise<void>> = {
   async sheet() {
     if (!only) throw new Error("sheet needs a scenario");
     console.log(await sheet(runDir(only), Number(from ?? 0), Number(every ?? 500), `sheet-${from ?? 0}`));
-  },
-  // Count this tree and write ../side/paral-standing.md, the side-by-side with Roamies and pickje2: stand <a note>.
-  async stand() {
-    console.log(await stand(process.argv.slice(3).join(" ") || "a count"));
   },
   // One page of what works, from the verdicts already written.
   async explain() {
