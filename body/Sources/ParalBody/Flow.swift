@@ -77,8 +77,13 @@ public final class Flow {
         var first = true
         for ask in asks {
             if !first {
-                if let after = ask["startAfter"] as? [String: Any], let plus = (after["firstSayPlusMs"] as? NSNumber)?.doubleValue {
+                let after = ask["startAfter"] as? [String: Any]
+                if let plus = (after?["firstSayPlusMs"] as? NSNumber)?.doubleValue {
                     _ = try await until("a first sentence", limit: 60_000, from: seenTo) { if case .say = $0 { return true } else { return false } }
+                    await pause(plus)
+                } else if let plus = (after?["firstAnswerPlusMs"] as? NSNumber)?.doubleValue {
+                    // The first sentence of the answer itself, not a line said while he waits: a cut in the middle of an answer.
+                    _ = try await until("the answer's first sentence", limit: 60_000, from: seenTo) { if case .say(_, _, _, let aside) = $0 { return !aside } else { return false } }
                     await pause(plus)
                 } else {
                     try await settled(from: seenTo)

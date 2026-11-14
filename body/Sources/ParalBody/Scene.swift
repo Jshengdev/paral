@@ -58,7 +58,7 @@ public struct Scene {
         case .heard(let text, _):
             let words = text.split(separator: " ").map(String.init)
             heard = words.enumerated().map { i, word in i < heard.count && heard[i].word == word ? heard[i] : (word, at) }
-        case .say(let id, let beat, let text):
+        case .say(let id, let beat, let text, _):
             if !asks.contains(where: { $0.id == id }) { asks.append(Ask(id: id, beganAt: at)) }
             edit(id) { $0.beats[beat] = Beat(text: text, sayAt: at) }
         case .voice(let id, let beat, let pcm, _):

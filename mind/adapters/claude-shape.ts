@@ -48,6 +48,6 @@ export function asking(asked: Asked): string {
     asked.lessons.length > 0
       ? `Lessons you can show as a short clip (set "lesson" to one of these names when it fits, otherwise null):\n${asked.lessons.map((lesson) => `- ${lesson.name}: ${lesson.idea}`).join("\n")}`
       : 'No lesson clip can be shown now, so set "lesson" to null.',
-    ...(asked.leadIn ? [`If the student's work has a wrong line, they hear this just before your hint: "${asked.leadIn}" Do not say it again; carry on from it.`] : []),
+    `If the student's work has a wrong line, they hear this just before your hint: "${asked.leadIn}" Do not say it again; carry on from it.`,
   ].join("\n\n");
 }

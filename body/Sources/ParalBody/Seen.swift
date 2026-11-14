@@ -19,7 +19,7 @@ public enum Seen {
     case screen(display: DisplayPlace, lines: [ReadLine])
     case state(name: String, detail: String?)
     case heard(text: String, final: Bool)
-    case say(id: String, beat: Int, text: String)
+    case say(id: String, beat: Int, text: String, aside: Bool)
     case voice(id: String, beat: Int, pcm: Data, last: Bool)
     case words(id: String, beat: Int, start: [Double], end: [Double])
     case mute(id: String)
@@ -84,7 +84,7 @@ public enum Seen {
             return .success(.heard(text: text, final: final))
         case "say":
             guard let id, let beat, let text = s("text"), !text.isEmpty else { return .failure(Refused("say: id, beat and text are needed")) }
-            return .success(.say(id: id, beat: beat, text: text))
+            return .success(.say(id: id, beat: beat, text: text, aside: f["aside"] as? Bool ?? false))
         case "voice":
             guard let id, let beat, let pcm = s("pcm"), let sound = Data(base64Encoded: pcm) else { return .failure(Refused("voice: id, beat and pcm are needed")) }
             return .success(.voice(id: id, beat: beat, pcm: sound, last: f["last"] as? Bool ?? false))

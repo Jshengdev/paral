@@ -149,7 +149,7 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
     const leak = givesAway(planned, answered.result);
     if (leak) {
       planned = [{ say: settings.heldBackLine.value, mark: null }];
-      log(`${id}: push held back an explanation that gave the result away`);
+      log(`${id}: push held back an explanation that gave the result away; it was: "${mapped(answered).map((beat) => beat.say).join(" ")}"`);
     }
     tell(planned);
     if (leak) clip.drop();
@@ -175,7 +175,7 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
   const secondLook = codeSaysLeak ? null : await ports.secondLook.leaks(line, answered.problem, signal);
   if (signal.aborted) return;
   const verdict = judge({ line, result: answered.result, secondLook, safe, onHisLine });
-  if (verdict.verdict === "leak") log(`${id}: push swapped a leaked hint for the safe line of rung ${move.rung} (${verdict.why})`);
+  if (verdict.verdict === "leak") log(`${id}: push swapped a leaked hint for the safe line of rung ${move.rung} (${verdict.why}); the hint it replaced was: "${line}"`);
   // After a leak the safe line stands in for the hint. When it was already said with the ring, nothing more is said.
   const shown = verdict.verdict !== "leak" ? sentences : led ? [] : [safe];
   const from = led ? 1 : 0;

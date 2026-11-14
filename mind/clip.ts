@@ -17,14 +17,16 @@ export function lessonClip({ ports, settings, send, log }: Hands, asking: Asking
   const known: Record<string, { idea: string; examples: Example[] }> = ports.lessons === null ? {} : settings.lessons.value;
   const lines = asking.seen.lines.map((line) => line.text);
   let showing: { name: string; making: Promise<Clip> } | null = null;
+  const catalogue = Object.entries(known).map(([name, lesson]) => ({ name, idea: lesson.idea }));
   return {
     /** The lessons the model may name, each with the idea it shows. */
-    catalogue: Object.entries(known).map(([name, lesson]) => ({ name, idea: lesson.idea })),
+    catalogue,
     /** Whether this answer will show a clip. Then it is one sentence, with no board and no fixed line before it. */
     on: () => showing !== null,
     /** Starts the clip for the lesson the model named, when there is an example of it that may be shown. */
     start(name: string | null | undefined, result: string | null) {
-      if (!name) return;
+      // Said so that a run with no clip explains itself: the model was offered a lesson and did not name one.
+      if (!name) return void (catalogue.length > 0 && log(`${id}: of the lessons on offer (${catalogue.map((lesson) => lesson.name).join(", ")}) the model named none`));
       const example = ports.lessons && known[name] ? pick(known[name].examples, lines, result) : null;
       if (!ports.lessons || !example) return log(`${id}: the model named the lesson "${name}", and there is no example of it that may be shown; words only`);
       const making = ports.lessons.render(name, example, signal);

@@ -69,7 +69,7 @@ export async function standIn(input: StandIn) {
   const logged: string[] = [];
   const live = anthropic(capped, { answer: "answer prompt", secondLook: "second look prompt", opener: "opener prompt" }, (line) => logged.push(line), client);
   const signal = new AbortController().signal;
-  const asked = { words: "", lines: [], fresh: false, circled: [], leadIn: null, lessons: [], ...input.asked, lesson: { ...empty, ...input.asked.lesson }, picturePath: input.picture ? picturePath : null, rung: settings.ladder.value[0] };
+  const asked = { words: "", lines: [], fresh: false, circled: [], leadIn: settings.ladder.value[0].safe, lessons: [], ...input.asked, lesson: { ...empty, ...input.asked.lesson }, picturePath: input.picture ? picturePath : null, rung: settings.ladder.value[0] };
   try {
     let answered = null;
     let early = false;
