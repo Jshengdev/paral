@@ -1,0 +1,12 @@
+{
+  "v": 1,
+  "id": "pressed-again",
+  "title": "He lets go and presses again at once, with a new question",
+  "criteria": ["C2", "C11"],
+  "page": "milestone",
+  "steps": [
+    { "say": "What does the first check mean?", "circle": null, "expect": {} },
+    { "say": "Which line here is about passwords?", "circle": null, "pressAgainAfterMs": 100,
+      "expect": { "takesBackTheAskBefore": true, "sentences": 1, "plain": true, "mark": { "on": "extra-hash" } } }
+  ]
+}

@@ -5,13 +5,13 @@ import { z } from "zod";
 import type { Judged } from "./explain.ts";
 import { film, frameAt, frameCount, still } from "./film.ts";
 import { board, lesson } from "./judge/board.ts";
-import { closing, cutIn, ending } from "./judge/ending.ts";
+import { closing, cutIn, ending, pressedAgain } from "./judge/ending.ts";
 import { atEnd, atRest, inked, look, thinkingShown, trail } from "./judge/frames.ts";
 import { marks } from "./judge/marks.ts";
 import { pictureSent } from "./judge/picture.ts";
 import { drawnIn } from "./judge/motion.ts";
-import { thinkingSaid, timing } from "./judge/timing.ts";
-import { spoken, voiced } from "./judge/words.ts";
+import { takenBack, thinkingSaid, timing } from "./judge/timing.ts";
+import { heardWhole, spoken, voiced } from "./judge/words.ts";
 import { runDir } from "./prepare.ts";
 import { readings } from "./readings.ts";
 import { moments, placed } from "./session.ts";
@@ -65,9 +65,11 @@ export async function judge(scenario: Scenario): Promise<Judged> {
     const ask = all[index];
     if (!ask) throw new Error(`${scenario.id}: the run holds ${all.length} asks, and the scenario has ${steps.length}`);
     if (!("say" in step)) continue;
-    if (step.say !== "") verdicts.push(...timing(ask, step.expect, where), ...(seen ? await thinkingShown(seen, ask, where) : thinkingSaid(ask)));
+    const nextDown = all[index + 1]?.down ?? null;
+    if (step.say !== "") verdicts.push(...timing(ask, step.expect, where, nextDown), ...(seen ? await thinkingShown(seen, ask, where) : thinkingSaid(ask)));
+    if (!takenBack(ask, nextDown)) verdicts.push(...heardWhole(ask, step.say));
     verdicts.push(...marks(ask, step.expect, truth), ...spoken(ask, step.expect, truth), ...voiced(ask, step.expect, all[index + 1]?.down ?? null),
-      ...board(ask, step.expect, truth, where), ...lesson(ask, step.expect), ...cutIn(ask, all[index - 1] ?? null, step.expect, voice));
+      ...board(ask, step.expect, truth, where), ...lesson(ask, step.expect), ...cutIn(ask, all[index - 1] ?? null, step.expect, voice), ...pressedAgain(ask, all[index - 1] ?? null, step.expect));
     if (seen) {
       const circled = step.circle === null ? null : boxOf(truth, step.circle, scenario.id);
       // With no voice there is no last word to wait for, so the ask is looked at just before the next one, or at the end.

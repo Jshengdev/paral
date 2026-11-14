@@ -15,6 +15,18 @@ const plain = (text: string) => text.toLowerCase().replace(/[−–—]/g, "-").
 const HIM_AS_SOMEONE_ELSE = /\b(the|a) (student|user|learner)('s| is| has| was| wants| asked| needs| should| can)\b/i;
 const WORKINGS = [/\bNONE\b/, /\bI.ll say\b/i, HIM_AS_SOMEONE_ELSE, /\bas an AI\b/i, /\bmy (instructions|prompt)\b/i];
 
+// The ear must hear the whole question. A hold cut short leaves a word or two. The ear mishears a word now and
+// then ("forged" as "forced"), so the words are counted, not matched.
+const HEARD_SHARE = 0.7;
+
+export function heardWhole(ask: Ask, said: string): Verdict[] {
+  const count = (text: string) => text.trim().split(/\s+/).filter(Boolean).length;
+  if (count(said) === 0) return [];
+  const heard = count(of(ask.moments, "heard").at(-1)?.text ?? "");
+  const measured = `${heard} words heard of ${count(said)} said`;
+  return [heard >= HEARD_SHARE * count(said) ? yes("C2", ask.index, "His whole question is heard", measured) : no("C2", ask.index, "His whole question is heard", measured)];
+}
+
 // Signs of a piece that was cut off from its sentence. Each was said aloud on film in the passes of 13:00 on
 // 11-14, where a long sentence had been cut at a comma: "Which is 13.", "Like a two or three letter name on a short
 // ending." and "Take y minus 4 equals 9: to clear the minus 4." A reader still judges the rest.

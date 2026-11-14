@@ -19,6 +19,31 @@ export function ending(ask: Ask, isLast: boolean): Verdict[] {
 // A line's id is its turn and its place in the turn, as "t2:0".
 const turnOf = (id: string) => id.split(":")[0];
 
+// What was left of the ask before must not come after this press: no sentence of it and no mark of it. A line is
+// the old ask's when its turn spoke in that ask, or when it is not the turn that speaks last in this one (an ask he
+// took back at once had said nothing yet, so only the second sign can show it).
+function nothingOfTheOld(ask: Ask, before: Ask, graceMs: number, what: string): Verdict {
+  const spoke = (a: Ask) => [...of(a.moments, "say"), ...of(a.moments, "mark")].sort((x, y) => x.at - y.at);
+  const lines = spoke(ask);
+  const old = new Set(spoke(before).map((m) => turnOf(m.id)));
+  const own = lines.length > 0 ? turnOf(lines[lines.length - 1].id) : null;
+  const late = lines.filter((m) => (old.has(turnOf(m.id)) || turnOf(m.id) !== own) && m.at - ask.down > graceMs);
+  return late.length === 0 ? yes("C11", ask.index, what, "no sentence and no mark of it") : no("C11", ask.index, what, `${late.length} came, the first ${late[0].at - ask.down} ms after the key`);
+}
+
+const IN_FLIGHT_MS = 300;   // a line already on its way when the key went down may still cross
+
+// He let go and pressed again at once, with a new question. It must listen, and the ask he took back stays unsaid.
+export function pressedAgain(ask: Ask, before: Ask | null, expect: Expect): Verdict[] {
+  if (!expect.takesBackTheAskBefore) return [];
+  if (!before) return [unseen("C11", ask.index, "Nothing of the ask he took back is said or drawn", "there is no ask before this one")];
+  const listening = of(ask.moments, "look").find((m) => m.name === "listening") ?? null;
+  return [
+    within("C11", ask.index, "It listens at once when he presses again", listening ? listening.at - ask.down : null, 100, "Nielsen: 0.1 s feels instant"),
+    nothingOfTheOld(ask, before, IN_FLIGHT_MS, "Nothing of the ask he took back is said or drawn"),
+  ];
+}
+
 // C11: the ask that cut in. What he hears is on the film's voice track: it must fall silent at once.
 const QUIET = 0.01; // loudness below this is silence: speech on these tracks sits near 0.1
 
@@ -30,11 +55,7 @@ export function cutIn(ask: Ask, before: Ask | null, expect: Expect, voice: Sound
   if (!before) return [unseen("C11", s, what, "there is no answer before this ask")];
   const listening = of(ask.moments, "look").find((m) => m.name === "listening") ?? null;
   const out = [within("C11", s, "It listens at once", listening ? listening.at - ask.down : null, 100, "Nielsen: 0.1 s feels instant")];
-  // What was left of the old answer must not come after the press: no sentence of it and no mark of it.
-  const old = new Set([...of(before.moments, "say"), ...of(before.moments, "mark")].map((m) => turnOf(m.id)));
-  const late = [...of(ask.moments, "say"), ...of(ask.moments, "mark")].filter((m) => old.has(turnOf(m.id)) && m.at - ask.down > stopBy);
-  const nothingMore = "Nothing more of the old answer comes after he cuts in";
-  out.push(late.length === 0 ? yes("C11", s, nothingMore, "no sentence and no mark of it") : no("C11", s, nothingMore, `${late.length} came, the first ${late[0].at - ask.down} ms after the key`));
+  out.push(nothingOfTheOld(ask, before, stopBy, "Nothing more of the old answer comes after he cuts in"));
   if (!voice) return [...out, unseen("C11", s, what, "the film has no voice track to listen to")];
   const wasSpeaking = loudness(voice, ask.down - 400, ask.down) > QUIET;
   if (!wasSpeaking) return [...out, unseen("C11", s, what, "nothing was being said when he cut in, so this run proves nothing")];

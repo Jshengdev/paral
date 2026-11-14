@@ -1,9 +1,9 @@
 import { board } from "./judge/board.ts";
 import { drawnIn } from "./judge/motion.ts";
 import { onlyThePart } from "./judge/picture.ts";
-import { cutIn } from "./judge/ending.ts";
+import { cutIn, pressedAgain } from "./judge/ending.ts";
 import { timing } from "./judge/timing.ts";
-import { spoken, voiced } from "./judge/words.ts";
+import { heardWhole, spoken, voiced } from "./judge/words.ts";
 import type { Placed } from "./session.ts";
 import type { Ask, Moment } from "./timeline.ts";
 import type { Verdict } from "./verdict.ts";
@@ -12,6 +12,9 @@ import type { Verdict } from "./verdict.ts";
 // none, and names the check that must fail or pass on it. `node exam/run.ts planted` runs them all, with no service.
 // The ask that cut in on the one before it: its key went down at 20 s on the run's clock.
 const cutting = (extra: Moment[]): Ask => ({ index: 1, down: 20000, up: 22000, moments: [{ at: 20000, kind: "key-down" }, { at: 20010, kind: "look", name: "listening" }, { at: 22000, kind: "key-up" }, ...extra] });
+
+// An ask he took back before it said anything.
+const SILENT: Ask = { index: 0, down: 17000, up: 19900, moments: [{ at: 17000, kind: "key-down" }, { at: 19900, kind: "key-up" }] };
 
 type Case = { name: string; check: string; mustPass: boolean; verdicts: () => Verdict[] | Promise<Verdict[]> };
 
@@ -77,6 +80,10 @@ const CASES: Case[] = [
   { name: "only the new answer after he cuts in", check: "Nothing more of the old answer", mustPass: true, verdicts: () => cutIn(cutting([say("t2:0", 24000, "A forged cookie is a faked one.")]), ask([...sentence]), { stopsVoiceWithinMs: 300 }, null) },
   { name: "a sentence he cut off after its first word", check: "The voice says the same words", mustPass: true, verdicts: () => voiced(ask([...sentence, { at: 6200, kind: "voiced", of: "t1:0", words: ["First"] }]), {}, 6400) },
   { name: "a sentence spoken in fewer words with no cut", check: "The voice says the same words", mustPass: false, verdicts: () => voiced(ask([...sentence, { at: 6200, kind: "voiced", of: "t1:0", words: ["First"] }]), {}, null) },
+  { name: "a question cut short to one word", check: "His whole question is heard", mustPass: false, verdicts: () => heardWhole(ask([]), "Which line here is about passwords?") },
+  { name: "a question heard with one word wrong", check: "His whole question is heard", mustPass: true, verdicts: () => heardWhole(ask([{ at: 2900, kind: "heard", text: "Which line here is about pass words?" }]), "Which line here is about passwords?") },
+  { name: "the ask he took back speaks after his second press", check: "Nothing of the ask he took back", mustPass: false, verdicts: () => pressedAgain(cutting([say("t1:0", 21000, "The first check means this."), say("t2:0", 24000, "Passwords are on the eighth line.")]), SILENT, { takesBackTheAskBefore: true }) },
+  { name: "only the new ask speaks after his second press", check: "Nothing of the ask he took back", mustPass: true, verdicts: () => pressedAgain(cutting([say("t2:0", 24000, "Passwords are on the eighth line.")]), SILENT, { takesBackTheAskBefore: true }) },
   { name: "a hint on a plain question", check: "A plain question gets an answer", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "Read the highlighted line again, slowly.", { hint: true })]), { plain: true }, []) },
   { name: "his number in a worked example", check: "It never gives the result", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "So a equals 2 plus 9, which is 11.")]), { never: ["11", "eleven"] }, []) },
   { name: "an ask that ends in the failed look", check: "The ask is answered", mustPass: false, verdicts: () => spoken(ask([{ at: 5000, kind: "look", name: "failed", detail: "I lost that answer on my side. Ask me again." }]), {}, []) },

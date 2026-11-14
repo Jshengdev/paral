@@ -48,20 +48,24 @@ export function thinkingSaid(ask: Ask): Verdict[] {
   return [within("C4", ask.index, "The mind says it is thinking when he lets go", sinceUp(ask, thinking), 500, "the ear's grace, then at once")];
 }
 
-export function timing(ask: Ask, expect: Expect, placed: Placed[]): Verdict[] {
+// He pressed again before a second had passed: he took the ask back before it could say anything.
+export const takenBack = (ask: Ask, nextDown: number | null) => nextDown !== null && ask.up !== null && nextDown - ask.up < FLOW_MS;
+
+export function timing(ask: Ask, expect: Expect, placed: Placed[], nextDown: number | null = null): Verdict[] {
   const s = ask.index;
   const out: Verdict[] = [];
+  const answers = !takenBack(ask, nextDown);   // an ask he took back is not held to its first words
   const listening = of(ask.moments, "look").find((m) => m.name === "listening") ?? null;
   out.push(within("C2", s, "It shows it is listening the moment he presses", listening ? listening.at - ask.down : null, INSTANT_MS, "Nielsen: 0.1 s feels instant"));
   const heard = of(ask.moments, "heard").find((m) => m.text.trim() !== "") ?? null;
   out.push(within("C2", s, "His first words show soon after he starts to talk", heard ? heard.at - ask.down : null, FIRST_WORDS_MS, "his click of 11-14: about 2 s, as the video shows at 11:49 to 11:51"));
   const opener = of(ask.moments, "say").find((m) => m.opener) ?? null;
   const anySay = first(ask.moments, "say");
-  if (expect.opener) out.push(within("C5", s, "An opener names what it will do", sinceUp(ask, opener), OPENER_MS, "the video shows it one second in"));
-  out.push(within("U2", s, "He sees the first words while he is still in flow", sinceUp(ask, anySay), FLOW_MS, "Nielsen: 1 s keeps the train of thought"));
+  if (expect.opener && answers) out.push(within("C5", s, "An opener names what it will do", sinceUp(ask, opener), OPENER_MS, "the video shows it one second in"));
+  if (answers) out.push(within("U2", s, "He sees the first words while he is still in flow", sinceUp(ask, anySay), FLOW_MS, "Nielsen: 1 s keeps the train of thought"));
   // A voice tutor's first words are the ones he hears. The sound starts when its first piece reaches the body.
   const firstSound = spoken(ask)[0]?.start ?? null;
-  if (!expect.textOnly && ask.up !== null) out.push(within("U2", s, "He hears the first words while he is still in flow", firstSound === null ? null : firstSound - ask.up, FLOW_MS, "Nielsen: 1 s keeps the train of thought"));
+  if (answers && !expect.textOnly && ask.up !== null) out.push(within("U2", s, "He hears the first words while he is still in flow", firstSound === null ? null : firstSound - ask.up, FLOW_MS, "Nielsen: 1 s keeps the train of thought"));
   // The video's two seconds are from a turn where he circled. His own circle coming back counts: it is a mark on the thing he means.
   const mark = first(ask.moments, "mark");
   const echo = first(ask.moments, "echo");

@@ -77,6 +77,12 @@ only when the builder says the tree is frozen, and the builder edits again only 
 - **A cut-in in the middle of an answer** is its own scenario. The key goes down one second after the first sentence
   of the answer itself (`cutInAnswerAfterMs`). Besides the voice stopping, nothing more of the old answer may come
   after the press: no sentence of it and no mark of it.
+- **A quick second press** is its own scenario: he lets go and presses again a tenth of a second later with a new
+  question (`pressAgainAfterMs`), inside the microphone's grace. The new question must be heard whole and answered,
+  and nothing of the ask he took back may be said or drawn. An ask taken back within a second is not held to its
+  first words.
+- **His whole question is heard.** The words the ear ends with are counted against the words said; seven in ten is
+  the bar, since the ear mishears a word now and then. A hold cut short leaves a word or two.
 - **A piece cut off from its sentence.** A long sentence cut at a comma once left "Which is 13." said on its own.
   The judge holds three signs of that, each heard on film. A reader judges the rest.
 - A verdict is `works`, `fails` or `not shown`. `not shown` means this run could not prove it either way.

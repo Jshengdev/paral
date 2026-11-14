@@ -42,7 +42,9 @@ export async function prepare(scenario: Scenario): Promise<string> {
     const wav = join(dir, `ask-${index + 1}.wav`);
     const lastsMs = step.say === "" ? await silence(SILENT_ASK_MS, wav) : await speak(step.say, wav);
     const trail = step.circle === null ? [] : circling(boxOf(step.circle), Math.min(lastsMs, LONGEST_TRAIL_MS));
-    const startAfter = step.cutInAnswerAfterMs ? { firstAnswerPlusMs: step.cutInAnswerAfterMs } : step.cutInAfterMs ? { firstSayPlusMs: step.cutInAfterMs } : "idle";
+    const startAfter = step.pressAgainAfterMs ? { releasePlusMs: step.pressAgainAfterMs }
+      : step.cutInAnswerAfterMs ? { firstAnswerPlusMs: step.cutInAnswerAfterMs }
+      : step.cutInAfterMs ? { firstSayPlusMs: step.cutInAfterMs } : "idle";
     asks.push({ wav, trail, startAfter });
   }
   const flow = Flow.parse({ v: 1, display: DISPLAY, page: png, fault: scenario.fault, asks });
