@@ -78,15 +78,17 @@ export function spoken(ask: Ask, expect: Expect, truth: Truth[]): Verdict[] {
   return out;
 }
 
-// The voice service reports the words it spoke, with their times. They must be the words on screen.
-function sameWords(ask: Ask): Verdict[] {
+// The voice service reports the words it spoke, with their times. They must be the words on screen. When he cut
+// in, the sentence being said stops part-way, and its spoken words are then the start of the shown ones.
+function sameWords(ask: Ask, cutAt: number | null): Verdict[] {
   const s = ask.index;
   const says = new Map(of(ask.moments, "say").map((m) => [m.id, m.text]));
   const voicedWords = new Map<string, string[]>();
   for (const m of of(ask.moments, "voiced")) voicedWords.set(m.of, [...(voicedWords.get(m.of) ?? []), ...m.words]);
   if (voicedWords.size === 0) return [];
   const letters = (text: string) => text.toLowerCase().replace(/[^a-z0-9]/g, "");
-  const differ = [...voicedWords].filter(([id, list]) => letters(list.join("")) !== letters(says.get(id) ?? ""));
+  const cutShort = (shown: string, said: string) => cutAt !== null && letters(shown).startsWith(letters(said));
+  const differ = [...voicedWords].filter(([id, list]) => letters(list.join("")) !== letters(says.get(id) ?? "") && !cutShort(says.get(id) ?? "", list.join("")));
   const what = "The voice says the same words the capsule shows";
   return [differ.length === 0 ? yes("C7", s, what, `${voicedWords.size} of ${voicedWords.size} sentences match`)
     : no("C7", s, what, `shown "${(says.get(differ[0][0]) ?? "").slice(0, 40)}", spoken "${differ[0][1].join(" ").slice(0, 40)}"`)];
@@ -109,6 +111,6 @@ export function voiced(ask: Ask, expect: Expect, cutAt: number | null): Verdict[
   }
   const silent = says.filter((m) => !heard.has(m.id) && !(cutAt !== null && cutAt - m.at < VOICE_STARTS_MS));
   if (says.length === 0) return [];
-  return [...sameWords(ask), silent.length === 0 ? yes("C7", s, "Every sentence shown is also spoken", `${says.length} of ${says.length}`)
+  return [...sameWords(ask, cutAt), silent.length === 0 ? yes("C7", s, "Every sentence shown is also spoken", `${says.length} of ${says.length}`)
     : no("C7", s, "Every sentence shown is also spoken", `${says.length - silent.length} of ${says.length}; silent: "${silent[0].text.slice(0, 40)}"`)];
 }
