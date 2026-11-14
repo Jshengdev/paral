@@ -24,6 +24,7 @@ import { filmed, landing } from "./runners/body.ts";
 import { fresh } from "./runners/temp.ts";
 import { playTurn } from "./runners/turn.ts";
 
+// A row is JSON on disk: its "in" is whatever its runner takes, so it is typed where the runner reads it.
 type Row = { name: string; run: string; in: any; out: unknown };
 type Filed = Row & { file: string };
 
