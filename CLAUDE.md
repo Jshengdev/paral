@@ -31,7 +31,7 @@ Keys never live in this folder. The start scripts read `~/.config/paral/keys.env
 ```
 body (Swift)                      seam                       mind (TypeScript, Node 26, no build step)
 key, mic, screen picture  ──────► one schema, one line  ───► turn.ts   one hold of the key = one ask
-overlay window, speaker   ◄────── of JSON per event    ◄──── ask.ts    one ask, acted on while the answer arrives
+overlay window, speaker   ◄────── of JSON per event    ◄──── ask.ts    one ask: a hint (hint.ts) or an explanation
 Scene → Picture → Painter                                    cores/    the logic: values in, values out
                                                              ports.ts  one small interface per outside service
                                                              adapters/ one file per vendor, and a tape for each
@@ -85,8 +85,9 @@ Do these in order. Each step has a row before the next one starts.
    `measured`. "Not measured" is an honest value.
 4. **Port.** A new outside service is one interface in `mind/ports.ts`, one adapter in `mind/adapters/`, and a tape
    field in `adapters/tape.ts`. Look at `adapters/raea.ts`.
-5. **Turn or ask.** Call the core from `mind/turn.ts` (things that happen once per hold) or `mind/ask.ts` (things that
-   depend on the answer). Add a `turn` row that plays the lines in and checks the lines out.
+5. **Turn or ask.** Call the core from `mind/turn.ts` (things that happen once per hold), `mind/ask.ts` (things that
+   depend on the answer's first fields), or one of the ask's two roads: `mind/hint.ts` when his work has a wrong line,
+   `mind/explanation.ts` when it has none. Add a `turn` row that plays the lines in and checks the lines out.
 6. **Scene.** Teach `Scene.take` the new line and give `Picture` the new plain values, in `ScenePicture.swift`.
 7. **Painter.** Draw the new values in a `Painter*.swift` file. Every size, colour and time is a token in
    `body/tokens.json`, so it shows up on the dials page by itself.

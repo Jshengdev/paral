@@ -6,10 +6,13 @@ Every decision is a pure function in `cores/`; every outside service is behind `
 
 | file | job |
 |---|---|
-| `main.ts` | reads the environment, picks live adapters or the tape, starts the server |
+| `main.ts` | reads the environment, picks a live adapter or the tape for each port, starts the server, stops it cleanly |
 | `server.ts` | the socket: one connection is one conversation; can record every line that crosses |
 | `turn.ts` | one hold of the key: his words, his path, the picture, then one ask |
-| `ask.ts` | one ask, acted on while the answer is still arriving: ring, lines, marks, board, clip |
+| `drafts.ts` | the opener, drafted from his words while he is still talking, so a line is written by the time he lets go |
+| `ask.ts` | one ask, acted on while the answer is still arriving: reads its first fields, wipes what no longer applies, and takes one of two roads |
+| `hint.ts` | the road when his work has a wrong line: the ring, the rung's fixed line, and the hint once Push has passed it |
+| `explanation.ts` | the road when it has none: sentences with their marks as they finish, and the board |
 | `card.ts` | the board of one ask: an empty card opened when his words ask for a drawing, filled when the board arrives, taken away when none comes |
 | `clip.ts` | the lesson clip of one ask: the example picked on other numbers than his, the clip started early and sent after the words |
 | `fast.ts` | the fast lines of one ask: the opener, its deadline and fixed stand-in, and the fast model's line about the page |
@@ -22,7 +25,7 @@ Every decision is a pure function in `cores/`; every outside service is behind `
 
 | line | who writes it | when it is said |
 |---|---|---|
-| the opener | the fast model; a fixed line while a wrong line is open, or when the model's line is long or fails | as soon as it is written. If it is not there one second after release, a fixed line is said first and the opener follows when it comes, unless the answer has begun |
+| the opener | the fast model; a fixed line while a wrong line is open, or when the model's line is long or fails | as soon as it is written. If it is not there 0.8 s after release, a fixed line is said first and the opener follows when it comes, unless the answer has begun |
 | his loop as a ring (`echo`) | nobody: code, from his path | right after his words are final |
 | the rung's fixed line | a setting (`ladder`) | with the ring, the moment the wrong line is known |
 | the hint | the deep model, one rung per ask, in the number of sentences its rung allows | after Push has passed it |

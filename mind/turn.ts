@@ -1,11 +1,12 @@
 import { setTimeout as wait } from "node:timers/promises";
 import { ask, type Screen } from "./ask.ts";
-import { fits, hear, silence, type Words } from "./cores/catch.ts";
+import { hear, silence, type Words } from "./cores/catch.ts";
 import { fitted } from "./cores/beats.ts";
 import { circled, drew, echo, type Point } from "./cores/circle.ts";
 import { showable } from "./cores/fit.ts";
 import { empty, type Lesson } from "./cores/hold.ts";
-import type { Listening, Opened, Opener, Ports } from "./ports.ts";
+import { drafts } from "./drafts.ts";
+import type { Listening, Ports } from "./ports.ts";
 import type { Settings } from "./settings.ts";
 import { speech } from "./speech.ts";
 import { SEAM_VERSION, type FromBody, type FromMind } from "../seam/schema.ts";
@@ -34,25 +35,15 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
   let trail: Point[] = [];
   /** What he drew around with no words waits here for his next ask. */
   let carried: Point[] = [];
-  type Draft = { words: string; line: Promise<Opened>; at: number };
-  /** The newest opener drafted from his words so far, and the newest one whose line is already written. */
-  let drafted: Draft | null = null;
-  let written: Draft | null = null;
-
-  const openWith = (opener: Opener, said: string, signal: AbortSignal) => {
-    const line = opener.open(said, screen?.lines.map((read) => read.text).filter(Boolean) ?? [], signal);
-    // A draft may never be used. Whoever does use this line hears its failure there; this keeps an unused one quiet.
-    line.catch(() => {});
-    return line;
-  };
+  /** The opener, drafted from his words while he is still talking. With no fast model there is no opener at all. */
+  const drafting = ports.opener && drafts(ports.opener, settings, () => screen?.lines.map((read) => read.text).filter(Boolean) ?? []);
 
   function down(at: number) {
     running?.abort();
     const mine = new AbortController();
     running = mine;
     screen = null;
-    drafted = null;
-    written = null;
+    drafting?.reset();
     trail = [];
     words = hear(silence, { type: "key.down", at });
     send({ v, type: "state", name: "listening" });
@@ -63,13 +54,8 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
         if (mine.signal.aborted || words.final) return;
         words = hear(words, { type: "ear", text });
         send({ v, type: "heard", text: words.text, final: false });
-        const due = drafted === null || Date.now() - drafted.at >= settings.openerDraftEveryMs.value;
-        if (ports.opener && lesson.breakLine === null && due && words.text.split(" ").length >= settings.openerDraftWords.value) {
-          const draft: Draft = { words: words.text, line: openWith(ports.opener, words.text, mine.signal), at: Date.now() };
-          drafted = draft;
-          // A draft that fails is simply never "written"; the ask then waits for a newer one or asks afresh.
-          draft.line.then(() => mine.signal.aborted || (written !== null && written.at > draft.at) || (written = draft)).catch(() => {});
-        }
+        // With a wrong line open the opener is a fixed line (see up), so nothing is drafted.
+        if (lesson.breakLine === null) drafting?.note(words.text, mine.signal);
       }, mine.signal);
     } catch (error) {
       listening = null;
@@ -114,15 +100,9 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
       }
       if (mine.signal.aborted) return;
       if (screen === null) return send({ v, type: "state", name: "failed", detail: "no picture of the screen arrived with this ask" });
-      // A draft that is already written is used before a newer one still being written: it can be said at once.
-      const pick = (draft: Draft | null) => (draft && fits(draft.words, words.text, settings.openerDraftShare.value) ? draft.line : null);
       // With a wrong line open, the opener is a fixed line: a model that sees his page could name the mistake a rung early.
-      const opener =
-        ports.opener === null
-          ? null
-          : lesson.breakLine !== null
-            ? Promise.resolve({ line: settings.openerInLesson.value, seen: Promise.resolve(null) })
-            : (pick(written) ?? pick(drafted) ?? openWith(ports.opener, words.text, mine.signal));
+      const fixed = { line: settings.openerInLesson.value, seen: Promise.resolve(null) };
+      const opener = drafting ? (lesson.breakLine !== null ? Promise.resolve(fixed) : drafting.choose(words.text, mine.signal)) : null;
       const around = circled(path, screen.lines, screen.display, settings.circleLeast.value);
       const asking = { id, words: words.text, seen: screen, circled: around, lesson, markUp, releasedAt: at, opener, signal: mine.signal };
       await ask({ ports, settings, send, log }, asking, (kept) => (lesson = kept));

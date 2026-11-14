@@ -1,5 +1,6 @@
 import { z } from "zod";
-import type { Asked } from "../ports.ts";
+import type { Part as Arriving } from "../cores/partial.ts";
+import type { Asked, Part } from "../ports.ts";
 
 // What is asked of Claude for one answer, and the shape its reply must have.
 
@@ -50,4 +51,52 @@ export function asking(asked: Asked): string {
       : 'No lesson clip can be shown now, so set "lesson" to null.',
     `If the student's work has a wrong line, they hear this just before your hint: "${asked.leadIn}" Do not say it again; carry on from it.`,
   ].join("\n\n");
+}
+
+// The model writes "" or -1 where it means "none". These turn a reply into the mind's own shape, where none is null.
+
+const numbered = (index: number | null | undefined) => (index != null && index >= 0 ? index : null);
+
+/** A mark as the mind uses it, or none when the model left its quote empty. */
+const marked = (mark: z.infer<typeof Mark>) =>
+  mark && mark.quote ? { ...mark, index: numbered(mark.index), label: mark.label || null, toIndex: numbered(mark.toIndex), toQuote: mark.toQuote || null } : null;
+
+/** A board without its empty boxes and rows, or none when nothing is left. */
+const boarded = (board: string[][] | null) => {
+  const rows = (board ?? []).map((row) => row.filter(Boolean)).filter((row) => row.length > 0);
+  return rows.length > 0 ? rows : null;
+};
+
+/** A whole reply in the mind's own shape. */
+export function cleaned(reply: z.infer<typeof Reply>) {
+  return {
+    problem: reply.problem,
+    breakIndex: numbered(reply.breakIndex),
+    breakLine: reply.breakLine || null,
+    result: reply.result || null,
+    lesson: reply.lesson || null,
+    beats: reply.beats.map(({ say, mark }) => ({ say, mark: marked(mark) })),
+    board: boarded(reply.board),
+  };
+}
+
+/**
+ * What is known of a reply that is still arriving, in the mind's own shape. A field is there only once it is
+ * finished; `nextMark` is the mark of the sentence still being written, once that mark is whole.
+ */
+export function arriving(part: Arriving): Part {
+  const beats = Reply.shape.beats.safeParse(part.beats);
+  const board = Reply.shape.board.safeParse(part.board);
+  const writing = (part.next as { mark?: unknown } | undefined)?.mark;
+  const next = Mark.safeParse(writing);
+  return {
+    ...(typeof part.problem === "string" ? { problem: part.problem } : {}),
+    ...(part.breakLine !== undefined ? { breakLine: part.breakLine || null, breakIndex: numbered(part.breakIndex) } : {}),
+    ...(part.result !== undefined ? { result: part.result || null } : {}),
+    ...(part.lesson !== undefined ? { lesson: part.lesson || null } : {}),
+    ...(part.board !== undefined && board.success ? { board: boarded(board.data) } : {}),
+    ...(writing !== undefined && next.success ? { nextMark: marked(next.data) } : {}),
+    beats: beats.success ? beats.data.map(({ say, mark }) => ({ say, mark: marked(mark) })) : [],
+    whole: false,
+  };
 }
