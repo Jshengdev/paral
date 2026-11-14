@@ -30,9 +30,11 @@ To check that the key is seen on this Mac before starting:  body/.build/debug/pa
 
 On each ask, with the live services, this leaves the Mac: the sound of the question (to the ear), one scaled
 picture of the main display with the lines read from it and the question (to the model), and each sentence of
-the answer (to the voice). Close private windows first.
+the answer (to the voice). When you draw around something, only that part of the picture and the lines in it go.
+Close private windows first.
 
-To use it: hold $1, ask out loud, let go. The "paral" item in the menu bar closes a conversation or quits.
+To use it: hold $1, ask out loud, let go. Hold $2 as well and move the pointer to draw around something.
+The "paral" item in the menu bar closes a conversation or quits; so does the cross on the resting circle.
 TEXT
 }
 
@@ -42,8 +44,8 @@ case "${1:-}" in
   *) echo "usage: ./run | ./run build | ./run grants | ./run stop" >&2; exit 2 ;;
 esac
 
-key=$(setting holdKey) && socket=$(setting socketPath) || exit 1
-if [ "${1:-}" = grants ]; then grants "$key"; exit 0; fi
+key=$(setting holdKey) && pen=$(setting drawKey) && socket=$(setting socketPath) || exit 1
+if [ "${1:-}" = grants ]; then grants "$key" "$pen"; exit 0; fi
 
 (cd body && swift build -c release 2>&1 | tail -1 | grep -q "Build complete") || { echo "run: the body did not build; run (cd body && swift build -c release) to see why" >&2; exit 1; }
 mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources"
@@ -74,7 +76,7 @@ codesign --force --sign "$identity" "$app" >/dev/null 2>&1 || { echo "run: signi
 
 if [ "${1:-}" = build ]; then echo "built and signed $app; nothing was started"; exit 0; fi
 
-grants "$key"
+grants "$key" "$pen"
 [ -f "$keys" ] || echo "run: no key file at $keys, so the mind answers from the tape (recorded answers); see keys.env.example" >&2
 stop
 node --env-file-if-exists="$keys" mind/main.ts > tmp/mind.log 2>&1 &
