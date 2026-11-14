@@ -1,0 +1,3 @@
+{ "name": "seam: a line with another version is refused", "run": "seam.read",
+  "in": { "from": "body", "text": "{\"v\":2,\"type\":\"key.down\",\"at\":5}" },
+  "out": { "ok": false, "why": "v: Invalid input: expected 1" } }

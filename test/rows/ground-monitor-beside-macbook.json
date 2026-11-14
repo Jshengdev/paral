@@ -1,0 +1,10 @@
+{ "name": "ground: on a scale-1 monitor placed to the right of a 1728-point MacBook, picture pixels are already points", "run": "ground",
+  "in": {
+    "quoted": "Profit = 480 + 300 = 780",
+    "minScore": 0.6,
+    "display": { "scale": 1, "x": 1728, "y": -40 },
+    "lines": [
+      { "text": "R = 12 x 40 = 480", "box": { "x": 300, "y": 500, "w": 400, "h": 30 } },
+      { "text": "Profit = 480 + 300 = 780", "box": { "x": 300, "y": 560, "w": 520, "h": 30 } }
+    ] },
+  "out": { "found": true, "box": { "x": 2028, "y": 520, "w": 520, "h": 30 }, "line": "Profit = 480 + 300 = 780", "score": 1 } }

@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>paral dials</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="vendor/dialkit/styles.css">
+<style>
+  :root { --ink: #0b0b0c; --paper: #ffffff; --line: rgba(11, 11, 12, 0.12); --quiet: rgba(11, 11, 12, 0.55); }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #f4f4f2; color: var(--ink); font: 15px/1.45 -apple-system, "SF Pro Text", "Helvetica Neue", sans-serif; }
+  main { max-width: 1180px; margin: 0 auto; padding: 28px 28px 80px; }
+  h1 { font-size: 22px; font-weight: 650; letter-spacing: -0.01em; margin: 0 0 4px; }
+  p { margin: 0 0 10px; color: var(--quiet); max-width: 70ch; }
+  figure { margin: 18px 0 0; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--paper); }
+  figure img { display: block; width: 100%; height: auto; }
+  #status { margin-top: 12px; font: 13px/1.4 ui-monospace, "SF Mono", Menlo, monospace; color: var(--quiet); min-height: 1.4em; }
+  #status.wrong { color: #c2260a; font-weight: 600; }
+  @media print { .dialkit-root, [class*="dialkit"] { display: none !important; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>paral dials</h1>
+  <p>Every colour, size and motion time paral draws with is one file, <code>body/tokens.json</code>. Turn a dial and it is saved there. The picture below is one moment of a recorded run, drawn again by the real painter with the new values. A running paral takes the change within half a second.</p>
+  <figure><img id="frame" alt="One moment of a recorded run, drawn with the current look"></figure>
+  <div id="status">loading</div>
+</main>
+<script src="vendor/dialkit/browser.global.js"></script>
+<script>
+  const status = document.getElementById("status");
+  const frame = document.getElementById("frame");
+  const tell = (text, wrong = false) => { status.textContent = text; status.classList.toggle("wrong", wrong); };
+  const json = async (url, options) => {
+    const reply = await fetch(url, options);
+    const body = await reply.json();
+    if (!reply.ok) throw new Error(body.why || reply.statusText);
+    return body;
+  };
+
+  // The range each number may be turned through. Unlisted numbers get a range from their name and their value.
+  const RANGES = {
+    dim: [0, 1, 0.01], tempo: [0.25, 3, 0.05], overshoot: [0, 0.5, 0.01], wobble: [0, 0.2, 0.005],
+    arc: [0, 0.6, 0.01], bounce: [0, 0.4, 0.01], ringWide: [1, 2, 0.01], ringTall: [1, 3, 0.01],
+  };
+  function dial(key, value) {
+    if (typeof value === "number") {
+      if (RANGES[key]) return [value, ...RANGES[key]];
+      if (key.includes("Ms")) return [value, 0, Math.max(2000, value * 3), 10];
+      return [value, 0, Math.max(40, Math.ceil(value * 3)), Number.isInteger(value) ? 1 : 0.5];
+    }
+    if (value && typeof value === "object") return Object.fromEntries(Object.entries(value).map(([name, inner]) => [name, dial(name, inner)]));
+    return value; // a colour, a word or a switch is understood as it is
+  }
+
+  let look = null, view = { run: "", moment: 0.4, play: false }, end = 20000, asked = 0, saving = null;
+
+  async function draw() {
+    if (!view.run) return tell("No recorded run to look at yet. Make one with ./flow, then reload this page.", true);
+    const mine = ++asked;
+    try {
+      const reply = await fetch(`/api/frame?run=${encodeURIComponent(view.run)}&t=${Math.round(view.moment * end)}`);
+      if (mine !== asked) return;
+      if (!reply.ok) throw new Error((await reply.json()).why);
+      const length = Number(reply.headers.get("X-End")) || end;
+      if (length !== end) { end = length; return draw(); }   // the first frame of a run tells how long the run is; draw again at the right moment
+      const old = frame.src;
+      frame.src = URL.createObjectURL(await reply.blob());
+      if (old.startsWith("blob:")) URL.revokeObjectURL(old);
+      tell(`${view.run} at ${(view.moment * end / 1000).toFixed(1)} s of ${(end / 1000).toFixed(1)} s`);
+    } catch (error) {
+      tell(`could not draw the frame: ${error.message}`, true);
+    }
+  }
+
+  function save(values) {
+    clearTimeout(saving);
+    saving = setTimeout(async () => {
+      try {
+        await json("/api/tokens", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(values) });
+        await draw();
+      } catch (error) {
+        tell(`not saved: ${error.message}`, true);
+      }
+    }, 120);
+  }
+
+  (async () => {
+    try {
+      const [tokens, runs] = await Promise.all([json("/api/tokens"), json("/api/runs")]);
+      DialKit.createDialRoot();
+      view.run = runs.find((run) => run.startsWith("dev/")) || runs[0] || "";
+      if (runs.length > 0) {
+        const preview = DialKit.createDialKit("what you are looking at", {
+          run: { type: "select", options: runs, default: view.run },
+          moment: [view.moment, 0, 1, 0.002],
+          play: false,
+        });
+        preview.subscribe((v) => { view = { ...view, ...v }; draw(); });
+        setInterval(() => {
+          if (!view.play) return;
+          view.moment = (view.moment + 200 / end) % 1;
+          draw();
+        }, 200);
+      }
+      const kit = DialKit.createDialKit("the look (body/tokens.json)", dial("", tokens));
+      let first = true;
+      kit.subscribe((values) => {
+        if (first) { first = false; return draw(); }   // the first call only repeats what is on disk
+        look = values;
+        save(values);
+      });
+    } catch (error) {
+      tell(`the dials could not start: ${error.message}`, true);
+    }
+  })();
+</script>
+</body>
+</html>

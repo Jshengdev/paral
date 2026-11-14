@@ -1,0 +1,43 @@
+{
+  "v": 1,
+  "id": "trace-links",
+  "title": "He circles a table of links and asks how to shorten them, then asks a follow-up",
+  "criteria": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "C8",
+    "C9",
+    "C10",
+    "C13"
+  ],
+  "video": "21:41 to 22:46",
+  "page": "links",
+  "steps": [
+    {
+      "say": "These short links are still really long. What makes them so long, and how could I make them shorter?",
+      "circle": "table",
+      "expect": {
+        "opener": true,
+        "mark": {
+          "on": "link-1"
+        },
+        "sentences": 2,
+        "plain": true
+      }
+    },
+    {
+      "say": "Which domain would you buy for it? Show me what one of these links would look like.",
+      "circle": null,
+      "expect": {
+        "board": true,
+        "sentences": 2,
+        "plain": true
+      }
+    }
+  ]
+}

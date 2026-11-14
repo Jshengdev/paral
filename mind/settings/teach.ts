@@ -1,0 +1,103 @@
+import type { Example } from "../cores/lesson.ts";
+import type { Rung, Setting } from "./types.ts";
+
+/** Settings for teaching: the ladder, what is said, what counts as the same line, circles and lessons. */
+export const teach = {
+  ladder: {
+    value: [
+      { name: "look", may: "Says where to look. Names no idea, asks nothing and shows no step.", sentences: 1, safe: "Read the highlighted line again, slowly." },
+      { name: "idea", may: "Names the idea that applies and stops there. Asks no question and shows no step.", sentences: 1, safe: "Ask which rule the highlighted line has to obey." },
+      { name: "question", may: "Asks one leading question about the step. Shows no step.", sentences: 1, safe: "What must be true on the highlighted line before the next line can follow?" },
+      { name: "parallel", may: "Works a step of the same kind on other numbers. No number of the example, and above all not what it comes out to, may be the student's own answer or any number of it.", sentences: 2, safe: "Try the same move on a simpler case, then come back to this line." },
+    ],
+    why: "Four fixed rungs, none holding the result, so the answer is never one rung away. One rung is given per ask, and each rung has one move: the first three get one sentence, since a second sentence is where a hint slid into the next rung's move.",
+    measured: "one live hint on the second rung named the idea and then asked the third rung's leading question in its second sentence (2026-11-14, the outside judge). The one-sentence rungs have not been judged live",
+  } satisfies Setting<Rung[]>,
+
+  justTellMe: {
+    value: ["just tell me", "give me the answer", "what is the answer", "what's the answer", "tell me the answer"],
+    why: "Words that mean he wants the result. They raise the rung by one, like any other ask, and never more.",
+    measured: "not measured; a first list, to grow from what students actually say",
+  } satisfies Setting<string[]>,
+
+  sentenceMaxWords: {
+    value: { plain: 22, withNumbers: 14 },
+    why: "A spoken sentence longer than this is cut at its last clause break at or before the limit (after a comma, semicolon or colon, or before \"and\") and the rest is said as the next sentence. The prompt asks for eighteen; this is the guard for when the model runs well over. A sentence that holds numbers or an equation has a lower limit, since numbers are slow to say. A lesson's one sentence is left whole.",
+    measured: "a 28-word sentence took 8.2 s to say and a 22-word one 7.9 s; on the top rung five worked examples of about 21 words took 8.1 to 9.1 s, for example \"Take y minus 4 equals 9: to get y alone you add 4 to both sides, so y equals 9 plus 4.\" (2026-11-14, the outside judge)",
+  } satisfies Setting<{ plain: number; withNumbers: number }>,
+
+  maxBeats: {
+    value: 3,
+    why: "An explanation of something on the page is at most this many spoken sentences, each with one mark at most. Short, because every word is written before anything can show, and he can ask for more.",
+    measured: "one live run at six sentences: about 120 words, 40 s of speech, and the first sentence 7.8 s after the release (2026-11-14)",
+  } satisfies Setting<number>,
+
+  heldBackLine: {
+    value: "I can't hand that over, but I can help you get there. Ask me where to look.",
+    why: "Said in place of an explanation that the code check found giving a result away.",
+    measured: "not measured",
+  } satisfies Setting<string>,
+
+  notFoundLine: {
+    value: "I could not find that line on your screen.",
+    why: "Said in front of the hint when the quoted line matches nothing read from the picture, so paral never draws a guess.",
+    measured: "not measured",
+  } satisfies Setting<string>,
+
+  sameLineScore: {
+    value: 0.98,
+    why: "The lesson keeps the break line as the Mac read it. A later read counts as the same, unchanged line when it matches that text at this likeness or above. Two reads of unchanged pixels usually agree exactly, so this is set high on purpose: paral would rather call a rare misread a change (he gets the same rung in new words) than call his one-character fix unchanged (he would climb a rung for nothing).",
+    measured: "a changed sign in a 40-character line scores 0.975 and counts as a change; not yet measured over repeated readings of one real page",
+  } satisfies Setting<number>,
+
+  sameProblemScore: {
+    value: 0.5,
+    why: "Below this likeness the problem the brain read is treated as a new problem, and the lesson starts over at the first rung.",
+    measured: "not measured; first guess",
+  } satisfies Setting<number>,
+
+  groundMinScore: {
+    value: 0.6,
+    why: "How alike a quoted line and a read line must be before the highlight is drawn. Below it, paral says it could not find the line instead of guessing.",
+    measured: "on six generated pages (20 lines, quotes written the way a model writes them): the Mac read 14 lines exactly, all 20 quotes matched a line, and 19 highlights were on target by quote alone, 20 when the brain also gave the line number; the one miss by quote was a line that appears twice. Clean synthetic text, one run; real course pages are not measured yet",
+  } satisfies Setting<number>,
+
+  ringReach: {
+    value: { share: 0.25, points: 13, snug: 7.5 },
+    why: "How far a ring's ink reaches above and below its line: this share of the line's height plus this many points. Where the nearest line above or below is closer than that, the mark is a box that hugs the line. Worked out from the body's tokens as they stand: the ring is 1.5 times as tall as the line and its pad (so a quarter of the line's height, plus 1.5 times the pad of 6), plus half the pen's width of 3.5, plus a margin of 2. If those tokens are turned far on the dials, turn this with them. `snug` is the least gap in which a box's edge fits between two lines, the pen's width plus 4 points; closer than that the mark is an underline.",
+    measured: "with a free share of half the line's height, a heading 14.4 points above a 19.5-point line was still inked by 11% (2026-11-14, the outside judge): the ring reaches 13.9 points plus the pen there. In a code block a ring had inked 21% of the line above it",
+  } satisfies Setting<{ share: number; points: number; snug: number }>,
+
+  drawingAsks: {
+    value: ["draw", "diagram", "sketch", "show me what … look"],
+    why: "Words of his that ask for a drawing. When he says one, an empty card opens at once, before any model has spoken, and the board fills it when it arrives; if none comes the card is taken away. His choice at 11:20 on 2026-11-14 (\"Keep 2 s, build the card\"), so that a board is on his screen within two seconds of the first words.",
+    measured: "without the card a board came 2.2 to 3.4 s after the first words (2026-11-14, the outside judge), since it waits for the deep model. A first list of words, from the two scenarios that ask for a drawing",
+  } satisfies Setting<string[]>,
+
+  circleLeast: {
+    value: { points: 8, side: 24, share: 0.5 },
+    why: "What counts as drawing around something: at least this many pointer samples, at least this many points wide or tall, and a line counts when at least this share of it is inside the path's box. Less than that is a slip of the hand.",
+    measured: "not measured on a real hand; the exam's scripted circles have 30 or more samples",
+  } satisfies Setting<{ points: number; side: number; share: number }>,
+
+  circleNoWordsLine: {
+    value: "Go ahead, I'm listening.",
+    why: "Said when he draws around something and says nothing. No model is asked and nothing is drawn; what he drew around is kept for his next ask.",
+    measured: "not measured",
+  } satisfies Setting<string>,
+
+  lessons: {
+    value: {
+      balance: {
+        idea: "an equation is a balance: do the same thing to both sides and it stays true. It fits when the student asks why a term changes sign when it moves to the other side, or why they may add or subtract on both sides.",
+        examples: [
+          { left: "x − 4", right: "9", add: "+ 4", leftAfter: "x", rightAfter: "13", say: ["Both sides weigh the same.", "Do the same to both sides.", "It stays level."] },
+          { left: "x + 5", right: "12", add: "− 5", leftAfter: "x", rightAfter: "7", say: ["Both sides weigh the same.", "Do the same to both sides.", "It stays level."] },
+          { left: "y − 2", right: "6", add: "+ 2", leftAfter: "y", rightAfter: "8", say: ["Both sides weigh the same.", "Do the same to both sides.", "It stays level."] },
+        ],
+      },
+    },
+    why: "The clips that can be shown for a hard idea, each with fixed examples. The model only names a lesson; the example is chosen in code, the first one that shares nothing with his page and does not hold his result. A fixed example is rendered once and then comes back at once, and it can never carry his answer.",
+    measured: "the first render after a start took 17 s and the next 2.5 s (one run each, 2026-11-14, measured by the session that wrote lessons/); see notes for the times through the mind",
+  } satisfies Setting<Record<string, { idea: string; examples: Example[] }>>,
+};

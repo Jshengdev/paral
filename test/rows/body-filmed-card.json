@@ -1,0 +1,40 @@
+{
+ "name": "body: a filmed run where he asks for a drawing: the seam carries an empty board and then the full one, and on film the card begins at the empty card's size and grows to hold its rows",
+ "run": "body.filmed",
+ "in": {
+  "lines": [
+   "Solve for x: 2(x + 3) = 14",
+   "2x + 6 = 14",
+   "2x + 6 = 14, so x = 10"
+  ],
+  "display": {
+   "x": 0,
+   "y": 0
+  },
+  "tape": "filmed.json",
+  "asks": [
+   "draw me a diagram of this"
+  ],
+  "onLine": 0,
+  "watchesTheBoard": true
+ },
+ "out": {
+  "frames": true,
+  "bareFirstFrame": true,
+  "linesSkipped": 0,
+  "marks": 0,
+  "markCoversTheLine": false,
+  "capsuleRestsAt": {
+   "h": 18,
+   "w": 18,
+   "x": 791,
+   "y": 927
+  },
+  "voiceSeconds": 6.3,
+  "boardLines": [
+   0,
+   2
+  ],
+  "cardGrew": true
+ }
+}

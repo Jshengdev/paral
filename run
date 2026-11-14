@@ -1,0 +1,87 @@
+#!/bin/sh
+# ./run          the first look: says which grants paral needs, then builds, signs and starts the mind and the app
+# ./run build    builds and signs tmp/Paral.app and starts nothing
+# ./run grants   only says which grants paral needs
+# ./run stop     ends the mind and the app
+# PARAL_KEYS names the key file (default ~/.config/paral/keys.env). PARAL_SIGN=- signs without an identity.
+cd "$(dirname "$0")" || exit 1
+app=tmp/Paral.app
+keys="${PARAL_KEYS:-$HOME/.config/paral/keys.env}"
+mkdir -p tmp
+
+stop() {
+  pkill -f "$app/Contents/MacOS/paral" 2>/dev/null
+  [ -f tmp/mind.pid ] && kill "$(cat tmp/mind.pid)" 2>/dev/null
+  rm -f tmp/mind.pid
+}
+
+setting() { node -e "import('./mind/settings.ts').then((m) => console.log(m.settings.$1.value))"; }
+
+grants() {
+  cat <<TEXT
+paral needs two grants from macOS, and asks for both the first time it starts:
+
+  1. Microphone. A system box appears. paral listens only while the key is held.
+  2. Screen & System Audio Recording. System Settings opens; switch paral on there, then start it again with
+     ./run (macOS applies this grant only to a fresh start).
+
+It asks for no Accessibility and no Input Monitoring grant: the key is read by asking the system which keys are down.
+To check that the key is seen on this Mac before starting:  body/.build/debug/paral-headless keys 10 $1
+
+On each ask, with the live services, this leaves the Mac: the sound of the question (to the ear), one scaled
+picture of the main display with the lines read from it and the question (to the model), and each sentence of
+the answer (to the voice). Close private windows first.
+
+To use it: hold $1, ask out loud, let go. The "paral" item in the menu bar closes a conversation or quits.
+TEXT
+}
+
+case "${1:-}" in
+  stop) stop; echo "paral stopped"; exit 0 ;;
+  ""|build|grants) ;;
+  *) echo "usage: ./run | ./run build | ./run grants | ./run stop" >&2; exit 2 ;;
+esac
+
+key=$(setting holdKey) && socket=$(setting socketPath) || exit 1
+if [ "${1:-}" = grants ]; then grants "$key"; exit 0; fi
+
+(cd body && swift build -c release 2>&1 | tail -1 | grep -q "Build complete") || { echo "run: the body did not build; run (cd body && swift build -c release) to see why" >&2; exit 1; }
+mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources"
+cp body/.build/release/paral "$app/Contents/MacOS/paral"
+cp body/tokens.json "$app/Contents/Resources/tokens.json"
+cat > "$app/Contents/Info.plist" <<PLIST
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+  <key>CFBundleIdentifier</key><string>dev.paral.body</string>
+  <key>CFBundleName</key><string>paral</string>
+  <key>CFBundleExecutable</key><string>paral</string>
+  <key>CFBundlePackageType</key><string>APPL</string>
+  <key>CFBundleShortVersionString</key><string>0.1</string>
+  <key>LSMinimumSystemVersion</key><string>14.0</string>
+  <key>LSUIElement</key><true/>
+  <key>NSMicrophoneUsageDescription</key><string>paral listens only while you hold its key, to hear your question.</string>
+  <key>ParalSocket</key><string>$socket</string>
+  <key>ParalTokens</key><string>$PWD/body/tokens.json</string>
+</dict></plist>
+PLIST
+identity="${PARAL_SIGN:-$(security find-identity -v -p codesigning | awk 'NR==1 && $2 ~ /^[0-9A-F]+$/ {print $2}')}"
+if [ -z "$identity" ]; then
+  identity=-
+  echo "run: no code-signing identity on this Mac, so macOS will ask for the screen grant again after every rebuild" >&2
+fi
+codesign --force --sign "$identity" "$app" >/dev/null 2>&1 || { echo "run: signing failed" >&2; exit 1; }
+
+if [ "${1:-}" = build ]; then echo "built and signed $app; nothing was started"; exit 0; fi
+
+grants "$key"
+[ -f "$keys" ] || echo "run: no key file at $keys, so the mind answers from the tape (recorded answers); see keys.env.example" >&2
+stop
+node --env-file-if-exists="$keys" mind/main.ts > tmp/mind.log 2>&1 &
+echo $! > tmp/mind.pid
+tries=0
+while [ ! -S "$socket" ] && [ "$tries" -lt 100 ]; do sleep 0.05; tries=$((tries + 1)); done
+[ -S "$socket" ] || { echo "run: the mind did not start; see tmp/mind.log" >&2; stop; exit 1; }
+open "$app"
+echo
+echo "paral is starting. The mind's log is tmp/mind.log. ./run stop ends it."

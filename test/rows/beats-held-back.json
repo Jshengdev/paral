@@ -1,0 +1,27 @@
+{
+ "name": "beats: an explanation whose sentence or label holds the result is caught by the code check",
+ "run": "beats.givesAway",
+ "in": {
+  "result": "x = 4",
+  "planned": [
+   {
+    "say": "Start by undoing the plus six.",
+    "mark": null
+   },
+   {
+    "say": "Look at this line.",
+    "mark": {
+     "kind": "bracket",
+     "box": {
+      "x": 1,
+      "y": 1,
+      "w": 1,
+      "h": 1
+     },
+     "label": "x = 4"
+    }
+   }
+  ]
+ },
+ "out": true
+}

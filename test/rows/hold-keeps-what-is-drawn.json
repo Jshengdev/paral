@@ -1,0 +1,91 @@
+{
+ "name": "hold: the lesson keeps what is drawn in words: a second mark on a line replaces the first, a second board replaces the first, a wipe empties it, and a new problem starts with nothing drawn",
+ "run": "hold.drawn",
+ "in": {
+  "events": [
+   {
+    "type": "problem.read",
+    "text": "How a message crosses the internet"
+   },
+   {
+    "type": "mark.drawn",
+    "kind": "ring",
+    "line": "Data is split into packets"
+   },
+   {
+    "type": "mark.drawn",
+    "kind": "bracket",
+    "line": "Packets are numbered"
+   },
+   {
+    "type": "board.drawn",
+    "rows": [
+     [
+      "split",
+      "number"
+     ],
+     [
+      "resend"
+     ]
+    ]
+   },
+   {
+    "type": "mark.drawn",
+    "kind": "underline",
+    "line": "Data is split into packets"
+   },
+   {
+    "type": "board.drawn",
+    "rows": [
+     [
+      "packets",
+      "order",
+      "trust"
+     ]
+    ]
+   },
+   {
+    "type": "wiped"
+   },
+   {
+    "type": "mark.drawn",
+    "kind": "wavy",
+    "line": "Lost packets are sent again"
+   },
+   {
+    "type": "problem.read",
+    "text": "Solve for x"
+   }
+  ]
+ },
+ "out": [
+  [],
+  [
+   "ring on \"Data is split into packets\""
+  ],
+  [
+   "ring on \"Data is split into packets\"",
+   "bracket on \"Packets are numbered\""
+  ],
+  [
+   "ring on \"Data is split into packets\"",
+   "bracket on \"Packets are numbered\"",
+   "board reading split then number / resend"
+  ],
+  [
+   "bracket on \"Packets are numbered\"",
+   "board reading split then number / resend",
+   "underline on \"Data is split into packets\""
+  ],
+  [
+   "bracket on \"Packets are numbered\"",
+   "underline on \"Data is split into packets\"",
+   "board reading packets then order then trust"
+  ],
+  [],
+  [
+   "wavy on \"Lost packets are sent again\""
+  ],
+  []
+ ]
+}

@@ -1,0 +1,16 @@
+/* One look for every exam page: a plain document, black on white, as a course page or a notes app would show it. */
+html, body { margin: 0; background: #fff; color: #16181d; }
+body { font: 17px/1.55 -apple-system, "Helvetica Neue", sans-serif; padding: 56px 0 0 300px; width: 1728px; height: 1117px; box-sizing: border-box; overflow: hidden; }
+main { width: 900px; }
+td { white-space: nowrap; }
+h1 { font-size: 26px; margin: 0 0 14px; }
+h2 { font-size: 18px; margin: 26px 0 8px; }
+p, li { margin: 0 0 8px; }
+ol, ul { padding-left: 22px; margin: 0; }
+pre, code { font: 14px/1.6 Menlo, monospace; }
+pre { margin: 0; padding: 14px 16px; background: #f4f5f7; border-radius: 8px; width: max-content; }
+pre span { display: block; }
+table { border-collapse: collapse; }
+th, td { text-align: left; padding: 8px 28px 8px 0; border-bottom: 1px solid #e3e5ea; }
+th { font-weight: 600; color: #5b616d; }
+.work p { font: 20px/1.9 Georgia, serif; margin: 0; width: max-content; }

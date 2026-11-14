@@ -1,0 +1,28 @@
+{
+  "v": 1,
+  "id": "cut-in",
+  "title": "He holds the key again while it is still answering",
+  "criteria": [
+    "C11"
+  ],
+  "page": "milestone",
+  "steps": [
+    {
+      "say": "Walk me through everything on this page, one step at a time.",
+      "circle": null,
+      "expect": {
+        "plain": true
+      }
+    },
+    {
+      "say": "Wait. What does a forged cookie mean?",
+      "circle": "extra-cookie",
+      "cutInAfterMs": 1500,
+      "expect": {
+        "stopsVoiceWithinMs": 300,
+        "sentences": 1,
+        "plain": true
+      }
+    }
+  ]
+}

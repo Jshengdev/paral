@@ -1,0 +1,67 @@
+{
+ "name": "lesson: the example shown shares nothing with his page and holds no number of his result (an example with a 4 in it is passed over when his answer is 4); with none left there is no clip; an MP4's length is read from its header",
+ "run": "lesson",
+ "in": {
+  "examples": [
+   {
+    "left": "x \u2212 4",
+    "right": "9",
+    "rightAfter": "13"
+   },
+   {
+    "left": "x + 5",
+    "right": "12",
+    "rightAfter": "7"
+   },
+   {
+    "left": "y \u2212 2",
+    "right": "6",
+    "rightAfter": "8"
+   }
+  ],
+  "cases": {
+   "nothing of his": {
+    "lines": [
+     "Solve for x: 2(x + 3) = 14"
+    ],
+    "result": "x = 4"
+   },
+   "his page has x - 4 written with the same sign": {
+    "lines": [
+     "x \u2212 4 = 9"
+    ],
+    "result": null
+   },
+   "his result is thirteen": {
+    "lines": [
+     "3x = 39"
+    ],
+    "result": "13"
+   },
+   "all three are his": {
+    "lines": [
+     "x \u2212 4",
+     "x + 5",
+     "y \u2212 2"
+    ],
+    "result": null
+   }
+  },
+  "mp4": {
+   "eight seconds at 600 a second": "000000006d76686400000000000000000000000000000258000012c0",
+   "no header": "0000000066747970"
+  }
+ },
+ "out": {
+  "shown": {
+   "nothing of his": "x + 5",
+   "his page has x - 4 written with the same sign": "x + 5",
+   "his result is thirteen": "x + 5",
+   "all three are his": null
+  },
+  "seconds": {
+   "eight seconds at 600 a second": 8,
+   "no header": null
+  }
+ }
+}

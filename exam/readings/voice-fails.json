@@ -1,0 +1,20 @@
+{
+  "session": "5b98ddc38c26",
+  "by": "the pickje2 session, 2026-11-14",
+  "verdicts": [
+    {
+      "criterion": "C15",
+      "step": 0,
+      "pass": true,
+      "what": "With no voice, the words alone still answer",
+      "measured": "three sentences are shown: 307 is a temporary redirect, the browser follows it to Wikipedia, and it is not cached, so every click is counted"
+    },
+    {
+      "criterion": "U6",
+      "step": 0,
+      "pass": true,
+      "what": "It speaks to him about his page, never about its own workings",
+      "measured": "every line is about his test run"
+    }
+  ]
+}

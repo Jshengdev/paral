@@ -1,0 +1,40 @@
+{
+ "name": "beats: a follow-up on the same break keeps what is drawn; a new problem or a moved break wipes it",
+ "run": "beats.wipes",
+ "in": {
+  "cases": [
+   [
+    false,
+    "line a",
+    "line a"
+   ],
+   [
+    false,
+    null,
+    "line a"
+   ],
+   [
+    false,
+    "line a",
+    "line b"
+   ],
+   [
+    false,
+    "line a",
+    null
+   ],
+   [
+    true,
+    null,
+    null
+   ]
+  ]
+ },
+ "out": [
+  false,
+  false,
+  true,
+  true,
+  true
+ ]
+}

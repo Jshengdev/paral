@@ -1,0 +1,30 @@
+{
+  "v": 1,
+  "id": "review-plan",
+  "title": "He asks whether a build plan looks right",
+  "criteria": [
+    "C2",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "C9",
+    "C13"
+  ],
+  "video": "09:04 to 09:30",
+  "page": "plan",
+  "steps": [
+    {
+      "say": "This is the plan for the app. Does it look right to you, and is there anything in the file layout I should worry about?",
+      "circle": "files",
+      "expect": {
+        "opener": true,
+        "mark": {
+          "on": "file-rate"
+        },
+        "sentences": 2,
+        "plain": true
+      }
+    }
+  ]
+}

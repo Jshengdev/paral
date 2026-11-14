@@ -1,0 +1,46 @@
+{
+ "name": "hold: after six events the lesson holds each shown line once and the right rung",
+ "run": "hold",
+ "in": {
+  "events": [
+   {
+    "type": "problem.read",
+    "text": "Solve for x: 2(x + 3) = 14"
+   },
+   {
+    "type": "break.found",
+    "line": "2x + 6 = 14, so x = 10",
+    "read": "2x + 6 = 14, s0 x = 10"
+   },
+   {
+    "type": "rung.given",
+    "rung": 0
+   },
+   {
+    "type": "line.shown",
+    "text": "Read the highlighted line again, slowly."
+   },
+   {
+    "type": "he.tried",
+    "words": "i subtracted six"
+   },
+   {
+    "type": "line.shown",
+    "text": "Read the highlighted line again, slowly."
+   }
+  ]
+ },
+ "out": {
+  "problem": "Solve for x: 2(x + 3) = 14",
+  "breakLine": "2x + 6 = 14, so x = 10",
+  "breakRead": "2x + 6 = 14, s0 x = 10",
+  "tried": [
+   "i subtracted six"
+  ],
+  "rung": 0,
+  "shown": [
+   "Read the highlighted line again, slowly."
+  ],
+  "drawn": []
+ }
+}

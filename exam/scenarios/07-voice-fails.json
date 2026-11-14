@@ -1,0 +1,24 @@
+{
+  "v": 1,
+  "id": "voice-fails",
+  "title": "The voice service does not answer",
+  "criteria": [
+    "C15"
+  ],
+  "page": "links",
+  "fault": "voice",
+  "steps": [
+    {
+      "say": "What does status 307 mean here?",
+      "circle": "note-1",
+      "expect": {
+        "textOnly": true,
+        "sentences": 1,
+        "mark": {
+          "on": "note-1"
+        },
+        "plain": true
+      }
+    }
+  ]
+}

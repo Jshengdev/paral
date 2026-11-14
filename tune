@@ -1,0 +1,6 @@
+#!/bin/sh
+# ./tune
+# The dials page: every colour, size and motion time, live, saved to body/tokens.json. It prints the address to open.
+cd "$(dirname "$0")" || exit 1
+(cd body && swift build 2>&1 | tail -1 | grep -q "Build complete") || { echo "tune: the body did not build; run (cd body && swift build) to see why" >&2; exit 1; }
+exec node dials/serve.ts

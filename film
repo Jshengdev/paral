@@ -1,0 +1,9 @@
+#!/bin/sh
+# ./film RUN
+# Replays a recorded run through the body's real scene and painter, off screen, over the page's picture. It writes
+# frames/f_00000.png (the bare page), frames/f_00001.png and up at 30 a second, voice.wav on the same clock, and
+# drawn.jsonl (where the painter put each thing). It calls no service.
+cd "$(dirname "$0")" || exit 1
+[ -f "$1/session.jsonl" ] && [ -f "$1/flow.json" ] || { echo "usage: ./film RUN (a folder holding flow.json and session.jsonl)" >&2; exit 2; }
+(cd body && swift build 2>&1 | tail -1 | grep -q "Build complete") || { echo "film: the body did not build; run (cd body && swift build) to see why" >&2; exit 1; }
+exec body/.build/debug/paral-headless film "$1" body/tokens.json

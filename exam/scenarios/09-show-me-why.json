@@ -1,0 +1,30 @@
+{
+  "v": 1,
+  "id": "show-me-why",
+  "title": "A student asks to be shown why a step works",
+  "criteria": [
+    "C7",
+    "C16",
+    "C17"
+  ],
+  "page": "algebra",
+  "steps": [
+    {
+      "say": "I do not understand why the six changes sign when it moves to the other side. Can you show me why that works?",
+      "circle": "work-2",
+      "expect": {
+        "clip": true,
+        "sentences": 1,
+        "never": [
+          "x = 11",
+          "x=11",
+          "equals eleven",
+          "is eleven",
+          "is 11",
+          "11",
+          "eleven"
+        ]
+      }
+    }
+  ]
+}

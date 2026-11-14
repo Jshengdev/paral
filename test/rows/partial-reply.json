@@ -1,0 +1,158 @@
+{
+ "name": "partial: of a reply that is still arriving, a field is kept only once its own value has closed (a board being written is left out until it is whole); a sentence is finished once its own object has closed, and the one being written is given apart with the fields of it that are finished",
+ "run": "partial",
+ "in": {
+  "cases": {
+   "cut inside the broken line": "{\"problem\":\"Solve for x\",\"breakIndex\":2,\"breakLine\":\"2x + 6 = 14, so",
+   "the head has arrived": "{\"problem\":\"Solve for x\",\"breakIndex\":2,\"breakLine\":\"2x + 6 = 14, so x = 10\",\"result\":\"x = 4\",\"beats\":[{\"say\":\"Read the la",
+   "inside the second sentence": "{\"problem\":\"How it works\",\"breakIndex\":null,\"breakLine\":null,\"result\":null,\"beats\":[{\"say\":\"One, with a comma.\",\"mark\":null},{\"say\":\"Two\",\"mark\":nu",
+   "the sentences have closed": "{\"problem\":\"How it works\",\"breakIndex\":null,\"breakLine\":null,\"result\":null,\"beats\":[{\"say\":\"One.\",\"mark\":null},{\"say\":\"Two.\",\"mark\":null}],\"board\":nu",
+   "whole": "{\"problem\":\"How it works\",\"breakIndex\":null,\"breakLine\":null,\"result\":null,\"beats\":[{\"say\":\"One.\",\"mark\":null}],\"board\":null}",
+   "board first, then the first mark before its words": "{\"problem\":\"How it works\",\"breakIndex\":null,\"breakLine\":null,\"result\":null,\"lesson\":null,\"board\":[[\"a\",\"b\"]],\"beats\":[{\"mark\":{\"kind\":\"ring\",\"index\":0,\"quote\":\"Data is split\",\"label\":null,\"toIndex\":null,\"toQuote\":null},\"say\":\"Everything is se",
+   "the first sentence has closed and the second has begun": "{\"problem\":\"How it works\",\"breakIndex\":null,\"breakLine\":null,\"result\":null,\"lesson\":null,\"board\":null,\"beats\":[{\"mark\":null,\"say\":\"One.\"},{\"mark\":nu",
+   "a board with its first box written": "{\"problem\":\"How it works\",\"breakIndex\":null,\"breakLine\":null,\"result\":null,\"lesson\":null,\"board\":[[\"Sign up or log in\",\"Sess",
+   "a board with its first row closed": "{\"problem\":\"How it works\",\"breakIndex\":null,\"breakLine\":null,\"result\":null,\"lesson\":null,\"board\":[[\"Sign up\",\"Session\",\"Dashboard\"],[\"Create",
+   "a board that has closed": "{\"problem\":\"How it works\",\"breakIndex\":null,\"breakLine\":null,\"result\":null,\"lesson\":null,\"board\":[[\"Sign up\",\"Session\"],[\"Create\",\"Stats\"]],\"beats\":[{\"mark\":nu"
+  }
+ },
+ "out": {
+  "cut inside the broken line": {
+   "problem": "Solve for x",
+   "breakIndex": 2,
+   "beats": [],
+   "whole": false
+  },
+  "the head has arrived": {
+   "problem": "Solve for x",
+   "breakIndex": 2,
+   "breakLine": "2x + 6 = 14, so x = 10",
+   "result": "x = 4",
+   "beats": [],
+   "whole": false
+  },
+  "inside the second sentence": {
+   "problem": "How it works",
+   "breakIndex": null,
+   "breakLine": null,
+   "result": null,
+   "beats": [
+    {
+     "say": "One, with a comma.",
+     "mark": null
+    }
+   ],
+   "next": {
+    "say": "Two"
+   },
+   "whole": false
+  },
+  "the sentences have closed": {
+   "problem": "How it works",
+   "breakIndex": null,
+   "breakLine": null,
+   "result": null,
+   "beats": [
+    {
+     "say": "One.",
+     "mark": null
+    },
+    {
+     "say": "Two.",
+     "mark": null
+    }
+   ],
+   "whole": false
+  },
+  "whole": {
+   "problem": "How it works",
+   "breakIndex": null,
+   "breakLine": null,
+   "result": null,
+   "beats": [
+    {
+     "say": "One.",
+     "mark": null
+    }
+   ],
+   "board": null,
+   "whole": true
+  },
+  "board first, then the first mark before its words": {
+   "problem": "How it works",
+   "breakIndex": null,
+   "breakLine": null,
+   "result": null,
+   "lesson": null,
+   "board": [
+    [
+     "a",
+     "b"
+    ]
+   ],
+   "beats": [],
+   "next": {
+    "mark": {
+     "kind": "ring",
+     "index": 0,
+     "quote": "Data is split",
+     "label": null,
+     "toIndex": null,
+     "toQuote": null
+    }
+   },
+   "whole": false
+  },
+  "the first sentence has closed and the second has begun": {
+   "problem": "How it works",
+   "breakIndex": null,
+   "breakLine": null,
+   "result": null,
+   "lesson": null,
+   "board": null,
+   "beats": [
+    {
+     "mark": null,
+     "say": "One."
+    }
+   ],
+   "whole": false
+  },
+  "a board with its first box written": {
+   "problem": "How it works",
+   "breakIndex": null,
+   "breakLine": null,
+   "result": null,
+   "lesson": null,
+   "beats": [],
+   "whole": false
+  },
+  "a board with its first row closed": {
+   "problem": "How it works",
+   "breakIndex": null,
+   "breakLine": null,
+   "result": null,
+   "lesson": null,
+   "beats": [],
+   "whole": false
+  },
+  "a board that has closed": {
+   "problem": "How it works",
+   "breakIndex": null,
+   "breakLine": null,
+   "result": null,
+   "lesson": null,
+   "board": [
+    [
+     "Sign up",
+     "Session"
+    ],
+    [
+     "Create",
+     "Stats"
+    ]
+   ],
+   "beats": [],
+   "whole": false
+  }
+ }
+}

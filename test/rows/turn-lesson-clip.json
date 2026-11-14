@@ -1,0 +1,248 @@
+{
+ "name": "turn: he asks to be shown why, the model names a lesson: the line is ringed, one sentence is said with no fixed line before it, and the clip follows; with no break the board gives way to the clip",
+ "run": "turn",
+ "in": {
+  "tape": "lesson.json",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1005,
+     "display": {
+      "id": 1,
+      "scale": 1,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Solve for x: 2(x + 3) = 14",
+       "box": {
+        "x": 100,
+        "y": 100,
+        "w": 600,
+        "h": 40
+       }
+      },
+      {
+       "text": "2x + 6 = 14",
+       "box": {
+        "x": 100,
+        "y": 180,
+        "w": 300,
+        "h": 40
+       }
+      },
+      {
+       "text": "2x = 14 + 6",
+       "box": {
+        "x": 100,
+        "y": 260,
+        "w": 300,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "show me why"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 2100
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1005,
+     "display": {
+      "id": 1,
+      "scale": 1,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Solve for x: 2(x + 3) = 14",
+       "box": {
+        "x": 100,
+        "y": 100,
+        "w": 600,
+        "h": 40
+       }
+      },
+      {
+       "text": "2x + 6 = 14",
+       "box": {
+        "x": 100,
+        "y": 180,
+        "w": 300,
+        "h": 40
+       }
+      },
+      {
+       "text": "2x = 14 + 6",
+       "box": {
+        "x": 100,
+        "y": 260,
+        "w": 300,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "what is this"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 2100
+    }
+   ]
+  ]
+ },
+ "out": [
+  {
+   "v": 1,
+   "type": "state",
+   "name": "listening"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "show me why",
+   "final": false
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "thinking"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "show me why",
+   "final": true
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "t1",
+   "beat": 0,
+   "kind": "ring",
+   "box": {
+    "x": 100,
+    "y": 260,
+    "w": 300,
+    "h": 40
+   }
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t1",
+   "beat": 0,
+   "text": "Moving a term across is really doing the same thing to both sides.",
+   "rung": 0,
+   "of": 4
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "t1",
+   "why": "no voice is set up"
+  },
+  {
+   "v": 1,
+   "type": "clip",
+   "id": "t1",
+   "name": "balance",
+   "clip": "/tmp/paral-tape/balance.mp4",
+   "still": "/tmp/paral-tape/still.png",
+   "seconds": 8
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "idle"
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "listening"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "what is this",
+   "final": false
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "thinking"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "what is this",
+   "final": true
+  },
+  {
+   "v": 1,
+   "type": "clear"
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t2",
+   "beat": 0,
+   "text": "An equation is a balance."
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "t2",
+   "why": "no voice is set up"
+  },
+  {
+   "v": 1,
+   "type": "clip",
+   "id": "t2",
+   "name": "balance",
+   "clip": "/tmp/paral-tape/balance.mp4",
+   "still": "/tmp/paral-tape/still.png",
+   "seconds": 8
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "idle"
+  }
+ ]
+}

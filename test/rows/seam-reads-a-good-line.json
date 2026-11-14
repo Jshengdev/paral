@@ -1,0 +1,17 @@
+{
+ "name": "seam: a good line from the body is read",
+ "run": "seam.read",
+ "in": {
+  "from": "body",
+  "text": "{\"v\": 1, \"type\": \"mic\", \"pcm\": \"AAAA\", \"at\": 120}"
+ },
+ "out": {
+  "ok": true,
+  "line": {
+   "v": 1,
+   "type": "mic",
+   "pcm": "AAAA",
+   "at": 120
+  }
+ }
+}

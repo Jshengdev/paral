@@ -1,0 +1,48 @@
+{
+ "name": "live brain, stand-in: a declined ask is a named failure",
+ "run": "live.standin",
+ "in": {
+  "picture": false,
+  "asked": {
+   "words": "why is this wrong",
+   "lines": [
+    "Solve for x: 2(x + 3) = 14",
+    "2x + 6 = 14, so x = 10"
+   ],
+   "fresh": false,
+   "lesson": {
+    "problem": null,
+    "breakLine": null,
+    "breakRead": null,
+    "tried": [],
+    "rung": -1,
+    "shown": []
+   }
+  },
+  "lookReply": {
+   "model": "claude-haiku-5-5",
+   "stop_reason": "end_turn",
+   "usage": {
+    "input_tokens": 300,
+    "output_tokens": 50
+   },
+   "parsed_output": {
+    "leaks": false
+   }
+  },
+  "brainReply": {
+   "model": "claude-opus-5-5",
+   "stop_reason": "refusal",
+   "usage": {
+    "input_tokens": 2000,
+    "output_tokens": 0
+   },
+   "parsed_output": null
+  }
+ },
+ "out": {
+  "failed": "I can't help with that one.",
+  "calls": 1,
+  "theLogKeepsTheReply": false
+ }
+}

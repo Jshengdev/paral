@@ -1,0 +1,5 @@
+{ "name": "happened: an edited line that is still wrong repeats the rung in new words", "run": "happened",
+  "in": { "justTellMe": ["just tell me"], "sameLineScore": 0.98,
+    "seen": { "hasBreak": true, "breakRead": "2x + 6 = 14, so x = 10", "words": "what about now",
+      "lines": [ { "text": "Solve for x: 2(x + 3) = 14", "box": { "x": 1, "y": 1, "w": 1, "h": 1 } }, { "text": "2x = 20", "box": { "x": 1, "y": 2, "w": 1, "h": 1 } } ] } },
+  "out": "changed-still-wrong" }

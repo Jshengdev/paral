@@ -1,0 +1,3 @@
+{ "name": "catch: sound with no key held is not his turn", "run": "catch",
+  "in": { "events": [ { "type": "ear", "text": "background talk", "final": true, "at": 50 }, { "type": "key.up", "at": 60 } ] },
+  "out": { "text": "", "final": false, "startedAt": null, "endedAt": null } }

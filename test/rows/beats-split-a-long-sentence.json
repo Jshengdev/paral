@@ -1,0 +1,56 @@
+{
+ "name": "beats: a sentence over its limit is cut at its last clause break at or before the limit and the rest is said next; a worked step with three numbers or more has a lower limit, and a colon is a clause break; a sentence is not cut right after an opening clause that cannot stand alone; a short one, and a long one with no break, are left whole",
+ "run": "beats.split",
+ "in": {
+  "sentences": {
+   "28 words": "Pick something very short and cheap, like a five or six letter name on a two-letter ending, such as a dot co or dot io name you like.",
+   "at the limit": "Almost all the length is the domain, the temporary tunnel address Cloudflare gave you, not your six-character code.",
+   "no break": "This sentence simply keeps going without any pause at all for far longer than anybody would ever want to hear it said",
+   "break before and": "Something short you own works best for links people will type by hand and then your first link would read much shorter than the one you have now",
+   "cut twice": "First find the term that moved, then look at its sign on the line above, then compare it with its sign on this line, then ask what operation takes it across, and then check the other side too.",
+   "a worked example with numbers": "Take y minus 4 equals 9: to get y alone you add 4 to both sides, so y equals 9 plus 4.",
+   "a short one with numbers": "Add 4 to both sides, so y equals 13.",
+   "one number in a plain sentence": "You drew around the problem; the slip is two lines down, so what happened to the 6?",
+   "opens with a clause that cannot stand alone": "When a term moves across the equals sign, you undo it by doing the opposite operation to both sides, so its sign flips."
+  },
+  "limits": {
+   "plain": 18,
+   "withNumbers": 14
+  }
+ },
+ "out": {
+  "28 words": [
+   "Pick something very short and cheap, like a five or six letter name on a two-letter ending.",
+   "Such as a dot co or dot io name you like."
+  ],
+  "at the limit": [
+   "Almost all the length is the domain, the temporary tunnel address Cloudflare gave you, not your six-character code."
+  ],
+  "no break": [
+   "This sentence simply keeps going without any pause at all for far longer than anybody would ever want to hear it said"
+  ],
+  "break before and": [
+   "Something short you own works best for links people will type by hand.",
+   "And then your first link would read much shorter than the one you have now"
+  ],
+  "cut twice": [
+   "First find the term that moved, then look at its sign on the line above.",
+   "Then compare it with its sign on this line, then ask what operation takes it across.",
+   "And then check the other side too."
+  ],
+  "a worked example with numbers": [
+   "Take y minus 4 equals 9.",
+   "To get y alone you add 4 to both sides.",
+   "So y equals 9 plus 4."
+  ],
+  "a short one with numbers": [
+   "Add 4 to both sides, so y equals 13."
+  ],
+  "one number in a plain sentence": [
+   "You drew around the problem; the slip is two lines down, so what happened to the 6?"
+  ],
+  "opens with a clause that cannot stand alone": [
+   "When a term moves across the equals sign, you undo it by doing the opposite operation to both sides, so its sign flips."
+  ]
+ }
+}

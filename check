@@ -1,0 +1,5 @@
+#!/bin/sh
+# One command for every check. ./check runs all rows; ./check teach runs rows whose name contains "teach".
+cd "$(dirname "$0")" || exit 1
+(cd body && swift build 2>&1 | tail -1 | grep -q "Build complete") || { echo "check: the body did not build; run (cd body && swift build) to see why" >&2; exit 1; }
+ROWS="${1:-}" exec node --test test/main.test.ts

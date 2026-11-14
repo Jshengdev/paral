@@ -1,0 +1,63 @@
+import { z } from "zod";
+
+export const Box = z.object({ x: z.number(), y: z.number(), w: z.number().positive(), h: z.number().positive() });
+export type Box = z.infer<typeof Box>;
+
+export const Display = z.object({ id: z.number().int(), scale: z.number().positive(), x: z.number(), y: z.number(), w: z.number().positive(), h: z.number().positive() });
+export type Display = z.infer<typeof Display>;
+
+export const Truth = z.object({ id: z.string().min(1), text: z.string(), box: Box });
+export type Truth = z.infer<typeof Truth>;
+
+// A scenario names a thing on the page by its data-id. On a real page there are no such ids, so the name may also
+// be words that stand on the page: the first piece of text that holds them.
+export const findNamed = (truth: Truth[], name: string): Truth | undefined =>
+  truth.find((t) => t.id === name) ?? truth.find((t) => t.text.toLowerCase().includes(name.toLowerCase()));
+
+const Expect = z.object({
+  opener: z.boolean().optional(),
+  line: z.string().optional(),
+  mark: z.object({ on: z.string().min(1), kinds: z.array(z.string()).optional() }).nullable().optional(),
+  board: z.boolean().optional(),
+  clip: z.boolean().optional(),
+  sentences: z.number().int().positive().optional(),
+  never: z.array(z.string().min(1)).optional(),
+  stopsVoiceWithinMs: z.number().positive().optional(),
+  textOnly: z.boolean().optional(),
+  plain: z.boolean().optional(),
+});
+export type Expect = z.infer<typeof Expect>;
+
+const Step = z.union([
+  z.object({ say: z.string(), circle: z.string().nullable(), cutInAfterMs: z.number().positive().optional(), expect: Expect }),
+  z.object({ close: z.literal(true), expect: Expect.optional() }),
+]);
+export type Step = z.infer<typeof Step>;
+
+export const Scenario = z.object({
+  v: z.literal(1),
+  id: z.string().regex(/^[a-z0-9-]+$/),
+  title: z.string().min(1),
+  criteria: z.array(z.string().regex(/^[CU]\d+$/)).min(1),
+  video: z.string().optional(),
+  page: z.string().min(1),
+  source: z.object({ url: z.string().url(), at: z.string().optional() }).optional(),   // a real public page, fetched into tmp/real/ and never committed
+  fault: z.enum(["voice"]).optional(),
+  steps: z.array(Step).min(1),
+});
+export type Scenario = z.infer<typeof Scenario>;
+
+const StartAfter = z.union([z.literal("idle"), z.object({ firstSayPlusMs: z.number().positive() })]);
+
+export const Flow = z.object({
+  v: z.literal(1),
+  display: Display,
+  page: z.string().min(1),
+  source: z.object({ url: z.string().url(), at: z.string().optional() }).optional(),   // a real public page, fetched into tmp/real/ and never committed
+  fault: z.enum(["voice"]).optional(),
+  asks: z.array(z.union([
+    z.object({ wav: z.string().min(1), trail: z.array(z.tuple([z.number(), z.number(), z.number()])), startAfter: StartAfter }),
+    z.object({ close: z.literal(true) }),
+  ])),
+});
+export type Flow = z.infer<typeof Flow>;

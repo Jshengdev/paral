@@ -1,0 +1,11 @@
+{
+  "v": 1,
+  "id": "circle-no-words",
+  "title": "He circles something and says nothing",
+  "criteria": ["C3", "C12"],
+  "video": "11:46 to 11:48",
+  "page": "plan",
+  "steps": [
+    { "say": "", "circle": "decisions", "expect": { "line": "Go ahead, I'm listening.", "mark": null } }
+  ]
+}

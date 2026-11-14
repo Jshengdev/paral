@@ -1,0 +1,92 @@
+{
+ "name": "live brain, stand-in: a reply with a two-row board arrives in fifty pieces; while it arrives the board is given only once, whole, and never as its first box or first row",
+ "run": "live.standin",
+ "in": {
+  "picture": true,
+  "asked": {
+   "words": "why is this wrong",
+   "lines": [
+    "Solve for x: 2(x + 3) = 14",
+    "2x + 6 = 14, so x = 10"
+   ],
+   "fresh": false,
+   "lesson": {
+    "problem": null,
+    "breakLine": null,
+    "breakRead": null,
+    "tried": [],
+    "rung": -1,
+    "shown": []
+   }
+  },
+  "brainReply": {
+   "model": "claude-opus-5-5",
+   "stop_reason": "end_turn",
+   "usage": {
+    "input_tokens": 2000,
+    "output_tokens": 500
+   },
+   "parsed_output": {
+    "problem": "Solve for x: 2(x + 3) = 14",
+    "breakIndex": 1,
+    "breakLine": "2x + 6 = 14, so x = 10",
+    "result": "x = 4",
+    "beats": [
+     {
+      "say": "Read the last line again: what did you do to the 6?",
+      "mark": null
+     }
+    ],
+    "board": null
+   }
+  },
+  "lookReply": {
+   "model": "claude-haiku-5-5",
+   "stop_reason": "end_turn",
+   "usage": {
+    "input_tokens": 300,
+    "output_tokens": 50
+   },
+   "parsed_output": {
+    "leaks": false
+   }
+  },
+  "board": [
+   [
+    "Sign up or log in",
+    "Session cookie",
+    "Dashboard"
+   ],
+   [
+    "Create short link",
+    "Stats page"
+   ]
+  ]
+ },
+ "out": {
+  "boardsGivenWhileItArrived": [
+   [
+    [
+     "Sign up or log in",
+     "Session cookie",
+     "Dashboard"
+    ],
+    [
+     "Create short link",
+     "Stats page"
+    ]
+   ]
+  ],
+  "boardAtTheEnd": [
+   [
+    "Sign up or log in",
+    "Session cookie",
+    "Dashboard"
+   ],
+   [
+    "Create short link",
+    "Stats page"
+   ]
+  ]
+ }
+}

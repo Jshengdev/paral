@@ -1,0 +1,3 @@
+{ "name": "push: a hint that mentions step 4 is shown when the result is x = 4", "run": "push",
+  "in": { "line": "Look at step 4 again: what happened to the 6?", "result": "x = 4", "secondLook": false, "safe": "Read the highlighted line again, slowly." },
+  "out": { "verdict": "show", "line": "Look at step 4 again: what happened to the 6?" } }

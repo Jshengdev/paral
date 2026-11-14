@@ -1,0 +1,55 @@
+{
+ "name": "live brain, stand-in: a reply with no sentences is a failure in plain words, and the log keeps the reason and the reply's own text",
+ "run": "live.standin",
+ "in": {
+  "picture": true,
+  "asked": {
+   "words": "why is this wrong",
+   "lines": [
+    "Solve for x: 2(x + 3) = 14",
+    "2x + 6 = 14, so x = 10"
+   ],
+   "fresh": false,
+   "lesson": {
+    "problem": null,
+    "breakLine": null,
+    "breakRead": null,
+    "tried": [],
+    "rung": -1,
+    "shown": []
+   }
+  },
+  "brainReply": {
+   "model": "claude-opus-5-5",
+   "stop_reason": "end_turn",
+   "usage": {
+    "input_tokens": 2000,
+    "output_tokens": 500
+   },
+   "parsed_output": {
+    "problem": "Solve for x: 2(x + 3) = 14",
+    "breakIndex": 1,
+    "breakLine": "2x + 6 = 14, so x = 10",
+    "result": "x = 4",
+    "beats": [],
+    "board": null
+   }
+  },
+  "lookReply": {
+   "model": "claude-haiku-5-5",
+   "stop_reason": "end_turn",
+   "usage": {
+    "input_tokens": 300,
+    "output_tokens": 50
+   },
+   "parsed_output": {
+    "leaks": false
+   }
+  }
+ },
+ "out": {
+  "failed": "I lost that answer on my side. Ask me again.",
+  "calls": 1,
+  "theLogKeepsTheReply": true
+ }
+}

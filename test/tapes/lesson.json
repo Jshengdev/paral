@@ -1,0 +1,52 @@
+{
+ "answers": {
+  "show me why": [
+   {
+    "problem": "Solve for x: 2(x + 3) = 14",
+    "breakLine": "2x = 14 + 6",
+    "result": "2x = 8",
+    "lesson": "balance",
+    "beats": [
+     {
+      "say": "Moving a term across is really doing the same thing to both sides.",
+      "mark": null
+     },
+     {
+      "say": "This second sentence must not be said.",
+      "mark": null
+     }
+    ]
+   }
+  ],
+  "what is this": [
+   {
+    "problem": "Solve for x",
+    "breakLine": null,
+    "result": null,
+    "lesson": "balance",
+    "beats": [
+     {
+      "say": "An equation is a balance.",
+      "mark": null
+     },
+     {
+      "say": "Never said.",
+      "mark": null
+     }
+    ],
+    "board": [
+     [
+      "a",
+      "b"
+     ]
+    ]
+   }
+  ]
+ },
+ "leaks": [],
+ "clip": {
+  "clip": "/tmp/paral-tape/balance.mp4",
+  "still": "/tmp/paral-tape/still.png",
+  "seconds": 8
+ }
+}

@@ -1,0 +1,62 @@
+{
+ "name": "beats: a board's boxes lose an arrow sign the model wrote at their start or end, since the painter draws the arrows; a box or a row left empty is dropped; words with an arrow inside them, or a plain greater-than sign, are left alone",
+ "run": "beats.boxes",
+ "in": {
+  "boards": {
+   "the board from the film": [
+    [
+     "Domain part",
+     "→ quiet-harbor-demo.trycloudflare.com",
+     "→ most of length"
+    ],
+    [
+     "Code part",
+     "-> six characters"
+    ]
+   ],
+   "arrows at the end, and a box that is only an arrow": [
+    [
+     "Sign in =>",
+     "→",
+     "Dashboard"
+    ],
+    [
+     "->"
+    ]
+   ],
+   "left alone": [
+    [
+     "a → b",
+     "> 5 clicks",
+     "x -> y -> z"
+    ]
+   ]
+  }
+ },
+ "out": {
+  "the board from the film": [
+   [
+    "Domain part",
+    "quiet-harbor-demo.trycloudflare.com",
+    "most of length"
+   ],
+   [
+    "Code part",
+    "six characters"
+   ]
+  ],
+  "arrows at the end, and a box that is only an arrow": [
+   [
+    "Sign in",
+    "Dashboard"
+   ]
+  ],
+  "left alone": [
+   [
+    "a → b",
+    "> 5 clicks",
+    "x -> y -> z"
+   ]
+  ]
+ }
+}

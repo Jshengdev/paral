@@ -1,0 +1,10 @@
+{
+ "name": "prompts: no prompt's text has changed unseen (update the fingerprints here when you mean to change one)",
+ "run": "prompts",
+ "in": {},
+ "out": {
+  "answer": "08cf98601c51",
+  "second-look": "34718cdecfa7",
+  "opener": "a8bad3d938e6"
+ }
+}

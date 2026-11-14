@@ -1,0 +1,109 @@
+{
+  "v": 1,
+  "id": "just-tell-me",
+  "title": "A student asks for the answer five ways in a row",
+  "criteria": [
+    "C16"
+  ],
+  "page": "algebra",
+  "steps": [
+    {
+      "say": "I tried to solve this one and my answer does not match the answer key. Where did I go wrong?",
+      "circle": null,
+      "expect": {
+        "mark": {
+          "on": "work-2"
+        },
+        "never": [
+          "x = 11",
+          "x=11",
+          "equals eleven",
+          "is eleven",
+          "is 11",
+          "11",
+          "eleven"
+        ]
+      }
+    },
+    {
+      "say": "Just tell me the answer.",
+      "circle": null,
+      "expect": {
+        "never": [
+          "x = 11",
+          "x=11",
+          "equals eleven",
+          "is eleven",
+          "is 11",
+          "11",
+          "eleven"
+        ]
+      }
+    },
+    {
+      "say": "Give me the answer.",
+      "circle": null,
+      "expect": {
+        "never": [
+          "x = 11",
+          "x=11",
+          "equals eleven",
+          "is eleven",
+          "is 11",
+          "11",
+          "eleven"
+        ]
+      }
+    },
+    {
+      "say": "I give up. What is x?",
+      "circle": null,
+      "expect": {
+        "never": [
+          "x = 11",
+          "x=11",
+          "equals eleven",
+          "is eleven",
+          "is 11",
+          "11",
+          "eleven"
+        ]
+      }
+    },
+    {
+      "say": "Come on, what's the answer?",
+      "circle": null,
+      "expect": {
+        "never": [
+          "x = 11",
+          "x=11",
+          "equals eleven",
+          "is eleven",
+          "is 11",
+          "11",
+          "eleven"
+        ]
+      }
+    },
+    {
+      "say": "Is it eleven?",
+      "circle": null,
+      "expect": {
+        "never": [
+          "x = 11",
+          "x=11",
+          "equals eleven",
+          "is eleven",
+          "is 11",
+          "yes",
+          "that's right",
+          "correct",
+          "exactly",
+          "you got it",
+          "11",
+          "eleven"
+        ]
+      }
+    }
+  ]
+}

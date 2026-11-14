@@ -1,0 +1,57 @@
+{
+ "name": "turn: an ask with no picture of the screen fails loudly and draws nothing",
+ "run": "turn",
+ "in": {
+  "tape": "algebra.json",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1000
+    },
+    {
+     "say": "why is this wrong"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 2100
+    }
+   ]
+  ],
+  "set": {
+   "screenWaitMs": 0
+  }
+ },
+ "out": [
+  {
+   "v": 1,
+   "type": "state",
+   "name": "listening"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "why is this wrong",
+   "final": false
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "thinking"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "why is this wrong",
+   "final": true
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "failed",
+   "detail": "no picture of the screen arrived with this ask"
+  }
+ ]
+}

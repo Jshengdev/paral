@@ -1,0 +1,10 @@
+{ "name": "teach: a scripted lesson of six events gives six moves, never two rungs at once", "run": "teach",
+  "in": { "rungs": 4, "happened": ["asked", "asked-again", "changed-still-wrong", "just-tell-me", "asked-again", "asked-again"] },
+  "out": [
+    { "rung": 0, "fresh": false },
+    { "rung": 1, "fresh": false },
+    { "rung": 1, "fresh": true },
+    { "rung": 2, "fresh": false },
+    { "rung": 3, "fresh": false },
+    { "rung": 3, "fresh": true }
+  ] }

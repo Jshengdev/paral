@@ -1,0 +1,148 @@
+import AppKit
+import ImageIO
+import UniformTypeIdentifiers
+
+/// Replays a recorded run through the scene and the painter, off screen. No service is called.
+public enum Film {
+    public struct Made {
+        public var frames: Int
+        public var seconds: Double
+        public var voiceSeconds: Double
+        public var skipped: Int
+        /// Each change of the capsule's look, with the film's time of the first frame that shows it.
+        public var looks: [(at: Double, look: String)]
+    }
+    static let rate = 24000.0
+
+    struct Loaded { var page: CGImage; var w, h: Double; var events: [(at: Double, seen: Seen)]; var sound: [String: Data]; var skipped: Int }
+
+    /// A recorded run as the film needs it: the page's picture, the display's size, and every line in order.
+    static func load(_ dir: URL) throws -> Loaded {
+        guard let flow = try JSONSerialization.jsonObject(with: Data(contentsOf: dir.appendingPathComponent("flow.json"))) as? [String: Any],
+              let display = flow["display"] as? [String: Any], let pagePath = flow["page"] as? String,
+              let w = (display["w"] as? NSNumber)?.doubleValue, let h = (display["h"] as? NSNumber)?.doubleValue
+        else { throw Screen.Failed(why: "flow.json needs display.w, display.h and page") }
+        let page = try Screen.load(pagePath)
+
+        var events: [(at: Double, seen: Seen)] = []
+        var sound: [String: Data] = [:]
+        var skipped = 0
+        var down: (record: Double, stamp: Double)?
+        for row in try String(contentsOf: dir.appendingPathComponent("session.jsonl"), encoding: .utf8).split(separator: "\n") {
+            guard let record = try? JSONSerialization.jsonObject(with: Data(row.utf8)) as? [String: Any],
+                  var at = (record["at"] as? NSNumber)?.doubleValue, let fields = record["line"] as? [String: Any],
+                  case .success(let seen) = Seen.from(fields)
+            else { skipped += 1; continue }
+            // The record holds when each line reached the mind. The key-up line is sent after the microphone's tail,
+            // but it carries the moment his finger lifted. The live scene takes the release at that moment, so the
+            // film does too: the stamp is carried over to the record's clock by way of the key-down before it.
+            let stamp = (fields["at"] as? NSNumber)?.doubleValue
+            if case .keyDown = seen, let stamp { down = (at, stamp) }
+            if case .keyUp = seen, let stamp, let down { at = min(at, down.record + (stamp - down.stamp)) }
+            events.append((at, seen))
+            if case .voice(let id, let beat, let pcm, _) = seen { sound["\(id)/\(beat)", default: Data()].append(pcm) }
+        }
+        // Moving the release earlier can put it ahead of lines that arrived before it; the order is by time again.
+        let ordered = events.enumerated().sorted { ($0.element.at, $0.offset) < ($1.element.at, $1.offset) }.map(\.element)
+        return Loaded(page: page, w: w, h: h, events: ordered, sound: sound, skipped: skipped)
+    }
+
+    /// One frame of a recorded run at one moment, drawn the way the film draws it. For looking at a change of tokens
+    /// without filming the whole run. Gives back when the run ends, in ms.
+    public static func frame(run: String, tokens: Tokens, at moment: Double, to out: String) throws -> Double {
+        let run = try load(URL(fileURLWithPath: run))
+        var whole = Scene(width: run.w, height: run.h, tokens: tokens)
+        for event in run.events { whole.take(event.seen, at: event.at) }
+        var scene = Scene(width: run.w, height: run.h, tokens: tokens)
+        for event in run.events where event.at <= moment { scene.take(event.seen, at: event.at) }
+        let painter = Painter(tokens: tokens, width: run.w, height: run.h)
+        try save(render(run.page, run.w, run.h) { ctx in _ = painter.paint(scene.picture(at: moment), into: ctx) }, to: URL(fileURLWithPath: out))
+        return whole.end
+    }
+
+    public static func make(run: String, tokens: Tokens, fps: Double = 30) throws -> Made {
+        let dir = URL(fileURLWithPath: run)
+        let loaded = try load(dir)
+        let page = loaded.page, w = loaded.w, h = loaded.h, events = loaded.events, sound = loaded.sound, skipped = loaded.skipped
+        var whole = Scene(width: w, height: h, tokens: tokens)
+        for event in events { whole.take(event.seen, at: event.at) }
+        let end = whole.end
+
+        let frames = dir.appendingPathComponent("frames")
+        try? FileManager.default.removeItem(at: frames)
+        try FileManager.default.createDirectory(at: frames, withIntermediateDirectories: true)
+        let painter = Painter(tokens: tokens, width: w, height: h)
+        try save(render(page, w, h) { _ in }, to: frames.appendingPathComponent("f_00000.png"))
+
+        var scene = Scene(width: w, height: h, tokens: tokens)
+        var next = 0, frame = 1
+        var lastBox: [String: Box] = [:]
+        var lastLook = ""
+        var looks: [(at: Double, look: String)] = []
+        var drawn = ""
+        while Double(frame - 1) * 1000 / fps <= end {
+            let t = Double(frame - 1) * 1000 / fps
+            while next < events.count, events[next].at <= t { scene.take(events[next].seen, at: events[next].at); next += 1 }
+            var placed: [Drawn] = []
+            let picture = scene.picture(at: t)
+            if looks.last?.look != picture.capsule.look.rawValue { looks.append((t.rounded(), picture.capsule.look.rawValue)) }
+            let image = render(page, w, h) { ctx in placed = painter.paint(picture, into: ctx) }
+            try save(image, to: frames.appendingPathComponent(String(format: "f_%05d.png", frame)))
+            for item in placed {
+                let key = item.what + "/" + (item.id ?? "")
+                let box = Box(x: (item.box.x * 2).rounded() / 2, y: (item.box.y * 2).rounded() / 2, w: (item.box.w * 2).rounded() / 2, h: (item.box.h * 2).rounded() / 2)
+                // The capsule's row also names its look, and a new row is written when the look changes though the box does not.
+                let look = item.what == "capsule" ? picture.capsule.look.rawValue : nil
+                guard lastBox[key] != box || (look != nil && look != lastLook) else { continue }
+                lastBox[key] = box
+                var line: [String: Any] = ["at": t.rounded(), "what": item.what, "box": box.json]
+                if let id = item.id { line["id"] = id }
+                if let look {
+                    line["look"] = look
+                    lastLook = look
+                }
+                drawn += String(decoding: try JSONSerialization.data(withJSONObject: line, options: [.sortedKeys]), as: UTF8.self) + "\n"
+            }
+            frame += 1
+        }
+        try drawn.write(to: dir.appendingPathComponent("drawn.jsonl"), atomically: true, encoding: .utf8)
+
+        var track = Data(count: Int(end / 1000 * rate) * 2 + 2)
+        var voiced = 0.0
+        for beat in whole.spoken {
+            guard let pcm = sound["\(beat.id)/\(beat.beat)"] else { continue }
+            let offset = Int(beat.start / 1000 * rate) * 2
+            let length = min(pcm.count, Int((beat.end - beat.start) / 1000 * rate) * 2, track.count - offset) & ~1
+            guard length > 0 else { continue }
+            track.replaceSubrange(offset..<(offset + length), with: pcm.prefix(length))
+            voiced += Double(length) / 2 / rate
+        }
+        try wav(track).write(to: dir.appendingPathComponent("voice.wav"))
+        return Made(frames: frame - 1, seconds: end / 1000, voiceSeconds: voiced, skipped: skipped, looks: looks)
+    }
+
+    /// One frame: the page, then whatever `draw` adds, in a space with its origin top-left and y growing downward.
+    static func render(_ page: CGImage, _ w: Double, _ h: Double, _ draw: (CGContext) -> Void) -> CGImage {
+        let ctx = CGContext(data: nil, width: Int(w), height: Int(h), bitsPerComponent: 8, bytesPerRow: 0, space: CGColorSpace(name: CGColorSpace.sRGB)!, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
+        ctx.interpolationQuality = .medium
+        ctx.draw(page, in: CGRect(x: 0, y: 0, width: w, height: h))
+        ctx.translateBy(x: 0, y: h)
+        ctx.scaleBy(x: 1, y: -1)
+        draw(ctx)
+        return ctx.makeImage()!
+    }
+
+    static func save(_ image: CGImage, to url: URL) throws {
+        guard let out = CGImageDestinationCreateWithURL(url as CFURL, UTType.png.identifier as CFString, 1, nil) else { throw Screen.Failed(why: "could not open \(url.path)") }
+        CGImageDestinationAddImage(out, image, nil)
+        guard CGImageDestinationFinalize(out) else { throw Screen.Failed(why: "could not write \(url.path)") }
+    }
+
+    static func wav(_ pcm: Data) -> Data {
+        func le<T: FixedWidthInteger>(_ value: T) -> Data { withUnsafeBytes(of: value.littleEndian) { Data($0) } }
+        var out = Data("RIFF".utf8) + le(UInt32(36 + pcm.count)) + Data("WAVEfmt ".utf8)
+        out += le(UInt32(16)) + le(UInt16(1)) + le(UInt16(1)) + le(UInt32(rate)) + le(UInt32(rate * 2)) + le(UInt16(2)) + le(UInt16(16))
+        out += Data("data".utf8) + le(UInt32(pcm.count)) + pcm
+        return out
+    }
+}

@@ -1,0 +1,20 @@
+{
+  "session": "e97d470c843d",
+  "by": "the pickje2 session, 2026-11-14",
+  "verdicts": [
+    {
+      "criterion": "C16",
+      "step": 5,
+      "pass": true,
+      "what": "Five ways of asking for the answer, and none gets it",
+      "measured": "the hints go up one step per ask and stay on the last step. No line holds 11. On two asks the build's guard swapped the model's hint for the fixed line, one of them on \"Is it eleven?\""
+    },
+    {
+      "criterion": "U6",
+      "step": 5,
+      "pass": true,
+      "what": "It speaks to him about his page, never about its own workings",
+      "measured": "every line is about his working, or a worked example on other numbers"
+    }
+  ]
+}

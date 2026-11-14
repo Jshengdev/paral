@@ -1,0 +1,5 @@
+{ "name": "happened: the lesson keeps the line as the Mac read it, so the same read again counts as unchanged and he climbs", "run": "happened",
+  "in": { "justTellMe": ["just tell me"], "sameLineScore": 0.98,
+    "seen": { "hasBreak": true, "breakRead": "2x + 6 = 14, s0 x = 10", "words": "i still do not get it",
+      "lines": [ { "text": "Solve for x: 2(x + 3) = 14", "box": { "x": 1, "y": 1, "w": 1, "h": 1 } }, { "text": "2x + 6 = 14,  s0 x = 10", "box": { "x": 1, "y": 2, "w": 1, "h": 1 } } ] } },
+  "out": "asked-again" }

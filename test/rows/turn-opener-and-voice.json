@@ -1,0 +1,206 @@
+{
+ "name": "turn: an opener is said first; the ring goes out as soon as the broken line is known, with the rung's fixed line; then the hint; each sentence gets its sound and a closing chunk (sound shown here as a byte count)",
+ "run": "turn",
+ "in": {
+  "tape": "spoken.json",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Solve for x: 2(x + 3) = 14",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 48
+       }
+      },
+      {
+       "text": "2x + 6 = 14, so x = 10",
+       "box": {
+        "x": 200,
+        "y": 460,
+        "w": 700,
+        "h": 48
+       }
+      }
+     ]
+    },
+    {
+     "say": "why is this wrong"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 2100
+    },
+    {
+     "until": "voice"
+    },
+    {
+     "until": "voice"
+    },
+    {
+     "release": true
+    }
+   ]
+  ]
+ },
+ "out": [
+  {
+   "v": 1,
+   "type": "state",
+   "name": "listening"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "why is this wrong",
+   "final": false
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "thinking"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "why is this wrong",
+   "final": true
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t1",
+   "beat": -1,
+   "text": "Let me look at that last line.",
+   "aside": true
+  },
+  {
+   "v": 1,
+   "type": "words",
+   "id": "t1",
+   "beat": -1,
+   "count": 7,
+   "ends": 2.1
+  },
+  {
+   "v": 1,
+   "type": "voice",
+   "id": "t1",
+   "beat": -1,
+   "bytes": 100800
+  },
+  {
+   "v": 1,
+   "type": "voice",
+   "id": "t1",
+   "beat": -1,
+   "bytes": 0,
+   "last": true
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "t1",
+   "beat": 0,
+   "kind": "ring",
+   "box": {
+    "x": 100,
+    "y": 230,
+    "w": 350,
+    "h": 24
+   }
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t1",
+   "beat": 0,
+   "text": "Read the highlighted line again, slowly.",
+   "rung": 0,
+   "of": 4
+  },
+  {
+   "v": 1,
+   "type": "words",
+   "id": "t1",
+   "beat": 0,
+   "count": 6,
+   "ends": 1.8
+  },
+  {
+   "v": 1,
+   "type": "voice",
+   "id": "t1",
+   "beat": 0,
+   "bytes": 86400
+  },
+  {
+   "v": 1,
+   "type": "voice",
+   "id": "t1",
+   "beat": 0,
+   "bytes": 0,
+   "last": true
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t1",
+   "beat": 1,
+   "text": "Read the last line again: what did you do to the 6?",
+   "rung": 0,
+   "of": 4
+  },
+  {
+   "v": 1,
+   "type": "words",
+   "id": "t1",
+   "beat": 1,
+   "count": 12,
+   "ends": 3.6
+  },
+  {
+   "v": 1,
+   "type": "voice",
+   "id": "t1",
+   "beat": 1,
+   "bytes": 172800
+  },
+  {
+   "v": 1,
+   "type": "voice",
+   "id": "t1",
+   "beat": 1,
+   "bytes": 0,
+   "last": true
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "idle"
+  }
+ ]
+}

@@ -1,0 +1,57 @@
+{
+ "answers": {
+  "what does this mean": [
+   {
+    "problem": "How a message crosses the internet",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "Everything is sent as small packets.",
+      "mark": {
+       "kind": "ring",
+       "index": 0,
+       "quote": "Data is split into packets",
+       "label": null
+      }
+     },
+     {
+      "say": "Two jobs sit on top: putting packets in order and resending lost ones.",
+      "mark": {
+       "kind": "bracket",
+       "index": 1,
+       "quote": "Packets are numbered",
+       "label": "two jobs",
+       "toIndex": 2,
+       "toQuote": "Lost packets are sent again"
+      }
+     },
+     {
+      "say": "Together those give you a stream you can trust.",
+      "mark": {
+       "kind": "underline",
+       "index": 0,
+       "quote": "Data is split into packets",
+       "label": null
+      }
+     },
+     {
+      "say": "A fourth sentence that is past the cap.",
+      "mark": null
+     }
+    ],
+    "board": [
+     [
+      "packets",
+      "ordering",
+      "resending"
+     ],
+     [
+      "reliable stream"
+     ]
+    ]
+   }
+  ]
+ },
+ "leaks": []
+}

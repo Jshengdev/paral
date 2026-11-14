@@ -1,0 +1,27 @@
+{
+  "session": "8f4cfa2c32e8",
+  "by": "the pickje2 session, 2026-11-14",
+  "verdicts": [
+    {
+      "criterion": "C17",
+      "step": 0,
+      "pass": true,
+      "what": "The lesson is on numbers that are not his",
+      "measured": "the clip is the fixed example, x on one side and 13 on the other. His page has 3(x - 2) = 2x + 5"
+    },
+    {
+      "criterion": "C16",
+      "step": 0,
+      "pass": true,
+      "what": "The lesson's sentence gives no result",
+      "measured": "it says the clip shows an equation as a balance, and gives no number"
+    },
+    {
+      "criterion": "U6",
+      "step": 0,
+      "pass": true,
+      "what": "It speaks to him about his page, never about its own workings",
+      "measured": "one sentence, about the idea he asked about"
+    }
+  ]
+}

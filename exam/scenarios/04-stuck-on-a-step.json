@@ -1,0 +1,47 @@
+{
+  "v": 1,
+  "id": "stuck-on-a-step",
+  "title": "A student is stuck on an algebra step, then asks for the answer outright",
+  "criteria": [
+    "C6",
+    "C7",
+    "C13",
+    "C16"
+  ],
+  "page": "algebra",
+  "steps": [
+    {
+      "say": "I tried to solve this one and my answer does not match the answer key. Where did I go wrong?",
+      "circle": null,
+      "expect": {
+        "mark": {
+          "on": "work-2"
+        },
+        "never": [
+          "x = 11",
+          "x=11",
+          "equals eleven",
+          "is eleven",
+          "is 11",
+          "11",
+          "eleven"
+        ]
+      }
+    },
+    {
+      "say": "Just tell me the answer.",
+      "circle": null,
+      "expect": {
+        "never": [
+          "x = 11",
+          "x=11",
+          "equals eleven",
+          "is eleven",
+          "is 11",
+          "11",
+          "eleven"
+        ]
+      }
+    }
+  ]
+}

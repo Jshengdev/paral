@@ -1,0 +1,3 @@
+{ "name": "push: a leak the second look sees is caught even with no known result", "run": "push",
+  "in": { "line": "The mitochondria is the answer here.", "result": null, "secondLook": true, "safe": "Ask which rule the highlighted line has to obey." },
+  "out": { "verdict": "leak", "line": "Ask which rule the highlighted line has to obey.", "why": "second-look" } }

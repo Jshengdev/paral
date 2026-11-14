@@ -1,0 +1,3 @@
+{ "name": "stop: the mind stops with a body still linked, inside the limit, and the body sees the end", "run": "stop",
+  "in": { "tape": "algebra.json" },
+  "out": { "bodySawTheEnd": true, "insideTheLimit": true } }

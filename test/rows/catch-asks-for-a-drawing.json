@@ -1,0 +1,36 @@
+{
+ "name": "catch: his words ask for a drawing when they say draw, diagram or sketch at the start of a word, or \"show me what ... look like\"; other asks do not",
+ "run": "catch.drawing",
+ "in": {
+  "phrases": [
+   "draw",
+   "diagram",
+   "sketch",
+   "show me what … look"
+  ],
+  "asks": [
+   "Can you draw me a quick diagram of how sign-in, link creation and click stats connect?",
+   "Show me what one of these links would look like.",
+   "which domain would you buy for it? Show me what one of these links would look like.",
+   "Sketch it out for me",
+   "I'd like a drawing of the flow",
+   "Where did I go wrong?",
+   "What makes them so long and how could I make them shorter?",
+   "Can I withdraw this request?",
+   "Show me why that works",
+   "Just tell me the answer."
+  ]
+ },
+ "out": {
+  "Can you draw me a quick diagram of how sign-in, link creation and click stats connect?": true,
+  "Show me what one of these links would look like.": true,
+  "which domain would you buy for it? Show me what one of these links would look like.": true,
+  "Sketch it out for me": true,
+  "I'd like a drawing of the flow": true,
+  "Where did I go wrong?": false,
+  "What makes them so long and how could I make them shorter?": false,
+  "Can I withdraw this request?": false,
+  "Show me why that works": false,
+  "Just tell me the answer.": false
+ }
+}

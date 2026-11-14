@@ -1,0 +1,15 @@
+{
+ "name": "seam: a line to the body is checked and written",
+ "run": "seam.write",
+ "in": {
+  "from": "mind",
+  "line": {
+   "v": 1,
+   "type": "say",
+   "id": "s1",
+   "beat": 0,
+   "text": "Read the highlighted line again, slowly."
+  }
+ },
+ "out": "{\"v\":1,\"type\":\"say\",\"id\":\"s1\",\"beat\":0,\"text\":\"Read the highlighted line again, slowly.\"}\n"
+}

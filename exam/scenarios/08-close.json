@@ -1,0 +1,26 @@
+{
+  "v": 1,
+  "id": "close",
+  "title": "He closes it after an answer",
+  "criteria": [
+    "C9",
+    "C14"
+  ],
+  "video": "09:58",
+  "page": "plan",
+  "steps": [
+    {
+      "say": "What is the riskiest line in this file layout?",
+      "circle": "files",
+      "expect": {
+        "mark": {
+          "on": "file-rate"
+        },
+        "plain": true
+      }
+    },
+    {
+      "close": true
+    }
+  ]
+}

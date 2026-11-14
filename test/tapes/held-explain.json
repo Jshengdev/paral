@@ -1,0 +1,33 @@
+{
+ "answers": {
+  "what does this mean": [
+   {
+    "problem": "How a message crosses the internet",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "Everything is sent as small packets.",
+      "mark": null
+     },
+     {
+      "say": "Two jobs sit on top: putting packets in order and resending lost ones.",
+      "mark": null
+     },
+     {
+      "say": "Together those give you a stream you can trust.",
+      "mark": null
+     },
+     {
+      "say": "A fourth sentence that is past the cap.",
+      "mark": null
+     }
+    ],
+    "board": null,
+    "hold": true
+   }
+  ]
+ },
+ "leaks": [],
+ "opener": "Let's read this together."
+}

@@ -1,0 +1,98 @@
+{
+ "name": "body + ground: the same six pages when the brain also points by line number",
+ "run": "body.landing",
+ "in": {
+  "minScore": 0.6,
+  "minOverlap": 0.5,
+  "pages": [
+   [
+    {
+     "text": "Solve for x: 2(x + 3) = 14"
+    },
+    {
+     "text": "2x + 6 = 14"
+    },
+    {
+     "text": "2x + 6 = 14, so x = 10",
+     "quote": "2x + 6 = 14, so x = 10."
+    }
+   ],
+   [
+    {
+     "text": "Find the derivative of f(x) = 3x^2 + 5x",
+     "quote": "Find the derivative of f(x) = 3x² + 5x"
+    },
+    {
+     "text": "f'(x) = 6x + 5x",
+     "quote": "f′(x) = 6x + 5x"
+    },
+    {
+     "text": "so the slope at x = 1 is 11"
+    }
+   ],
+   [
+    {
+     "text": "CH3CH2Br + OH- gives CH3CH2OH + Br-",
+     "quote": "CH₃CH₂Br + OH⁻ → CH₃CH₂OH + Br⁻"
+    },
+    {
+     "text": "This is an SN1 reaction",
+     "quote": "This is an SN1 reaction"
+    },
+    {
+     "text": "because the carbon is primary"
+    }
+   ],
+   [
+    {
+     "text": "Revenue = price x quantity",
+     "quote": "Revenue = price × quantity"
+    },
+    {
+     "text": "R = 12 x 40 = 480",
+     "quote": "R = 12 × 40 = 480"
+    },
+    {
+     "text": "Profit = 480 - 300 = 780",
+     "quote": "Profit = 480 − 300 = 780"
+    }
+   ],
+   [
+    {
+     "text": "x = 4"
+    },
+    {
+     "text": "x = 40"
+    },
+    {
+     "text": "y = 4"
+    },
+    {
+     "text": "x = 4 and y = 2"
+    }
+   ],
+   [
+    {
+     "text": "Step 1: 3x = 12"
+    },
+    {
+     "text": "x = 4"
+    },
+    {
+     "text": "Step 2: check the answer"
+    },
+    {
+     "text": "x = 4"
+    }
+   ]
+  ],
+  "byNumber": true
+ },
+ "out": {
+  "lines": 20,
+  "readRight": 14,
+  "quotesMatched": 20,
+  "onTarget": 20,
+  "missed": []
+ }
+}

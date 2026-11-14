@@ -1,0 +1,17 @@
+{
+ "name": "size: no source file in mind, seam or body runs past 220 lines, and the one test file stays under 400",
+ "run": "size",
+ "in": {
+  "folders": [
+   "mind",
+   "seam",
+   "body/Sources"
+  ],
+  "limit": 220,
+  "testLimit": 400
+ },
+ "out": {
+  "tooLong": [],
+  "testFileFits": true
+ }
+}

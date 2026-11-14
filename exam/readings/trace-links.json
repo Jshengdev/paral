@@ -1,0 +1,50 @@
+{
+  "session": "aaac1c43befb",
+  "by": "the pickje2 session, 2026-11-14",
+  "verdicts": [
+    {
+      "criterion": "C10",
+      "step": 1,
+      "pass": true,
+      "what": "The follow-up builds on the first answer",
+      "measured": "it keeps the first answer's idea, a short domain of his own, and shows his first link on it: https://, qhd.io, /4CQMZu"
+    },
+    {
+      "criterion": "C5",
+      "step": 0,
+      "pass": true,
+      "what": "The opener is short and names the act",
+      "measured": "8 words: \"Let's look at how these links are built.\" The second ask opened with the fixed line",
+      "limit": "about ten words (the video: nine)"
+    },
+    {
+      "criterion": "C7",
+      "step": 0,
+      "pass": true,
+      "what": "An answer is two to four sentences",
+      "measured": "three sentences in each answer",
+      "limit": "the video: two to four"
+    },
+    {
+      "criterion": "C7",
+      "step": 1,
+      "pass": true,
+      "what": "A link reads well in the capsule",
+      "measured": "it spells only the short made-up name, \"q h d dot io\", and says what the link becomes in plain words. The board shows it written: https://, qhd.io, /4CQMZu"
+    },
+    {
+      "criterion": "C8",
+      "step": 1,
+      "pass": true,
+      "what": "The board reads cleanly",
+      "measured": "two rows of two or three boxes in each ask, and no box begins or ends with an arrow"
+    },
+    {
+      "criterion": "U6",
+      "step": 1,
+      "pass": true,
+      "what": "It speaks to him about his page, never about its own workings",
+      "measured": "every line says \"you\" or \"your\", and speaks only of his links, his domain and his server"
+    }
+  ]
+}

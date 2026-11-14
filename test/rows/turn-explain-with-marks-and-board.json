@@ -1,0 +1,167 @@
+{
+ "name": "turn: with no break it explains in at most three beats; a bracket runs from its first line to its last; a line is marked once (the third mark is on a marked line, so it is dropped); then a board",
+ "run": "turn",
+ "in": {
+  "tape": "explain.json",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1005,
+     "display": {
+      "id": 1,
+      "scale": 1,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Data is split into packets",
+       "box": {
+        "x": 100,
+        "y": 100,
+        "w": 600,
+        "h": 40
+       }
+      },
+      {
+       "text": "Packets are numbered",
+       "box": {
+        "x": 100,
+        "y": 180,
+        "w": 500,
+        "h": 40
+       }
+      },
+      {
+       "text": "Lost packets are sent again",
+       "box": {
+        "x": 100,
+        "y": 260,
+        "w": 640,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "what does this mean"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 2100
+    }
+   ]
+  ]
+ },
+ "out": [
+  {
+   "v": 1,
+   "type": "state",
+   "name": "listening"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "what does this mean",
+   "final": false
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "thinking"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "what does this mean",
+   "final": true
+  },
+  {
+   "v": 1,
+   "type": "board",
+   "id": "t1",
+   "rows": [
+    [
+     "packets",
+     "ordering",
+     "resending"
+    ],
+    [
+     "reliable stream"
+    ]
+   ]
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "t1",
+   "beat": 0,
+   "kind": "ring",
+   "box": {
+    "x": 100,
+    "y": 100,
+    "w": 600,
+    "h": 40
+   }
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t1",
+   "beat": 0,
+   "text": "Everything is sent as small packets."
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "t1",
+   "why": "no voice is set up"
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t1",
+   "beat": 1,
+   "text": "Two jobs sit on top: putting packets in order and resending lost ones."
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "t1",
+   "beat": 1,
+   "kind": "bracket",
+   "box": {
+    "x": 100,
+    "y": 180,
+    "w": 640,
+    "h": 120
+   },
+   "label": "two jobs"
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t1",
+   "beat": 2,
+   "text": "Together those give you a stream you can trust."
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "idle"
+  }
+ ]
+}

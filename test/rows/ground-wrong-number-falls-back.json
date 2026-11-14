@@ -1,0 +1,8 @@
+{ "name": "ground: a number that points at a different line than the quote is ignored, and the best match is used", "run": "ground",
+  "in": {
+    "quoted": "Step 2: check the answer", "index": 0, "minScore": 0.6, "display": { "scale": 1, "x": 0, "y": 0 },
+    "lines": [
+      { "text": "x = 4", "box": { "x": 120, "y": 206, "w": 90, "h": 40 } },
+      { "text": "Step 2: check the answer", "box": { "x": 120, "y": 302, "w": 400, "h": 40 } }
+    ] },
+  "out": { "found": true, "box": { "x": 120, "y": 302, "w": 400, "h": 40 }, "line": "Step 2: check the answer", "score": 1 } }

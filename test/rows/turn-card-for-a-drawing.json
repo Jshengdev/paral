@@ -1,0 +1,522 @@
+{
+ "name": "turn: he asks for a drawing: an empty card opens at once, before the answer; the board then fills that card and is sent with its rows once; when the answer has no board the card is taken away; on his own working the card opens and is taken away the moment a wrong line is named; and with a wrong line already open no card opens at all",
+ "run": "turn",
+ "in": {
+  "tape": "drawing.json",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1005,
+     "display": {
+      "id": 1,
+      "scale": 1,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Data is split into packets",
+       "box": {
+        "x": 100,
+        "y": 100,
+        "w": 600,
+        "h": 40
+       }
+      },
+      {
+       "text": "Packets are numbered",
+       "box": {
+        "x": 100,
+        "y": 180,
+        "w": 500,
+        "h": 40
+       }
+      },
+      {
+       "text": "Lost packets are sent again",
+       "box": {
+        "x": 100,
+        "y": 260,
+        "w": 640,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "draw me a diagram of this"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 2100
+    },
+    {
+     "until": "board"
+    },
+    {
+     "release": "answer"
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1005,
+     "display": {
+      "id": 1,
+      "scale": 1,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Data is split into packets",
+       "box": {
+        "x": 100,
+        "y": 100,
+        "w": 600,
+        "h": 40
+       }
+      },
+      {
+       "text": "Packets are numbered",
+       "box": {
+        "x": 100,
+        "y": 180,
+        "w": 500,
+        "h": 40
+       }
+      },
+      {
+       "text": "Lost packets are sent again",
+       "box": {
+        "x": 100,
+        "y": 260,
+        "w": 640,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "sketch how it works"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 2100
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Solve for x: 2(x + 3) = 14",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 48
+       }
+      },
+      {
+       "text": "2x + 6 = 14, so x = 10",
+       "box": {
+        "x": 200,
+        "y": 460,
+        "w": 700,
+        "h": 48
+       }
+      }
+     ]
+    },
+    {
+     "say": "draw why this is wrong"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 2100
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Solve for x: 2(x + 3) = 14",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 48
+       }
+      },
+      {
+       "text": "2x + 6 = 14, so x = 10",
+       "box": {
+        "x": 200,
+        "y": 460,
+        "w": 700,
+        "h": 48
+       }
+      }
+     ]
+    },
+    {
+     "say": "draw it for me"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 2100
+    }
+   ]
+  ]
+ },
+ "out": [
+  {
+   "v": 1,
+   "type": "state",
+   "name": "listening"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "draw me a diagram of this",
+   "final": false
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "thinking"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "draw me a diagram of this",
+   "final": true
+  },
+  {
+   "v": 1,
+   "type": "board",
+   "id": "t1",
+   "rows": []
+  },
+  {
+   "v": 1,
+   "type": "board",
+   "id": "t1",
+   "rows": [
+    [
+     "packets",
+     "ordering",
+     "resending"
+    ],
+    [
+     "reliable stream"
+    ]
+   ]
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t1",
+   "beat": 0,
+   "text": "Everything is sent as small packets."
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "t1",
+   "why": "no voice is set up"
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t1",
+   "beat": 1,
+   "text": "Two jobs sit on top: putting packets in order and resending lost ones."
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t1",
+   "beat": 2,
+   "text": "Together those give you a stream you can trust."
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "idle"
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "listening"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "sketch how it works",
+   "final": false
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "thinking"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "sketch how it works",
+   "final": true
+  },
+  {
+   "v": 1,
+   "type": "board",
+   "id": "t2",
+   "rows": []
+  },
+  {
+   "v": 1,
+   "type": "board.close",
+   "id": "t2"
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t2",
+   "beat": 0,
+   "text": "Everything is sent as small packets."
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "t2",
+   "why": "no voice is set up"
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t2",
+   "beat": 1,
+   "text": "Two jobs sit on top: putting packets in order and resending lost ones."
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t2",
+   "beat": 2,
+   "text": "Together those give you a stream you can trust."
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "idle"
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "listening"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "draw why this is wrong",
+   "final": false
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "thinking"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "draw why this is wrong",
+   "final": true
+  },
+  {
+   "v": 1,
+   "type": "board",
+   "id": "t3",
+   "rows": []
+  },
+  {
+   "v": 1,
+   "type": "clear"
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "t3",
+   "beat": 0,
+   "kind": "ring",
+   "box": {
+    "x": 100,
+    "y": 230,
+    "w": 350,
+    "h": 24
+   }
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t3",
+   "beat": 0,
+   "text": "Read the highlighted line again, slowly.",
+   "rung": 0,
+   "of": 4
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "t3",
+   "why": "no voice is set up"
+  },
+  {
+   "v": 1,
+   "type": "board.close",
+   "id": "t3"
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t3",
+   "beat": 1,
+   "text": "Read the last line again: what did you do to the 6?",
+   "rung": 0,
+   "of": 4
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "idle"
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "listening"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "draw it for me",
+   "final": false
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "thinking"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "draw it for me",
+   "final": true
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "t4",
+   "beat": 0,
+   "kind": "ring",
+   "box": {
+    "x": 100,
+    "y": 230,
+    "w": 350,
+    "h": 24
+   }
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t4",
+   "beat": 0,
+   "text": "Ask which rule the highlighted line has to obey.",
+   "rung": 1,
+   "of": 4
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "t4",
+   "why": "no voice is set up"
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t4",
+   "beat": 1,
+   "text": "Read the last line again: what did you do to the 6?",
+   "rung": 1,
+   "of": 4
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "idle"
+  }
+ ]
+}

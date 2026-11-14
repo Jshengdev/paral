@@ -1,0 +1,55 @@
+{
+ "answers": {
+  "why is this wrong": [
+   {
+    "problem": "Solve for x: 2(x + 3) = 14",
+    "breakLine": "2x + 6 = 14, so x = 10",
+    "result": "x = 4",
+    "beats": [
+     {
+      "say": "Read the last line again: what did you do to the 6?",
+      "mark": null
+     }
+    ]
+   },
+   {
+    "problem": "Solve for x: 2(x + 3) = 14",
+    "breakLine": "2x + 6 = 14, so x = 10",
+    "result": "x = 4",
+    "beats": [
+     {
+      "say": "Whatever you do to one side of an equation, you do to the other.",
+      "mark": null
+     }
+    ]
+   }
+  ],
+  "just tell me": [
+   {
+    "problem": "Solve for x: 2(x + 3) = 14",
+    "breakLine": "2x + 6 = 14, so x = 10",
+    "result": "x = 4",
+    "beats": [
+     {
+      "say": "Subtract 6 from both sides, so 2x = 8 and x = 4.",
+      "mark": null
+     }
+    ]
+   }
+  ],
+  "is this right now": [
+   {
+    "problem": "Solve for x: 2(x + 3) = 14",
+    "breakLine": null,
+    "result": "x = 4",
+    "beats": [
+     {
+      "say": "That line holds now. Carry on to the next one.",
+      "mark": null
+     }
+    ]
+   }
+  ]
+ },
+ "leaks": []
+}

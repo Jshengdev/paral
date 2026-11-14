@@ -1,0 +1,20 @@
+{
+  "session": "bb975d393af4",
+  "by": "the pickje2 session, 2026-11-14",
+  "verdicts": [
+    {
+      "criterion": "C13",
+      "step": 0,
+      "pass": true,
+      "what": "It answers what he asked",
+      "measured": "he asked which line is the riskiest. It names the rate limiter and says why: its buckets live in memory on one server"
+    },
+    {
+      "criterion": "U6",
+      "step": 0,
+      "pass": true,
+      "what": "It speaks to him about his page, never about its own workings",
+      "measured": "three sentences, all about his file layout"
+    }
+  ]
+}

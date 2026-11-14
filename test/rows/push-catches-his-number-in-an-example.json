@@ -1,0 +1,61 @@
+{
+ "name": "push: a worked example on other numbers that comes out to his own answer is a leak, in digits or in words; it is swapped for the rung's safe line",
+ "run": "push.count",
+ "in": {
+  "lines": [
+   {
+    "line": "Try a fresh one: in a minus 9 equals 2. Getting rid of the minus 9 means adding 9 to each side. So a equals 2 plus 9, which is 11.",
+    "result": "x = 11",
+    "secondLook": false,
+    "safe": "safe",
+    "onHisLine": "3x - 2x = 5 - 6",
+    "leaks": true
+   },
+   {
+    "line": "So a comes out to eleven.",
+    "result": "x = 11",
+    "secondLook": false,
+    "safe": "safe",
+    "onHisLine": "3x - 2x = 5 - 6",
+    "leaks": true
+   },
+   {
+    "line": "Say y minus 4 equals 10: add 4 to both sides, so y equals 14.",
+    "result": "x = 11",
+    "secondLook": false,
+    "safe": "safe",
+    "onHisLine": "3x - 2x = 5 - 6",
+    "leaks": false
+   },
+   {
+    "line": "Look at the six on your line: which side did it start on?",
+    "result": "x = 6",
+    "secondLook": false,
+    "safe": "safe",
+    "onHisLine": "3x - 2x = 5 - 6",
+    "leaks": false
+   },
+   {
+    "line": "Your answer should be twenty one.",
+    "result": "x = 21",
+    "secondLook": false,
+    "safe": "safe",
+    "onHisLine": "2x = 40 + 2",
+    "leaks": true
+   },
+   {
+    "line": "Keep your eye on the right-hand side, where the six ended up after it crossed over.",
+    "result": "x = 11",
+    "secondLook": false,
+    "safe": "safe",
+    "onHisLine": "3x - 2x = 5 - 6",
+    "leaks": false
+   }
+  ]
+ },
+ "out": {
+  "leaking": 3,
+  "caught": 3,
+  "falseAlarms": 0
+ }
+}

@@ -1,0 +1,73 @@
+{
+ "answers": {
+  "why is this wrong": [
+   {
+    "problem": "Solve for x: 2(x + 3) = 14",
+    "breakLine": "2x + 6 = 14, so x = 10",
+    "result": "x = 4",
+    "beats": [
+     {
+      "say": "Read the last line again: what did you do to the 6?",
+      "mark": null
+     }
+    ]
+   }
+  ],
+  "just tell me": [
+   {
+    "problem": "Solve for x: 2(x + 3) = 14",
+    "breakLine": "2x + 6 = 14, so x = 10",
+    "result": "x = 4",
+    "beats": [
+     {
+      "say": "Subtract 6 from both sides, so 2x = 8 and x = 4.",
+      "mark": null
+     }
+    ]
+   }
+  ],
+  "why is this wrong @ 0": [
+   {
+    "problem": "Solve for x: 2(x + 3) = 14",
+    "breakLine": "2x + 6 = 14, so x = 10",
+    "result": "x = 4",
+    "beats": [
+     {
+      "say": "You drew around the problem; the slip is two lines down. What happened to the 6?",
+      "mark": null
+     }
+    ]
+   }
+  ],
+  "draw me a diagram of this": [
+   {
+    "problem": "How to solve for x",
+    "breakLine": null,
+    "result": null,
+    "board": [
+     [
+      "Open the brackets",
+      "Move the six",
+      "Divide by two"
+     ],
+     [
+      "One step a line"
+     ]
+    ],
+    "beats": [
+     {
+      "say": "Each line does one thing to both sides.",
+      "mark": null
+     },
+     {
+      "say": "Follow the boxes left to right.",
+      "mark": null
+     }
+    ]
+   }
+  ]
+ },
+ "leaks": [],
+ "opener": "Let me look at that last line.",
+ "voice": true
+}

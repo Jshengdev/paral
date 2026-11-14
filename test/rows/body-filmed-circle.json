@@ -1,0 +1,42 @@
+{
+ "name": "body: a filmed run where he draws around the first line as he asks: the trail is drawn, his loop comes back as a ring, his path is on the picture the model gets, the model is asked about that line, and the ring still lands on the broken line",
+ "run": "body.filmed",
+ "in": {
+  "lines": [
+   "Solve for x: 2(x + 3) = 14",
+   "2x + 6 = 14",
+   "2x + 6 = 14, so x = 10"
+  ],
+  "display": {
+   "x": 0,
+   "y": 0
+  },
+  "tape": "filmed.json",
+  "asks": [
+   "why is this wrong"
+  ],
+  "onLine": 2,
+  "drawsAround": 0
+ },
+ "out": {
+  "frames": true,
+  "bareFirstFrame": true,
+  "linesSkipped": 0,
+  "marks": 1,
+  "markCoversTheLine": true,
+  "capsuleRestsAt": {
+   "h": 18,
+   "w": 18,
+   "x": 791,
+   "y": 927
+  },
+  "voiceSeconds": 8.7,
+  "trailDrawn": true,
+  "hisLoopComesBackAsARing": true,
+  "pathOnThePicture": true,
+  "said": [
+   "Read the highlighted line again, slowly.",
+   "You drew around the problem; the slip is two lines down. What happened to the 6?"
+  ]
+ }
+}

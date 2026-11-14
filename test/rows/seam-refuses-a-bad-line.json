@@ -1,0 +1,12 @@
+{
+ "name": "seam: a bad line is refused with the field named",
+ "run": "seam.read",
+ "in": {
+  "from": "mind",
+  "text": "{\"v\": 1, \"type\": \"mark\", \"id\": \"m1\", \"beat\": 0, \"kind\": \"ring\", \"box\": {\"x\": 10, \"y\": 20, \"w\": 0, \"h\": 12}}"
+ },
+ "out": {
+  "ok": false,
+  "why": "box.w: Too small: expected number to be >0"
+ }
+}

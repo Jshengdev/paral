@@ -1,0 +1,14 @@
+{ "name": "push: count over ten canned lines, five leaking (the code check alone, no model)", "run": "push.count",
+  "in": { "lines": [
+    { "leaks": true,  "line": "Fine: x = 4.", "result": "x = 4", "secondLook": null, "safe": "s" },
+    { "leaks": true,  "line": "So the answer is x=4, moving on.", "result": "x = 4", "secondLook": null, "safe": "s" },
+    { "leaks": true,  "line": "You should end with X  =  4", "result": "x = 4", "secondLook": null, "safe": "s" },
+    { "leaks": true,  "line": "It comes out to −3.5 in the end.", "result": "-3.5", "secondLook": null, "safe": "s" },
+    { "leaks": true,  "line": "The product is 2-bromobutane.", "result": "2-bromobutane", "secondLook": null, "safe": "s" },
+    { "leaks": false, "line": "What do you get when you undo the + 6?", "result": "x = 4", "secondLook": null, "safe": "s" },
+    { "leaks": false, "line": "Check line 4: is the sign right?", "result": "x = 4", "secondLook": null, "safe": "s" },
+    { "leaks": false, "line": "x = 40 would be too big, so what went wrong?", "result": "x = 4", "secondLook": null, "safe": "s" },
+    { "leaks": false, "line": "Think about which carbon the bromide leaves from.", "result": "2-bromobutane", "secondLook": null, "safe": "s" },
+    { "leaks": false, "line": "Your 13.5 is off by a sign somewhere.", "result": "-3.5", "secondLook": null, "safe": "s" }
+  ] },
+  "out": { "leaking": 5, "caught": 5, "falseAlarms": 0 } }

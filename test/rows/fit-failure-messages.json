@@ -1,0 +1,22 @@
+{
+ "name": "fit: a failure's message is shown only when it is one short line of plain words; a shape error, a stack or a long message is not",
+ "run": "fit.showable",
+ "in": {
+  "messages": [
+   "[ { \"origin\": \"array\", \"code\": \"too_small\", \"minimum\": 1, \"path\": [ \"beats\" ], \"message\": \"Too small: expected array to have >=1 items\" } ]",
+   "Cannot read properties of undefined (reading 'length')",
+   "no picture of the screen arrived with this ask",
+   "I lost that answer on my side. Ask me again.",
+   "the spend cap of $5 is reached ($5.012 spent); raise spendCapUsd in settings to go on",
+   ""
+  ]
+ },
+ "out": {
+  "[ { \"origin\": \"array\", \"code\": \"too_small\", \"minimum\": 1, \"p": false,
+  "Cannot read properties of undefined (reading 'length')": false,
+  "no picture of the screen arrived with this ask": true,
+  "I lost that answer on my side. Ask me again.": true,
+  "the spend cap of $5 is reached ($5.012 spent); raise spendCa": true,
+  "": false
+ }
+}

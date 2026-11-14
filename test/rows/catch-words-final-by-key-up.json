@@ -1,0 +1,9 @@
+{ "name": "catch: his words are final by the key-up", "run": "catch",
+  "in": { "events": [
+    { "type": "key.down", "at": 1000 },
+    { "type": "ear", "text": "why", "final": false, "at": 1300 },
+    { "type": "ear", "text": "why is line three", "final": false, "at": 1900 },
+    { "type": "ear", "text": "why is line three wrong ", "final": false, "at": 2400 },
+    { "type": "key.up", "at": 2600 }
+  ] },
+  "out": { "text": "why is line three wrong", "final": true, "startedAt": 1000, "endedAt": 2600 } }

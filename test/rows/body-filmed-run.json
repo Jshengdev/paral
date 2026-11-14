@@ -1,0 +1,36 @@
+{
+ "name": "body: a whole filmed run on a tape, on a display to the left of the main one (negative x): the ring covers the broken line, the capsule rests bottom centre, the voice is on the film's clock, and the film shows the thinking look within a frame of his finger lifting, not when the key-up line arrives after the microphone's tail",
+ "run": "body.filmed",
+ "in": {
+  "lines": [
+   "Solve for x: 2(x + 3) = 14",
+   "2x + 6 = 14",
+   "2x + 6 = 14, so x = 10"
+  ],
+  "display": {
+   "x": -1600,
+   "y": 60
+  },
+  "tape": "filmed.json",
+  "asks": [
+   "why is this wrong"
+  ],
+  "onLine": 2,
+  "timesTheRelease": true
+ },
+ "out": {
+  "frames": true,
+  "bareFirstFrame": true,
+  "linesSkipped": 0,
+  "marks": 1,
+  "markCoversTheLine": true,
+  "capsuleRestsAt": {
+   "h": 18,
+   "w": 18,
+   "x": 791,
+   "y": 927
+  },
+  "voiceSeconds": 7.5,
+  "thinkingLookAfterTheTrueReleaseMs": 33
+ }
+}

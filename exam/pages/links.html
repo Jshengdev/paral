@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Short links</title><link rel="stylesheet" href="page.css"><script src="truth.js"></script></head>
+<body><main>
+<h1>Link shortener: test run</h1>
+<p data-id="intro">I shortened six addresses through the public API, and every one came back created.</p>
+<table data-id="table">
+<tr><th>Short link</th><th>Goes to</th><th>Clicks</th></tr>
+<tr><td><span data-id="link-1">https://quiet-harbor-demo.trycloudflare.com/4CQMZu</span></td><td>Wikipedia: Rubber duck debugging</td><td>9</td></tr>
+<tr><td><span data-id="link-2">https://quiet-harbor-demo.trycloudflare.com/CErVBK</span></td><td>NASA image of the day</td><td>8</td></tr>
+<tr><td><span data-id="link-3">https://quiet-harbor-demo.trycloudflare.com/BF7zWC</span></td><td>GitHub: better-sqlite3</td><td>7</td></tr>
+<tr><td><span data-id="link-4">https://quiet-harbor-demo.trycloudflare.com/C3q2Yq</span></td><td>Hacker News</td><td>6</td></tr>
+<tr><td><span data-id="link-5">https://quiet-harbor-demo.trycloudflare.com/PQcIMY</span></td><td>BBC Science</td><td>5</td></tr>
+<tr><td><span data-id="link-6">https://quiet-harbor-demo.trycloudflare.com/Fr0FfG</span></td><td>Google Maps: Big Ben</td><td>4</td></tr>
+</table>
+<h2>Then I tested the first link</h2>
+<ul>
+<li data-id="note-1">I opened it twice. Both visits returned status 307 and went to Wikipedia.</li>
+<li data-id="note-2">The database stored both clicks with their time and country.</li>
+</ul>
+</main></body></html>

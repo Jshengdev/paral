@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>paral: what works</title>
+<link rel="stylesheet" href="vendor/dialkit/styles.css">
+<style>
+  :root { --desk: #1b1d22; --paper: #f4f5f7; --ink: #16181d; --dim: #6b7381; --rule: #d9dce2; --accent: #2f6fde; --ok: #1f7a4d; --bad: #c0392b;
+          --size: 16px; --leading: 1.5; --space: 16px; --still: 250px; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--desk); color: var(--ink); }
+  body { font: 400 var(--size)/var(--leading) system-ui, -apple-system, sans-serif; }
+  main { max-width: 1120px; margin: 28px auto 80px; background: var(--paper); border-radius: 14px; padding: calc(var(--space) * 2); }
+  h1 { font-size: 1.8em; margin: 0 0 6px; }
+  h2 { font-size: 1.15em; margin: 0 0 4px; }
+  h2 b { font-size: .8em; margin-left: 8px; }
+  p { margin: 0 0 var(--space); max-width: 72ch; }
+  .lede { font-size: 1.12em; }
+  .dim { color: var(--dim); font-weight: 400; }
+  .ok { color: var(--ok); }
+  .bad { color: var(--bad); }
+  table { border-collapse: collapse; width: 100%; font-size: .92em; }
+  th, td { text-align: left; vertical-align: top; padding: 6px 10px 6px 0; border-bottom: 1px solid var(--rule); }
+  th { color: var(--dim); font-weight: 500; }
+  td.id { color: var(--accent); font-weight: 600; white-space: nowrap; }
+  td.why { color: var(--dim); }
+  .run { background: #fff; border: 1px solid var(--rule); border-radius: 10px; padding: var(--space); margin: var(--space) 0; }
+  video { width: 100%; border-radius: 8px; border: 1px solid var(--rule); background: #000; }
+  .strip { display: grid; grid-template-columns: repeat(auto-fill, minmax(var(--still), 1fr)); gap: 8px; margin: 10px 0; }
+  figure { margin: 0; }
+  img { width: 100%; display: block; border-radius: 6px; border: 1px solid var(--rule); }
+  figcaption { font-size: .78em; color: var(--dim); margin-top: 2px; }
+  details { margin-top: 8px; }
+  summary { cursor: pointer; color: var(--accent); }
+  ul, ol { margin: 6px 0 var(--space); padding-left: 1.2em; max-width: 72ch; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: calc(var(--space) * 1.5); }
+  @media (max-width: 860px) { .two { grid-template-columns: 1fr; } }
+  @media print { .dialkit-root, [class*="dialkit"] { display: none !important; } main { margin: 0; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>paral: what works</h1>
+  <p class="lede"><!--LEDE--></p>
+  <p class="dim">Each run below is a scripted ask, answered by the real mind with the live services, then replayed through the app's own drawing code into a film. The judge reads the run's record and the film's frames. It is a separate program from the app.</p>
+  <p class="dim"><b>These films are checks, not takes.</b> A take is run by hand on a real screen. Nothing here was shown on a real screen, and no real key, microphone or screen capture was used.</p>
+  <h2 style="margin-top:24px">The list, one line each</h2>
+  <!--SUMMARY-->
+  <div class="two">
+    <div><h2 style="margin-top:28px">Not live in these films</h2>
+    <ul><!--NOTLIVE--></ul></div>
+    <div><h2 style="margin-top:28px">Waiting for a person</h2>
+    <ul><!--WAITING--></ul></div>
+  </div>
+  <!--RUNS-->
+</main>
+<script src="vendor/dialkit/browser.global.js"></script>
+<script>
+  const root = document.documentElement.style;
+  DialKit.createDialRoot({ position: 'bottom-right' });
+  DialKit.createDialKit('Type and space', { size: [16, 13, 21, 0.5], leading: [1.5, 1.2, 1.9, 0.01], space: [16, 8, 28, 1] }, { persist: true, defaultCollapsed: true })
+    .subscribe((v) => { root.setProperty('--size', v.size + 'px'); root.setProperty('--leading', v.leading); root.setProperty('--space', v.space + 'px'); });
+  DialKit.createDialKit('Stills and colour', { still: [250, 160, 520, 10], accent: '#2f6fde' }, { persist: true, defaultCollapsed: true })
+    .subscribe((v) => { root.setProperty('--still', v.still + 'px'); root.setProperty('--accent', v.accent); });
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "v": 1,
+  "id": "draw-the-flow",
+  "title": "He asks for a drawing of how the pieces connect",
+  "criteria": [
+    "C5",
+    "C7",
+    "C8",
+    "C9",
+    "C13"
+  ],
+  "video": "13:02 to 13:26",
+  "page": "milestone",
+  "steps": [
+    {
+      "say": "Can you draw me a quick diagram of how sign in, creating a link, and the click stats connect in this build?",
+      "circle": null,
+      "expect": {
+        "opener": true,
+        "board": true,
+        "sentences": 3,
+        "plain": true
+      }
+    }
+  ]
+}

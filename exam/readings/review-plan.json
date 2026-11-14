@@ -1,0 +1,28 @@
+{
+  "session": "c7ea210d49ad",
+  "by": "the pickje2 session, 2026-11-14",
+  "verdicts": [
+    {
+      "criterion": "C13",
+      "step": 0,
+      "pass": true,
+      "what": "It answers what he asked",
+      "measured": "he asked if the plan looks right and what to worry about. It says the layout looks sensible and names the rate limiter's Map in memory, with why"
+    },
+    {
+      "criterion": "C5",
+      "step": 0,
+      "pass": true,
+      "what": "The opener is short and names the act",
+      "measured": "6 words: \"Let's go through your plan together.\"",
+      "limit": "about ten words (the video: nine)"
+    },
+    {
+      "criterion": "U6",
+      "step": 0,
+      "pass": true,
+      "what": "It speaks to him about his page, never about its own workings",
+      "measured": "three sentences, all about his plan"
+    }
+  ]
+}

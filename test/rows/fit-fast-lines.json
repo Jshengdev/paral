@@ -1,0 +1,32 @@
+{
+ "name": "fit: a line the fast model wrote is dropped when it carries the word for no line anywhere, speaks about him in the third person, or talks about itself; a plain line to him is kept",
+ "run": "fit",
+ "in": {
+  "lines": [
+   "This checklist is a student's own milestone summary, so I'll say NONE.",
+   "NONE",
+   "None.",
+   "Let's sort out what the student is asking about the domain.",
+   "The user wants to shorten their links.",
+   "I'll say what the page shows.",
+   "As an AI I can only describe the page.",
+   "Let's look at what makes those links long.",
+   "Every one of these links starts with the same long address.",
+   "None of these links has a custom domain.",
+   "Let's trace your steps one at a time."
+  ]
+ },
+ "out": {
+  "This checklist is a student's own milestone summary, so I'll say NONE.": "it holds the word that means \"no line\"",
+  "NONE": "it holds the word that means \"no line\"",
+  "None.": "it is only the word that means \"no line\"",
+  "Let's sort out what the student is asking about the domain.": "it speaks about him, not to him",
+  "The user wants to shorten their links.": "it speaks about him, not to him",
+  "I'll say what the page shows.": "it talks about what it is doing",
+  "As an AI I can only describe the page.": "it talks about itself",
+  "Let's look at what makes those links long.": null,
+  "Every one of these links starts with the same long address.": null,
+  "None of these links has a custom domain.": null,
+  "Let's trace your steps one at a time.": null
+ }
+}

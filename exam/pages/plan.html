@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Build plan</title><link rel="stylesheet" href="page.css"><script src="truth.js"></script></head>
+<body><main>
+<h1>Plan for the link shortener</h1>
+<p data-id="intro">Spec files, plus a few small extras where two places share logic.</p>
+<h2>File layout</h2>
+<pre data-id="files"><span data-id="file-db">lib/db.ts          one shared connection, plus migrations</span><span data-id="file-codes">lib/codes.ts       six-character codes, retry up to five times on a collision</span><span data-id="file-urls">lib/urls.ts        http and https only, reject our own host</span><span data-id="file-links">lib/links.ts       createLink(userId, url): validate, then insert</span><span data-id="file-stats">lib/stats.ts       total clicks, the last 14 days, top referrers</span><span data-id="file-auth">lib/auth.ts        password hash and verify, signed session cookie</span><span data-id="file-rate">lib/rateLimit.ts   token bucket per key, kept in a Map in memory</span><span data-id="file-api">lib/api.ts         one error shape for every API route</span></pre>
+<h2 data-id="decisions">Key decisions</h2>
+<ul>
+<li data-id="dec-db">Database: tables match the spec, and migrations run on the first load.</li>
+<li data-id="dec-redirect">Redirect: the short link answers with status 307 and records the click after the response.</li>
+<li data-id="dec-country">Country: read from the first header present, else "unknown".</li>
+</ul>
+</main></body></html>

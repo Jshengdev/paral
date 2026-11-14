@@ -1,0 +1,31 @@
+#!/bin/sh
+# ./flow RUN/flow.json
+# A real run with no screen, mic or key: the headless body plays the scripted asks against the real mind, in real
+# time, with the live services. It leaves session.jsonl (every line that crossed the seam), spend.json and mind.log
+# beside the flow file. With PARAL_TAPE=test/tapes/NAME.json it runs on recorded answers and calls no service.
+# The keys are read from PARAL_KEYS (default ~/.config/paral/keys.env), never from this folder.
+cd "$(dirname "$0")" || exit 1
+[ -f "$1" ] || { echo "usage: ./flow RUN/flow.json" >&2; exit 2; }
+dir=$(cd "$(dirname "$1")" && pwd)
+flow="$dir/$(basename "$1")"
+sock="/tmp/paral-flow-$$.sock"
+fault=$(python3 -c "import json,sys; print(json.load(open(sys.argv[1])).get('fault') or '')" "$flow")
+(cd body && swift build 2>&1 | tail -1 | grep -q "Build complete") || { echo "flow: the body did not build; run (cd body && swift build) to see why" >&2; exit 1; }
+
+PARAL_SOCKET="$sock" PARAL_RECORD="$dir/session.jsonl" PARAL_SPEND="$dir/spend.json" PARAL_FAULT="$fault" \
+  node --env-file-if-exists="${PARAL_KEYS:-$HOME/.config/paral/keys.env}" mind/main.ts > "$dir/mind.log" 2>&1 &
+mind=$!
+tries=0
+while [ ! -S "$sock" ] && [ "$tries" -lt 100 ]; do sleep 0.05; tries=$((tries + 1)); done
+[ -S "$sock" ] || { echo "flow: the mind did not start; see $dir/mind.log" >&2; kill "$mind" 2>/dev/null; exit 1; }
+
+body/.build/debug/paral-headless flow "$flow" "$sock" body/tokens.json
+code=$?
+kill -TERM "$mind" 2>/dev/null
+wait "$mind" 2>/dev/null
+if [ "$code" -eq 0 ]; then
+  echo "flow: recorded $(wc -l < "$dir/session.jsonl" | tr -d ' ') lines in $dir/session.jsonl"
+else
+  echo "flow: FAILED; the mind's side is in $dir/mind.log" >&2
+fi
+exit "$code"

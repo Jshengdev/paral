@@ -1,0 +1,5 @@
+{ "name": "happened: he changes one sign in a long line, and that counts as a change", "run": "happened",
+  "in": { "justTellMe": ["just tell me"], "sameLineScore": 0.98,
+    "seen": { "hasBreak": true, "breakRead": "so the total cost is 12x + 40 - 3(x - 5)", "words": "is it right now",
+      "lines": [ { "text": "so the total cost is 12x + 40 + 3(x - 5)", "box": { "x": 1, "y": 2, "w": 1, "h": 1 } } ] } },
+  "out": "changed-still-wrong" }

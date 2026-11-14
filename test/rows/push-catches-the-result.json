@@ -1,0 +1,3 @@
+{ "name": "push: a line that holds the result is swapped for the rung's safe line", "run": "push",
+  "in": { "line": "Subtract 6 from both sides and you get x = 4.", "result": "x = 4", "secondLook": false, "safe": "Read the highlighted line again, slowly." },
+  "out": { "verdict": "leak", "line": "Read the highlighted line again, slowly.", "why": "result" } }

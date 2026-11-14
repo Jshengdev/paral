@@ -1,0 +1,32 @@
+{
+ "answers": {
+  "slow question": [
+   {
+    "problem": "Solve for x: 2(x + 3) = 14",
+    "breakLine": "2x + 6 = 14, so x = 10",
+    "result": "x = 4",
+    "beats": [
+     {
+      "say": "This hint belongs to an ask that was cut.",
+      "mark": null
+     }
+    ],
+    "hold": true
+   }
+  ],
+  "why is this wrong": [
+   {
+    "problem": "Solve for x: 2(x + 3) = 14",
+    "breakLine": "2x + 6 = 14, so x = 10",
+    "result": "x = 4",
+    "beats": [
+     {
+      "say": "Read the last line again: what did you do to the 6?",
+      "mark": null
+     }
+    ]
+   }
+  ]
+ },
+ "leaks": []
+}

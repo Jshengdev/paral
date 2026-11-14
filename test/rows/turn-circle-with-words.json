@@ -1,0 +1,207 @@
+{
+ "name": "turn: he draws around two lines as he asks: his loop comes back as one rounded box around them before any answer, and the model is asked about those two lines",
+ "run": "turn",
+ "in": {
+  "tape": "circled.json",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1005,
+     "display": {
+      "id": 1,
+      "scale": 1,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Data is split into packets",
+       "box": {
+        "x": 100,
+        "y": 100,
+        "w": 600,
+        "h": 40
+       }
+      },
+      {
+       "text": "Packets are numbered",
+       "box": {
+        "x": 100,
+        "y": 180,
+        "w": 500,
+        "h": 40
+       }
+      },
+      {
+       "text": "Lost packets are sent again",
+       "box": {
+        "x": 100,
+        "y": 260,
+        "w": 640,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "v": 1,
+     "type": "trail",
+     "x": 760,
+     "y": 240,
+     "at": 1100
+    },
+    {
+     "v": 1,
+     "type": "trail",
+     "x": 714,
+     "y": 278,
+     "at": 1116
+    },
+    {
+     "v": 1,
+     "type": "trail",
+     "x": 590,
+     "y": 305,
+     "at": 1132
+    },
+    {
+     "v": 1,
+     "type": "trail",
+     "x": 420,
+     "y": 315,
+     "at": 1148
+    },
+    {
+     "v": 1,
+     "type": "trail",
+     "x": 250,
+     "y": 305,
+     "at": 1164
+    },
+    {
+     "v": 1,
+     "type": "trail",
+     "x": 126,
+     "y": 278,
+     "at": 1180
+    },
+    {
+     "v": 1,
+     "type": "trail",
+     "x": 80,
+     "y": 240,
+     "at": 1196
+    },
+    {
+     "v": 1,
+     "type": "trail",
+     "x": 126,
+     "y": 202,
+     "at": 1212
+    },
+    {
+     "v": 1,
+     "type": "trail",
+     "x": 250,
+     "y": 175,
+     "at": 1228
+    },
+    {
+     "v": 1,
+     "type": "trail",
+     "x": 420,
+     "y": 165,
+     "at": 1244
+    },
+    {
+     "v": 1,
+     "type": "trail",
+     "x": 590,
+     "y": 175,
+     "at": 1260
+    },
+    {
+     "v": 1,
+     "type": "trail",
+     "x": 714,
+     "y": 202,
+     "at": 1276
+    },
+    {
+     "say": "what does this mean"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 2100
+    }
+   ]
+  ]
+ },
+ "out": [
+  {
+   "v": 1,
+   "type": "state",
+   "name": "listening"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "what does this mean",
+   "final": false
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "thinking"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "what does this mean",
+   "final": true
+  },
+  {
+   "v": 1,
+   "type": "echo",
+   "id": "t1",
+   "box": {
+    "x": 100,
+    "y": 180,
+    "w": 640,
+    "h": 120
+   },
+   "shape": "box"
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t1",
+   "beat": 0,
+   "text": "Those two lines are the jobs that make packets trustworthy."
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "t1",
+   "why": "no voice is set up"
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "idle"
+  }
+ ]
+}
