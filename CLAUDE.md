@@ -26,7 +26,7 @@ Cartesia for the ear and the voice.
 | `./flow RUN/flow.json` | a real run with no screen: a scripted ask goes through the real mind and services, every line recorded | the keys |
 | `./film RUN` | replays a recorded run through the real scene and painter into frames and a voice track | nothing |
 | `./tune` | the dials page: every colour, size and motion time, saved to `body/tokens.json` | a browser |
-| `./run` | the real thing: lists the two grants, then starts the mind and the app | the keys, a microphone, the screen grant |
+| `./run` | the real thing: lists the grants, then starts the mind and the app | the keys, a microphone, the screen grant; Accessibility only for "Scroll for me" and "Open it for me" |
 | `./run build`, `./run grants`, `./run stop` | bundle and sign only; print the grants only; end both | |
 | `node pages/gather.ts` | reads the public USC pages named in `pages/list.json` and keeps their text in `pages/kept/`, closed sections and all | the network |
 
@@ -116,7 +116,8 @@ the same all day: it is asked once, kept in `tmp/looks/`, and asked ahead for ev
 
 **It guides from page to page.** For three minutes after an answer (`followForMs`), a look at another kept page is
 taken as him following that answer: the model is asked only whether this page holds what he was sent for, and if so
-the place is boxed with one line ("found what you asked for"). paral clicks nothing; he goes there himself.
+the place is boxed with one line ("found what you asked for"). He goes there himself, or presses "Take me there" and the
+app opens that page's address (below).
 
 **"Show me."** When those are his whole words (`showMeAsks`), paral walks him through what is still ahead, one step
 each time he says it (`mind/showme.ts`). For the step he is on: the board of all the steps with `now` naming his
@@ -183,7 +184,8 @@ needs the Accessibility grant. Nothing else is ever clicked, and nothing is ever
 **"Add it to my calendar."** The date paral last showed him, from a look or from an answer, can be kept
 (`mind/keep.ts`, `keepAsks`). No model is asked: the date is written into a calendar file (.ics) with the line as the
 page writes it and the page's address, an `open` line crosses the seam, and the app opens the file in his calendar
-app (`Keep.swift`). The app opens nothing but a file ending in .ics, and clicks nothing in the calendar.
+app (`Keep.swift`). The app opens three things and no others: a file ending in .ics, his own notes page, and an https
+address of a usc.edu site. It clicks nothing in the calendar.
 
 **"Show me my notes."** What he takes away at the end of a sitting (`mind/notes.ts`, `notesAsks`; the last line of
 each scenario in the menu). No model is asked: one page is made from what the mind already holds
@@ -260,8 +262,9 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
   picture; the room round a marked box (`notesCut`) is a guess. A section is cut only from a look: a box placed by
   "show me" or by an answer on a page that has not moved since gives no picture until the next look. The goal is the
   first ask that is not a command, whatever it was about.
-- The demo's guide has run only on a tape. It has steps for two pages, the club recognition page and the Catalina
-  Maymester page; the chemistry worksheet has none, since the mind cannot yet tell that page is on screen. It knows
+- The guide's card has been on his real screen through whole takes. It has steps for two pages, the club recognition
+  page and the Catalina Maymester page; the chemistry worksheet has none (the measured sheet is found on screen for
+  its rings, and no steps were written for it). The goal's counter has run only on a tape. It knows
   a step happened only from what the mind itself did: a click in Calendar, or a section opened with the date's line
   still out of view, is not seen.
 - A click on a step's box has run only on a tape and in the scripted stand-in. The app reads the left button by asking
@@ -292,12 +295,15 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
   steps in the order the looks found them, in the look's own words for each; a step is done when he clicks its box or
   says "show me" again, and nothing else tells it. A step's place is the line the look named for it, or the line of
   its date; a step with neither has nothing to box.
-- The real windows have been started by the owner on his own Mac, twice. Seen there: the hold key, the microphone,
-  the ear, the voice, and answers with marks once the screen grant was on. Not yet seen there: a circle, the cross,
-  the board over real windows, a headset, and everything added since 368e4da except what the watcher cost.
-- The orb at rest has been seen only in films and stills: on a real screen it has never been drawn. Its light costs
-  under a millisecond a frame at its Retina size in a release build, measured once; the window then draws only the
-  orb's square again, thirty times a second, and what that costs on his Mac is not measured.
+- The real windows have run on the owner's own Mac, and on November 15 were recorded there by a second session through
+  nineteen clips: the first look on six kept pages, spoken questions, answers with marks and their cards, the board,
+  the walk through three steps by clicks, rings on the worksheet's atoms, marks leaving while the page moves and coming
+  back when it stops, the orb at rest, and one uncut take from an empty tab. Not yet seen there, each needing him at
+  the screen: "Scroll for me" and "Open it for me" (no Accessibility grant yet), "Take me there", the notes page,
+  "Add to calendar" pressed, a circle drawn with the pen key, and a headset.
+- The orb at rest is on his real screen in those clips, with the app at 13 to 20 percent of one processor at rest,
+  no more than before it. Its light costs under a millisecond a frame at its Retina size in a release build, measured
+  once.
 - One display, chosen when the app starts. After plugging in a display or a projector, start it again.
 - The pill sits above the Dock's height as the display gave it when the app started. Not seen on a real screen; if the
   Dock is moved or shown after that, start the app again.

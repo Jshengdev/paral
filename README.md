@@ -37,7 +37,10 @@ Hold the right Option key, ask, and let go. Hold Shift as well to draw around so
 - `./check` runs one test file over the rows in `test/rows/`. Each row states one thing that must be true.
 - `exam/` is a separate judge. It plays scripted asks through the real services, films what paral draws, and reads
   the film and the record against a list of what paral must do.
-- Not yet proven: the real windows on a person's screen. Everything above runs without a window.
+- On a real screen, on its owner's Mac on November 15: the first look on six USC pages, spoken questions answered,
+  the walk through three steps by clicks, rings on a worksheet's atoms, marks that leave while the page moves and come
+  back when it stops, and one uncut take from an empty tab. Not yet seen on a real screen, since each needs a person
+  at it: "Scroll for me", "Open it for me", "Take me there", the notes page, and "Add to calendar" pressed.
 
 ## Built with
 
