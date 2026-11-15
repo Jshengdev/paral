@@ -1,7 +1,7 @@
 import type { Hands, Screen } from "./ask.ts";
 import { unknownDate, worded } from "./cores/dates.ts";
 import { named, type ToKeep } from "./cores/keep.ts";
-import { whichPage, type KeptPage } from "./cores/page.ts";
+import { headingOf, whichPage, type KeptPage } from "./cores/page.ts";
 import { point, whereIs } from "./place.ts";
 import type { Following, Glanced } from "./ports.ts";
 import { SEAM_VERSION, type FromBody } from "../seam/schema.ts";
@@ -96,6 +96,8 @@ export function glances({ ports, settings, send, log }: Hands, remember: (ahead:
           return undefined;
         });
         if (mine.signal.aborted || glanced === undefined) return;
+        // The heading is read from the kept page, not taken on the model's word: once it named the site's menu instead.
+        if (glanced !== null) glanced.under = headingOf(page, glanced.line, glanced.under);
         found.set(key, glanced);
         if (glanced === null && following) {
           log(`${id}: what he was sent for is not on this page; the page gets a look of its own`);
