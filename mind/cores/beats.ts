@@ -44,6 +44,8 @@ export const WHOLE: Limits = { plain: Infinity, withNumbers: Infinity };
 const SUBJECT = /^(i|you|he|she|it|we|they|the|a|an|this|that|these|those|your|its|their|there|each|every|both|all|then|[a-z])$/i;
 /** After a comma, "so" opens a sentence of its own whatever its subject, except in "so that", "so as to", "so far as" and the like. */
 const NOT_AFTER_SO = /^(that|as|far|long|much|many|to|on|forth)$/i;
+/** After a comma, "per the ..." is a tail that says where the thing is written. "Per" before anything else is a rate ("twelve dollars, per transcript"). */
+const WRITTEN_IN = /^(the|this|that|its|their|your)$/i;
 
 /**
  * A spoken sentence over its limit is cut into two only where both parts stand as sentences: after a semicolon, after
@@ -53,7 +55,9 @@ const NOT_AFTER_SO = /^(that|as|far|long|much|many|to|on|forth)$/i;
  * and with no place at all the sentence is left as it is. A sentence within its words that is over its letters is
  * cut the same way, but never at a colon, and at a comma before "and" or "but" only when eight words or more follow:
  * what follows a colon in a short sentence, or a few words after ", and", is most often a list or its last thing,
- * which does not stand alone. After ", so" a clause follows, and it is cut there whatever its length.
+ * which does not stand alone. After ", so" a clause follows, and it is cut there whatever its length. A tail that
+ * says where the thing is written ("..., per the closed Deadlines section under Important Dates") is no sentence as
+ * it stands, so it is cut there and said as one: "That's per the closed Deadlines section under Important Dates."
  */
 export function split(sentence: string, limits: Limits): string[] {
   const words = sentence.trim().split(/\s+/);
@@ -74,12 +78,14 @@ export function split(sentence: string, limits: Limits): string[] {
     // After a colon a clause follows, or a name does ("Officer Trainings: Hazing Prevention and Officer Learning
     // Path"). A capital letter on a word that cannot open a sentence is a name, and a name is not cut in two.
     const named = /:$/.test(before) && /^\p{Lu}/u.test(words[first]) && !SUBJECT.test(words[first]);
-    if ((/;$/.test(before) || (wordy && /:$/.test(before) && !named)) || joins) places.push(first);
+    const written = /,$/.test(before) && /^per$/i.test(words[first]) && WRITTEN_IN.test(next);
+    if ((/;$/.test(before) || (wordy && /:$/.test(before) && !named)) || joins || written) places.push(first);
   }
   const first = places.filter((place) => place <= limit).at(-1) ?? places[0];
   if (first === undefined) return [sentence.trim()];
   const rest = words.slice(first).join(" ");
-  return [words.slice(0, first).join(" ").replace(/[,;:]$/, "") + ".", ...split(rest[0].toUpperCase() + rest.slice(1), limits)];
+  const next = /^per$/i.test(words[first]) ? `That's ${rest}` : rest[0].toUpperCase() + rest.slice(1);
+  return [words.slice(0, first).join(" ").replace(/[,;:]$/, "") + ".", ...split(next, limits)];
 }
 
 export function hint(reply: Reply, maxBeats: number, maxWords: Limits): string[] {

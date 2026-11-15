@@ -1,0 +1,28 @@
+{
+ "name": "beats: a long sentence that ends by saying where the thing is written (\", per the closed Deadlines section ...\") is cut before that tail, and the tail is said as a sentence of its own (\"That's per the ...\"); a short sentence with such a tail is left whole; \"per\" as a rate (\"twelve dollars, per transcript\") is no place to cut",
+ "run": "beats.split",
+ "in": {
+  "limits": {
+   "plain": 22,
+   "withNumbers": 14,
+   "letters": 110
+  },
+  "sentences": {
+   "a long tail": "Advisors must submit their requirements by December 1, sixteen days from today, per the closed Deadlines section under Important Dates.",
+   "a short one": "Certificates from previous years aren't accepted, per the annual recognition section of this FAQ.",
+   "a rate": "It costs twelve dollars, per transcript, for each PDF you order through USC Parchment Services for the program's own office."
+  }
+ },
+ "out": {
+  "a long tail": [
+   "Advisors must submit their requirements by December 1, sixteen days from today.",
+   "That's per the closed Deadlines section under Important Dates."
+  ],
+  "a short one": [
+   "Certificates from previous years aren't accepted, per the annual recognition section of this FAQ."
+  ],
+  "a rate": [
+   "It costs twelve dollars, per transcript, for each PDF you order through USC Parchment Services for the program's own office."
+  ]
+ }
+}
