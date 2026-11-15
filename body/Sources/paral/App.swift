@@ -65,10 +65,7 @@ final class App: NSObject, NSApplicationDelegate {
         status.menu = GuideSwitch.shared.added(to: menu) { [weak self] on in self?.scene.guideOn = on }
         self.status = status
 
-        mic.onSound = { [weak self] sound in
-            guard let self else { return }
-            self.wire.send(.mic(pcm: sound, at: self.stamp()))
-        }
+        mic.onSound = { [weak self] sound in self?.wire.send(.mic(pcm: sound, at: self?.stamp() ?? 0)); self?.tell(.sound(sound)) }
         mic.onFailed = { [weak self] why in self?.failed(why) }
         wire.onLine = { [weak self] seen in self?.took(seen) }
         wire.onRefused = { [weak self] why in self?.failed("the body refused a line from the mind (\(why))") }
