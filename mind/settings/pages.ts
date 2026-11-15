@@ -38,6 +38,12 @@ export const pages = {
     measured: "not measured; a first list. One live run heard \"Show me.\" as said",
   } satisfies Setting<string[]>,
 
+  movedLeast: {
+    value: 6,
+    why: "A marked line whose box is this many points or more from where it was, across or down, has moved: the mark is drawn again where the line now is. Less than that is taken as the text reader's own wobble between two pictures, and what is shown stays.",
+    measured: "not measured on a real screen: how far the reader's boxes wobble between two pictures of a still page is not known",
+  } satisfies Setting<number>,
+
   unaskedVoice: {
     value: true,
     why: "Whether the first look at a page is also said aloud when it shows a date, ahead or passed: once for the page in a sitting, never while he holds the key or an answer is on its way, and stopped by a press of the key. A look that only moves its mark is never spoken. The owner's word at about midnight on 2026-11-15: \"yes it should speak the unasked line aloud\".",
