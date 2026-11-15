@@ -85,6 +85,8 @@ public struct Scene {
             for i in marks.indices where marks[i].clearedAt == nil && Scene.sameLine(marks[i].box, here) { marks[i].clearedAt = at }
             // His own loop gives way once paral marks something inside it.
             for i in echoes.indices where echoes[i].clearedAt == nil && Scene.sameLine(echoes[i].box, here) { echoes[i].clearedAt = at }
+            // The thing an arrow led to is in view once the same look or answer marks it, so that arrow goes.
+            for i in ways.indices where ways[i].clearedAt == nil && ways[i].id == id { ways[i].clearedAt = at }
             marks.append(Mark(id: id, beat: beat, kind: kind, box: box.moved(dx: -origin.x, dy: -origin.y), label: label, at: at, withSay: withSay))
         case .way(let id, let to, let toward):
             // One arrow at a time: a newer one takes the place of the one before. A clear wipes it, as it does a mark.

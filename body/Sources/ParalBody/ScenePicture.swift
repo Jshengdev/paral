@@ -7,7 +7,7 @@ extension Scene {
         var capsule = capsule(at: t)
         let clip = clip(at: t)
         capsule.closes = capsule.look == .rest && (!marks.isEmpty || way != nil || board != nil || clip != nil)
-        return Picture(clock: t, capsule: capsule, marks: marks, echo: echo(at: t), way: way, pointer: pointer(at: t, capsule), board: board, clip: clip, trail: trailUp(at: t), avoid: texts)
+        return Picture(clock: t, capsule: capsule, marks: marks, echo: echo(at: t), way: way, pointer: pointer(at: t), board: board, clip: clip, trail: trailUp(at: t), avoid: texts)
     }
 
     func capsule(at t: Double) -> CapsulePicture {
@@ -79,7 +79,7 @@ extension Scene {
 
     /// His own loop, drawn back: the ring a line gets, a rounded box around several lines, or a ring that follows
     /// the loop's own box when it holds no whole line.
-    private func ring(for echo: Echo, drawn: Double) -> MarkPicture {
+    func ring(for echo: Echo, drawn: Double) -> MarkPicture {
         if echo.shape == "ring" || echo.shape == "box" {
             return MarkPicture(key: "echo/\(echo.id)", kind: echo.shape == "box" ? .box : .ring, box: echo.box, label: nil, drawn: drawn)
         }
@@ -94,40 +94,8 @@ extension Scene {
         return ring(for: echo, drawn: inked(.ring, since: echo.at, at: t))
     }
 
-    /// The kind of stroke an echo is drawn with, for the pointer's timing.
-    private func kind(of echo: Echo) -> MarkKind { echo.shape == "box" ? .box : .ring
-    }
-
-    /// The pointer: it flies in one arc to where the next stroke starts, rides the pen's tip, rests where the stroke
-    /// ended, and leaves as the capsule goes back to rest.
-    func pointer(at t: Double, _ capsule: CapsulePicture) -> PointerPicture? {
-        guard !still, let hold = holds.last(where: { $0.down <= t }) else { return nil }
-        let alpha = capsule.look == .rest ? min(max(capsule.open, 0), 1) : 1
-        guard alpha > 0.02 else { return nil }
-        var strokes: [(began: Double, kind: MarkKind, path: [CGPoint])] = []
-        // Only strokes still on the page count, so a clear or a close takes the pointer with the ink.
-        func up(_ clearedAt: Double?) -> Bool { clearedAt.map { t < $0 } ?? true }
-        for echo in echoes where echo.at >= hold.down && echo.at <= t && up(echo.clearedAt) {
-            strokes.append((echo.at, kind(of: echo), Pen.path(of: ring(for: echo, drawn: 1), tokens: tokens, avoiding: texts)))
-        }
-        for mark in marks where mark.at >= hold.down && up(mark.clearedAt) {
-            guard let began = start(mark), began <= t else { continue }
-            let whole = MarkPicture(key: "\(mark.id)/\(mark.beat)", kind: mark.kind, box: mark.box, label: nil, drawn: 1)
-            strokes.append((began, mark.kind, Pen.path(of: whole, tokens: tokens, avoiding: texts)))
-        }
-        strokes.sort { $0.began < $1.began }
-        guard let now = strokes.last, let first = now.path.first, let last = now.path.last else { return nil }
-        let inkAt = now.began + flight
-        if t < inkAt {
-            let home = Layout.capsule(open: 1, width: width, height: height, tokens: tokens)
-            let from = strokes.count > 1 ? strokes[strokes.count - 2].path.last ?? first : CGPoint(x: home.x + home.w / 2, y: home.y)
-            let at = Motion.arc(from: from, to: first, Motion.spring((t - now.began) / flight, bounce: tokens.motion.bounce), lift: tokens.motion.arc)
-            return PointerPicture(x: at.x, y: at.y, alpha: alpha)
-        }
-        let share = Motion.land((t - inkAt) / duration(now.kind))
-        let tip = share >= 1 ? last : Pen.reach(now.path, share).tip
-        return PointerPicture(x: tip.x, y: tip.y, alpha: alpha)
-    }
+    /// The kind of stroke an echo is drawn with, for the cursor's timing.
+    func kind(of echo: Echo) -> MarkKind { echo.shape == "box" ? .box : .ring }
 
     func board(at t: Double) -> BoardPicture? {
         guard let board = boards.last(where: { $0.at <= t && ($0.clearedAt.map { t < $0 } ?? true) }) else { return nil }

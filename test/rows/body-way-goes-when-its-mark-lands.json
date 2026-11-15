@@ -1,0 +1,78 @@
+{
+ "name": "body: a mark with the arrow's own id takes the arrow down with no clear before it, so the body cannot show the way to a thing and a box on it at once; a mark with another id leaves the arrow up",
+ "run": "body.way",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "The Spring 2027 recognition process is now open.",
+   "All student organizations must complete recognition",
+   "through the online portal, on an annual basis.",
+   "Recognition status runs for one academic year.",
+   "If you hope to re-establish your club, submit this form.",
+   "For questions, contact Campus Activities.",
+   "Important Dates"
+  ],
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "way",
+     "id": "g1",
+     "to": "down",
+     "toward": "Deadlines"
+    }
+   },
+   {
+    "at": 2000,
+    "line": {
+     "type": "mark",
+     "id": "t7",
+     "beat": 0,
+     "kind": "box",
+     "box": {
+      "x": 120,
+      "y": 398,
+      "w": 500,
+      "h": 47
+     }
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "mark",
+     "id": "g1",
+     "beat": 0,
+     "kind": "box",
+     "box": {
+      "x": 120,
+      "y": 782,
+      "w": 300,
+      "h": 47
+     }
+    }
+   }
+  ],
+  "at": [
+   2500,
+   3100
+  ]
+ },
+ "out": [
+  {
+   "arrow": {
+    "to": "down",
+    "toward": "Deadlines",
+    "inked": "whole",
+    "edge": "bottom",
+    "insideTheDisplay": true,
+    "onText": false,
+    "onTheCapsule": false,
+    "onTheBoard": false
+   }
+  },
+  {
+   "arrow": null
+  }
+ ]
+}

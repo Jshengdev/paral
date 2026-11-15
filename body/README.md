@@ -12,8 +12,9 @@ Three programs come from one package: `ParalBody` (everything), `paral` (the app
 | `Seen.swift`, `Lines.swift` | the seam on this side: every line read and written, checked at the edge |
 | `Scene.swift`, `SceneTimes.swift`, `ScenePicture.swift` | events in, a `Picture` for any moment out. No clock, no drawing |
 | `SceneWay.swift` | the arrow that says which way to scroll: how far the pen has inked it, and its nod |
+| `ScenePointer.swift` | paral's own cursor: its flight to a mark, its ride on the pen, its rest beside the mark and the ripple there |
 | `Picture.swift` | what is on screen at one moment, as plain values |
-| `Layout.swift` | where the capsule sits, the largest empty place for a board, and the place at an edge for the way arrow |
+| `Layout.swift` | where the capsule sits, the largest empty place for a board, the place at an edge for the way arrow, and where the cursor rests beside a mark |
 | `Motion.swift` | the curves: ease, land, spring, arc |
 | `Pen.swift` | the path the pen takes for each kind of mark |
 | `PenWay.swift` | the strokes the pen makes for the way arrow: its shaft, then its head |
@@ -72,10 +73,26 @@ takes the place of the one before, and `clear` or a close wipes it. While it is 
 cross. Its looks are the `way` group and `ember` in `tokens.json`. Its shape is after the drawn arrow of the design
 kit ("Lost and Found: brand kit", page 08), drawn here in code; no picture is loaded.
 
+## Marks and the cursor, after the design kit
+
+The seam's mark kinds are unchanged; the kit's look comes through tokens. A ring, an underline, a wavy line and a
+bracket are drawn by hand in `ember`. A box is the kit's neat highlight: a thinner edge (`mark.boxWidth`) in
+`cardinal` and a faint wash of cardinal inside it (`mark.wash`). The kit washes at 8 percent; it is 6 here, because
+over a white page 8 changes a pixel by more than the outside judge counts as ink (49 against its 40) and the words
+of a boxed line would count as covered, and 6 changes it by 37.
+
+The pointer is the kit's cursor: an arrow filled from `cardinalDeep` through `cardinal` to `ember` with a paper edge,
+its outline written in `PainterCursor.swift` from the corners of the kit's shape. It flies to where the newest mark
+starts (from the capsule the first time, from wherever it was after that), rides the pen while the mark is drawn,
+then steps aside to rest just beside the mark on none of the page's read text (`Layout.beside`: to the right of the
+mark first), and a ripple spreads from it once. It points and never clicks: it is ink in the overlay, which lets
+every click through. It comes for a mark with no key pressed too (a look's mark), stays for as long as its mark is
+on the page, and goes with it on a clear or a close. With motion reduced there is no cursor.
+
 `paral-headless` commands: `read`, `smaller`, `page`, `lines`, `keys SECONDS NAME` (watch a key), `flow`, `film`,
 `frame RUN TOKENS MS OUT.png` (one moment of a run, for the dials page), `capsule RUN TOKENS MS...` (what the capsule
 shows at those moments), `placed RUN TOKENS MS...` (where the painter puts each thing at those moments, and the way
-arrow's own values).
+arrow's and the cursor's own values).
 
-Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain` and `body.way` rows, with no window. The hosts are compiled and have never been run:
+Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way` and `body.cursor` rows, with no window. The hosts are compiled and have never been run:
 the key, the microphone, the screen picture and the overlay wait for a person and their grants (`./run`).

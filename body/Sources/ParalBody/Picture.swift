@@ -61,7 +61,11 @@ public struct WayPicture: Equatable {
 
 public struct TrailPoint: Equatable { public var x, y, alpha: Double }
 
-public struct PointerPicture: Equatable { public var x, y, alpha: Double }
+/// Paral's own cursor: where its tip is, and how far the ripple that says "here" has spread, 0 to 1, or nil for none.
+public struct PointerPicture: Equatable {
+    public var x, y, alpha: Double
+    public var ripple: Double?
+}
 
 /// Everything on screen at one moment, as plain values. The painter draws it; nothing else decides what is shown.
 public struct Picture: Equatable {

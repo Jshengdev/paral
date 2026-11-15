@@ -1,3 +1,4 @@
+import CoreGraphics
 import Foundation
 
 /// Where things go on a display, in points from its top-left corner.
@@ -46,6 +47,29 @@ public enum Layout {
             }
         }
         return best?.box ?? Box(x: home.x, y: home.y, w: size.w, h: size.h)
+    }
+
+    /// How wide the cursor is for a height of one: the design kit's arrow is 72 wide and 92.6 tall, and its shape
+    /// before the corners are rounded, which is what is laid out here, 75 by 97.9.
+    static let cursorWide = 0.766
+
+    /// Where the cursor's tip rests once its mark is drawn: just beside the mark and pointing back at it, on none of
+    /// the page's text. To the right first, where a line most often ends in empty page; then under the mark's end
+    /// and under its start. The first place that covers no text and is inside the display wins; failing that, the
+    /// one that covers least.
+    public static func beside(_ mark: Box, cursor: (w: Double, h: Double), gap: Double, texts: [Box], width: Double, height: Double) -> CGPoint {
+        let right = mark.x + mark.w + gap, middle = mark.y + mark.h / 2
+        let tips = [
+            CGPoint(x: right, y: middle - cursor.h / 4), CGPoint(x: right, y: mark.y + mark.h - cursor.h / 8), CGPoint(x: right, y: mark.y - cursor.h / 2),
+            CGPoint(x: mark.x + mark.w - cursor.w, y: mark.y + mark.h + gap), CGPoint(x: mark.x, y: mark.y + mark.h + gap),
+        ]
+        func cost(_ tip: CGPoint) -> Double {
+            let body = Box(x: tip.x, y: tip.y, w: cursor.w, h: cursor.h)
+            let outside = body.x < 0 || body.y < 0 || body.x + body.w > width || body.y + body.h > height
+            let covered = texts.reduce(0) { $0 + max(0, min(body.x + body.w, $1.x + $1.w) - max(body.x, $1.x)) * max(0, min(body.y + body.h, $1.y + $1.h) - max(body.y, $1.y)) }
+            return covered + (outside ? cursor.w * cursor.h : 0)
+        }
+        return tips.enumerated().min { (cost($0.element), $0.offset) < (cost($1.element), $1.offset) }?.element ?? tips[0]
     }
 
     /// The largest empty rectangle left by the page's text and the capsule, found on a coarse grid.
