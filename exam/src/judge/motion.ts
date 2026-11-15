@@ -13,11 +13,16 @@ const POPPED_MS = 100;    // Nielsen: a change under 0.1 s reads as instant, so 
 const SLOW_MS = 1000;     // Nielsen: past 1 s the eye waits on the pen and stops following the voice
 
 // A mark is drawn by a pen, so its ink grows. The pen's time is from a tenth of the mark's ink to nine tenths of it.
+// The ink is counted from the least there was as the mark began: nothing, for a mark on a clean line; and for a
+// mark that takes the place of one on the same line ("show me" boxes the line the look had boxed), what was left
+// when the old one was wiped. Counted from before the wipe, such a mark grew by nothing and was never judged.
 async function penTime(seen: Seen, mark: Placed): Promise<number | null> {
   const box = { x: mark.box.x - ROOM, y: mark.box.y - ROOM, w: mark.box.w + 2 * ROOM, h: mark.box.h + 2 * ROOM };
   const samples: { ms: number; ink: number }[] = [];
   for (let ms = mark.at - BEFORE_MS; ms <= mark.at + AFTER_MS; ms += STEP_MS) samples.push({ ms, ink: count(await seen.ink(ms), seen.size, box) });
-  const grown = samples.map((s) => ({ ms: s.ms, ink: s.ink - samples[0].ink }));
+  const began = samples.filter((s) => s.ms <= mark.at + 2 * STEP_MS);
+  const least = began.reduce((low, s) => (s.ink <= low.ink ? s : low));
+  const grown = samples.filter((s) => s.ms >= least.ms).map((s) => ({ ms: s.ms, ink: s.ink - least.ink }));
   const full = grown[grown.length - 1].ink;   // the window always holds at least one sample
   if (full < FEW) return null;
   // The last sample holds all the ink, so some sample always reaches any share of it.
