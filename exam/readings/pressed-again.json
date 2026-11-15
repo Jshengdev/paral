@@ -1,5 +1,5 @@
 {
-  "session": "f926f41d95ce",
+  "session": "e964c99c50af",
   "by": "the judge's reader, 2026-11-14",
   "verdicts": [
     {
@@ -7,7 +7,7 @@
       "step": 1,
       "pass": true,
       "what": "After his second press it answers the new question",
-      "measured": "he let go of \"What does the first check mean?\" and pressed again a tenth of a second later. It heard the new question whole, \"which line here is about passwords.\", and answered it: the first bullet under Extra checks I ran, passwords are saved scrambled. Nothing about the first check was said. The underline is on that line"
+      "measured": "he let go of \"What does the first check mean?\" and pressed again a tenth of a second later. It heard the new question whole, \"which line here is about passwords.\", and answered it: the first bullet under Extra checks I ran, saying passwords are saved scrambled. Nothing about the first check was said. The underline is on that line"
     },
     {
       "criterion": "U6",

@@ -1,5 +1,5 @@
 {
-  "session": "bc58e2a5daf4",
+  "session": "1d2a02eed5f4",
   "by": "the judge's reader, 2026-11-14",
   "verdicts": [
     {
@@ -7,7 +7,7 @@
       "step": 0,
       "pass": true,
       "what": "It answers what he asked",
-      "measured": "he asked for the riskiest line in the file layout; it names one, the rate limiter's buckets in one process's memory, says why (each copy keeps its own counts and a restart wipes them) and gives a fix"
+      "measured": "he asked for the riskiest line in the file layout; it names one, the rate limiter's buckets in one server's memory, says why (a restart wipes the counts, and several instances each keep their own limits) and gives a fix"
     },
     {
       "criterion": "U6",

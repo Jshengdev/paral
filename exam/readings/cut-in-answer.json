@@ -1,5 +1,5 @@
 {
-  "session": "d60b9bd09912",
+  "session": "e6dc501c46d9",
   "by": "the judge's reader, 2026-11-14",
   "verdicts": [
     {
@@ -7,7 +7,7 @@
       "step": 1,
       "pass": true,
       "what": "After he cuts in, it answers the new question",
-      "measured": "he cut in one second into the first answer, which had said to start with sign up. It dropped the rest and answered the new question: the line about the stats page is item six, the last under What you should see, and it says what that line lists. The underline is on that line"
+      "measured": "he cut in one second into the first answer, which had said to start with sign up. It dropped the rest and answered the new question: the line about the stats page is item six, the last numbered line, and it says what that line lists. The underline is on that line"
     },
     {
       "criterion": "U6",

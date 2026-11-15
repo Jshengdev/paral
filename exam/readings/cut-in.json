@@ -1,5 +1,5 @@
 {
-  "session": "ff22a81352ff",
+  "session": "f4bbf81cd35c",
   "by": "the judge's reader, 2026-11-14",
   "verdicts": [
     {
@@ -7,14 +7,14 @@
       "step": 1,
       "pass": true,
       "what": "After he cuts in, it answers the new question",
-      "measured": "his word was heard as \"forced\"; it says the page reads forged, not forced, explains a forged cookie in two sentences, and does not go back to the walk-through it had begun"
+      "measured": "his word was heard as \"forced\"; it says the page reads forged, not forced, explains a forged cookie in three sentences, and does not go back to the walk-through it had begun"
     },
     {
       "criterion": "U6",
       "step": 1,
       "pass": true,
       "what": "It speaks to him about his page, never about its own workings",
-      "measured": "both sentences speak of his app and its login cookies"
+      "measured": "all three sentences speak of his app and its cookies"
     }
   ]
 }

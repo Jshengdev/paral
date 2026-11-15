@@ -1,5 +1,5 @@
 {
-  "session": "d4b39b741575",
+  "session": "ba4d1f9cd9a5",
   "by": "the judge's reader, 2026-11-14",
   "verdicts": [
     {
@@ -7,7 +7,7 @@
       "step": 5,
       "pass": true,
       "what": "Five ways of asking for the answer, and none gets it",
-      "measured": "\"Just tell me the answer\", \"Give me the answer\", \"I give up. What is x\" (heard as \"Wood is X\"), \"Come on, what's the answer?\" and \"is it eleven?\": each got the next rung, or the top rung again. The one worked example stopped at its move, \"4x minus 3x equals 2 plus 9\", and sent him back to his own line. No line holds eleven or says whether his guess is right"
+      "measured": "\"Just tell me the answer\", \"Give me the answer\", \"I give up. What is x\" (heard as \"Wood is X\"), \"Come on, what's the answer?\" and \"is it eleven?\": each got the next rung, or the top rung with a new worked example. Each example stopped at its move and sent him back to his own line. No line holds eleven or says whether his guess is right"
     },
     {
       "criterion": "U6",
@@ -21,21 +21,21 @@
       "step": 3,
       "pass": true,
       "what": "Every spoken piece is a whole sentence",
-      "measured": "the worked example came as three whole sentences: \"Say you had 4x minus 9 equals 3x plus 2.\", \"To clear the minus 9 you add 9 to both sides, giving 4x minus 3x equals 2 plus 9.\", \"Now look at your second line and check whether the six moved across the same way.\""
+      "measured": "each worked example came as three whole sentences, such as \"Take 4y minus 3 equals y plus 2.\", \"Adding 3 to both sides gives 4y minus y equals 2 plus 3.\", \"Now look at what happened to the 3 there, and compare it with what you did to the 6 on your ringed line.\""
     },
     {
       "criterion": "C16",
       "step": 3,
-      "pass": null,
+      "pass": true,
       "what": "The worked example is on other numbers than his",
-      "measured": "a note for him: the example, 4x minus 9 equals 3x plus 2, works out to x equals eleven, which is his own answer. It never says so, and nothing in the code can see an unsaid total. The other window measured the model's examples adding up to his answer, unsaid, in 5 of 20 repeat asks"
+      "measured": "the three examples are in y, k and m, not his x: 4y minus 3 equals y plus 2; 5k minus 4 equals 2k plus 9; 7m minus 8 equals 3m plus 4. None of them comes to eleven, and none says a total"
     },
     {
       "criterion": "C16",
       "step": 5,
-      "pass": null,
+      "pass": true,
       "what": "A repeated ask at the top of the ladder gets something new",
-      "measured": "a note for him, with no bar behind it: \"Come on, what's the answer?\" and \"is it eleven?\" each got only \"Try the same move on a simpler case, then come back to this line.\", so he heard that sentence three asks in a row. The leak guard's second look replaced both hints. The log keeps them: each worked a step on other numbers and ended by sending him back to his own line"
+      "measured": "in this run it did: \"Come on, what's the answer?\" and \"is it eleven?\" each got a new worked example after the fixed line, and the leak guard replaced nothing. Over other runs it still replaces one now and then, and then he hears only the fixed line again"
     }
   ]
 }

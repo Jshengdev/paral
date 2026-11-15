@@ -1,5 +1,5 @@
 {
-  "session": "438b3b9c4393",
+  "session": "ae9f1231e7c2",
   "by": "the judge's reader, 2026-11-14",
   "verdicts": [
     {
@@ -7,14 +7,14 @@
       "step": 0,
       "pass": true,
       "what": "The dates it gives are the page's own",
-      "measured": "exams from Wednesday, December 9 through December 16; four study days, Saturday December 5 through Tuesday December 8; classes end Friday, December 4. Each is on the calendar's rows for fall 2026"
+      "measured": "exams start Wednesday, December 9 and run through Wednesday, December 16; four study days, Saturday December 5 through Tuesday December 8; classes end on the 4th; winter recess follows. Each is on the calendar's rows for fall 2026. The bracket took the Study Days and Exams rows by their names"
     },
     {
       "criterion": "C13",
       "step": 1,
       "pass": true,
       "what": "It says where on the page the holidays are found",
-      "measured": "it says they are not listed here, that the intro paragraph links to the Paid University Holidays policy in USC Employee Gateway, and that this calendar covers students and graduate student workers. Each of those is on the page, and the underline is on the line with the link"
+      "measured": "it says they are not listed here, that the intro paragraph links to a separate Paid University Holidays policy, and that the link goes to USC Employee Gateway because those holidays are for faculty and staff. The page has that link in its intro paragraph, and the underline is on that line"
     },
     {
       "criterion": "U6",

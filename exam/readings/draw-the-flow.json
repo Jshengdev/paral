@@ -1,5 +1,5 @@
 {
-  "session": "842dbf61d72e",
+  "session": "876dc4c165cd",
   "by": "the judge's reader, 2026-11-14",
   "verdicts": [
     {
@@ -7,14 +7,14 @@
       "step": 0,
       "pass": true,
       "what": "The drawing shows what he asked for",
-      "measured": "he asked how sign in, creating a link and the click stats connect; the board has two rows of three boxes: sign up or log in, dashboard, create short link; then visitor opens link, click recorded, stats page"
+      "measured": "he asked how sign in, creating a link and the click stats connect; the board has two rows of three boxes: sign up or log in, dashboard, create short link; then visitor opens link, click recorded, stats page. It opened with both rows on it, never empty"
     },
     {
       "criterion": "C5",
       "step": 0,
       "pass": true,
       "what": "The opener is short and names the act",
-      "measured": "7 words: \"Let's map out how those pieces connect.\" It came after the fixed line",
+      "measured": "10 words: \"Let's sketch how sign-in, link creation, and click stats connect.\" It came after the fixed line",
       "limit": "about ten words (the video: nine)"
     },
     {

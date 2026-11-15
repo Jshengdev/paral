@@ -1,5 +1,5 @@
 {
-  "session": "0ad03a862968",
+  "session": "aa574f6a69a8",
   "by": "the judge's reader, 2026-11-14",
   "verdicts": [
     {
@@ -7,14 +7,14 @@
       "step": 1,
       "pass": true,
       "what": "The follow-up builds on the first answer",
-      "measured": "the first answer said to buy a short domain and point it at his server; the follow-up picks one kind (four to six letters on a cheap ending, \"like a made-up q h dot link\") and shows his own code on it: qh.link/4CQMZu"
+      "measured": "the first answer said to buy a short domain and point it at his server; the follow-up picks one kind (a two-letter name on dot link or dot to) and shows his own code on it: qh.link/4CQMZu"
     },
     {
       "criterion": "C5",
       "step": 0,
       "pass": true,
       "what": "The opener is short and names the act",
-      "measured": "8 words: \"Let's look at how these links are built.\"",
+      "measured": "9 words: \"Let's look at what these links are made of.\"",
       "limit": "about ten words (the video: nine)"
     },
     {
@@ -30,14 +30,14 @@
       "step": 1,
       "pass": true,
       "what": "A link reads well in the capsule",
-      "measured": "it is said as \"q h dot link\" and then \"that domain, a slash, and the same six-character code\", and the board shows it written: qh.link/4CQMZu"
+      "measured": "it is said as \"that domain, a slash, and the same six-character code\", and the board shows it written: qh.link/4CQMZu"
     },
     {
       "criterion": "C8",
       "step": 1,
       "pass": true,
       "what": "The board reads cleanly",
-      "measured": "two rows in each ask, two or three boxes a row, and no box begins or ends with an arrow. One box in the second board holds only the word \"slash\""
+      "measured": "two rows of two boxes in the first ask, one row of three in the second, and no box begins or ends with an arrow. Neither opened empty"
     },
     {
       "criterion": "U6",
