@@ -95,7 +95,7 @@ walk are kept outside this repo, beside the films, because the record quotes the
   display's. Lines that came with a place and no words are a second sign of a part. The exam's circles are small, so
   the whole display sent with a circle is a fault here.
 - **A sentence is said once, never twice.** DuckyHelper's own notes say so for the tutor in the video (0.10.32). It is
-  held within one answer.
+  held within one answer. A card that shows an answer's sentence again without speaking it has not said it twice.
 - **About the page.** An answer must share words with the page. Only the answer's own sentences, labels and board
   count: a waiting line that happens to hold a word of the page proves nothing. A hint is not held to this. It says
   little on purpose, and the ring on his line is what ties it to the page.
@@ -122,7 +122,8 @@ walk are kept outside this repo, beside the films, because the record quotes the
   page in front of him, or one of the build's kept pages that the mind's log says it gave the model with that ask
   or with any ask or look before it in the same sitting (`src/judge/pages.ts`): one sitting, one memory. A date he said himself, and the day of the run, also count. The kept pages' text is the
   builder's reading of each site; the judge does not check it against the site.
-  A scenario can ask that the days to a date be counted rightly from the day of the run (`countsDaysTo`).
+  A scenario can ask that the days to a date be counted rightly from the day of the run (`countsDaysTo`); a whole
+  number of weeks may be said in weeks ("one week" for seven days).
   A scenario can also ask that the answer say something in its own words (`saysThat`), such as that the date has
   passed: any one of the listed words shows it, whole words only. The list is a sign, so a reader reads every pass.
 - **A piece cut off from its sentence.** A long sentence cut at a comma once left "Which is 13." said on its own.
