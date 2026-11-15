@@ -18,7 +18,20 @@ const WORKINGS = [/\bNONE\b/, /\bI.ll say\b/i, HIM_AS_SOMEONE_ELSE, /\bas an AI\
 
 /** Everything the judge holds about what was said in one ask: the answer itself, its sentences' form, and the hint ladder. */
 export function spoken(ask: Ask, expect: Expect, truth: Truth[]): Verdict[] {
-  return [...oneLine(ask, expect), ...aboutThePage(ask, expect, truth), aboutHim(ask), ...sentenceForm(ask), ...answered(ask), ...plainAnswer(ask, expect), ...ladder(ask, expect)];
+  return [...oneLine(ask, expect), ...quickLines(ask), ...aboutThePage(ask, expect, truth), aboutHim(ask), ...sentenceForm(ask), ...answered(ask), ...plainAnswer(ask, expect), ...ladder(ask, expect)];
+}
+
+// His click of 2026-11-14 at 16:52: the quick line is twelve words at most. Every line said while he waits is held
+// to it, the opener and the waiting lines alike. Whether a quick line is true of his page is a reader's to judge.
+const QUICK_WORDS = 12;
+
+function quickLines(ask: Ask): Verdict[] {
+  const quick = of(ask.moments, "say").filter((m) => m.opener);
+  if (quick.length === 0) return [];
+  const count = (text: string) => text.trim().split(/\s+/).length;
+  const long = quick.filter((m) => count(m.text) > QUICK_WORDS);
+  const what = "A line said while he waits is twelve words at most";
+  return [long.length === 0 ? yes("C5", ask.index, what, `${quick.length} lines, the longest ${Math.max(...quick.map((m) => count(m.text)))} words`) : no("C5", ask.index, what, `${count(long[0].text)} words: "${long[0].text.slice(0, 70)}"`)];
 }
 
 // He circled and said nothing: one fixed line and no more.
