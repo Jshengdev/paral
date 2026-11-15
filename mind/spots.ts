@@ -35,7 +35,8 @@ export function spotsOn({ ports, settings, send, log }: Hands, id: string, seen:
           continue;
         }
         const what = on.sheet.spots[name].what ?? name;
-        send({ v, type: "mark", id, beat, kind: "ring", box: toPoints(spot.box, seen.display) });
+        // A place of a drawing, not a line: the body leads no arrow from it and keeps the cursor off the drawing.
+        send({ v, type: "mark", id, beat, kind: "ring", box: toPoints(spot.box, seen.display), spot: true });
         drew({ type: "mark.drawn", kind: "ring", line: `the drawing's ${what}` });
         log(`${id}: a ring on the drawing's ${name} (${what})`);
       }

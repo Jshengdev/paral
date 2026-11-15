@@ -140,7 +140,7 @@ where and draws it (`PainterNudge.swift`, `Layout.nudge`), as for the guide's ca
 | `Overlay.swift` | one see-through panel above everything that lets every click through, except where the last picture drew the cross or a nudge button; it never makes the app active |
 | `Press.swift` (in the app) | what a click the overlay took does: the cross closes, "Add to calendar" asks as a tapped cue card does, "Not now" puts the card away |
 | `Wire.swift` | the socket to the mind; reconnects when the mind restarts |
-| `Watch.swift` | looks at the display with no key pressed and reports a look when what it read has changed and stood still. Never run |
+| `Watch.swift` | looks at the display with no key pressed and reports a look when what it read, or where its first line stands, has changed and stood still. It reads the text only when the picture has changed. It has run on the owner's Mac since 2026-11-14 19:53; its sense of a scroll that keeps the same lines in view has not |
 | `Release.swift` | the end of a hold: the microphone's grace after the key is let go, and a new press that ends the hold before it first. Used by the app and by the scripted flow |
 
 ## With no window
