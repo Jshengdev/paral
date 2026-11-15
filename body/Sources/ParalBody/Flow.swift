@@ -8,9 +8,8 @@ public final class Flow {
 
     private let wire: Wire
     private let file: [String: Any]
-    /// The flow file itself, which a live flow reads again for each step (FlowSteps).
-    private let path: URL
-    private let dir: URL
+    private let path: URL   // the flow file itself, which a live flow reads again for each step (FlowSteps)
+    private var dir: URL { path.deletingLastPathComponent() }
     private var got: [Seen] = []
     private var scene: Scene
     private let tokens: Tokens
@@ -29,7 +28,6 @@ public final class Flow {
         else { throw Failed(why: "the flow file needs display.w and display.h") }
         self.file = file
         self.path = URL(fileURLWithPath: path)
-        dir = URL(fileURLWithPath: path).deletingLastPathComponent()
         scene = Scene(width: w, height: h, tokens: tokens)
         self.tokens = tokens
         wire = Wire(path: socket)
