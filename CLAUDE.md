@@ -91,6 +91,10 @@ line itself, or the heading it sits under), one sentence in the capsule with the
 shown and not spoken, and a board of what is still ahead. When he scrolls or opens a section the mark moves. What
 is ahead is remembered for the sitting and given to every ask. A press of the key takes over at once.
 
+**A page's first look is kept.** Its question is about the kept page's own text and today's date, so the answer is
+the same all day: it is asked once, kept in `tmp/looks/`, and asked ahead for every kept page when the mind starts
+(`mind/adapters/looked.ts`). A look after an ask is always asked live.
+
 **It guides from page to page.** For three minutes after an answer (`followForMs`), a look at another kept page is
 taken as him following that answer: the model is asked only whether this page holds what he was sent for, and if so
 the place is boxed with one line ("found what you asked for"). paral clicks nothing; he goes there himself.

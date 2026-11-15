@@ -1,9 +1,11 @@
+import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { anthropic } from "./adapters/anthropic.ts";
 import { silenced } from "./adapters/fault.ts";
 import { ink } from "./adapters/ink.ts";
 import { kept } from "./adapters/kept.ts";
+import { looked } from "./adapters/looked.ts";
 import { raea } from "./adapters/raea.ts";
 import { sonic } from "./adapters/sonic.ts";
 import { tape } from "./adapters/tape.ts";
@@ -25,15 +27,23 @@ const prompt = (name: string) => readFileSync(join(here, "prompts", `${name}.md`
 const spent = { usd: () => 0, credits: { used: 0 } };
 /** What is live in this run, for the first log line. */
 const using: string[] = [];
-/** Stops the work done ahead of time (lesson clips, kept sound) when the mind stops. */
+/** Stops the work done ahead of time (lesson clips, kept sound, kept looks) when the mind stops. */
 const ahead = new AbortController();
+/** Asks ahead for the first look of each kept page, once the pages are loaded; set when the deep model is live. */
+let looksAhead: (pages: KeptPage[]) => void = () => {};
 
 /** Claude for the answer, the second look and the fast lines. */
 function claude(): Partial<Ports> {
   const live = anthropic(settings, { answer: prompt("answer"), secondLook: prompt("second-look"), opener: prompt("opener"), glance: prompt("glance") }, log);
   spent.usd = live.spentUsd;
   using.push(`brain ${settings.brainModel.value} (cap $${settings.spendCapUsd.value})`);
-  return { brain: live.brain, secondLook: live.secondLook, opener: live.opener, glancer: live.glancer };
+  // A page's first look is kept on disk for the day, named by what would change it, and asked ahead at the start
+  // for the pages of the demo first: tonight that look took from 4 to 17 s when asked as the page came up.
+  const stamp = createHash("sha256").update(JSON.stringify([settings.brainModel.value, settings.brainEffort.value, settings.pageLinesGiven.value, prompt("glance")])).digest("hex").slice(0, 12);
+  const looks = looked(live.glancer, stamp, join(here, "..", "tmp", "looks"), log);
+  const demoFirst = (pages: KeptPage[]) => [...pages].sort((a, b) => Number(b.name in settings.demoSteps.value) - Number(a.name in settings.demoSteps.value));
+  looksAhead = (pages) => void looks.ahead(demoFirst(pages), Date.now(), ahead.signal);
+  return { brain: live.brain, secondLook: live.secondLook, opener: live.opener, glancer: looks };
 }
 
 /** Cartesia for the ear and the voice. The lines whose words never change are spoken from kept sound. */
@@ -97,6 +107,7 @@ if (live && ANTHROPIC_API_KEY) ports = { ...ports, ...claude() };
 if (live && CARTESIA_API_KEY) ports = { ...ports, ...cartesia(CARTESIA_API_KEY) };
 if (live && ANTHROPIC_API_KEY) ports = { ...ports, ...lessonClips() };
 if (live) ports = { ...ports, pages: keptPages() };
+if (live) looksAhead(ports.pages);
 if (PARAL_FAULT === "voice") {
   ports = { ...ports, voice: silenced };
   using.push("FAULT: the voice fails on purpose");

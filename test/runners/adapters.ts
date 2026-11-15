@@ -3,7 +3,9 @@ import { writeFileSync } from "node:fs";
 import type Anthropic from "@anthropic-ai/sdk";
 import { anthropic } from "../../mind/adapters/anthropic.ts";
 import { kept } from "../../mind/adapters/kept.ts";
+import { looked } from "../../mind/adapters/looked.ts";
 import { empty, type Lesson } from "../../mind/cores/hold.ts";
+import type { KeptPage } from "../../mind/cores/page.ts";
 import type { Asked, Spoken } from "../../mind/ports.ts";
 import { settings } from "../../mind/settings.ts";
 import { fresh } from "./temp.ts";
@@ -113,6 +115,27 @@ export async function keptVoice(input: { fixed: string[]; says: { text: string; 
     let firstWordAt = -1;
     await voice.say(say.text, new AbortController().signal, (pcm) => (bytes += pcm.length), (spoken) => (firstWordAt = Number(spoken.start[0].toFixed(2))));
     out.push({ text: say.text, voice: say.voice, calledTheLiveVoice: calls.length > before, bytes, firstWordAt });
+  }
+  return out;
+}
+
+/** Kept looks over a counting stand-in: which looks called the live glancer, and what each gave back. */
+export async function keptLook(input: { looks: { page: string; today: string; after?: string }[] }) {
+  const dir = fresh("looks");
+  const calls: string[] = [];
+  const live = {
+    async glance(page: KeptPage, today: number, _signal: AbortSignal, following?: { words: string; told: string[] }) {
+      calls.push(page.name);
+      return page.name === "empty" ? null : { kind: "date" as const, line: `${page.name} on ${new Date(today).toISOString().slice(0, 10)}${following ? ` after ${following.words}` : ""}`, under: "", say: "s", sayInView: "s", ahead: [] };
+    },
+  };
+  const looks = looked(live, "stamp", dir, () => {});
+  const out = [];
+  for (const look of input.looks) {
+    const before = calls.length;
+    const page = { name: look.page, url: `https://example.edu/${look.page}/`, readOn: "2026-11-14", title: look.page, lines: [] };
+    const found = await looks.glance(page, Date.parse(look.today), new AbortController().signal, look.after ? { words: look.after, told: [] } : undefined);
+    out.push({ ...look, calledTheModel: calls.length > before, line: found?.line ?? null });
   }
   return out;
 }

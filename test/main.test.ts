@@ -23,7 +23,7 @@ import { givesAway, judge, wrongSum, type Judged } from "../mind/cores/push.ts";
 import { empty, fold, NO_RUNG } from "../mind/cores/hold.ts";
 import { FromBody, FromMind, read, write } from "../seam/schema.ts";
 import { settings } from "../mind/settings.ts";
-import { keptVoice, standIn } from "./runners/adapters.ts";
+import { keptLook, keptVoice, standIn } from "./runners/adapters.ts";
 import { capsule, cardOnFilm, filmed, landing, pressedAgain, sameToTheWatcher } from "./runners/body.ts";
 import { fresh } from "./runners/temp.ts";
 import { playTurn } from "./runners/turn.ts";
@@ -40,6 +40,7 @@ type Filed = Row & { file: string };
 const root = join(import.meta.dirname, "..");
 const runs: Record<string, (input: any) => unknown> = {
   kept: keptVoice,
+  "kept.look": keptLook,
   "live.standin": standIn,
   "beats.fitted": (input) => Object.fromEntries(Object.entries(input.marks).map(([name, [kind, text]]: [string, any]) => [name, fitted(kind, text, input.lines, input.reach, input.scale)])),
   "beats.split": (input) => Object.fromEntries(Object.entries(input.sentences).map(([name, text]) => [name, split(text as string, input.limits)])),

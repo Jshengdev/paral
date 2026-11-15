@@ -1,0 +1,82 @@
+{
+ "name": "kept looks: a page's first look is asked once for a day and then given from what was kept, also when it found nothing; another day, another page and a look after an ask are asked live",
+ "run": "kept.look",
+ "in": {
+  "looks": [
+   {
+    "page": "club",
+    "today": "2026-11-14T12:00:00-08:00"
+   },
+   {
+    "page": "club",
+    "today": "2026-11-14T12:05:00-08:00"
+   },
+   {
+    "page": "club",
+    "today": "2026-11-14T12:06:00-08:00",
+    "after": "where do i book a room"
+   },
+   {
+    "page": "club",
+    "today": "2026-11-17T12:00:00-08:00"
+   },
+   {
+    "page": "empty",
+    "today": "2026-11-14T12:00:00-08:00"
+   },
+   {
+    "page": "empty",
+    "today": "2026-11-14T12:05:00-08:00"
+   },
+   {
+    "page": "maymester",
+    "today": "2026-11-14T12:05:00-08:00"
+   }
+  ]
+ },
+ "out": [
+  {
+   "page": "club",
+   "today": "2026-11-14T12:00:00-08:00",
+   "calledTheModel": true,
+   "line": "club on 2026-11-14"
+  },
+  {
+   "page": "club",
+   "today": "2026-11-14T12:05:00-08:00",
+   "calledTheModel": false,
+   "line": "club on 2026-11-14"
+  },
+  {
+   "page": "club",
+   "today": "2026-11-14T12:06:00-08:00",
+   "after": "where do i book a room",
+   "calledTheModel": true,
+   "line": "club on 2026-11-14 after where do i book a room"
+  },
+  {
+   "page": "club",
+   "today": "2026-11-17T12:00:00-08:00",
+   "calledTheModel": true,
+   "line": "club on 2026-11-17"
+  },
+  {
+   "page": "empty",
+   "today": "2026-11-14T12:00:00-08:00",
+   "calledTheModel": true,
+   "line": null
+  },
+  {
+   "page": "empty",
+   "today": "2026-11-14T12:05:00-08:00",
+   "calledTheModel": false,
+   "line": null
+  },
+  {
+   "page": "maymester",
+   "today": "2026-11-14T12:05:00-08:00",
+   "calledTheModel": true,
+   "line": "maymester on 2026-11-14"
+  }
+ ]
+}
