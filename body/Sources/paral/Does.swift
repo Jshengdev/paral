@@ -63,8 +63,11 @@ final class Does {
         tell(.stale(true, hand: true))
         ended = { tell(.stale(false, hand: true)) }
         let began = Date(), high = Double(screen.frame.height)
-        /// A reach of `points`, as the turns of the wheel that make it, eased.
-        func reach(_ points: Double) -> ArraySlice<Double> { Hand.eased(points, turns: Int(Hand.perSecond * Hand.reachTakes * min(1, max(0.3, abs(points) / (Hand.reach * high)))))[...] }
+        /// A reach of `points`, as the turns of the wheel that make it, eased. The page as it stands is what the look after it is measured from.
+        func reach(_ points: Double) -> ArraySlice<Double> {
+            watch.reaching()
+            return Hand.eased(points, turns: Int(Hand.perSecond * Hand.reachTakes * min(1, max(0.3, abs(points) / (Hand.reach * high)))))[...]
+        }
         // The pointer goes over the page first: he has just pressed paral's own button, and the wheel turns whatever is under the pointer.
         guard Hand.aim(on: screen) else { note("scroll: the display could not be found"); return failed(Hand.stuck) }
         var phase = Phase.aiming(since: began, down: first), reaches = 1, trimmed = false, last = first, turned = 0

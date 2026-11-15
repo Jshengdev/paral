@@ -23,6 +23,8 @@ public final class Watch {
     /// moved since the look before it. The scroller waits, after each reach, for a look taken once the page had stopped.
     public private(set) var sent = 0, sentTaken = Date.distantPast, sentMoved = true
     private var forcedAt: Date?
+    /// The page as the latest round saw it when the scroller began its reach: what a look it asks for is set against.
+    private var reachFrom = Data()
     private var next = Date.distantPast
     /// What the app and the scene say now: whether the key is held, and the scene's answer to the watcher
     /// (`Scene.watching`): an ask being heard or answered, which way the scroll arrow points if one is up, and
@@ -77,6 +79,11 @@ public final class Watch {
         next = .distantPast
     }
 
+    /// The scroller is about to turn the wheel: the page as it stands now is what its next asked-for look is measured
+    /// from. Measured from the last look sent instead, a look sent of itself while the page was still moving made the
+    /// asked-for one read as "not moved", and the scrolling stopped a reach short.
+    public func reaching() { reachFrom = rounds.latest }
+
     /// The menu bar's height, in points: what the display has above the room it leaves to windows.
     private var bar: Double { max(0, screen.frame.maxY - screen.visibleFrame.maxY) }
 
@@ -115,7 +122,7 @@ public final class Watch {
                 // A look asked for by the scroller is sent whatever the rounds say, if its picture was taken after the asking.
                 let forced = self.forcedAt.map { taken >= $0 } ?? false
                 if forced { self.forcedAt = nil }
-                self.pendingMoved = !self.rounds.unmoved(print, within: Watch.within)
+                self.pendingMoved = forced ? !Screen.alike(print, self.reachFrom, within: Watch.within) : !self.rounds.unmoved(print, within: Watch.within)
                 return self.rounds.report(print, waiting: scene?.down != nil, most: self.most, within: Watch.within) || forced
             }
             let lines = wanted ? shot.flatMap { try? Screen.read($0.image) } : nil
