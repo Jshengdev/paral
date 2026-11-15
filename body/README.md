@@ -17,7 +17,7 @@ when; the body only draws. Nothing here takes a click except the cross, and noth
 | The trail (build's name; the kit has no frame) | the steps paral took before a line it said without being asked, in small capitals above the line, each cardinal once reached | `say` with `trail` | with its line | `capsule.tagType`, `cardinal`, `motion.trailStepMs` |
 | Highlight ring, and drawn notes | "this line": a ring, underline, wavy line or bracket drawn by hand in ember, with a note beside it when the mind sends one | `mark` (kind `ring`, `underline`, `wavy`, `bracket`; `label` for the note) | `clear`, a close, or a new mark on the same line | `mark.*`, `ember`, `cardinal` (the note) |
 | Highlight (the box) | "this line", where lines sit too close for a ring: a thin cardinal edge and a faint wash laid along the line by the pen | `mark` (kind `box`) | `clear`, a close, or a new mark on the same line | `mark.boxWidth`, `mark.wash`, `mark.ringMs`, `cardinal` |
-| Drawn arrow (the kit's, from its ring to its card) | "this line is what that is about": one curve in ember from the newest mark to whatever is speaking about it, the capsule or the guide's card | no line of its own: the newest `mark` once the pen has finished it, with its own `say` in the capsule, or with a `next` that came together with it | goes with its mark (`clear`, a close, a newer mark); drawn back as the capsule closes; gone when the card's words move on, and while a `way` arrow is up | `lead.*`, `way.head`, `way.halo`, `mark.width`, `ember`, `cursor.settleMs` |
+| Drawn arrow (the kit's, from its ring to its card) | "this line is what that is about": one curve in ember from the newest mark to whatever is speaking about it, and only where a way exists that keeps clear of every word on the page | no line of its own: the newest `mark` once the pen has finished it, while the capsule carries that mark's own `say`; or, with the capsule at rest, while the guide's card (`next`) names the marked line | goes with its mark (`clear`, a close, a newer mark); drawn back as the capsule closes; gone when the card's words move on, and while a `way` arrow is up | `lead.*`, `way.head`, `way.halo`, `mark.width`, `ember`, `cursor.settleMs` |
 | Cursor | paral's own pointer: it shows where, never clicks. It flies to the newest mark or arrow, rides the pen, rests beside it; one ripple says "here" | the newest `mark`, `way` or `echo` on the page | goes with its mark or arrow; none with motion reduced | `cursor.*`, `cardinalDeep`, `cardinal`, `ember`, `motion.flightMs`, `motion.arc`, `motion.bounce` |
 | Cursor: tag | says whose cursor is moving: a light pill with the orb and the name, worn only while it comes in from nowhere | the first `mark` or `way` after the page was clean | its arrival | `strings.name`, `light`, `glass`, `shadow`, `gold` |
 | Cursor: thinking | says paral is working: the orb beside a cursor that is already on the page | `key.up`, until the answer begins | the answer's first sentence | `gold`, the cursor's reds |
@@ -117,29 +117,32 @@ kit ("Lost and Found: brand kit", page 08), drawn here in code; no picture is lo
 ## The arrow from a mark to what speaks about it
 
 The design kit's page 08 draws one curve from the ring round a line to the card that speaks about it. Here the scene
-says which mark has one (`SceneLead.swift`) and the painter finds its way (`PainterLead.swift`); nothing crosses the
-seam for it.
+says which mark has one and what it leads to (`SceneLead.swift`) and the painter finds its way (`PainterLead.swift`);
+nothing crosses the seam for it.
 
 - **One at a time.** Only the newest of paral's marks on the page has an arrow, never his own loop, and none is drawn
   while the arrow that says which way to scroll is up.
-- **What speaks.** The capsule speaks about a mark when the mark's own sentence is one of its lines: the arrow comes
-  when that sentence comes up, stays while the capsule holds that answer's words, and is drawn back as the capsule
-  closes. The guide's card speaks about a mark when its words came together with the mark (within the tenth of a
-  second that one look's lines take): the arrow stays while the card shows those words. When both speak, the arrow
-  leads to the one nearer up or down the display (the card sits at the top, the capsule at the bottom), and it is not
-  handed to the other when the first lets go. A mark with only a note beside it has no arrow: nothing speaks of it.
+- **What speaks.** The capsule, whenever it carries that mark's words: the arrow comes when the mark's own sentence
+  comes up in the capsule, stays while the capsule holds that answer's words, and is drawn back as the capsule
+  closes. The guide's card says what he does next, which is seldom about the marked line ("Say it again: show me"),
+  so it is led to only once the capsule is at rest and only when its words name the very line that is marked: the
+  whole of a read line the mark is on is among the card's words ("Open Deadlines", with the mark on "Deadlines"). The
+  body can tell no more than that from the lines it is sent; in every other case there is no arrow.
 - **When.** It is inked once the pen has finished the mark and the cursor has stepped aside (`cursor.settleMs`), in
   `lead.drawMs` (700: a hand's one sweep; chosen, not measured), and it is whole at once with motion reduced.
-- **Its way.** It leaves the mark's edge, beginning on the far side of the cursor where the cursor rests in its way,
-  and stops `lead.gap` (8, the kit's arrow stops about that short of its card) from what it leads to. A way is
-  refused when it lies on the words of the line it leaves (every read line level with the mark), on the board, the
-  clip, the way arrow, the toast or the other speaker, or off the display; when more than `lead.overText` of it
-  (0.12) lies on the page's other words; and when it is longer than `lead.longest` (1000 points: on the recorded
-  club page a 951-point arrow along the top to the card reads, and a 1107-point loop down to the capsule swallows the
-  page). Of the ways left the one on the fewest words, the shortest and the nearest the kit's plain bow wins, and
-  where none is left no arrow is drawn. The way is found once and kept while nothing it depends on moves.
-- **Its shape.** One bow after the kit's drawn arrow, whose curve was measured: it leaves flat, pulled out 0.37 of
-  the straight way, and arrives turned as far to the other side, pulled back 0.32; then the head, with the way
+- **Its ink never covers the page's words.** A way is refused when its ink or its paper edge comes within
+  `lead.clear` (4 points) of any read line, the line it leaves among them. It is refused too when it lies on the
+  mark, the resting cursor, the board, the clip, the way arrow, the toast or the other speaker, or off the display,
+  and when it is longer than `lead.longest` (1000 points: on the recorded club page the ways down the right margin
+  to the capsule run 590 to 920). Where no way is left, no arrow is drawn: a missing arrow is fine, an arrow over
+  words is not.
+- **Its way.** It begins straight out from the mark's edge, on the far side of the cursor where the cursor rests
+  there, and stops `lead.gap` (8, the kit's arrow stops about that short of its card) from what it leads to. From
+  there it may set off straight out, as the kit's bow does, or turned by up to a quarter turn, which is what lets it
+  run down a margin too narrow for a bow; of the ways that are clear, the shortest and the nearest the kit's plain
+  bow wins. The way is found once and kept while nothing it depends on moves.
+- **Its shape.** One bow after the kit's drawn arrow, whose curve was measured: pulled out 0.37 of the straight way
+  the way it leaves, and arriving turned as far to the other side, pulled back 0.32; then the head, with the way
   arrow's barbs (`way.head`) and paper edge (`way.halo`), at the pen's width (`mark.width`, the kit's 3.5).
 
 ## The capsule, the board and the tags on the kit's light surface

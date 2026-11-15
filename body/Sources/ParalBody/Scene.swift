@@ -19,6 +19,8 @@ public struct Scene {
     public var reduceMotion = false
     var origin = (x: 0.0, y: 0.0)
     var texts: [Box] = []
+    /// What each read line says, in the order of `texts`.
+    var read: [String] = []
     var holds: [Hold] = []
     var heard: [(word: String, at: Double)] = []
     var asks: [Ask] = []
@@ -69,6 +71,7 @@ public struct Scene {
         case .screen(let display, let lines):
             origin = (display.x, display.y)
             texts = lines.map { Box(x: $0.box.x / display.scale, y: $0.box.y / display.scale, w: $0.box.w / display.scale, h: $0.box.h / display.scale) }
+            read = lines.map(\.text)
         case .state(let name, let detail):
             // The first failure since the last press is the cause; one that follows it is its consequence.
             if name == "failed", failed == nil { failed = (detail ?? "", at) }

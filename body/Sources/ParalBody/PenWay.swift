@@ -44,15 +44,16 @@ extension Pen {
     /// The arrow that leads from a mark to what speaks about it: one bow that leaves `from` the way `out` points and
     /// arrives at `to` turned as far to the other side of the straight way as it left on this side, so it never
     /// doubles back on itself; then the head. `held` is how much longer than the kit's it keeps to the way it left
-    /// before it turns (1 for the kit's own bow). Also gives the way it arrives, as a direction of length one.
-    static func lead(from: CGPoint, out: CGPoint, to: CGPoint, held: Double = 1, tokens: Tokens) -> (strokes: [[CGPoint]], arrives: CGPoint) {
+    /// before it turns (1 for the kit's own bow). The shaft is given as `steps` straight pieces. Also gives the
+    /// way it arrives, as a direction of length one.
+    static func lead(from: CGPoint, out: CGPoint, to: CGPoint, held: Double = 1, steps: Int, tokens: Tokens) -> (strokes: [[CGPoint]], arrives: CGPoint) {
         let far = max(hypot(to.x - from.x, to.y - from.y), 1)
         let way = CGPoint(x: (to.x - from.x) / far, y: (to.y - from.y) / far)
         let along = out.x * way.x + out.y * way.y
         let arrives = CGPoint(x: 2 * along * way.x - out.x, y: 2 * along * way.y - out.y)
         let pull = CGPoint(x: from.x + out.x * far * leaves * held, y: from.y + out.y * far * leaves * held)
         let turn = CGPoint(x: to.x - arrives.x * far * lands, y: to.y - arrives.y * far * lands)
-        return ([curve(from, pull, turn, to, steps: 36), head(at: to, back: atan2(-arrives.y, -arrives.x), tokens: tokens)], arrives)
+        return ([curve(from, pull, turn, to, steps: steps), head(at: to, back: atan2(-arrives.y, -arrives.x), tokens: tokens)], arrives)
     }
 
     /// Several strokes cut at a share of their whole length, in the order they are drawn: each as far as the pen has got.

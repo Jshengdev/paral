@@ -1,5 +1,7 @@
 // The runner for rows about the arrow that leads from a mark to what speaks about it: moments of a hand-written run
 // on a drawn page, through the real scene and painter. No mind, no service, no window.
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { handWritten, type Written } from "./body.ts";
 import { at, DISPLAY, textOf, type Box } from "./placed.ts";
 
@@ -20,12 +22,16 @@ export function onTheirLines(rows: Written[], lines: string[]): Written[] {
 
 /**
  * The arrow at each moment: which line of the page it leaves, what it leads to, whether its ink is growing, standing
- * still or going back just then (read from a second look a twentieth of a second later), and whether any point of it
- * lies on the words of the line it leaves, on another line's words, on the board, or off the display.
+ * still or going back just then (read from a second look a twentieth of a second later), and whether it keeps clear
+ * of every read line's words, the line it leaves among them, and off the board and inside the display. Clear of the
+ * words means no point of the pen's path is nearer a line's box than half the pen's width, its paper edge and the
+ * room the tokens ask for (`lead.clear`).
  */
 export function lead(input: { lines: string[]; rows: Written[]; at: number[] }) {
   const dir = handWritten("lead", onTheirLines(input.rows, input.lines), input.lines);
   const text = textOf(dir);
+  const tokens = JSON.parse(readFileSync(join(import.meta.dirname, "..", "..", "body", "tokens.json"), "utf8"));
+  const room = tokens.mark.width / 2 + tokens.way.halo + tokens.lead.clear - 0.01;
   const inked = (moment: { placed: { what: string; path?: Point[] }[] }) => long(moment.placed.find((item) => item.what === "lead")?.path ?? []);
   const soonAfter = at(dir, input.at.map((moment) => moment + 50)).map(inked);
   return at(dir, input.at).map((moment, index) => {
@@ -40,8 +46,7 @@ export function lead(input: { lines: string[]; rows: Written[]; at: number[] }) 
         fromLine,
         toward: arrow.id?.endsWith(">guide") ? "the guide's card" : "the capsule",
         ink: change > 0.5 ? "growing" : change < -0.5 ? "going back" : "still",
-        onItsOwnLine: path.some((p) => within(p, text[fromLine])),
-        otherLinesCrossed: text.filter((line, index) => index !== fromLine && path.some((p) => within(p, line))).length,
+        clearOfEveryLinesWords: path.every((p) => text.every((line) => apart(p, line) >= room)),
         onTheBoard: board ? path.some((p) => within(p, board)) : false,
         insideTheDisplay: path.every((p) => p[0] >= 0 && p[1] >= 0 && p[0] <= DISPLAY.w && p[1] <= DISPLAY.h),
       },

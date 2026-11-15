@@ -3,7 +3,7 @@ import AppKit
 /// The last way found for the leading arrow and what it was found for. Finding a way tries a few hundred curves
 /// against every line of the page, and nothing it depends on moves while the arrow stands, so it is found once.
 final class LeadWays {
-    struct Asked: Equatable { var mark: Box; var own: [Box]; var target: Box; var taken: [Box]; var cursor: Box?; var texts: [Box] }
+    struct Asked: Equatable { var mark: Box; var target: Box; var taken: [Box]; var cursor: Box?; var texts: [Box] }
     var asked: Asked?
     var found: [[CGPoint]]?
 }
@@ -12,16 +12,19 @@ extension Painter {
     /// A place on a box's edge, and the way straight out of the box there.
     private struct Edge { var at: CGPoint; var out: CGPoint }
 
-    /// How much a share of its length on the page's words costs a way, against its length: a way with a twentieth
-    /// of itself on words loses to a clean one up to twice as long.
-    private static let wordsCost = 20.0
     /// An arrow shorter than this many heads is not drawn: it would be all head.
     private static let leastHeads = 3.0
-    /// The ways a curve may leave an edge, each with what it costs against the kit's own bow, which leaves straight
-    /// out: leaning to one side by 25 or 50 degrees, or keeping to its way for longer before it turns. A plain bow
-    /// wins unless it is in the way of something. All chosen on the recorded walks, not measured.
-    private static let leans: [(turn: Double, cost: Double)] = [(0, 0), (25, 0.15), (-25, 0.15), (50, 0.3), (-50, 0.3)]
-    private static let holds: [(held: Double, cost: Double)] = [(1, 0), (1.7, 0.1)]
+    /// The ways a curve may set off from where it begins beside the mark: straight out, as the kit's bow does, or
+    /// turned to one side by up to a quarter turn, which is what lets it run down a margin too narrow for a bow.
+    /// A quarter turn costs a tenth of its length again, and keeping to its way for longer before it turns a
+    /// twentieth: the kit's plain bow wins a short way, and a long way is not swung wide when a straighter one is
+    /// clear. Chosen on the recorded walks, not measured.
+    private static let turns: [Double] = [0, 25, -25, 50, -50, 75, -75, 90, -90]
+    private static let turnCost = 0.1 / 90
+    private static let holds: [(held: Double, cost: Double)] = [(1, 0), (1.7, 0.05)]
+    /// A way is first tried as a dozen straight pieces, which is enough to refuse most; one that passes is then
+    /// drawn in pieces no longer than this many points, so what is checked along them holds for the whole curve.
+    private static let coarse = 12, piece = 6.0
 
     /// The middle of each end of a box, then three places along its bottom and its top. The ends come first, so
     /// of two ways that cost the same the one that leaves a line at its end wins, as the kit's arrow does.
@@ -33,43 +36,46 @@ extension Painter {
     }
 
     /// The way the arrow takes from a mark to what speaks about it, or nothing when there is no good way. It leaves
-    /// the mark's edge, past the cursor where the cursor rests in its way, and stops short of the target. A way is
-    /// refused when it lies on the words of the line it leaves (`own`), on another piece (`taken`), on its target
-    /// or off the display, when more than `lead.overText` of it lies on the page's other words, and when it is
-    /// longer than `lead.longest`. Of the ways left, the one that lies on the fewest words, is shortest and is
-    /// nearest the kit's plain bow wins.
+    /// the mark's edge, beginning on the far side of the cursor where the cursor rests in its way, and stops short
+    /// of the target. Its ink never covers the page's words: a way is refused when its ink or its paper edge comes
+    /// within `lead.clear` of any read line, the line it leaves among them. It is refused too when it lies on the
+    /// mark, the cursor, another piece (`taken`), its target or off the display, and when it is longer than
+    /// `lead.longest`. Of the ways left the shortest and the nearest the kit's plain bow wins.
     func way(_ asked: LeadWays.Asked) -> [[CGPoint]]? {
         if ways.asked == asked { return ways.found }
-        let gap = tokens.lead.gap, half = tokens.mark.width / 2
-        let shut = asked.own.map { $0.grown(half + 1) } + asked.taken.map { $0.grown(tokens.band + half) } + [asked.target.grown(gap - 1)]
-        let words = asked.texts.map { $0.grown(half) } + (asked.cursor.map { [$0] } ?? [])
+        let gap = tokens.lead.gap, half = tokens.mark.width / 2, edge = half + tokens.way.halo
+        let shut = asked.texts.map { $0.grown(edge + tokens.lead.clear) } + [asked.mark.grown(1)] + (asked.cursor.map { [$0.grown(1)] } ?? [])
+            + asked.taken.map { $0.grown(tokens.band + edge) } + [asked.target.grown(gap - 1)]
         func on(_ p: CGPoint, _ boxes: [Box]) -> Bool { boxes.contains { p.x > $0.x && p.x < $0.x + $0.w && p.y > $0.y && p.y < $0.y + $0.h } }
-        func off(_ p: CGPoint) -> Bool { p.x < half || p.y < half || p.x > width - half || p.y > height - half }
+        func blocked(_ p: CGPoint) -> Bool { p.x < edge || p.y < edge || p.x > width - edge || p.y > height - edge || on(p, shut) }
         var best: (cost: Double, strokes: [[CGPoint]])?
         for start in edges(of: asked.mark) {
-            for lean in Painter.leans {
-                let turn = lean.turn * Double.pi / 180
-                let out = CGPoint(x: start.out.x * cos(turn) - start.out.y * sin(turn), y: start.out.x * sin(turn) + start.out.y * cos(turn))
-                // Where the cursor rests on this way out of the mark, the arrow begins on the far side of it.
-                func along(_ far: Double) -> CGPoint { CGPoint(x: start.at.x + out.x * far, y: start.at.y + out.y * far) }
-                let behind = asked.cursor.flatMap { rest in Array(stride(from: 0.0, through: 3 * tokens.cursor.size, by: 2)).last { on(along(gap + $0), [rest.grown(gap / 2)]) } }
-                let from = along(gap + (behind.map { $0 + gap } ?? 0))
-                for end in edges(of: asked.target) {
-                    let to = CGPoint(x: end.at.x + end.out.x * gap, y: end.at.y + end.out.y * gap)
-                    // Long enough to be an arrow, and it leaves toward what it leads to.
-                    guard hypot(to.x - from.x, to.y - from.y) >= Painter.leastHeads * tokens.way.head, out.x * (to.x - from.x) + out.y * (to.y - from.y) >= 0 else { continue }
+            // It begins straight out from the mark's edge, on the far side of the cursor where the cursor rests there.
+            func out(_ far: Double) -> CGPoint { CGPoint(x: start.at.x + start.out.x * far, y: start.at.y + start.out.y * far) }
+            let behind = asked.cursor.flatMap { rest in Array(stride(from: 0.0, through: 3 * tokens.cursor.size, by: 2)).last { on(out(gap + $0), [rest.grown(gap / 2)]) } }
+            let from = out(gap + (behind.map { $0 + gap } ?? 0))
+            guard !blocked(from) else { continue }
+            for end in edges(of: asked.target) {
+                let to = CGPoint(x: end.at.x + end.out.x * gap, y: end.at.y + end.out.y * gap)
+                let far = hypot(to.x - from.x, to.y - from.y)
+                guard far >= Painter.leastHeads * tokens.way.head, far <= tokens.lead.longest else { continue }
+                for turn in Painter.turns {
+                    let angle = turn * Double.pi / 180
+                    let leaves = CGPoint(x: start.out.x * cos(angle) - start.out.y * sin(angle), y: start.out.x * sin(angle) + start.out.y * cos(angle))
+                    // It sets off toward what it leads to, not away from it.
+                    guard leaves.x * (to.x - from.x) + leaves.y * (to.y - from.y) >= 0 else { continue }
                     for hold in Painter.holds {
-                        let drawn = Pen.lead(from: from, out: out, to: to, held: hold.held, tokens: tokens)
+                        // No way is shorter than the straight one, so one that could not win is not tried.
+                        let dear = 1 + abs(turn) * Painter.turnCost + hold.cost
+                        guard far * dear < (best?.cost ?? .infinity) else { continue }
+                        let rough = Pen.lead(from: from, out: leaves, to: to, held: hold.held, steps: Painter.coarse, tokens: tokens)
                         // It comes in to the target's edge from outside it, and lies on nothing it must keep off.
-                        guard drawn.arrives.x * end.out.x + drawn.arrives.y * end.out.y <= -0.3 else { continue }
-                        let points = Array(drawn.strokes.joined())
-                        guard !points.contains(where: { off($0) || on($0, shut) }) else { continue }
-                        let share = Double(points.filter { on($0, words) }.count) / Double(points.count)
-                        guard share <= tokens.lead.overText else { continue }
-                        let long = zip(drawn.strokes[0], drawn.strokes[0].dropFirst()).reduce(0) { $0 + hypot($1.1.x - $1.0.x, $1.1.y - $1.0.y) }
-                        guard long <= tokens.lead.longest else { continue }
-                        let cost = long * (1 + Painter.wordsCost * share) * (1 + lean.cost + hold.cost)
-                        if cost < (best?.cost ?? .infinity) { best = (cost, drawn.strokes) }
+                        guard rough.arrives.x * end.out.x + rough.arrives.y * end.out.y <= -0.3, !rough.strokes.joined().contains(where: blocked) else { continue }
+                        let drawn = Pen.lead(from: from, out: leaves, to: to, held: hold.held, steps: max(36, Int(far / Painter.piece)), tokens: tokens)
+                        let shaft = drawn.strokes[0]
+                        let long = zip(shaft, shaft.dropFirst()).reduce(0) { $0 + hypot($1.1.x - $1.0.x, $1.1.y - $1.0.y) }
+                        guard long <= tokens.lead.longest, long * dear < (best?.cost ?? .infinity), !shaft.contains(where: blocked) else { continue }
+                        best = (long * dear, drawn.strokes)
                     }
                 }
             }
@@ -96,16 +102,14 @@ extension Painter {
             (target, name) = (pill(trail), "capsule")
             if let card { taken.append(card) }
         }
-        // The mark is its line and the ink round it; the words of its line are every read line level with it.
+        // The mark is its line and the ink round it.
         let ink = Pen.path(of: mark, tokens: tokens, avoiding: picture.avoid, inside: (width, height))
         let b = mark.box, half = tokens.mark.width / 2
         let left = min(b.x, Double(ink.map(\.x).min() ?? 0)) - half, top = min(b.y, Double(ink.map(\.y).min() ?? 0)) - half
         let right = max(b.x + b.w, Double(ink.map(\.x).max() ?? 0)) + half, bottom = max(b.y + b.h, Double(ink.map(\.y).max() ?? 0)) + half
-        let whole = Box(x: left, y: top, w: right - left, h: bottom - top)
-        func level(_ text: Box) -> Bool { text.y + text.h / 2 > b.y && text.y + text.h / 2 < b.y + b.h }
         let c = tokens.cursor
         let cursor = picture.pointer.flatMap { $0.withWay == nil ? Box(x: $0.x - c.edge, y: $0.y - c.edge, w: Layout.cursorWide * c.size + 2 * c.edge, h: c.size + 2 * c.edge) : nil }
-        let asked = LeadWays.Asked(mark: whole, own: [whole] + picture.avoid.filter(level), target: target, taken: taken, cursor: cursor, texts: picture.avoid.filter { !level($0) })
+        let asked = LeadWays.Asked(mark: Box(x: left, y: top, w: right - left, h: bottom - top), target: target, taken: taken, cursor: cursor, texts: picture.avoid)
         guard let strokes = way(asked) else { return nil }
         let inked = Pen.reach(strokes: strokes, lead.drawn)
         self.ink(inked, ctx)
