@@ -42,6 +42,8 @@ those are helpers, not test files.
 | `body.inkInside` | a hand-written run with marks, looked at at given moments: how many marks are up and whether all of their ink lies inside the display |
 | `body.curves` | the four curves in the tokens: each one's value at given shares of its time, whether it only ever goes forward, and the furthest it gets |
 | `body.moves` | a hand-written run on a drawn page, looked at at given moments: how far the capsule is open, how much of a mark's stroke and of a drawn arrow's shaft and head is inked, how far the cursor has still to fly, how large its name tag is, and how far the guide's card has come up, each as a share of its whole |
+| `body.lifted` | a hand-written run looked at with no Dock and with a Dock that takes part of the display's foot: how far the open capsule's foot is above the display's, how much higher the capsule, the way arrow and the toast sit with the Dock, and whether the board is above it |
+| `body.scaled` | one moment of a hand-written run drawn at the tokens' sizes and again with the one `scale` changed: how large the guide's card, the cursor, the toast and the board then are against their size at 1 |
 | `body.pressedAgain` | a run on a tape where the key is pressed again soon after a release: the order of the key lines the mind got |
 
 Tapes in `tapes/` are recorded answers, so no row needs a key, a microphone or a screen. A tape answer keyed

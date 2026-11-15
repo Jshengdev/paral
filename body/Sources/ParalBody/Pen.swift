@@ -56,27 +56,31 @@ enum Pen {
                 return CGPoint(x: mark.box.x - 2 + (mark.box.w + 4) * u, y: y + lift)
             }
         case .box:
-            return rounded(hug(mark.box, tokens: tokens, avoiding: texts), radius: corner)
+            return rounded(hug(mark.box, tokens: tokens, avoiding: texts), radius: m.boxRadius)
         case .bracket:
             let x = box.x - 6, arm = 9.0
             return [CGPoint(x: x + arm, y: box.y), CGPoint(x: x, y: box.y + 1), CGPoint(x: x - 1, y: box.y + box.h - 1), CGPoint(x: x + arm, y: box.y + box.h)]
         }
     }
 
-    /// How round the corners of a hugging box are.
-    static let corner = 8.0
-
-    /// The box that hugs what a box mark marks. Its top and bottom sit in the middle of the gap to the nearest text
-    /// outside it, at most 5 points out, and pulled in a little where the read box overlaps its neighbour.
+    /// The box that hugs what a box mark marks, after the design kit's highlight: the kit's room round the line
+    /// (`mark.boxPadX` across, `mark.boxPadY` up and down) where the page has it. Between close lines its top and
+    /// bottom sit in the middle of the gap to the nearest text outside it, pulled in a little where the read box
+    /// overlaps its neighbour; and its ends stop half way to a neighbour on the same line, so its ink and its wash
+    /// are on no other words.
     static func hug(_ b: Box, tokens: Tokens, avoiding texts: [Box]) -> Box {
+        let m = tokens.mark
         let outside = texts.filter { text in
             let middle = text.y + text.h / 2
             return text.x < b.x + b.w && b.x < text.x + text.w && !(middle > b.y && middle < b.y + b.h)
         }
-        func room(_ gaps: [Double]) -> Double { min(5, max(-2, (gaps.min() ?? 100) / 2 - tokens.mark.width / 2)) }
-        let up = room(outside.filter { $0.y + $0.h / 2 <= b.y }.map { b.y - ($0.y + $0.h) })
-        let down = room(outside.filter { $0.y + $0.h / 2 >= b.y + b.h }.map { $0.y - (b.y + b.h) })
-        return Box(x: b.x - 7, y: b.y - up, w: b.w + 14, h: b.h + up + down)
+        func room(_ gaps: [Double], most: Double, least: Double) -> Double { min(most, max(least, (gaps.min() ?? 100) / 2 - m.width / 2)) }
+        let up = room(outside.filter { $0.y + $0.h / 2 <= b.y }.map { b.y - ($0.y + $0.h) }, most: m.boxPadY, least: -2)
+        let down = room(outside.filter { $0.y + $0.h / 2 >= b.y + b.h }.map { $0.y - (b.y + b.h) }, most: m.boxPadY, least: -2)
+        let level = texts.filter { $0.y < b.y + b.h && b.y < $0.y + $0.h }
+        let left = room(level.filter { $0.x + $0.w <= b.x }.map { b.x - ($0.x + $0.w) }, most: m.boxPadX, least: 1)
+        let right = room(level.filter { $0.x >= b.x + b.w }.map { $0.x - (b.x + b.w) }, most: m.boxPadX, least: 1)
+        return Box(x: b.x - left, y: b.y - up, w: b.w + left + right, h: b.h + up + down)
     }
 
     /// A rounded box, drawn clockwise from its top-left corner and closed a little past where it began.

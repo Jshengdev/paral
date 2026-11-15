@@ -24,6 +24,10 @@ public struct Painter {
     let frames = ClipFrames()
     let ways = LeadWays()
     let faces: Faces
+    /// How much of the display's foot the Dock takes in the picture being painted, and the height left above it:
+    /// the capsule and what sits beside it at the bottom are laid out above the Dock.
+    var inset = 0.0
+    var floor: Double { height - inset }
 
     public init(tokens: Tokens, width: Double, height: Double) {
         self.tokens = tokens
@@ -68,6 +72,12 @@ public struct Painter {
 
     /// The context's origin must be the display's top-left corner, y growing downward, one unit a point.
     public func paint(_ picture: Picture, into ctx: CGContext) -> [Drawn] {
+        var lifted = self
+        lifted.inset = picture.bottomInset
+        return lifted.draw(picture, into: ctx)
+    }
+
+    private func draw(_ picture: Picture, into ctx: CGContext) -> [Drawn] {
         let before = NSGraphicsContext.current
         NSGraphicsContext.current = NSGraphicsContext(cgContext: ctx, flipped: true)
         defer { NSGraphicsContext.current = before }

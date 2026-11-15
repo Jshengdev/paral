@@ -16,7 +16,7 @@ when; the body only draws. Nothing here takes a click except the cross, and noth
 | Voice pill (the capsule) | paral's one voice on screen: his words as they are heard, that it is working, each sentence as it is said, a failure in words. At rest it is the logo mark at the bottom centre; at rest with paral's ink on the page, a cross that clears it, with the logo mark and the name to its left | `key.down` (listening), `key.up` (working), `say` with `voice` or `mute` (answering), `state` failed; a `say` with a `trail` opens it with no key | the answer's end and a short linger, then it rests; the next press takes it over | `capsule.*`, `light`, `glass`, `shadow`, `ink`, `dim`, `font`, `motion.arriveMs`, `motion.leaveMs`, `motion.lingerMs`, `motion.unaskedStayMs`, `motion.standMsAWord`, `motion.readMsLeast`, `strings.*` (`strings.name` beside the cross) |
 | The trail (build's name; the kit has no frame) | the steps paral took before a line it said without being asked, in small capitals above the line, each cardinal once reached | `say` with `trail` | with its line | `capsule.tagType`, `cardinal`, `motion.trailStepMs` |
 | Highlight ring, and drawn notes | "this line": a ring, underline, wavy line or bracket drawn by hand in ember, with a note beside it when the mind sends one | `mark` (kind `ring`, `underline`, `wavy`, `bracket`; `label` for the note) | `clear`, a close, or a new mark on the same line | `mark.*`, `ember`, `cardinal` (the note) |
-| Highlight (the box) | "this line", where lines sit too close for a ring: a thin cardinal edge and a faint wash laid along the line by the pen | `mark` (kind `box`) | `clear`, a close, or a new mark on the same line | `mark.boxWidth`, `mark.wash`, `mark.ringMs`, `cardinal` |
+| Highlight (the box) | "this line", where lines sit too close for a ring: a thin cardinal edge and a faint wash laid along the line by the pen | `mark` (kind `box`) | `clear`, a close, or a new mark on the same line | `mark.boxWidth`, `mark.boxPadX`, `mark.boxPadY`, `mark.boxRadius`, `mark.wash`, `mark.ringMs`, `cardinal` |
 | Drawn arrow (the kit's, from its ring to its card) | "this line is what that is about": one curve in ember from the newest mark to whatever is speaking about it, and only where a way exists that keeps clear of every word on the page | no line of its own: the newest `mark` once the pen has finished it, while the capsule carries that mark's own `say`; or, with the capsule at rest, while the guide's card (`next`) names the marked line | goes with its mark (`clear`, a close, a newer mark); drawn back as the capsule closes; gone when the card's words move on, and while a `way` arrow is up | `lead.*`, `way.head`, `way.halo`, `ember`, `cursor.settleMs`, `mark.shaftMs`, `mark.headMs` |
 | A step's mark, waiting (build's name) | "this is the step you are on; click it when it is done": the mark of a walk's step breathes, a glow of its own colour round its ink that swells and goes back, and a box's wash deepens with it | a `mark` whose `board`, with the same id, names the step (`now`) | the step moving on (the mind's `clear` and next mark, also when the next step is on the same line) or the walk ending; nothing breathes with motion reduced | `mark.breath`, `mark.breathDeep`, `mark.breathMs`, `way.nodEveryMs`, `cursor.settleMs`, `cursor.rippleMs` |
 | Cursor | paral's own pointer, which is its logo mark: it shows where, never clicks. It flies to the newest mark or arrow, rides the pen, rests beside it; one ripple says "here" | the newest `mark`, `way` or `echo` on the page | goes with its mark or arrow; none with motion reduced | `cursor.*`, `cardinal`, `paper`, `motion.flightMs`, `motion.arc`, `curves.travel` |
@@ -25,7 +25,7 @@ when; the body only draws. Nothing here takes a click except the cross, and noth
 | The way arrow (build's name; after the kit's drawn arrow) | the thing is on this page and not in view: which way to scroll, and its name on a tag | `way` (`to`, `toward`) | `clear`, a close, a newer `way`, or a `mark` with the same id | `way.*`, `ember`, `light`, `glass`, `shadow`, `mark.width`, `mark.shaftMs`, `mark.headMs` |
 | The board (build's name; in the kit's language of card and buttons) | what is still ahead, or the parts of an answer, as boxes on a light card. On a board of steps the step he is on is the ink button | `board` (`rows`; `now` for the step) | `clear`, a close, a `clip`; the same rows again keep the card in place | `board.*`, `light`, `mist`, `ink`, `glass`, `shadow`, `motion.arriveMs`, `motion.usualMs` |
 | Toast | confirms something paral did: "Open in your calendar · November 22" beside the capsule | `open` (`label` for the date) | four seconds; a `clear` does not take it | `toast.*`, `strings.opened`, `cardinal`, `light`, `glass`, `shadow`, `motion.arriveMs`, `motion.leaveMs` |
-| Nudge, without its buttons (the guide's card) | says what to do next for the page he is on, and which step it is, so a first run needs no one beside him. The closing line comes when every step is done | `next` (`text`, `n`, `of`; `done` for the closing line) | a `next` with no words; the closing line goes by itself after the toast's stay; a `clear` does not take it. Not drawn at all when "Show the guide" is unticked in the menu | `guide.*`, `strings.step`, `strings.name`, `toast.stayMs`, `motion.arriveMs`, `motion.leaveMs`, `motion.standMsAWord`, `motion.readMsLeast`, `light`, `mist`, `glass`, `shadow`, `cardinal` |
+| Nudge, without its buttons (the guide's card) | says what to do next for the page he is on, and which step it is, so a first run needs no one beside him. The closing line comes when every step is done | `next` (`text`, `n`, `of`; `done` for the closing line) | a `next` with no words; the closing line goes by itself after the toast's stay; a `clear` does not take it. Not drawn at all when "Show the guide" is unticked in the menu | `guide.*`, `strings.step`, `strings.name`, `toast.stayMs`, `motion.arriveMs`, `motion.leaveMs`, `motion.standMsAWord`, `motion.readMsLeast`, `light`, `mist`, `stone`, `glass`, `shadow`, `cardinal` |
 | The lesson clip (build's name; no frame in the kit) | a rendered clip on an example that is not his, in the board's place, on a dark card | `clip` | `clear`, a close, a `board` | `board.pad`, `board.radius`, `board.maxWidth`, `ink` |
 | His own trail and his loop (build's names; they are his, not paral's) | the path of his pointer while he draws with the draw key held, and that loop drawn back by hand once his words are final | `trail` (from the body), `echo` | the trail fades as he lets go; the echo goes at his next press or when paral marks inside it | `accent` (the trail; the kit's ember, as the echo is), `ember` (the echo), `mark.width`, `motion.trailFadeMs` |
 
@@ -182,6 +182,41 @@ curve; the `body.curves` row holds each one's values.
   would wait until about 300. (With the old spring over 260 ms the words came at about 88.) These are read off the
   curves, not measured on a screen.
 
+## The kit's sizes, and one scale over them
+
+The pieces the design kit draws are drawn at the kit's own sizes, which its handoff gives as exact from the design
+file. They were about 0.7 of that before.
+
+| piece | the kit's sizes | tokens |
+|---|---|---|
+| Cursor | the mark in a frame of 36 with its tip at (3.6, 3.6); the ripple's rings 42 and 70 across, a line of 2 | `cursor.size`, `cursor.ripple` (35, the outer ring's reach); the rest are shares of the frame in `PainterCursor.swift` and `Layout.cursorTip` |
+| Cursor: tag | type 15 medium, the mark at 18, room 8 on the left, 14 on the right, 7 above and below, a gap of 8, at (26, 30) of the cursor's frame | shares of the cursor's frame in `PainterCursor.swift` |
+| The guide's card | 420 wide, room 24, corner 24, 16 between its lines, words 22 regular, the name line 15 medium in stone, the mark at 24 and 10 from the name | `guide.width`, `pad`, `radius`, `gap`, `type`, `small`, `avatar`, `nameGap`, `stone` |
+| Toast | type 18 medium, badge 30, room 10 on the left, 20 on the right, 10 above and below, a gap of 12 | `toast.type`, `pad`, `gap` (the badge and the right-hand room are shares in `PainterToast.swift`) |
+| Highlight (the box) | room 14 across and 10 up and down, corner 12, edge 2, wash 8 percent | `mark.boxPadX`, `boxPadY`, `boxRadius`, `boxWidth`, `wash` |
+| Drawn ink | 3.5 across | `mark.width` |
+
+`scale` is one dial over all of these (and `lead.width`, the leading arrow's ink): 1 is the kit's size, and
+`Tokens.load` gives the look with it already applied, so nothing else knows of it. The kit's handoff asks for one
+such scale and not for changed sizes. The board, the way arrow and the capsule are the build's own and are not
+under it. The step's number on the guide's card, which the kit has no frame for, is written as the name line is.
+
+What the larger sizes cost on the recorded club page: nothing is on the page's words. The card is 420 wide where
+it was 300 and still sits in the top right clear of the text, which ends at about 1040 of 1728 points there; on a
+narrower page it goes down the side or to the left as before (`Layout.corner`). The box gets the kit's 10 above
+and below only where lines stand that far apart; on the page's close lines it is cut to the middle of the gap, as
+it was. The ripple's rings are the kit's 70 across where they were 54, and for the 0.9 s they last they cross the
+end of the line the cursor rests beside. These are from stills of the first recorded walk, not a screen.
+
+## The capsule clear of the Dock
+
+The capsule's foot is `capsule.bottom` (28, the kit's) above the foot of the display, and above the Dock when the
+Dock takes part of that foot. The app tells the scene how much (`Scene.bottomInset`, 0 with the Dock hidden or at
+the side, and in a film); the scene puts it in the picture, and the painter lays out everything that sits at the
+bottom above it: the capsule, the way arrow beside it, the toast, and the ways of the leading arrow; the board's
+place is found above it too. The window's test for a click on the cross (`Overlay.swift`) must lay the capsule out
+with the same height less the inset, or the cross is drawn above where its click is taken.
+
 ## The capsule, the board and the tags on the kit's light surface
 
 The capsule has the look of the design kit's voice pill within the states it already had: a light pill with a soft
@@ -237,6 +272,10 @@ The seam's mark kinds are unchanged; the kit's look comes through tokens. A ring
 bracket are drawn by hand in `ember`. A box is the kit's neat highlight: a thinner edge (`mark.boxWidth`) in
 `cardinal` and a faint wash of cardinal inside it (`mark.wash`, the kit's 8 percent), laid across the line from its
 start as the edge is drawn, the way a highlighter is pulled along. The wash tints the words and does not hide them.
+The box leaves the kit's room round its line, `mark.boxPadX` across and `mark.boxPadY` up and down, with the kit's
+corner (`mark.boxRadius`), where the page has that room; between close lines its top and bottom stop in the middle
+of the gap to the next line, and its ends stop half way to a neighbour on the same line, so neither its edge nor
+its wash is on any other words (`Pen.hug`).
 No mark's ink leaves the display: where the thing it marks runs to an edge of the display or past it (a line as wide
 as the page), the pen's path runs along that edge, `mark.pad` in, so a loop is still seen to close. His own loop
 coming back is kept inside the same way.
@@ -321,5 +360,5 @@ tokens' size times whatever the card was shrunk by.
 shows at those moments), `curves TOKENS SHARE...` (each of the four curves at those shares of its time), `placed RUN TOKENS MS...` (where the painter puts each thing at those moments, the points
 the pen has inked of a mark and of a drawn arrow, the capsule's look and words, and the way arrow's, the cursor's and the board's own values).
 
-Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way`, `body.cursor`, `body.steps`, `body.pages`, `body.toast`, `body.boardType`, `body.guide`, `body.lead`, `body.breath`, `body.stands`, `body.resting`, `body.cursorInside`, `body.inkInside`, `body.curves` and `body.moves` rows, with no window. The look of the mark, the white surfaces and the trail's colour are checked on stills. The hosts are compiled and have never been run:
+Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way`, `body.cursor`, `body.steps`, `body.pages`, `body.toast`, `body.boardType`, `body.guide`, `body.lead`, `body.breath`, `body.stands`, `body.resting`, `body.cursorInside`, `body.inkInside`, `body.curves`, `body.moves`, `body.lifted` and `body.scaled` rows, with no window. The look of the mark, the white surfaces, the trail's colour and the kit's sizes are checked on stills. The hosts are compiled and have never been run:
 the key, the microphone, the screen picture and the overlay wait for a person and their grants (`./run`).

@@ -17,7 +17,7 @@ extension Painter {
             let hug = Pen.hug(mark.box, tokens: tokens, avoiding: texts)
             ctx.saveGState()
             ctx.clip(to: CGRect(x: hug.x, y: hug.y, width: hug.w * mark.drawn, height: hug.h))
-            ctx.addPath(CGPath(roundedRect: CGRect(x: hug.x, y: hug.y, width: hug.w, height: hug.h), cornerWidth: min(Pen.corner, hug.h / 2), cornerHeight: min(Pen.corner, hug.h / 2), transform: nil))
+            ctx.addPath(CGPath(roundedRect: CGRect(x: hug.x, y: hug.y, width: hug.w, height: hug.h), cornerWidth: min(tokens.mark.boxRadius, hug.h / 2), cornerHeight: min(tokens.mark.boxRadius, hug.h / 2), transform: nil))
             // While it breathes, the wash deepens with the glow and comes back.
             ctx.setFillColor(cardinal.copy(alpha: tokens.mark.wash + max(tokens.mark.breathDeep - tokens.mark.wash, 0) * mark.breath) ?? cardinal)
             ctx.fillPath()

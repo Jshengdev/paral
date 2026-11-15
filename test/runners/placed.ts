@@ -23,9 +23,10 @@ const headless = join(root, "body", ".build", "debug", "paral-headless");
 export const DISPLAY = { w: 1600, h: 1000 };
 const touches = (a: Box, b: Box) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
 export const textOf = (dir: string): Box[] => session(dir)[0].lines.map((line: { box: Box }) => line.box);
-// `guideOff` is the menu's "Show the guide" unticked: no seam line carries it, so the probe is told by the environment.
-export const at = (dir: string, moments: number[], guideOff = false): Moment[] =>
-  JSON.parse(execFileSync(headless, ["placed", dir, join(root, "body", "tokens.json"), ...moments.map(String)], { encoding: "utf8", env: { ...process.env, PARAL_GUIDE: guideOff ? "off" : "on" } }));
+// `guideOff` is the menu's "Show the guide" unticked, and `inset` the points of the display's foot a Dock takes: no
+// seam line carries either, so the probe is told by the environment.
+export const at = (dir: string, moments: number[], guideOff = false, inset = 0): Moment[] =>
+  JSON.parse(execFileSync(headless, ["placed", dir, join(root, "body", "tokens.json"), ...moments.map(String)], { encoding: "utf8", env: { ...process.env, PARAL_GUIDE: guideOff ? "off" : "on", PARAL_INSET: String(inset) } }));
 
 /**
  * At each moment: whether the arrow is up and, if it is, what it leads to, how far the pen has inked it, which edge

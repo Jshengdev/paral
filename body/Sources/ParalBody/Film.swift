@@ -75,11 +75,11 @@ public enum Film {
 
     /// Where the painter puts each thing at each of the given moments of a recorded run, and the way arrow's, the
     /// cursor's and the board's own values then. For rows: a film's record says when a thing's box changes, and not when the thing goes.
-    public static func placed(run: String, tokens: Tokens, at moments: [Double], guide: Bool = true) throws -> [[String: Any]] {
+    public static func placed(run: String, tokens: Tokens, at moments: [Double], guide: Bool = true, inset: Double = 0) throws -> [[String: Any]] {
         let run = try load(URL(fileURLWithPath: run))
         let painter = Painter(tokens: tokens, width: run.w, height: run.h)
         return moments.map { moment in
-            var scene = Scene(width: run.w, height: run.h, tokens: tokens)
+            var scene = Scene(width: run.w, height: run.h, tokens: tokens, bottomInset: inset)
             scene.guideOn = guide
             for event in run.events where event.at <= moment { scene.take(event.seen, at: event.at) }
             let picture = scene.picture(at: moment)
