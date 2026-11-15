@@ -16,7 +16,7 @@ type Moment = {
   toast: string | null;
   capsule: { look: string; says: string; stone: string[]; note: string | null; trail: string[]; caret: boolean | null; wave: string[]; working: boolean };
   guide: { text: string; n: number | null; of: number | null; appear: number } | null;
-  nudge: { text: string; inked: number; trail: string[]; buttons: boolean; appear: number; rows: number[]; leave: number } | null;
+  nudge: { text: string; inked: number; trail: string[]; buttons: boolean; offer: string | null; appear: number; rows: number[]; leave: number } | null;
 };
 
 const root = join(import.meta.dirname, "..", "..");

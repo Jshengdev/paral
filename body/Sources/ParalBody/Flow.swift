@@ -105,7 +105,7 @@ public final class Flow {
                     await pause(plus)
                 } else if let plus = (after?["firstAnswerPlusMs"] as? NSNumber)?.doubleValue {
                     // The first sentence of the answer itself, not a line said while he waits: a cut in the middle of an answer.
-                    _ = try await until("the answer's first sentence", limit: 60_000, from: seenTo) { if case .say(_, _, _, let aside, _, _) = $0 { return !aside } else { return false } }
+                    _ = try await until("the answer's first sentence", limit: 60_000, from: seenTo) { if case .say(_, _, _, let aside, _, _, _) = $0 { return !aside } else { return false } }
                     await pause(plus)
                 } else if !afterLook {
                     // A look ends in no state line; it has waited its own time already.

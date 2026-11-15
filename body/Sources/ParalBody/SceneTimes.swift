@@ -62,7 +62,7 @@ extension Scene {
     /// whose words got no card (he had answered them) holds no line back.
     func turn(after at: Double) -> Double {
         var waits = [standing(at: at)].compactMap { $0 }
-        if let last = asks.last(where: { $0.trail != nil && !unseen($0) }), let text = last.beats.keys.max().flatMap({ last.beats[$0]?.text }) {
+        if let last = asks.last(where: { cards[$0.id] != nil && !unseen($0) }), let text = last.beats.keys.max().flatMap({ last.beats[$0]?.text }) {
             waits.append((text, shown(last).last?.start ?? last.beganAt))
         }
         return max(at, waits.map { $0.since + stand($0.text) }.max() ?? at)

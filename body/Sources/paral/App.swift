@@ -105,7 +105,7 @@ final class App: NSObject, NSApplicationDelegate {
             }
             watch.start(everyMs: settings.lookEveryMs, longEdge: settings.pictureLongEdge)
             cues.show(settings.cues, in: status?.menu)
-            if !settings.opening.isEmpty { [Seen.say(id: "hello", beat: 0, text: settings.opening, aside: false, trail: ["Lost and Found"], keep: false), .mute(id: "hello")].forEach(tell) }
+            if !settings.opening.isEmpty { [Seen.say(id: "hello", beat: 0, text: settings.opening, aside: false, trail: ["Lost and Found"], keep: false, offer: nil), .mute(id: "hello")].forEach(tell) }
         }
         if case .voice(let id, _, let sound, _) = seen {
             guard !cut.contains(id) else { return }
@@ -113,6 +113,7 @@ final class App: NSObject, NSApplicationDelegate {
             speaker.play(sound)
         }
         if case .open(let path, _) = seen, !Keep.open(path) { failed("the calendar file could not be opened") }
+        if case .go(_, let url, _) = seen, !Keep.go(url) { failed("the page could not be opened (\(url))") }
         tell(seen)
     }
 

@@ -1,0 +1,152 @@
+{
+ "name": "body: a line with an offer goes on the nudge card though it carries no trail, with the offer's words on its primary button beside \"Not now\" and no trail row, and the capsule stays at rest for it; a press sends the offer's words as a tapped line, after which the card stays up offering nothing; the mind's go line takes the card away and shows a toast that names the page",
+ "run": "body.nudge",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Important Dates",
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes.",
+   "December 1: Deadline for advisors.",
+   "Info Sessions, Workshops, and Office Hours"
+  ],
+  "words": true,
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "key.down",
+     "at": 1001000
+    }
+   },
+   {
+    "at": 1600,
+    "line": {
+     "type": "key.up",
+     "at": 1001600
+    }
+   },
+   {
+    "at": 1800,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 0,
+     "text": "Room bookings are on the RSO Resources page.",
+     "offer": {
+      "label": "Open RSO Resources",
+      "send": "take me to RSO Resources"
+     }
+    }
+   },
+   {
+    "at": 1800,
+    "line": {
+     "type": "mute",
+     "id": "t1",
+     "why": "no voice is set up"
+    }
+   },
+   {
+    "at": 1850,
+    "line": {
+     "type": "state",
+     "name": "idle"
+    }
+   },
+   {
+    "at": 4000,
+    "line": {
+     "type": "typed",
+     "text": "take me to RSO Resources",
+     "at": 1004000
+    }
+   },
+   {
+    "at": 4050,
+    "line": {
+     "type": "go",
+     "id": "t2",
+     "url": "https://campusactivities.usc.edu/rso-resources/",
+     "label": "RSO Resources"
+    }
+   }
+  ],
+  "at": [
+   1700,
+   2600,
+   4020,
+   4100,
+   4400
+  ]
+ },
+ "out": [
+  {
+   "card": null,
+   "capsule": "thinking",
+   "toast": null
+  },
+  {
+   "card": {
+    "says": "Room bookings are on the RSO Resources page.",
+    "steps": [],
+    "look": "up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "no line: at the right, above the capsule",
+    "arrowLeadsToIt": false,
+    "button": "Open RSO Resources"
+   },
+   "capsule": "rest",
+   "toast": null
+  },
+  {
+   "card": {
+    "says": "Room bookings are on the RSO Resources page.",
+    "steps": [],
+    "look": "up",
+    "offers": [],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "no line: at the right, above the capsule",
+    "arrowLeadsToIt": false,
+    "button": "Open RSO Resources"
+   },
+   "capsule": "thinking",
+   "toast": null
+  },
+  {
+   "card": {
+    "says": "Room bookings are on the RSO Resources page.",
+    "steps": [],
+    "look": "going",
+    "offers": [],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [
+     "toast"
+    ],
+    "where": "no line: at the right, above the capsule",
+    "arrowLeadsToIt": false,
+    "button": "Open RSO Resources"
+   },
+   "capsule": "thinking",
+   "toast": "Opening RSO Resources"
+  },
+  {
+   "card": null,
+   "capsule": "thinking",
+   "toast": "Opening RSO Resources"
+  }
+ ]
+}

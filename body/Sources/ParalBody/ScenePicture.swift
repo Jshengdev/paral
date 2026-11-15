@@ -57,7 +57,7 @@ extension Scene {
         let thinking = open(.thinking, his.map { Word(text: $0.word, bright: 1) }, tokens.strings.thinking)
         let done = idleAt.map { $0 >= up && $0 <= t } ?? false
         // The sentence whose words are up is the one being said, or the one before it while that still stands its time.
-        if let ask = asks.last(where: { $0.beganAt >= hold.down && $0.trail == nil }), let up = shown(ask).last(where: { $0.start <= t }), let now = times(ask).first(where: { $0.beat == up.beat }) {
+        if let ask = asks.last(where: { $0.beganAt >= hold.down && cards[$0.id] == nil }), let up = shown(ask).last(where: { $0.start <= t }), let now = times(ask).first(where: { $0.beat == up.beat }) {
             let said = ask.beats[now.beat]!
             // Once paral draws on the page for this ask, his question stays in the bubble as the reason for what is
             // drawn, until the answer's own words take it: a line said while he waits no longer does.
