@@ -290,7 +290,11 @@
     "read the whole page",
     "found 1 date"
    ],
-   "keep": true
+   "keep": true,
+   "offer": {
+    "label": "Open it for me",
+    "send": "open it for me"
+   }
   },
   {
    "v": 1,
@@ -401,7 +405,11 @@
    "trail": [
     "saw this page",
     "found what you asked for"
-   ]
+   ],
+   "offer": {
+    "label": "Open it for me",
+    "send": "open it for me"
+   }
   },
   {
    "v": 1,

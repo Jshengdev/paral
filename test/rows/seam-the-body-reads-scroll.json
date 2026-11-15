@@ -1,5 +1,5 @@
 {
- "name": "seam: the body's own reader takes a scroll line, down or up, and refuses one that says neither",
+ "name": "seam: the body's own reader takes a scroll line, down or up, and refuses one that says neither; it takes a press line with its point, and refuses one with no point",
  "run": "body.seen",
  "in": {
   "lines": [
@@ -23,12 +23,28 @@
     "id": "t6",
     "to": "sideways",
     "toward": "Deadlines"
+   },
+   {
+    "v": 1,
+    "type": "press",
+    "id": "t7",
+    "x": 325,
+    "y": 310,
+    "on": "Deadlines +"
+   },
+   {
+    "v": 1,
+    "type": "press",
+    "id": "t8",
+    "on": "Deadlines +"
    }
   ]
  },
  "out": [
   "took scroll(id: \"t4\", down: true)",
   "took scroll(id: \"t5\", down: false)",
-  "refused scroll: id and to (up or down) are needed"
+  "refused scroll: id and to (up or down) are needed",
+  "took press(id: \"t7\", x: 325.0, y: 310.0)",
+  "refused press: id, x and y are needed"
  ]
 }

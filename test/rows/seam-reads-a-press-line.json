@@ -1,0 +1,19 @@
+{
+ "name": "seam: a press line from the mind is read: the point of the display the app is to click for him, and the heading's words",
+ "run": "seam.read",
+ "in": {
+  "from": "mind",
+  "text": "{\"v\": 1, \"type\": \"press\", \"id\": \"t2\", \"x\": 325, \"y\": 310, \"on\": \"Deadlines +\"}"
+ },
+ "out": {
+  "ok": true,
+  "line": {
+   "v": 1,
+   "type": "press",
+   "id": "t2",
+   "x": 325,
+   "y": 310,
+   "on": "Deadlines +"
+  }
+ }
+}

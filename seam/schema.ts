@@ -113,6 +113,11 @@ export const FromMind = z.discriminatedUnion("type", [
    * comes into view (a mark lands, or the arrow goes) or it has tried long enough. It needs his Accessibility grant.
    */
   z.object({ v, type: z.literal("scroll"), id, to: z.enum(["up", "down"]), toward: z.string().min(1) }),
+  /**
+   * He asked for the closed section paral has boxed to be opened: the body clicks once at this point of the display
+   * (points from its top-left, as a mark's box is), for him. `on` is the heading's words. It needs his Accessibility grant.
+   */
+  z.object({ v, type: z.literal("press"), id, x: z.number().nonnegative(), y: z.number().nonnegative(), on: z.string().min(1) }),
   z.object({ v, type: z.literal("mark"), id, beat, kind: MarkKind, box: Box, label: z.string().optional(), tone: z.enum(["strong", "quiet", "date"]).optional(), spot: z.boolean().optional() }),
   /** In place of a mark, when the thing is on this page and not in view: which way to scroll, and the name of what it leads to. `clear` wipes it. */
   z.object({ v, type: z.literal("way"), id, to: z.enum(["up", "down"]), toward: z.string().min(1) }),

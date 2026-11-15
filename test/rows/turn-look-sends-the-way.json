@@ -307,7 +307,11 @@
     "saw this page",
     "found where it is"
    ],
-   "keep": true
+   "keep": true,
+   "offer": {
+    "label": "Open it for me",
+    "send": "open it for me"
+   }
   },
   {
    "v": 1,

@@ -40,6 +40,9 @@ public struct Rounds {
 
     public init() {}
 
+    /// Whether a print shows the page as the last look reported saw it.
+    public func isLast(_ print: Data, within: Double) -> Bool { Screen.alike(print, reported, within: within) }
+
     /// Takes one round's print; true when it is to be read and reported as a look.
     public mutating func report(_ print: Data, waiting: Bool, most: Int, within: Double) -> Bool {
         let hurry = waiting && hurried < most

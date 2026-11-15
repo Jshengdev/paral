@@ -189,7 +189,7 @@ public struct Scene {
             kept(at)
         case .go(_, let url, let label): went(to: url, label, at)
         case .click(let x, let y): click(x: x, y: y, at: at)
-        case .other, .scroll:
+        case .other, .scroll, .press:
             break
         }
     }

@@ -17,9 +17,10 @@ type Seen = Pick<Screen, "lines" | "display">;
  * itself (`inView`) or the heading it sits under. `kind` is the mark for it: the thing's own line gets a ring where
  * the lines around leave room for one (a hugging box or an underline where they do not), and a heading he should
  * open gets a box. With no place to mark, `to` is the way it lies, when that can be told, and `toward` names what
- * the way leads to.
+ * the way leads to. `opens` is true when the place is a heading that is closed over the thing: the kept page writes
+ * that heading with its + sign, and the thing's own line is not in view.
  */
-export type Where = { box: Box | null; on: string | null; inView: boolean; kind: MarkKind; to: "up" | "down" | null; toward: string };
+export type Where = { box: Box | null; on: string | null; inView: boolean; kind: MarkKind; to: "up" | "down" | null; toward: string; opens: boolean };
 
 /**
  * Whether a line on his screen is where a kept paragraph begins. His screen breaks a paragraph into several lines,
@@ -46,7 +47,7 @@ export function whereIs(settings: Settings, seen: Seen, page: KeptPage, thing: {
   const to = target ? null : whichWay(seen.lines.map((read) => read.text), page, thing.line);
   // The thing's own line gets the ring; a line that opens a section (the page writes it with its + sign) is a thing to open, and gets the box.
   const kind = line.found && !/\+\s*$/.test(line.line) ? fitted("ring", line.line, seen.lines, settings.ringReach.value, seen.display.scale) : "box";
-  return { box: target?.box ?? null, on: target?.line ?? null, inView: line.found, kind, to, toward };
+  return { box: target?.box ?? null, on: target?.line ?? null, inView: line.found, kind, to, toward, opens: !line.found && heading?.found === true && /\+\s*$/.test(thing.under) };
 }
 
 /** What goes with a mark on the thing's own line: a strike in the mark's place for what has passed, and a tag beside the line. */

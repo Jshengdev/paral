@@ -45,7 +45,7 @@ export const pages = {
   } satisfies Setting<{ line: string; label: string; send: string }>,
 
   goAsks: {
-    value: ["take me there", "take me to it", "take me to that page", "yes take me", "go there", "open that page", "open it for me"],
+    value: ["take me there", "take me to it", "take me to that page", "yes take me", "go there", "open that page"],
     why: "Words of his that ask to be taken to the page the last answer sent him to. They count only when an answer has named such a page; otherwise they are an ordinary ask.",
     measured: "not measured; a first list",
   } satisfies Setting<string[]>,
@@ -60,6 +60,24 @@ export const pages = {
     why: "After an answer on one of USC's kept pages, the answer stays on a card of its own with the one thing paral can do next. The owner, after his first real run, where each answer was a caption above the pill and then gone: \"we need the card that opens when we ask it for important ifnromation about what the rso is going on\". The trail is what was done for the answer; `most` is how many letters of it the card holds, cut at a sentence's end, so the card finds room beside the page; the two offers are the button's words and the words it sends back: to scroll to what the answer's arrow points at, and, when nothing else is offered and steps are known, to walk them. A date the answer named that is still ahead is offered to be kept instead, and a page it sent him to is offered by `goOffer`.",
     measured: "not seen on a real screen; 320 letters is about three sentences of an answer",
   } satisfies Setting<{ trail: string[]; most: number; scroll: { label: string; send: string }; steps: { label: string; send: string } }>,
+
+  openOffer: {
+    value: { label: "Open it for me", send: "open it for me", found: "Here it is: {name}. It is closed." },
+    why: "When paral's box is on a heading that is closed over the thing, the card offers to open it: the button's words, the words it sends back, which are also what he can say, and the line of the card that says so after an answer sent him there ({name} is the heading's name). The owner, after his first real run: \"It should have access to scroll and click to find and open pages to then draw on them\".",
+    measured: "not seen on a real screen",
+  } satisfies Setting<{ label: string; send: string; found: string }>,
+
+  openAsks: {
+    value: ["open it for me", "open it", "open that for me", "open that section", "open the section", "click it for me", "click that for me"],
+    why: "Words of his that ask the app to open the closed section paral has boxed. They count only while such a box is up: the app clicks nothing else, ever.",
+    measured: "not measured; a first list",
+  } satisfies Setting<string[]>,
+
+  nothingToOpenLine: {
+    value: "There is no closed section I have marked right now.",
+    why: "What he hears when he asks for something to be opened and paral's box is on no closed heading: nothing is clicked on a guess.",
+    measured: "not heard live",
+  } satisfies Setting<string>,
 
   scrollAsks: {
     value: ["scroll for me", "scroll there", "scroll to it", "scroll down for me", "scroll up for me", "scroll there for me", "take me to it on this page"],

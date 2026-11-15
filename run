@@ -27,9 +27,10 @@ paral needs two grants from macOS, and asks for both the first time it starts:
 
 It asks for no Input Monitoring grant: the key is read by asking the system which keys are down.
 
-  3. Accessibility, only if you ask it to scroll for you ("Scroll for me"). macOS shows its own box the first time;
-     switch paral on under Privacy & Security, Accessibility, then press the button again. Without it paral never
-     scrolls, and says so. Everything else works without it.
+  3. Accessibility, only if you ask it to scroll for you ("Scroll for me") or to open a closed section it has boxed
+     ("Open it for me"). macOS shows its own box the first time; switch paral on under Privacy & Security,
+     Accessibility, then ask again. Without it paral never scrolls or clicks, and says so. Everything else works
+     without it.
 To check that the key is seen on this Mac before starting:  body/.build/debug/paral-headless keys 10 $1
 
 On each ask, with the live services, this leaves the Mac: the sound of the question (to the ear); the text read

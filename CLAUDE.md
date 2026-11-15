@@ -145,10 +145,18 @@ nothing to offer it is a card that goes by itself. An answer on any other page i
 **"Scroll for me."** When an arrow says the thing is off his screen and he says or presses "scroll for me"
 (`scrollAsks`), the mind asks no model: it sends a `scroll` line with the way the arrow points (`mind/takes.ts`,
 `glance.ts` `wayNow`: the walk's step, else where his last answer sent him, else the page's own thing). The app
-(`Does.swift`, `Scroll.swift`) turns the wheel for the app in front, half a display at a time, and after each reach
+(`Does.swift`, `Hand.swift`) turns the wheel for the app in front, half a display at a time, and after each reach
 waits for a look of the still page to be answered, so the mark lands on the line where the line is. It stops when the
 arrow goes, when he presses the key, when the page no longer moves, or after 30 s. It needs his Accessibility grant,
 asks for it once, and says so when it has none. With no arrow up he is told so and nothing is scrolled.
+
+**"Open it for me."** The one click paral makes. When its box is on a heading that is closed over the thing, the
+card offers "Open it for me" (`openOffer`, `openAsks`). The mind sends a `press` line only when all of this holds, and
+the checks sit together in `mind/takes.ts`: he asked; his screen is a kept page read from an https usc.edu address;
+the place is where paral's own last look put its box; the kept page writes that heading with its + sign and the
+thing's own line is not in view. The app (`Does.swift`) then takes one picture and clicks only if the page still
+stands as that look saw it (`Watch.still`): one press of the left button at the middle of the box (`Hand.press`). It
+needs the Accessibility grant. Nothing else is ever clicked, and nothing is ever typed.
 
 **"Add it to my calendar."** The date paral last showed him, from a look or from an answer, can be kept
 (`mind/keep.ts`, `keepAsks`). No model is asked: the date is written into a calendar file (.ics) with the line as the
@@ -222,7 +230,10 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
   the scripted stand-in and never on a real screen. The sheet is found from two of its printed lines; scrolled so
   that only one shows, it is not found and the ask is answered as before. Which places a hint may ring is bound only
   by the prompt's rule and the cap of two: no code checks that two rings together do not show the result.
-- "Scroll for me" has never scrolled anything: `Does.swift` and `Scroll.swift` are compiled and unrun, since nothing but the
+- "Open it for me" has never clicked anything: `Hand.press` and `Watch.still` are compiled and unrun. Not known: whether
+  the click reaches the page under paral's own window (the pointer rests 0.2 s first so that window lets clicks through
+  again), and whether one click on the heading's words opens the section on every USC page. The mind's half has rows.
+- "Scroll for me" has never scrolled anything: `Does.swift` and `Hand.swift` are compiled and unrun, since nothing but the
   app on his Mac can send a turn of the wheel. Not known: whether his browser takes a turn sent to it this way, whether the
   sign is right (down is a negative turn), and how the reaches look. The mind's half has rows. Until the arrow's own
   button lands he says it, or taps it in the menu.

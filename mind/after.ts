@@ -57,6 +57,12 @@ export function answered({ settings, send, log }: Hands) {
       held.way = way;
       send({ v, type: "clear" });
       log(`${id}: the page has moved under his answer, so what was drawn for it is wiped; ${where === null ? "the answer pointed at no place on this page, and the page's own thing does not come back" : `the looks keep to where it sent him: ${point(send, id, where)}`}`);
+      if (where?.opens) {
+        // The place is there and closed: a card says so and offers to open it.
+        const { label, send: words, found } = settings.openOffer.value;
+        send({ v, type: "say", id, beat: 0, text: found.replace("{name}", where.toward), trail: ["saw this page", "found where it is"], offer: { label, send: words } });
+        send({ v, type: "mute", id, why: "a look he did not ask for is shown, not spoken" });
+      }
       return true;
     },
   };

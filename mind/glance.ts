@@ -4,7 +4,7 @@ import { away, unknownDate, worded } from "./cores/dates.ts";
 import type { Box } from "./cores/ground.ts";
 import { named, type ToKeep } from "./cores/keep.ts";
 import { headingOf, whichPage, type KeptPage } from "./cores/page.ts";
-import { finished, point, whereIs, type More } from "./place.ts";
+import { finished, point, whereIs, type More, type Where } from "./place.ts";
 import type { Following, Glanced } from "./ports.ts";
 import { speech } from "./speech.ts";
 import { SEAM_VERSION, type FromBody } from "../seam/schema.ts";
@@ -57,6 +57,8 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
     return same;
   }
   let looks = 0;
+  /** What a card offers when its box is on a heading that is closed over the thing. */
+  const opens = { label: settings.openOffer.value.label, send: settings.openOffer.value.send };
   let running: AbortController | null = null;
   /** The step that leads the looks on its page, when he has said "show me": they place it, not the page's own thing. */
   let led: Led | null = null;
@@ -84,7 +86,7 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
     const tags = settings.markTags.value;
     const marked = where ? point(send, id, where, tags ? { tag: { label: settings.walkTags.value.next, tone: "strong" } } : {}) : "no line of this page is known for the step, so nothing is marked";
     if (tags) finished(send, id, settings, look, page, step.done ?? [], settings.walkTags.value.done);
-    send({ v, type: "say", id, beat: 0, text: step.text, trail: step.trail });
+    send({ v, type: "say", id, beat: 0, text: step.text, trail: step.trail, ...(where?.opens ? { offer: opens } : {}) });
     send({ v, type: "mute", id, why: "a look he did not ask for is shown, not spoken" });
     send({ v, type: "board", id, rows: step.rows, now: step.now });
     log(`${id}: following "show me", ${step.trail[1]}: ${marked}`);
@@ -108,16 +110,15 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
       return true;
     },
     /**
-     * Which way the thing now pointed at lies, when it is off his screen: the walk's step, else the place his last
-     * answer sent him to, else the page's own thing. From the last look taken. Null when no arrow would be up.
+     * Where the thing now pointed at is, from the last look taken: the walk's step, else the place his last answer
+     * sent him to, else the page's own thing, with the kept page it is on. Null when nothing is pointed at there.
      */
-    wayNow(): { to: "up" | "down"; toward: string } | null {
+    whereNow(): { where: Where; page: KeptPage } | null {
       if (last === null) return null;
       const held = answer.on(last.page.name);
       const step = led !== null && led.page === last.page.name ? led : null;
       const thing = step ? (step.line === null ? null : { line: step.line, under: step.under }) : held ? held.target : (found.get(last.page.name) ?? null);
-      const where = thing ? whereIs(settings, last.look, last.page, thing) : null;
-      return where && where.box === null && where.to !== null ? { to: where.to, toward: where.toward } : null;
+      return thing ? { where: whereIs(settings, last.look, last.page, thing), page: last.page } : null;
     },
     /** An answer was given: it holds the looks of its page from here (`after.ts`). */
     pointed: answer.pointed,
@@ -129,8 +130,9 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
     },
     async take(look: Look | Screen, asked: Asked | null): Promise<void> {
       const page = whichPage(look.lines.map((line) => line.text), ports.pages, settings.pageLeastLines.value);
+      // On a page that is not kept nothing is pointed at: what the last kept page's look found is not kept for it.
+      last = page === null ? null : { look, page };
       if (page === null || ports.glancer === null) return;
-      last = { look, page };
       if (led !== null && led.page === page.name) return follow(look, page, led);
       if (answer.take(look, page)) return;
       // He is being followed when he asked something a moment ago and has since come to another kept page. That ends
@@ -196,7 +198,8 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
       const trail = following ? ["saw this page", "found what you asked for"] : first ? ["saw this page", read, what] : ["saw this page", reached];
       // A date still ahead can be kept: the body may offer it as a button, which sends "add it to my calendar" as a tapped
       // line. A date he has already kept in this sitting is not offered again.
-      send({ v, type: "say", id, beat: 0, text, trail, ...(glanced.kind === "date" && !kept(glanced.line) ? { keep: true } : {}) });
+      // With the box on a heading that is closed over the thing, the card offers to open it instead: an offer wins.
+      send({ v, type: "say", id, beat: 0, text, trail, ...(glanced.kind === "date" && !kept(glanced.line) ? { keep: true } : {}), ...(where.opens ? { offer: opens } : {}) });
       // The first time a page's look shows a date, ahead or passed, it is also said aloud, once for the page. A look
       // that only moves its mark, a step with no date, and a look after his ask are shown and not spoken. A press of
       // the key stops it, as it stops the look.

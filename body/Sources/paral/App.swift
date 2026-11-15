@@ -115,7 +115,7 @@ final class App: NSObject, NSApplicationDelegate {
             speaker.play(sound)
         }
         if case .open(let path, _) = seen, !Keep.open(path) { failed("the calendar file could not be opened") }
-        does.take(seen, on: screen, way: { [unowned self] in self.held ? nil : self.scene.watching(at: self.clock()).down }, looks: { [unowned self] in self.watch.sent }) { [unowned self] in self.failed($0) }
+        does.take(seen, on: screen, watch: watch, way: { [unowned self] in self.held ? nil : self.scene.watching(at: self.clock()).down }) { [unowned self] in self.failed($0) }
         tell(seen)
     }
 

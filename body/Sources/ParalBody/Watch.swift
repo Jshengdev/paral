@@ -38,12 +38,25 @@ public final class Watch {
         self.timer = timer
     }
 
+    /// The menu bar's height, in points: what the display has above the room it leaves to windows.
+    private var bar: Double { max(0, screen.frame.maxY - screen.visibleFrame.maxY) }
+
+    /// Whether the display still shows what the last look sent to the mind saw: one picture taken now, against that
+    /// look's print. Asked before a click at a place that look found, so nothing is clicked on a page that has moved.
+    public func still(_ then: @escaping (Bool) -> Void) {
+        let screen = self.screen, bar = self.bar
+        Task { [weak self] in
+            let shot = try? await Screen.picture(of: screen)
+            let print = shot.map { Screen.print($0.image, skip: Int(bar * $0.place.scale)) } ?? Data()
+            await MainActor.run { then(self?.rounds.isLast(print, within: Watch.within) ?? false) }
+        }
+    }
+
     private func look() {
         guard !looking, Date() >= next, !busy(), Screen.allowed else { return }
         looking = true
         next = Date().addingTimeInterval(everyMs / 1000)
-        // The menu bar's height, in points: what the display has above the room it leaves to windows.
-        let screen = self.screen, bar = max(0, screen.frame.maxY - screen.visibleFrame.maxY)
+        let screen = self.screen, bar = self.bar
         Task { [weak self] in
             let shot = try? await Screen.picture(of: screen)
             let print = shot.map { Screen.print($0.image, skip: Int(bar * $0.place.scale)) } ?? Data()
