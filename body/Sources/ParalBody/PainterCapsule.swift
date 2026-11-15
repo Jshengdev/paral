@@ -5,9 +5,8 @@ extension Painter {
     /// row of dots) and the full pill (a stop control, the wave, a send control), with the bubble that carries its
     /// words above it (`PainterBubble.swift`). At rest with paral's ink on the page it is the cross that clears it,
     /// wearing the logo mark and the name. The two controls are drawn as the kit draws them and take no click: paral
-    /// is held and let go. Open, it sits where neither it nor its bubble lies on the page's read text, and at rest
-    /// where it lies on none (`Layout.pillMiddle`, `Layout.restMiddle`). Gives back the capsule's box, the cross's own
-    /// when it carries one, and the bubble's.
+    /// is held and let go. It stays at the bottom centre and covers what is under it; `texts` no longer moves it.
+    /// Gives back the capsule's box, the cross's own when it carries one, and the bubble's.
     func capsule(_ c: CapsulePicture, avoiding texts: [Box], _ ctx: CGContext) -> (box: Box, cross: Box?, bubble: Box?) {
         let k = tokens.capsule
         let (core, box, full) = places(c, avoiding: texts)
@@ -61,11 +60,9 @@ extension Painter {
         let k = tokens.capsule
         let name = inked(tokens.strings.name, size: k.tagType, color: ink, weight: .medium).size().width
         let wear = 3 * (k.restClose - k.rest) / 2 + k.rest + name
-        let middle = Layout.pillMiddle(texts: texts, width: width, height: floor, tokens: tokens)
-        let resting = Layout.restMiddle(texts: texts, closes: c.closes, wear: wear, width: width, height: floor, tokens: tokens)
-        let core = Layout.pill(open: c.open, closes: c.closes, middle: middle, resting: resting, width: width, height: floor, tokens: tokens)
+        let core = Layout.pill(open: c.open, closes: c.closes, width: width, height: floor, tokens: tokens)
         let worn = c.closes ? wear * (1 - c.open) : 0
-        return (core, Box(x: core.x - worn, y: core.y, w: core.w + worn, h: core.h), Layout.pill(open: 1, middle: middle, width: width, height: floor, tokens: tokens))
+        return (core, Box(x: core.x - worn, y: core.y, w: core.w + worn, h: core.h), Layout.pill(open: 1, width: width, height: floor, tokens: tokens))
     }
 
     /// What the capsule takes at this moment, for an arrow to keep off: the pill, or the cross with its name, and the
