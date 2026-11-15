@@ -11,7 +11,7 @@
         "neverSays": ["has passed", "already passed", "too late", "you missed"] } },
     { "say": "How many days do I have left?", "circle": null,
       "expect": { "plain": true, "sentences": 1, "countsDaysTo": "November 22" } },
-    { "say": "What's due after that?", "circle": null,
+    { "say": "And what is the next deadline after that one?", "circle": null,
       "expect": { "plain": true, "sentences": 1, "says": ["December 1"] } },
     { "say": "When did it open?", "circle": null,
       "expect": { "plain": true, "sentences": 1, "says": ["October 27"] } },
