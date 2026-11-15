@@ -1,9 +1,10 @@
 import type { Hands, Screen } from "./ask.ts";
+import { fitted } from "./cores/beats.ts";
 import { locate, type Box } from "./cores/ground.ts";
 import { dateLine } from "./cores/keep.ts";
 import { whichWay, type KeptPage } from "./cores/page.ts";
 import type { Settings } from "./settings.ts";
-import { SEAM_VERSION } from "../seam/schema.ts";
+import { SEAM_VERSION, type MarkKind } from "../seam/schema.ts";
 
 const v = SEAM_VERSION;
 const plain = (text: string) => text.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();
@@ -13,10 +14,12 @@ type Seen = Pick<Screen, "lines" | "display">;
 
 /**
  * Where a kept line is on his screen now. `box` and `on` are the place to mark and the screen's line there: the line
- * itself (`inView`) or the heading it sits under. With no place to mark, `to` is the way it lies, when that can be
- * told, and `toward` names what the way leads to.
+ * itself (`inView`) or the heading it sits under. `kind` is the mark for it: the thing's own line gets a ring where
+ * the lines around leave room for one (a hugging box or an underline where they do not), and a heading he should
+ * open gets a box. With no place to mark, `to` is the way it lies, when that can be told, and `toward` names what
+ * the way leads to.
  */
-export type Where = { box: Box | null; on: string | null; inView: boolean; to: "up" | "down" | null; toward: string };
+export type Where = { box: Box | null; on: string | null; inView: boolean; kind: MarkKind; to: "up" | "down" | null; toward: string };
 
 /**
  * Whether a line on his screen is where a kept paragraph begins. His screen breaks a paragraph into several lines,
@@ -39,12 +42,13 @@ export function whereIs(settings: Settings, seen: Seen, page: KeptPage, thing: {
   // What the way leads to: the heading without the sign that opens it, or the start of the line up to its colon.
   const toward = thing.under.replace(/\s*[+\-–−]\s*$/, "").trim() || thing.line.split(/:\s+/)[0].slice(0, 40).trim();
   const to = target ? null : whichWay(seen.lines.map((read) => read.text), page, thing.line);
-  return { box: target?.box ?? null, on: target?.line ?? null, inView: line.found, to, toward };
+  const kind = line.found ? fitted("ring", line.line, seen.lines, settings.ringReach.value, seen.display.scale) : "box";
+  return { box: target?.box ?? null, on: target?.line ?? null, inView: line.found, kind, to, toward };
 }
 
 /** Draws where it is: a box on the place, or the way to it. Gives back the words for the log. */
 export function point(send: Hands["send"], id: string, where: Where): string {
-  if (where.box) send({ v, type: "mark", id, beat: 0, kind: "box", box: where.box });
+  if (where.box) send({ v, type: "mark", id, beat: 0, kind: where.kind, box: where.box });
   else if (where.to && where.toward !== "") send({ v, type: "way", id, to: where.to, toward: where.toward });
   if (where.box) return `the mark is on "${where.on}"`;
   return where.to ? `the way is ${where.to}, toward "${where.toward}"` : "nothing is marked, since neither the line nor its heading is in view and the way cannot be told";

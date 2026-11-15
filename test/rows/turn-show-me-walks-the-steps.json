@@ -693,7 +693,7 @@
    "type": "mark",
    "id": "g2",
    "beat": 0,
-   "kind": "box",
+   "kind": "ring",
    "box": {
     "x": 100,
     "y": 300,
@@ -766,7 +766,7 @@
    "type": "mark",
    "id": "t3",
    "beat": 0,
-   "kind": "box",
+   "kind": "ring",
    "box": {
     "x": 100,
     "y": 350,
