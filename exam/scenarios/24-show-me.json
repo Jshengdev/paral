@@ -11,7 +11,7 @@
     { "say": "Show me.", "circle": null,
       "expect": { "step": 1, "way": { "to": "down" } } },
     { "look": true, "page": "real:rso-deadlines", "waitMs": 8000,
-      "expect": { "mark": { "on": "November 22 at 11:59pm:" } } },
+      "expect": { "way": { "to": "down" } } },
     { "say": "Show me.", "circle": null,
       "expect": { "step": 2, "mark": { "on": "November 22 at 11:59pm:" } } },
     { "say": "Show me.", "circle": null,

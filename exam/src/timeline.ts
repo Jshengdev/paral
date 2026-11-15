@@ -6,7 +6,7 @@ export type Moment = { at: number } & (
   | { kind: "key-up" }
   | { kind: "heard"; text: string }
   | { kind: "trail"; x: number; y: number }
-  | { kind: "look"; name: string; detail?: string }
+  | { kind: "look"; name: string; detail?: string; /** For "voice down": the id of the line the mind marked as shown and not spoken. */ of?: string }
   | { kind: "way"; to: "up" | "down"; toward: string }   // in a mark's place: which way to scroll to a thing not in view
   | { kind: "opened"; path: string }    // a file the mind handed to the Mac to open, such as a calendar file
   | { kind: "glance"; lines: number }   // a look with no key pressed: the body saw the display change and stand still

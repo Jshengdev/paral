@@ -26,7 +26,10 @@ export function dates(text: string): { month: string; day: number; said: string 
   return found.flatMap((m, index) => {
     const from = (m.index ?? 0) + m[0].length;
     const until = Math.min(index + 1 < found.length ? found[index + 1].index ?? text.length : text.length, from + 40);
-    const days = [...text.slice(from, until).matchAll(/\b([12]?\d|3[01])(?:st|nd|rd|th)?\b(?!:\d| days?\b)/g)].map((d) => Number(d[1])).filter((d) => d >= 1 && d <= 31);
+    // The numbers are looked for in everything after the month and kept when they begin inside its window, so that
+    // what follows a number is the text's own: cut at the window's edge, "closed 13 days ago" once ended at "13" and
+    // was read as a day.
+    const days = [...text.slice(from).matchAll(/\b([12]?\d|3[01])(?:st|nd|rd|th)?\b(?!:\d| days?\b)/g)].filter((d) => (d.index ?? 0) < until - from).map((d) => Number(d[1])).filter((d) => d >= 1 && d <= 31);
     return days.map((day) => ({ month: key(m[1]), day, said: `${m[1]} ${day}` }));
   });
 }

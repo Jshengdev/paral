@@ -22,7 +22,7 @@ function moment(at: number, line: Record<string, unknown> & { type: string }): M
     case "heard": return { at, kind: "heard", text: String(line.text) };
     case "trail": return { at, kind: "trail", x: Number(line.x), y: Number(line.y) };
     case "state": return { at, kind: "look", name: String(line.name), detail: line.detail === undefined ? undefined : String(line.detail) };
-    case "mute": return { at, kind: "look", name: "voice down", detail: String(line.why) };
+    case "mute": return { at, kind: "look", name: "voice down", detail: String(line.why), of: line.id === undefined ? undefined : String(line.id) };
     case "say": return { at, kind: "say", id: sayId(line), text: String(line.text), opener: line.aside === true || Number(line.beat) < 0, hint: line.rung !== undefined, top: line.rung !== undefined && Number(line.rung) === Number(line.of) - 1, trail: Array.isArray(line.trail) ? line.trail.map(String) : undefined };
     case "voice": return { at, kind: "voice", of: sayId(line), ms: voiceMs(String(line.pcm)) };
     case "words": return { at, kind: "voiced", of: sayId(line), words: (line.words as string[]).map(String) };
@@ -71,5 +71,19 @@ export async function moments(dir: string): Promise<Moment[]> {
 // Where the painter says it put each thing, written by the film. The seam does not carry these: the body decides them.
 export async function placed(dir: string): Promise<Placed[]> {
   const file = join(dir, "drawn.jsonl");
-  return existsSync(file) ? lines(file, Placed) : [];
+  return existsSync(file) ? firstOfEach(await lines(file, Placed)) : [];
+}
+
+/**
+ * A mark as the film first lists it. The film may list a standing mark again at every frame (it does for one that
+ * wears a chip); read as it comes, each listing looked like a new mark that had popped in whole, and one ask took
+ * ten minutes to judge. A mark drawn again elsewhere, or under another id, is still a new mark.
+ */
+export function firstOfEach(all: Placed[]): Placed[] {
+  const seen = new Set<string>();
+  return all.filter((p) => {
+    if (p.what !== "mark" && p.what !== "echo") return true;
+    const key = `${p.what}|${p.id ?? ""}|${[p.box.x, p.box.y, p.box.w, p.box.h].map(Math.round).join(",")}`;
+    return seen.has(key) ? false : (seen.add(key), true);
+  });
 }

@@ -49,7 +49,13 @@ export function voiced(ask: Ask, expect: Expect, cutAt: number | null): Verdict[
   }
   const spokenUntil = (before: number) => Math.max(0, ...aloud(ask).filter((one) => one.start < before).map((one) => one.end));
   const turnOf = (m: { at: number }) => Math.max(m.at, spokenUntil(m.at));
-  const silent = says.filter((m) => !heard.has(m.id) && !(cutAt !== null && cutAt - turnOf(m) < VOICE_STARTS_MS));
+  // A line of its own that the mind marks as shown and not spoken (an offer on its card) is not part of the answer.
+  // It is let off only when nothing of its id was voiced: an answer's own sentence cannot be excused this way.
+  const turn = (id: string) => id.split(":")[0];
+  const marked = new Set(of(ask.moments, "look").filter((m) => m.name === "voice down" && m.of !== undefined).map((m) => m.of));
+  const voicedTurns = new Set([...heard].map(turn));
+  const shownOnly = (id: string) => marked.has(turn(id)) && !voicedTurns.has(turn(id));
+  const silent = says.filter((m) => !heard.has(m.id) && !shownOnly(m.id) && !(cutAt !== null && cutAt - turnOf(m) < VOICE_STARTS_MS));
   if (says.length === 0) return [];
   return [...sameWords(ask, cutAt), silent.length === 0 ? yes("C7", s, "Every sentence shown is also spoken", `${says.length} of ${says.length}`)
     : no("C7", s, "Every sentence shown is also spoken", `${says.length - silent.length} of ${says.length}; silent: "${silent[0].text.slice(0, 40)}"`)];
