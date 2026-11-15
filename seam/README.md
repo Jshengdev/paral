@@ -14,6 +14,7 @@ Promises: one schema for every line between body and mind (`schema.ts`), newline
 | `screen` | the picture (a smaller copy's path, and `w` and `h`, which are the size the lines were read at and not the size of that copy), its display, and the lines read from it. With a path drawn, the picture has it on it and is cut down to the part he drew around, and a line outside that part comes with its place and no words. It may arrive after `key.up`, and may be sent twice: the app sends the whole display as the key goes down, and the part he drew around again at the release. The mind answers from the last one; the quick line is drafted from the lines of the first |
 | `look` | the same fields as `screen`, sent with no key pressed when what is on the display has changed and then stood still. The mind acts on it only when the screen is a page it has kept |
 | `key.up` | he let go; carries the true moment of release |
+| `click` | he pressed the left button at `x`, `y` (display points). The mind uses it only to see a click on the box of the step it is showing; it is kept nowhere and sent nowhere |
 | `typed` | an ask whose words were tapped or typed, not spoken: its `text` is asked exactly as a hold that heard those words, with no ear. A `screen` line follows it, as after a press |
 | `close` | he closed it: the conversation ends and the ink goes |
 

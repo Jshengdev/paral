@@ -1,0 +1,591 @@
+{
+ "name": "turn: a click on the box of the step he is on is that step done: the walk moves to the next step, shown and not spoken; a click elsewhere, or with no step's box in view, moves nothing; a click on the last step's box ends the walk",
+ "run": "turn",
+ "in": {
+  "tape": "club.json",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "hello",
+     "body": "row"
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "look",
+     "at": 1794700030000,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "If you need accessibility accommodations or have questions related to RSO recognition, please contact Campus Activities.",
+       "box": {
+        "x": 200,
+        "y": 200,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Important Dates",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Deadlines +",
+       "box": {
+        "x": 200,
+        "y": 400,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "October 27: Application opens",
+       "box": {
+        "x": 200,
+        "y": 500,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "November 22 at 11:59pm: Application closes. You must submit the form on EngageSC before 11:59pm.",
+       "box": {
+        "x": 200,
+        "y": 600,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "December 1: Deadline for advisors to submit their requirements.",
+       "box": {
+        "x": 200,
+        "y": 700,
+        "w": 900,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "until": "board"
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "click",
+     "x": 300,
+     "y": 310,
+     "at": 1794700035000
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1794700040000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1794700010005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "If you need accessibility accommodations or have questions related to RSO recognition, please contact Campus Activities.",
+       "box": {
+        "x": 200,
+        "y": 200,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Important Dates",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Deadlines +",
+       "box": {
+        "x": 200,
+        "y": 400,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "October 27: Application opens",
+       "box": {
+        "x": 200,
+        "y": 500,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "November 22 at 11:59pm: Application closes. You must submit the form on EngageSC before 11:59pm.",
+       "box": {
+        "x": 200,
+        "y": 600,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "December 1: Deadline for advisors to submit their requirements.",
+       "box": {
+        "x": 200,
+        "y": 700,
+        "w": 900,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "show me"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 1794700012000
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "click",
+     "x": 300,
+     "y": 310,
+     "at": 1794700045000
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1794700050000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1794700010005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "If you need accessibility accommodations or have questions related to RSO recognition, please contact Campus Activities.",
+       "box": {
+        "x": 200,
+        "y": 200,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Important Dates",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Deadlines +",
+       "box": {
+        "x": 200,
+        "y": 400,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "October 27: Application opens",
+       "box": {
+        "x": 200,
+        "y": 500,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "November 22 at 11:59pm: Application closes. You must submit the form on EngageSC before 11:59pm.",
+       "box": {
+        "x": 200,
+        "y": 600,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "December 1: Deadline for advisors to submit their requirements.",
+       "box": {
+        "x": 200,
+        "y": 700,
+        "w": 900,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "show me"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 1794700012000
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "click",
+     "x": 900,
+     "y": 700,
+     "at": 1794700055000
+    },
+    {
+     "v": 1,
+     "type": "click",
+     "x": 300,
+     "y": 310,
+     "at": 1794700056000
+    },
+    {
+     "until": "board"
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "click",
+     "x": 300,
+     "y": 360,
+     "at": 1794700060000
+    },
+    {
+     "until": "mute"
+    }
+   ]
+  ]
+ },
+ "out": [
+  {
+   "v": 1,
+   "type": "ready",
+   "mind": "paral",
+   "holdKey": "rightOption",
+   "drawKey": "shift",
+   "earGraceMs": 300,
+   "markPad": 4,
+   "pictureLongEdge": 1280,
+   "cropAround": {
+    "share": 1,
+    "points": 200
+   },
+   "lookEveryMs": 2500
+  },
+  {
+   "v": 1,
+   "type": "clear"
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "g1",
+   "beat": 0,
+   "kind": "box",
+   "box": {
+    "x": 100,
+    "y": 300,
+    "w": 450,
+    "h": 20
+   }
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "g1",
+   "beat": 0,
+   "text": "This is the date to keep: the application closes in 8 days.",
+   "trail": [
+    "saw this page",
+    "read the whole page",
+    "found 1 date"
+   ]
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "g1",
+   "why": "a look he did not ask for is shown, not spoken"
+  },
+  {
+   "v": 1,
+   "type": "board",
+   "id": "g1",
+   "rows": [
+    [
+     "Officers finish their training"
+    ],
+    [
+     "Submit the application: November 22 at 11:59pm"
+    ],
+    [
+     "Advisor requirements: December 1"
+    ]
+   ]
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "listening"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "show me",
+   "final": false
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "thinking"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "show me",
+   "final": true
+  },
+  {
+   "v": 1,
+   "type": "clear"
+  },
+  {
+   "v": 1,
+   "type": "board",
+   "id": "t1",
+   "rows": [
+    [
+     "Officers finish their training"
+    ],
+    [
+     "Submit the application: November 22 at 11:59pm"
+    ],
+    [
+     "Advisor requirements: December 1"
+    ]
+   ],
+   "now": 0
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t1",
+   "beat": 0,
+   "text": "Step 1 of 3: Officers finish their training."
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "t1",
+   "why": "no voice is set up"
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "idle"
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "listening"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "show me",
+   "final": false
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "thinking"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "show me",
+   "final": true
+  },
+  {
+   "v": 1,
+   "type": "clear"
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "t2",
+   "beat": 0,
+   "kind": "box",
+   "box": {
+    "x": 100,
+    "y": 300,
+    "w": 450,
+    "h": 20
+   }
+  },
+  {
+   "v": 1,
+   "type": "board",
+   "id": "t2",
+   "rows": [
+    [
+     "Officers finish their training"
+    ],
+    [
+     "Submit the application: November 22 at 11:59pm"
+    ],
+    [
+     "Advisor requirements: December 1"
+    ]
+   ],
+   "now": 1
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t2",
+   "beat": 0,
+   "text": "Step 2 of 3: Submit the application, by November 22 at 11:59pm."
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "t2",
+   "why": "no voice is set up"
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "idle"
+  },
+  {
+   "v": 1,
+   "type": "clear"
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "g2",
+   "beat": 0,
+   "kind": "box",
+   "box": {
+    "x": 100,
+    "y": 350,
+    "w": 450,
+    "h": 20
+   }
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "g2",
+   "beat": 0,
+   "text": "Step 3 of 3: Advisor requirements, by December 1.",
+   "trail": [
+    "show me",
+    "step 3 of 3"
+   ]
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "g2",
+   "why": "a look he did not ask for is shown, not spoken"
+  },
+  {
+   "v": 1,
+   "type": "board",
+   "id": "g2",
+   "rows": [
+    [
+     "Officers finish their training"
+    ],
+    [
+     "Submit the application: November 22 at 11:59pm"
+    ],
+    [
+     "Advisor requirements: December 1"
+    ]
+   ],
+   "now": 2
+  },
+  {
+   "v": 1,
+   "type": "clear"
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "c2",
+   "beat": 0,
+   "text": "That was the last step I found.",
+   "trail": [
+    "show me",
+    "every step done"
+   ]
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "c2",
+   "why": "a step his click moved to is shown, not spoken"
+  }
+ ]
+}

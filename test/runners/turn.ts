@@ -64,8 +64,8 @@ export async function playTurn(input: { tape: string; asks: Step[][]; set?: Reco
         else if (step.say) socket.write(JSON.stringify({ v: 1, type: "mic", pcm: Buffer.from(step.say).toString("base64"), at: 0 }) + "\n");
         else socket.write(JSON.stringify(step) + "\n");
       }
-      // A look he did not ask for ends in no state line; a group with one says itself what it waits for.
-      if (!ask.some((step) => step.type === "look")) await until(settled, "a settled state");
+      // A look he did not ask for, and a click, end in no state line; a group with one says itself what it waits for.
+      if (!ask.some((step) => step.type === "look" || step.type === "click")) await until(settled, "a settled state");
     }
     if (input.show === "ahead") return played.asked.map((asked) => ({ words: asked.words, ahead: asked.ahead }));
     if (input.show === "drawn") return played.asked.map((asked) => ({ words: asked.words, drawn: asked.lesson.drawn }));

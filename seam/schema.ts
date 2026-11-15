@@ -28,6 +28,8 @@ export const FromBody = z.discriminatedUnion("type", [
   /** An ask whose words were tapped or typed, not spoken. A `screen` line follows it, as after a press of the key. */
   z.object({ v, type: z.literal("typed"), text: z.string().min(1), at }),
   z.object({ v, type: z.literal("close"), at }),
+  /** He pressed the left button here, in display points. The mind uses it only to see a click on the box of a step it is showing. */
+  z.object({ v, type: z.literal("click"), x: z.number(), y: z.number(), at }),
   z.object({
     v,
     type: z.literal("screen"),

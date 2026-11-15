@@ -1,5 +1,6 @@
 import type { Hands, Screen } from "./ask.ts";
 import { unknownDate, worded } from "./cores/dates.ts";
+import type { Box } from "./cores/ground.ts";
 import { named, type ToKeep } from "./cores/keep.ts";
 import { headingOf, whichPage, type KeptPage } from "./cores/page.ts";
 import { point, whereIs } from "./place.ts";
@@ -42,6 +43,10 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
   let running: AbortController | null = null;
   /** The step that leads the looks on its page, when he has said "show me": they place it, not the page's own thing. */
   let led: Led | null = null;
+  /** The box on the leading step's own line while that line is in view: where a click of his counts as the step done. */
+  let ringed: Box | null = null;
+  /** The last look taken on a kept page, so a step can be placed again without waiting for the next one. */
+  let last: { look: Look | Screen; page: KeptPage } | null = null;
   /** The page on which each ask he followed was found to end, by the words of the ask. */
   const endedOn = new Map<string, string>();
 
@@ -50,6 +55,7 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
     running?.abort();
     const id = `g${++looks}`;
     const where = step.line === null ? null : whereIs(settings, look, page, { line: step.line, under: "" });
+    ringed = where?.inView ? where.box : null;
     const at = `step ${step.now} on ${where?.on ?? where?.to ?? ""}`;
     if (at === shown) return log(`${id}: nothing has moved since the last look; what is shown stays`);
     shown = at;
@@ -63,10 +69,19 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
   }
 
   return {
-    /** A step takes the lead of the looks on its page, or gives it back (null). */
-    lead(step: Led | null) {
+    /** A step takes the lead of the looks on its page, or gives it back (null). `box` is where its own line is now, if it was just placed in view. */
+    lead(step: Led | null, box: Box | null = null) {
       led = step;
       shown = null;
+      ringed = box;
+    },
+    /** The box on the leading step's own line, or null when no step leads or its line is not in view. */
+    ring: () => ringed,
+    /** Places the leading step again from the last look, without waiting for the next. False when there is no look of its page to place it on. */
+    again(): boolean {
+      if (led === null || last === null || last.page.name !== led.page) return false;
+      follow(last.look, last.page, led);
+      return true;
     },
     /** A press of the key ends a look in progress; what it had shown is his to ask about now. */
     stop() {
@@ -77,6 +92,7 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
     async take(look: Look | Screen, asked: Asked | null): Promise<void> {
       const page = whichPage(look.lines.map((line) => line.text), ports.pages, settings.pageLeastLines.value);
       if (page === null || ports.glancer === null) return;
+      last = { look, page };
       if (led !== null && led.page === page.name) return follow(look, page, led);
       // He is being followed when he asked something a moment ago and has since come to another kept page. That ends
       // on the page that holds what he was sent for: a page he opens after it, or one found not to hold it, gets a

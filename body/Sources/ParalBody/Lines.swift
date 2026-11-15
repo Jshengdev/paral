@@ -40,6 +40,8 @@ public enum ToMind {
     /// A look with no key pressed: what is on the display now, sent when it has changed and then stood still.
     case look(at: Double, display: DisplayPlace, path: String, w: Int, h: Int, lines: [ReadLine])
     case close(at: Double)
+    /// He pressed the left button at this place, in display points.
+    case click(x: Double, y: Double, at: Double)
 
     public var line: String {
         var fields: [String: Any]
@@ -51,6 +53,7 @@ public enum ToMind {
         case .keyUp(let at): fields = ["type": "key.up", "at": at]
         case .typed(let text, let at): fields = ["type": "typed", "text": text, "at": at]
         case .close(let at): fields = ["type": "close", "at": at]
+        case .click(let x, let y, let at): fields = ["type": "click", "x": x, "y": y, "at": at]
         case .screen(let at, let display, let path, let w, let h, let lines), .look(let at, let display, let path, let w, let h, let lines):
             var type = "screen"
             if case .look = self { type = "look" }

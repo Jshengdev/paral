@@ -91,7 +91,7 @@ public enum Seen {
         case "next":
             guard let text = s("text") else { return .failure(Refused("next.text: missing")) }
             return .success(.next(text: text, n: (f["n"] as? NSNumber)?.intValue ?? 0, of: (f["of"] as? NSNumber)?.intValue ?? 0, done: f["done"] as? Bool ?? false))
-        case "hello", "mic": return .success(.other)
+        case "hello", "mic", "click": return .success(.other)
         case "trail":
             guard let x = n("x"), let y = n("y") else { return .failure(Refused("trail: x and y are needed")) }
             return .success(.trail(x: x, y: y))
