@@ -180,7 +180,8 @@ card is in the movie, this macOS records the window anyway and the setting does 
 | `GuideWindow.swift` | the guide's card, and the arrow that leads to it, in a panel of their own over the display that lets every click through and is marked not to be shared, so a recording of the screen leaves them out |
 | `Press.swift` (in the app) | what a click the overlay took does: the cross closes, "Add to calendar" asks as a tapped cue card does, "Not now" puts the card away |
 | `Wire.swift` | the socket to the mind; reconnects when the mind restarts |
-| `Watch.swift` | looks at the display with no key pressed and reports a look when what it read, or where its first line stands, has changed and stood still. It reads the text only when the picture has changed. It has run on the owner's Mac since 2026-11-14 19:53; its sense of a scroll that keeps the same lines in view has not |
+| `Watch.swift` | looks at the display with no key pressed, every round: a picture, a small grey print of it with the menu bar left out, and a look reported when `Rounds` says so. It reads the text only for a look it reports, and does not look while the key is down or an answer is being said |
+| `Rounds.swift` | the print (`Screen.print`), whether two prints are the same page (`Screen.alike`: a clock that ticks is, a scroll is not), and what the watcher reports round by round: a changed page once it stands still, or at once while an arrow says the thing is off screen |
 | `Release.swift` | the end of a hold: the microphone's grace after the key is let go, and a new press that ends the hold before it first. Used by the app and by the scripted flow |
 
 ## With no window

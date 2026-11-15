@@ -113,16 +113,6 @@ public enum Screen {
         return (cut, kept)
     }
 
-    /// A small grey copy of a picture, 160 by 100: enough to tell whether the display has changed since another
-    /// picture of it, at a fraction of what reading its text costs. Empty when it could not be drawn.
-    public static func small(_ image: CGImage) -> Data {
-        let w = 160, h = 100
-        guard let context = CGContext(data: nil, width: w, height: h, bitsPerComponent: 8, bytesPerRow: w, space: CGColorSpaceCreateDeviceGray(), bitmapInfo: CGImageAlphaInfo.none.rawValue) else { return Data() }
-        context.interpolationQuality = .high
-        context.draw(image, in: CGRect(x: 0, y: 0, width: w, height: h))
-        return context.data.map { Data(bytes: $0, count: w * h) } ?? Data()
-    }
-
     public static func load(_ path: String) throws -> CGImage {
         guard let source = CGImageSourceCreateWithURL(URL(fileURLWithPath: path) as CFURL, nil),
               let image = CGImageSourceCreateImageAtIndex(source, 0, nil)

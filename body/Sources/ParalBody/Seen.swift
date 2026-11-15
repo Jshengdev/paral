@@ -15,6 +15,7 @@ public struct BodySettings: Equatable {
     public var cropShare = 1.0, cropPoints = 200.0
     /// How often to look at the display with no key pressed; 0 is never.
     public var lookEveryMs = 0.0
+    public var lookFastMost = 0
     /// Lines he can tap in the menu instead of saying them, in groups.
     public var cues: [Cue] = []
     /// One line that says what this is; empty for none. The app shows it once when it starts, in the capsule and not
@@ -101,6 +102,7 @@ public enum Seen {
                 settings.cropPoints = points
             }
             settings.lookEveryMs = n("lookEveryMs") ?? 0
+            settings.lookFastMost = Int(n("lookFastMost") ?? 0)
             settings.opening = s("opening") ?? ""
             settings.cues = (f["cues"] as? [[String: Any]] ?? []).compactMap { cue in
                 guard let name = cue["name"] as? String, let lines = cue["lines"] as? [String] else { return nil }

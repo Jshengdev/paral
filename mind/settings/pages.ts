@@ -9,9 +9,15 @@ export const pages = {
   } satisfies Setting<number>,
 
   lookEveryMs: {
-    value: 2500,
-    why: "How often the body looks at the display with no key pressed. It sends a look to the mind only when what it read has changed since the last one it sent and then stood still for one round, so scrolling sends nothing until he stops. The mind acts on a look only when the screen is one of USC's kept pages. Zero turns the looks off.",
-    measured: "not measured on a real window: how much of the Mac a look every 2.5 s costs is unknown",
+    value: 1000,
+    why: "How often the body looks at the display with no key pressed: a picture and a small grey print of it each round, with the menu bar left out. It sends a look to the mind only when the print has changed since the last look it sent and then stood still for one round, so scrolling sends nothing until he stops, and it reads the text only for a look it sends. The owner, after his first real run: \"the rescan the page at faster intervals also doesnt seem to work\". It was 2500 and compared every letter read off the display, so a timer ticking in the menu bar kept any round from matching the one before. The mind acts on a look only when the screen is one of USC's kept pages. Zero turns the looks off.",
+    measured: "not measured on a real window: what a picture and a print every second cost the Mac is unknown. On his first real run at 2500 the looks came about 30 s apart",
+  } satisfies Setting<number>,
+
+  lookFastMost: {
+    value: 30,
+    why: "While an arrow says the thing he was pointed to is off screen, the body sends a look as soon as the page has changed, without waiting for it to stand still, so the mark lands as the thing comes into view. This is how many rounds in a row it may do that before the page must stand still again. The owner's words: \"can it fire like once every second during that particular phase with a cap of like 30 fires in a row without it\".",
+    measured: "his number; not seen on a real screen",
   } satisfies Setting<number>,
 
   keepAsks: {

@@ -201,10 +201,15 @@ export function pressedAgain(input: { lines: string[]; tape: string; asks: strin
 }
 
 /** Pages drawn and compared the way the watcher compares two pictures of the display: is each the same as the first? */
-export function sameToTheWatcher(input: { pages: string[][] }) {
+export function sameToTheWatcher(input: { pages?: string[][]; rounds?: unknown[]; most?: number; within?: number }) {
   const dir = fresh("same");
   mkdirSync(dir, { recursive: true });
-  const pictures = input.pages.map((lines, index) => {
+  // A row of rounds instead of pages: what the watcher decides for each, from prints given as letters.
+  if (input.rounds) {
+    writeFileSync(join(dir, "rounds.json"), JSON.stringify(input));
+    return body("rounds", join(dir, "rounds.json")).reported as boolean[];
+  }
+  const pictures = (input.pages ?? []).map((lines, index) => {
     const picture = join(dir, `page-${index}.png`);
     body("page", picture, ...lines);
     return picture;

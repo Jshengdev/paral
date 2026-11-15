@@ -68,6 +68,7 @@ export const FromMind = z.discriminatedUnion("type", [
     cropAround: z.object({ share: z.number().nonnegative(), points: z.number().nonnegative() }),
     /** How often the body looks at the display with no key pressed, to send a `look` when it has changed. Absent or 0: never. */
     lookEveryMs: z.number().nonnegative().optional(),
+    lookFastMost: z.number().int().nonnegative().optional(),
     /** Lines he can tap instead of saying them, in groups: the body shows them in its menu and sends a tapped one as `typed`. */
     cues: z.array(z.object({ name: z.string().min(1), lines: z.array(z.string().min(1)) })).optional(),
     /** One line that says what this is, for the app to show once when it starts. */

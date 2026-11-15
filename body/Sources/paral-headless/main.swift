@@ -21,7 +21,7 @@ func why(_ error: Error) -> String {
 // the cure; it costs nothing.
 _ = Bundle.main.infoDictionary
 
-let usage = "usage: read PICTURE | smaller PICTURE OUT.jpg LONG_EDGE | same PICTURE PICTURE | page OUT.png LINE... | lines | keys SECONDS rightOption|fn|controlOption | flow FLOW.json SOCKET TOKENS.json | film RUN_DIR TOKENS.json | frame RUN_DIR TOKENS.json MS OUT.png | capsule RUN_DIR TOKENS.json MS... | placed RUN_DIR TOKENS.json MS... | apart RUN_DIR TOKENS.json MS MARGIN | usc ADDRESS... | curves TOKENS.json SHARE..."
+let usage = "usage: read PICTURE | smaller PICTURE OUT.jpg LONG_EDGE | same PICTURE PICTURE | rounds ROUNDS.json | page OUT.png LINE... | lines | keys SECONDS rightOption|fn|controlOption | flow FLOW.json SOCKET TOKENS.json | film RUN_DIR TOKENS.json | frame RUN_DIR TOKENS.json MS OUT.png | capsule RUN_DIR TOKENS.json MS... | placed RUN_DIR TOKENS.json MS... | apart RUN_DIR TOKENS.json MS MARGIN | usc ADDRESS... | curves TOKENS.json SHARE..."
 let arguments = Array(CommandLine.arguments.dropFirst())
 
 switch arguments.first {
@@ -47,9 +47,15 @@ case "same":
     // Whether two pictures look the same to the watcher, which reads a picture's text only when they do not.
     guard arguments.count == 3 else { fail(usage) }
     do {
-        let one = Screen.small(try Screen.load(arguments[1])), other = Screen.small(try Screen.load(arguments[2]))
-        out(["same": !one.isEmpty && one == other])
+        out(["same": Screen.alike(Screen.print(try Screen.load(arguments[1])), Screen.print(try Screen.load(arguments[2])), within: Watch.within)])
     } catch { fail(why(error)) }
+
+case "rounds":
+    // What the watcher decides for a row of rounds, each a print given as letters (one letter is one point's grey).
+    guard arguments.count == 2, let data = FileManager.default.contents(atPath: arguments[1]), let asked = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+          let most = asked["most"] as? Int, let within = asked["within"] as? Double, let given = asked["rounds"] as? [[String: Any]] else { fail(usage) }
+    var rounds = Rounds()
+    out(["reported": given.map { rounds.report(Data(($0["print"] as? String ?? "").utf8), waiting: $0["waiting"] as? Bool ?? false, most: most, within: within) }])
 
 case "page":
     guard arguments.count >= 3 else { fail(usage) }

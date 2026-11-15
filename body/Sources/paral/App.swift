@@ -22,7 +22,7 @@ final class App: NSObject, NSApplicationDelegate {
     private var trail: [CGPoint] = []
     private var voiced: Set<String> = [], cut: Set<String> = []
     private var holds = 0
-    /// True from the key going down until that hold has ended. The watch does not look meanwhile.
+    /// True from the key going down until that hold has ended. The watch does not look meanwhile, nor while it is answered.
     private var held = false
     /// Ends each hold: the microphone closes and the mind is told when the key came up.
     private lazy var release = Release { [weak self] released in
@@ -97,13 +97,14 @@ final class App: NSObject, NSApplicationDelegate {
             key.onHeld = { [weak self] in self?.draw() }
             key.start()
             self.key = key
-            watch.busy = { [weak self] in self?.held ?? true }
+            watch.busy = { [weak self] in self.map { $0.held || $0.scene.watching(at: $0.clock()).busy } ?? true }
+            watch.waiting = { [weak self] in self.map { $0.scene.watching(at: $0.clock()).waiting } ?? false }
             watch.onLook = { [weak self] path, w, h, place, lines in
                 guard let self else { return }
                 self.tell(.screen(display: place, lines: Screen.taken(path, w, lines, below: self.scene.footShare)))
                 self.wire.send(.look(at: self.stamp(), display: place, path: path, w: w, h: h, lines: lines))
             }
-            watch.start(everyMs: settings.lookEveryMs, longEdge: settings.pictureLongEdge)
+            watch.start(everyMs: settings.lookEveryMs, most: settings.lookFastMost, longEdge: settings.pictureLongEdge)
             cues.show(settings.cues, in: status?.menu)
             if !settings.opening.isEmpty { [Seen.say(id: "hello", beat: 0, text: settings.opening, aside: false, trail: ["Lost and Found"], keep: false, offer: nil), .mute(id: "hello")].forEach(tell) }
         }

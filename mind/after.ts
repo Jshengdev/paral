@@ -18,13 +18,13 @@ type Seen = Pick<Screen, "lines" | "display">;
  */
 export function answered({ settings, send, log }: Hands) {
   /** The page the last answer was given on, his screen as the answer's marks were placed on it, and where it sent him. */
-  let held: { page: string; seen: Seen; target: After["target"] } | null = null;
+  let held: { page: string; seen: Seen; target: After["target"]; way: string | null } | null = null;
   let looks = 0;
 
   return {
     /** An answer was given on `page`, with his screen as it was read for it. Gives back the page the answer sent him to. */
     pointed(page: string, seen: Seen, after: After): KeptPage | null {
-      held = { page, seen, target: after.target };
+      held = { page, seen, target: after.target, way: null };
       return after.sent;
     },
     /** His next ask has begun: the answer before it no longer holds the looks. */
@@ -43,9 +43,17 @@ export function answered({ settings, send, log }: Hands) {
         log(`${id}: the page has not moved since his answer; what he was shown stays`);
         return true;
       }
-      send({ v, type: "clear" });
       const where = held.target === null ? null : whereIs(settings, look, page, held.target);
       held.seen = look;
+      // While he scrolls toward it the looks come every second: an arrow that still points the same way is left as
+      // it is, and not wiped and drawn again each time.
+      const way = where !== null && where.box === null && where.to !== null ? `${where.to}, toward "${where.toward}"` : null;
+      if (way !== null && way === held.way) {
+        log(`${id}: the page has moved and the place his answer sent him to is still ${way}; the arrow stays`);
+        return true;
+      }
+      held.way = way;
+      send({ v, type: "clear" });
       log(`${id}: the page has moved under his answer, so what was drawn for it is wiped; ${where === null ? "the answer pointed at no place on this page, and the page's own thing does not come back" : `the looks keep to where it sent him: ${point(send, id, where)}`}`);
       return true;
     },

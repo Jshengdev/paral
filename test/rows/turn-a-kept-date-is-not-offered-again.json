@@ -178,7 +178,8 @@
     "share": 1,
     "points": 200
    },
-   "lookEveryMs": 2500
+   "lookEveryMs": 1000,
+   "lookFastMost": 30
   },
   {
    "v": 1,

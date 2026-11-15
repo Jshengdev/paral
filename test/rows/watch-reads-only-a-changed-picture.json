@@ -1,5 +1,5 @@
 {
- "name": "watch: a picture of the same page is the same to the watcher, so its text is not read again; one word changed, one sign changed, or the page scrolled by a line is a change",
+ "name": "watch: to the watcher a picture of the same page is the same page, and so is one where only a clock has ticked, so no round looks new because of it; a line of the page changed, or the page scrolled by a line, is a change",
  "run": "body.same",
  "in": {
   "pages": [
@@ -8,41 +8,46 @@
     "The Spring 2027 RSO Recognition process is now open on EngageSC",
     "for new RSOs and RSOs re-establishing after a lapse in recognition.",
     "Important Dates",
-    "Deadlines +"
+    "Deadlines +",
+    "3:04"
    ],
    [
     "Recognition Process",
     "The Spring 2027 RSO Recognition process is now open on EngageSC",
     "for new RSOs and RSOs re-establishing after a lapse in recognition.",
     "Important Dates",
-    "Deadlines +"
-   ],
-   [
-    "Recognition Process",
-    "The Spring 2027 RSO Recognition process is now open on EngageSC",
-    "for new RSOs and RSOs re-establishing after a lapse in recognition.",
-    "Important Notes",
-    "Deadlines +"
+    "Deadlines +",
+    "3:04"
    ],
    [
     "Recognition Process",
     "The Spring 2027 RSO Recognition process is now open on EngageSC",
     "for new RSOs and RSOs re-establishing after a lapse in recognition.",
     "Important Dates",
-    "Deadlines -"
+    "Deadlines +",
+    "3:05"
+   ],
+   [
+    "Recognition Process",
+    "The Spring 2027 RSO Recognition process is now open on EngageSC",
+    "for new RSOs and RSOs re-establishing after a lapse in recognition.",
+    "Info Sessions, Workshops, and Office Hours are held every week",
+    "Deadlines +",
+    "3:04"
    ],
    [
     "The Spring 2027 RSO Recognition process is now open on EngageSC",
     "for new RSOs and RSOs re-establishing after a lapse in recognition.",
     "Important Dates",
     "Deadlines +",
-    "Info Sessions, Workshops, and Office Hours +"
+    "3:04",
+    "Before You Begin"
    ]
   ]
  },
  "out": [
   true,
-  false,
+  true,
   false,
   false
  ]

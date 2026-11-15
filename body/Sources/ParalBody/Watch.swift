@@ -1,64 +1,62 @@
 import AppKit
 
-/// Looks at a display with no key pressed. Every so often it takes a picture and reads its lines. When what it read
-/// has changed since the last look it reported, and is the same as the round before (so he has stopped scrolling),
-/// it reports the look, once. It does not look while `busy` says the key is down, and paral's own window is left
-/// out of the picture, so what paral draws never counts as a change. Reading the text is what a look costs, so a
-/// picture that is the same as the last one read is not read again: at rest a look is one picture and a compare.
+/// Looks at a display with no key pressed. Every round it takes a picture and makes a small grey print of it, with
+/// the menu bar left out: a clock or a recording's timer ticks there, and would make every round look new. `Rounds`
+/// says from the prints alone whether the round is a look to report: the page has changed since the last one
+/// reported and has stood still for a round, or, while an arrow says the thing is off screen (`waiting`), it has
+/// changed at all. Reading the text is what a look costs, so it is read only for a look that is reported. It does
+/// not look while `busy` says the key is down or an answer is being said, and paral's own window is left out of the
+/// picture, so what paral draws never counts as a change.
 public final class Watch {
+    /// Two prints with fewer than this share of their points apart are the same page (`Screen.alike`): about a dozen
+    /// changed signs on a display. Not measured on a real screen.
+    public static let within = 0.0015
     private let screen: NSScreen
     private var timer: Timer?
     private var looking = false
-    /// What the round before read, and what the last reported look read: the letters and digits only, since the text
-    /// reader wobbles on marks and spaces from one picture to the next, and where the first line stands.
-    private var before = ""
-    private var reported = ""
-    /// The last picture that was read, as its small grey copy, and the lines read from it.
-    private var lastRead = (small: Data(), lines: [ReadLine]())
+    private var rounds = Rounds()
+    private var next = Date.distantPast
     public var busy: () -> Bool = { false }
+    /// Whether something he was pointed to is off screen: the rounds then report at once, `most` in a row at most.
+    public var waiting: () -> Bool = { false }
     /// A look to send: where its smaller copy was saved, the picture's size, where its display is, and the lines read from it.
     public var onLook: ((String, Int, Int, DisplayPlace, [ReadLine]) -> Void)?
-    private var longEdge = 1280.0
+    private var everyMs = 0.0, most = 0, longEdge = 1280.0
 
     public init(screen: NSScreen) { self.screen = screen }
 
-    /// Starts looking every `everyMs`; zero means never. Starting twice does nothing. `longEdge` is the size of the
-    /// copy saved for the mind, in a file of its own that the next look overwrites.
-    public func start(everyMs: Double, longEdge: Double) {
-        self.longEdge = longEdge
+    /// Starts looking every `everyMs`; zero means never. Starting twice does nothing. `most` is how many rounds in a
+    /// row may be reported at once while waiting. `longEdge` is the size of the copy saved for the mind, in a file
+    /// of its own that the next look overwrites.
+    public func start(everyMs: Double, most: Int, longEdge: Double) {
+        (self.everyMs, self.most, self.longEdge) = (everyMs, most, longEdge)
         guard everyMs > 0, timer == nil else { return }
-        let timer = Timer(timeInterval: everyMs / 1000, repeats: true) { [weak self] _ in self?.look() }
+        let timer = Timer(timeInterval: min(everyMs, 250) / 1000, repeats: true) { [weak self] _ in self?.look() }
         RunLoop.main.add(timer, forMode: .common)
         self.timer = timer
     }
 
     private func look() {
-        guard !looking, !busy(), Screen.allowed else { return }
+        guard !looking, Date() >= next, !busy(), Screen.allowed else { return }
         looking = true
-        let screen = self.screen, last = lastRead
+        next = Date().addingTimeInterval(everyMs / 1000)
+        // The menu bar's height, in points: what the display has above the room it leaves to windows.
+        let screen = self.screen, bar = max(0, screen.frame.maxY - screen.visibleFrame.maxY)
         Task { [weak self] in
-            var seen: (image: CGImage, place: DisplayPlace, lines: [ReadLine], small: Data)?
-            if let (image, place) = try? await Screen.picture(of: screen) {
-                let small = Screen.small(image)
-                let same = !small.isEmpty && small == last.small
-                if let lines = same ? last.lines : try? Screen.read(image) { seen = (image, place, lines, small) }
+            let shot = try? await Screen.picture(of: screen)
+            let print = shot.map { Screen.print($0.image, skip: Int(bar * $0.place.scale)) } ?? Data()
+            let wanted = await MainActor.run { () -> Bool in
+                guard let self, !print.isEmpty, !self.busy() else { return false }
+                return self.rounds.report(print, waiting: self.waiting(), most: self.most, within: Watch.within)
             }
-            let found = seen
+            let lines = wanted ? shot.flatMap { try? Screen.read($0.image) } : nil
             await MainActor.run {
                 guard let self else { return }
                 self.looking = false
-                guard let found, !self.busy() else { return }
-                self.lastRead = (found.small, found.lines)
-                // What was read is its words and where the first line stands (to about four points): a scroll that
-                // keeps the same lines in view is still a change, and the marks must follow it.
-                let words = found.lines.map(\.text).joined(separator: " ").lowercased().filter { $0.isLetter || $0.isNumber }
-                let read = words + "@\(Int((found.lines.first?.box.y ?? 0) / (8 * found.place.scale / 2)))"
-                defer { self.before = read }
-                guard read == self.before, read != self.reported else { return }
+                guard let shot, let lines, !self.busy() else { return }
                 let path = NSTemporaryDirectory() + "paral-look.jpg"
-                guard (try? Screen.saveSmaller(found.image, to: path, longEdge: self.longEdge)) != nil else { return }
-                self.reported = read
-                self.onLook?(path, found.image.width, found.image.height, found.place, found.lines)
+                guard (try? Screen.saveSmaller(shot.image, to: path, longEdge: self.longEdge)) != nil else { return }
+                self.onLook?(path, shot.image.width, shot.image.height, shot.place, lines)
             }
         }
     }
