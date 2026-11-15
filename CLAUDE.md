@@ -197,15 +197,17 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
 - The cue cards in the menu and the tapped ask have never been used on a Mac: `Cues.swift` and the app's `typed` are
   compiled and unrun. The scripted stand-in has run tapped asks live. The menu bar says "Lost and Found"; the app's
   file, its grants in System Settings and this repo still say paral.
-- The page-to-page guide, the way line and "show me" have run only on a tape and in the scripted stand-in. The body
-  on main draws nothing for a way line and does not read the board's `now`: both are drawn on a branch by a second
-  session. "Show me" walks the steps in the order the looks found them, in the look's own words for each, and has
-  no way to know a step is done. A step with no date has no line to box.
+- The page-to-page guide, the way line, "show me" and a click on a step's box have been walked live in the scripted
+  stand-in by the second session, and are drawn on main. None has been seen on a real screen. "Show me" walks the
+  steps in the order the looks found them, in the look's own words for each; a step is done when he clicks its box or
+  says "show me" again, and nothing else tells it. A step's place is the line the look named for it, or the line of
+  its date; a step with neither has nothing to box.
 - The real windows have been started by the owner on his own Mac, twice. Seen there: the hold key, the microphone,
   the ear, the voice, and answers with marks once the screen grant was on. Not yet seen there: a circle, the cross,
   the board over real windows, a headset, and everything added since 368e4da except what the watcher cost.
 - One display, chosen when the app starts. After plugging in a display or a projector, start it again.
-- The capsule is placed on the whole display, so with the Dock at the bottom it sits over the Dock.
+- The pill sits above the Dock's height as the display gave it when the app started. Not seen on a real screen; if the
+  Dock is moved or shown after that, start the app again.
 - Every press of the hold key starts an ask, also when the key is used for typing.
 - With a Bluetooth headset the start of the voice may be cut: the headset changes mode when the microphone opens and
   closes. Not tried; the Mac's own microphone and speakers avoid it.
