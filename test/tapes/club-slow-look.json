@@ -59,6 +59,19 @@
      }
     ]
    }
+  ],
+  "where are the info sessions": [
+   {
+    "problem": "Where the info sessions are listed",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "Those are further down this page, in the section called Info Sessions, Workshops, and Office Hours.",
+      "mark": null
+     }
+    ]
+   }
   ]
  },
  "leaks": [],

@@ -11,7 +11,7 @@ import { guides } from "./guide.ts";
 import { keeps } from "./keep.ts";
 import { drafts } from "./drafts.ts";
 import type { Listening, Ports } from "./ports.ts";
-import { wayToDate } from "./place.ts";
+import { wayAfter } from "./place.ts";
 import { ready } from "./ready.ts";
 import type { Settings } from "./settings.ts";
 import { shows } from "./showme.ts";
@@ -158,7 +158,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
       if (!mine.signal.aborted && told.length > 0) guide.noted({ kind: "asked", words: words.text });
       if (!mine.signal.aborted && told.length > 0) asked = { words: words.text, told, page: onPage?.name ?? null, at: Date.now() };
       keeping.answered(told, onPage ? [onPage, ...ports.pages] : ports.pages);
-      if (onPage && !mine.signal.aborted) wayToDate(hands, id, screen, onPage, told);
+      if (onPage && !mine.signal.aborted) wayAfter(hands, id, screen, onPage, told);
       if (!mine.signal.aborted) send({ v, type: "state", name: "idle" });
     } catch (error) {
       if (mine.signal.aborted) return;
