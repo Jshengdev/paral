@@ -27,8 +27,9 @@ you have open.
   on your page: a ring, a box, "7 days left", a line through a date that has gone.
 - **It walks you through.** Say "show me" and it takes the steps one at a time. The step you are on is marked
   "Next". Click it and it is ticked "Done".
-- **It does the next thing when you say so.** Each answer stays on a card with one main button: add the date to
-  your calendar, scroll to it, open the closed section, or go to the USC page that covers what you asked.
+- **It does the next thing when you say so.** On a page it knows, an answer stays on a card with one main button:
+  add the date to your calendar, open the closed section, walk the steps, or go to the USC page that covers what
+  you asked. An arrow that points off screen carries its own button to scroll there for you.
 - **It draws the whole picture.** Ask it to draw everything you have to do, in order, and it lays the steps out
   as a map beside the page.
 - **On your own homework it tutors.** It gives one hint at a time, rings the part of the problem the hint is
@@ -68,7 +69,8 @@ A few choices do most of the work.
   it speaks within a second of letting go. A deeper one writes the answer, which begins four to five seconds
   after.
 - **A spoken sentence is kept short.** A sentence is measured by its letters as well as its words and cut where
-  both halves still stand, so none takes more than about eight seconds to say.
+  both halves still stand. In the last pass none of 72 answers had a sentence over eight seconds; one with no
+  clean place to cut is said whole.
 - **Nothing is a magic number.** Every setting carries its reason and what was measured. Every colour, size and
   timing of the look sits in one file with a page of dials, so a new look slots in without touching code.
 
@@ -84,9 +86,12 @@ those readings hold nothing about any student.
 | | one picture of the display, its text and the question | Anthropic, for the answer |
 | It answers | each sentence | Cartesia, to be spoken |
 | It speaks first on a page it knows | its own kept copy of that page, and the date | Anthropic |
+| | the one sentence it says aloud | Cartesia, to be spoken |
 | It looks at any other page | nothing | |
 
-Its own windows are left out of every picture. It has no account and keeps no history between runs. It acts in
+Its own windows are left out of every picture. It has no account and keeps no history between runs. While it
+runs, the newest picture of the screen and, for the notes page, cut-outs of the sections it marked sit in the
+Mac's temporary folder and nowhere else. It acts in
 another app only when asked: it opens an https page on usc.edu, turns the scroll wheel, or clicks one closed
 heading it has itself marked. It never types.
 
@@ -129,7 +134,8 @@ there. `node pages/gather.ts` with no name reads every page on the list again.
   of the weekend, 1,912 of 1,914 checks pass. The two that do not are a true date shown as "December first"
   where the page writes "December 1".
 - **On a real screen** it has been recorded speaking first on six USC pages, answering spoken questions,
-  walking three steps by clicks, and ringing the atoms on a chemistry worksheet.
+  walking three steps by clicks, and ringing the atoms on a chemistry worksheet. "Scroll for me" has moved a real
+  page until the mark landed on its line, once, on its owner's Mac.
 
 The judge found real faults over the weekend, and each became a row before it was fixed: a date written in
 words that the date rule could not read, a question in a page's first second that silenced the page, sentences
@@ -143,10 +149,10 @@ that took too long to say.
   you about one you never visit.
 - It remembers one sitting. Close it and it starts over.
 - The kept pages are as fresh as their last reading. Reading them again every night is the next step.
-- "Scroll for me", "Open it for me", "Take me there", the notes page and "Add to calendar" run in tests and
-  have not yet been recorded on a real screen.
-- It does not work with a screen reader. Every spoken sentence is also shown as text, any question can be tapped
-  from the menu, and it follows the Mac's Reduce Motion setting.
+- "Open it for me", "Take me there" pressed and the notes page run in tests and have not yet run on a real
+  screen. "Scroll for me" and "Add to calendar" have each run there, and neither has been filmed.
+- It does not work with a screen reader. Every spoken sentence is also shown as text, the demo's questions can be
+  tapped from the menu, and it follows the Mac's Reduce Motion setting.
 
 ## Where things are
 
