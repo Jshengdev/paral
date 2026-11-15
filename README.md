@@ -200,9 +200,9 @@ there. `node pages/gather.ts` with no name reads every page on the list again.
   of the weekend, 1,912 of 1,914 checks pass. The two that do not are a true date shown as "December first"
   where the page writes "December 1".
 - **On a real screen** it has been recorded speaking first on six USC pages, answering spoken questions,
-  walking three steps by clicks, and ringing the atoms on a chemistry worksheet. "Scroll for me" has been pressed
-  there, and the mark then landed on its line; whether the app's own scrolling moved the page that time is not
-  confirmed.
+  walking three steps by clicks, and ringing the atoms on a chemistry worksheet. "Open it for me" has been pressed
+  there, and two seconds later the closed section was open with its line marked. "Scroll for me" has been
+  pressed there too; whether the app's own scrolling moved the page is not confirmed.
 
 The judge found real faults over the weekend, and each became a row before it was fixed: a date written in
 words that the date rule could not read, a question in a page's first second that silenced the page, sentences
@@ -216,9 +216,9 @@ that took too long to say.
   you about one you never visit.
 - It remembers one sitting. Close it and it starts over.
 - The kept pages are as fresh as their last reading. Reading them again every night is the next step.
-- "Open it for me", "Take me there" pressed and the notes page run in tests and have not yet run on a real
-  screen. "Scroll for me" has been pressed there and "Add to calendar" has written its date there;
-  neither has been filmed, and the scrolling itself is not yet confirmed on a real screen.
+- "Take me there" pressed and the notes page run in tests and have not yet run on a real screen. "Open it for
+  me", "Scroll for me" and "Add to calendar" have been pressed there: the section opened and the date was
+  written, none of it filmed, and the scrolling itself is not yet confirmed.
 - It does not work with a screen reader. Every spoken sentence is also shown as text, the demo's questions can be
   tapped from the menu, and it follows the Mac's Reduce Motion setting.
 
