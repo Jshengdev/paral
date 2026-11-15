@@ -43,6 +43,8 @@ const Expect = z.object({
   keeps: z.string().min(1).optional(),
   /** On a look with no key: whether anything may be shown at all. False on a page it has not read, or one it has already spoken to. */
   shows: z.boolean().optional(),
+  /** This look's line is also said aloud: a page's first look in a sitting that shows a date (his word of 2026-11-15, 00:02). Every other look is shown and not spoken. */
+  spoken: z.boolean().optional(),
   /** On a look: the dates the board of what is still ahead must hold, soonest first, each as a page writes it. */
   ahead: z.array(z.string().min(1)).optional(),
 });
