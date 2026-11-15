@@ -43,9 +43,12 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
   const onScreen = whichPage(seen.lines.map((line) => line.text), ports.pages, settings.pageLeastLines.value);
   const known = onScreen ? together(onScreen, ports.pages) : [];
   if (onScreen) log(`${id}: his screen is the kept page "${onScreen.title}" (${onScreen.url}, read ${onScreen.readOn}); given with it: ${known.slice(1).map((page) => page.url).join(", ") || "no other page"}`);
-  /** Everything a date in the answer may be taken from: today, his words, his screen, and those pages. */
+  /**
+   * Everything a date in the answer may be taken from: today, his words, his screen, those pages, and what paral
+   * remembers as still ahead, whose dates it read on a kept page earlier in this sitting, whatever page he is on now.
+   */
   const today = new Date(asking.releasedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
-  const sources = [today, words, ...seen.lines.map((line) => line.text), ...known.flatMap((page) => page.lines)];
+  const sources = [today, words, ...seen.lines.map((line) => line.text), ...known.flatMap((page) => page.lines), ...asking.ahead.map((step) => step.by)];
 
   const talk = speech(hands, id, signal);
   const board = card(hands, asking, drew);

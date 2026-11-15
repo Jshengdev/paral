@@ -42,6 +42,23 @@
      }
     ]
    }
+  ],
+  "what is still ahead for me": [
+   {
+    "problem": "What is still ahead for the club",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "You submit on EngageSC by November 22 at 11:59pm.",
+      "mark": null
+     },
+     {
+      "say": "Then your advisor's requirements are due December 1.",
+      "mark": null
+     }
+    ]
+   }
   ]
  },
  "leaks": [],
