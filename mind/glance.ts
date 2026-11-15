@@ -94,9 +94,9 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
   }
 
   return {
-    /** A step takes the lead of the looks on its page, or gives it back (null). `box` is where its own line is now, if it was just placed in view. */
+    /** A step takes the lead of the looks on its page, or gives it back (null); `box` is where its own line is now, if just placed in view. A walk that begins takes the looks from an answer; one that ends leaves the page as an answer does, so its own first thing does not come back by itself. */
     lead(step: Led | null, box: Box | null = null) {
-      if (step !== null) answer.stop();
+      if (step !== null) answer.stop(); else if (led !== null && last !== null) answer.pointed(last.page.name, last.look, { sent: null, target: null, way: false });
       led = step;
       [shown, shownAt] = [null, null];
       ringed = box;
