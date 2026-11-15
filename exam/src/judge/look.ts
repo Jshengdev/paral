@@ -43,7 +43,8 @@ function trailIsTrue(s: number, line: { text: string; trail?: string[] }, known:
   const found = new Set(dates(line.text).map((d) => `${d.month} ${d.day}`)).size;
   const wrong = trail.flatMap((step) => {
     const pages = /^read (\d+) .*pages?$/i.exec(step);
-    if (pages && Number(pages[1]) !== known.pages.length) return [`"${step}", and the record names ${known.pages.length} for this look`];
+    const forThis = (known.forThis ?? known.pages).length;
+    if (pages && Number(pages[1]) !== forThis) return [`"${step}", and the record names ${forThis} for this look`];
     const named = /^found (\d+) dates?$/i.exec(step);
     if (named && Number(named[1]) !== found) return [`"${step}", and the line it shows names ${found}`];
     return [];

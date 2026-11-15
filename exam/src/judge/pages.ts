@@ -44,3 +44,18 @@ export async function pagesGiven(dir: string): Promise<Map<string, PageRead[]>> 
   }
   return given;
 }
+
+/**
+ * Everything read so far in the sitting, for each name in the record's own order: the pages given with that ask or
+ * look and with every one before it. He asked for one memory across the sitting (2026-11-14, 19:02: it "must have
+ * continuous session memory"), so a date found on the club page may still be said two pages later.
+ */
+export function readSoFar(given: Map<string, PageRead[]>): Map<string, PageRead[]> {
+  const sofar = new Map<string, PageRead[]>();
+  const all: PageRead[] = [];
+  for (const [name, pages] of given) {
+    for (const page of pages) if (!all.some((one) => one.url === page.url)) all.push(page);
+    sofar.set(name, [...all]);
+  }
+  return sofar;
+}

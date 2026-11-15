@@ -97,7 +97,7 @@ only when the builder says the tree is frozen, and the builder edits again only 
   page writes it, with "1st" read as "1". And every date in any answer, a month with its day, must be on a page it
   read (his words: it may say what it found on another page, never what it has no page for). A page it read is the
   page in front of him, or one of the build's kept pages that the mind's log says it gave the model with that ask
-  (`src/judge/pages.ts`). A date he said himself, and the day of the run, also count. The kept pages' text is the
+  or with any ask or look before it in the same sitting (`src/judge/pages.ts`): one sitting, one memory. A date he said himself, and the day of the run, also count. The kept pages' text is the
   builder's reading of each site; the judge does not check it against the site.
   A scenario can ask that the days to a date be counted rightly from the day of the run (`countsDaysTo`).
   A scenario can also ask that the answer say something in its own words (`saysThat`), such as that the date has

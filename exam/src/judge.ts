@@ -9,7 +9,7 @@ import { closing, cutIn, ending, pressedAgain } from "./judge/ending.ts";
 import { atEnd, atRest, inked, look, thinkingShown, trail } from "./judge/frames.ts";
 import { marks, standingBefore } from "./judge/marks.ts";
 import { glanced, pageChanged } from "./judge/look.ts";
-import { pagesGiven, type PageRead } from "./judge/pages.ts";
+import { pagesGiven, readSoFar, type PageRead } from "./judge/pages.ts";
 import { pictureSent } from "./judge/picture.ts";
 import { drawnIn } from "./judge/motion.ts";
 import { takenBack, thinkingSaid, timing } from "./judge/timing.ts";
@@ -75,6 +75,7 @@ export async function judge(scenario: Scenario): Promise<Judged> {
   const numbered = scenario.steps.map((step, at) => ({ step, truth: truths[at] }));
   const where = await placed(dir);
   const given = await pagesGiven(dir);
+  const sofar = readSoFar(given);
   // How the judged build draws a board, from its own look file; the film was drawn with it.
   const boardLook: BoardLook = (await read(join(BUILD, "body", "tokens.json"), z.object({ board: z.object({ pad: z.number(), boxPadY: z.number(), rowGap: z.number(), type: z.number() }) }))).board;
   /** The last board shown under one name ("t1", "g1"): how many rows it has, and the card the painter drew for it. */
@@ -97,7 +98,7 @@ export async function judge(scenario: Scenario): Promise<Judged> {
     const nextStart = everything.find((m) => (m.kind === "key-down" || m.kind === "glance") && m.at > ask.down)?.at ?? Infinity;
     if (step.say !== "") verdicts.push(...timing(ask, step.expect, where, nextDown), ...(seen ? await thinkingShown(seen, ask, where) : thinkingSaid(ask)));
     if (!takenBack(ask, nextDown)) verdicts.push(...heardWhole(ask, step.say));
-    verdicts.push(...marks(ask, step.expect, truth, standingBefore(everything, ask)), ...spoken(ask, step.expect, truth, { pages: given.get(turnOf(ask)) ?? [], ranOn: ran }), ...voiced(ask, step.expect, all[index + 1]?.down ?? null),
+    verdicts.push(...marks(ask, step.expect, truth, standingBefore(everything, ask)), ...spoken(ask, step.expect, truth, { pages: sofar.get(turnOf(ask)) ?? [], ranOn: ran }), ...voiced(ask, step.expect, all[index + 1]?.down ?? null),
       ...board(ask, step.expect, truth, where), ...lesson(ask, step.expect), ...cutIn(ask, all[index - 1] ?? null, step.expect, voice), ...pressedAgain(ask, all[index - 1] ?? null, step.expect));
     const drawnBoard = lastBoard(ask.moments, turnOf(ask));
     verdicts.push(...readable("C8", ask.index, drawnBoard.rows, drawnBoard.card, boardLook));
@@ -114,13 +115,15 @@ export async function judge(scenario: Scenario): Promise<Judged> {
   // a later look at the same page (the mark moving) is held to the page of the look before it.
   const lookSteps = numbered.filter(({ step }) => "look" in step);
   let asked: PageRead[] = [];
+  let everRead: PageRead[] = [];
   for (const [index, { step, truth }] of lookSteps.entries()) {
     const seenLook = seenLooks[index];
     if (!seenLook) throw new Error(`${scenario.id}: the run holds ${seenLooks.length} looks, and the scenario has ${lookSteps.length}`);
     if (!("look" in step)) continue;
     const name = first(seenLook.moments, "say")?.id.split(":")[0] ?? "";
     asked = given.get(name) ?? asked;
-    verdicts.push(...glanced(seenLook, step.expect, truth, { pages: asked, ranOn: ran }));
+    everRead = sofar.get(name) ?? (everRead.length > 0 ? everRead : asked);
+    verdicts.push(...glanced(seenLook, step.expect, truth, { pages: everRead, ranOn: ran, forThis: asked }));
     const drawnBoard = lastBoard(seenLook.moments, name);
     verdicts.push(...readable("C18", seenLook.index, drawnBoard.rows, drawnBoard.card, boardLook));
     if (step.page) verdicts.push(pageChanged(seenLook.index, standingBefore(everything, { down: seenLook.at, moments: seenLook.moments }).length));

@@ -33,8 +33,11 @@ const plain = (text: string) => text.toLowerCase().replace(/\b(\d+)(st|nd|rd|th)
 
 const answerOf = (ask: Pick<Ask, "moments">) => [...of(ask.moments, "say").filter((m) => !m.opener).map((m) => m.text), ...of(ask.moments, "mark").map((m) => m.label ?? ""), ...of(ask.moments, "board").map((m) => m.text)].join(" ");
 
-/** What the build knew besides his screen: the pages it gave the model with this ask, and the day of the run. */
-export type Known = { pages: PageRead[]; ranOn: Date };
+/**
+ * What the build knew besides his screen: every page it gave the model up to and with this ask (one sitting, one
+ * memory), the day of the run, and for a look the pages it was asked about for that look alone.
+ */
+export type Known = { pages: PageRead[]; ranOn: Date; forThis?: PageRead[] };
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const NUMBERS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"];

@@ -6,6 +6,7 @@ import { onlyThePart } from "./judge/picture.ts";
 import { cutIn, pressedAgain } from "./judge/ending.ts";
 import { timing } from "./judge/timing.ts";
 import { heardWhole, voiced } from "./judge/voice.ts";
+import { readSoFar } from "./judge/pages.ts";
 import { spoken } from "./judge/words.ts";
 import type { Placed } from "./session.ts";
 import type { Box } from "./shape.ts";
@@ -48,6 +49,8 @@ const BOARD_LOOK = { pad: 20, boxPadY: 9, rowGap: 16, type: 15 };
 // A look with no key at 1000 ms, and the one line it shows a second later with a trail above it.
 const looked = (moments: Moment[]): Look => ({ index: 0, at: 1000, moments: [{ at: 1000, kind: "glance", lines: 12 }, ...moments] });
 const shownLine = (trail: string[]): Extract<Moment, { kind: "say" }> => ({ at: 2000, kind: "say", id: "g1:0", text: "The application closes November 22 at 11:59pm; see Deadlines, further down.", opener: false, hint: false, top: false, trail });
+// A page of another site, with no date of the club's on it.
+const OTHER = { title: "Catalina Maymester", url: "https://example.edu/maymester", lines: ["Application deadline: November 2, 2026"] };
 // Some signs that an answer says a date has passed. A scenario lists its own.
 const PASSED = { what: "the date has passed", anyOf: ["passed", "closed", "missed", "ago", "no longer"] };
 // A page with a due date and a range of dates, as two lines.
@@ -148,6 +151,8 @@ const CASES: Case[] = [
   { name: "what is ahead, soonest first", check: "The board of what is ahead runs soonest first", mustPass: true, verdicts: () => glanced(looked([shownLine(["saw this page"]), { at: 2200, kind: "board", text: "Submit the application: November 22 at 11:59pm → Advisor requirements: December 1" }]), { shows: true, ahead: ["November 22", "December 1"] }, DATED, { pages: [KEPT], ranOn: RAN }) },
   { name: "what is ahead, with a date already past in it", check: "The board of what is ahead runs soonest first", mustPass: false, verdicts: () => glanced(looked([shownLine(["saw this page"]), { at: 2200, kind: "board", text: "Application opens: October 27 → Submit the application: November 22 at 11:59pm" }]), { shows: true, ahead: ["November 22"] }, DATED, { pages: [KEPT], ranOn: RAN }) },
   { name: "what is ahead, later date first", check: "The board of what is ahead runs soonest first", mustPass: false, verdicts: () => glanced(looked([shownLine(["saw this page"]), { at: 2200, kind: "board", text: "Advisor requirements: December 1 → Submit the application: November 22 at 11:59pm" }]), { shows: true, ahead: ["November 22"] }, DATED, { pages: [KEPT], ranOn: RAN }) },
+  { name: "a date from a page read two asks ago, said on another site's page", check: "Every date it says is on a page it read", mustPass: true, verdicts: () => spoken(ask([say("t2:0", 6000, "Still ahead: you submit on EngageSC by November 22 at 11:59 pm.")]), {}, DATED, { pages: readSoFar(new Map([["t1", [KEPT]], ["t2", [OTHER]]])).get("t2") ?? [], ranOn: RAN }) },
+  { name: "the same date when no earlier ask read its page", check: "Every date it says is on a page it read", mustPass: false, verdicts: () => spoken(ask([say("t2:0", 6000, "Still ahead: you submit on EngageSC by November 22 at 11:59 pm.")]), {}, DATED, { pages: readSoFar(new Map([["t2", [OTHER]]])).get("t2") ?? [], ranOn: RAN }) },
   { name: "a date from a kept page the build gave with the ask", check: "Every date it says is on a page it read", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "It closes November 22 at 11:59 pm, inside the Deadlines section.")]), {}, DATED, { pages: [KEPT], ranOn: RAN }) },
   { name: "a date from a kept page that was not given with the ask", check: "Every date it says is on a page it read", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "It closes November 22 at 11:59 pm, inside the Deadlines section.")]), {}, DATED, { pages: [], ranOn: RAN }) },
   { name: "a date he said himself, said back to him", check: "Every date it says is on a page it read", mustPass: true, verdicts: () => spoken(ask([{ at: 4000, kind: "heard", text: "Is it due November 20?" }, say("t1:0", 6000, "It is not November 20; the page says March 1, 2027.")]), {}, DATED, { pages: [], ranOn: RAN }) },
