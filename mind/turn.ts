@@ -83,7 +83,10 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
       words = hear(hear(words, { type: "ear", text }), { type: "key.up", at });
       const drawn = drew(trail, settings.circleLeast.value);
       if (words.text === "") {
-        if (!drawn) return send({ v, type: "state", name: "idle", detail: "no words heard" });
+        if (!drawn) {
+          log(`no words were heard in this hold, ${Date.now() - at} ms after the release; nothing is asked`);
+          return send({ v, type: "state", name: "idle", detail: "no words heard" });
+        }
         carried = trail;
         const id = `t${++asks}`;
         const talk = speech({ ports, settings, send, log }, id, mine.signal);
@@ -107,7 +110,10 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
         screenCame = null;
       }
       if (mine.signal.aborted) return;
-      if (screen === null) return send({ v, type: "state", name: "failed", detail: "no picture of the screen arrived with this ask" });
+      if (screen === null) {
+        log(`no picture of the screen arrived within ${settings.screenWaitMs.value} ms of his words; this ask fails and nothing is asked (the body says why in the capsule: the screen grant, most likely)`);
+        return send({ v, type: "state", name: "failed", detail: "no picture of the screen arrived with this ask" });
+      }
       const opener = opening(mine.signal);
       const around = circled(path, screen.lines, screen.display, settings.circleLeast.value);
       const asking = { id, words: words.text, seen: screen, circled: around, lesson, markUp, releasedAt: at, opener, signal: mine.signal };
