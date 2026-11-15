@@ -44,6 +44,9 @@ those are helpers, not test files.
 | `body.moves` | a hand-written run on a drawn page, looked at at given moments: how far the capsule is open, how much of a mark's stroke and of a drawn arrow's shaft and head is inked, how far the cursor has still to fly, how large its name tag is, and how far the guide's card has come up, each as a share of its whole |
 | `body.lifted` | a hand-written run looked at with no Dock and with a Dock that takes part of the display's foot: how far the open capsule's foot is above the display's, how much higher the capsule, the way arrow and the toast sit with the Dock, and whether the board is above it |
 | `body.scaled` | one moment of a hand-written run drawn at the tokens' sizes and again with the one `scale` changed: how large the guide's card, the cursor, the toast and the board then are against their size at 1 |
+| `body.cardLines` | a hand-written run with `next` lines, looked at at given moments: how strong the guide's card is, and how far below its place each of its two lines is just then |
+| `body.toastTick` | a hand-written run with an `open` line, looked at at given moments: how large the toast's badge is against its full size, and how much of its tick the pen has drawn |
+| `body.click` | a hand-written walk with clicks of his, looked at at given moments: how large paral's cursor is drawn, how far across the outer ring of the click's picture is, and whether the newest mark has an echo |
 | `body.pressedAgain` | a run on a tape where the key is pressed again soon after a release: the order of the key lines the mind got |
 
 Tapes in `tapes/` are recorded answers, so no row needs a key, a microphone or a screen. A tape answer keyed

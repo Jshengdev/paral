@@ -28,9 +28,32 @@ extension Painter {
                 ctx.strokeEllipse(in: CGRect(x: middle.x - r, y: middle.y - r, width: 2 * r, height: 2 * r))
             }
         }
+        // It swells about its middle while paral works, and at his click it presses toward its tip.
         let swollen = frame.grown(c.size * c.workGrows * pointer.working / 2)
-        logo(in: CGRect(x: swollen.x, y: swollen.y, width: swollen.w, height: swollen.h), ctx)
-        return (swollen, worn)
+        let pressed = Box(x: pointer.x + (swollen.x - pointer.x) * pointer.press, y: pointer.y + (swollen.y - pointer.y) * pointer.press, w: swollen.w * pointer.press, h: swollen.h * pointer.press)
+        logo(in: CGRect(x: pressed.x, y: pressed.y, width: pressed.w, height: pressed.h), ctx)
+        return (pressed, worn)
+    }
+
+    /// From the kit's cursor that clicks: its two rings set off at these shares of their size and this strong, come
+    /// to rest at the strengths the kit's still shows (0.45 and 0.18), and the inner takes this share of the outer's time.
+    private static let clickRings: [(reach: Double, from: Double, strong: Double, rests: Double, time: Double)] = [(innerRing, 0.3, 0.7, 0.45, 400.0 / 550), (1, 0.35, 0.3, 0.18, 1)]
+
+    /// The rings of his click, under the cursor's tip: they set off at once, come softly to rest at the kit's 42 and
+    /// 70 across, and fade when they go. Gives back the outer ring's box.
+    func click(_ click: ClickPicture, _ ctx: CGContext) -> Box {
+        let c = tokens.cursor
+        let middle = CGPoint(x: click.x + Painter.rippleAt * c.size, y: click.y + Painter.rippleAt * c.size)
+        var outer = 0.0
+        ctx.setLineWidth(Painter.rippleLine * c.size)
+        for ring in Painter.clickRings {
+            let come = tokens.curves.arrive(click.spread / ring.time)
+            let r = c.ripple * ring.reach * (ring.from + (1 - ring.from) * come)
+            ctx.setStrokeColor(cardinal.copy(alpha: (ring.strong + (ring.rests - ring.strong) * come) * (1 - click.gone)) ?? cardinal)
+            ctx.strokeEllipse(in: CGRect(x: middle.x - r, y: middle.y - r, width: 2 * r, height: 2 * r))
+            outer = max(outer, r)
+        }
+        return Box(x: middle.x - outer, y: middle.y - outer, w: 2 * outer, h: 2 * outer)
     }
 
     /// The cursor moved the least that keeps all of its frame on the display, at the size it has just then. Its tip

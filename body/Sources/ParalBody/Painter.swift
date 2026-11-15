@@ -122,12 +122,18 @@ public struct Painter {
         // The toast keeps off the text, the cards and the arrow, so it comes after them.
         if let toast = picture.toast {
             let up = drawn.filter { ["board", "clip", "way"].contains($0.what) }.map(\.box)
-            drawn.append(Drawn(what: "toast", id: nil, box: self.toast(toast, avoiding: picture.avoid + up, ctx)))
+            let made = self.toast(toast, avoiding: picture.avoid + up, ctx)
+            drawn.append(Drawn(what: "toast", id: nil, box: made.place))
+            // Its badge is named too, at the size it has just then and with as much of its tick as is drawn.
+            drawn.append(Drawn(what: "badge", id: nil, box: made.badge, path: made.tick))
         }
         // The guide's card keeps off everything else, so it is placed last of the things that are placed.
         if let guide = picture.guide {
             let up = drawn.filter { ["board", "clip", "way", "toast", "mark", "echo"].contains($0.what) }.map(\.box)
-            drawn.append(Drawn(what: "guide", id: nil, box: self.guide(guide, avoiding: picture.avoid + up, ctx)))
+            let card = self.guide(guide, avoiding: picture.avoid + up, ctx)
+            drawn.append(Drawn(what: "guide", id: nil, box: card.card))
+            // Its lines are named too, each where it is just then, so a film's record says how the card came up.
+            for (index, line) in card.lines.enumerated() { drawn.append(Drawn(what: "line", id: "guide/\(index)", box: line)) }
         }
         // The nudge card keeps off the page's words and every card placed so far, so it comes after them.
         if let nudge = picture.nudge {
@@ -140,6 +146,8 @@ public struct Painter {
         var with = picture
         with.pointer = pointer
         if let lead = lead(with, placed: drawn, ctx) { drawn.append(lead) }
+        // The rings of his click lie under the cursor.
+        if let click = picture.click { drawn.append(Drawn(what: "click", id: nil, box: self.click(click, ctx))) }
         if let pointer {
             let cursor = self.pointer(pointer, clock: picture.clock, ctx)
             drawn.append(Drawn(what: "pointer", id: nil, box: cursor.box))

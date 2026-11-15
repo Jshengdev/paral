@@ -19,14 +19,18 @@ extension Scene {
     }
 
     /// The toast that says a date has been opened in his calendar: up for its stay from the moment of the `open` line,
-    /// coming and going as the board does. It is not ink on the page, so a clear does not take it and it brings no cross.
+    /// coming and going as a card does. A moment after it comes its badge pops out and the tick in it draws itself.
+    /// It is not ink on the page, so a clear does not take it and it brings no cross.
     func toast(at t: Double) -> ToastPicture? {
         guard let opened, t >= opened.at else { return nil }
         let gone = opened.at + ms(tokens.motion.arriveMs) + tokens.toast.stayMs
         guard t < gone + ms(tokens.motion.leaveMs) else { return nil }
-        let appear = still ? 1 : min(arriving(since: opened.at, at: t), 1 - leaving(since: gone, at: t))
+        let coming = coming(since: opened.at, lines: 0, gone: still ? 0 : leaving(since: gone, at: t), at: t)
+        // The badge and its tick take the usual time of a small change, the tick at a pen's even speed.
+        let popped = (t - opened.at - ms(tokens.toast.badgeAfterMs)) / max(ms(tokens.motion.usualMs), 1)
         // The date follows the words after a dot, as the kit's toast writes it.
-        return ToastPicture(text: tokens.strings.opened + (opened.label.map { " · " + $0 } ?? ""), appear: appear)
+        return ToastPicture(text: tokens.strings.opened + (opened.label.map { " · " + $0 } ?? ""), appear: min(max(coming.card, 0), 1) * (1 - coming.gone),
+                            coming: coming, badge: still ? 1 : tokens.curves.pop(popped), tick: still ? 1 : Motion.even(popped))
     }
 
     /// A nod is a dip, slow at both ends, and a way back that sets off at once and lands softly; it goes past

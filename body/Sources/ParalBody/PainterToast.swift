@@ -10,8 +10,10 @@ extension Painter {
     /// The toast that confirms something paral did, after the design kit's: a light pill with a soft shadow, a
     /// cardinal badge with a tick in it, and the words in the look's ink. It sits at the bottom edge beside the
     /// capsule, level with it, on none of `taken` (`Layout.way`). It is not blurred behind, as the kit's is: the
-    /// overlay cannot see the page under it. Gives back its box.
-    func toast(_ toast: ToastPicture, avoiding taken: [Box], _ ctx: CGContext) -> Box {
+    /// overlay cannot see the page under it. It comes up as a card does; its badge pops out from `toast.badgeFrom`
+    /// of its size, and the tick is drawn by a pen. Gives back its place, the badge's box just then, and the points
+    /// of the tick that are inked.
+    func toast(_ toast: ToastPicture, avoiding taken: [Box], _ ctx: CGContext) -> (place: Box, badge: Box, tick: [CGPoint]) {
         let t = tokens.toast, c = tokens.capsule
         let words = inked(toast.text, size: t.type, color: ink, weight: .medium)
         let size = words.size()
@@ -22,23 +24,23 @@ extension Painter {
         let rise = c.bottom + c.height / 2 - tokens.way.edge - tall / 2
         let place = Layout.way(down: true, size: (wide, tall), rise: rise, taken: taken, width: width, height: floor, tokens: tokens)
         let pill = CGRect(x: place.x, y: place.y, width: place.w, height: place.h)
-        let shape = CGPath(roundedRect: pill, cornerWidth: tall / 2, cornerHeight: tall / 2, transform: nil)
-
-        ctx.saveGState()
-        defer { ctx.restoreGState() }
-        ctx.setAlpha(toast.appear)
-        surface(shape, ctx)
-
-        let spot = CGRect(x: pill.minX + t.pad, y: pill.midY - round / 2, width: round, height: round)
-        ctx.setFillColor(cardinal)
-        ctx.fillEllipse(in: spot)
-        ctx.setStrokeColor(paper)
-        ctx.setLineWidth(Painter.tickLine * round)
-        ctx.setLineCap(.round)
-        ctx.setLineJoin(.round)
-        ctx.addLines(between: Painter.tick.map { CGPoint(x: spot.minX + $0.x * round, y: spot.minY + $0.y * round) })
-        ctx.strokePath()
-        words.draw(at: CGPoint(x: spot.maxX + t.gap, y: pill.midY - size.height / 2))
-        return place
+        // The badge at the size it has just then, about its own middle; the tick in it as far as the pen has got.
+        let across = round * (t.badgeFrom + (1 - t.badgeFrom) * toast.badge)
+        let spot = CGRect(x: pill.minX + t.pad + (round - across) / 2, y: pill.midY - across / 2, width: across, height: across)
+        let inked = Pen.reach(Painter.tick.map { CGPoint(x: spot.minX + $0.x * across, y: spot.minY + $0.y * across) }, toast.tick).inked
+        card(pill, radius: tall / 2, toast.coming, ctx) {
+            ctx.setFillColor(cardinal)
+            ctx.fillEllipse(in: spot)
+            if toast.tick > 0 {
+                ctx.setStrokeColor(paper)
+                ctx.setLineWidth(Painter.tickLine * across)
+                ctx.setLineCap(.round)
+                ctx.setLineJoin(.round)
+                ctx.addLines(between: inked)
+                ctx.strokePath()
+            }
+            words.draw(at: CGPoint(x: pill.minX + t.pad + round + t.gap, y: pill.midY - size.height / 2))
+        }
+        return (place, Box(x: spot.minX, y: spot.minY, w: across, h: across), toast.tick > 0 ? inked : [])
     }
 }

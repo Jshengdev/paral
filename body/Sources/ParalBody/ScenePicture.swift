@@ -8,10 +8,11 @@ extension Scene {
         var pointer = pointer(at: t)
         pointer?.thinking = capsule.look == .thinking
         if capsule.look == .thinking { pointer?.working = working(at: t) }
+        pointer?.press = press(at: t)
         let clip = clip(at: t)
         capsule.closes = capsule.look == .rest && (!marks.isEmpty || way != nil || board != nil || clip != nil)
         let nudge = nudge(at: t)
-        return Picture(clock: t, capsule: capsule, marks: marks, echo: echo(at: t), way: way, pointer: pointer, board: board, clip: clip, toast: toast(at: t), guide: guide(at: t), lead: lead(at: t, capsule: capsule, nudge: nudge), trail: trailUp(at: t), avoid: texts, bottomInset: bottomInset, nudge: nudge)
+        return Picture(clock: t, capsule: capsule, marks: marks, echo: echo(at: t), way: way, pointer: pointer, click: still ? nil : click(at: t), board: board, clip: clip, toast: toast(at: t), guide: guide(at: t), lead: lead(at: t, capsule: capsule, nudge: nudge), trail: trailUp(at: t), avoid: texts, bottomInset: bottomInset, nudge: nudge)
     }
 
     func capsule(at t: Double) -> CapsulePicture {

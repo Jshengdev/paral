@@ -48,6 +48,8 @@ public struct Scene {
     /// The words of every card he has answered or whose date was opened, and when: those words get no card again.
     var answered: [(text: String, at: Double)] = []
     var clips: [Clip] = []
+    /// His last click on a mark that waited for it: when, where paral's cursor's tip was then, and which mark.
+    var clicked: (at: Double, x: Double, y: Double, mark: String)?
     var trail: [(x: Double, y: Double, at: Double)] = []
     var failed: (detail: String, at: Double)?
     var idleAt: Double?
@@ -176,8 +178,9 @@ public struct Scene {
         case .open(_, let label):
             opened = (at, label)
             kept(at)
-        // Nothing is drawn for his own click yet.
-        case .other, .click:
+        case .click(let x, let y):
+            click(x: x, y: y, at: at)
+        case .other:
             break
         }
     }
