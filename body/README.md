@@ -28,7 +28,7 @@ here clicks.
 | Cursor: tag | says whose cursor is moving: a light pill with the logo mark and the name, worn only while it comes in from nowhere; it pops out as the cursor comes | the first `mark` or `way` after the page was clean | its arrival | `strings.name`, `cursor.tagFrom`, `motion.usualMs`, `curves.pop`, `light`, `glass`, `shadow` |
 | Cursor: thinking | says paral is working: a cursor that is already on the page breathes, swelling a little and coming back | `key.up`, until the answer begins | the answer's first sentence | `cursor.workGrows`, `cursor.workMs`, `curves.travel` |
 | Cursor: click | answers his own click on the mark of the step he is on: paral's cursor presses and two rings spread from under its tip, come to rest and fade. Paral clicks nothing | his `click` (from the body) on a mark whose board names the step | a moment later, by itself; none with motion reduced | `cursor.pressTo`, `cursor.clickMs`, `cursor.clickStayMs`, `cursor.ripple`, `motion.pressMs`, `motion.usualMs`, `motion.leaveMs`, `cardinal` |
-| The way arrow (build's name; after the kit's drawn arrow) | the thing is on this page and not in view: which way to scroll, and its name on a tag | `way` (`to`, `toward`) | `clear`, a close, a newer `way`, or a `mark` with the same id | `way.*`, `ember`, `light`, `glass`, `shadow`, `mark.width`, `mark.shaftMs`, `mark.headMs` |
+| The way arrow (build's name; after the kit's drawn arrow) | the thing is on this page and not in view: which way to scroll, and its name on a tag | `way` (`to`, `toward`) | `clear`, a close, a newer `way`, or a `mark` with the same id | `way.*` (`way.maxWidth` the widest its tag may be), `ember`, `light`, `glass`, `shadow`, `mark.width`, `mark.shaftMs`, `mark.headMs` |
 | The board (build's name; in the kit's language of card and buttons) | what is still ahead, or the parts of an answer, as boxes on a light card. On a board of steps the step he is on is the ink button | `board` (`rows`; `now` for the step) | `clear`, a close, a `clip`; the same rows again keep the card in place | `board.*`, `light`, `mist`, `ink`, `glass`, `shadow`, `motion.arriveMs`, `motion.usualMs`, `motion.boardAfterMs` |
 | Toast | confirms something paral did: "Open in your calendar · November 22", or "Opening RSO Resources" for a page opened in his browser, beside the capsule | `open` (`label` for the date), `go` (`label` for the page) | four seconds; a `clear` does not take it | `toast.*`, `card.*`, `strings.opened`, `strings.going`, `cardinal`, `light`, `glass`, `shadow`, `motion.arriveMs`, `motion.leaveMs`, `motion.usualMs`, `curves.pop` |
 | Nudge (the kit's, with its pill buttons) | a line paral says without being asked, or any line with an offer: the name and the trail (when it has one), the message, and its offer's button ("Add to calendar" when its date can be kept) and "Not now". Beside the marked line, to the right of the page's text when there is room | `say` with `trail` or `offer` (`keep` or `offer` for the buttons); spoken words fill in from stone to ink with its `voice` | with buttons: "Not now", the hold key, a close, a newer such line taking its place, or after a press of its offer the mind's answer (`open`, `go`, its next `say`, a `clear`) or `nudge.answeredMs`; without: its reading time and `motion.unaskedStayMs`. Words he answered get no card again while the app runs | `nudge.*`, `scale`, `stone`, `light`, `mist`, `ink`, `paper`, `glass`, `shadow`, `band`, `curves.arrive`, `curves.leave`, `strings.name`, `motion.cardAfterMs`, `motion.buttonsAfterMs` |
@@ -424,6 +424,22 @@ its update; it was #FBFBFB). The kit fills at 0.85 over a blur of the page; the 
 and at 0.85 with no blur the page's words would show through the card's, so `glass` is 1. Only the lesson clip keeps
 its dark card.
 
+## The board is as tall as the rows it shows
+
+An answer's board shows its rows one a sentence. The card was sized for all of them from the first, so with the
+first row up its lower part was empty: in the owner's take 01 (frame 11-9.29) a card of one row of three boxes was
+about twice as tall as the row. Now the card is as tall as the rows shown so far need, and grows downward to hold the
+next as its sentence begins, on `travel` in `motion.usualMs` (`BoardPicture.coming`). It is still placed and shrunk
+for all of its rows, so it never moves or shrinks as they come. A board that arrives whole is as before.
+
+## The way's tag writes its name whole
+
+The tag beside the way arrow writes what it leads to on one line up to `way.maxWidth` (420; it was 280, which cut
+"Individual Officer Requirements" to "Individual Officer Requiremen…" in take 01, frames 07-4.44 to 11-9.29). At
+`way.type` 17 that holds about 40 letters; a longer name is still cut with "…". One line was chosen over two: the tag
+stays a pill, and `Layout.way` still finds it a place on none of the page's read text, the capsule or the board,
+moving in from the edge where it must. The film's record names the tag and its words (`way-tag`).
+
 ## A line stands a least time
 
 Where one line takes the place of another, in the capsule or on the guide's card, the one before has stood a least
@@ -600,5 +616,5 @@ tokens' size times whatever the card was shrunk by.
 shows at those moments), `curves TOKENS SHARE...` (each of the four curves at those shares of its time), `placed RUN TOKENS MS...` (where the painter puts each thing at those moments, the points
 the pen has inked of a mark and of a drawn arrow, the capsule's look, words, stone words, note, trail, caret, wave and breathing mark (`PARAL_INSET` for a Dock's height), and the way arrow's, the cursor's and the board's own values).
 
-Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way`, `body.cursor`, `body.steps`, `body.pages`, `body.toast`, `body.boardType`, `body.guide`, `body.lead`, `body.nudge`, `body.seen`, `body.echo`, `body.stands`, `body.resting`, `body.cursorInside`, `body.inkInside`, `body.curves`, `body.moves`, `body.pill`, `body.lifted`, `body.scaled`, `body.cardLines`, `body.toastTick`, `body.click`, `body.marks`, `body.order`, `body.follow` rows, with no window. The look of the mark, the white surfaces, the trail's colour and the kit's sizes are checked on stills. The hosts are compiled and have never been run:
+Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way`, `body.cursor`, `body.steps`, `body.pages`, `body.toast`, `body.boardType`, `body.guide`, `body.lead`, `body.nudge`, `body.seen`, `body.echo`, `body.stands`, `body.resting`, `body.cursorInside`, `body.inkInside`, `body.curves`, `body.moves`, `body.pill`, `body.lifted`, `body.scaled`, `body.cardLines`, `body.toastTick`, `body.click`, `body.marks`, `body.order`, `body.follow`, `body.boardFits`, `body.wayTag` rows, with no window. The look of the mark, the white surfaces, the trail's colour and the kit's sizes are checked on stills. The hosts are compiled and have never been run:
 the key, the microphone, the screen picture and the overlay wait for a person and their grants (`./run`).

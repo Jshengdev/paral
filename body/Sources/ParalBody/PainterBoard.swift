@@ -37,13 +37,20 @@ extension Painter {
         let rowHeights = sized.map { row in (row.map { $0.1.height }.max() ?? b.type) + 2 * b.boxPadY }
         let rowWidths = sized.map { row in row.reduce(0) { $0 + $1.1.width + 2 * b.boxPadX } + b.gap * Double(max(0, row.count - 1)) }
         let fullW = (rowWidths.max() ?? 0) + 2 * b.pad
-        let fullH = rowHeights.reduce(0, +) + Double(max(0, sized.count - 1)) * b.rowGap + 2 * b.pad
+        // The card is as tall as the rows shown so far need (an answer's rows come one a sentence), the newest growing
+        // in as it comes; it is placed and sized for all of them, so it grows downward and never moves or shrinks.
+        func tall(_ rows: Int, _ last: Double = 1) -> Double {
+            let heights = rowHeights.prefix(rows).enumerated().map { $0.offset == rows - 1 ? $0.element * last + b.rowGap * (last - 1) : $0.element }
+            return heights.reduce(0, +) + Double(max(0, rows - 1)) * b.rowGap + 2 * b.pad
+        }
+        let shownCount = min(board.shown, sized.count)
+        let fullH = tall(sized.count), shownH = tall(shownCount, shownCount > 1 ? min(max(board.coming, 0), 1) : 1)
         let grown = sized.isEmpty ? 0 : min(max(board.filled, 0), 1)
         let cardW = b.emptyWidth + (fullW - b.emptyWidth) * grown
-        let cardH = b.emptyHeight + (fullH - b.emptyHeight) * grown
-        let scale = min(1, board.room.w / cardW, board.room.h / cardH, b.maxWidth / cardW)
+        let cardH = b.emptyHeight + (shownH - b.emptyHeight) * grown, allH = b.emptyHeight + (fullH - b.emptyHeight) * grown
+        let scale = min(1, board.room.w / cardW, board.room.h / allH, b.maxWidth / cardW)
         let w = cardW * scale, h = cardH * scale
-        let origin = CGPoint(x: board.room.x + (board.room.w - w) / 2, y: board.room.y + (board.room.h - h) / 2)
+        let origin = CGPoint(x: board.room.x + (board.room.w - w) / 2, y: board.room.y + (board.room.h - allH * scale) / 2)
 
         ctx.saveGState()
         ctx.setAlpha(board.appear)
@@ -56,14 +63,14 @@ extension Painter {
         ctx.addPath(card)
         ctx.clip()
         ctx.setAlpha(board.appear * grown)
-        ctx.translateBy(x: (cardW - fullW) / 2, y: (cardH - fullH) / 2)
+        ctx.translateBy(x: (cardW - fullW) / 2, y: (cardH - shownH) / 2)
         ctx.setStrokeColor(chalk.copy(alpha: 0.9) ?? chalk)
         ctx.setLineWidth(1.5)
         ctx.setLineCap(.round)
         var y = b.pad
         var lit: Box?
         // Where a place in the rows' own space is on the display, for the lit row's box.
-        let rowsAt = CGPoint(x: origin.x + (cardW - fullW) / 2 * scale, y: origin.y + (cardH - fullH) / 2 * scale)
+        let rowsAt = CGPoint(x: origin.x + (cardW - fullW) / 2 * scale, y: origin.y + (cardH - shownH) / 2 * scale)
         for (index, row) in sized.enumerated() where index < board.shown {
             var x = (fullW - rowWidths[index]) / 2
             let boxHeight = rowHeights[index]

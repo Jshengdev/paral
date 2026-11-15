@@ -84,6 +84,7 @@
    "upElsewhere": [
     "board",
     "way",
+    "way-tag",
     "toast",
     "badge",
     "guide",
@@ -98,6 +99,7 @@
    "upElsewhere": [
     "board",
     "way",
+    "way-tag",
     "toast",
     "badge",
     "guide",

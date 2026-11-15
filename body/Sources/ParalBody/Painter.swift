@@ -121,6 +121,7 @@ public struct Painter {
             let place = self.place(way, avoiding: picture.avoid + cards)
             self.way(way, at: place, ctx)
             drawn.append(Drawn(what: "way", id: way.id, box: place.whole))
+            drawn.append(Drawn(what: "way-tag", id: place.name.string, box: Box(x: place.pill.minX, y: place.pill.minY, w: place.pill.width, h: place.pill.height)))
             if let with = pointer {
                 let tip = self.tip(of: with, with: way, at: place)
                 pointer?.x = tip.x

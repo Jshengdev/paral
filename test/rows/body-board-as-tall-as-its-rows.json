@@ -1,0 +1,146 @@
+{
+ "name": "body: a board's card is as tall as the rows it shows: an answer's board of three rows, one row a sentence, shows its first row on a card as tall as that row needs, not as tall as all three (take 01, frame 11-9.29: the lower half of the card was empty); the card grows downward as each next row comes, its top where it was, and is as tall as all three once they are",
+ "run": "body.boardFits",
+ "in": {
+  "lines": [
+   "Before You Begin",
+   "Start here to learn what your organization needs.",
+   "Application Requirements",
+   "The following items are required.",
+   "Membership Requirements",
+   "Constitution"
+  ],
+  "rows": [
+   {
+    "at": 500,
+    "line": {
+     "type": "key.down"
+    }
+   },
+   {
+    "at": 1500,
+    "line": {
+     "type": "key.up"
+    }
+   },
+   {
+    "at": 4000,
+    "line": {
+     "type": "board",
+     "id": "t1",
+     "rows": [
+      [
+       "Scroll past Before You Begin",
+       "Application Requirements",
+       "Individual Officer Requirements +"
+      ],
+      [
+       "Open Officer Requirements"
+      ],
+      [
+       "Check each officer's trainings"
+      ]
+     ]
+    }
+   },
+   {
+    "at": 4000,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 0,
+     "text": "Scroll down past Before You Begin until you reach the Application Requirements heading."
+    }
+   },
+   {
+    "at": 4000,
+    "line": {
+     "type": "mute",
+     "id": "t1",
+     "why": "a row"
+    }
+   },
+   {
+    "at": 4001,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 1,
+     "text": "Then open Officer Requirements."
+    }
+   },
+   {
+    "at": 4002,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 2,
+     "text": "Each officer's trainings are listed there."
+    }
+   }
+  ],
+  "at": [
+   5000,
+   6000,
+   8800,
+   10500
+  ],
+  "asTall": [
+   [
+    [
+     "Scroll past Before You Begin",
+     "Application Requirements",
+     "Individual Officer Requirements +"
+    ]
+   ],
+   [
+    [
+     "Scroll past Before You Begin",
+     "Application Requirements",
+     "Individual Officer Requirements +"
+    ]
+   ],
+   [
+    [
+     "Scroll past Before You Begin",
+     "Application Requirements",
+     "Individual Officer Requirements +"
+    ],
+    [
+     "Open Officer Requirements"
+    ]
+   ],
+   [
+    [
+     "Scroll past Before You Begin",
+     "Application Requirements",
+     "Individual Officer Requirements +"
+    ],
+    [
+     "Open Officer Requirements"
+    ],
+    [
+     "Check each officer's trainings"
+    ]
+   ]
+  ]
+ },
+ "out": [
+  {
+   "asTallAsItsRowsNeed": true,
+   "topStays": true
+  },
+  {
+   "asTallAsItsRowsNeed": true,
+   "topStays": true
+  },
+  {
+   "asTallAsItsRowsNeed": true,
+   "topStays": true
+  },
+  {
+   "asTallAsItsRowsNeed": true,
+   "topStays": true
+  }
+ ]
+}

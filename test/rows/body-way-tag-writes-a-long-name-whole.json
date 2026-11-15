@@ -1,0 +1,97 @@
+{
+ "name": "body: the way's tag writes a name of up to about 40 letters whole, on one line, where it was cut with an ellipsis at 280 points (take 01, frame 11-9.29: \"Individual Officer Requiremen…\"): \"Individual Officer Requirements\" and the 41 letters of \"Officer Trainings and Commitment Form Due\" at the bottom edge, \"Deadlines\" at the top; each on none of the page's text, the capsule or the board, inside the display",
+ "run": "body.wayTag",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "The Spring 2027 recognition process is now open.",
+   "All student organizations must complete recognition",
+   "through the online portal, on an annual basis.",
+   "Recognition status runs for one academic year.",
+   "If you hope to re-establish your club, submit this form.",
+   "For questions, contact Campus Activities.",
+   "Important Dates"
+  ],
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "way",
+     "id": "g1",
+     "to": "down",
+     "toward": "Individual Officer Requirements"
+    }
+   },
+   {
+    "at": 4000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 4000,
+    "line": {
+     "type": "way",
+     "id": "g2",
+     "to": "down",
+     "toward": "Officer Trainings and Commitment Form Due"
+    }
+   },
+   {
+    "at": 7000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 7000,
+    "line": {
+     "type": "way",
+     "id": "g3",
+     "to": "up",
+     "toward": "Deadlines"
+    }
+   }
+  ],
+  "at": [
+   2500,
+   5500,
+   8500
+  ]
+ },
+ "out": [
+  {
+   "tag": {
+    "says": "Individual Officer Requirements",
+    "onText": false,
+    "onTheCapsule": false,
+    "onTheBoard": false,
+    "insideTheDisplay": true
+   }
+  },
+  {
+   "tag": {
+    "says": "Officer Trainings and Commitment Form Due",
+    "onText": false,
+    "onTheCapsule": false,
+    "onTheBoard": false,
+    "insideTheDisplay": true
+   }
+  },
+  {
+   "tag": {
+    "says": "Deadlines",
+    "onText": false,
+    "onTheCapsule": false,
+    "onTheBoard": false,
+    "insideTheDisplay": true
+   }
+  }
+ ]
+}

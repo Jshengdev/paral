@@ -58,6 +58,8 @@ public struct BoardPicture: Equatable {
     public var room: Box
     /// On a board of steps, the row that is the step he is on, from 0. That row is lit.
     public var now: Int?
+    /// How far the card has grown to hold the newest of its `shown` rows, 0 to 1: the card is as tall as the rows it shows.
+    public var coming = 1.0
 }
 
 public struct ClipPicture: Equatable {
