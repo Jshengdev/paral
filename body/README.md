@@ -28,8 +28,11 @@ when; the body only draws. Nothing here takes a click except the cross, and noth
 | His own trail and his loop (build's names; they are his, not paral's) | the path of his pointer while he draws with the draw key held, and that loop drawn back by hand once his words are final | `trail` (from the body), `echo` | the trail fades as he lets go; the echo goes at his next press or when paral marks inside it | `accent` (the trail), `ember` (the echo), `mark.width`, `motion.trailFadeMs` |
 
 Every light surface (the capsule, the board, the tags, the toast, the guide's card) is drawn by one function,
-`Painter.surface`: the light fill, a soft shadow, and a hairline edge in `mist` so that on a white page it does not
-run into the page's own lines. The guide's card sits in a corner (`Layout.corner`): the top right first, below the
+`Painter.surface`: a solid light fill (`glass` 1, so no word of the page shows through), a soft shadow, a hairline
+edge in `mist`, and outside the edge a band of the surface's own colour (`band`), so the page's letters stop short
+of it. A ring round a whole line of text is the kit's loop: flat above and below the words with round ends, a little
+open where it began; between close lines it is flattened on each side to pass through the middle of the gap to the
+nearest line, so it strikes through no word. The guide's card sits in a corner (`Layout.corner`): the top right first, below the
 Mac's menu bar, then down that side, then the top left, on none of the page's read text, the marks, the board, the
 arrow, the toast or the capsule. "Show the guide" is one item at the top of the menu bar's menu (`GuideSwitch.swift`),
 ticked when the app starts; nothing crosses the seam for it.

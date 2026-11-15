@@ -17,11 +17,24 @@ enum Pen {
         switch mark.kind {
         case .ring:
             let steps = 72, sweep = 2 * Double.pi * (1 + m.overshoot), from = -0.8 * Double.pi
+            // Between close lines the loop is flattened to pass through the middle of the gap to the nearest line
+            // above or below, so it strikes through no word of theirs. The wobble and the loop's slow growth can
+            // carry it 9 percent further out, which is allowed for.
+            let b = mark.box
+            let near = texts.filter { $0.x < b.x + b.w && b.x < $0.x + $0.w && !($0.y + $0.h / 2 > b.y && $0.y + $0.h / 2 < b.y + b.h) }
+            func reach(_ gaps: [Double]) -> Double { min(box.h / 2 * m.ringTall, (b.h / 2 + max((gaps.min() ?? 100) / 2, 1)) / 1.09) }
+            let up = reach(near.filter { $0.y + $0.h / 2 <= b.y }.map { b.y - ($0.y + $0.h) })
+            let below = reach(near.filter { $0.y + $0.h / 2 >= b.y + b.h }.map { $0.y - (b.y + b.h) })
             return (0...steps).map { step in
                 let u = Double(step) / Double(steps)
                 let angle = from + sweep * u
                 let wobble = 1 + m.wobble * sin(3 * angle + seed) + 0.05 * u
-                return CGPoint(x: box.x + box.w / 2 + box.w / 2 * m.ringWide * wobble * cos(angle), y: box.y + box.h / 2 + box.h / 2 * m.ringTall * wobble * sin(angle))
+                // Round a short thing as an oval; round a whole line of text as the kit's ring does, with flat sides
+                // above and below the words and round ends, so the loop does not cut through the ends of the line.
+                // The corners square up as the thing gets wider than it is tall, up to a line eight times as wide.
+                let square = 2 + 2 * min(max((box.w / box.h - 2) / 6, 0), 1)
+                let across = (cos(angle) < 0 ? -1.0 : 1.0) * pow(abs(cos(angle)), 2 / square), down = (sin(angle) < 0 ? -1.0 : 1.0) * pow(abs(sin(angle)), 2 / square)
+                return CGPoint(x: box.x + box.w / 2 + box.w / 2 * m.ringWide * wobble * across, y: box.y + box.h / 2 + (down < 0 ? up : below) * wobble * down)
             }
         case .underline, .wavy:
             // The line stays inside the gap between this line of text and the next one down.
