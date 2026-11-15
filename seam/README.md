@@ -28,7 +28,7 @@ Promises: one schema for every line between body and mind (`schema.ts`), newline
 | `words` | when each word of the beat is spoken, in seconds from the beat's first sound |
 | `mute` | this answer has no voice, and why |
 | `mark` | a ring, underline, wavy line, bracket or hugging box at a box, with the beat it belongs to |
-| `board` | rows of boxes joined by arrows. With no rows it is an empty card, opened when he asks for a drawing; a later `board` with the same id fills it |
+| `board` | rows of boxes joined by arrows. With no rows it is an empty card, which a later `board` with the same id fills; the mind sends an empty one only when `drawingAsks` holds words, and as set it holds none |
 | `board.close` | take away an empty card, since no board is coming |
 | `clip` | a lesson clip to play in the board's place: its name, the file, a first still, and its length |
 | `clear` | wipe paral's marks, board and clip |

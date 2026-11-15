@@ -1,5 +1,5 @@
 {
- "name": "body: a filmed run where he asks for a drawing: the seam carries an empty board and then the full one, and on film the card begins at the empty card's size and grows to hold its rows",
+ "name": "body: a filmed run where he asks for a drawing, as the product is set: the seam carries one board, with its rows, and on film it never stands empty",
  "run": "body.filmed",
  "in": {
   "lines": [
@@ -32,9 +32,8 @@
   },
   "voiceSeconds": 6.3,
   "boardLines": [
-   0,
    2
   ],
-  "cardGrew": true
+  "cardGrew": false
  }
 }

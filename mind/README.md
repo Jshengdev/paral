@@ -13,7 +13,7 @@ Every decision is a pure function in `cores/`; every outside service is behind `
 | `ask.ts` | one ask, acted on while the answer is still arriving: reads its first fields, wipes what no longer applies, and takes one of two roads |
 | `hint.ts` | the road when his work has a wrong line: the ring, the rung's fixed line, and the hint once Push has passed it |
 | `explanation.ts` | the road when it has none: sentences with their marks as they finish, and the board |
-| `card.ts` | the board of one ask: an empty card opened when his words ask for a drawing, filled when the board arrives, taken away when none comes |
+| `card.ts` | the board of one ask: sent the moment it is whole. It can also open an empty card first when his words ask for a drawing (filled when the board arrives, taken away when none comes); that is switched off, `drawingAsks` is empty |
 | `clip.ts` | the lesson clip of one ask: the example picked on other numbers than his, the clip started early and sent after the words |
 | `fast.ts` | the fast lines of one ask: the opener, its deadline and fixed stand-in, and the fast model's line about the page |
 | `speech.ts` | the voice for one ask: sentences one after another; a failure turns the rest to words only |

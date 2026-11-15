@@ -62,8 +62,8 @@ Scene → Picture → Painter                                    (parts)   of on
 1. Key down: the body sends `key.down`, the microphone's sound, the pointer's path if the draw key is held, and a
    picture of the screen with the lines read from it. The mind sends his words back as they are heard.
 2. Key up: "thinking" at once. When his words are final, about 0.4 s later: if he drew, his loop comes back as a ring
-   (`echo`), with no model asked; if his words ask for a drawing, an empty card opens, to be filled by the board or
-   taken away.
+   (`echo`), with no model asked. (An empty card for an ask that wants a drawing exists and is switched off: the board
+   opens on its first row. See `drawingAsks`.)
 3. The opener, one short line from the fast model, as soon as it is written. If none is out 0.8 s after release, a fixed line is said first and the opener follows. If the deep answer has not begun to arrive 1.3 s after that has been heard, a fixed stall line, and up to two more.
 4. When the deep answer's first fields arrive, it is one of two things. **A wrong line in his work:** a ring on that
    line, the rung's fixed line said with it, then the model's hint once Push has passed it. One rung per ask, one sentence

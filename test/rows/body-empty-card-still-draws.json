@@ -1,0 +1,58 @@
+{
+ "name": "body: the empty card, which is switched off in the product, still draws: a board with no rows is a small card, and when its rows come the card grows to hold them",
+ "run": "body.card",
+ "in": {
+  "rows": [
+   {
+    "at": 100,
+    "line": {
+     "type": "key.down",
+     "at": 1000100
+    }
+   },
+   {
+    "at": 900,
+    "line": {
+     "type": "key.up",
+     "at": 1000900
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "board",
+     "id": "t1",
+     "rows": []
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "board",
+     "id": "t1",
+     "rows": [
+      [
+       "packets",
+       "ordering",
+       "resending"
+      ],
+      [
+       "reliable stream"
+      ]
+     ]
+    }
+   },
+   {
+    "at": 6000,
+    "line": {
+     "type": "state",
+     "name": "idle"
+    }
+   }
+  ]
+ },
+ "out": {
+  "sizesTheCardTook": true,
+  "cardGrew": true
+ }
+}

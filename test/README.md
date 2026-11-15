@@ -26,6 +26,7 @@ those are helpers, not test files.
 | `body.landing` | pages drawn, read by the Mac, and each quoted line found again |
 | `body.filmed` | a whole run on a tape through `./flow` and `./film`, read back from the film's record |
 | `body.capsule` | what the capsule shows at given moments of a hand-written run: its look and its note |
+| `body.card` | a hand-written run with an empty card and then its rows, filmed: whether the card grew |
 | `body.pressedAgain` | a run on a tape where the key is pressed again soon after a release: the order of the key lines the mind got |
 
 Tapes in `tapes/` are recorded answers, so no row needs a key, a microphone or a screen. A tape answer keyed

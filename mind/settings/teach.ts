@@ -69,9 +69,9 @@ export const teach = {
   } satisfies Setting<{ share: number; points: number; snug: number }>,
 
   drawingAsks: {
-    value: ["draw", "diagram", "sketch", "show me what … look"],
-    why: "Words of his that ask for a drawing. When he says one, an empty card opens at once, before any model has spoken, and the board fills it when it arrives; if none comes the card is taken away. His choice at 11:20 on 2026-11-14 (\"Keep 2 s, build the card\"), so that a board is on his screen within two seconds of the first words.",
-    measured: "without the card a board came 2.2 to 3.4 s after the first words (2026-11-14, the outside judge), since it waits for the deep model. A first list of words, from the two scenarios that ask for a drawing",
+    value: [] as string[],
+    why: "Words of his that ask for a drawing. With any here, an empty card opens the moment he says one, before any model has spoken, and the board fills it when it arrives; if none comes the card is taken away. The list is empty, so no empty card opens and the board appears on its first row: the owner's choice on 2026-11-14 at 16:52, in place of his earlier one for the card, since the tutor this follows never opens its board empty. To bring the card back, put the words back: draw, diagram, sketch, \"show me what … look\".",
+    measured: "without the card a board came 2.2 to 3.4 s after the first words (2026-11-14, the outside judge), since it waits for the deep model; with it, in about 0.4 s, and in one judged run it then stood empty for about nine seconds",
   } satisfies Setting<string[]>,
 
   circleLeast: {

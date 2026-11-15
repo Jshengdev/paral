@@ -1,5 +1,5 @@
 {
- "name": "turn: he asks for a drawing: an empty card opens at once, before the answer; the board then fills that card and is sent with its rows once; when the answer has no board the card is taken away; on his own working the card opens and is taken away the moment a wrong line is named; and with a wrong line already open no card opens at all",
+ "name": "turn: with the empty card switched on (words that ask for a drawing are set): he asks for a drawing: an empty card opens at once, before the answer; the board then fills that card and is sent with its rows once; when the answer has no board the card is taken away; on his own working the card opens and is taken away the moment a wrong line is named; and with a wrong line already open no card opens at all",
  "run": "turn",
  "in": {
   "tape": "drawing.json",
@@ -232,7 +232,15 @@
      "at": 2100
     }
    ]
-  ]
+  ],
+  "set": {
+   "drawingAsks": [
+    "draw",
+    "diagram",
+    "sketch",
+    "show me what … look"
+   ]
+  }
  },
  "out": [
   {

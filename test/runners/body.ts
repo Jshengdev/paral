@@ -137,14 +137,29 @@ export function filmed(input: { lines: string[]; display: { x: number; y: number
  * What the capsule shows at given moments of a hand-written run: each line with the time it arrived. No mind and no
  * service; the same scene the real window and the films use.
  */
-export function capsule(input: { rows: { at: number; line: Record<string, unknown> }[]; at: number[] }) {
-  const dir = fresh("capsule");
+export function capsule(input: { rows: Written[]; at: number[] }) {
+  return body("capsule", handWritten("capsule", input.rows), join(root, "body", "tokens.json"), ...input.at.map(String));
+}
+
+/** A hand-written run filmed: how many boards the film drew over time, and whether the card began smaller than it ended. */
+export function cardOnFilm(input: { rows: Written[] }) {
+  const dir = handWritten("card", input.rows);
+  execFileSync(headless, ["film", dir, join(root, "body", "tokens.json")], { encoding: "utf8" });
+  const drawn = readFileSync(join(dir, "drawn.jsonl"), "utf8").split("\n").filter(Boolean).map((line) => JSON.parse(line));
+  return { sizesTheCardTook: new Set(drawn.filter((item) => item.what === "board").map((item) => `${item.box.w}x${item.box.h}`)).size > 1, cardGrew: boardGrew(drawn) };
+}
+
+type Written = { at: number; line: Record<string, unknown> };
+
+/** A run folder made from lines written by hand, each with the time it arrived: a page, a flow file and the record. */
+function handWritten(name: string, rows: Written[]): string {
+  const dir = fresh(name);
   mkdirSync(dir, { recursive: true });
   const page = join(dir, "page.png");
   body("page", page, "a page");
   writeFileSync(join(dir, "flow.json"), JSON.stringify({ v: 1, display: { id: 2, scale: 1, x: 0, y: 0, w: 1600, h: 1000 }, page, asks: [] }));
-  writeFileSync(join(dir, "session.jsonl"), input.rows.map((row) => JSON.stringify({ at: row.at, line: { v: 1, ...row.line } })).join("\n") + "\n");
-  return body("capsule", dir, join(root, "body", "tokens.json"), ...input.at.map(String));
+  writeFileSync(join(dir, "session.jsonl"), rows.map((row) => JSON.stringify({ at: row.at, line: { v: 1, ...row.line } })).join("\n") + "\n");
+  return dir;
 }
 
 /**
