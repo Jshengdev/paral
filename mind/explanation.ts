@@ -2,6 +2,7 @@ import type { Asking, Hands } from "./ask.ts";
 import type { card } from "./card.ts";
 import type { lessonClip } from "./clip.ts";
 import { explain, WHOLE, type Planned } from "./cores/beats.ts";
+import { unknownDate, worded } from "./cores/dates.ts";
 import type { HoldEvent } from "./cores/hold.ts";
 import { givesAway } from "./cores/push.ts";
 import type { Answered, Part } from "./ports.ts";
@@ -16,6 +17,8 @@ type With = {
   clip: ReturnType<typeof lessonClip>;
   lead: { count(): number };
   drew(event: HoldEvent): void;
+  /** Everything a date may be taken from: his words, the lines on his screen, and the kept pages given with this ask. */
+  sources: string[];
 };
 
 /**
@@ -23,12 +26,14 @@ type With = {
  * while it arrives: the board goes out when it is whole, the first mark ahead of its sentence, and each sentence when
  * it is finished. With a lesson clip coming it is one sentence and no board.
  */
-export function explanation({ settings, send, log }: Hands, asking: Asking, { talk, board, clip, lead, drew }: With) {
+export function explanation({ settings, send, log }: Hands, asking: Asking, { talk, board, clip, lead, drew, sources }: With) {
   const { id, seen } = asking;
   const since = () => Date.now() - asking.releasedAt;
   /** How many of its sentences are out, and whether the first mark went out ahead of its sentence. */
   let told = 0;
   let markOut = false;
+  /** Sentences that were not said, since they named a date found on no page paral has read. */
+  const held = new Set<string>();
 
   /** The reply so far as sentences, each with its mark found on his screen. */
   const planned = (reply: { result?: string | null; beats: Answered["beats"] }) =>
@@ -44,6 +49,13 @@ export function explanation({ settings, send, log }: Hands, asking: Asking, { ta
     for (; told < sentences.length; told++) {
       const { say, mark } = sentences[told];
       const beat = lead.count() + told;
+      // Push: a date that is on no page paral has read would be made up, so the sentence that names it is not said.
+      const made = unknownDate(say, sources);
+      if (made) {
+        held.add(say);
+        log(`${id}: push held back a sentence that names a date found on no page it has read (${worded(made)}); it was: "${say}"`);
+        continue;
+      }
       send({ v, type: "say", id, beat, text: say });
       if (mark && !(told === 0 && markOut)) draw(beat, mark);
       talk.speak(beat, say);
@@ -89,7 +101,9 @@ export function explanation({ settings, send, log }: Hands, asking: Asking, { ta
       board.fill(leak || clip.on() ? null : answered.board);
       board.close("no board came");
       drew({ type: "break.fixed" });
-      for (const { say } of sentences) drew({ type: "line.shown", text: say });
+      // If every sentence was held back for a date, he is told plainly that it is not on a page paral has read.
+      if (sentences.length > 0 && sentences.every(({ say }) => held.has(say))) tell([...sentences, { say: settings.noPageLine.value, mark: null }]);
+      for (const { say } of sentences) if (!held.has(say)) drew({ type: "line.shown", text: say });
       log(`${id}: ${sentences.length} sentence${sentences.length === 1 ? "" : "s"}, all sent at ${since()} ms from the release`);
     },
   };

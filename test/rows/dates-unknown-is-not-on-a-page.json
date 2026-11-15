@@ -1,0 +1,43 @@
+{
+ "name": "dates: a date said that no source holds is caught; one that a page or his own words hold is not, however it is written",
+ "run": "dates.unknown",
+ "in": {
+  "cases": [
+   [
+    "The application closes on November 22 at 11:59pm.",
+    [
+     "November 22 at 11:59pm: Application closes."
+    ]
+   ],
+   [
+    "It closes on Nov 22.",
+    [
+     "November 22 at 11:59pm: Application closes."
+    ]
+   ],
+   [
+    "The application closes on November 29.",
+    [
+     "November 22 at 11:59pm: Application closes."
+    ]
+   ],
+   [
+    "It opened on October 27 and closes December 1.",
+    [
+     "October 27: Application opens",
+     "December 1: Deadline for advisors"
+    ]
+   ]
+  ]
+ },
+ "out": [
+  null,
+  null,
+  {
+   "month": 11,
+   "day": 29,
+   "year": null
+  },
+  null
+ ]
+}

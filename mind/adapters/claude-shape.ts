@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { datesIn, daysFrom, worded } from "../cores/dates.ts";
+import type { KeptPage } from "../cores/page.ts";
 import type { Part as Arriving } from "../cores/partial.ts";
 import type { Asked, Part } from "../ports.ts";
 
@@ -27,10 +29,30 @@ export const Reply = z.object({
   beats: z.array(z.object({ mark: Mark, say: z.string() })),
 });
 
-/** The words of the request: what he said, what was read from his screen, the lesson so far, and the rung to write for. */
+/**
+ * What the model is told of USC's kept pages: their text, and every date on them counted from today, so it never
+ * counts days itself. It is the same for every ask on that site on one day, so the adapter sends it as a block of
+ * its own, ahead of everything that changes, where the service can keep it between asks. Null when no page is known.
+ */
+export function pagesRead(asked: Asked, most: number): string | null {
+  const { known } = asked;
+  const today = new Date(asked.today);
+  if (known.length === 0) return null;
+  const away = new Map<string, number>();
+  for (const page of known) for (const date of datesIn(page.lines.slice(0, most).join("\n"))) away.set(worded(date), daysFrom(today, date));
+  const counted = [...away].map(([date, days]) => `- ${date}: ${days === 0 ? "today" : days > 0 ? `${days} day${days === 1 ? "" : "s"} from today` : `${-days} day${days === -1 ? "" : "s"} ago`}`);
+  return [
+    `What you have read ahead of time. These are USC's own pages as they stood on ${known[0].readOn}: first the page on their screen, in full, including what is inside sections that are closed on their screen; then other pages of the same site. You may tell them something from these pages that is not on their screen. When you do, say where it is (the section, or the page by its name), so they can find it. A mark can only go on a line that is on their screen. About USC's dates, steps and rules, say nothing that is on neither their screen nor these pages; if it is not there, say you do not have it.`,
+    ...known.map((page) => `Page "${page.title}" (${page.url}):\n${page.lines.slice(0, most).join("\n")}`),
+    ...(counted.length > 0 ? [`The dates on these pages, counted from today by the calendar. Use these counts as they are and never work one out yourself:\n${counted.join("\n")}`] : []),
+  ].join("\n\n");
+}
+
+/** The words of the request: today's date, what he said, what was read from his screen, the lesson so far, and the rung to write for. */
 export function asking(asked: Asked): string {
   const { lesson, rung } = asked;
   return [
+    `Today is ${new Date(asked.today).toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}.`,
     `What the student just said: "${asked.words}"`,
     ...(asked.saidFirst
       ? [`You have already answered aloud with this one line, while you looked: "${asked.saidFirst}" Go on from it. Do not say it again and do not take it back; if it got something about the page wrong, put that right plainly in your first sentence.`]

@@ -19,6 +19,7 @@ Cartesia for the ear and the voice.
 | `./tune` | the dials page: every colour, size and motion time, saved to `body/tokens.json` | a browser |
 | `./run` | the real thing: lists the two grants, then starts the mind and the app | the keys, a microphone, the screen grant |
 | `./run build`, `./run grants`, `./run stop` | bundle and sign only; print the grants only; end both | |
+| `node pages/gather.ts` | reads the public USC pages named in `pages/list.json` and keeps their text in `pages/kept/`, closed sections and all | the network |
 
 `PARAL_TAPE=test/tapes/NAME.json ./flow ...` runs on recorded answers and calls no service. `SHOW=1 ./check words`
 prints what a row did. `FREEZE=1 ./check words` fills in a new row whose `out` is null, and fails so you read it.
@@ -37,6 +38,7 @@ Scene → Picture → Painter                                    (parts)   of on
                                                              ports.ts  one small interface per outside service
                                                              adapters/ one file per vendor, and a tape for each
                                                              settings/ every value, with why and what was measured
+pages/   USC's public pages, read ahead of time and kept as text: what paral knows beyond the screen
 ```
 
 - **The body draws what it is told and decides nothing about teaching.** `Scene` turns the lines that crossed the seam
@@ -150,5 +152,9 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
 - On the top rung the second look is steady for one line and erratic between lines: the same hint was passed with
   the example in k and swapped with it in x. A repeat visit to the top rung still gets only the rung's fixed line now
   and then: 1 of 8 asks in the four live runs since the last change, about one in three before it.
+- What paral knows of USC beyond the screen is the pages in `pages/kept/`, read on the day each file says. It does not
+  browse while it runs, and it does not know the page's address: it recognises a kept page from the lines on screen.
+  A page that has changed since it was read is answered from the old text. A date it says must be on the screen or
+  in a kept page, or the sentence is not said; other facts are not checked.
 - One lesson exists (`balance`), with three fixed examples.
 - Landing a mark on the right line is measured on generated pages only, not on real course pages.

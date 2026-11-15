@@ -3,6 +3,7 @@ import { lessonClip } from "./clip.ts";
 import { wipes } from "./cores/beats.ts";
 import { alike, locate, type Found } from "./cores/ground.ts";
 import { happened } from "./cores/happened.ts";
+import { together, whichPage } from "./cores/page.ts";
 import { fold, type HoldEvent, type Lesson } from "./cores/hold.ts";
 import { next, type Move } from "./cores/teach.ts";
 import { explanation } from "./explanation.ts";
@@ -37,6 +38,14 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
   /** Known once the answer's first fields are in: where his wrong line is, or that there is none. */
   let headed: { place: Found | null; explains: boolean } | null = null;
 
+  /** The kept page on his screen, when it is one of them, with the other kept pages of its site. */
+  const onScreen = whichPage(seen.lines.map((line) => line.text), ports.pages, settings.pageLeastLines.value);
+  const known = onScreen ? together(onScreen, ports.pages) : [];
+  if (onScreen) log(`${id}: his screen is the kept page "${onScreen.title}" (${onScreen.url}, read ${onScreen.readOn}); given with it: ${known.slice(1).map((page) => page.url).join(", ") || "no other page"}`);
+  /** Everything a date in the answer may be taken from: today, his words, his screen, and those pages. */
+  const today = new Date(asking.releasedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+  const sources = [today, words, ...seen.lines.map((line) => line.text), ...known.flatMap((page) => page.lines)];
+
   const talk = speech(hands, id, signal);
   const board = card(hands, asking, drew);
   const clip = lessonClip(hands, asking, drew);
@@ -45,7 +54,7 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
     arriving: () => headed !== null,
     shown: () => board.filled() || explained.markOut() || headed?.place?.found === true,
   });
-  const explained = explanation(hands, asking, { talk, board, clip, lead, drew });
+  const explained = explanation(hands, asking, { talk, board, clip, lead, drew, sources });
   const hinted = ladderHint(hands, asking, { talk, clip, lead, drew });
 
   /** The rung this ask is on: the first on a new wrong line, the same again when he changed the line, otherwise one up. */
@@ -92,6 +101,8 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
     const asked = {
       words,
       saidFirst,
+      today: asking.releasedAt,
+      known,
       picturePath: seen.picture.path,
       lines: seen.lines.map((line) => line.text),
       circled: asking.circled,

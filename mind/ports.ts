@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { MarkKind } from "../seam/schema.ts";
 import type { Lesson } from "./cores/hold.ts";
+import type { KeptPage } from "./cores/page.ts";
 import type { Rung } from "./settings.ts";
 
 export type Asked = {
@@ -13,6 +14,10 @@ export type Asked = {
   leadIn: string;
   /** The quick line he has just heard, word for word; null when nothing was said before the answer. */
   saidFirst: string | null;
+  /** The moment of the ask, so the model knows today's date and dates can be counted from it. */
+  today: number;
+  /** USC's kept pages that bear on this ask: the one on his screen first, then others of the same site. Empty when his screen is none of them. */
+  known: KeptPage[];
   /** The lessons that can be shown as a clip, each with the idea it shows; empty when none can. */
   lessons: { name: string; idea: string }[];
   lesson: Lesson;
@@ -99,4 +104,5 @@ export interface Lessons {
   render(name: string, example: Record<string, string | string[]>, signal: AbortSignal): Promise<Clip>;
 }
 
-export type Ports = { brain: Brain; secondLook: SecondLook; ear: Ear; voice: Voice | null; opener: Opener | null; lessons: Lessons | null };
+/** `pages` is not a service: it is USC's pages as read ahead of time and kept in `pages/kept/`; empty when none are kept. */
+export type Ports = { brain: Brain; secondLook: SecondLook; ear: Ear; voice: Voice | null; opener: Opener | null; lessons: Lessons | null; pages: KeptPage[] };

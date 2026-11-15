@@ -1,0 +1,36 @@
+{
+ "name": "dates: every month and day a text names is read, with its year when one is written; \"may\" with no number is not a date",
+ "run": "dates.in",
+ "in": {
+  "texts": [
+   "November 22 at 11:59pm: Application closes.",
+   "between July 1, 2026 and the application deadline",
+   "Tuesday, Nov. 3rd, 10:00-11:00am on Zoom",
+   "You may begin at any time."
+  ]
+ },
+ "out": [
+  [
+   {
+    "month": 11,
+    "day": 22,
+    "year": null
+   }
+  ],
+  [
+   {
+    "month": 7,
+    "day": 1,
+    "year": 2026
+   }
+  ],
+  [
+   {
+    "month": 11,
+    "day": 3,
+    "year": null
+   }
+  ],
+  []
+ ]
+}

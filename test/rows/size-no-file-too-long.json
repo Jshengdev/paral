@@ -1,5 +1,5 @@
 {
- "name": "size: no source file in mind, seam, body, dials, exam, lessons or the test runners runs past 220 lines, and the one test file stays under 400",
+ "name": "size: no source file in mind, seam, body, dials, exam, lessons, pages or the test runners runs past 220 lines, and the one test file stays under 400",
  "run": "size",
  "in": {
   "folders": [
@@ -9,7 +9,8 @@
    "dials",
    "exam",
    "lessons",
-   "test/runners"
+   "test/runners",
+   "pages"
   ],
   "limit": 220,
   "testLimit": 400

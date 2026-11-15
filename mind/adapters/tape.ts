@@ -9,6 +9,7 @@ const Tape = z.object({
   failSecondLook: z.boolean().optional(),
   holdOpener: z.boolean().optional(),
   opener: z.string().optional(),
+  pages: z.array(z.object({ name: z.string(), url: z.string(), readOn: z.string(), title: z.string(), lines: z.array(z.string()) })).optional(),
   voice: z.boolean().optional(),
   clip: z.object({ clip: z.string(), still: z.string(), seconds: z.number() }).optional(),
 });
@@ -95,6 +96,7 @@ export function tape(path: string): Ports & { release(kind?: string): void; aske
           },
         } : null,
     lessons: recorded.clip ? { render: async () => recorded.clip! } : null,
+    pages: recorded.pages ?? [],
     voice: recorded.voice
       ? {
           async say(text, _signal, onSound, onWords) {

@@ -8,6 +8,8 @@ import { tape } from "../mind/adapters/tape.ts";
 import { serve } from "../mind/server.ts";
 import { boxes, fitted, split, wipes } from "../mind/cores/beats.ts";
 import { asksForDrawing, fits, hear, silence } from "../mind/cores/catch.ts";
+import { datesIn, daysFrom, unknownDate, type Named } from "../mind/cores/dates.ts";
+import { whichPage } from "../mind/cores/page.ts";
 import { showable, unfit } from "../mind/cores/fit.ts";
 import { circled, echo } from "../mind/cores/circle.ts";
 import { happened } from "../mind/cores/happened.ts";
@@ -55,6 +57,10 @@ const runs: Record<string, (input: any) => unknown> = {
   "body.pressedAgain": pressedAgain,
   catch: (input) => input.events.reduce(hear, silence),
   "catch.drawing": (input) => Object.fromEntries(input.asks.map((words: string) => [words, asksForDrawing(words, input.phrases)])),
+  "page.which": (input) => whichPage(input.seen, input.kept, input.least)?.name ?? null,
+  "dates.in": (input) => input.texts.map((text: string) => datesIn(text)),
+  "dates.unknown": (input) => input.cases.map(([said, sources]: [string, string[]]) => unknownDate(said, sources)),
+  "dates.days": (input) => input.cases.map(([today, date]: [string, Named]) => daysFrom(new Date(today), date)),
   "catch.fits": (input) => input.cases.map(([drafted, final]: [string, string]) => fits(drafted, final, { share: input.share, least: input.least ?? 0, small: input.small ?? [] })),
   circle: (input) =>
     Object.fromEntries(

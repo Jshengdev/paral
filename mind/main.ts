@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { anthropic } from "./adapters/anthropic.ts";
 import { silenced } from "./adapters/fault.ts";
@@ -7,6 +7,7 @@ import { kept } from "./adapters/kept.ts";
 import { raea } from "./adapters/raea.ts";
 import { sonic } from "./adapters/sonic.ts";
 import { tape } from "./adapters/tape.ts";
+import type { KeptPage } from "./cores/page.ts";
 import type { Ports } from "./ports.ts";
 import { serve } from "./server.ts";
 import { settings } from "./settings.ts";
@@ -45,6 +46,7 @@ function cartesia(key: string): Partial<Ports> {
     ...settings.ladder.value.map((rung) => rung.safe),
     settings.heldBackLine.value,
     settings.circleNoWordsLine.value,
+    settings.noPageLine.value,
   ];
   const voiceName = () => `cartesia ${settings.voiceModel.value} ${settings.voiceId.value} pcm_s16le 24000`;
   // Kept under tmp/, which is not committed: the sound is made once on each Mac, for the voice in use.
@@ -78,11 +80,21 @@ async function renderAhead(lessons: NonNullable<Ports["lessons"]>) {
   }
 }
 
+/** USC's pages as read ahead of time by `pages/gather.ts`. With none kept, paral speaks only of what is on the screen. */
+function keptPages(): KeptPage[] {
+  const dir = join(here, "..", "pages", "kept");
+  if (!existsSync(dir)) return [];
+  const kept = readdirSync(dir).filter((file) => file.endsWith(".json")).map((file) => JSON.parse(readFileSync(join(dir, file), "utf8")) as KeptPage);
+  if (kept.length > 0) using.push(`${kept.length} of USC's pages kept from ${kept.map((page) => page.readOn).sort()[0]} on`);
+  return kept;
+}
+
 const live = !PARAL_TAPE;
 let ports: Ports = tape(PARAL_TAPE ?? join(here, "..", "test", "tapes", "algebra.json"));
 if (live && ANTHROPIC_API_KEY) ports = { ...ports, ...claude() };
 if (live && CARTESIA_API_KEY) ports = { ...ports, ...cartesia(CARTESIA_API_KEY) };
 if (live && ANTHROPIC_API_KEY) ports = { ...ports, ...lessonClips() };
+if (live) ports = { ...ports, pages: keptPages() };
 if (PARAL_FAULT === "voice") {
   ports = { ...ports, voice: silenced };
   using.push("FAULT: the voice fails on purpose");

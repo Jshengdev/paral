@@ -1,0 +1,45 @@
+{
+ "name": "page: a screen that is none of the kept pages is none of them, also when it shares a short heading with one",
+ "run": "page.which",
+ "in": {
+  "least": 2,
+  "kept": [
+   {
+    "name": "rso-recognition-process",
+    "url": "https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/",
+    "readOn": "2026-11-14",
+    "title": "Recognition Process - Campus Activities",
+    "lines": [
+     "Recognition Process",
+     "The Spring 2027 RSO Recognition process is now open on EngageSC for new RSOs and RSOs re-establishing after a lapse in recognition.",
+     "If you need accessibility accommodations or have questions related to RSO recognition, please contact Campus Activities.",
+     "Important Dates",
+     "Deadlines +",
+     "October 27: Application opens",
+     "November 22 at 11:59pm: Application closes. You must submit the form on EngageSC before 11:59pm.",
+     "December 1: Deadline for advisors to submit their requirements."
+    ]
+   },
+   {
+    "name": "rso-resources",
+    "url": "https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-resources/",
+    "readOn": "2026-11-14",
+    "title": "RSO Resources - Campus Activities",
+    "lines": [
+     "RSO Resources",
+     "EngageSC +",
+     "Review helpful tips on how to use all the features EngageSC has to offer.",
+     "Space Requests +",
+     "Recognized Student Organizations in good standing can request to book space on campus."
+    ]
+   }
+  ],
+  "seen": [
+   "Problem set 3, problem 4",
+   "Solve for x: 3(x - 2) = 2x + 5",
+   "Important Dates",
+   "3x - 6 = 2x + 5"
+  ]
+ },
+ "out": null
+}

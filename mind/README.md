@@ -20,6 +20,7 @@ Every decision is a pure function in `cores/`; every outside service is behind `
 | `ports.ts` | the interfaces: Brain, SecondLook, Opener, Ear, Voice, Lessons |
 | `settings.ts`, `settings/` | every value, one file per thing it governs |
 | `prompts/` | one prompt per job; a row holds each one's fingerprint |
+| `cores/page.ts`, `cores/dates.ts` | which of USC's kept pages (`../pages/kept/`) is on his screen; the dates a text names, counted from today, and whether a date said is on a page that was read |
 
 ## What is said, and by whom
 

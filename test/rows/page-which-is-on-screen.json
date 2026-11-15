@@ -1,0 +1,46 @@
+{
+ "name": "page: the kept page on his screen is the one whose text holds the most of the lines read (lines broken where the screen wraps them still count); a screen that shares only a menu word with a kept page is none of them",
+ "run": "page.which",
+ "in": {
+  "least": 2,
+  "kept": [
+   {
+    "name": "rso-recognition-process",
+    "url": "https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/",
+    "readOn": "2026-11-14",
+    "title": "Recognition Process - Campus Activities",
+    "lines": [
+     "Recognition Process",
+     "The Spring 2027 RSO Recognition process is now open on EngageSC for new RSOs and RSOs re-establishing after a lapse in recognition.",
+     "If you need accessibility accommodations or have questions related to RSO recognition, please contact Campus Activities.",
+     "Important Dates",
+     "Deadlines +",
+     "October 27: Application opens",
+     "November 22 at 11:59pm: Application closes. You must submit the form on EngageSC before 11:59pm.",
+     "December 1: Deadline for advisors to submit their requirements."
+    ]
+   },
+   {
+    "name": "rso-resources",
+    "url": "https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-resources/",
+    "readOn": "2026-11-14",
+    "title": "RSO Resources - Campus Activities",
+    "lines": [
+     "RSO Resources",
+     "EngageSC +",
+     "Review helpful tips on how to use all the features EngageSC has to offer.",
+     "Space Requests +",
+     "Recognized Student Organizations in good standing can request to book space on campus."
+    ]
+   }
+  ],
+  "seen": [
+   "Recognition Process",
+   "The Spring 2027 RSO Recognition process is now open on EngageSC",
+   "for new RSOs and RSOs re-establishing after a lapse in recognition.",
+   "Important Dates",
+   "Deadlines +"
+  ]
+ },
+ "out": "rso-recognition-process"
+}

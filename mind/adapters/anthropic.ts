@@ -4,14 +4,14 @@ import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import { z } from "zod";
 import { settled } from "../cores/partial.ts";
-import { arriving, asking, cleaned, Reply } from "./claude-shape.ts";
+import { arriving, asking, cleaned, pagesRead, Reply } from "./claude-shape.ts";
 import { Answered, type Brain, type Opener, type SecondLook } from "../ports.ts";
 import type { Settings } from "../settings.ts";
 
 
 const Look = z.object({ leaks: z.boolean() });
 
-type Usage = { input_tokens: number; output_tokens: number };
+type Usage = { input_tokens: number; output_tokens: number; cache_creation_input_tokens?: number | null; cache_read_input_tokens?: number | null };
 type Log = (line: string) => void;
 export type Prompts = { answer: string; secondLook: string; opener: string };
 
@@ -33,8 +33,13 @@ export function anthropic(settings: Settings, prompts: Prompts, log: Log, client
 
   function count(model: string, asked: string, usage: Usage) {
     const price = prices[model] ?? prices[asked];
-    spentUsd += (usage.input_tokens * price.input + usage.output_tokens * price.output) / 1_000_000;
-    log(`${model}: ${usage.input_tokens} tokens in, ${usage.output_tokens} out; $${spentUsd.toFixed(3)} spent of $${settings.spendCapUsd.value}`);
+    // Tokens the service kept from an earlier ask are counted at a twentieth of the input price, and tokens it is
+    // asked to keep for an hour at twice it. Both are the published ratios, rounded; the count is for the cap only.
+    const kept = usage.cache_read_input_tokens ?? 0;
+    const keeping = usage.cache_creation_input_tokens ?? 0;
+    spentUsd += ((usage.input_tokens + keeping * 2 + kept * 0.05) * price.input + usage.output_tokens * price.output) / 1_000_000;
+    const cached = kept + keeping > 0 ? ` (and ${kept} kept from before, ${keeping} newly kept)` : "";
+    log(`${model}: ${usage.input_tokens} tokens in${cached}, ${usage.output_tokens} out; $${spentUsd.toFixed(3)} spent of $${settings.spendCapUsd.value}`);
   }
 
   return {
@@ -53,6 +58,10 @@ export function anthropic(settings: Settings, prompts: Prompts, log: Log, client
               },
             }]
           : [];
+        // USC's kept pages go first and are marked to be kept by the service for an hour: they are the same for every
+        // ask on that site, so after the first ask they cost a twentieth and no longer slow the answer.
+        const read = pagesRead(asked, settings.pageLinesGiven.value);
+        const pages = read === null ? [] : [{ type: "text" as const, text: read, cache_control: { type: "ephemeral" as const, ttl: "1h" as const } }];
         const stream = client.beta.messages.stream(
           {
             model,
@@ -63,7 +72,7 @@ export function anthropic(settings: Settings, prompts: Prompts, log: Log, client
             betas: ["server-side-fallback-2026-07-01"],
             fallbacks: "default",
             output_config: { effort: settings.brainEffort.value, format: betaZodOutputFormat(Reply) },
-            messages: [{ role: "user", content: [...picture, { type: "text", text: asking(asked) }] }],
+            messages: [{ role: "user", content: [...pages, ...picture, { type: "text", text: asking(asked) }] }],
           },
           { signal },
         );
