@@ -88,7 +88,11 @@ export function datesSaid(ask: Pick<Ask, "index" | "moments">, expect: Expect, t
     const days = Math.abs(daysTo(known.ranOn, to.month, to.day));
     const word = NUMBERS[days] ?? String(days);
     const what = `It counts the days to ${expect.countsDaysTo} rightly`;
-    const right = new RegExp(`\\b(${days}|${word}) days?\\b`).test(plain(answer));
+    // A whole number of weeks may be said as weeks: on 11-15 "You have one week to submit" was failed for November 22.
+    const weeks = days > 0 && days % 7 === 0 ? days / 7 : null;
+    const inWeeks = weeks === null ? null : weeks === 1 ? "(a|one|1) week" : `(${weeks}|${NUMBERS[weeks] ?? weeks}) weeks`;
+    const text = plain(answer);
+    const right = new RegExp(`\\b(${days}|${word}) days?\\b`).test(text) || (inWeeks !== null && new RegExp(`\\b${inWeeks}\\b`).test(text));
     out.push(right ? yes("C13", s, what, `${days} days from the day of the run, and it says so`) : no("C13", s, what, `it is ${days} days from the day of the run; it said: "${answer.slice(0, 110)}"`));
   }
   const said = dates(answer);
