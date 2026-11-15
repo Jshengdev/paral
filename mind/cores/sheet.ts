@@ -28,6 +28,9 @@ export type Placed = {
 /** The most the fit may miss by, as a share of a matched line's height on screen, before the page is not trusted. */
 export const MAX_ERROR_SHARE = 0.5;
 
+/** The miss a ring can bear, as a share of the smallest spot's shorter side: past it lines are dropped while three or more are left. */
+const FINE_SHARE = 0.25;
+
 /** How much the heights count against the centres. The reader's boxes run taller than ink, so they count for less. */
 const HEIGHT_WEIGHT = 0.5;
 
@@ -92,8 +95,10 @@ const median = (values: number[]) => [...values].sort((a, b) => a - b)[Math.floo
 
 /**
  * Each spot's box on screen, from the lines read there. Null when fewer than two lines match, or when the fit misses
- * by more than MAX_ERROR_SHARE of a matched line's height (median). With three or more matched, the worst line is
- * dropped once and the fit tried again, so one wrong match does not throw the page away.
+ * by more than MAX_ERROR_SHARE of a matched line's height (median). While three or more are matched and the fit
+ * misses by more than a ring can bear (FINE_SHARE of the smallest spot's shorter side, on screen), the worst line is
+ * dropped and the fit tried again: the places are carried by the lines that agree, so a line or two read in the
+ * wrong place neither throw the page away nor pull a ring off its atom. Two in three of the matched lines must stay.
  */
 export function place(anchors: Anchors, found: Found[]): Placed | null {
   const page = anchors.page.points;
@@ -101,7 +106,11 @@ export function place(anchors: Anchors, found: Found[]): Placed | null {
   if (pairs.length < 2) return null;
   let done = fit(pairs);
   const limit = () => MAX_ERROR_SHARE * median(pairs.map((pair) => pair.screen.h));
-  if (done.error > limit() && pairs.length >= 3) {
+  const smallest = Math.min(...Object.values(anchors.spots).map((spot) => Math.min(toPoints(spot.box, page).w, toPoints(spot.box, page).h)));
+  const fine = () => FINE_SHARE * smallest * done.scale;
+  // Two in three of the matched lines must stay: a few lines that agree by chance are not the page.
+  const least = Math.ceil((pairs.length * 2) / 3);
+  while (done.error > Math.min(limit(), fine()) && pairs.length >= 3 && pairs.length - 1 >= least) {
     const worst = done.misses.indexOf(Math.max(...done.misses));
     pairs = pairs.filter((_, i) => i !== worst);
     done = fit(pairs);

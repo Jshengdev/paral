@@ -1,0 +1,267 @@
+{
+ "name": "sheet: the places of a drawing are carried by the lines that agree. Two lines read in the wrong place among eight are dropped one after the other and the page is found exactly, where one drop alone left it refused; one line a little off, which the page's fit could bear, is dropped too, so the places land exactly and not a few points aside; when every line sits a little off its own way, no more than two of the eight are dropped, and the six left carry the place to within two points",
+ "run": "sheet.place",
+ "in": {
+  "sheet": "chem-worksheet-question-2.json",
+  "spot": "benzoyl.C",
+  "cases": [
+   [
+    {
+     "text": "1.",
+     "box": {
+      "x": 489.31176000000005,
+      "y": 222.17464959999998,
+      "w": 14.287680000000002,
+      "h": 17.25936
+     }
+    },
+    {
+     "text": "22. The NMR spectra are shown for two isomeric compounds with formula C10H12O. Their in-",
+     "box": {
+      "x": 560.75016,
+      "y": 344.0894464,
+      "w": 652.4707200000001,
+      "h": 13.100275199999999
+     }
+    },
+    {
+     "text": "frared spectra show strong bands near 1715 cm-1. Make no attempt to interpret the aromatic",
+     "box": {
+      "x": 591.11148,
+      "y": 297.77906559999997,
+      "w": 621.51408,
+      "h": 20.2397568
+     }
+    },
+    {
+     "text": "proton area between 7.1 and 7.4 ppm except to determine the number of protons attached to the",
+     "box": {
+      "x": 591.11148,
+      "y": 323.3734336,
+      "w": 621.51408,
+      "h": 14.8851456
+     }
+    },
+    {
+     "text": "aromatic ring. Draw the structure of the compounds.",
+     "box": {
+      "x": 630.51616,
+      "y": 293.6131904,
+      "w": 343.49964,
+      "h": 14.8851456
+     }
+    },
+    {
+     "text": "(a)",
+     "box": {
+      "x": 838.7646000000001,
+      "y": 725.8111935999999,
+      "w": 16.668960000000002,
+      "h": 11.9047488
+     }
+    },
+    {
+     "text": "(b)",
+     "box": {
+      "x": 838.7646000000001,
+      "y": 1095.4982656,
+      "w": 16.668960000000002,
+      "h": 13.100275199999999
+     }
+    },
+    {
+     "text": "2. Draw mechanism and expect final product",
+     "box": {
+      "x": 488.71644000000003,
+      "y": 1221.7020736,
+      "w": 470.30280000000005,
+      "h": 22.613971199999998
+     }
+    }
+   ],
+   [
+    {
+     "text": "1.",
+     "box": {
+      "x": 489.31176000000005,
+      "y": 222.17464959999998,
+      "w": 14.287680000000002,
+      "h": 17.25936
+     }
+    },
+    {
+     "text": "22. The NMR spectra are shown for two isomeric compounds with formula C10H12O. Their in-",
+     "box": {
+      "x": 560.75016,
+      "y": 284.0894464,
+      "w": 652.4707200000001,
+      "h": 13.100275199999999
+     }
+    },
+    {
+     "text": "frared spectra show strong bands near 1715 cm-1. Make no attempt to interpret the aromatic",
+     "box": {
+      "x": 591.11148,
+      "y": 297.77906559999997,
+      "w": 621.51408,
+      "h": 20.2397568
+     }
+    },
+    {
+     "text": "proton area between 7.1 and 7.4 ppm except to determine the number of protons attached to the",
+     "box": {
+      "x": 591.11148,
+      "y": 335.3734336,
+      "w": 621.51408,
+      "h": 14.8851456
+     }
+    },
+    {
+     "text": "aromatic ring. Draw the structure of the compounds.",
+     "box": {
+      "x": 590.51616,
+      "y": 343.6131904,
+      "w": 343.49964,
+      "h": 14.8851456
+     }
+    },
+    {
+     "text": "(a)",
+     "box": {
+      "x": 838.7646000000001,
+      "y": 725.8111935999999,
+      "w": 16.668960000000002,
+      "h": 11.9047488
+     }
+    },
+    {
+     "text": "(b)",
+     "box": {
+      "x": 838.7646000000001,
+      "y": 1095.4982656,
+      "w": 16.668960000000002,
+      "h": 13.100275199999999
+     }
+    },
+    {
+     "text": "2. Draw mechanism and expect final product",
+     "box": {
+      "x": 488.71644000000003,
+      "y": 1221.7020736,
+      "w": 470.30280000000005,
+      "h": 22.613971199999998
+     }
+    }
+   ],
+   [
+    {
+     "text": "1.",
+     "box": {
+      "x": 495.31176000000005,
+      "y": 231.17464959999998,
+      "w": 14.287680000000002,
+      "h": 17.25936
+     }
+    },
+    {
+     "text": "22. The NMR spectra are shown for two isomeric compounds with formula C10H12O. Their in-",
+     "box": {
+      "x": 554.75016,
+      "y": 276.0894464,
+      "w": 652.4707200000001,
+      "h": 13.100275199999999
+     }
+    },
+    {
+     "text": "frared spectra show strong bands near 1715 cm-1. Make no attempt to interpret the aromatic",
+     "box": {
+      "x": 597.11148,
+      "y": 302.77906559999997,
+      "w": 621.51408,
+      "h": 20.2397568
+     }
+    },
+    {
+     "text": "proton area between 7.1 and 7.4 ppm except to determine the number of protons attached to the",
+     "box": {
+      "x": 585.11148,
+      "y": 332.3734336,
+      "w": 621.51408,
+      "h": 14.8851456
+     }
+    },
+    {
+     "text": "aromatic ring. Draw the structure of the compounds.",
+     "box": {
+      "x": 596.51616,
+      "y": 335.6131904,
+      "w": 343.49964,
+      "h": 14.8851456
+     }
+    },
+    {
+     "text": "(a)",
+     "box": {
+      "x": 832.7646000000001,
+      "y": 730.8111935999999,
+      "w": 16.668960000000002,
+      "h": 11.9047488
+     }
+    },
+    {
+     "text": "(b)",
+     "box": {
+      "x": 844.7646000000001,
+      "y": 1104.4982656,
+      "w": 16.668960000000002,
+      "h": 13.100275199999999
+     }
+    },
+    {
+     "text": "2. Draw mechanism and expect final product",
+     "box": {
+      "x": 482.71644000000003,
+      "y": 1213.7020736,
+      "w": 470.30280000000005,
+      "h": 22.613971199999998
+     }
+    }
+   ]
+  ]
+ },
+ "out": [
+  {
+   "matched": 6,
+   "scale": 2,
+   "error": 0,
+   "spot": {
+    "x": 803.6,
+    "y": 1371.1,
+    "w": 22,
+    "h": 13.7
+   }
+  },
+  {
+   "matched": 7,
+   "scale": 2,
+   "error": 0,
+   "spot": {
+    "x": 803.6,
+    "y": 1371.1,
+    "w": 22,
+    "h": 13.7
+   }
+  },
+  {
+   "matched": 6,
+   "scale": 2,
+   "error": 7.5,
+   "spot": {
+    "x": 803.5,
+    "y": 1369.2,
+    "w": 21.8,
+    "h": 13.6
+   }
+  }
+ ]
+}
