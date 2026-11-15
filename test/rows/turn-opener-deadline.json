@@ -1,5 +1,5 @@
 {
- "name": "turn: when the fast model has no quick line by the deadline, the fixed line is said first; the quick line is said after it when it comes within the wait, and it is the line the deep model is told",
+ "name": "turn: when the fast model has no quick line by the deadline, the fixed line is said in its place and that is the line the deep model is told; the answer is asked at once, and the model's line, when it comes, is never said",
  "run": "turn",
  "in": {
   "tape": "late-opener.json",
@@ -61,9 +61,6 @@
      "release": "opener"
     },
     {
-     "until": "say"
-    },
-    {
      "release": "answer"
     }
    ]
@@ -74,17 +71,13 @@
   "toldTheDeepModel": [
    {
     "words": "why is this wrong",
-    "saidFirst": "This line came too late to be said."
+    "saidFirst": "Okay, let me look."
    }
   ],
   "said": [
    {
     "beat": -2,
     "text": "Okay, let me look."
-   },
-   {
-    "beat": -1,
-    "text": "This line came too late to be said."
    },
    {
     "beat": 0,

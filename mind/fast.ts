@@ -13,10 +13,9 @@ type Answer = { nothingSaid(): boolean; arriving(): boolean; shown(): boolean };
 /**
  * The lines said while the deep answer is worked out. First the quick line: one short line from the fast model, said
  * as he lets go, which may name the thing on his page that matters. The deep model is told that line word for word,
- * so the answer is asked once it is settled. If the quick line is not written by the deadline, a fixed line is said
- * first, so that he hears something inside a second, and the quick line follows it if it comes before the wait runs
- * out; one that comes later still is never said, since the deep model was not told it. A line that fails, runs long
- * or is not fit to say is replaced by the fixed line. After that, if the wait goes on, fixed stall lines.
+ * so the answer is asked once it is settled. If the quick line is not written by the deadline, or it fails, runs
+ * long or is not fit to say, a fixed line is said in its place, and a line that comes later is never said: the deep
+ * model was not told it, and the answer does not wait for it. After that, if the wait goes on, fixed stall lines.
  */
 export function fast({ settings, send, log }: Hands, asking: Asking, talk: Speaks, answer: Answer) {
   const { id, signal } = asking;
@@ -41,34 +40,20 @@ export function fast({ settings, send, log }: Hands, asking: Asking, talk: Speak
       (line) => ({ line }),
       (error) => ({ failed: why(error) }),
     );
-    /** The quick line if it is written by `ms` after the release, or "late". */
-    const by = async (ms: number) => {
-      let timer: NodeJS.Timeout | undefined;
-      const late = new Promise<"late">((resolve) => (timer = setTimeout(() => resolve("late"), Math.max(0, asking.releasedAt + ms - Date.now()))));
-      const first = await Promise.race([written, late]);
-      clearTimeout(timer);
-      return first;
-    };
-    let first = await by(settings.openerDeadlineMs.value);
+    let timer: NodeJS.Timeout | undefined;
+    const late = new Promise<"late">((resolve) => (timer = setTimeout(() => resolve("late"), Math.max(0, asking.releasedAt + settings.openerDeadlineMs.value - Date.now()))));
+    const first = await Promise.race([written, late]);
+    clearTimeout(timer);
     if (signal.aborted) return null;
-    const stoodIn = first === "late";
     if (first === "late") {
       say(-2, fixed);
-      log(`${id}: no opener ${settings.openerDeadlineMs.value} ms after the release; the fixed line is said at ${since()} ms`);
-      first = await by(settings.openerWaitMs.value);
-      if (signal.aborted) return null;
-      if (first === "late") {
-        log(`${id}: no opener ${settings.openerWaitMs.value} ms after the release either; the answer is asked without it, and it is not said if it comes`);
-        return fixed;
-      }
+      log(`${id}: no opener ${settings.openerDeadlineMs.value} ms after the release; the fixed line is said at ${since()} ms, and an opener that comes later is not said`);
+      return fixed;
     }
     const wrong = "failed" in first ? null : first.line === "" ? "came back empty" : count(first.line) > settings.openerMaxWords.value ? `ran past ${settings.openerMaxWords.value} words` : unfit(first.line);
     if ("failed" in first) log(`${id}: the opener failed (${first.failed})`);
     else if (wrong !== null) log(`${id}: the opener is not said: ${wrong}`);
-    const fit = !("failed" in first) && wrong === null;
-    // A line that cannot be said is replaced by the fixed line, unless the fixed line has already stood in.
-    if (!fit && stoodIn) return fixed;
-    const line = fit && !("failed" in first) ? first.line : fixed;
+    const line = "failed" in first || wrong !== null ? fixed : first.line;
     say(-1, line);
     log(`${id}: opener at ${since()} ms from the release`);
     return line;

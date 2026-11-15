@@ -39,10 +39,22 @@ export const opener = {
   } satisfies Setting<number>,
 
   openerDraftShare: {
-    value: 0.8,
-    why: "A draft made from the start of his sentence is used when it covers at least this share of his final words. The quick line names the thing on his page that matters, and that thing is often named at the end of the question, so a draft from much less than the whole can name the wrong one.",
-    measured: "15 recorded asks (2026-11-14): the last early draft was a clean start of his final words in 14; it covered 0.8 of them in 9 and 0.6 of them in 14. At 0.6, one live ask (\"Where on this page do I find the paid university holidays?\") got a quick line drafted from its first words that named the fall term dates, and the answer began \"Actually,\"; that is why it is 0.8. Not yet counted live at 0.8",
+    value: 0.7,
+    why: "A draft made from the start of his sentence is used when it heard at least this share of his final words, and at least openerDraftLeast of them. A line can only be ready as he lets go if it was begun most of a second earlier, when the ear had heard about this much. The thing he asks about is sometimes named at the end, so a draft is told that he is still speaking and to name only what his words so far make certain.",
+    measured: "15 recorded asks (2026-11-14): the last early draft was a clean start of his final words in 14; it covered 0.8 of them in 9 and 0.6 of them in 14. At 0.6, one live ask (\"Where on this page do I find the paid university holidays?\") got a quick line drafted from its first words that named the fall term dates, and the answer began \"Actually,\"; At 0.8, a pass of the outside judge had no quick line ready as he let go in 11 of 11 asks, against 4 of 11 at 0.6, and first sentences about half a second later; With only the small-words rule and no share, 1 of 11 was ready. So a share again, 0.7 with a least number of words, and the draft told that the question may be unfinished; counted in the notes of that day",
   } satisfies Setting<number>,
+
+  openerDraftLeast: {
+    value: 6,
+    why: "A draft that heard fewer words than this is used only when everything he added after it is small words. From a short start the fast model can only guess what he is asking about.",
+    measured: "drafts made from the first 0.6 of the recorded questions (2026-11-14): \"Wait. What does a\" (four words) gave \"Let's look at the stats page\" for a question about a forged cookie, and \"What is the riskiest line\" (five) named another part of the page than the one asked about; starts of seven words and more stayed with what was certain",
+  } satisfies Setting<number>,
+
+  openerSmallWords: {
+    value: ["a", "about", "all", "an", "and", "are", "at", "be", "before", "can", "do", "does", "first", "for", "get", "go", "have", "here", "how", "i", "if", "in", "is", "it", "its", "me", "mean", "my", "now", "of", "on", "or", "out", "please", "right", "so", "that", "the", "them", "then", "there", "these", "this", "those", "to", "too", "try", "up", "was", "we", "what", "when", "where", "which", "why", "with", "work", "works", "would", "wrong", "you", "your"],
+    why: "A draft that heard too little by share or by count is still used when every word he added after it is one of these. The quick line names the thing on his page that matters, and a draft that never heard that thing can only guess it; these words cannot be it.",
+    measured: "34 drafts made from the first 0.6 of the recorded questions (2026-11-14): where the missing words held the thing asked about, the line guessed (\"Wait. What does a\" gave \"Let's look at the stats page\", the question was about a forged cookie). A first list, from those questions",
+  } satisfies Setting<string[]>,
 
   openerDraftWords: {
     value: 3,
@@ -52,14 +64,8 @@ export const opener = {
 
   openerDeadlineMs: {
     value: 800,
-    why: "The latest moment after the true release (his finger lifting) at which first words may be sent. If no quick line is written by then, the fixed line is said first and the quick line follows if it comes within openerWaitMs. Its reason: first words he can see and hear inside one second of the release (Nielsen's limit for keeping the train of thought), less the voice's first sound (95 to 124 ms measured), less a margin.",
+    why: "The latest moment after the true release (his finger lifting) at which first words may be sent. If no quick line is written by then, the fixed line is said in its place, the answer is asked at once, and a quick line that comes later is never said: waiting for it up to 1.5 s was tried, and in a pass of the outside judge 5 of 11 asks waited for nothing and first sentences came about half a second later. Its reason: first words he can see and hear inside one second of the release (Nielsen's limit for keeping the train of thought), less the voice's first sound (95 to 124 ms measured), less a margin.",
     measured: "the fast model's first line took 0.25 to 2.5 s over nine live scenarios. At 1,000 the fixed line went out 1,002 to 1,009 ms after the true release in five asks, a few ms over the bar before any sound (2026-11-14, the outside judge, on the true clock). An ask that uses a finished early draft has first words at about 450 ms",
-  } satisfies Setting<number>,
-
-  openerWaitMs: {
-    value: 1500,
-    why: "After the fixed line has stood in at the deadline, the quick line is still waited for until this long after the release, and said when it comes; the deep model's call waits with it, so that it can be told the line. Past this the answer is asked without it and a quick line that arrives is never said. The same wait, 1.5 s, as the earlier project this follows, where the owner chose that the deep model waits for the draft.",
-    measured: "51 asks of the fast model on the recorded pages: its line took a median of 0.84 s and at the slowest 1.75 to 2.4 s, so one asked afresh at the ear's final words (about 0.43 s after the release) is written by about 1.3 s in most asks and misses the 0.8 s deadline in nearly all (2026-11-14). How often the wait is used, and what it costs the answer, are in the notes of that day",
   } satisfies Setting<number>,
 
   stallAfterMs: {

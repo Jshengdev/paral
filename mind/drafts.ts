@@ -5,16 +5,16 @@ import type { Settings } from "./settings.ts";
 type Draft = { words: string; line: Promise<string>; at: number };
 
 /**
- * The opener, drafted while he is still talking. The fast model is asked again every so often with his words so
- * far, so that when he lets go a line is already written. `seen` gives the lines on his screen at that moment.
+ * The quick line, drafted while he is still talking. The fast model is asked again each time more of his words
+ * arrive, so that when he lets go a line is already written or nearly so. `seen` gives the lines on his screen at
+ * that moment.
  */
 export function drafts(opener: Opener, settings: Settings, seen: () => string[]) {
-  /** The newest draft, and the newest one whose line is already written. */
-  let newest: Draft | null = null;
-  let written: Draft | null = null;
+  /** Every draft of this hold of the key, oldest first. */
+  let made: Draft[] = [];
 
-  const ask = (said: string, signal: AbortSignal) => {
-    const line = opener.open(said, seen(), signal);
+  const ask = (said: string, stillSpeaking: boolean, signal: AbortSignal) => {
+    const line = opener.open(said, seen(), stillSpeaking, signal);
     // A draft may never be used. Whoever does use this line hears its failure there; this keeps an unused one quiet.
     line.catch(() => {});
     return line;
@@ -23,32 +23,26 @@ export function drafts(opener: Opener, settings: Settings, seen: () => string[])
   return {
     /** Forgets every draft: a new hold of the key has begun. */
     reset() {
-      newest = null;
-      written = null;
+      made = [];
     },
     /** His words so far. Starts a new draft when the last is old enough and there are enough words to go on. */
     note(words: string, signal: AbortSignal) {
-      const due = newest === null || Date.now() - newest.at >= settings.openerDraftEveryMs.value;
+      const last = made.at(-1);
+      const due = last === undefined || Date.now() - last.at >= settings.openerDraftEveryMs.value;
       // The quick line may name what is on his page, so nothing is drafted before the page's lines are here.
       if (!due || words.split(" ").length < settings.openerDraftWords.value || seen().length === 0) return;
-      const draft: Draft = { words, line: ask(words, signal), at: Date.now() };
-      newest = draft;
-      // Once its line is written it becomes the newest written draft, unless a later one got there first. A draft
-      // that fails is simply never "written"; the ask then waits for a newer one or asks afresh.
-      const whenWritten = () => {
-        const overtaken = written !== null && written.at > draft.at;
-        if (!signal.aborted && !overtaken) written = draft;
-      };
-      draft.line.then(whenWritten, () => {});
+      made.push({ words, line: ask(words, true, signal), at: Date.now() });
     },
     /**
-     * The opener for his final words. A draft already written is used before a newer one still being written,
-     * since it can be said at once; a draft is used only if it still fits what he ended up saying. Failing both,
-     * the fast model is asked afresh.
+     * The quick line for his final words. A draft fits when it heard enough of his question (see `fits`), and of
+     * the drafts that fit, the first to be written is the one said: an older one may be written already, and one
+     * begun after he let go will come too late. With no draft that fits, the fast model is asked afresh.
      */
     choose(final: string, signal: AbortSignal): Promise<string> {
-      const usable = (draft: Draft | null) => (draft && fits(draft.words, final, settings.openerDraftShare.value) ? draft.line : null);
-      return usable(written) ?? usable(newest) ?? ask(final, signal);
+      const enough = { share: settings.openerDraftShare.value, least: settings.openerDraftLeast.value, small: settings.openerSmallWords.value };
+      const fitting = made.filter((draft) => fits(draft.words, final, enough));
+      if (fitting.length === 0) return ask(final, false, signal);
+      return Promise.any(fitting.map((draft) => draft.line)).catch(() => ask(final, false, signal));
     },
   };
 }

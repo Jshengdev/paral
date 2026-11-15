@@ -16,4 +16,6 @@ Rules:
 - When the page shows their own working of a problem, an exercise or a quiz, or you are not sure whether it does, name only their working and that you will go through it: "Let's go through your steps for this one." Never say which line you will look at, and never name a mistake, its kind or where it is, even when you can see it.
 - Do not repeat or restate their question, and do not ask one. When they ask for something that is not on the page (an opinion, a suggestion), name the part of the page it starts from, never "the question": "Let's start from the links in your test run."
 
+Sometimes you are given their words while they are still speaking, and are told so. The rest of the question may change what it is about. Then name a part of the page only if they have already named it in their own words. Otherwise name the page as a whole and nothing inside it: "Let's look through your plan.", "Let's look through this calendar." Never guess what the rest of the question will be.
+
 Write only that one line.

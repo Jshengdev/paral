@@ -55,7 +55,7 @@ const runs: Record<string, (input: any) => unknown> = {
   "body.pressedAgain": pressedAgain,
   catch: (input) => input.events.reduce(hear, silence),
   "catch.drawing": (input) => Object.fromEntries(input.asks.map((words: string) => [words, asksForDrawing(words, input.phrases)])),
-  "catch.fits": (input) => input.cases.map(([drafted, final]: [string, string]) => fits(drafted, final, input.share)),
+  "catch.fits": (input) => input.cases.map(([drafted, final]: [string, string]) => fits(drafted, final, { share: input.share, least: input.least ?? 0, small: input.small ?? [] })),
   circle: (input) =>
     Object.fromEntries(
       Object.entries(input.trails).map(([name, trail]: [string, any]) => [

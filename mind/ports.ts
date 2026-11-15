@@ -70,9 +70,12 @@ export interface SecondLook {
   leaks(line: string, problem: string, signal: AbortSignal): Promise<boolean>;
 }
 
-/** The fast model's one quick line: what it is about to do, which may name the thing on his page that matters. */
+/**
+ * The fast model's one quick line: what it is about to do, which may name the thing on his page that matters.
+ * `stillSpeaking` is true for a draft made while he holds the key: his words may not be the whole question yet.
+ */
 export interface Opener {
-  open(words: string, lines: string[], signal: AbortSignal): Promise<string>;
+  open(words: string, lines: string[], stillSpeaking: boolean, signal: AbortSignal): Promise<string>;
 }
 
 

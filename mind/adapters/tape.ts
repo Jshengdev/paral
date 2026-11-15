@@ -89,7 +89,7 @@ export function tape(path: string): Ports & { release(kind?: string): void; aske
       },
     },
     opener: recorded.opener ? {
-          async open(_words, _lines, signal) {
+          async open(_words, _lines, _stillSpeaking, signal) {
             if (recorded.holdOpener) await held(signal, "opener");
             return recorded.opener!;
           },

@@ -15,6 +15,12 @@ func why(_ error: Error) -> String {
     (error as? Screen.Failed)?.why ?? (error as? Flow.Failed)?.why ?? error.localizedDescription
 }
 
+// The system's image library reads the program's bundle information the first time it is used, and so does the
+// network library on its own thread. Once, under load, the two met and this program crashed inside that first read
+// (2026-11-14, one run in several hundred). Reading it here first, before any other thread exists, is a guess at
+// the cure; it costs nothing.
+_ = Bundle.main.infoDictionary
+
 let usage = "usage: read PICTURE | smaller PICTURE OUT.jpg LONG_EDGE | page OUT.png LINE... | lines | keys SECONDS rightOption|fn|controlOption | flow FLOW.json SOCKET TOKENS.json | film RUN_DIR TOKENS.json | frame RUN_DIR TOKENS.json MS OUT.png | capsule RUN_DIR TOKENS.json MS..."
 let arguments = Array(CommandLine.arguments.dropFirst())
 

@@ -1,0 +1,116 @@
+{
+ "name": "catch: a drafted line is used when it heard enough of his question (0.7 of the words and at least six), or everything but small words (\"try first and why\"); a short start is not used when the words after it hold what he is asking about (\"forced cookie mean\", \"in this file layout\")",
+ "run": "catch.fits",
+ "in": {
+  "share": 0.7,
+  "small": [
+   "a",
+   "about",
+   "all",
+   "an",
+   "and",
+   "are",
+   "at",
+   "be",
+   "before",
+   "can",
+   "do",
+   "does",
+   "first",
+   "for",
+   "get",
+   "go",
+   "have",
+   "here",
+   "how",
+   "i",
+   "if",
+   "in",
+   "is",
+   "it",
+   "its",
+   "me",
+   "mean",
+   "my",
+   "now",
+   "of",
+   "on",
+   "or",
+   "out",
+   "please",
+   "right",
+   "so",
+   "that",
+   "the",
+   "them",
+   "then",
+   "there",
+   "these",
+   "this",
+   "those",
+   "to",
+   "too",
+   "try",
+   "up",
+   "was",
+   "we",
+   "what",
+   "when",
+   "where",
+   "which",
+   "why",
+   "with",
+   "work",
+   "works",
+   "would",
+   "wrong",
+   "you",
+   "your"
+  ],
+  "cases": [
+   [
+    "When do final exams start this semester, and how many study days do I",
+    "When do final exams start this semester, and how many study days do I get before them?"
+   ],
+   [
+    "I do not understand why the six changes sign when it moves to the other side. Can you show me why",
+    "I do not understand why the six changes sign when it moves to the other side. Can you show me why that works?"
+   ],
+   [
+    "Which of these 6 checks should I",
+    "Which of these 6 checks should I try first and why?"
+   ],
+   [
+    "Wait. What does a",
+    "Wait. What does a forced cookie mean?"
+   ],
+   [
+    "Where on this page do I find the",
+    "Where on this page do I find the paid university holidays?"
+   ],
+   [
+    "What is the riskiest line",
+    "What is the riskiest line in this file layout?"
+   ],
+   [
+    "When do final exams start this semester, and how",
+    "When do final exams start this semester, and how many study days do I get before them?"
+   ],
+   [
+    "why is this last line",
+    "Why is this last line?"
+   ]
+  ],
+  "least": 6
+ },
+ "out": [
+  true,
+  true,
+  true,
+  false,
+  true,
+  false,
+  false,
+  true
+ ]
+}

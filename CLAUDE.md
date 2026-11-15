@@ -66,9 +66,9 @@ Scene → Picture → Painter                                    (parts)   of on
    opens on its first row. See `drawingAsks`.)
 3. The quick line: one short line from the fast model, drafted while he talks and said as he lets go. It may name the
    thing on his page that matters, never the result; on his own working it names only his working. If none is written
-   0.8 s after release, a fixed line is said first, and the quick line follows if it comes within 1.5 s. The deep
-   model is told the line he heard, word for word, so its call waits for that line. If the deep answer has not begun
-   1.3 s after the last line has been heard, a fixed stall line, and up to two more.
+   0.8 s after release, a fixed line is said in its place and a quick line that comes later is never said. The deep
+   model is told the line he heard, word for word, so its call waits for that line, to the 0.8 s mark at the latest.
+   If the deep answer has not begun 1.3 s after the last line has been heard, a fixed stall line, and up to two more.
 4. When the deep answer's first fields arrive, it is one of two things. **A wrong line in his work:** a ring on that
    line, the rung's fixed line said with it, then the model's hint once Push has passed it. One rung per ask, one sentence
    for the first three rungs. Where lines sit close the ring is a box that hugs the line.
@@ -143,9 +143,10 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
 - The board comes before the sentences, three to five seconds after he lets go in the runs so far; nothing of the
   answer comes sooner than the reply's first fields.
 - Nothing checks the quick line. The fast model writes it from the lines read off his page, without the picture,
-  and it can name the wrong thing; the deep model is told the line and is asked to put it right. When no drafted line
-  is ready as he lets go, the answer waits for one up to 1.5 s after the release, which can cost the answer about a
-  second.
+  and it can name the wrong thing; the deep model is told the line and is asked to put it right. It is said only when
+  a draft made while he talked heard enough of his question, which was about one ask in three in the live runs; the
+  rest open with the fixed line. The ear runs about a second behind his voice and the fast model takes most of a
+  second, so a line written from his whole question cannot be ready inside the 0.8 s mark.
 - On the top rung the second look is steady for one line and erratic between lines: the same hint was passed with
   the example in k and swapped with it in x. A repeat visit to the top rung still gets only the rung's fixed line now
   and then: 1 of 8 asks in the four live runs since the last change, about one in three before it.

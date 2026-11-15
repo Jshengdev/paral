@@ -7,12 +7,23 @@ export type Words = { text: string; final: boolean; startedAt: number | null; en
 
 const plain = (text: string) => text.toLowerCase().replace(/[^\p{L}\p{N} ]/gu, "").replace(/\s+/g, " ").trim();
 
-/** Whether a line drafted from his words so far still fits his final words: the same words, or a start that covers enough of them. */
-export function fits(drafted: string, final: string, share: number): boolean {
+/** How much of his question a draft must have heard: this share of its words and at least this many, or all of it but small words. */
+export type Enough = { share: number; least: number; small: string[] };
+
+/**
+ * Whether a line drafted from his words so far still fits his final words. It does when the words are the same;
+ * when the draft is a start of them and every word he added after it is a small one ("get before them"); or when
+ * it is a start that heard enough: a share of the words and a least number of them. A short start is never
+ * enough, since the thing he asks about may be in the words it did not hear.
+ */
+export function fits(drafted: string, final: string, enough: Enough): boolean {
   const had = plain(drafted);
   const all = plain(final);
   if (had === all) return true;
-  return all.startsWith(had + " ") && had.split(" ").length >= share * all.split(" ").length;
+  if (!all.startsWith(had + " ")) return false;
+  const heard = had.split(" ").length;
+  if (heard >= enough.least && heard >= enough.share * all.split(" ").length) return true;
+  return all.slice(had.length + 1).split(" ").every((word) => enough.small.includes(word));
 }
 
 export const silence: Words = { text: "", final: false, startedAt: null, endedAt: null };

@@ -91,7 +91,7 @@ export function anthropic(settings: Settings, prompts: Prompts, log: Log, client
       },
     },
     opener: {
-      async open(words, lines, signal) {
+      async open(words, lines, stillSpeaking, signal) {
         allowed();
         const model = settings.openerModel.value;
         const stream = client.messages.stream(
@@ -101,7 +101,7 @@ export function anthropic(settings: Settings, prompts: Prompts, log: Log, client
             thinking: { type: "disabled" },
             output_config: { effort: settings.openerEffort.value },
             system: prompts.opener,
-            messages: [{ role: "user", content: `What they just said to you: "${words}"\n\nLines on their screen:\n${lines.slice(0, settings.openerPageLines.value).join("\n")}` }],
+            messages: [{ role: "user", content: `${stillSpeaking ? "What they have said so far (they are still speaking, and the question may not be finished)" : "What they just said to you"}: "${words}"\n\nLines on their screen:\n${lines.slice(0, settings.openerPageLines.value).join("\n")}` }],
           },
           { signal },
         );
@@ -109,9 +109,9 @@ export function anthropic(settings: Settings, prompts: Prompts, log: Log, client
         count(reply.model, model, reply.usage);
         const text = reply.content.flatMap((block) => (block.type === "text" ? [block.text] : [])).join("\n");
         // One line is asked for. If the model wrote more, only the first is the quick line; quote marks it put
-        // around the line are not part of it.
+        // around the whole line are not part of it.
         const first = text.split("\n").map((part) => part.trim()).find(Boolean) ?? "";
-        return first.replace(/^["“”']+|["“”']+$/g, "").trim();
+        return /^["“'].*["”']$/.test(first) ? first.slice(1, -1).trim() : first;
       },
     },
     secondLook: {
