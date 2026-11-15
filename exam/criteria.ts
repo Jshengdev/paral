@@ -42,8 +42,9 @@ export const NOT_LIVE = [
 
 // What only a person at the Mac can do. Printed on the explainer beside what the films do not prove.
 export const WAITING = [
-  "The first look on a real screen: the real key, the microphone, the screen picture and the windows over real apps.",
-  "The Mac's permissions for that first look. Nothing here asked for one.",
+  "The real screen. He has run it on his own Mac since 2026-11-14, 18:15: the key, the microphone, the screen picture, and from 19:57 the looks with no key. What he saw and heard there is his to say; the films cannot.",
+  "The arrow, the cursor and \"show me\" on a real screen, with the Dock, the menu bar and a browser's own bars in the picture.",
+  "Calendar: his own click on Add, after the calendar file opens.",
   "Whether the panel shows the hint's number, as in \"hint 1 of 4\".",
   "The look. The colours, type and motion are one tokens file, tuned on the dials page.",
 ];
