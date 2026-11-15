@@ -87,7 +87,7 @@ When the mind has kept pages and a model, its ready line asks the body to look b
 stood still. The mind (`mind/glance.ts`) acts only when the screen is one of USC's kept pages. The first time it
 sees a page it asks the deep model about the kept page's own text, whether it holds one thing that will cost him
 later; nothing read from his screen is sent for that. If so: a box on the line where it now is on his screen (the
-line itself, or the heading it sits under), one sentence in the capsule with the trail of what was done above it,
+line itself, or the heading it sits under), one sentence on the nudge card with the trail of what was done under its name,
 shown and not spoken, and a board of what is still ahead. When he scrolls or opens a section the mark moves. What
 is ahead is remembered for the sitting and given to every ask. A press of the key takes over at once.
 
@@ -190,6 +190,9 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
   whether it needs a grant on his Mac is not known. A step with no date has no box to click. A click on the page
   near the boxed line for any other reason also moves the walk on.
 - The opening line (`openingLine`, shown once by the app when it starts) has never been seen: no scripted run shows it.
+- The nudge card's buttons have never been clicked on a Mac: the overlay as a panel that never makes the app active,
+  its first click and the button held down are compiled and unrun. They are checked only as the boxes the picture
+  offers and the lines a press stands for.
 - The cue cards in the menu and the tapped ask have never been used on a Mac: `Cues.swift` and the app's `typed` are
   compiled and unrun. The scripted stand-in has run tapped asks live. The menu bar says "Lost and Found"; the app's
   file, its grants in System Settings and this repo still say paral.
