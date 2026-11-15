@@ -12,10 +12,13 @@ import { BUILD } from "../tools.ts";
 // site.
 const Kept = z.object({ url: z.string().min(1), title: z.string(), lines: z.array(z.string()) });
 const GIVEN = / (t\d+): his screen is the kept page "(.*)" \((\S+), read [^)]*\); given with it: (.*)$/;
+// A look he did not ask for names the one page the model was asked about, by its title:
+//   g1: an unasked look: his screen is the kept page "TITLE". Nothing read from his screen leaves the Mac for it: ...
+const LOOKED = / (g\d+): an unasked look: his screen is the kept page "(.*)"\. Nothing read from his screen/;
 
 export type PageRead = z.infer<typeof Kept>;
 
-/** For each ask's id ("t1"), the kept pages its answer was given, the one on his screen first. */
+/** For each ask's id ("t1"), the kept pages its answer was given, the one on his screen first; for a look's id ("g1"), the one page asked about. */
 export async function pagesGiven(dir: string): Promise<Map<string, PageRead[]>> {
   const log = join(dir, "mind.log");
   const keptDir = join(BUILD, "pages", "kept");
@@ -24,6 +27,12 @@ export async function pagesGiven(dir: string): Promise<Map<string, PageRead[]>> 
   const files = (await readdir(keptDir)).filter((name) => name.endsWith(".json"));
   const kept = await Promise.all(files.map(async (name) => Kept.parse(JSON.parse(await readFile(join(keptDir, name), "utf8")))));
   for (const line of (await readFile(log, "utf8")).split("\n")) {
+    const looked = LOOKED.exec(line);
+    if (looked) {
+      const page = kept.find((one) => one.title === looked[2]);
+      if (!page) throw new Error(`the mind's log names "${looked[2]}" as the page of a look, and pages/kept holds no page of that title`);
+      given.set(looked[1], [page]);
+    }
     const found = GIVEN.exec(line);
     if (!found) continue;
     const urls = [found[3], ...found[4].split(", ").filter((url) => url.startsWith("http"))];

@@ -4,11 +4,12 @@ import { join } from "node:path";
 import { z } from "zod";
 import type { Judged } from "./explain.ts";
 import { film, frameAt, frameCount, still } from "./film.ts";
-import { board, lesson } from "./judge/board.ts";
+import { board, lesson, readable, type BoardLook } from "./judge/board.ts";
 import { closing, cutIn, ending, pressedAgain } from "./judge/ending.ts";
 import { atEnd, atRest, inked, look, thinkingShown, trail } from "./judge/frames.ts";
 import { marks, standingBefore } from "./judge/marks.ts";
-import { pagesGiven } from "./judge/pages.ts";
+import { glanced, pageChanged } from "./judge/look.ts";
+import { pagesGiven, type PageRead } from "./judge/pages.ts";
 import { pictureSent } from "./judge/picture.ts";
 import { drawnIn } from "./judge/motion.ts";
 import { takenBack, thinkingSaid, timing } from "./judge/timing.ts";
@@ -19,7 +20,8 @@ import { readings } from "./readings.ts";
 import { moments, placed } from "./session.ts";
 import { sound } from "./sound.ts";
 import { Flow, Truth, findNamed, type Box, type Scenario } from "./shape.ts";
-import { asks, first, of, spoken as aloud, type Ask } from "./timeline.ts";
+import { BUILD } from "./tools.ts";
+import { asks, first, looks, of, spoken as aloud, type Ask, type Moment } from "./timeline.ts";
 import type { Verdict } from "./verdict.ts";
 
 const read = async <S extends z.ZodType>(file: string, shape: S): Promise<z.infer<S>> => shape.parse(JSON.parse(await readFile(file, "utf8")));
@@ -59,33 +61,71 @@ export async function judge(scenario: Scenario): Promise<Judged> {
   const dir = runDir(scenario.id);
   const truth = await read(join(dir, "truth.json"), z.array(Truth));
   const flow = await read(join(dir, "flow.json"), Flow);
-  const all = asks(await moments(dir));
+  const everything = await moments(dir);
+  const all = asks(everything);
+  const seenLooks = looks(everything);
+  // The page on the screen at each step: the scenario's own, until a step puts another one there.
+  const truths: Truth[][] = [];
+  let onScreen = truth;
+  let pages = 0;
+  for (const step of scenario.steps) {
+    if ("page" in step && step.page) onScreen = await read(join(dir, `truth-${++pages}.json`), z.array(Truth));
+    truths.push(onScreen);
+  }
+  const numbered = scenario.steps.map((step, at) => ({ step, truth: truths[at] }));
   const where = await placed(dir);
   const given = await pagesGiven(dir);
+  // How the judged build draws a board, from its own look file; the film was drawn with it.
+  const boardLook: BoardLook = (await read(join(BUILD, "body", "tokens.json"), z.object({ board: z.object({ pad: z.number(), boxPadY: z.number(), rowGap: z.number(), type: z.number() }) }))).board;
+  /** The last board shown under one name ("t1", "g1"): how many rows it has, and the card the painter drew for it. */
+  const lastBoard = (shown: Moment[], name: string) => {
+    const text = of(shown, "board").at(-1)?.text ?? null;
+    return { rows: text === null ? 0 : text.split(" | ").length, card: where.filter((p) => p.what === "board" && p.id === name).at(-1)?.box ?? null };
+  };
   const ran = (await stat(join(dir, "session.jsonl"))).mtime;
   const filmed = existsSync(join(dir, "frames"));
   const seen = filmed ? await look(dir, flow.display) : null;
   const voice = existsSync(join(dir, "voice.wav")) ? await sound(join(dir, "voice.wav")) : null;
   const verdicts: Verdict[] = seen ? await atRest(seen) : [];
-  const steps = scenario.steps.filter((step) => "say" in step);
-  for (const [index, step] of steps.entries()) {
+  const steps = numbered.filter(({ step }) => "say" in step);
+  for (const [index, { step, truth }] of steps.entries()) {
     const ask = all[index];
     if (!ask) throw new Error(`${scenario.id}: the run holds ${all.length} asks, and the scenario has ${steps.length}`);
     if (!("say" in step)) continue;
     const nextDown = all[index + 1]?.down ?? null;
+    // Where this ask's stretch of the film ends: his next press, or the next look with no key.
+    const nextStart = everything.find((m) => (m.kind === "key-down" || m.kind === "glance") && m.at > ask.down)?.at ?? Infinity;
     if (step.say !== "") verdicts.push(...timing(ask, step.expect, where, nextDown), ...(seen ? await thinkingShown(seen, ask, where) : thinkingSaid(ask)));
     if (!takenBack(ask, nextDown)) verdicts.push(...heardWhole(ask, step.say));
-    verdicts.push(...marks(ask, step.expect, truth, standingBefore(all, index)), ...spoken(ask, step.expect, truth, { pages: given.get(turnOf(ask)) ?? [], ranOn: ran }), ...voiced(ask, step.expect, all[index + 1]?.down ?? null),
+    verdicts.push(...marks(ask, step.expect, truth, standingBefore(everything, ask)), ...spoken(ask, step.expect, truth, { pages: given.get(turnOf(ask)) ?? [], ranOn: ran }), ...voiced(ask, step.expect, all[index + 1]?.down ?? null),
       ...board(ask, step.expect, truth, where), ...lesson(ask, step.expect), ...cutIn(ask, all[index - 1] ?? null, step.expect, voice), ...pressedAgain(ask, all[index - 1] ?? null, step.expect));
+    const drawnBoard = lastBoard(ask.moments, turnOf(ask));
+    verdicts.push(...readable("C8", ask.index, drawnBoard.rows, drawnBoard.card, boardLook));
     if (seen) {
       const circled = step.circle === null ? null : boxOf(truth, step.circle, scenario.id);
       // With no voice there is no last word to wait for, so the ask is looked at just before the next one, or at the end.
       const lastWords = aloud(ask).at(-1)?.end ?? Infinity;
-      const settledAt = Math.min(lastWords + 500, (all[index + 1]?.down ?? Infinity) - 200);
-      verdicts.push(...await trail(seen, ask, circled, where), ...await pictureSent(ask, circled !== null, flow.display), ...await inked(seen, ask, step.expect, truth, settledAt, where, all[index + 1]?.down ?? Infinity),
-        ...await drawnIn(seen, ask, where, all[index + 1]?.down ?? Infinity));
+      const settledAt = Math.min(lastWords + 500, nextStart - 200);
+      verdicts.push(...await trail(seen, ask, circled, where), ...await pictureSent(ask, circled !== null, flow.display), ...await inked(seen, ask, step.expect, truth, settledAt, where, nextStart),
+        ...await drawnIn(seen, ask, where, nextStart));
     }
   }
+  // A look with no key: a page it has read, asked about once, is given by the record under the look's own name;
+  // a later look at the same page (the mark moving) is held to the page of the look before it.
+  const lookSteps = numbered.filter(({ step }) => "look" in step);
+  let asked: PageRead[] = [];
+  for (const [index, { step, truth }] of lookSteps.entries()) {
+    const seenLook = seenLooks[index];
+    if (!seenLook) throw new Error(`${scenario.id}: the run holds ${seenLooks.length} looks, and the scenario has ${lookSteps.length}`);
+    if (!("look" in step)) continue;
+    const name = first(seenLook.moments, "say")?.id.split(":")[0] ?? "";
+    asked = given.get(name) ?? asked;
+    verdicts.push(...glanced(seenLook, step.expect, truth, { pages: asked, ranOn: ran }));
+    const drawnBoard = lastBoard(seenLook.moments, name);
+    verdicts.push(...readable("C18", seenLook.index, drawnBoard.rows, drawnBoard.card, boardLook));
+    if (step.page) verdicts.push(pageChanged(seenLook.index, standingBefore(everything, { down: seenLook.at, moments: seenLook.moments }).length));
+  }
+  if (all.length === 0) throw new Error(`${scenario.id}: the run holds no ask; a scenario needs one so its ending can be judged`);
   const last = all[all.length - 1];   // the loop above threw if the run held fewer asks than the scenario
   const closed = of(last.moments, "close").length > 0;
   verdicts.push(...(closed ? closing(last) : ending(last, true)));

@@ -7,7 +7,8 @@ export type Moment = { at: number } & (
   | { kind: "heard"; text: string }
   | { kind: "trail"; x: number; y: number }
   | { kind: "look"; name: string; detail?: string }
-  | { kind: "say"; id: string; text: string; opener: boolean; hint: boolean; top: boolean }   // top: a hint on the last rung of the ladder
+  | { kind: "glance"; lines: number }   // a look with no key pressed: the body saw the display change and stand still
+  | { kind: "say"; id: string; text: string; opener: boolean; hint: boolean; top: boolean; trail?: string[] }   // top: a hint on the last rung of the ladder; trail: the steps shown above a line he did not ask for
   | { kind: "mark"; id: string; mark: string; box: Box; label?: string }
   | { kind: "echo"; box: Box }
   | { kind: "board"; text: string }
@@ -25,14 +26,26 @@ export type Ask = { index: number; moments: Moment[]; down: number; up: number |
 export const of = <K extends Moment["kind"]>(moments: Moment[], kind: K) => moments.filter((m): m is Extract<Moment, { kind: K }> => m.kind === kind);
 export const first = <K extends Moment["kind"]>(moments: Moment[], kind: K) => of(moments, kind)[0] ?? null;
 
+const starts = (moments: Moment[]) => moments.filter((m) => m.kind === "key-down" || m.kind === "glance");
+const stretch = (moments: Moment[], from: number) => {
+  const until = starts(moments).find((start) => start.at > from)?.at ?? Infinity;
+  return moments.filter((m) => m.at >= from && m.at < until);
+};
+
 // One ask runs from its key-down to the next key-down, so a cut-in's late lines belong to the ask that cut in.
+// A look with no key ends an ask's stretch too: what a look shows is the look's, not the ask's.
 export function asks(moments: Moment[]): Ask[] {
-  const downs = of(moments, "key-down");
-  return downs.map((down, index) => {
-    const until = downs[index + 1]?.at ?? Infinity;
-    const mine = moments.filter((m) => m.at >= down.at && m.at < until);
+  return of(moments, "key-down").map((down, index) => {
+    const mine = stretch(moments, down.at);
     return { index, moments: mine, down: down.at, up: first(mine, "key-up")?.at ?? null };
   });
+}
+
+/** A look with no key pressed, and everything shown from it until the next look or press. */
+export type Look = { index: number; at: number; moments: Moment[] };
+
+export function looks(moments: Moment[]): Look[] {
+  return of(moments, "glance").map((glance, index) => ({ index, at: glance.at, moments: stretch(moments, glance.at) }));
 }
 
 // Sound reaches the body faster than it plays, so what he hears is worked out: each sentence plays when its first

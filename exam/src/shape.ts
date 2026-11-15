@@ -35,6 +35,10 @@ const Expect = z.object({
   saysThat: z.object({ what: z.string().min(1), anyOf: z.array(z.string().min(1)).min(1) }).optional(),
   /** He pressed again at once: nothing of the ask before this one may be said or drawn after this press. */
   takesBackTheAskBefore: z.boolean().optional(),
+  /** On a look with no key: whether anything may be shown at all. False on a page it has not read, or one it has already spoken to. */
+  shows: z.boolean().optional(),
+  /** On a look: the dates the board of what is still ahead must hold, soonest first, each as a page writes it. */
+  ahead: z.array(z.string().min(1)).optional(),
 });
 export type Expect = z.infer<typeof Expect>;
 
@@ -46,8 +50,11 @@ export const rowOf = (want: Truth, truth: Truth[]): Truth[] =>
 const Step = z.union([
   // A step may cut in on the ask before it: `cutInAfterMs` after its first line of any kind,
   // `cutInAnswerAfterMs` after the first sentence of the answer itself, or `pressAgainAfterMs` after its release.
-  z.object({ say: z.string(), circle: z.string().nullable(), cutInAfterMs: z.number().positive().optional(), cutInAnswerAfterMs: z.number().positive().optional(), pressAgainAfterMs: z.number().positive().optional(), expect: Expect }),
+  z.object({ say: z.string(), circle: z.string().nullable(), page: z.string().min(1).optional(), cutInAfterMs: z.number().positive().optional(), cutInAnswerAfterMs: z.number().positive().optional(), pressAgainAfterMs: z.number().positive().optional(), expect: Expect }),
   z.object({ close: z.literal(true), expect: Expect.optional() }),
+  // A look with no key pressed: what the app sends by itself when the display has changed and stood still.
+  // `page` puts another page on the screen from this step on (he scrolled, or opened a section).
+  z.object({ look: z.literal(true), page: z.string().min(1).optional(), waitMs: z.number().positive().optional(), expect: Expect }),
 ]);
 export type Step = z.infer<typeof Step>;
 
@@ -73,8 +80,9 @@ export const Flow = z.object({
   source: z.object({ url: z.string().url(), at: z.string().optional() }).optional(),   // a real public page, fetched into tmp/real/ and never committed
   fault: z.enum(["voice"]).optional(),
   asks: z.array(z.union([
-    z.object({ wav: z.string().min(1), trail: z.array(z.tuple([z.number(), z.number(), z.number()])), startAfter: StartAfter }),
+    z.object({ wav: z.string().min(1), trail: z.array(z.tuple([z.number(), z.number(), z.number()])), startAfter: StartAfter, page: z.string().min(1).optional() }),
     z.object({ close: z.literal(true) }),
+    z.object({ look: z.literal(true), waitMs: z.number().positive(), page: z.string().min(1).optional() }),
   ])),
 });
 export type Flow = z.infer<typeof Flow>;

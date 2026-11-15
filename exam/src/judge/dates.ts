@@ -18,7 +18,7 @@ const key = (month: string) => month.toLowerCase().slice(0, 3);
  * number with a colon and a digit after it is a time ("11:59"), not a day; "December 1: Deadline" is still a day
  * (the judge once read no date in that line, and failed three right answers for it).
  */
-function dates(text: string): { month: string; day: number; said: string }[] {
+export function dates(text: string): { month: string; day: number; said: string }[] {
   const found = [...text.matchAll(MONTH)];
   return found.flatMap((m, index) => {
     const from = (m.index ?? 0) + m[0].length;
@@ -31,7 +31,7 @@ function dates(text: string): { month: string; day: number; said: string }[] {
 // As the page writes it: the same letters and digits, with "1st" read as "1" and commas and case let go.
 const plain = (text: string) => text.toLowerCase().replace(/\b(\d+)(st|nd|rd|th)\b/g, "$1").replace(/[,.]/g, " ").replace(/[−–—]/g, "-").replace(/\s+/g, " ").trim();
 
-const answerOf = (ask: Ask) => [...of(ask.moments, "say").filter((m) => !m.opener).map((m) => m.text), ...of(ask.moments, "mark").map((m) => m.label ?? ""), ...of(ask.moments, "board").map((m) => m.text)].join(" ");
+const answerOf = (ask: Pick<Ask, "moments">) => [...of(ask.moments, "say").filter((m) => !m.opener).map((m) => m.text), ...of(ask.moments, "mark").map((m) => m.label ?? ""), ...of(ask.moments, "board").map((m) => m.text)].join(" ");
 
 /** What the build knew besides his screen: the pages it gave the model with this ask, and the day of the run. */
 export type Known = { pages: PageRead[]; ranOn: Date };
@@ -43,7 +43,7 @@ const NUMBERS = ["zero", "one", "two", "three", "four", "five", "six", "seven", 
 const dayOf = (ranOn: Date) => ranOn.toLocaleDateString("en-CA", { timeZone: "America/Los_Angeles" }).split("-").map(Number);
 
 /** Whole days from the day of the run to a month and day, in the year that puts it nearest: 8, or -12 for one gone. */
-function daysTo(ranOn: Date, month: string, day: number): number {
+export function daysTo(ranOn: Date, month: string, day: number): number {
   const [year, m, d] = dayOf(ranOn);
   const from = Date.UTC(year, m - 1, d);
   const index = MONTHS.findIndex((name) => name.startsWith(month));
@@ -52,7 +52,7 @@ function daysTo(ranOn: Date, month: string, day: number): number {
 }
 
 /** What the judge holds about dates in one answer. */
-export function datesSaid(ask: Ask, expect: Expect, truth: Truth[], known: Known | null = null): Verdict[] {
+export function datesSaid(ask: Pick<Ask, "index" | "moments">, expect: Expect, truth: Truth[], known: Known | null = null): Verdict[] {
   const s = ask.index;
   // The day of the run is known without a page: it may say "today is November 14".
   const today = known ? [{ title: "today's date", url: "today", lines: [known.ranOn.toLocaleDateString("en-US", { month: "long", day: "numeric", timeZone: "America/Los_Angeles" })] }] : [];

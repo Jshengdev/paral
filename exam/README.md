@@ -112,6 +112,18 @@ only when the builder says the tree is frozen, and the builder edits again only 
   row the scenario names counts as on it: once a bracket took two rows by their names and left the date cells alone.
 - **Which line a mark names:** the one line it overlaps most. His own circle, come back as an echo, names no line.
   Ink on a line that no mark names counts against U5.
+- **A look with no key** (`src/judge/look.ts`; his choice of 2026-11-14, 19:02). A scenario step `{"look": true}`
+  scripts what the app's watcher sends by itself, and `"page"` on a step puts another page on the screen from then on.
+  On a page it has read it shows one sentence, not spoken. Each step of the trail above the line must be true: the
+  pages it says it read are the ones the record names for that look, and the dates it says it found are the ones in
+  the line. Every date is on a page it read, the mark is on the line the scenario names, and the board of what is
+  ahead runs soonest first with nothing already past. Where the scenario says `"shows": false` (a second look at the
+  same screen, a page it has not read) it shows nothing. The app's own watcher is not run by any film.
+  One bar here is the judge's own proposal and not one he was shown: when a look sees another page come up, the
+  marks drawn for the page before are cleared.
+- **A board that can be read.** A board is shrunk to fit its room and its words shrink with it. Their size is worked
+  out from the card the painter drew, and must be 10 points or more, the smallest text style the Mac itself uses.
+  A look once drew a one-row board of three long steps 17.5 points tall, its words about 3.5 points.
 - Every bar names its source: the video, Nielsen's response-time limits, or the scenario.
 
 ## What a film does not prove

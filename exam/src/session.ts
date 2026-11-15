@@ -22,7 +22,7 @@ function moment(at: number, line: Record<string, unknown> & { type: string }): M
     case "trail": return { at, kind: "trail", x: Number(line.x), y: Number(line.y) };
     case "state": return { at, kind: "look", name: String(line.name), detail: line.detail === undefined ? undefined : String(line.detail) };
     case "mute": return { at, kind: "look", name: "voice down", detail: String(line.why) };
-    case "say": return { at, kind: "say", id: sayId(line), text: String(line.text), opener: line.aside === true || Number(line.beat) < 0, hint: line.rung !== undefined, top: line.rung !== undefined && Number(line.rung) === Number(line.of) - 1 };
+    case "say": return { at, kind: "say", id: sayId(line), text: String(line.text), opener: line.aside === true || Number(line.beat) < 0, hint: line.rung !== undefined, top: line.rung !== undefined && Number(line.rung) === Number(line.of) - 1, trail: Array.isArray(line.trail) ? line.trail.map(String) : undefined };
     case "voice": return { at, kind: "voice", of: sayId(line), ms: voiceMs(String(line.pcm)) };
     case "words": return { at, kind: "voiced", of: sayId(line), words: (line.words as string[]).map(String) };
     case "mark": return { at, kind: "mark", id: sayId(line), mark: String(line.kind), box: Box.parse(line.box), label: line.label === undefined ? undefined : String(line.label) };
@@ -33,6 +33,7 @@ function moment(at: number, line: Record<string, unknown> & { type: string }): M
       const lines = line.lines as { text: string }[];
       return { at, kind: "picture", path: (line.picture as { path: string }).path, lines: lines.length, unread: lines.filter((read) => read.text === "").length };
     }
+    case "look": return { at, kind: "glance", lines: (line.lines as unknown[]).length };
     case "board.close": return { at, kind: "board-closed" };
     case "clear": return { at, kind: "clear" };
     case "close": return { at, kind: "close" };

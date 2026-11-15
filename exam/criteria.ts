@@ -1,5 +1,6 @@
 // What paral must do. C1 to C15 are what the person in the video does with DuckyHelper (youtu.be/PHswiY3YUO0, times in
-// the scenarios). C16 is the team's own and C17 is ours. U2 to U7 are checks of use, with their sources in src/judge/.
+// the scenarios). C16 is the team's own and C17 is ours. C18 is the look he chose on 2026-11-14 at 19:02 ("lets try
+// the B"). U2 to U7 are checks of use, with their sources in src/judge/.
 export const CRITERIA: Record<string, string> = {
   C1: "At rest, one small circle sits at the bottom centre, above other apps.",
   C2: "He holds the key and talks. The circle widens and his words show as he says them.",
@@ -18,6 +19,7 @@ export const CRITERIA: Record<string, string> = {
   C15: "If the voice fails, the words still show and the marks still draw.",
   C16: "The team's own: when his work has a break, a hint first, one step up per ask, never the result.",
   C17: "Ours: for a hard idea, a short rendered lesson plays on the board, on numbers that are not his.",
+  C18: "With no key pressed, on a page it has read, it shows one true line, marks where the thing is, and draws what is ahead. Elsewhere it stays quiet.",
   U2: "Use: its first words come within a second of release.",
   U3: "Use: there is never a long silence with nothing new on screen.",
   U4: "Use: a mark never covers the words it marks.",
@@ -31,6 +33,7 @@ export const NOT_LIVE = [
   "The real key press. The run scripts the key's times.",
   "His microphone. The ask is a recorded sound, heard by the real ear service.",
   "A capture of his real screen. The page is a prepared picture, read by the Mac's own text reading.",
+  "The app's own watcher, which takes a picture of the display every few seconds with no key pressed. The run scripts each look.",
   "The real windows floating over his apps. The film is drawn by the same painter, off screen.",
 ];
 

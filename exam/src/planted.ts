@@ -1,5 +1,6 @@
-import { board } from "./judge/board.ts";
-import { marks } from "./judge/marks.ts";
+import { board, readable } from "./judge/board.ts";
+import { glanced, pageChanged } from "./judge/look.ts";
+import { marks, standingBefore } from "./judge/marks.ts";
 import { drawnIn } from "./judge/motion.ts";
 import { onlyThePart } from "./judge/picture.ts";
 import { cutIn, pressedAgain } from "./judge/ending.ts";
@@ -8,7 +9,7 @@ import { heardWhole, voiced } from "./judge/voice.ts";
 import { spoken } from "./judge/words.ts";
 import type { Placed } from "./session.ts";
 import type { Box } from "./shape.ts";
-import type { Ask, Moment } from "./timeline.ts";
+import type { Ask, Look, Moment } from "./timeline.ts";
 import type { Verdict } from "./verdict.ts";
 
 // A check that cannot fail proves nothing. Each case here is a made-up ask with one fault planted in it, or with
@@ -41,7 +42,12 @@ const COLONS = [{ id: "closes", text: "November 22 at 11:59pm: Application close
 // The day of a run: Saturday, November 14, 2026, at 7 pm in Los Angeles.
 const RAN = new Date("2026-11-14T19:00:00-08:00");
 // A page the build read ahead of time, as its record names it.
-const KEPT = { title: "Recognition Process", url: "https://example.edu/recognition", lines: ["Deadlines +", "November 22 at 11:59pm: Application closes."] };
+const KEPT = { title: "Recognition Process", url: "https://example.edu/recognition", lines: ["Deadlines +", "October 27: Application opens", "November 22 at 11:59pm: Application closes.", "December 1: Deadline for advisors to submit their requirements."] };
+// How the build draws a board, as its look file had it on 2026-11-14.
+const BOARD_LOOK = { pad: 20, boxPadY: 9, rowGap: 16, type: 15 };
+// A look with no key at 1000 ms, and the one line it shows a second later with a trail above it.
+const looked = (moments: Moment[]): Look => ({ index: 0, at: 1000, moments: [{ at: 1000, kind: "glance", lines: 12 }, ...moments] });
+const shownLine = (trail: string[]): Extract<Moment, { kind: "say" }> => ({ at: 2000, kind: "say", id: "g1:0", text: "The application closes November 22 at 11:59pm; see Deadlines, further down.", opener: false, hint: false, top: false, trail });
 // Some signs that an answer says a date has passed. A scenario lists its own.
 const PASSED = { what: "the date has passed", anyOf: ["passed", "closed", "missed", "ago", "no longer"] };
 // A page with a due date and a range of dates, as two lines.
@@ -129,6 +135,19 @@ const CASES: Case[] = [
   { name: "the date it was asked for, with a spoken ending", check: "It says", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "It is due March 1st.")]), { says: ["March 1"] }, DATED) },
   { name: "it says he can still apply after the date", check: "It never says", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "The deadline was March 1, but you can still apply today.")]), { neverSays: ["you can still apply"] }, DATED) },
   { name: "it says the date has passed", check: "It never says", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "That deadline, March 1, has passed.")]), { neverSays: ["you can still apply"] }, DATED) },
+  { name: "a one-row board drawn 17.5 points tall", check: "The board's words are big enough to read", mustPass: false, verdicts: () => readable("C18", 0, 1, { x: 1368, y: 543, w: 336, h: 17.5 }, BOARD_LOOK) },
+  { name: "a two-row board drawn 115.5 points tall", check: "The board's words are big enough to read", mustPass: true, verdicts: () => readable("C8", 0, 2, { x: 1112, y: 446, w: 560, h: 115.5 }, BOARD_LOOK) },
+  { name: "another page comes up and the old underline stays over it", check: "When another page comes up", mustPass: false, verdicts: () => [pageChanged(0, standingBefore([mark("t1:0", 5000), { at: 9000, kind: "glance", lines: 30 }], { down: 9000, moments: [{ at: 9000, kind: "glance", lines: 30 }] }).length)] },
+  { name: "another page comes up and the look clears what was drawn", check: "When another page comes up", mustPass: true, verdicts: () => [pageChanged(0, standingBefore([mark("t1:0", 5000), { at: 9000, kind: "glance", lines: 30 }, { at: 9100, kind: "clear" }], { down: 9000, moments: [{ at: 9000, kind: "glance", lines: 30 }, { at: 9100, kind: "clear" }] }).length)] },
+  { name: "a look that shows one true line, unspoken", check: "Each step of the trail above the line is true", mustPass: true, verdicts: () => glanced(looked([shownLine(["saw this page", "read 1 USC pages", "found 1 date"])]), { shows: true }, DATED, { pages: [KEPT], ranOn: RAN }) },
+  { name: "a trail that says six pages were read when the record names one", check: "Each step of the trail above the line is true", mustPass: false, verdicts: () => glanced(looked([shownLine(["saw this page", "read 6 USC pages", "found 1 date"])]), { shows: true }, DATED, { pages: [KEPT], ranOn: RAN }) },
+  { name: "a trail that says a date was found when the line names none", check: "Each step of the trail above the line is true", mustPass: false, verdicts: () => glanced(looked([{ ...shownLine(["saw this page", "found 1 date"]), text: "Fundraising needs approval first; see the rule further down." }]), { shows: true }, DATED, { pages: [KEPT], ranOn: RAN }) },
+  { name: "a look that is spoken aloud", check: "What a look shows is not spoken", mustPass: false, verdicts: () => glanced(looked([shownLine(["saw this page"]), voice("g1:0", 2100, 3000)]), { shows: true }, DATED, { pages: [KEPT], ranOn: RAN }) },
+  { name: "a look that shows a line where it must show nothing", check: "A look shows nothing when it has nothing new to show", mustPass: false, verdicts: () => glanced(looked([shownLine(["saw this page"])]), { shows: false }, DATED, { pages: [], ranOn: RAN }) },
+  { name: "a look that stays quiet on a page it has not read", check: "A look shows nothing when it has nothing new to show", mustPass: true, verdicts: () => glanced(looked([]), { shows: false }, DATED, { pages: [], ranOn: RAN }) },
+  { name: "what is ahead, soonest first", check: "The board of what is ahead runs soonest first", mustPass: true, verdicts: () => glanced(looked([shownLine(["saw this page"]), { at: 2200, kind: "board", text: "Submit the application: November 22 at 11:59pm → Advisor requirements: December 1" }]), { shows: true, ahead: ["November 22", "December 1"] }, DATED, { pages: [KEPT], ranOn: RAN }) },
+  { name: "what is ahead, with a date already past in it", check: "The board of what is ahead runs soonest first", mustPass: false, verdicts: () => glanced(looked([shownLine(["saw this page"]), { at: 2200, kind: "board", text: "Application opens: October 27 → Submit the application: November 22 at 11:59pm" }]), { shows: true, ahead: ["November 22"] }, DATED, { pages: [KEPT], ranOn: RAN }) },
+  { name: "what is ahead, later date first", check: "The board of what is ahead runs soonest first", mustPass: false, verdicts: () => glanced(looked([shownLine(["saw this page"]), { at: 2200, kind: "board", text: "Advisor requirements: December 1 → Submit the application: November 22 at 11:59pm" }]), { shows: true, ahead: ["November 22"] }, DATED, { pages: [KEPT], ranOn: RAN }) },
   { name: "a date from a kept page the build gave with the ask", check: "Every date it says is on a page it read", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "It closes November 22 at 11:59 pm, inside the Deadlines section.")]), {}, DATED, { pages: [KEPT], ranOn: RAN }) },
   { name: "a date from a kept page that was not given with the ask", check: "Every date it says is on a page it read", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "It closes November 22 at 11:59 pm, inside the Deadlines section.")]), {}, DATED, { pages: [], ranOn: RAN }) },
   { name: "a date he said himself, said back to him", check: "Every date it says is on a page it read", mustPass: true, verdicts: () => spoken(ask([{ at: 4000, kind: "heard", text: "Is it due November 20?" }, say("t1:0", 6000, "It is not November 20; the page says March 1, 2027.")]), {}, DATED, { pages: [], ranOn: RAN }) },

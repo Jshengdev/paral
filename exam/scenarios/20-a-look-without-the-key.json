@@ -1,0 +1,25 @@
+{
+  "v": 1,
+  "id": "a-look-without-the-key",
+  "title": "It looks at the club page by itself, follows him down it, and stays quiet on a page it has not read",
+  "criteria": ["C18", "C13", "C6"],
+  "page": "real:rso-recognition",
+  "source": { "url": "https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/" },
+  "steps": [
+    { "look": true, "waitMs": 12000,
+      "expect": { "shows": true, "says": ["November 22"],
+        "saysThat": { "what": "where on the page the date is", "anyOf": ["deadlines", "important dates", "below", "further down", "scroll", "section"] },
+        "ahead": ["November 22", "December 1"] } },
+    { "look": true, "waitMs": 5000,
+      "expect": { "shows": false } },
+    { "look": true, "page": "real:rso-deadlines", "waitMs": 9000,
+      "expect": { "shows": true, "mark": { "on": "November 22 at 11:59pm:" }, "countsDaysTo": "November 22", "ahead": ["November 22", "December 1"] } },
+    { "say": "What do I still have to do, and by when?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["November 22", "December 1"] } },
+    { "look": true, "page": "real:marshall-outgoing", "waitMs": 6000,
+      "expect": { "shows": false } },
+    { "say": "Is this one still open?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["April 24"],
+        "saysThat": { "what": "the date has passed", "anyOf": ["passed", "closed", "missed", "ago", "no longer", "too late", "was due", "deadline was", "already", "out of date", "outdated"] } } }
+  ]
+}

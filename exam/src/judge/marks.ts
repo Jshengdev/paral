@@ -1,5 +1,5 @@
 import { findNamed, rowOf, type Box, type Expect, type Truth } from "../shape.ts";
-import { of, type Ask } from "../timeline.ts";
+import { of, type Ask, type Moment } from "../timeline.ts";
 import { no, yes, type Verdict } from "../verdict.ts";
 
 const GROWN = 14; // points a mark may sit outside the line it names: a ring goes round it, an underline under it
@@ -18,10 +18,13 @@ export function nearestLine(box: Box, truth: Truth[]): Truth | null {
 /** A mark an earlier ask drew that nothing has cleared: it is still on his page when this ask is answered. */
 export type Standing = { mark: string; box: Box };
 
-/** The marks still on his page from the asks before this one: every mark drawn since the last clear or close. */
-export function standingBefore(all: Ask[], index: number): Standing[] {
+/**
+ * The marks still on his page when this ask is answered: every mark drawn before he pressed, by an ask or by a look,
+ * since the last clear or close. A clear inside the ask itself wipes them too.
+ */
+export function standingBefore(everything: Moment[], ask: { down: number; moments: Moment[] }): Standing[] {
   let standing: Standing[] = [];
-  for (const moment of [...all.slice(0, index).flatMap((earlier) => earlier.moments), ...of(all[index].moments, "clear")]) {
+  for (const moment of [...everything.filter((m) => m.at < ask.down), ...of(ask.moments, "clear")]) {
     if (moment.kind === "clear" || moment.kind === "close") standing = [];
     if (moment.kind === "mark") standing.push({ mark: moment.mark, box: moment.box });
   }
@@ -30,7 +33,7 @@ export function standingBefore(all: Ask[], index: number): Standing[] {
 
 // A line that an earlier ask marked, and that nothing cleared, is marked: paral says "the one I already underlined"
 // and draws nothing new, and the ink is on his page (seen on film, 2026-11-14, 19:13).
-export function marks(ask: Ask, expect: Expect, truth: Truth[], standing: Standing[] = []): Verdict[] {
+export function marks(ask: Pick<Ask, "index" | "moments">, expect: Expect, truth: Truth[], standing: Standing[] = []): Verdict[] {
   const s = ask.index;
   const echoes = of(ask.moments, "echo").map((m) => ({ ...m, mark: "his circle, as a ring" }));
   const now = [...echoes, ...of(ask.moments, "mark")].map((m) => ({ mark: m.mark, box: m.box, earlier: false }));

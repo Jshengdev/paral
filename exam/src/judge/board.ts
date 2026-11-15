@@ -78,3 +78,23 @@ export function board(ask: Ask, expect: Expect, truth: Truth[], placed: Placed[]
   const covered = truth.filter((t) => t.box.h < 90 && overlap(where.box, t.box) > 0);
   return [...out, covered.length === 0 ? yes("C8", s, "The board covers no text", "it sits in an empty part of the page") : no("C8", s, "The board covers no text", `it covers "${covered[0].text.slice(0, 40)}"`)];
 }
+
+// The board's card is shrunk to fit the room it is given, and its words shrink with it. The Mac's own text styles
+// stop at 10 points (Apple's Human Interface Guidelines, the smallest built-in styles), so a board whose words come
+// out smaller than that cannot be read. The size is worked out from the card the painter drew: a card of N rows is
+// two pads, N boxes of one line of type with its padding, and the gaps between rows; what it was shrunk by is its
+// drawn height over that. Seen on film, 2026-11-14: a one-row board of three long steps drawn 17.5 points tall.
+const SMALLEST_TYPE = 10;
+const LINE = 1.2;   // a line of the system font is this many times its size (a two-row card measured 115.5 points at a shrink of 0.903)
+
+export type BoardLook = { pad: number; boxPadY: number; rowGap: number; type: number };
+
+export function readable(criterion: string, s: number, rows: number, card: Box | null, look: BoardLook): Verdict[] {
+  const what = "The board's words are big enough to read";
+  if (card === null || rows === 0) return [];
+  const whole = 2 * look.pad + rows * (LINE * look.type + 2 * look.boxPadY) + (rows - 1) * look.rowGap;
+  const size = look.type * Math.min(1, card.h / whole);
+  const limit = `${SMALLEST_TYPE} points (the smallest text style the Mac itself uses)`;
+  const measured = `about ${size.toFixed(1)} points: a card of ${rows} row${rows === 1 ? "" : "s"} drawn ${card.h} points tall`;
+  return [size >= SMALLEST_TYPE ? yes(criterion, s, what, measured, limit) : no(criterion, s, what, measured, limit)];
+}
