@@ -9,8 +9,8 @@ Three programs come from one package: `ParalBody` (everything), `paral` (the app
 
 What paral can put over a page, one row a piece. The names in the first column are the design kit's ("Lost and
 Found: brand kit"); where the kit has no frame for a piece, the name is the build's and says so. The mind decides
-when; the body only draws. Nothing here takes a click except the cross and the nudge card's two buttons, and nothing
-here clicks.
+when; the body only draws. Nothing here takes a click except the cross, the nudge card's two buttons and the way tag's "Scroll for me", and
+nothing here clicks.
 
 | piece (kit's name) | what it is for | the line that brings it | what ends it | tokens |
 |---|---|---|---|---|
@@ -179,7 +179,7 @@ card is in the movie, this macOS records the window anyway and the setting does 
 | `Mic.swift` | the microphone as 16 kHz chunks, only while the key is held |
 | `Speaker.swift` | plays the voice as it arrives; drops what is waiting at the next key press |
 | `Screen.swift` | one picture of a display without paral's own window, the lines read from it, his path drawn on it |
-| `Overlay.swift` | one see-through panel above everything that lets every click through, except where the last picture drew the cross or a nudge button; it never makes the app active |
+| `Overlay.swift` | one see-through panel above everything that lets every click through, except where the last picture drew the cross, a nudge button or the way's "Scroll for me" (`Overlay.hits`); it never makes the app active |
 | `GuideWindow.swift` | the guide's card, and the arrow that leads to it, in a panel of their own over the display that lets every click through and is marked not to be shared, so a recording of the screen leaves them out |
 | `Press.swift` (in the app) | what a click the overlay took does: the cross closes, "Add to calendar" asks as a tapped cue card does, "Not now" puts the card away |
 | `Does.swift` (in the app), `Scroll.swift` | what the app does in his apps for him, on his word only: it opens a usc.edu page, and it scrolls the page in front to what an arrow points at, a reach of half a display at a time, stopping after each until a look of the still page has been answered; it needs his Accessibility grant and says so when it has none |
@@ -225,6 +225,19 @@ in from the edge rather than cover any, up to a third of the display. There is o
 takes the place of the one before, and `clear` or a close wipes it. While it is up the resting circle carries the
 cross. Its looks are the `way` group and `ember` in `tokens.json`. Its shape is after the drawn arrow of the design
 kit ("Lost and Found: brand kit", page 08), drawn here in code; no picture is loaded.
+
+## "Scroll for me" on the way's tag
+
+After the owner's take of 2026-11-15 ("hwne it draws and asks to scroll, there shoudl be a button that just pops up
+that says, scroll for me"): under the way's tag is a small ink button with white words, `way.scroll` ("Scroll for
+me") at `way.buttonType` (14) with `way.buttonPadX`, `way.buttonPadY` round them and `way.buttonGap` below the tag.
+It comes once the arrow is inked, `motion.buttonsAfterMs` after it, rising as a card's line does, and takes a click
+only once it has arrived; with motion reduced it is there with the arrow. Its room is part of the way's place from the
+first, so `Layout.way` keeps it off the page's read text, the capsule and the board, and nothing moves when it comes.
+A press is an offer like the nudge card's (`Overlay.hits`, `Hit.offer`): the app sends the typed line
+`ScrollButton.asks` ("scroll for me") exactly as a tapped cue card does, and the scene takes it as a tapped ask. What is
+done with it is the mind's; the body scrolls nothing by itself. It goes with its way: a clear, a close, a newer way,
+or a mark with the way's id. The overlay taking the click on a Mac has not been seen.
 
 ## The arrow from a mark to what speaks about it
 
@@ -616,5 +629,5 @@ tokens' size times whatever the card was shrunk by.
 shows at those moments), `curves TOKENS SHARE...` (each of the four curves at those shares of its time), `placed RUN TOKENS MS...` (where the painter puts each thing at those moments, the points
 the pen has inked of a mark and of a drawn arrow, the capsule's look, words, stone words, note, trail, caret, wave and breathing mark (`PARAL_INSET` for a Dock's height), and the way arrow's, the cursor's and the board's own values).
 
-Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way`, `body.cursor`, `body.steps`, `body.pages`, `body.toast`, `body.boardType`, `body.guide`, `body.lead`, `body.nudge`, `body.seen`, `body.echo`, `body.stands`, `body.resting`, `body.cursorInside`, `body.inkInside`, `body.curves`, `body.moves`, `body.pill`, `body.lifted`, `body.scaled`, `body.cardLines`, `body.toastTick`, `body.click`, `body.marks`, `body.order`, `body.follow`, `body.boardFits`, `body.wayTag` rows, with no window. The look of the mark, the white surfaces, the trail's colour and the kit's sizes are checked on stills. The hosts are compiled and have never been run:
+Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way`, `body.cursor`, `body.steps`, `body.pages`, `body.toast`, `body.boardType`, `body.guide`, `body.lead`, `body.nudge`, `body.seen`, `body.echo`, `body.stands`, `body.resting`, `body.cursorInside`, `body.inkInside`, `body.curves`, `body.moves`, `body.pill`, `body.lifted`, `body.scaled`, `body.cardLines`, `body.toastTick`, `body.click`, `body.marks`, `body.order`, `body.follow`, `body.boardFits`, `body.wayTag`, `body.scrollButton` rows, with no window. The look of the mark, the white surfaces, the trail's colour and the kit's sizes are checked on stills. The hosts are compiled and have never been run:
 the key, the microphone, the screen picture and the overlay wait for a person and their grants (`./run`).

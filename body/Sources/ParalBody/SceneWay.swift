@@ -20,7 +20,7 @@ extension Scene {
         guard let way = wayUp(at: t) else { return nil }
         let ink = inking(way)
         let drawn = still ? 1 : Motion.even((t - ink.from) / max(ink.to - ink.from, 1))
-        return WayPicture(id: way.id, down: way.down, toward: way.toward, drawn: drawn, nod: nod(since: ink.to, at: t))
+        return WayPicture(id: way.id, down: way.down, toward: way.toward, drawn: drawn, nod: nod(since: ink.to, at: t), button: still ? 1 : arriving(since: ink.to + ms(tokens.motion.buttonsAfterMs), at: t))
     }
 
     /// The toast that says a date has been opened in his calendar: up for its stay from the moment of the `open` line,

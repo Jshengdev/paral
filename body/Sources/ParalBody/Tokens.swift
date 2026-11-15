@@ -88,6 +88,8 @@ public struct Tokens: Codable {
         /// How far a nod dips, how long one lasts, and the rest between two (0 for no nods). The pen's time over the
         /// arrow is `mark.shaftMs` and `mark.headMs`.
         public var nod, nodMs, nodEveryMs: Double
+        /// The button under the tag: its words, their size, the room round them and its gap below the tag.
+        public var scroll: String; public var buttonType, buttonPadX, buttonPadY, buttonGap: Double
     }
     /// The toast that confirms something paral did, after the design kit's.
     public struct Toast: Codable {

@@ -122,6 +122,8 @@ public struct Painter {
             self.way(way, at: place, ctx)
             drawn.append(Drawn(what: "way", id: way.id, box: place.whole))
             drawn.append(Drawn(what: "way-tag", id: place.name.string, box: Box(x: place.pill.minX, y: place.pill.minY, w: place.pill.width, h: place.pill.height)))
+            // Its button takes a click once it has arrived, as the nudge card's do (`Overlay.hits`).
+            if way.button >= 1 { drawn.append(Drawn(what: "button", id: ScrollButton.button, box: Box(x: place.button.minX, y: place.button.minY, w: place.button.width, h: place.button.height))) }
             if let with = pointer {
                 let tip = self.tip(of: with, with: way, at: place)
                 pointer?.x = tip.x

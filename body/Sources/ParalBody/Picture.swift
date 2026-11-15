@@ -80,6 +80,8 @@ public struct WayPicture: Equatable {
     public var drawn: Double
     /// How far the arrow has dipped toward its edge, in points: 0 at rest, and for a moment more while it nods.
     public var nod: Double
+    /// How far its "Scroll for me" button has come, 0 to 1: it comes once the arrow is inked, and takes a click at 1.
+    public var button = 1.0
 }
 
 /// The toast that confirms something paral did: its words, how strong it is, 0 to 1, how it has come up as a card,

@@ -23,6 +23,23 @@ extension Film {
     }
 
     /// A clear picture of the display with `draw` painted on it, origin top-left and y growing downward.
+    /// What the overlay would take a click on at each moment of a recorded run, painted as the app paints it: each
+    /// thing, what a press of it does (`cross`, `notNow`, or the words an offer sends) and its box. For rows.
+    public static func hits(run: String, tokens: Tokens, at moments: [Double]) throws -> [[[String: Any]]] {
+        let run = try load(URL(fileURLWithPath: run), tokens: tokens)
+        return moments.map { moment in
+            var scene = run.scene(tokens)
+            for event in run.events where event.at <= moment { scene.take(event.seen, at: event.at) }
+            let picture = scene.picture(at: moment)
+            var placed: [Drawn] = []
+            _ = clear(run.w, run.h) { placed = Painter(tokens: tokens, width: run.w, height: run.h).paint(picture, into: $0) }
+            return Overlay.hits(placed, picture).map { hit, box in
+                let does: String = { switch hit { case .cross: return "cross"; case .notNow: return "notNow"; case .offer(let send): return send } }()
+                return ["does": does, "box": box.json]
+            }
+        }
+    }
+
     private static func clear(_ w: Double, _ h: Double, _ draw: (CGContext) -> Void) -> CGContext {
         let ctx = CGContext(data: nil, width: Int(w), height: Int(h), bitsPerComponent: 8, bytesPerRow: 0, space: CGColorSpace(name: CGColorSpace.sRGB)!, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
         ctx.translateBy(x: 0, y: h)

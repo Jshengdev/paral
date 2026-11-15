@@ -93,7 +93,7 @@ public enum Film {
             let picture = scene.picture(at: moment)
             var placed: [Drawn] = []
             _ = render(run.pages.pictures[0], run.w, run.h) { ctx in placed = painter.paint(picture, into: ctx) }
-            let way: Any = picture.way.map { ["id": $0.id, "to": $0.down ? "down" : "up", "toward": $0.toward, "drawn": $0.drawn, "nod": $0.nod] as [String: Any] } ?? NSNull()
+            let way: Any = picture.way.map { ["id": $0.id, "to": $0.down ? "down" : "up", "toward": $0.toward, "drawn": $0.drawn, "nod": $0.nod, "button": $0.button] as [String: Any] } ?? NSNull()
             let pointer: Any = picture.pointer.map { ["x": $0.x, "y": $0.y, "ripple": $0.ripple ?? NSNull(), "flight": $0.withWay?.flight ?? NSNull(), "tag": $0.tag, "thinking": $0.thinking] as [String: Any] } ?? NSNull()
             let board: Any = picture.board.map { ["id": $0.id, "now": $0.now ?? NSNull(), "appear": $0.appear] as [String: Any] } ?? NSNull()
             // A drawn arrow's row also gives the points the pen has inked, so a row can say what it lies on.

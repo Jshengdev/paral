@@ -1,0 +1,129 @@
+{
+ "name": "body: the way's tag carries a \"Scroll for me\" button under its name: not there while the arrow is being inked, coming once it is, and only once it has arrived does the overlay take a click on it, a press asking \"scroll for me\" exactly as a tapped cue card does; it sits under the tag at the bottom edge and at the top, on none of the page's text and off the capsule, inside the display; it goes with its way (a clear, a mark with the way's id)",
+ "run": "body.scrollButton",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "The Spring 2027 recognition process is now open.",
+   "All student organizations must complete recognition",
+   "through the online portal, on an annual basis.",
+   "Recognition status runs for one academic year.",
+   "If you hope to re-establish your club, submit this form.",
+   "For questions, contact Campus Activities.",
+   "Important Dates"
+  ],
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "way",
+     "id": "g1",
+     "to": "down",
+     "toward": "Officer Trainings"
+    }
+   },
+   {
+    "at": 6000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 6000,
+    "line": {
+     "type": "way",
+     "id": "g2",
+     "to": "up",
+     "toward": "Deadlines"
+    }
+   },
+   {
+    "at": 10000,
+    "line": {
+     "type": "mark",
+     "id": "g2",
+     "beat": 0,
+     "kind": "box",
+     "box": {
+      "x": 120,
+      "y": 100,
+      "w": 300,
+      "h": 40
+     }
+    }
+   }
+  ],
+  "at": [
+   900,
+   1500,
+   2200,
+   2600,
+   7000,
+   9000,
+   10500
+  ]
+ },
+ "out": [
+  {
+   "way": null,
+   "takesAClick": []
+  },
+  {
+   "arrow": "part inked",
+   "button": "none",
+   "takesAClick": [
+    "cross"
+   ]
+  },
+  {
+   "arrow": "whole",
+   "button": "coming",
+   "takesAClick": [
+    "cross"
+   ]
+  },
+  {
+   "arrow": "whole",
+   "button": "up",
+   "takesAClick": [
+    "scroll for me",
+    "cross"
+   ],
+   "underTheTag": true,
+   "onText": false,
+   "onTheCapsule": false,
+   "insideTheDisplay": true
+  },
+  {
+   "arrow": "whole",
+   "button": "none",
+   "takesAClick": [
+    "cross"
+   ]
+  },
+  {
+   "arrow": "whole",
+   "button": "up",
+   "takesAClick": [
+    "scroll for me",
+    "cross"
+   ],
+   "underTheTag": true,
+   "onText": false,
+   "onTheCapsule": false,
+   "insideTheDisplay": true
+  },
+  {
+   "way": null,
+   "takesAClick": [
+    "cross"
+   ]
+  }
+ ]
+}

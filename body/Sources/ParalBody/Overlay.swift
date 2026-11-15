@@ -13,8 +13,8 @@ final class Canvas: NSView {
     override func mouseUp(with event: NSEvent) { onUp?(convert(event.locationInWindow, from: nil)) }
 }
 
-/// What on the overlay takes a click: the cross on the resting circle, and the nudge card's buttons while it offers
-/// them: its offer's, with the words a press sends, and "Not now".
+/// What on the overlay takes a click: the cross on the resting circle, the nudge card's buttons while it offers
+/// them (its offer's, with the words a press sends, and "Not now"), and the way tag's "Scroll for me", an offer too.
 public enum Hit: Equatable { case cross, offer(send: String), notNow }
 
 /// One see-through window over a display, above everything, that lets every click through. It hosts the painter and
@@ -58,11 +58,7 @@ public final class Overlay {
             apart.leavesOutGuide = true
             let placed = apart.paint(shown, into: ctx)
             self.guide.show(shown, placed: placed, painter: self.painter)
-            self.hits = placed.compactMap { item in
-                if item.what == "cross" { return (.cross, item.box) }
-                guard item.what == "button" else { return nil }
-                return item.id == NudgeButton.notNow.rawValue ? (.notNow, item.box) : shown.nudge?.offer.map { (.offer(send: $0.send), item.box) }
-            }
+            self.hits = Overlay.hits(placed, shown)
         }
         // The cross clears at the press, as it always has; a button is pressed at the press and asks at the release.
         canvas.onDown = { [weak self] point in
@@ -80,7 +76,7 @@ public final class Overlay {
             var now = picture()
             // The clock only matters while something pulses: the thinking dots, or the dots in an empty card.
             if now.capsule.look != .thinking && !(now.board?.rows.isEmpty ?? false) { now.clock = 0 }
-            if let held = self.held, held != .cross { now.nudge?.held = held == .notNow ? .notNow : .add }
+            if let held = self.held, held != .cross, held != .offer(send: ScrollButton.asks) { now.nudge?.held = held == .notNow ? .notNow : .add }
             let over = self.held != nil || self.hit(at: self.pointer) != nil
             if self.window.ignoresMouseEvents == over { self.window.ignoresMouseEvents = !over }
             guard now != self.shown || self.stale else { return }
@@ -90,6 +86,17 @@ public final class Overlay {
         }
         RunLoop.main.add(timer, forMode: .common)
         self.timer = timer
+    }
+
+    /// What takes a click in a painted picture, and where: the cross, the nudge card's buttons while it offers them,
+    /// and the way tag's "Scroll for me", which asks exactly as a tapped cue card does (`ScrollButton.asks`).
+    public static func hits(_ placed: [Drawn], _ picture: Picture) -> [(hit: Hit, box: Box)] {
+        placed.compactMap { item in
+            if item.what == "cross" { return (.cross, item.box) }
+            guard item.what == "button" else { return nil }
+            if item.id == ScrollButton.button { return (.offer(send: ScrollButton.asks), item.box) }
+            return item.id == NudgeButton.notNow.rawValue ? (.notNow, item.box) : picture.nudge?.offer.map { (.offer(send: $0.send), item.box) }
+        }
     }
 
     /// What takes a click at this point, if anything: a thing's box a little wider than it is drawn.

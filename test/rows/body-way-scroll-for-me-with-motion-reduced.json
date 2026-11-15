@@ -1,0 +1,94 @@
+{
+ "name": "body: with motion reduced the way's \"Scroll for me\" button is there with the arrow, and takes a click at once",
+ "run": "body.scrollButton",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "The Spring 2027 recognition process is now open.",
+   "All student organizations must complete recognition",
+   "through the online portal, on an annual basis.",
+   "Recognition status runs for one academic year.",
+   "If you hope to re-establish your club, submit this form.",
+   "For questions, contact Campus Activities.",
+   "Important Dates"
+  ],
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "way",
+     "id": "g1",
+     "to": "down",
+     "toward": "Officer Trainings"
+    }
+   },
+   {
+    "at": 6000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 6000,
+    "line": {
+     "type": "way",
+     "id": "g2",
+     "to": "up",
+     "toward": "Deadlines"
+    }
+   },
+   {
+    "at": 10000,
+    "line": {
+     "type": "mark",
+     "id": "g2",
+     "beat": 0,
+     "kind": "box",
+     "box": {
+      "x": 120,
+      "y": 100,
+      "w": 300,
+      "h": 40
+     }
+    }
+   }
+  ],
+  "at": [
+   1001,
+   7000
+  ],
+  "still": true
+ },
+ "out": [
+  {
+   "arrow": "whole",
+   "button": "up",
+   "takesAClick": [
+    "scroll for me",
+    "cross"
+   ],
+   "underTheTag": true,
+   "onText": false,
+   "onTheCapsule": false,
+   "insideTheDisplay": true
+  },
+  {
+   "arrow": "whole",
+   "button": "up",
+   "takesAClick": [
+    "scroll for me",
+    "cross"
+   ],
+   "underTheTag": true,
+   "onText": false,
+   "onTheCapsule": false,
+   "insideTheDisplay": true
+  }
+ ]
+}

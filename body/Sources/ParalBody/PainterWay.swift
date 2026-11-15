@@ -1,35 +1,49 @@
 import AppKit
 
-/// Where the parts of the way arrow are, once room has been found for it: the two together, the tag, the arrow's own
-/// room, and the place beside it where the cursor rests.
+/// The "Scroll for me" button on the way's tag: what a press sends, exactly as a tapped cue card sends its words, and
+/// the name the painter gives its box. The mind answers the words; the body scrolls nothing by itself.
+public enum ScrollButton {
+    public static let asks = "scroll for me"
+    public static let button = "scroll"
+}
+
+/// Where the parts of the way arrow are, once room has been found for it: the two together, the tag, the button under
+/// it, the arrow's own room, how far in from the arrow's room its tail starts, and the place beside it where the cursor rests.
 struct WayPlace {
     var whole: Box
     var pill: CGRect
+    var button: CGRect
     var arrow: Box
+    var inset: Double
     var rest: CGPoint
-    var name: NSAttributedString
+    var name, scroll: NSAttributedString
 }
 
 extension Painter {
-    /// Finds room for the way arrow: the tag with the name of what it leads to, the arrow beside it, and beside that
-    /// a place for the cursor, at the edge he must scroll toward and clear of `taken` (`Layout.way`).
+    /// Finds room for the way arrow: the tag with the name of what it leads to and its "Scroll for me" button under
+    /// it, the arrow beside them, and beside that a place for the cursor, at the edge he must scroll toward and clear
+    /// of `taken` (`Layout.way`). The button's room is kept from the first, so nothing moves when it comes.
     func place(_ way: WayPicture, avoiding taken: [Box]) -> WayPlace {
         let w = tokens.way, c = tokens.cursor
         let name = named(way.toward, within: w.maxWidth - 2 * w.padX)
-        let words = name.size()
+        let scroll = inked(w.scroll, size: w.buttonType, color: paper, weight: .medium)
+        let words = name.size(), said = scroll.size()
         let tag = CGSize(width: words.width + 2 * w.padX, height: words.height + 2 * w.padY)
+        let button = CGSize(width: (said.width + 2 * w.buttonPadX).rounded(.up), height: (said.height + 2 * w.buttonPadY).rounded(.up))
+        let column = max(tag.width, button.width), below = w.buttonGap + button.height
         let cursorRoom = c.gap + (1 - Layout.cursorTip) * c.size
-        let whole = Layout.way(down: way.down, size: (tag.width + w.gap + w.wide + cursorRoom, max(tag.height, w.tall, c.size)), taken: taken, width: width, height: floor, tokens: tokens)
-        // The tag sits at the arrow's tail, the end away from the edge it points to.
-        let pill = CGRect(x: whole.x, y: way.down ? whole.y : whole.y + whole.h - tag.height, width: tag.width, height: tag.height)
-        let arrow = Box(x: whole.x + tag.width + w.gap, y: whole.y, w: w.wide, h: whole.h)
-        return WayPlace(whole: whole, pill: pill, arrow: arrow, rest: CGPoint(x: arrow.x + arrow.w + c.gap, y: pill.minY), name: name)
+        let whole = Layout.way(down: way.down, size: (column + w.gap + w.wide + cursorRoom, max(tag.height, w.tall, c.size) + below), taken: taken, width: width, height: floor, tokens: tokens)
+        // The tag sits at the arrow's tail, the end away from the edge it points to, and the button under the tag.
+        let pill = CGRect(x: whole.x, y: way.down ? whole.y : whole.y + whole.h - tag.height - below, width: tag.width, height: tag.height)
+        let arrow = Box(x: whole.x + column + w.gap, y: whole.y, w: w.wide, h: whole.h)
+        return WayPlace(whole: whole, pill: pill, button: CGRect(x: whole.x, y: pill.maxY + w.buttonGap, width: button.width, height: button.height), arrow: arrow,
+                        inset: tag.height / 2 + (way.down ? 0 : below), rest: CGPoint(x: arrow.x + arrow.w + c.gap, y: pill.minY), name: name, scroll: scroll)
     }
 
     /// The pen's strokes for the arrow as it stands, dipped toward its edge while it nods.
     private func strokes(_ way: WayPicture, _ place: WayPlace) -> [[CGPoint]] {
         let room = place.arrow.moved(dx: 0, dy: way.down ? way.nod : -way.nod)
-        return Pen.arrow(in: room, inset: place.pill.height / 2, down: way.down, tokens: tokens)
+        return Pen.arrow(in: room, inset: place.inset, down: way.down, tokens: tokens)
     }
 
     /// The arrow that says which way to scroll, and a tag beside it that names what it leads to. The tag is the
@@ -42,6 +56,16 @@ extension Painter {
         place.name.draw(at: CGPoint(x: place.pill.minX + w.padX, y: place.pill.minY + w.padY))
 
         ink(Pen.reach(arrow: strokes(way, place), way.drawn, tokens: tokens), wide: tokens.mark.width, ctx)
+        // The button comes once the arrow is inked, rising into place as a card's line does, in ink with white words.
+        guard way.button > 0 else { return }
+        ctx.saveGState()
+        defer { ctx.restoreGState() }
+        ctx.setAlpha(min(way.button, 1))
+        ctx.translateBy(x: 0, y: tokens.card.rise * (1 - min(way.button, 1)))
+        ctx.addPath(CGPath(roundedRect: place.button, cornerWidth: place.button.height / 2, cornerHeight: place.button.height / 2, transform: nil))
+        ctx.setFillColor(ink)
+        ctx.fillPath()
+        place.scroll.draw(at: CGPoint(x: place.button.minX + tokens.way.buttonPadX, y: place.button.midY - place.scroll.size().height / 2))
     }
 
     /// The ink of a drawn arrow, in ember and `wide` points across, with a paper edge under it so that it shows on

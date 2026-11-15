@@ -50,7 +50,7 @@ export function nudge(input: { lines: string[]; rows: Written[]; at: number[]; n
     if (nudge && instead) return { card: null, inTheCapsule: { says: nudge.text, onText: text.some((other) => touches(other, instead.box)), arrowLeadsToIt: placed.some((item) => item.what === "lead" && item.id?.endsWith(">capsule")) }, toast: toast !== null };
     if (!nudge || !card) return { card: null, ...also };
     const box = card.box, pill = placed.find((item) => item.what === "capsule")!.box;
-    const buttons = placed.filter((item) => item.what === "button");
+    const buttons = placed.filter((item) => item.what === "button" && item.id !== "scroll"); // the way tag's "Scroll for me" is not the card's
     const line = card.id ? marked.get(card.id) : undefined;
     const atItsHeight = text.filter((other) => other.y < box.y + box.h && box.y < other.y + other.h);
     const right = atItsHeight.every((other) => box.x >= other.x + other.w);

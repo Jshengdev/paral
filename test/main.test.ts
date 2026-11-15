@@ -39,7 +39,7 @@ import { stands } from "./runners/stands.ts";
 import { cardLines, clickPicture, curves, lifted, moves, scaled, toastTick } from "./runners/motion.ts";
 import { apart, nudge, order, seen, usc } from "./runners/nudge.ts";
 import { follow } from "./runners/follow.ts";
-import { wayTag } from "./runners/ways.ts";
+import { scrollButton, wayTag } from "./runners/ways.ts";
 import { marks } from "./runners/marks.ts";
 
 // A row is JSON on disk: its "in" is whatever its runner takes, so it is typed where the runner reads it.
@@ -101,6 +101,7 @@ const runs: Record<string, (input: any) => unknown> = {
   "body.order": order,
   "body.follow": follow,
   "body.wayTag": wayTag,
+  "body.scrollButton": scrollButton,
   "body.seen": seen,
   "body.marks": marks,
   "body.apart": apart,
