@@ -1,8 +1,7 @@
 // Runners for rows about the notes of a sitting: the page (`cores/notes.ts`), what goes on it (`cores/sitting.ts`),
 // and the part of a look's picture cut for a marked section.
 import { execFileSync } from "node:child_process";
-import { mkdirSync, rmSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { notesPage, type Item, type Notes } from "../../mind/cores/notes.ts";
 import { cutOut, notesOf, scaled } from "../../mind/cores/sitting.ts";
@@ -47,17 +46,18 @@ export const notesRuns = {
     return { part, inCopy: part === null ? null : scaled(part, read, copy) };
   }),
   /**
-   * Whether the app would open each path as his notes page (`Keep.notes`): the files are made in this machine's
-   * temporary folder for the row, by their place there; the notes page is first asked for while it is not there.
+   * Whether the app would open each path as his notes page (`Keep.notes`): the files are made in a folder
+   * of the row's own that stands for the temporary folder, by their place there; the notes page is first asked for while it is not there.
    */
   "body.notesOpen": (input: { paths: string[] }) => {
-    const notes = join(tmpdir(), "lost-and-found-notes.html");
-    rmSync(notes, { force: true });
-    const missing: boolean[] = JSON.parse(execFileSync(headless, ["notes", notes], { encoding: "utf8" }));
-    const paths = input.paths.map((path) => `${tmpdir()}/${path}`);
+    const folder = fresh("notes-open");
+    mkdirSync(folder, { recursive: true });
+    const notes = join(folder, "lost-and-found-notes.html");
+    const missing: boolean[] = JSON.parse(execFileSync(headless, ["notes", folder, notes], { encoding: "utf8" }));
+    const paths = input.paths.map((path) => `${folder}/${path}`);
     for (const path of paths) mkdirSync(join(path, ".."), { recursive: true });
     for (const path of paths) writeFileSync(path, "<!doctype html>");
-    const opens: boolean[] = JSON.parse(execFileSync(headless, ["notes", ...paths], { encoding: "utf8" }));
+    const opens: boolean[] = JSON.parse(execFileSync(headless, ["notes", folder, ...paths], { encoding: "utf8" }));
     return { "the notes page, before it is written": missing[0], ...Object.fromEntries(input.paths.map((path, index) => [path, opens[index]])) };
   },
   /**

@@ -1,8 +1,8 @@
 import { createHash } from "node:crypto";
 import { writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
+import { outbox } from "./outbox.ts";
 import type { Hands } from "./ask.ts";
 import { asksFor, saysOnly } from "./cores/catch.ts";
 import { notesPage } from "./cores/notes.ts";
@@ -58,7 +58,7 @@ export function notes(hands: Hands, held: Held) {
         const part = cutOut(where.box, look.display, look.picture, settings.notesCut.value);
         if (part === null) continue;
         const file = `lost-and-found-cut-${createHash("sha256").update(step.step).digest("hex").slice(0, 10)}.jpg`;
-        const cut = await ports.cutter.cut({ from: look.picture.path, read: { w: look.picture.w, h: look.picture.h }, part, to: join(tmpdir(), file) }).catch(() => false);
+        const cut = await ports.cutter.cut({ from: look.picture.path, read: { w: look.picture.w, h: look.picture.h }, part, to: join(outbox(), file) }).catch(() => false);
         if (cut) pictures.set(step.step, { file, own: where.inView });
         log(cut ? `the section of "${step.step}" under "${where.on}" is cut from the look's picture for his notes` : `the section of "${step.step}" could not be cut; his notes leave its picture out`);
       }
@@ -77,7 +77,7 @@ export function notes(hands: Hands, held: Held) {
         await sayLine(hands, id, settings.nothingForNotesLine.value, signal);
         return true;
       }
-      const path = join(tmpdir(), notesFile);
+      const path = join(outbox(), notesFile);
       writeFileSync(path, notesPage(made, { sheets: [], dialkit }));
       send({ v, type: "open", id, path, label: settings.notesLabel.value });
       const count = (what: number, one: string) => `${what} ${one}${what === 1 ? "" : "s"}`;

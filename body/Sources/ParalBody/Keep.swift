@@ -22,9 +22,10 @@ public enum Keep {
 
     /// The notes page, when the path is the file that exists in the temporary folder under that one name. Nil for any
     /// other path: another name there, the same name in any other folder, a file that is not there.
-    public static func notes(_ path: String) -> URL? {
+    /// `folder` is the temporary folder, and is named only by a row, which makes its files in a folder of its own.
+    public static func notes(_ path: String, in folder: String = NSTemporaryDirectory()) -> URL? {
         let page = URL(fileURLWithPath: path).standardizedFileURL.resolvingSymlinksInPath()
-        let only = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(notesName).standardizedFileURL.resolvingSymlinksInPath()
+        let only = URL(fileURLWithPath: folder).appendingPathComponent(notesName).standardizedFileURL.resolvingSymlinksInPath()
         guard page.path == only.path, FileManager.default.fileExists(atPath: page.path) else { return nil }
         return page
     }

@@ -1,10 +1,10 @@
 import { writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
 import { join } from "node:path";
 import type { Hands } from "./ask.ts";
 import { asksFor } from "./cores/catch.ts";
 import { calendarFile, dateLine, when, type ToKeep } from "./cores/keep.ts";
 import type { KeptPage } from "./cores/page.ts";
+import { outbox } from "./outbox.ts";
 import { sayLine } from "./speech.ts";
 import { SEAM_VERSION } from "../seam/schema.ts";
 
@@ -51,7 +51,7 @@ export function keeps(hands: Hands) {
       const file = last === null ? null : calendarFile({ ...last, today });
       let line = settings.nothingToKeepLine.value;
       if (last !== null && day !== null && file !== null) {
-        const path = join(tmpdir(), "lost-and-found-keep.ics");
+        const path = join(outbox(), "lost-and-found-keep.ics");
         writeFileSync(path, file);
         const label = new Date(day.year, day.month - 1, day.day).toLocaleDateString("en-US", { month: "long", day: "numeric" });
         send({ v, type: "open", id, path, label });

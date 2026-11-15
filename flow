@@ -12,7 +12,7 @@ sock="/tmp/paral-flow-$$.sock"
 fault=$(python3 -c "import json,sys; print(json.load(open(sys.argv[1])).get('fault') or '')" "$flow")
 (cd body && swift build 2>&1 | tail -1 | grep -q "Build complete") || { echo "flow: the body did not build; run (cd body && swift build) to see why" >&2; exit 1; }
 
-PARAL_SOCKET="$sock" PARAL_RECORD="$dir/session.jsonl" PARAL_SPEND="$dir/spend.json" PARAL_FAULT="$fault" \
+PARAL_SOCKET="$sock" PARAL_RECORD="$dir/session.jsonl" PARAL_SPEND="$dir/spend.json" PARAL_FAULT="$fault" PARAL_OUT="$dir" \
   node --env-file-if-exists="${PARAL_KEYS:-$HOME/.config/paral/keys.env}" mind/main.ts > "$dir/mind.log" 2>&1 &
 mind=$!
 tries=0
