@@ -4,7 +4,7 @@ import Foundation
 /// Where the pen goes for a mark, as points in the order they are drawn. The painter inks along it and the pointer
 /// rides its tip, so both come from here.
 enum Pen {
-    private static func phase(_ key: String) -> Double {
+    static func phase(_ key: String) -> Double {
         var hash: UInt64 = 5381
         for byte in key.utf8 { hash = hash &* 33 &+ UInt64(byte) }
         return Double(hash % 628) / 100
@@ -60,6 +60,13 @@ enum Pen {
         case .bracket:
             let x = box.x - 6, arm = 9.0
             return [CGPoint(x: x + arm, y: box.y), CGPoint(x: x, y: box.y + 1), CGPoint(x: x - 1, y: box.y + box.h - 1), CGPoint(x: x + arm, y: box.y + box.h)]
+        case .tick:
+            return tick(beside: mark.box, seed: seed, tokens: tokens)
+        case .strike:
+            return strike(through: mark.box, seed: seed, tokens: tokens)
+        case .tag:
+            // A tag is a chip, not ink (`LayoutTag.swift`): the pen draws nothing for it.
+            return []
         }
     }
 

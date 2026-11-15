@@ -10,11 +10,23 @@ final class Faces {
     private let optical: Double
     private var made: [String: NSFont] = [:]
 
+    /// The families already said to be missing, so the painter and the scene's measure say it once between them.
+    private static var told: Set<String> = []
+    /// One kept for each family and optical size, for measuring words outside the painter (a tag's, in the scene).
+    private static var kept: [String: Faces] = [:]
+
+    static func kept(family: String, optical: Double) -> Faces {
+        if let known = kept["\(family)/\(optical)"] { return known }
+        let made = Faces(family: family, optical: optical)
+        kept["\(family)/\(optical)"] = made
+        return made
+    }
+
     init(family: String, optical: Double) {
         self.family = family
         self.optical = optical
         // An empty family asks for the system's font, which is not a fallback and is not announced.
-        if !family.isEmpty, NSFontManager.shared.availableMembers(ofFontFamily: family) == nil {
+        if !family.isEmpty, NSFontManager.shared.availableMembers(ofFontFamily: family) == nil, Faces.told.insert(family).inserted {
             FileHandle.standardError.write(Data("paral: the font \"\(family)\" is not on this Mac, so the system's font is used\n".utf8))
         }
     }

@@ -3,17 +3,17 @@ import Foundation
 
 extension Scene {
     public func picture(at t: Double) -> Picture {
-        let marks = marksUp(at: t), board = board(at: t), way = way(at: t)
+        let marks = marksUp(at: t), tags = tagsUp(at: t), board = board(at: t), way = way(at: t)
         var capsule = capsule(at: t)
         var pointer = pointer(at: t)
         pointer?.thinking = capsule.look == .thinking
         if capsule.look == .thinking { pointer?.working = working(at: t) }
         pointer?.press = press(at: t)
         let clip = clip(at: t)
-        capsule.closes = capsule.look == .rest && (!marks.isEmpty || way != nil || board != nil || clip != nil)
+        capsule.closes = capsule.look == .rest && (!marks.isEmpty || !tags.isEmpty || way != nil || board != nil || clip != nil)
         dress(&capsule, at: t, cursorUp: pointer != nil)
         let nudge = nudge(at: t)
-        return Picture(clock: t, capsule: capsule, marks: marks, echo: echo(at: t), way: way, pointer: pointer, click: still ? nil : click(at: t), board: board, clip: clip, toast: toast(at: t), guide: guide(at: t), lead: lead(at: t, capsule: capsule, nudge: nudge), trail: trailUp(at: t), avoid: texts, bottomInset: bottomInset, nudge: nudge)
+        return Picture(clock: t, capsule: capsule, marks: marks, echo: echo(at: t), way: way, pointer: pointer, click: still ? nil : click(at: t), board: board, clip: clip, toast: toast(at: t), guide: guide(at: t), lead: lead(at: t, capsule: capsule, nudge: nudge), trail: trailUp(at: t), avoid: texts, bottomInset: bottomInset, nudge: nudge, tags: tags)
     }
 
     /// What the pill and its bubble say at `t`. The bubble carries every word the pill has to say: his words while
@@ -91,9 +91,10 @@ extension Scene {
         still ? 1 : Motion.even((t - began - flight) / duration(kind))
     }
 
+    /// The ink on the page at `t`. Tags are drawn as chips (`tagsUp`).
     func marksUp(at t: Double) -> [MarkPicture] {
         marks.compactMap { mark in
-            guard mark.at <= t, mark.clearedAt.map({ t < $0 }) ?? true, let began = start(mark), t >= began else { return nil }
+            guard mark.kind != .tag, mark.at <= t, mark.clearedAt.map({ t < $0 }) ?? true, let began = start(mark), t >= began else { return nil }
             return MarkPicture(key: "\(mark.id)/\(mark.beat)", kind: mark.kind, box: mark.box, label: mark.label, drawn: inked(mark.kind, since: began, at: t), pulse: pulse(of: mark, since: began, at: t))
         }
     }

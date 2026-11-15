@@ -22,8 +22,8 @@ extension Painter {
 
     /// Where the cursor rests beside the card's own mark, and the whole ink of every mark: the card keeps off both,
     /// at their full size from the first moment, so it does not move as the pen draws. The resting place is found as
-    /// the scene finds it (`ScenePointer.swift`).
-    private func held(_ marks: [MarkPicture], of id: String, cursor: Bool, avoiding texts: [Box]) -> [Box] {
+    /// the scene finds it (`ScenePointer.swift`), beside the mark and the tags on its line.
+    private func held(_ marks: [MarkPicture], of id: String, tags: [TagPicture], cursor: Bool, avoiding texts: [Box]) -> [Box] {
         let c = tokens.cursor
         var held: [Box] = []
         for mark in marks {
@@ -32,7 +32,8 @@ extension Painter {
             guard let path = Painter.bounds(of: Pen.path(of: whole, tokens: tokens, avoiding: texts, inside: (width, height))) else { continue }
             held.append(path.grown(tokens.mark.width / 2))
             guard cursor, mark.key.hasPrefix(id + "/") else { continue }
-            let tip = Layout.beside(path, cursor: c.size, gap: c.gap, texts: texts, width: width, height: height)
+            let near = Layout.resting(ink: path, kind: mark.kind, line: mark.box, tags: tags.filter { Scene.sameLine($0.line, mark.box) }.compactMap { tag in tag.box.map { Layout.tagLargest($0, of: tag.line, tokens: tokens) } })
+            let tip = Layout.beside(near, cursor: c.size, gap: c.gap, texts: texts, width: width, height: height)
             held.append(Layout.cursor(tip: tip, size: c.size))
         }
         return held
@@ -47,7 +48,7 @@ extension Painter {
     /// each rising; it goes faster, fading and shrinking a little. A held button is drawn smaller. Gives back the card's
     /// place, and each button's while the card can be pressed; or nothing, drawing nothing, when no place is free
     /// even at its smallest, and then the line is shown in the capsule (`Painter.paint`).
-    func nudge(_ card: NudgePicture, avoiding texts: [Box], taken: [Box], marks: [MarkPicture], cursor: Bool, _ ctx: CGContext) -> [Drawn] {
+    func nudge(_ card: NudgePicture, avoiding texts: [Box], taken: [Box], marks: [MarkPicture], tags: [TagPicture] = [], cursor: Bool, _ ctx: CGContext) -> [Drawn] {
         let n = tokens.nudge, stone = color(tokens.stone)
         let wrapped: NSString.DrawingOptions = [.usesLineFragmentOrigin, .usesFontLeading]
         let inner = n.width - 2 * n.pad, beyond = n.avatar + n.nameGap
@@ -70,7 +71,7 @@ extension Painter {
         let full = CGSize(width: n.width, height: n.pad + head + trailTall + n.gap + said.height.rounded(.up) + (pills.isEmpty ? 0 : n.gap + pillTall) + n.pad)
 
         let asked = NudgePlaces.Asked(text: card.text, w: full.width, h: full.height, beside: card.beside, texts: texts)
-        let was = nudges.asked == asked ? nudges.found : nil, kept = taken + held(marks, of: card.id, cursor: cursor, avoiding: texts)
+        let was = nudges.asked == asked ? nudges.found : nil, kept = taken + held(marks, of: card.id, tags: tags, cursor: cursor, avoiding: texts)
         // A card that is going stays where it was, whatever has come up since.
         let place: (box: Box, scale: Double)?
         if card.coming.gone > 0, let was { place = was } else if nudges.asked == asked, was == nil, nudges.taken == kept { place = nil } else {

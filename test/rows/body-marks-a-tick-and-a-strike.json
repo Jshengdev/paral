@@ -1,0 +1,116 @@
+{
+ "name": "body: a tick is drawn by the pen left of its line, in a square as tall as the line up to 26 (its ink 20 tall on a line 47 tall) whose edge is 8 clear of the words (its stroke's middle 9), touching no read line; a strike is drawn through its line at even speed, from 4 before it to 4 past it, rising a little and inside the line's height; the cursor rides the pen for both and then rests by each, and a clear takes both and the cursor",
+ "run": "body.marks",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes.",
+   "Late applications are not accepted.",
+   "Info Sessions, Workshops, and Office Hours",
+   "Application deadline: November 2, 2026",
+   "Apply for the Catalina Maymester"
+  ],
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "t1",
+     "beat": 0,
+     "kind": "tick",
+     "on": 2
+    }
+   },
+   {
+    "at": 2000,
+    "line": {
+     "type": "mark",
+     "id": "g1",
+     "beat": 0,
+     "kind": "strike",
+     "on": 6
+    }
+   },
+   {
+    "at": 4000,
+    "line": {
+     "type": "clear"
+    }
+   }
+  ],
+  "at": [
+   1300,
+   1530,
+   2000,
+   2570,
+   3200,
+   4100
+  ]
+ },
+ "out": [
+  {
+   "cursor": "nearest nothing",
+   "arrowLeaves": null
+  },
+  {
+   "t1/0 tick": {
+    "leftOfItsWords": true,
+    "clearOfTheWords": 21,
+    "tall": 9,
+    "onAnyReadLine": false
+   },
+   "cursor": "on the pen's tip",
+   "arrowLeaves": null
+  },
+  {
+   "t1/0 tick": {
+    "leftOfItsWords": true,
+    "clearOfTheWords": 9,
+    "tall": 20,
+    "onAnyReadLine": false
+   },
+   "cursor": "nearest t1/0 tick",
+   "arrowLeaves": null
+  },
+  {
+   "t1/0 tick": {
+    "leftOfItsWords": true,
+    "clearOfTheWords": 9,
+    "tall": 20,
+    "onAnyReadLine": false
+   },
+   "g1/0 strike": {
+    "startsBeforeItsLine": 4,
+    "endsPastIt": -342.2,
+    "rises": false,
+    "insideItsLine": true,
+    "onOtherLines": false
+   },
+   "cursor": "on the pen's tip",
+   "arrowLeaves": null
+  },
+  {
+   "t1/0 tick": {
+    "leftOfItsWords": true,
+    "clearOfTheWords": 9,
+    "tall": 20,
+    "onAnyReadLine": false
+   },
+   "g1/0 strike": {
+    "startsBeforeItsLine": 4,
+    "endsPastIt": 4,
+    "rises": true,
+    "insideItsLine": true,
+    "onOtherLines": false
+   },
+   "cursor": "nearest g1/0 strike",
+   "arrowLeaves": null
+  },
+  {
+   "cursor": "none",
+   "arrowLeaves": null
+  }
+ ]
+}

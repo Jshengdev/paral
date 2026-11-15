@@ -1,0 +1,81 @@
+{
+ "name": "body: a tag whose place after its line is taken by a card of ours (the board) sits above the line's end instead, on no read line and no piece of ours",
+ "run": "body.marks",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes.",
+   "Late applications are not accepted.",
+   "Info Sessions, Workshops, and Office Hours",
+   "Application deadline: November 2, 2026",
+   "Apply for the Catalina Maymester"
+  ],
+  "rows": [
+   {
+    "at": 500,
+    "line": {
+     "type": "board",
+     "id": "g9",
+     "rows": [
+      [
+       "Officers finish their training"
+      ],
+      [
+       "Submit the application: November 22 at 11:59pm"
+      ],
+      [
+       "Advisor requirements: December 1"
+      ]
+     ]
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "g1",
+     "beat": 0,
+     "kind": "strike",
+     "on": 3
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "g1",
+     "beat": 0,
+     "kind": "tag",
+     "on": 3,
+     "label": "closed 13 days ago",
+     "tone": "quiet"
+    }
+   }
+  ],
+  "at": [
+   2500
+  ]
+ },
+ "out": [
+  {
+   "g1/0 strike": {
+    "startsBeforeItsLine": 4,
+    "endsPastIt": 4,
+    "rises": true,
+    "insideItsLine": true,
+    "onOtherLines": false
+   },
+   "g1/0 tag": {
+    "where": "above its line's end",
+    "rightEdgeAtTheLinesEnd": true,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "cursor": "nearest g1/0 tag",
+   "arrowLeaves": null
+  }
+ ]
+}
