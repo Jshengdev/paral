@@ -210,11 +210,11 @@ The judge found real faults over the weekend, and each became a row before it wa
 words that the date rule could not read, a question in a page's first second that silenced the page, sentences
 that took too long to say.
 
-**After the 11:00 submission.** This branch stood as submitted until the judging was over. What was added that
-Sunday afternoon and merged afterwards: the scroll wheel is turned the way a real one is, so "Scroll for me" moves
+**After the 11:00 submission.** This branch stood as submitted until the judging was over. What was added after
+the submission was sent (from 10:43 that Sunday morning on) and merged afterwards: the scroll wheel is turned the way a real one is, so "Scroll for me" moves
 a page in Chrome; a page's first look brings one line and one mark, and the board of steps comes when asked for;
 the pages a question is given are held ready by the model's service as soon as the page is seen, so a first
-question is answered as fast as a second; dates written with slashes are read; a long sentence that ends by
+question on a page no longer waits for them; dates written with slashes are read; a long sentence that ends by
 saying where a thing is written is said as two; the app finishes the look it is taking before it exits; and an
 exercise can be worked through step by step behind a switch that is off (`PARAL_WORK_THROUGH=1 ./run`). On the
 build with all but the two-sentence change, the judge's pass was 1,900 of 1,903 checks.
@@ -227,8 +227,9 @@ build with all but the two-sentence change, the judge's pass was 1,900 of 1,903 
   you about one you never visit.
 - It remembers one sitting. Close it and it starts over.
 - The kept pages are as fresh as their last reading. Reading them again every night is the next step.
-- "Scroll for me" has turned a real page only when pressed on a page's first look. Pressed beside an answer's
-  card it stopped one reach short on a real screen; that is changed and has not been seen there since.
+- "Scroll for me" has worked on a real screen only when pressed on a page's first look. Pressed beside an
+  answer's card there, the page turned and the heading was marked, but the app said the page had not moved; that
+  is changed and has not been seen there since.
 - "Take me there" pressed and the notes page run in tests and have not yet run on a real screen. "Add to
   calendar" has written its date there.
 - It does not work with a screen reader. Every spoken sentence is also shown as text, the demo's questions can be
