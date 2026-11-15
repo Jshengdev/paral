@@ -129,6 +129,10 @@ the mind sees the step happen (`mind/guide.ts`, `cores/guide.ts`): the look show
 heading or the line, a "show me" step was given, a date was kept, an ask holding certain words was answered. A step
 done out of order counts. It asks no model. The body draws the card and can hide it.
 
+That list stands until he asks something on the page. The first thing he asks there is his goal, and from then the
+card counts the goal's steps: the ones the looks found on that page, the first of them until "show me" or a click on
+a step's box moves it on (`cores/guide.ts` `towardGoal`). The demo's own lines are in the menu, ticked as he presses them.
+
 **Rings on a drawing.** A sheet in `sheets/` is a page measured once: some of its printed lines, and a box for each
 place of a drawing on it. On each ask the mind tries to find the sheet on his screen from those lines
 (`cores/sheet.ts`: one scale and one shift, refused under two lines or when the fit is poor), which gives every place

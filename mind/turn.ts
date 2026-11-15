@@ -54,7 +54,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
   /** His last ask and what he was told, for a look at the page he goes to next. */
   let asked: (Asked & { at: number }) | null = null;
   /** The demo's guide: what to do next on the page on his screen, told what the rest of the mind sees happen. */
-  const guide = guides({ settings, send, log });
+  const guide = guides({ settings, send, log }, () => ahead);
   const hands: Hands = { ports, settings, send, log, noted: guide.noted };
   const keeping = keeps(hands);
   const taking = takes(hands, () => glancing.whereNow(), keeping.has);

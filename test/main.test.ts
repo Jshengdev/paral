@@ -10,7 +10,7 @@ import { boxes, fitted, split, wipes } from "../mind/cores/beats.ts";
 import { asksFor, fits, hear, saysOnly, silence, unasked } from "../mind/cores/catch.ts";
 import { away, datesIn, daysFrom, unknownDate, type Named } from "../mind/cores/dates.ts";
 import { calendarFile, dateLine, named, when } from "../mind/cores/keep.ts";
-import { nextStep, note, nothingYet, type Noted, type Step } from "../mind/cores/guide.ts";
+import { guideGoal, guideNext } from "./runners/guide.ts";
 import { headingOf, movedUnder, whichPage, whichWay } from "../mind/cores/page.ts";
 import { showable, unfit } from "../mind/cores/fit.ts";
 import { circled, echo } from "../mind/cores/circle.ts";
@@ -115,10 +115,8 @@ const runs: Record<string, (input: any) => unknown> = {
   "page.which": (input) => whichPage(input.seen, input.kept, input.least)?.name ?? null,
   "page.moved": (input) => input.cases.map(([then, now]: [any[], any[]]) => movedUnder(then, now, input.least)),
   "page.heading": (input) => input.cases.map(([line, named]: [string, string]) => headingOf(input.page, line, named)),
-  "guide.next": (input) => {
-    let seen = nothingYet;
-    return input.happens.map((what: Noted) => (input.steps as Step[])[nextStep(input.steps, (seen = note(seen, what)))]?.text ?? null);
-  },
+  "guide.next": guideNext,
+  "guide.goal": guideGoal,
   "sheet.place": sheetPlace,
   "page.way": (input) => input.cases.map(([seen, line]: [string[], string]) => whichWay(seen, input.page, line)),
   "dates.away": (input) => input.cases.map(([line, today]: [string, string]) => away(line, new Date(today))?.words ?? null),

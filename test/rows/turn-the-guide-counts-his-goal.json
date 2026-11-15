@@ -1,0 +1,334 @@
+{
+ "name": "turn: the guide's counter is his goal's once he has asked something on the page: before that it gives the page's own list; after his first ask, the steps the look found on the page, the first of three; \"show me\" gives that same first step, and \"show me\" again moves it to the second, with its date",
+ "run": "turn",
+ "in": {
+  "tape": "club.json",
+  "show": "next",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "hello",
+     "body": "row"
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "look",
+     "at": 1794700000000,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Recognition Process",
+       "box": {
+        "x": 200,
+        "y": 200,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "The Spring 2027 RSO Recognition process is now open on EngageSC",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "for new RSOs and RSOs re-establishing after a lapse in recognition.",
+       "box": {
+        "x": 200,
+        "y": 360,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Important Dates",
+       "box": {
+        "x": 200,
+        "y": 500,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Deadlines +",
+       "box": {
+        "x": 200,
+        "y": 600,
+        "w": 900,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "until": "board"
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "typed",
+     "text": "what is left",
+     "at": 1794700010000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1794700010005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Recognition Process",
+       "box": {
+        "x": 200,
+        "y": 200,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "The Spring 2027 RSO Recognition process is now open on EngageSC",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "for new RSOs and RSOs re-establishing after a lapse in recognition.",
+       "box": {
+        "x": 200,
+        "y": 360,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Important Dates",
+       "box": {
+        "x": 200,
+        "y": 500,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Deadlines +",
+       "box": {
+        "x": 200,
+        "y": 600,
+        "w": 900,
+        "h": 40
+       }
+      }
+     ]
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1794700010000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1794700010005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Recognition Process",
+       "box": {
+        "x": 200,
+        "y": 200,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "The Spring 2027 RSO Recognition process is now open on EngageSC",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "for new RSOs and RSOs re-establishing after a lapse in recognition.",
+       "box": {
+        "x": 200,
+        "y": 400,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Important Dates",
+       "box": {
+        "x": 200,
+        "y": 500,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Deadlines +",
+       "box": {
+        "x": 200,
+        "y": 600,
+        "w": 900,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "show me"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 1794700012000
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1794700010000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1794700010005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Recognition Process",
+       "box": {
+        "x": 200,
+        "y": 200,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "The Spring 2027 RSO Recognition process is now open on EngageSC",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "for new RSOs and RSOs re-establishing after a lapse in recognition.",
+       "box": {
+        "x": 200,
+        "y": 400,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Important Dates",
+       "box": {
+        "x": 200,
+        "y": 500,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Deadlines +",
+       "box": {
+        "x": 200,
+        "y": 600,
+        "w": 900,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "show me"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 1794700012000
+    }
+   ]
+  ]
+ },
+ "out": [
+  {
+   "text": "Wait: it looks at this page by itself",
+   "n": 1,
+   "of": 9
+  },
+  {
+   "text": "Open Deadlines",
+   "n": 3,
+   "of": 9
+  },
+  {
+   "text": "Officers finish their training",
+   "n": 1,
+   "of": 3
+  },
+  {
+   "text": "Submit the application, by November 22 at 11:59pm",
+   "n": 2,
+   "of": 3
+  }
+ ]
+}

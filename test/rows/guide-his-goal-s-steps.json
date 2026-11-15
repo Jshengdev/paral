@@ -1,0 +1,83 @@
+{
+ "name": "guide: once he has asked something on the page the looks' steps are his goal's: the first step before any \"show me\" and after the first, the second after the next, its date said with it; past the last it is past; with nothing asked yet, or no steps known, there is no goal line and the page's own list stands",
+ "run": "guide.goal",
+ "in": {
+  "steps": [
+   {
+    "step": "Officers finish their training."
+   },
+   {
+    "step": "Submit the application",
+    "by": "November 22 at 11:59pm"
+   },
+   {
+    "step": "Advisor requirements",
+    "by": "December 1"
+   }
+  ],
+  "cases": [
+   {
+    "asked": [],
+    "showme": 0
+   },
+   {
+    "asked": [
+     "what is left"
+    ],
+    "showme": 0
+   },
+   {
+    "asked": [
+     "what is left"
+    ],
+    "showme": 1
+   },
+   {
+    "asked": [
+     "what is left"
+    ],
+    "showme": 2
+   },
+   {
+    "asked": [
+     "what is left"
+    ],
+    "showme": 4
+   }
+  ],
+  "none": {
+   "asked": [
+    "what is left"
+   ],
+   "showme": 0
+  }
+ },
+ "out": [
+  null,
+  {
+   "text": "Officers finish their training.",
+   "n": 1,
+   "of": 3,
+   "past": false
+  },
+  {
+   "text": "Officers finish their training.",
+   "n": 1,
+   "of": 3,
+   "past": false
+  },
+  {
+   "text": "Submit the application, by November 22 at 11:59pm",
+   "n": 2,
+   "of": 3,
+   "past": false
+  },
+  {
+   "text": "",
+   "n": 3,
+   "of": 3,
+   "past": true
+  },
+  null
+ ]
+}

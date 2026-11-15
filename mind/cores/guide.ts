@@ -41,3 +41,20 @@ export function happened(when: string, seen: Seen): boolean {
 export function nextStep(steps: Step[], seen: Seen): number {
   return steps.findIndex((step) => !happened(step.when, seen));
 }
+
+/** A step toward his goal, as a look found it on the page: what to do, and by when if the page says. */
+export type Toward = { step: string; by?: string };
+
+/**
+ * The guide's line once he has a goal, which is the first thing he asked on this page: the steps the looks found on
+ * the page are the goal's instructions, and the walk counts them. The step he is on is the one "show me" (or a click
+ * on its box) last gave him, and the first before any. `past` is true once he has walked past the last. Null while
+ * he has asked nothing here or no steps are known, and then the page's own list stands.
+ */
+export function towardGoal(steps: Toward[], seen: Seen): { text: string; n: number; of: number; past: boolean } | null {
+  if (seen.asked.length === 0 || steps.length === 0) return null;
+  const on = Math.max(1, seen.showme);
+  if (on > steps.length) return { text: "", n: steps.length, of: steps.length, past: true };
+  const { step, by } = steps[on - 1];
+  return { text: by ? `${step.replace(/\.$/, "")}, by ${by}` : step, n: on, of: steps.length, past: false };
+}
