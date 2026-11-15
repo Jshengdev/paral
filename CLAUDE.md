@@ -134,5 +134,8 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
 - The fast model's line about the page is switched off (`surfaceMaxWords` is 0). In live runs it was said once in
   about 200 asks, and that once it said something false about the page; nothing checks what it says. The opener is
   what is heard first. A limit of 12 turns it back on.
+- On the top rung the second look is steady for one line and erratic between lines: the same hint was passed with
+  the example in k and swapped with it in x. A repeat visit to the top rung still gets only the rung's fixed line in
+  about one ask in five.
 - One lesson exists (`balance`), with three fixed examples.
 - Landing a mark on the right line is measured on generated pages only, not on real course pages.
