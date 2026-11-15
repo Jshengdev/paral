@@ -83,7 +83,9 @@ export function shows(hands: Hands, looks: Looks, showed: (date: ToKeep) => void
       looks.lead(now.led, where?.inView ? where.box : null);
       hands.noted?.({ kind: "showme" });
       log(`${id}: show me, step ${on + 1} of ${ahead.length}: ${now.words}${now.by === "" ? "" : ` (by ${now.by})`}; ${marked}`);
-      await sayLine(hands, id, now.text, signal);
+      // The sentence is not waited for: his click on the step's box counts from the moment the box is up, also while
+      // the step is still being said. A walk that waited for its own voice would lose that click.
+      void sayLine(hands, id, now.text, signal);
       return true;
     },
 
