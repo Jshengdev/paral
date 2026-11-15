@@ -118,7 +118,10 @@ public struct Painter {
         with.pointer = pointer
         if let lead = lead(with, placed: drawn, ctx) { drawn.append(lead) }
         if let pointer { drawn.append(Drawn(what: "pointer", id: nil, box: self.pointer(pointer, clock: picture.clock, ctx))) }
-        drawn.append(Drawn(what: "capsule", id: nil, box: capsule(picture.capsule, clock: picture.clock, ctx)))
+        let pill = capsule(picture.capsule, clock: picture.clock, ctx)
+        drawn.append(Drawn(what: "capsule", id: nil, box: pill.box))
+        // The cross is named too, since it is the one thing on the overlay that takes a click.
+        if let cross = pill.cross { drawn.append(Drawn(what: "cross", id: nil, box: cross)) }
         return drawn
     }
 }

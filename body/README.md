@@ -13,7 +13,7 @@ when; the body only draws. Nothing here takes a click except the cross, and noth
 
 | piece (kit's name) | what it is for | the line that brings it | what ends it | tokens |
 |---|---|---|---|---|
-| Voice pill (the capsule) | paral's one voice on screen: his words as they are heard, that it is working, each sentence as it is said, a failure in words. At rest it is the kit's orb at the bottom centre | `key.down` (listening), `key.up` (working), `say` with `voice` or `mute` (answering), `state` failed; a `say` with a `trail` opens it with no key | the answer's end and a short linger, then it rests; the next press takes it over | `capsule.*`, `light`, `glass`, `shadow`, `ink`, `dim`, `font`, `motion.openMs`, `motion.lingerMs`, `motion.unaskedStayMs`, `motion.standMsAWord`, `motion.readMsLeast`, `strings.*` |
+| Voice pill (the capsule) | paral's one voice on screen: his words as they are heard, that it is working, each sentence as it is said, a failure in words. At rest it is the kit's orb at the bottom centre; at rest with paral's ink on the page, a cross that clears it, with the orb and the name to its left | `key.down` (listening), `key.up` (working), `say` with `voice` or `mute` (answering), `state` failed; a `say` with a `trail` opens it with no key | the answer's end and a short linger, then it rests; the next press takes it over | `capsule.*`, `light`, `glass`, `shadow`, `ink`, `dim`, `font`, `motion.openMs`, `motion.lingerMs`, `motion.unaskedStayMs`, `motion.standMsAWord`, `motion.readMsLeast`, `strings.*` (`strings.name` beside the cross) |
 | The trail (build's name; the kit has no frame) | the steps paral took before a line it said without being asked, in small capitals above the line, each cardinal once reached | `say` with `trail` | with its line | `capsule.tagType`, `cardinal`, `motion.trailStepMs` |
 | Highlight ring, and drawn notes | "this line": a ring, underline, wavy line or bracket drawn by hand in ember, with a note beside it when the mind sends one | `mark` (kind `ring`, `underline`, `wavy`, `bracket`; `label` for the note) | `clear`, a close, or a new mark on the same line | `mark.*`, `ember`, `cardinal` (the note) |
 | Highlight (the box) | "this line", where lines sit too close for a ring: a thin cardinal edge and a faint wash laid along the line by the pen | `mark` (kind `box`) | `clear`, a close, or a new mark on the same line | `mark.boxWidth`, `mark.wash`, `mark.ringMs`, `cardinal` |
@@ -152,7 +152,11 @@ nothing crosses the seam for it.
 ## The capsule, the board and the tags on the kit's light surface
 
 The capsule has the look of the design kit's voice pill within the states it already had: a light pill with a soft
-shadow and words in ink. At rest it is collapsed to the kit's orb (or to a cross while paral's ink is on the page).
+shadow and words in ink. At rest it is collapsed to the kit's orb. While paral's ink is on the page it rests as a
+cross that clears the ink, and since a cross alone over a line of the page reads as a stray button, it wears the
+resting orb and `strings.name` to its left, small (`capsule.tagType`), so it is plain whose cross it is. The cross
+keeps its place: a click is taken on the cross's own circle and nowhere else, so the name takes no click. The room
+for the name opens as the capsule shuts, and the name is written from the cross leftward, so it does not slide.
 Listening, a small wave stands before his words, which are grey while still being heard and black once settled.
 Answering, the words to come are grey and settle to black as they are said; the steps of a look's trail are cardinal
 once reached. The kit's pill also has a stop and a send button and keeps its transcript in a bar of its own above the
@@ -266,5 +270,5 @@ tokens' size times whatever the card was shrunk by.
 shows at those moments), `placed RUN TOKENS MS...` (where the painter puts each thing at those moments, the points
 the pen has inked of a mark and of a drawn arrow, the capsule's look and words, and the way arrow's, the cursor's and the board's own values).
 
-Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way`, `body.cursor`, `body.steps`, `body.pages`, `body.toast`, `body.boardType`, `body.guide`, `body.lead`, `body.breath`, `body.stands` and `body.inkInside` rows, with no window. The hosts are compiled and have never been run:
+Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way`, `body.cursor`, `body.steps`, `body.pages`, `body.toast`, `body.boardType`, `body.guide`, `body.lead`, `body.breath`, `body.stands`, `body.resting` and `body.inkInside` rows, with no window. The hosts are compiled and have never been run:
 the key, the microphone, the screen picture and the overlay wait for a person and their grants (`./run`).

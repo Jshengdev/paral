@@ -1,6 +1,7 @@
 // Runners for rows that look at given moments of a hand-written run on a drawn page, through the real scene and
 // painter: the arrow that says which way to scroll, and the cursor. No mind, no service, no window.
 import { execFileSync } from "node:child_process";
+import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { handWritten, session, type Written } from "./body.ts";
 
@@ -176,5 +177,22 @@ export function inkInside(input: { lines: string[]; rows: Written[]; at: number[
   return at(dir, input.at).map(({ placed }) => {
     const ink = placed.filter((item) => item.what === "mark" || item.what === "echo").map((item) => item.box);
     return { marks: ink.length, insideTheDisplay: ink.every((box) => box.x >= 3.5 && box.y >= 3.5 && box.x + box.w <= DISPLAY.w - 3.5 && box.y + box.h <= DISPLAY.h - 3.5) };
+  });
+}
+
+/**
+ * The capsule at rest at each moment of a hand-written run: whether it carries the cross that clears paral's ink,
+ * whether the cross's middle is where a click on it is taken (the middle of the capsule's own resting place, which
+ * the window's click test uses), and whether the capsule is wider than the cross, as it is when it wears its name.
+ */
+export function resting(input: { lines: string[]; rows: Written[]; at: number[] }) {
+  const tokens = JSON.parse(readFileSync(join(root, "body", "tokens.json"), "utf8"));
+  const taken = { x: DISPLAY.w / 2, y: DISPLAY.h - tokens.capsule.bottom - tokens.capsule.height / 2 };
+  return at(handWritten("resting", input.rows, input.lines), input.at).map(({ placed, capsule }) => {
+    const pill = placed.find((item) => item.what === "capsule")!.box;
+    const cross = placed.find((item) => item.what === "cross")?.box;
+    if (!cross) return { look: capsule.look, cross: null };
+    const middle = { x: cross.x + cross.w / 2, y: cross.y + cross.h / 2 };
+    return { look: capsule.look, cross: { whereAClickIsTaken: Math.hypot(middle.x - taken.x, middle.y - taken.y) < 0.5, capsuleWiderThanTheCross: pill.w > cross.w + 1, nameToItsLeft: pill.x < cross.x - 1 && Math.abs(pill.x + pill.w - (cross.x + cross.w)) < 0.5 } };
   });
 }

@@ -37,6 +37,7 @@ those are helpers, not test files.
 | `body.lead` | a hand-written run on a drawn page, looked at at given moments: whether the arrow from a mark to what speaks about it is up, which line it leaves, what it leads to, whether its ink is growing, still or going back, and whether it keeps clear of every read line's words, off the board and inside the display |
 | `body.breath` | a hand-written walk through steps on a drawn page, looked at at given moments: which line the newest mark is on, whether the pen is still drawing it, and how far its breath reaches; then how many of those moments show a breath with motion reduced |
 | `body.stands` | a hand-written run of lines that come close together, looked at at given moments: the words the capsule holds and the words on the guide's card |
+| `body.resting` | a hand-written run looked at while the capsule rests: whether it carries the cross, whether the cross is where a click on it is taken, and whether the capsule wears its name to the cross's left |
 | `body.inkInside` | a hand-written run with marks, looked at at given moments: how many marks are up and whether all of their ink lies inside the display |
 | `body.pressedAgain` | a run on a tape where the key is pressed again soon after a release: the order of the key lines the mind got |
 
