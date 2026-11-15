@@ -14,14 +14,16 @@ public struct Tokens: Codable {
         /// breath lasts. The rest between two is the way arrow's (`way.nodEveryMs`): both say "this waits for you".
         public var breath, breathDeep, breathMs: Double
     }
-    /// Paral's own cursor, after the design kit's.
+    /// Paral's own cursor, after the design kit's: the logo mark.
     public struct Cursor: Codable {
-        /// How tall it is, how wide its paper edge is, and how far from a mark it rests.
-        public var size, edge, gap: Double
+        /// How large its square frame is, and how far from a mark it rests.
+        public var size, gap: Double
         /// How long it takes to step aside once its mark is drawn; then how far the ripple that says "here" spreads, and for how long.
         public var settleMs, ripple, rippleMs: Double
         /// How small its name tag is when it pops out, as a share of its full size.
         public var tagFrom: Double
+        /// While paral works the cursor breathes: how much larger it gets, as a share of its size, and how long each way takes.
+        public var workGrows, workMs: Double
     }
     public struct Board: Codable { public var pad, boxPadX, boxPadY, gap, rowGap, type, radius, maxWidth, margin, emptyWidth, emptyHeight: Double }
     public struct Motion: Codable {
@@ -56,9 +58,9 @@ public struct Tokens: Codable {
         public var stayMs: Double
     }
     /// The guide's card, after the design kit's nudge: how wide it is, the room inside it, its corner, the size of
-    /// its words and of the small line above them, the orb's width, the gap between the two lines, and how far from
+    /// its words and of the small line above them, the logo's width, the gap between the two lines, and how far from
     /// the top and the side of the display it sits (the top clears the Mac's menu bar, 37 points on a notched display).
-    public struct Guide: Codable { public var width, pad, radius, type, small, orb, gap, top, side: Double }
+    public struct Guide: Codable { public var width, pad, radius, type, small, avatar, gap, top, side: Double }
     /// The arrow that leads from a mark to what speaks about it, after the design kit's drawn arrow: how wide its
     /// ink is, how far it stays from the mark and from what it leads to, how far its ink and paper edge keep from
     /// every read line of the page, and the longest it may be. Where no such way is found, none is drawn. The pen's
@@ -74,11 +76,11 @@ public struct Tokens: Codable {
     /// design kit writes everything in DM Sans at an optical size of 14.
     public var font: String
     public var fontOptical: Double
-    /// The design kit's reds. Ember is for what is drawn by hand on the page (its ring and its arrow); cardinal for
-    /// the neat box and for names; the cursor runs from deep cardinal through cardinal to ember.
-    public var ember, cardinal, cardinalDeep: String
-    /// The design kit's light surface, for a toast and the cursor's tag; and its gold, which is a spark only (one ring of the orb).
-    public var light, gold: String
+    /// The design kit's reds. Ember is for what is drawn by hand on the page (its ring and its arrow, and his own
+    /// loop); cardinal for the neat box, for names and for the logo mark.
+    public var ember, cardinal: String
+    /// The design kit's light surface, for every card, pill and tag.
+    public var light: String
     /// The design kit's quiet grey, for a box on the board that is not the step he is on.
     public var mist: String
     /// The light surface of the capsule, the toast and the tags: how solid its fill is, and how far its soft shadow

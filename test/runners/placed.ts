@@ -79,7 +79,7 @@ export function cursor(input: { lines: string[]; markOn: number; kind: string; m
     const moved = before === null || Math.hypot(pointer.x - before.x, pointer.y - before.y) > 0.5;
     before = pointer;
     const far = !mark ? Infinity : Math.max(mark.x - pointer.x, pointer.x - (mark.x + mark.w), mark.y - pointer.y, pointer.y - (mark.y + mark.h), 0);
-    const wears = pointer.thinking ? "the orb that says it is working" : pointer.tag ? "its name tag" : "nothing";
+    const wears = pointer.thinking ? "nothing, and breathes to say it is working" : pointer.tag ? "its name tag" : "nothing";
     return { cursor: { moved, tip: far === 0 ? "on the mark" : far <= 12 ? "beside the mark" : "away from it", onText: text.some((box) => touches(box, drawn)), ripple: pointer.ripple === null ? "none" : "spreading", wears } };
   });
 }

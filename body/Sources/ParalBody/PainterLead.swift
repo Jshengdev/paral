@@ -107,8 +107,7 @@ extension Painter {
         let b = mark.box, half = tokens.mark.width / 2
         let left = min(b.x, Double(ink.map(\.x).min() ?? 0)) - half, top = min(b.y, Double(ink.map(\.y).min() ?? 0)) - half
         let right = max(b.x + b.w, Double(ink.map(\.x).max() ?? 0)) + half, bottom = max(b.y + b.h, Double(ink.map(\.y).max() ?? 0)) + half
-        let c = tokens.cursor
-        let cursor = picture.pointer.flatMap { $0.withWay == nil ? Box(x: $0.x - c.edge, y: $0.y - c.edge, w: Layout.cursorWide * c.size + 2 * c.edge, h: c.size + 2 * c.edge) : nil }
+        let cursor = picture.pointer.flatMap { $0.withWay == nil ? Layout.cursor(tip: CGPoint(x: $0.x, y: $0.y), size: tokens.cursor.size) : nil }
         let asked = LeadWays.Asked(mark: Box(x: left, y: top, w: right - left, h: bottom - top), target: target, taken: taken, cursor: cursor, texts: picture.avoid)
         guard let strokes = way(asked) else { return nil }
         let inked = Pen.reach(arrow: strokes, lead.drawn, tokens: tokens)

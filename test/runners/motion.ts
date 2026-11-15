@@ -32,7 +32,8 @@ export function curves(input: { at: number[] }) {
  * how far the capsule is open; how much of the newest mark's stroke is inked; how much of the leading arrow's shaft
  * and of its head; how far the cursor still has to go to where it is at `cursorLandsAt` (or at the last moment asked
  * for), as a share of how far it was at the first moment that shows it; how large its name tag is against its size at the last moment that shows it (0 for no tag); and how far
- * the guide's card has come up. Only what `watch` names is given. The last moment asked for must show each thing whole.
+ * the guide's card has come up; where in the cursor's frame its tip is, as shares of the frame across and down; and
+ * how large the cursor is drawn against its size in the tokens. Only what `watch` names is given. The last moment asked for must show each thing whole.
  */
 export function moves(input: { lines: string[]; rows: Written[]; at: number[]; watch: string[]; cursorLandsAt?: number }) {
   const tokens = JSON.parse(readFileSync(tokensPath, "utf8"));
@@ -41,6 +42,7 @@ export function moves(input: { lines: string[]; rows: Written[]; at: number[]; w
   const mark = (moment: (typeof moments)[number]) => moment.placed.filter((item) => item.what === "mark").at(-1)?.path as Point[] | undefined;
   const arrow = (moment: (typeof moments)[number]) => moment.placed.find((item) => item.what === "lead")?.path as Point[] | undefined;
   const tag = (moment: (typeof moments)[number]) => moment.placed.find((item) => item.what === "tag")?.box.w ?? 0;
+  const cursor = (moment: (typeof moments)[number]) => moment.placed.find((item) => item.what === "pointer")?.box;
   const last = moments.at(-1)!;
   // The whole arrow ends with its head, one stroke through three points; what comes before those is its shaft. The
   // record joins the two strokes, so the step from the shaft's end to the head's first barb is taken off.
@@ -60,6 +62,8 @@ export function moves(input: { lines: string[]; rows: Written[]; at: number[]; w
       cursorToGo: moment.pointer ? places(far(moment.pointer) / Math.max(far(firstShown ?? null), 1)) : null,
       tag: places(tag(moment) / settledTag),
       card: moment.guide ? places(moment.guide.appear) : null,
+      cursorTip: moment.pointer && cursor(moment) ? [places((moment.pointer.x - cursor(moment)!.x) / cursor(moment)!.w), places((moment.pointer.y - cursor(moment)!.y) / cursor(moment)!.h)] : null,
+      cursorSize: cursor(moment) ? places(cursor(moment)!.w / tokens.cursor.size) : null,
     };
     return Object.fromEntries(input.watch.map((name) => [name, all[name]]));
   });

@@ -71,26 +71,29 @@ public enum Layout {
         return best?.box ?? Box(x: width - g.side - size.w, y: g.top, w: size.w, h: size.h)
     }
 
-    /// How wide the cursor is for a height of one: the design kit's arrow is 72 wide and 92.6 tall, and its shape
-    /// before the corners are rounded, which is what is laid out here, 75 by 97.9.
-    static let cursorWide = 0.766
+    /// The cursor is the design kit's logo mark in a square frame, and its tip is this share of the frame in from
+    /// the frame's top-left corner: the kit's (3.6, 3.6) in a frame of 36.
+    static let cursorTip = 0.1
+
+    /// The cursor's frame, for a tip at `tip`.
+    static func cursor(tip: CGPoint, size: Double) -> Box { Box(x: tip.x - cursorTip * size, y: tip.y - cursorTip * size, w: size, h: size) }
 
     /// Where the cursor's tip rests once its mark is drawn: just beside the mark and pointing back at it, on none of
     /// the page's text. To the right first, where a line most often ends in empty page; then under the mark's end
     /// and under its start. The first place that covers no text and is inside the display wins; failing that, the
     /// one that covers least.
-    public static func beside(_ mark: Box, cursor: (w: Double, h: Double), edge: Double, gap: Double, texts: [Box], width: Double, height: Double) -> CGPoint {
+    public static func beside(_ mark: Box, cursor size: Double, gap: Double, texts: [Box], width: Double, height: Double) -> CGPoint {
         let right = mark.x + mark.w + gap, middle = mark.y + mark.h / 2
         let tips = [
-            CGPoint(x: right, y: middle - cursor.h / 4), CGPoint(x: right, y: mark.y + mark.h - cursor.h / 8), CGPoint(x: right, y: mark.y - cursor.h / 2),
-            CGPoint(x: mark.x + mark.w - cursor.w, y: mark.y + mark.h + gap), CGPoint(x: mark.x, y: mark.y + mark.h + gap),
+            CGPoint(x: right, y: middle - size / 4), CGPoint(x: right, y: mark.y + mark.h - size / 8), CGPoint(x: right, y: mark.y - size / 2),
+            CGPoint(x: mark.x + mark.w - size, y: mark.y + mark.h + gap), CGPoint(x: mark.x, y: mark.y + mark.h + gap),
         ]
         func cost(_ tip: CGPoint) -> Double {
-            // Its paper edge is part of it, and a point more keeps it from grazing a line.
-            let body = Box(x: tip.x, y: tip.y, w: cursor.w, h: cursor.h).grown(edge + 1)
+            // Its whole frame, and a point more to keep it from grazing a line.
+            let body = cursor(tip: tip, size: size).grown(1)
             let outside = body.x < 0 || body.y < 0 || body.x + body.w > width || body.y + body.h > height
             let covered = texts.reduce(0) { $0 + max(0, min(body.x + body.w, $1.x + $1.w) - max(body.x, $1.x)) * max(0, min(body.y + body.h, $1.y + $1.h) - max(body.y, $1.y)) }
-            return covered + (outside ? cursor.w * cursor.h : 0)
+            return covered + (outside ? size * size : 0)
         }
         return tips.enumerated().min { (cost($0.element), $0.offset) < (cost($1.element), $1.offset) }?.element ?? tips[0]
     }
