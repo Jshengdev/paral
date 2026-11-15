@@ -30,8 +30,8 @@ here clicks.
 | Cursor: click | answers his own click on the mark of the step he is on: paral's cursor presses and two rings spread from under its tip, come to rest and fade. Paral clicks nothing | his `click` (from the body) on a mark whose board names the step | a moment later, by itself; none with motion reduced | `cursor.pressTo`, `cursor.clickMs`, `cursor.clickStayMs`, `cursor.ripple`, `motion.pressMs`, `motion.usualMs`, `motion.leaveMs`, `cardinal` |
 | The way arrow (build's name; after the kit's drawn arrow) | the thing is on this page and not in view: which way to scroll, and its name on a tag | `way` (`to`, `toward`) | `clear`, a close, a newer `way`, or a `mark` with the same id | `way.*`, `ember`, `light`, `glass`, `shadow`, `mark.width`, `mark.shaftMs`, `mark.headMs` |
 | The board (build's name; in the kit's language of card and buttons) | what is still ahead, or the parts of an answer, as boxes on a light card. On a board of steps the step he is on is the ink button | `board` (`rows`; `now` for the step) | `clear`, a close, a `clip`; the same rows again keep the card in place | `board.*`, `light`, `mist`, `ink`, `glass`, `shadow`, `motion.arriveMs`, `motion.usualMs` |
-| Toast | confirms something paral did: "Open in your calendar · November 22" beside the capsule | `open` (`label` for the date) | four seconds; a `clear` does not take it | `toast.*`, `card.*`, `strings.opened`, `cardinal`, `light`, `glass`, `shadow`, `motion.arriveMs`, `motion.leaveMs`, `motion.usualMs`, `curves.pop` |
-| Nudge (the kit's, with its pill buttons) | a line paral says without being asked: the name and the trail, the message, and when its date can be kept "Add to calendar" and "Not now". Beside the marked line, to the right of the page's text when there is room | `say` with `trail` (`keep` for the buttons); spoken words fill in from stone to ink with its `voice` | with buttons: a press of either, the hold key, a close, the `open` line after "Add to calendar", or a newer such line taking its place; without: its reading time and `motion.unaskedStayMs`. Words he answered get no card again while the app runs | `nudge.*`, `scale`, `stone`, `light`, `mist`, `ink`, `paper`, `glass`, `shadow`, `band`, `curves.arrive`, `curves.leave`, `strings.name` |
+| Toast | confirms something paral did: "Open in your calendar · November 22", or "Opening RSO Resources" for a page opened in his browser, beside the capsule | `open` (`label` for the date), `go` (`label` for the page) | four seconds; a `clear` does not take it | `toast.*`, `card.*`, `strings.opened`, `strings.going`, `cardinal`, `light`, `glass`, `shadow`, `motion.arriveMs`, `motion.leaveMs`, `motion.usualMs`, `curves.pop` |
+| Nudge (the kit's, with its pill buttons) | a line paral says without being asked, or any line with an offer: the name and the trail (when it has one), the message, and its offer's button ("Add to calendar" when its date can be kept) and "Not now". Beside the marked line, to the right of the page's text when there is room | `say` with `trail` or `offer` (`keep` or `offer` for the buttons); spoken words fill in from stone to ink with its `voice` | with buttons: "Not now", the hold key, a close, a newer such line taking its place, or after a press of its offer the mind's answer (`open`, `go`, its next `say`, a `clear`) or `nudge.answeredMs`; without: its reading time and `motion.unaskedStayMs`. Words he answered get no card again while the app runs | `nudge.*`, `scale`, `stone`, `light`, `mist`, `ink`, `paper`, `glass`, `shadow`, `band`, `curves.arrive`, `curves.leave`, `strings.name` |
 | Nudge, without its buttons (the guide's card) | says what to do next for the page he is on, and which step it is, so a first run needs no one beside him. The closing line comes when every step is done | `next` (`text`, `n`, `of`; `done` for the closing line) | a `next` with no words; the closing line goes by itself after the toast's stay; either way it goes in less time than it came; a `clear` does not take it. Not drawn at all when "Show the guide" is unticked in the menu | `guide.*`, `card.*`, `strings.step`, `strings.name`, `toast.stayMs`, `motion.arriveMs`, `motion.leaveMs`, `motion.standMsAWord`, `motion.readMsLeast`, `light`, `mist`, `stone`, `glass`, `shadow`, `cardinal` |
 | The lesson clip (build's name; no frame in the kit) | a rendered clip on an example that is not his, in the board's place, on a dark card | `clip` | `clear`, a close, a `board` | `board.pad`, `board.radius`, `board.maxWidth`, `ink` |
 | His own trail and his loop (build's names; they are his, not paral's) | the path of his pointer while he draws with the draw key held, and that loop drawn back by hand once his words are final | `trail` (from the body), `echo` | the trail fades as he lets go; the echo goes at his next press or when paral marks inside it | `accent` (the trail; the kit's ember, as the echo is), `ember` (the echo), `mark.width`, `motion.trailFadeMs` |
@@ -79,11 +79,16 @@ where and draws it (`PainterNudge.swift`, `Layout.nudge`), as for the guide's ca
   in `nudge.leaveMs` (160), to 0.98 of its size. The kit's blur on arrival is not drawn. With motion reduced it is
   there or not. The drawn arrow lands on the card's near end about a third of the way down (`nudge.landing`), as the
   kit's newer pictures have it.
+- **Its offer.** A `say` line may carry `offer` (`label`, `send`): one thing it offers to do. Its card's primary
+  button says `label`, and a press sends `send` as a tapped line, exactly as a cue card tapped in the menu does.
+  `keep: true` is the offer "Add to calendar" / `Nudge.asks` ("add it to my calendar"); a line with both shows its
+  `offer`. A line with an offer goes on the card though it carries no trail: the card then has no trail row, and the
+  capsule stays at rest for it. The first line of an ask decides where the ask is shown.
 - **When it goes.** With buttons it stays until a button is pressed, the hold key is pressed, the cross closes the
   conversation, or a newer such line takes its place (the same words sent again as the page scrolls are the same card,
-  which does not come up again). "Add to calendar" sends the typed line `Nudge.asks` exactly as a tapped cue card does;
-  the card stays up, the pressed button drawn held and nothing more offered, and goes on the mind's `open` line (or
-  when that ask ends with no date opened). "Not now" sends it away at once. The words of a card he answered either
+  which does not come up again). After a press of its offer the card stays up, the pressed button drawn held and
+  nothing more offered, until the mind answers: an `open`, a `go`, its next `say` or a `clear` (or the end of that
+  ask), and `nudge.answeredMs` (3 s) after the press at the latest, so it never hangs. "Not now" sends it away at once. The words of a card he answered either
   way, and the words of the line whose date was opened however it was asked for, get no card again while the app
   runs; a press of the hold key keeps nothing. Without buttons it stays its reading time and `motion.unaskedStayMs`,
   as the capsule kept such a line before. "Not now" crosses no seam (`Seen.notNow`): a film of a real run cannot show
@@ -95,6 +100,34 @@ where and draws it (`PainterNudge.swift`, `Layout.nudge`), as for the guide's ca
   mind for every click, these too. None of this has run on a Mac.
 - **Over it.** The cursor and its name tag are drawn above everything, and may pass over the card while they fly in
   and ride the pen; at rest the cursor is clear of it.
+
+## A page of USC's, opened in his browser
+
+A `go` line (`url`, `label`) is a page of USC's he asked to be taken to. The app opens it in his default browser
+(`Keep.go`), and only an https address whose host is usc.edu or ends in .usc.edu (`Keep.usc`, a pure check with its
+row): http, another host, usc.edu.evil.com, a file path, nothing else. A refused address is said in the capsule as a
+failure. The scene shows the toast for it, "Opening" and the page's name (`strings.going`), and a card whose offer asked
+for it goes. A film and the scripted stand-in open nothing. Never run on a Mac.
+
+## The guide's card on his screen and out of a recording
+
+The guide's card is for him, not for whoever watches a recording of his screen. So the app paints it in a window
+of its own (`GuideWindow.swift`): a panel over the whole display, at the overlay's level, on every space, never
+making the app active, letting every click through, and marked not to be shared (`sharingType = .none`). The
+overlay paints the same picture with the card left out (`Painter.leavesOutGuide`): the card is still placed, so
+everything else keeps off it, and the arrow that leads to the card goes into the card's window with it rather than
+point at nothing. "Show the guide" in the menu hides and shows it as before. A film paints one picture, card and all.
+
+Whether this macOS leaves such a window out of a `screencapture` recording has not been seen: newer ways of capturing
+the screen are said to ignore the setting. To check, with the app running and the guide's card on screen:
+
+```
+screencapture -v -V 5 ~/Desktop/guide-check.mov
+```
+
+It records five seconds of the screen (the Terminal may first need the screen-recording grant). Open the movie: the
+card and its "Step n of 8" should be missing from it while the capsule, the marks and the board are in it. If the
+card is in the movie, this macOS records the window anyway and the setting does nothing here.
 
 ## Deciding what is on screen
 
@@ -144,6 +177,7 @@ where and draws it (`PainterNudge.swift`, `Layout.nudge`), as for the guide's ca
 | `Speaker.swift` | plays the voice as it arrives; drops what is waiting at the next key press |
 | `Screen.swift` | one picture of a display without paral's own window, the lines read from it, his path drawn on it |
 | `Overlay.swift` | one see-through panel above everything that lets every click through, except where the last picture drew the cross or a nudge button; it never makes the app active |
+| `GuideWindow.swift` | the guide's card, and the arrow that leads to it, in a panel of their own over the display that lets every click through and is marked not to be shared, so a recording of the screen leaves them out |
 | `Press.swift` (in the app) | what a click the overlay took does: the cross closes, "Add to calendar" asks as a tapped cue card does, "Not now" puts the card away |
 | `Wire.swift` | the socket to the mind; reconnects when the mind restarts |
 | `Watch.swift` | looks at the display with no key pressed and reports a look when what it read, or where its first line stands, has changed and stood still. It reads the text only when the picture has changed. It has run on the owner's Mac since 2026-11-14 19:53; its sense of a scroll that keeps the same lines in view has not |

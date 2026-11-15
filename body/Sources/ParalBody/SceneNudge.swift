@@ -1,18 +1,38 @@
 import Foundation
 
-/// The words the nudge card's "Add to calendar" asks, exactly as a cue card tapped in the menu asks them. They must
-/// be among the mind's `keepAsks`, which keep the date paral last showed him.
+/// The words the nudge card's "Add to calendar" asks, exactly as a cue card tapped in the menu asks them, for a line
+/// that carries `keep` and no `offer` of its own. They must be among the mind's `keepAsks`, which keep the date paral
+/// last showed him.
 public enum Nudge { public static let asks = "add it to my calendar" }
 
 extension Scene {
     /// The nudge card of one line said without being asked. `upSince` is when its card came up: earlier than the
     /// line's own turn when the same words were on the card just before (the page scrolled and the look sent them
-    /// again). `answered` is the button he pressed and when; `goneAt` is when it began to go, once it has.
-    struct Card { var keep: Bool; var upSince: Double; var answered: (button: NudgeButton, at: Double)?; var goneAt: Double? }
+    /// again). `offer` is what its button does, if it has buttons; `answered` is the button he pressed and when;
+    /// `goneAt` is when it began to go, once it has.
+    struct Card { var offer: Offer?; var upSince: Double; var answered: (button: NudgeButton, at: Double)?; var goneAt: Double? }
 
-    /// The newest line said without being asked whose turn has come by `t`: the one the card is about, if any. A
-    /// newer one takes the card's place when its turn comes.
-    func unasked(at t: Double) -> Ask? { asks.last { $0.trail != nil && $0.beganAt <= t } }
+    /// The newest line on a card (said without being asked, or with an offer) whose turn has come by `t`: the one the
+    /// card is about, if any. A newer one takes the card's place when its turn comes.
+    func unasked(at t: Double) -> Ask? { asks.last { cards[$0.id] != nil && $0.beganAt <= t } }
+
+    /// What a `say` line does to the card. A card whose button he pressed goes, since this is the mind's answer to
+    /// it. A fresh line said without being asked (`carded`, which an offer makes too) waits its turn and gets a card.
+    /// Gives back when the line gets its turn.
+    mutating func card(_ id: String, fresh: Bool, text: String, carded: Bool, offer: Offer?, at: Double) -> Double {
+        goes(at, onlyAnswered: true)
+        guard fresh, carded else { return at }
+        let comes = turn(after: at)
+        cards[id] = card(text, offer: offer, comes: comes)
+        return comes
+    }
+
+    /// A page of USC's was opened in his browser: the toast says so, by the name it came with or its address's host,
+    /// and a card whose button asked for it goes.
+    mutating func went(to url: String, _ label: String?, _ at: Double) {
+        opened = (at, label ?? URL(string: url)?.host ?? url, true)
+        goes(at, onlyAnswered: true)
+    }
 
     /// The words of an ask's line.
     private func words(_ ask: Ask) -> String { ask.beats.keys.max().flatMap { ask.beats[$0]?.text } ?? "" }
@@ -29,17 +49,24 @@ extension Scene {
 
     /// The card of a line that gets its turn at `comes`: a new one, or the one already up when it holds the same
     /// words. That is the same card: it does not come up a second time and keeps what he did with it.
-    func card(_ text: String, keep: Bool, comes: Double) -> Card {
+    private func card(_ text: String, offer: Offer?, comes: Double) -> Card {
         if let up = unasked(at: comes), let card = cards[up.id], words(up) == text, shows(up, at: comes) {
-            return Card(keep: keep, upSince: card.upSince, answered: card.answered)
+            return Card(offer: offer, upSince: card.upSince, answered: card.answered)
         }
-        return Card(keep: keep, upSince: comes)
+        return Card(offer: offer, upSince: comes)
+    }
+
+    /// He tapped or typed a line: when its words are what the card's button sends, that is a press of the button.
+    mutating func answer(byTyping text: String, _ at: Double) {
+        func plain(_ words: String) -> String { words.lowercased().trimmingCharacters(in: .whitespaces) }
+        guard let ask = unasked(at: at), let send = cards[ask.id]?.offer?.send, plain(send) == plain(text) else { return }
+        answer(.add, at)
     }
 
     /// He pressed a button of the card that is up, or tapped its ask in the menu. "Not now" sends it away at once;
-    /// "Add to calendar" keeps it up until the date is opened. Either way its words get no card again.
+    /// its offer's button keeps it up until the mind answers (`ends`). Either way its words get no card again.
     mutating func answer(_ button: NudgeButton, _ at: Double) {
-        guard let ask = unasked(at: at), let card = cards[ask.id], card.keep, card.answered == nil, shows(ask, at: at) else { return }
+        guard let ask = unasked(at: at), let card = cards[ask.id], card.offer != nil, card.answered == nil, shows(ask, at: at) else { return }
         cards[ask.id]?.answered = (button, at)
         if button == .notNow { cards[ask.id]?.goneAt = at }
         answered.append((words(ask), at))
@@ -57,17 +84,21 @@ extension Scene {
     /// A date was opened in his calendar: the date paral last showed him, which is the newest card that offered it.
     /// That card goes, and its words get no card again, however the date was asked for.
     mutating func kept(_ at: Double) {
-        guard let ask = asks.last(where: { $0.trail != nil && $0.beganAt <= at && cards[$0.id]?.keep == true }) else { return }
+        guard let ask = asks.last(where: { $0.beganAt <= at && cards[$0.id]?.offer != nil }) else { return }
         if shows(ask, at: at) { cards[ask.id]?.goneAt = at }
         answered.append((words(ask), at))
     }
 
-    /// When an ask's card begins to go, or nil while it stays. With buttons it stays until it is sent away; with
-    /// none, for its reading time and the stay after it, as the capsule kept such a line before.
+    /// When an ask's card begins to go, or nil while it stays. With buttons it stays until it is sent away: after a
+    /// press of its offer, by the mind's answer (an `open`, a `go`, its next line or a `clear`), or `nudge.answeredMs`
+    /// after the press at the latest. With none, for its reading time and the stay after it, as the capsule kept such
+    /// a line before.
     func ends(_ ask: Ask) -> Double? {
         guard let card = cards[ask.id] else { return nil }
         if let gone = card.goneAt { return gone }
-        return card.keep ? nil : times(ask).last.map { $0.end + tokens.motion.unaskedStayMs }
+        // A pressed button's card waits for the mind's answer, and never longer than `nudge.answeredMs`.
+        if let answer = card.answered { return answer.at + ms(tokens.nudge.answeredMs) }
+        return card.offer != nil ? nil : times(ask).last.map { $0.end + tokens.motion.unaskedStayMs }
     }
 
     /// The nudge card at `t`: the newest line said without being asked, once its turn has come, beside the mark the
@@ -90,7 +121,7 @@ extension Scene {
         // The steps light one after another, as they did in the capsule.
         let trail = (ask.trail ?? []).enumerated().map { index, step in Word(text: step, bright: still || t - ask.beganAt >= Double(index) * ms(tokens.motion.trailStepMs) ? 1 : tokens.dim) }
         let beside = marks.last { $0.id == ask.id && $0.at <= t }?.box
-        return NudgePicture(id: ask.id, text: text, words: spoken, trail: trail, buttons: card.keep, beside: beside, coming: arrival, answered: card.answered?.button)
+        return NudgePicture(id: ask.id, text: text, words: spoken, trail: trail, offer: card.offer, beside: beside, coming: arrival, answered: card.answered?.button)
     }
 
     /// When the newest card to have gone was gone, at or before `t`, if one has. A card whose place a newer line had

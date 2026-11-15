@@ -122,6 +122,9 @@ public struct Tokens: Codable {
         public var clear, beside, edge, top, cell, least, shrink: Double
         /// How long it takes to go (it comes up as any card does, `card`), and the size of a held button.
         public var leaveMs, pressed: Double
+        /// After a press of its offer, the longest the card waits for the mind's answer before it goes by itself, so
+        /// it never hangs. Chosen, not measured: the tapped calendar line was answered within a tenth of a second on a tape.
+        public var answeredMs: Double
         /// Where the drawn arrow lands on the card's near end, as a share of its height from the top: the kit's
         /// newer pictures land it about a third of the way down.
         public var landing: Double
@@ -129,7 +132,10 @@ public struct Tokens: Codable {
     /// `opened` is what the toast says when a date has been opened in his calendar. It does not say "added": whether
     /// Calendar asks first or adds at once is not known.
     /// `name` is what the cursor's tag says: whose cursor it is.
-    public struct Strings: Codable { public var thinking, listening, failed, opened, name, step: String }
+    public struct Strings: Codable { public var thinking, listening, failed, opened, name, step: String
+        /// What the toast says before the name of a page of USC's opened in his browser.
+        public var going: String
+    }
 
     public var ink, paper, accent: String
     /// The design kit's grey for a quiet line: the name above a card's words and the step's number; the words in

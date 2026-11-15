@@ -22,6 +22,13 @@ public struct BodySettings: Equatable {
     public var opening = ""
 }
 
+/// One thing a line offers to do for him, as the primary button of its card: the button's words, and the words sent
+/// as a tapped line when it is pressed.
+public struct Offer: Equatable {
+    public var label, send: String
+    public init(label: String, send: String) { self.label = label; self.send = send }
+}
+
 /// Everything the scene can be told, from either side of the seam. The windows and the film feed it the same way.
 public enum Seen {
     case ready(BodySettings)
@@ -41,13 +48,16 @@ public enum Seen {
     case heard(text: String, final: Bool)
     /// `trail` is nil for a line of an answer he asked for. A line said without being asked carries the steps paral took,
     /// and `keep` when it shows a date he can ask to keep: its card then offers "Add to calendar" (false when absent).
-    case say(id: String, beat: Int, text: String, aside: Bool, trail: [String]?, keep: Bool)
+    /// `offer` is one thing any line offers to do, as its card's button; it wins over `keep`.
+    case say(id: String, beat: Int, text: String, aside: Bool, trail: [String]?, keep: Bool, offer: Offer?)
     case voice(id: String, beat: Int, pcm: Data, last: Bool)
     case words(id: String, beat: Int, start: [Double], end: [Double])
     case mute(id: String)
     /// A calendar file the mind has written. The scene shows nothing for it; the app opens it (see `Keep`).
     /// `label` is the date in a few words ("November 22"), which the toast shows.
     case open(path: String, label: String?)
+    /// A page of USC's he asked to be taken to, and its name for the toast. The app opens it (`Keep.go`).
+    case go(id: String, url: String, label: String?)
     /// `tone` is only for a tag, whose words are its `label`; a tag with no tone is quiet. `spot` is true for a mark on a
     /// place of a drawing (an atom), not a line: no arrow leads from it and the cursor does not go to it.
     case mark(id: String, beat: Int, kind: MarkKind, box: Box, label: String?, tone: Tone?, spot: Bool)
@@ -133,7 +143,8 @@ public enum Seen {
             return .success(.heard(text: text, final: final))
         case "say":
             guard let id, let beat, let text = s("text"), !text.isEmpty else { return .failure(Refused("say: id, beat and text are needed")) }
-            return .success(.say(id: id, beat: beat, text: text, aside: f["aside"] as? Bool ?? false, trail: f["trail"] as? [String], keep: f["keep"] as? Bool ?? false))
+            let offer = (f["offer"] as? [String: Any]).flatMap { o in (o["label"] as? String).flatMap { label in (o["send"] as? String).map { Offer(label: label, send: $0) } } }
+            return .success(.say(id: id, beat: beat, text: text, aside: f["aside"] as? Bool ?? false, trail: f["trail"] as? [String], keep: f["keep"] as? Bool ?? false, offer: offer.flatMap { $0.label.isEmpty || $0.send.isEmpty ? nil : $0 }))
         case "voice":
             guard let id, let beat, let pcm = s("pcm"), let sound = Data(base64Encoded: pcm) else { return .failure(Refused("voice: id, beat and pcm are needed")) }
             return .success(.voice(id: id, beat: beat, pcm: sound, last: f["last"] as? Bool ?? false))
@@ -146,6 +157,9 @@ public enum Seen {
         case "open":
             guard let path = s("path"), !path.isEmpty else { return .failure(Refused("open.path: missing")) }
             return .success(.open(path: path, label: s("label")))
+        case "go":
+            guard let id, let url = s("url"), !url.isEmpty else { return .failure(Refused("go: id and url are needed")) }
+            return .success(.go(id: id, url: url, label: s("label")))
         case "mark":
             guard let id, let beat, let kind = MarkKind(rawValue: s("kind") ?? ""), let b = box(f["box"]) else {
                 return .failure(Refused("mark: id, beat, a known kind and a box with positive w and h are needed"))

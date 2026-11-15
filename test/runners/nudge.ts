@@ -23,9 +23,10 @@ const PIECES = ["mark", "echo", "pointer", "tag", "capsule", "cross", "board", "
  * right of the text, elsewhere, or with no line); and whether the drawn arrow leads to it. Also the capsule's look
  * and whether the toast is up. `notNow` are the moments he pressed "Not now"; `motion` adds how far the card, each of
  * its rows and its going have come, and how many of its words are in ink. `still` plays the run with motion reduced.
- * A row writes a voice line by its length (`ms`); here it becomes that much silence at the voice's 24 kHz.
+ * A row writes a voice line by its length (`ms`); here it becomes that much silence at the voice's 24 kHz. `words`
+ * adds what the card's offer button says and what the toast says.
  */
-export function nudge(input: { lines: string[]; rows: Written[]; at: number[]; notNow?: number[]; motion?: boolean; still?: boolean }) {
+export function nudge(input: { lines: string[]; rows: Written[]; at: number[]; notNow?: number[]; motion?: boolean; still?: boolean; words?: boolean }) {
   const rows = onTheirLines(input.rows, input.lines).map((row) => {
     if (row.line.type !== "voice" || typeof row.line.ms !== "number") return row;
     const { ms, ...line } = row.line;
@@ -42,7 +43,7 @@ export function nudge(input: { lines: string[]; rows: Written[]; at: number[]; n
     : at(dir, input.at, false, 0, input.notNow ?? []);
   return moments.map(({ placed, nudge, capsule, toast }) => {
     const card = placed.find((item) => item.what === "nudge");
-    const also = { capsule: capsule.look, toast: toast !== null };
+    const also = { capsule: capsule.look, toast: input.words ? toast : toast !== null };
     // With no place clear of the page's words the card is not drawn and its line is in the capsule: what it says
     // there, whether the capsule lies on any read line, and whether the arrow leads there.
     const instead = placed.find((item) => item.what === "nudge-in-capsule");
@@ -66,6 +67,7 @@ export function nudge(input: { lines: string[]; rows: Written[]; at: number[]; n
         onPieces: PIECES.filter((what) => placed.some((item) => item.what === what && touches(item.box, box))),
         where: !line ? (box.x + box.w / 2 > DISPLAY.w / 2 && box.y + box.h <= pill.y ? "no line: at the right, above the capsule" : "no line: elsewhere") : level && right ? "level with its line, right of the text" : right ? "right of the text" : "elsewhere",
         arrowLeadsToIt: placed.some((item) => item.what === "lead" && item.id?.endsWith(">nudge")),
+        ...(input.words ? { button: nudge.offer } : {}),
         ...(input.motion ? { appear: places(nudge.appear), rows: nudge.rows.map(places), leave: places(nudge.leave), wordsInInk: nudge.inked } : {}),
       },
       ...also,
@@ -76,4 +78,27 @@ export function nudge(input: { lines: string[]; rows: Written[]; at: number[]; n
 /** Lines given to the body's own reader of the seam, as the app gets them: what it took each one for, or why it refused it. */
 export function seen(input: { lines: object[] }) {
   return execFileSync(headless, ["lines"], { input: input.lines.map((line) => JSON.stringify(line)).join("\n") + "\n", encoding: "utf8" }).split("\n").filter(Boolean);
+}
+
+/**
+ * Each moment of a hand-written run painted as the app paints it: the overlay with the guide's card left out, and
+ * the card in its own window, which a recording leaves out. Whether the guide's card is up, whether the overlay puts
+ * any ink on it, whether the card's window draws it, and whether that window draws anything beyond it (the arrow
+ * that leads to the card, when one does), past the room its shadow takes.
+ */
+export function apart(input: { lines: string[]; rows: Written[]; at: number[] }) {
+  const dir = handWritten("apart", onTheirLines(input.rows, input.lines), input.lines);
+  const tokens = JSON.parse(readFileSync(join(root, "body", "tokens.json"), "utf8"));
+  const margin = tokens.shadow + tokens.band + 2;
+  return input.at.map((moment) => {
+    const seen = JSON.parse(execFileSync(headless, ["apart", dir, join(root, "body", "tokens.json"), String(moment), String(margin)], { encoding: "utf8" }));
+    if (seen.guide === null) return { guide: null, overlayDrawsSomething: seen.overlayInk > 0 };
+    return { guide: "up", overlayInkOnIt: seen.overlayInkOnTheCard > 0, itsWindowDrawsIt: seen.cardInkOnTheCard > 0, itsWindowDrawsMore: seen.cardInkElsewhere > 0 };
+  });
+}
+
+/** Whether the app would open each address in his browser: an https address on usc.edu or a site under it, and nothing else. */
+export function usc(input: { addresses: string[] }) {
+  const opens: boolean[] = JSON.parse(execFileSync(headless, ["usc", ...input.addresses], { encoding: "utf8" }));
+  return Object.fromEntries(input.addresses.map((address, index) => [address, opens[index]]));
 }

@@ -1,5 +1,5 @@
 {
- "name": "seam: the body's own reader takes keep from a line said without being asked, false when the line has none, and the words of a typed line",
+ "name": "seam: the body's own reader takes keep from a line said without being asked, false when the line has none, an offer when a line carries one (its button's words and the words it sends), a go line with its address and name, and the words of a typed line",
  "run": "body.seen",
  "in": {
   "lines": [
@@ -35,6 +35,24 @@
    },
    {
     "v": 1,
+    "type": "say",
+    "id": "t2",
+    "beat": 0,
+    "text": "Room bookings are on the RSO Resources page.",
+    "offer": {
+     "label": "Open RSO Resources",
+     "send": "take me to RSO Resources"
+    }
+   },
+   {
+    "v": 1,
+    "type": "go",
+    "id": "t3",
+    "url": "https://campusactivities.usc.edu/rso-resources/",
+    "label": "RSO Resources"
+   },
+   {
+    "v": 1,
     "type": "typed",
     "text": "add it to my calendar",
     "at": 1794729603780
@@ -42,9 +60,11 @@
   ]
  },
  "out": [
-  "took say(id: \"g1\", beat: 0, text: \"This is the date to keep: the application closes in 8 days.\", aside: false, trail: Optional([\"saw this page\", \"found 1 date\"]), keep: true)",
-  "took say(id: \"g2\", beat: 0, text: \"Open Deadlines to see the dates.\", aside: false, trail: Optional([\"saw this page\", \"found where it is\"]), keep: false)",
-  "took say(id: \"t1\", beat: 0, text: \"November 22 is open in your calendar.\", aside: false, trail: nil, keep: false)",
+  "took say(id: \"g1\", beat: 0, text: \"This is the date to keep: the application closes in 8 days.\", aside: false, trail: Optional([\"saw this page\", \"found 1 date\"]), keep: true, offer: nil)",
+  "took say(id: \"g2\", beat: 0, text: \"Open Deadlines to see the dates.\", aside: false, trail: Optional([\"saw this page\", \"found where it is\"]), keep: false, offer: nil)",
+  "took say(id: \"t1\", beat: 0, text: \"November 22 is open in your calendar.\", aside: false, trail: nil, keep: false, offer: nil)",
+  "took say(id: \"t2\", beat: 0, text: \"Room bookings are on the RSO Resources page.\", aside: false, trail: nil, keep: false, offer: Optional(ParalBody.Offer(label: \"Open RSO Resources\", send: \"take me to RSO Resources\")))",
+  "took go(id: \"t3\", url: \"https://campusactivities.usc.edu/rso-resources/\", label: Optional(\"RSO Resources\"))",
   "took typed(text: \"add it to my calendar\")"
  ]
 }

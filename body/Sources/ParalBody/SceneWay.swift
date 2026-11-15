@@ -28,8 +28,9 @@ extension Scene {
         let coming = coming(since: opened.at, lines: 0, gone: still ? 0 : leaving(since: gone, at: t), at: t)
         // The badge and its tick take the usual time of a small change, the tick at a pen's even speed.
         let popped = (t - opened.at - ms(tokens.toast.badgeAfterMs)) / max(ms(tokens.motion.usualMs), 1)
-        // The date follows the words after a dot, as the kit's toast writes it.
-        return ToastPicture(text: tokens.strings.opened + (opened.label.map { " · " + $0 } ?? ""), appear: min(max(coming.card, 0), 1) * (1 - coming.gone),
+        // The date follows the words after a dot, as the kit's toast writes it; a page opened is named after "Opening".
+        let words = opened.page ? tokens.strings.going + " " + (opened.label ?? "") : tokens.strings.opened + (opened.label.map { " · " + $0 } ?? "")
+        return ToastPicture(text: words, appear: min(max(coming.card, 0), 1) * (1 - coming.gone),
                             coming: coming, badge: still ? 1 : tokens.curves.pop(popped), tick: still ? 1 : Motion.even(popped))
     }
 

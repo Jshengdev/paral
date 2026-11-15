@@ -21,7 +21,7 @@ func why(_ error: Error) -> String {
 // the cure; it costs nothing.
 _ = Bundle.main.infoDictionary
 
-let usage = "usage: read PICTURE | smaller PICTURE OUT.jpg LONG_EDGE | same PICTURE PICTURE | page OUT.png LINE... | lines | keys SECONDS rightOption|fn|controlOption | flow FLOW.json SOCKET TOKENS.json | film RUN_DIR TOKENS.json | frame RUN_DIR TOKENS.json MS OUT.png | capsule RUN_DIR TOKENS.json MS... | placed RUN_DIR TOKENS.json MS... | curves TOKENS.json SHARE..."
+let usage = "usage: read PICTURE | smaller PICTURE OUT.jpg LONG_EDGE | same PICTURE PICTURE | page OUT.png LINE... | lines | keys SECONDS rightOption|fn|controlOption | flow FLOW.json SOCKET TOKENS.json | film RUN_DIR TOKENS.json | frame RUN_DIR TOKENS.json MS OUT.png | capsule RUN_DIR TOKENS.json MS... | placed RUN_DIR TOKENS.json MS... | apart RUN_DIR TOKENS.json MS MARGIN | usc ADDRESS... | curves TOKENS.json SHARE..."
 let arguments = Array(CommandLine.arguments.dropFirst())
 
 switch arguments.first {
@@ -104,6 +104,15 @@ case "placed":
     // for the moments he pressed "Not now" on the nudge card (ms, by commas), which no line carries either.
     let told = ProcessInfo.processInfo.environment, notNow = (told["PARAL_NOT_NOW"] ?? "").split(separator: ",").compactMap { Double($0) }
     do { out(try Film.placed(run: arguments[1], tokens: try Tokens.load(arguments[2]), at: arguments.dropFirst(3).compactMap(Double.init), guide: told["PARAL_GUIDE"] != "off", inset: Double(told["PARAL_INSET"] ?? "") ?? 0, notNow: notNow)) } catch { fail(why(error)) }
+
+case "apart":
+    // One moment painted as the app paints it: the overlay without the guide's card, and the card alone.
+    guard arguments.count == 5, let moment = Double(arguments[3]), let margin = Double(arguments[4]) else { fail(usage) }
+    do { out(try Film.apart(run: arguments[1], tokens: try Tokens.load(arguments[2]), at: moment, margin: margin)) } catch { fail(why(error)) }
+
+case "usc":
+    // Whether the app would open each address in his browser (`Keep.usc`), for rows.
+    out(arguments.dropFirst().map { Keep.usc($0) != nil })
 
 case "curves":
     // Each of the four curves at the given shares of its time, for rows.

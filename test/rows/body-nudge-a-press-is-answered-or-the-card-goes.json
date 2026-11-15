@@ -1,0 +1,403 @@
+{
+ "name": "body: after a press of the card's offer the card waits for the mind's answer and never hangs: a line with both keep and an offer shows the offer, and a press of it with no answer lets the card go by itself three seconds later; after \"Add to calendar\" on another card the mind's next line takes it away; after one more, a clear does",
+ "run": "body.nudge",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Important Dates",
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes.",
+   "December 1: Deadline for advisors.",
+   "Info Sessions, Workshops, and Office Hours"
+  ],
+  "words": true,
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "g1",
+     "beat": 0,
+     "kind": "ring",
+     "on": 4
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "say",
+     "id": "g1",
+     "beat": 0,
+     "text": "This is the date to keep: the application closes in 8 days.",
+     "trail": [
+      "saw this page",
+      "found the line"
+     ],
+     "keep": true,
+     "offer": {
+      "label": "Save the date",
+      "send": "save the date"
+     }
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mute",
+     "id": "g1",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "typed",
+     "text": "save the date",
+     "at": 1003000
+    }
+   },
+   {
+    "at": 8000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 8000,
+    "line": {
+     "type": "mark",
+     "id": "g2",
+     "beat": 0,
+     "kind": "ring",
+     "on": 5
+    }
+   },
+   {
+    "at": 8000,
+    "line": {
+     "type": "say",
+     "id": "g2",
+     "beat": 0,
+     "text": "Advisors have a date of their own, under Deadlines.",
+     "trail": [
+      "saw this page",
+      "found the line"
+     ],
+     "keep": true
+    }
+   },
+   {
+    "at": 8000,
+    "line": {
+     "type": "mute",
+     "id": "g2",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   },
+   {
+    "at": 9000,
+    "line": {
+     "type": "typed",
+     "text": "add it to my calendar",
+     "at": 1009000
+    }
+   },
+   {
+    "at": 9100,
+    "line": {
+     "type": "say",
+     "id": "t5",
+     "beat": 0,
+     "text": "I have not found a date to keep on this page."
+    }
+   },
+   {
+    "at": 9100,
+    "line": {
+     "type": "mute",
+     "id": "t5",
+     "why": "no voice is set up"
+    }
+   },
+   {
+    "at": 12000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 12000,
+    "line": {
+     "type": "mark",
+     "id": "g3",
+     "beat": 0,
+     "kind": "ring",
+     "on": 3
+    }
+   },
+   {
+    "at": 12000,
+    "line": {
+     "type": "say",
+     "id": "g3",
+     "beat": 0,
+     "text": "Late applications are not accepted.",
+     "trail": [
+      "saw this page",
+      "found the line"
+     ],
+     "keep": true
+    }
+   },
+   {
+    "at": 12000,
+    "line": {
+     "type": "mute",
+     "id": "g3",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   },
+   {
+    "at": 13000,
+    "line": {
+     "type": "typed",
+     "text": "add it to my calendar",
+     "at": 1013000
+    }
+   },
+   {
+    "at": 13100,
+    "line": {
+     "type": "clear"
+    }
+   }
+  ],
+  "at": [
+   2500,
+   5900,
+   6100,
+   6300,
+   8600,
+   9050,
+   9150,
+   9400,
+   12600,
+   13050,
+   13150,
+   13400
+  ]
+ },
+ "out": [
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "found the line"
+    ],
+    "look": "up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": true,
+    "button": "Save the date"
+   },
+   "capsule": "rest",
+   "toast": null
+  },
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "found the line"
+    ],
+    "look": "up",
+    "offers": [],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": true,
+    "button": "Save the date"
+   },
+   "capsule": "thinking",
+   "toast": null
+  },
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "found the line"
+    ],
+    "look": "going",
+    "offers": [],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": true,
+    "button": "Save the date"
+   },
+   "capsule": "thinking",
+   "toast": null
+  },
+  {
+   "card": null,
+   "capsule": "thinking",
+   "toast": null
+  },
+  {
+   "card": {
+    "says": "Advisors have a date of their own, under Deadlines.",
+    "steps": [
+     "saw this page",
+     "found the line"
+    ],
+    "look": "up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": false,
+    "button": "Add to calendar"
+   },
+   "capsule": "thinking",
+   "toast": null
+  },
+  {
+   "card": {
+    "says": "Advisors have a date of their own, under Deadlines.",
+    "steps": [
+     "saw this page",
+     "found the line"
+    ],
+    "look": "up",
+    "offers": [],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": false,
+    "button": "Add to calendar"
+   },
+   "capsule": "thinking",
+   "toast": null
+  },
+  {
+   "card": {
+    "says": "Advisors have a date of their own, under Deadlines.",
+    "steps": [
+     "saw this page",
+     "found the line"
+    ],
+    "look": "going",
+    "offers": [],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": true,
+    "button": "Add to calendar"
+   },
+   "capsule": "speaking",
+   "toast": null
+  },
+  {
+   "card": null,
+   "capsule": "speaking",
+   "toast": null
+  },
+  {
+   "card": {
+    "says": "Late applications are not accepted.",
+    "steps": [
+     "saw this page",
+     "found the line"
+    ],
+    "look": "up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": false,
+    "button": "Add to calendar"
+   },
+   "capsule": "speaking",
+   "toast": null
+  },
+  {
+   "card": {
+    "says": "Late applications are not accepted.",
+    "steps": [
+     "saw this page",
+     "found the line"
+    ],
+    "look": "up",
+    "offers": [],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": false,
+    "button": "Add to calendar"
+   },
+   "capsule": "thinking",
+   "toast": null
+  },
+  {
+   "card": {
+    "says": "Late applications are not accepted.",
+    "steps": [
+     "saw this page",
+     "found the line"
+    ],
+    "look": "going",
+    "offers": [],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": false,
+    "button": "Add to calendar"
+   },
+   "capsule": "thinking",
+   "toast": null
+  },
+  {
+   "card": null,
+   "capsule": "thinking",
+   "toast": null
+  }
+ ]
+}

@@ -42,8 +42,9 @@ public struct Scene {
     var nexts: [Next] = []
     /// The menu's "Show the guide". Off, the card is not drawn; the steps are still taken.
     public var guideOn = true
-    /// The date last opened in his calendar, and when: the toast says so for a while.
-    var opened: (at: Double, label: String?)?
+    /// The date last opened in his calendar, or the page of USC's opened in his browser (`page`), and when: the toast
+    /// says so for a while.
+    var opened: (at: Double, label: String?, page: Bool)?
     /// The nudge card of each line said without being asked, by its ask's id (`SceneNudge.swift`).
     var cards: [String: Card] = [:]
     /// The words of every card he has answered or whose date was opened, and when: those words get no card again.
@@ -82,7 +83,7 @@ public struct Scene {
         case .typed(let text):
             // A tapped or typed ask is a hold of no length: what a press does to the screen, and its release, at once.
             // When its words are the nudge card's own ask, it answers the card first, and the card waits for the date.
-            if text.lowercased().trimmingCharacters(in: .whitespaces) == Nudge.asks { answer(.add, at) }
+            answer(byTyping: text, at)
             take(.keyDown, at: at)
             take(.keyUp, at: at)
         case .notNow:
@@ -104,11 +105,10 @@ public struct Scene {
         case .heard(let text, _):
             let words = text.split(separator: " ").map(String.init)
             heard = words.enumerated().map { i, word in i < heard.count && heard[i].word == word ? heard[i] : (word, at) }
-        case .say(let id, let beat, let text, _, let trail, let keep):
-            // A line said without being asked waits its turn: the line before it stands its time first.
+        case .say(let id, let beat, let text, _, let trail, let keep, let offer):
+            // A line said without being asked, or one with an offer, waits its turn for its card (`SceneNudge`).
             let fresh = !asks.contains { $0.id == id }
-            let comes = fresh && trail != nil ? turn(after: at) : at
-            if fresh, trail != nil { cards[id] = card(text, keep: keep, comes: comes) }
+            let comes = card(id, fresh: fresh, text: text, carded: trail != nil || offer != nil, offer: offer ?? (keep ? Offer(label: tokens.nudge.add, send: Nudge.asks) : nil), at: at)
             if fresh { asks.append(Ask(id: id, beganAt: comes)) }
             edit(id) {
                 $0.beats[beat] = Beat(text: text, sayAt: comes)
@@ -171,6 +171,7 @@ public struct Scene {
             let kept = same.flatMap { old in texts.contains { Scene.touch($0, old.room) } ? nil : old.room }
             boards.append(Board(id: id, rows: rows, now: now, at: at, upSince: same?.upSince ?? at, room: kept ?? Layout.room(texts: texts, width: width, height: floor, tokens: tokens)))
         case .clear:
+            goes(at, onlyAnswered: true)
             wipe(at)
         case .close:
             goes(at)
@@ -183,8 +184,10 @@ public struct Scene {
             // The mind is linked. A failure from before the first press (the mind was not running) no longer stands.
             if holds.isEmpty { failed = nil }
         case .open(_, let label):
-            opened = (at, label)
+            opened = (at, label, false)
             kept(at)
+        case .go(_, let url, let label):
+            went(to: url, label, at)
         case .click(let x, let y):
             click(x: x, y: y, at: at)
         case .other:

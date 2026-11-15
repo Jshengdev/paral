@@ -66,7 +66,7 @@ extension Painter {
         let said = message.boundingRect(with: CGSize(width: inner, height: .greatestFiniteMagnitude), options: wrapped).size
         let head = max(n.avatar, name.size().height)
         let trailTall = card.trail.isEmpty ? 0 : n.trailGap + trailSize.height.rounded(.up)
-        let pills = card.buttons ? [(NudgeButton.add, pill(n.add, primary: true)), (NudgeButton.notNow, pill(n.notNow, primary: false))] : []
+        let pills = card.offer.map { [(NudgeButton.add, pill($0.label, primary: true)), (NudgeButton.notNow, pill(n.notNow, primary: false))] } ?? []
         let pillTall = pills.map(\.1.size.height).max() ?? 0
         let full = CGSize(width: n.width, height: n.pad + head + trailTall + n.gap + said.height.rounded(.up) + (pills.isEmpty ? 0 : n.gap + pillTall) + n.pad)
 

@@ -105,7 +105,7 @@ public struct GuidePicture: Equatable {
     public var coming: CardArrival
 }
 
-/// The two buttons of the nudge card.
+/// The two buttons of the nudge card: its offer's ("Add to calendar" for a date that can be kept), and "Not now".
 public enum NudgeButton: String { case add, notNow }
 
 /// The nudge card: a line said without being asked, the steps paral took to it, and its two buttons when its date
@@ -119,7 +119,8 @@ public struct NudgePicture: Equatable {
     public var words: [Word]
     /// The steps paral took, each lit once it is reached.
     public var trail: [Word]
-    public var buttons: Bool
+    /// What its primary button says and sends, when it has buttons ("Not now" is the other); nil for none.
+    public var offer: Offer?
     /// The box of the line it is about, or nil when the look sent the way to it and no mark.
     public var beside: Box?
     /// How it stands, as any card does: how far it has come up and gone, and each of its lines (the name and the

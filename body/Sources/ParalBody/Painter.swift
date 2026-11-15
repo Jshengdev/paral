@@ -28,6 +28,12 @@ public struct Painter {
     /// How much of the display's foot the Dock takes in the picture being painted, and the height left above it:
     /// the capsule and what sits beside it at the bottom are laid out above the Dock.
     var inset = 0.0
+    /// The guide's card and the arrow that leads to it are left out: still placed, so the rest keeps off them and
+    /// the card is named in what is given back, but not drawn. The app's overlay paints so, and paints them in a
+    /// window of their own that a recording leaves out (`guide(of:placed:into:)`). A film paints everything.
+    public var leavesOutGuide = false
+    /// What the guide's card keeps off, besides the page's words.
+    static let underGuide = ["board", "clip", "way", "toast", "mark", "echo", "chip"]
     var floor: Double { height - inset }
 
     public init(tokens: Tokens, width: Double, height: Double) {
@@ -131,8 +137,11 @@ public struct Painter {
         }
         // The guide's card keeps off everything else, so it is placed last of the things that are placed.
         if let guide = picture.guide {
-            let up = drawn.filter { ["board", "clip", "way", "toast", "mark", "echo", "chip"].contains($0.what) }.map(\.box)
+            let up = drawn.filter { Painter.underGuide.contains($0.what) }.map(\.box)
+            ctx.saveGState()
+            if leavesOutGuide { ctx.clip(to: CGRect.zero) }
             let card = self.guide(guide, avoiding: picture.avoid + up, ctx)
+            ctx.restoreGState()
             drawn.append(Drawn(what: "guide", id: nil, box: card.card))
             // Its lines are named too, each where it is just then, so a film's record says how the card came up.
             for (index, line) in card.lines.enumerated() { drawn.append(Drawn(what: "line", id: "guide/\(index)", box: line)) }
@@ -151,7 +160,7 @@ public struct Painter {
         // The arrow from a mark to what speaks about it keeps off every other piece, so it is found a way last.
         var with = picture
         with.pointer = pointer
-        if let lead = lead(with, placed: drawn, ctx) { drawn.append(lead) }
+        if !(leavesOutGuide && picture.lead?.to == .guide), let lead = lead(with, placed: drawn, ctx) { drawn.append(lead) }
         // The rings of his click lie under the cursor.
         if let click = picture.click { drawn.append(Drawn(what: "click", id: nil, box: self.click(click, ctx))) }
         if let pointer {
