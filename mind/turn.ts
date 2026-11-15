@@ -89,6 +89,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
         }
         carried = trail;
         const id = `t${++asks}`;
+        log(`${id}: he drew a path of ${trail.length} points and said nothing; it waits for his next ask`);
         const talk = speech({ ports, settings, send, log }, id, mine.signal);
         send({ v, type: "say", id, beat: 0, text: settings.circleNoWordsLine.value });
         talk.speak(0, settings.circleNoWordsLine.value);
@@ -105,6 +106,9 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
       const back = echo(path, screen, settings.circleLeast.value, (line) => fitted("ring", line.text, lines, settings.ringReach.value, screen?.display.scale ?? 1) === "box");
       if (back) send({ v, type: "echo", id, ...back });
       log(`heard "${words.text}" ${Date.now() - at} ms after the release`);
+      // What became of his path is said here: nothing else in the log tells whether a circle registered.
+      const least = settings.circleLeast.value;
+      if (trail.length > 0 && !drawn) log(`${id}: a path of ${trail.length} point${trail.length === 1 ? "" : "s"} came with the draw key, too few or too small to be a circle (it takes ${least.points} points and ${least.side} points across); it is not used`);
       if (screen === null) {
         await Promise.race([new Promise<void>((resolve) => (screenCame = resolve)), wait(settings.screenWaitMs.value, undefined, { signal: mine.signal })]);
         screenCame = null;
@@ -116,6 +120,12 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
       }
       const opener = opening(mine.signal);
       const around = circled(path, screen.lines, screen.display, settings.circleLeast.value);
+      if (path.length > 0) {
+        const worded = screen.lines.filter((line) => line.text !== "").length;
+        // A line outside the part he drew around comes with its place and no words, so the count shows the cut.
+        const outside = worded < screen.lines.length ? "; the rest lie outside the part he drew around" : "";
+        log(`${id}: he drew a path of ${path.length} points around line${around.length === 1 ? "" : "s"} ${around.join(", ") || "none"}${drawn ? "" : " on the hold before"}; ${worded} of ${screen.lines.length} lines came with their words${outside}`);
+      }
       const asking = { id, words: words.text, seen: screen, circled: around, lesson, markUp, releasedAt: at, opener, signal: mine.signal };
       await ask({ ports, settings, send, log }, asking, (kept) => (lesson = kept));
       if (!mine.signal.aborted) send({ v, type: "state", name: "idle" });
