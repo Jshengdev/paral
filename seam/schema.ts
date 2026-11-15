@@ -94,6 +94,11 @@ export const FromMind = z.discriminatedUnion("type", [
   z.object({ v, type: z.literal("board.close"), id }),
   z.object({ v, type: z.literal("clip"), id, name: z.string().min(1), clip: z.string().min(1), still: z.string().min(1), seconds: z.number().positive() }),
   z.object({ v, type: z.literal("clear") }),
+  /**
+   * The demo's guide: what to do next on the page on his screen, step `n` of `of`. An empty `text` means no card.
+   * `done` is true on the one line sent when every step has happened. It is not ink on the page: `clear` leaves it.
+   */
+  z.object({ v, type: z.literal("next"), text: z.string(), n: z.number().int().nonnegative(), of: z.number().int().nonnegative(), done: z.boolean().optional() }),
 ]);
 export type FromMind = z.infer<typeof FromMind>;
 

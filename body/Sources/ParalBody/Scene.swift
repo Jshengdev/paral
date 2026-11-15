@@ -136,7 +136,8 @@ public struct Scene {
             if holds.isEmpty { failed = nil }
         case .open(_, let label):
             opened = (at, label)
-        case .other:
+        // Nothing is drawn for the guide's next line yet.
+        case .other, .next:
             break
         }
     }

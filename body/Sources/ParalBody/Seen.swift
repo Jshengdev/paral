@@ -42,6 +42,8 @@ public enum Seen {
     case boardClose(id: String)
     case clip(id: String, path: String, still: String, seconds: Double)
     case clear
+    /// The demo's guide: what to do next on this page, step `n` of `of`. An empty text means no card; `done` marks the closing line.
+    case next(text: String, n: Int, of: Int, done: Bool)
     case other
 
     public static func read(_ text: String) -> Result<Seen, Refused> {
@@ -82,6 +84,9 @@ public enum Seen {
         case "typed": return .success(.typed)
         case "close": return .success(.close)
         case "clear": return .success(.clear)
+        case "next":
+            guard let text = s("text") else { return .failure(Refused("next.text: missing")) }
+            return .success(.next(text: text, n: (f["n"] as? NSNumber)?.intValue ?? 0, of: (f["of"] as? NSNumber)?.intValue ?? 0, done: f["done"] as? Bool ?? false))
         case "hello", "mic": return .success(.other)
         case "trail":
             guard let x = n("x"), let y = n("y") else { return .failure(Refused("trail: x and y are needed")) }

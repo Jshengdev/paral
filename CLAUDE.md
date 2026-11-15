@@ -101,6 +101,12 @@ row, one spoken sentence from a fixed pattern, and a box on the kept line that w
 to it, or the name of the kept page it is on. No model is asked. Until his next ordinary ask the looks follow that
 step, so the box moves as he scrolls. paral cannot know a step is done: "show me" again moves on.
 
+**The demo's guide.** For a kept page that has steps (`demoSteps`, by the page's name), the mind tells the body what
+to do next, one step at a time, with a `next` line: "Scroll until Deadlines is on screen", 2 of 8. It moves on when
+the mind sees the step happen (`mind/guide.ts`, `cores/guide.ts`): the look showed its line, its mark reached the
+heading or the line, a "show me" step was given, a date was kept, an ask holding certain words was answered. A step
+done out of order counts. It asks no model. The body draws the card and can hide it.
+
 **A tapped ask.** The menu bar's menu lists cue cards (`cueCards`, sent in the ready line): lines he can tap instead
 of saying them, for a hall too loud for the microphone. A tapped line crosses the seam as `typed` and is asked exactly
 as a spoken one, with the same picture of the screen and no ear. In a flow file the step is `{"typed": "the words"}`.
@@ -168,6 +174,10 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
   Calendar asks before adding the entry or adds it at once is not known, so the line he hears says only that the date
   is open in his calendar. A line with a clock time becomes an entry at that time in the Mac's own time zone, since
   the pages write none. "It" is the last date shown; after an answer that named two dates it is the first of them.
+- The demo's guide has run only on a tape. It has steps for two pages, the club recognition page and the Catalina
+  Maymester page; the chemistry worksheet has none, since the mind cannot yet tell that page is on screen. It knows
+  a step happened only from what the mind itself did: a click in Calendar, or a section opened with the date's line
+  still out of view, is not seen.
 - The cue cards in the menu and the tapped ask have never been used on a Mac: `Cues.swift` and the app's `typed` are
   compiled and unrun. The scripted stand-in has run tapped asks live. The menu bar says "Lost and Found"; the app's
   file, its grants in System Settings and this repo still say paral.

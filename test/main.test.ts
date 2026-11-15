@@ -10,6 +10,7 @@ import { boxes, fitted, split, wipes } from "../mind/cores/beats.ts";
 import { asksFor, fits, hear, saysOnly, silence } from "../mind/cores/catch.ts";
 import { datesIn, daysFrom, unknownDate, type Named } from "../mind/cores/dates.ts";
 import { calendarFile, dateLine, named, when } from "../mind/cores/keep.ts";
+import { nextStep, note, nothingYet, type Noted, type Step } from "../mind/cores/guide.ts";
 import { headingOf, whichPage, whichWay } from "../mind/cores/page.ts";
 import { showable, unfit } from "../mind/cores/fit.ts";
 import { circled, echo } from "../mind/cores/circle.ts";
@@ -71,6 +72,10 @@ const runs: Record<string, (input: any) => unknown> = {
   "catch.drawing": (input) => Object.fromEntries(input.asks.map((words: string) => [words, asksFor(words, input.phrases)])),
   "page.which": (input) => whichPage(input.seen, input.kept, input.least)?.name ?? null,
   "page.heading": (input) => input.cases.map(([line, named]: [string, string]) => headingOf(input.page, line, named)),
+  "guide.next": (input) => {
+    let seen = nothingYet;
+    return input.happens.map((what: Noted) => (input.steps as Step[])[nextStep(input.steps, (seen = note(seen, what)))]?.text ?? null);
+  },
   "page.way": (input) => input.cases.map(([seen, line]: [string[], string]) => whichWay(seen, input.page, line)),
   "dates.in": (input) => input.texts.map((text: string) => datesIn(text)),
   "keep.when": (input) => input.cases.map(([written, today]: [string, string]) => when(written, new Date(today))),

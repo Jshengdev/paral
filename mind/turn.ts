@@ -1,5 +1,5 @@
 import { setTimeout as wait } from "node:timers/promises";
-import { ask, type Screen } from "./ask.ts";
+import { ask, type Hands, type Screen } from "./ask.ts";
 import { hear, silence, type Words } from "./cores/catch.ts";
 import { fitted } from "./cores/beats.ts";
 import { circled, drew, echo, type Point } from "./cores/circle.ts";
@@ -7,6 +7,7 @@ import { showable } from "./cores/fit.ts";
 import { empty, fold, type Lesson } from "./cores/hold.ts";
 import { whichPage, type KeptPage } from "./cores/page.ts";
 import { glances, type Ahead, type Asked } from "./glance.ts";
+import { guides } from "./guide.ts";
 import { keeps } from "./keep.ts";
 import { drafts } from "./drafts.ts";
 import type { Listening, Ports } from "./ports.ts";
@@ -52,10 +53,13 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
   /** His last ask and what he was told, for a look at the page he goes to next. */
   let asked: (Asked & { at: number }) | null = null;
   /** The date paral last showed him, for "add it to my calendar". */
-  const keeping = keeps({ ports, settings, send, log });
-  const glancing = glances({ ports, settings, send, log }, (found) => (ahead = [...ahead.filter((old) => !found.some((step) => step.step === old.step)), ...found]), keeping.found);
+  /** The demo's guide: what to do next on the page on his screen, told what the rest of the mind sees happen. */
+  const guide = guides({ settings, send, log });
+  const hands: Hands = { ports, settings, send, log, noted: guide.noted };
+  const keeping = keeps(hands);
+  const glancing = glances(hands, (found) => (ahead = [...ahead.filter((old) => !found.some((step) => step.step === old.step)), ...found]), keeping.found);
   /** "Show me": the walk through what is ahead, one step each time he says it. */
-  const showing = shows({ ports, settings, send, log }, glancing.lead, keeping.found);
+  const showing = shows(hands, glancing.lead, keeping.found);
   /** The opener, drafted from his words while he is still talking. With no fast model there is no opener at all. */
   const drafting = ports.opener && drafts(ports.opener, settings, () => screen?.lines.map((read) => read.text).filter(Boolean) ?? []);
 
@@ -115,7 +119,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
         carried = trail;
         const id = `t${++asks}`;
         log(`${id}: he drew a path of ${trail.length} points and said nothing; it waits for his next ask`);
-        return sayLine({ ports, settings, send, log }, id, settings.circleNoWordsLine.value, mine.signal);
+        return sayLine(hands, id, settings.circleNoWordsLine.value, mine.signal);
       }
       send({ v, type: "heard", text: words.text, final: true });
       const id = `t${++asks}`;
@@ -151,13 +155,14 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
       }
       const asking = { id, words: words.text, seen: screen, circled: around, lesson, ahead, markUp, releasedAt: at, opener, signal: mine.signal };
       const shownBefore = lesson.shown;
-      await ask({ ports, settings, send, log }, asking, (kept) => (lesson = kept));
+      await ask(hands, asking, (kept) => (lesson = kept));
       // What he asked and was told is kept for a while: if he now goes to another kept page, the next look is for
       // what he was sent there for.
       const told = lesson.shown.filter((line) => !shownBefore.includes(line));
+      if (!mine.signal.aborted && told.length > 0) guide.noted({ kind: "asked", words: words.text });
       if (!mine.signal.aborted && told.length > 0) asked = { words: words.text, told, page: onPage?.name ?? null, at: Date.now() };
       keeping.answered(told, onPage ? [onPage, ...ports.pages] : ports.pages);
-      if (onPage && !mine.signal.aborted) wayToDate({ ports, settings, send, log }, id, screen, onPage, told);
+      if (onPage && !mine.signal.aborted) wayToDate(hands, id, screen, onPage, told);
       if (!mine.signal.aborted) send({ v, type: "state", name: "idle" });
     } catch (error) {
       if (mine.signal.aborted) return;
@@ -178,7 +183,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
           return listening?.sound(Buffer.from(line.pcm, "base64"));
         case "screen":
           screen = line;
-          onPage = which(line);
+          onPage = guide.on(which(line));
           return screenCame?.();
         case "key.up":
           return up(line.at);
@@ -189,7 +194,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
         case "look":
           // A look he did not ask for never cuts into a hold or an answer.
           if (listening !== null || answering > 0) return log("look: not used, he is holding the key or an answer is on its way");
-          onPage = which(line);
+          onPage = guide.on(which(line));
           log(`look: ${line.lines.length} lines read; ${onPage ? `the kept page "${onPage.title}"` : "none of the kept pages"}`);
           // Another page has come up: what was drawn for the kept page before it points at nothing now, and goes.
           if (markUp && drawnOn !== null && onPage !== drawnOn) {

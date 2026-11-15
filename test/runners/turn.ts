@@ -21,7 +21,7 @@ function shorter(line: any) {
   return line;
 }
 
-export async function playTurn(input: { tape: string; asks: Step[][]; set?: Record<string, unknown>; show?: "drawn" | "saidFirst" | "ahead" }): Promise<unknown> {
+export async function playTurn(input: { tape: string; asks: Step[][]; set?: Record<string, unknown>; show?: "drawn" | "saidFirst" | "ahead" | "next" }): Promise<unknown> {
   const path = fresh("row") + ".sock";
   const played = tape(join(import.meta.dirname, "..", "tapes", input.tape));
   const changed: any = { ...settings };
@@ -70,7 +70,9 @@ export async function playTurn(input: { tape: string; asks: Step[][]; set?: Reco
     if (input.show === "ahead") return played.asked.map((asked) => ({ words: asked.words, ahead: asked.ahead }));
     if (input.show === "drawn") return played.asked.map((asked) => ({ words: asked.words, drawn: asked.lesson.drawn }));
     if (input.show === "saidFirst") return { toldTheDeepModel: played.asked.map((asked) => ({ words: asked.words, saidFirst: asked.saidFirst })), said: got.filter((line) => line.type === "say").map((line) => ({ beat: line.beat, text: line.text })) };
-    return got.map(shorter);
+    // The guide's lines are a setting's doing and would sit in every row that looks at a kept page; one row shows them.
+    if (input.show === "next") return got.filter((line) => line.type === "next").map(({ v: _v, type: _type, ...rest }) => rest);
+    return got.filter((line) => line.type !== "next").map(shorter);
   } finally {
     socket.destroy();
     await server.stop();

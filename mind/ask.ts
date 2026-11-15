@@ -3,6 +3,7 @@ import { lessonClip } from "./clip.ts";
 import { wipes } from "./cores/beats.ts";
 import { alike, locate, type Found } from "./cores/ground.ts";
 import { happened } from "./cores/happened.ts";
+import type { Noted } from "./cores/guide.ts";
 import { together, whichPage } from "./cores/page.ts";
 import { fold, type HoldEvent, type Lesson } from "./cores/hold.ts";
 import { next, type Move } from "./cores/teach.ts";
@@ -16,7 +17,8 @@ import { speech } from "./speech.ts";
 import { SEAM_VERSION, type FromBody, type FromMind } from "../seam/schema.ts";
 
 export type Screen = Extract<FromBody, { type: "screen" }>;
-export type Hands = { ports: Ports; settings: Settings; send: (line: FromMind) => void; log: (line: string) => void };
+/** `noted` tells the demo's guide that something it waits for was seen to happen; absent where there is no guide. */
+export type Hands = { ports: Ports; settings: Settings; send: (line: FromMind) => void; log: (line: string) => void; noted?: (what: Noted) => void };
 export type Asking = { id: string; words: string; seen: Screen; circled: number[]; lesson: Lesson; ahead: Ahead[]; markUp: boolean; releasedAt: number; opener: Promise<string> | null; signal: AbortSignal };
 
 const v = SEAM_VERSION;
