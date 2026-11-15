@@ -29,7 +29,8 @@ import { fresh } from "./runners/temp.ts";
 import { playTurn } from "./runners/turn.ts";
 import { boardType } from "./runners/boards.ts";
 import { filmedPages } from "./runners/pages.ts";
-import { cursor, guide, steps, toast, way } from "./runners/placed.ts";
+import { cursor, guide, inkInside, steps, toast, way } from "./runners/placed.ts";
+import { lead } from "./runners/leads.ts";
 
 // A row is JSON on disk: its "in" is whatever its runner takes, so it is typed where the runner reads it.
 type Row = { name: string; run: string; in: any; out: unknown };
@@ -67,6 +68,8 @@ const runs: Record<string, (input: any) => unknown> = {
   "body.steps": steps,
   "body.toast": toast,
   "body.guide": guide,
+  "body.lead": lead,
+  "body.inkInside": inkInside,
   "body.boardType": boardType,
   "body.pages": filmedPages,
   catch: (input) => input.events.reduce(hear, silence),

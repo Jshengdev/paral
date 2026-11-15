@@ -1,0 +1,368 @@
+{
+ "name": "body: an arrow leads from the newest mark to what speaks about it, one at a time, and only where a way exists that keeps clear of every read line's words: none until the mark is whole and the cursor has stepped aside; it leads to the capsule whenever the capsule carries that mark's words, and where no way to the capsule is clear of the words and short enough there is none; to the guide's card only once the capsule is at rest and the card's words name the very line that is marked, and it goes when the card's words move on; for an answer he asked for it leads to the capsule from the mark of the sentence being said, goes when a newer mark is begun and is inked again from that one, and is drawn back as the capsule closes; a card that says what he does next and came with a walk's mark gets no arrow, the capsule that says the step does; none while an arrow that says which way to scroll is up; it never lies on the board or off the display",
+ "run": "body.lead",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes.",
+   "Late applications are not accepted.",
+   "Info Sessions, Workshops, and Office Hours",
+   "Application deadline: November 2, 2026",
+   "Apply for the Catalina Maymester"
+  ],
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "g1",
+     "beat": 0,
+     "kind": "box",
+     "on": 1
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "say",
+     "id": "g1",
+     "beat": 0,
+     "text": "The application closes November 22 at 11:59pm, under Deadlines.",
+     "trail": [
+      "saw this page",
+      "found where it is"
+     ]
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mute",
+     "id": "g1",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   },
+   {
+    "at": 1001,
+    "line": {
+     "type": "next",
+     "text": "Open Deadlines",
+     "n": 3,
+     "of": 8
+    }
+   },
+   {
+    "at": 12000,
+    "line": {
+     "type": "next",
+     "text": "Hold the key and say: show me",
+     "n": 4,
+     "of": 8
+    }
+   },
+   {
+    "at": 13000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 14000,
+    "line": {
+     "type": "key.down",
+     "at": 1014000
+    }
+   },
+   {
+    "at": 14800,
+    "line": {
+     "type": "key.up",
+     "at": 1014800
+    }
+   },
+   {
+    "at": 15000,
+    "line": {
+     "type": "mark",
+     "id": "t1",
+     "beat": 1,
+     "kind": "ring",
+     "on": 6
+    }
+   },
+   {
+    "at": 15000,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 1,
+     "text": "The deadline was November 2, which was twelve days ago."
+    }
+   },
+   {
+    "at": 15000,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 2,
+     "text": "The sessions are listed under this heading."
+    }
+   },
+   {
+    "at": 15000,
+    "line": {
+     "type": "mark",
+     "id": "t1",
+     "beat": 2,
+     "kind": "underline",
+     "on": 5
+    }
+   },
+   {
+    "at": 15001,
+    "line": {
+     "type": "mute",
+     "id": "t1",
+     "why": "no voice is set up"
+    }
+   },
+   {
+    "at": 15100,
+    "line": {
+     "type": "state",
+     "name": "idle"
+    }
+   },
+   {
+    "at": 22000,
+    "line": {
+     "type": "key.down",
+     "at": 1022000
+    }
+   },
+   {
+    "at": 22800,
+    "line": {
+     "type": "key.up",
+     "at": 1022800
+    }
+   },
+   {
+    "at": 23000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 23000,
+    "line": {
+     "type": "mark",
+     "id": "t2",
+     "beat": 0,
+     "kind": "ring",
+     "on": 6
+    }
+   },
+   {
+    "at": 23000,
+    "line": {
+     "type": "board",
+     "id": "t2",
+     "rows": [
+      [
+       "Officers finish their training"
+      ],
+      [
+       "Submit the application: November 22 at 11:59pm"
+      ],
+      [
+       "Advisor requirements: December 1"
+      ]
+     ],
+     "now": 0
+    }
+   },
+   {
+    "at": 23000,
+    "line": {
+     "type": "next",
+     "text": "Say it again: show me",
+     "n": 5,
+     "of": 8
+    }
+   },
+   {
+    "at": 23001,
+    "line": {
+     "type": "say",
+     "id": "t2",
+     "beat": 0,
+     "text": "Step 1 of 3: Officers finish their training."
+    }
+   },
+   {
+    "at": 23001,
+    "line": {
+     "type": "mute",
+     "id": "t2",
+     "why": "no voice is set up"
+    }
+   },
+   {
+    "at": 23100,
+    "line": {
+     "type": "state",
+     "name": "idle"
+    }
+   },
+   {
+    "at": 25700,
+    "line": {
+     "type": "way",
+     "id": "t9",
+     "to": "down",
+     "toward": "Deadlines"
+    }
+   }
+  ],
+  "at": [
+   1500,
+   4000,
+   10300,
+   11500,
+   12500,
+   16500,
+   17500,
+   18300,
+   19200,
+   20500,
+   21330,
+   21600,
+   24600,
+   25500,
+   25900,
+   27000
+  ]
+ },
+ "out": [
+  {
+   "arrow": null
+  },
+  {
+   "arrow": null
+  },
+  {
+   "arrow": {
+    "fromLine": 1,
+    "toward": "the guide's card",
+    "ink": "growing",
+    "clearOfEveryLinesWords": true,
+    "onTheBoard": false,
+    "insideTheDisplay": true
+   }
+  },
+  {
+   "arrow": {
+    "fromLine": 1,
+    "toward": "the guide's card",
+    "ink": "still",
+    "clearOfEveryLinesWords": true,
+    "onTheBoard": false,
+    "insideTheDisplay": true
+   }
+  },
+  {
+   "arrow": null
+  },
+  {
+   "arrow": {
+    "fromLine": 6,
+    "toward": "the capsule",
+    "ink": "growing",
+    "clearOfEveryLinesWords": true,
+    "onTheBoard": false,
+    "insideTheDisplay": true
+   }
+  },
+  {
+   "arrow": {
+    "fromLine": 6,
+    "toward": "the capsule",
+    "ink": "still",
+    "clearOfEveryLinesWords": true,
+    "onTheBoard": false,
+    "insideTheDisplay": true
+   }
+  },
+  {
+   "arrow": null
+  },
+  {
+   "arrow": {
+    "fromLine": 5,
+    "toward": "the capsule",
+    "ink": "growing",
+    "clearOfEveryLinesWords": true,
+    "onTheBoard": false,
+    "insideTheDisplay": true
+   }
+  },
+  {
+   "arrow": {
+    "fromLine": 5,
+    "toward": "the capsule",
+    "ink": "still",
+    "clearOfEveryLinesWords": true,
+    "onTheBoard": false,
+    "insideTheDisplay": true
+   }
+  },
+  {
+   "arrow": {
+    "fromLine": 5,
+    "toward": "the capsule",
+    "ink": "going back",
+    "clearOfEveryLinesWords": true,
+    "onTheBoard": false,
+    "insideTheDisplay": true
+   }
+  },
+  {
+   "arrow": null
+  },
+  {
+   "arrow": {
+    "fromLine": 6,
+    "toward": "the capsule",
+    "ink": "growing",
+    "clearOfEveryLinesWords": true,
+    "onTheBoard": false,
+    "insideTheDisplay": true
+   }
+  },
+  {
+   "arrow": {
+    "fromLine": 6,
+    "toward": "the capsule",
+    "ink": "still",
+    "clearOfEveryLinesWords": true,
+    "onTheBoard": false,
+    "insideTheDisplay": true
+   }
+  },
+  {
+   "arrow": null
+  },
+  {
+   "arrow": null
+  }
+ ]
+}

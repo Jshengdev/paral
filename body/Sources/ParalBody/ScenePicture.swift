@@ -9,7 +9,7 @@ extension Scene {
         pointer?.thinking = capsule.look == .thinking
         let clip = clip(at: t)
         capsule.closes = capsule.look == .rest && (!marks.isEmpty || way != nil || board != nil || clip != nil)
-        return Picture(clock: t, capsule: capsule, marks: marks, echo: echo(at: t), way: way, pointer: pointer, board: board, clip: clip, toast: toast(at: t), guide: guide(at: t), trail: trailUp(at: t), avoid: texts)
+        return Picture(clock: t, capsule: capsule, marks: marks, echo: echo(at: t), way: way, pointer: pointer, board: board, clip: clip, toast: toast(at: t), guide: guide(at: t), lead: lead(at: t, capsule: capsule), trail: trailUp(at: t), avoid: texts)
     }
 
     func capsule(at t: Double) -> CapsulePicture {
@@ -21,18 +21,20 @@ extension Scene {
            let now = times(ask).last(where: { $0.start <= t }), t < now.end + m.unaskedStayMs, let said = ask.beats[now.beat] {
             let words = said.text.split(separator: " ").map { Word(text: String($0), bright: 1) }
             let steps = (ask.trail ?? []).enumerated().map { index, step in Word(text: step, bright: t - ask.beganAt >= Double(index) * ms(m.trailStepMs) ? 1 : tokens.dim) }
-            return CapsulePicture(look: .speaking, open: grown(ask.beganAt), words: words, note: nil, trail: steps)
+            return CapsulePicture(look: .speaking, open: grown(ask.beganAt), words: words, note: nil, trail: steps, ask: ask.id)
         }
         guard let hold = holds.last(where: { $0.down <= t }) else {
             // Before the first press a failure still shows: a grant not given, or the mind not running.
             if let failed, t >= failed.at { return CapsulePicture(look: .failed, open: grown(failed.at), words: [], note: failed.detail) }
             return CapsulePicture(look: .rest, open: 0, words: [], note: nil)
         }
-        func open(_ look: Look, _ words: [Word] = [], _ note: String? = nil) -> CapsulePicture {
-            CapsulePicture(look: look, open: grown(hold.down), words: words, note: note)
+        func open(_ look: Look, _ words: [Word] = [], _ note: String? = nil, of ask: String? = nil) -> CapsulePicture {
+            CapsulePicture(look: look, open: grown(hold.down), words: words, note: note, ask: ask)
         }
-        func rest(since: Double) -> CapsulePicture {
-            CapsulePicture(look: .rest, open: still ? 0 : 1 - Motion.ease((t - since) / ms(m.openMs)), words: [], note: nil)
+        // While it closes after an answer it is still that answer's, so what leads to it can go back with it.
+        func rest(since: Double, of ask: String? = nil) -> CapsulePicture {
+            let open = still ? 0 : 1 - Motion.ease((t - since) / ms(m.openMs))
+            return CapsulePicture(look: .rest, open: open, words: [], note: nil, ask: open > 0 ? ask : nil)
         }
         if let closed = closedAt, closed >= hold.down, t >= closed { return rest(since: closed) }
         // A failure since this press shows at once, while the key is still down too, and stays until the next press.
@@ -44,13 +46,13 @@ extension Scene {
         let done = idleAt.map { $0 >= up && $0 <= t } ?? false
         if let ask = asks.last(where: { $0.beganAt >= hold.down }), let now = times(ask).last(where: { $0.start <= t }) {
             let said = ask.beats[now.beat]!
-            if t < now.end { return open(.speaking, words(of: said, from: now, at: t)) }
+            if t < now.end { return open(.speaking, words(of: said, from: now, at: t), of: ask.id) }
             let whole = said.text.split(separator: " ").map { Word(text: String($0), bright: 1) }
             let more = ask.beats.keys.contains { $0 > now.beat }
-            if more { return open(.speaking, whole) }
-            if !done { return now.beat < 0 ? open(.thinking, [], tokens.strings.thinking) : open(.speaking, whole) }
+            if more { return open(.speaking, whole, of: ask.id) }
+            if !done { return now.beat < 0 ? open(.thinking, [], tokens.strings.thinking) : open(.speaking, whole, of: ask.id) }
             let restAt = max(now.end, idleAt ?? now.end) + m.lingerMs
-            return t < restAt ? open(.speaking, whole) : rest(since: restAt)
+            return t < restAt ? open(.speaking, whole, of: ask.id) : rest(since: restAt, of: ask.id)
         }
         if done, let idle = idleAt { return rest(since: idle) }
         return open(.thinking, [], tokens.strings.thinking)

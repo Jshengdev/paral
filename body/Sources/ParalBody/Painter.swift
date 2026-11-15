@@ -6,6 +6,8 @@ public struct Drawn: Equatable {
     public var box: Box
     /// For a board: the size its words were drawn at, in points, which is the tokens' size times the card's shrink.
     public var type: Double?
+    /// For a drawn arrow: the points the pen has inked so far, in the order it draws them.
+    public var path: [CGPoint]?
 }
 
 func color(_ hex: String, alpha: Double = 1) -> CGColor {
@@ -20,6 +22,7 @@ public struct Painter {
     let ink, paper, ember, cardinal, cardinalDeep, light, gold, mist: CGColor
     public let accent: CGColor
     let frames = ClipFrames()
+    let ways = LeadWays()
     let faces: Faces
 
     public init(tokens: Tokens, width: Double, height: Double) {
@@ -107,6 +110,10 @@ public struct Painter {
             let up = drawn.filter { ["board", "clip", "way", "toast", "mark", "echo"].contains($0.what) }.map(\.box)
             drawn.append(Drawn(what: "guide", id: nil, box: self.guide(guide, avoiding: picture.avoid + up, ctx)))
         }
+        // The arrow from a mark to what speaks about it keeps off every other piece, so it is found a way last.
+        var with = picture
+        with.pointer = pointer
+        if let lead = lead(with, placed: drawn, ctx) { drawn.append(lead) }
         if let pointer { drawn.append(Drawn(what: "pointer", id: nil, box: self.pointer(pointer, clock: picture.clock, ctx))) }
         drawn.append(Drawn(what: "capsule", id: nil, box: capsule(picture.capsule, clock: picture.clock, ctx)))
         return drawn

@@ -41,15 +41,20 @@ extension Painter {
         surface(shape, ctx)
         place.name.draw(at: CGPoint(x: place.pill.minX + w.padX, y: place.pill.minY + w.padY))
 
-        let inked = Pen.reach(strokes: strokes(way, place), way.drawn)
+        ink(Pen.reach(strokes: strokes(way, place), way.drawn), ctx)
+    }
+
+    /// The ink of a drawn arrow, in ember at the pen's width, with a paper edge under it so that it shows on a dark
+    /// page and over a page's words. Both drawn arrows are inked here.
+    func ink(_ strokes: [[CGPoint]], _ ctx: CGContext) {
         ctx.setLineCap(.round)
         ctx.setLineJoin(.round)
         // The paper edge goes down first, under all of the ink.
-        let edge = w.halo > 0 ? [(paper, tokens.mark.width + 2 * w.halo)] : []
+        let edge = tokens.way.halo > 0 ? [(paper, tokens.mark.width + 2 * tokens.way.halo)] : []
         for (colour, wide) in edge + [(ember, tokens.mark.width)] {
             ctx.setStrokeColor(colour)
             ctx.setLineWidth(wide)
-            for stroke in inked where stroke.count > 1 { ctx.addLines(between: stroke) }
+            for stroke in strokes where stroke.count > 1 { ctx.addLines(between: stroke) }
             ctx.strokePath()
         }
     }

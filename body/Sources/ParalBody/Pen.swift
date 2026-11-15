@@ -10,7 +10,14 @@ enum Pen {
         return Double(hash % 628) / 100
     }
 
-    static func path(of mark: MarkPicture, tokens: Tokens, avoiding texts: [Box]) -> [CGPoint] {
+    /// The pen's path for a mark, kept inside the display: where the thing it marks runs to an edge or past it, the
+    /// path runs along that edge, `mark.pad` in, so a loop is still seen to close.
+    static func path(of mark: MarkPicture, tokens: Tokens, avoiding texts: [Box], inside display: (w: Double, h: Double)) -> [CGPoint] {
+        let edge = tokens.mark.pad
+        return shape(of: mark, tokens: tokens, avoiding: texts).map { CGPoint(x: min(max($0.x, edge), display.w - edge), y: min(max($0.y, edge), display.h - edge)) }
+    }
+
+    private static func shape(of mark: MarkPicture, tokens: Tokens, avoiding texts: [Box]) -> [CGPoint] {
         let m = tokens.mark
         let box = mark.box.grown(m.pad)
         let seed = phase(mark.key)

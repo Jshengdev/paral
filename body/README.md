@@ -17,6 +17,7 @@ when; the body only draws. Nothing here takes a click except the cross, and noth
 | The trail (build's name; the kit has no frame) | the steps paral took before a line it said without being asked, in small capitals above the line, each cardinal once reached | `say` with `trail` | with its line | `capsule.tagType`, `cardinal`, `motion.trailStepMs` |
 | Highlight ring, and drawn notes | "this line": a ring, underline, wavy line or bracket drawn by hand in ember, with a note beside it when the mind sends one | `mark` (kind `ring`, `underline`, `wavy`, `bracket`; `label` for the note) | `clear`, a close, or a new mark on the same line | `mark.*`, `ember`, `cardinal` (the note) |
 | Highlight (the box) | "this line", where lines sit too close for a ring: a thin cardinal edge and a faint wash laid along the line by the pen | `mark` (kind `box`) | `clear`, a close, or a new mark on the same line | `mark.boxWidth`, `mark.wash`, `mark.ringMs`, `cardinal` |
+| Drawn arrow (the kit's, from its ring to its card) | "this line is what that is about": one curve in ember from the newest mark to whatever is speaking about it, and only where a way exists that keeps clear of every word on the page | no line of its own: the newest `mark` once the pen has finished it, while the capsule carries that mark's own `say`; or, with the capsule at rest, while the guide's card (`next`) names the marked line | goes with its mark (`clear`, a close, a newer mark); drawn back as the capsule closes; gone when the card's words move on, and while a `way` arrow is up | `lead.*`, `way.head`, `way.halo`, `mark.width`, `ember`, `cursor.settleMs` |
 | Cursor | paral's own pointer: it shows where, never clicks. It flies to the newest mark or arrow, rides the pen, rests beside it; one ripple says "here" | the newest `mark`, `way` or `echo` on the page | goes with its mark or arrow; none with motion reduced | `cursor.*`, `cardinalDeep`, `cardinal`, `ember`, `motion.flightMs`, `motion.arc`, `motion.bounce` |
 | Cursor: tag | says whose cursor is moving: a light pill with the orb and the name, worn only while it comes in from nowhere | the first `mark` or `way` after the page was clean | its arrival | `strings.name`, `light`, `glass`, `shadow`, `gold` |
 | Cursor: thinking | says paral is working: the orb beside a cursor that is already on the page | `key.up`, until the answer begins | the answer's first sentence | `gold`, the cursor's reds |
@@ -52,13 +53,15 @@ and send buttons (paral is held and let go), the cursor's click (paral clicks no
 | `Layout.swift` | where the capsule sits, the largest empty place for a board, the place at an edge for the way arrow, and where the cursor rests beside a mark |
 | `Motion.swift` | the curves: ease, land, spring, arc |
 | `Pen.swift` | the path the pen takes for each kind of mark |
-| `PenWay.swift` | the strokes the pen makes for the way arrow: its shaft, then its head |
+| `PenWay.swift` | the strokes the pen makes for the two drawn arrows: a shaft, then a head |
+| `SceneLead.swift` | the arrow from a mark to what speaks about it: which mark has one, what it leads to, how far it is inked |
 
 ## Drawing it
 
 | file | job |
 |---|---|
 | `Painter.swift` and `Painter*.swift` | draw a picture into any drawing context, with the tokens |
+| `PainterLead.swift` | finds the way the arrow from a mark takes to what speaks about it, and inks it |
 | `Tokens.swift`, `tokens.json` | the look in one file: colour, type, sizes, motion times |
 
 ## Hosts (real windows only)
@@ -111,6 +114,37 @@ takes the place of the one before, and `clear` or a close wipes it. While it is 
 cross. Its looks are the `way` group and `ember` in `tokens.json`. Its shape is after the drawn arrow of the design
 kit ("Lost and Found: brand kit", page 08), drawn here in code; no picture is loaded.
 
+## The arrow from a mark to what speaks about it
+
+The design kit's page 08 draws one curve from the ring round a line to the card that speaks about it. Here the scene
+says which mark has one and what it leads to (`SceneLead.swift`) and the painter finds its way (`PainterLead.swift`);
+nothing crosses the seam for it.
+
+- **One at a time.** Only the newest of paral's marks on the page has an arrow, never his own loop, and none is drawn
+  while the arrow that says which way to scroll is up.
+- **What speaks.** The capsule, whenever it carries that mark's words: the arrow comes when the mark's own sentence
+  comes up in the capsule, stays while the capsule holds that answer's words, and is drawn back as the capsule
+  closes. The guide's card says what he does next, which is seldom about the marked line ("Say it again: show me"),
+  so it is led to only once the capsule is at rest and only when its words name the very line that is marked: the
+  whole of a read line the mark is on is among the card's words ("Open Deadlines", with the mark on "Deadlines"). The
+  body can tell no more than that from the lines it is sent; in every other case there is no arrow.
+- **When.** It is inked once the pen has finished the mark and the cursor has stepped aside (`cursor.settleMs`), in
+  `lead.drawMs` (700: a hand's one sweep; chosen, not measured), and it is whole at once with motion reduced.
+- **Its ink never covers the page's words.** A way is refused when its ink or its paper edge comes within
+  `lead.clear` (4 points) of any read line, the line it leaves among them. It is refused too when it lies on the
+  mark, the resting cursor, the board, the clip, the way arrow, the toast or the other speaker, or off the display,
+  and when it is longer than `lead.longest` (1000 points: on the recorded club page the ways down the right margin
+  to the capsule run 590 to 920). Where no way is left, no arrow is drawn: a missing arrow is fine, an arrow over
+  words is not.
+- **Its way.** It begins straight out from the mark's edge, on the far side of the cursor where the cursor rests
+  there, and stops `lead.gap` (8, the kit's arrow stops about that short of its card) from what it leads to. From
+  there it may set off straight out, as the kit's bow does, or turned by up to a quarter turn, which is what lets it
+  run down a margin too narrow for a bow; of the ways that are clear, the shortest and the nearest the kit's plain
+  bow wins. The way is found once and kept while nothing it depends on moves.
+- **Its shape.** One bow after the kit's drawn arrow, whose curve was measured: pulled out 0.37 of the straight way
+  the way it leaves, and arriving turned as far to the other side, pulled back 0.32; then the head, with the way
+  arrow's barbs (`way.head`) and paper edge (`way.halo`), at the pen's width (`mark.width`, the kit's 3.5).
+
 ## The capsule, the board and the tags on the kit's light surface
 
 The capsule has the look of the design kit's voice pill within the states it already had: a light pill with a soft
@@ -122,7 +156,7 @@ pill; paral is held and let go, so there are no buttons, and the transcript is i
 the same light surface: a box is the kit's quiet button (`mist`, written in ink) and the step he is on its main
 button (ink, written in white). The way arrow's tag, the cursor's tag and the toast are the same surface. `glass` is
 how solid it is and `shadow` how far its shadow spreads. The kit fills at 0.85 over a blur of the page; the overlay
-cannot blur what is under it, so `glass` is 0.97. Only the lesson clip keeps its dark card. Page 06 of the kit, the
+cannot blur what is under it, so `glass` is 1. Only the lesson clip keeps its dark card. Page 06 of the kit, the
 voice pill's own page, could not be read on the night this was made (the design tool stopped answering); the look
 is from the one pill on page 08 and a one-line account of its states, and where it guesses it says so here: the
 orb at rest, the wave's shape, and the transcript inside the pill.
@@ -141,6 +175,9 @@ The seam's mark kinds are unchanged; the kit's look comes through tokens. A ring
 bracket are drawn by hand in `ember`. A box is the kit's neat highlight: a thinner edge (`mark.boxWidth`) in
 `cardinal` and a faint wash of cardinal inside it (`mark.wash`, the kit's 8 percent), laid across the line from its
 start as the edge is drawn, the way a highlighter is pulled along. The wash tints the words and does not hide them.
+No mark's ink leaves the display: where the thing it marks runs to an edge of the display or past it (a line as wide
+as the page), the pen's path runs along that edge, `mark.pad` in, so a loop is still seen to close. His own loop
+coming back is kept inside the same way.
 
 The pointer is the kit's cursor: an arrow filled from `cardinalDeep` through `cardinal` to `ember` with a paper edge,
 its outline written in `PainterCursor.swift` from the corners of the kit's shape. It flies to where the newest mark
@@ -188,8 +225,8 @@ tokens' size times whatever the card was shrunk by.
 
 `paral-headless` commands: `read`, `smaller`, `page`, `lines`, `keys SECONDS NAME` (watch a key), `flow`, `film`,
 `frame RUN TOKENS MS OUT.png` (one moment of a run, for the dials page), `capsule RUN TOKENS MS...` (what the capsule
-shows at those moments), `placed RUN TOKENS MS...` (where the painter puts each thing at those moments, and the way
-arrow's, the cursor's and the board's own values).
+shows at those moments), `placed RUN TOKENS MS...` (where the painter puts each thing at those moments, the points
+a drawn arrow's pen has inked, and the way arrow's, the cursor's and the board's own values).
 
-Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way`, `body.cursor`, `body.steps`, `body.pages`, `body.toast`, `body.boardType` and `body.guide` rows, with no window. The hosts are compiled and have never been run:
+Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way`, `body.cursor`, `body.steps`, `body.pages`, `body.toast`, `body.boardType`, `body.guide`, `body.lead` and `body.inkInside` rows, with no window. The hosts are compiled and have never been run:
 the key, the microphone, the screen picture and the overlay wait for a person and their grants (`./run`).

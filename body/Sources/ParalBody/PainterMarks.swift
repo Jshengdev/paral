@@ -7,7 +7,7 @@ extension Painter {
     /// the wash is the kit's highlight for one line and he may have circled a whole table.
     func mark(_ mark: MarkPicture, his: Bool = false, avoiding texts: [Box], _ ctx: CGContext) -> Box? {
         guard mark.drawn > 0 else { return nil }
-        let points = Pen.path(of: mark, tokens: tokens, avoiding: texts)
+        let points = Pen.path(of: mark, tokens: tokens, avoiding: texts, inside: (width, height))
         // The design kit's two ways to show a place. A ring or a line is drawn by hand, in ember. A box is the kit's
         // neat highlight: a thinner cardinal edge, and a faint wash of cardinal laid across the line from its start
         // as the edge is drawn, the way a highlighter is pulled along. (A wash that came up all at once as it grew

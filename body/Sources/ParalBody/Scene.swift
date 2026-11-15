@@ -19,6 +19,8 @@ public struct Scene {
     public var reduceMotion = false
     var origin = (x: 0.0, y: 0.0)
     var texts: [Box] = []
+    /// What each read line says, in the order of `texts`.
+    var read: [String] = []
     var holds: [Hold] = []
     var heard: [(word: String, at: Double)] = []
     var asks: [Ask] = []
@@ -26,9 +28,11 @@ public struct Scene {
     var boards: [Board] = []
     var echoes: [Echo] = []
     var ways: [Way] = []
-    /// The guide's card: what to do next and which step it is, or the closing line when every step is done; when
-    /// these words came, and since when the card has been up.
-    var guide: (text: String, n: Int, of: Int, done: Bool, at: Double, upSince: Double)?
+    /// One line of the guide's card: what to do next and which step it is, or the closing line when every step is
+    /// done; no words take the card away. `at` is when the line came, `upSince` since when its card has been up.
+    struct Next { var text: String; var n, of: Int; var done: Bool; var at: Double; var upSince: Double }
+    /// Every line the guide's card has been sent, in order. The last one that has come is the one it shows.
+    var nexts: [Next] = []
     /// The menu's "Show the guide". Off, the card is not drawn; the steps are still taken.
     public var guideOn = true
     /// The date last opened in his calendar, and when: the toast says so for a while.
@@ -67,6 +71,7 @@ public struct Scene {
         case .screen(let display, let lines):
             origin = (display.x, display.y)
             texts = lines.map { Box(x: $0.box.x / display.scale, y: $0.box.y / display.scale, w: $0.box.w / display.scale, h: $0.box.h / display.scale) }
+            read = lines.map(\.text)
         case .state(let name, let detail):
             // The first failure since the last press is the cause; one that follows it is its consequence.
             if name == "failed", failed == nil { failed = (detail ?? "", at) }
@@ -102,7 +107,8 @@ public struct Scene {
             marks.append(Mark(id: id, beat: beat, kind: kind, box: box.moved(dx: -origin.x, dy: -origin.y), label: label, at: at, withSay: withSay))
         case .next(let text, let n, let of, let done):
             // New words take the place of the old in the same card; no words take the card away.
-            guide = text.isEmpty ? nil : (text, n, of, done, at, guide?.upSince ?? at)
+            let card = nexts.last.flatMap { $0.text.isEmpty ? nil : $0 }
+            nexts.append(Next(text: text, n: n, of: of, done: done, at: at, upSince: card?.upSince ?? at))
         case .way(let id, let to, let toward):
             // One arrow at a time: a newer one takes the place of the one before. A clear wipes it, as it does a mark.
             for i in ways.indices where ways[i].clearedAt == nil { ways[i].clearedAt = at }
