@@ -348,7 +348,7 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
   browse while it runs, and it does not know the page's address: it recognises a kept page from the lines on screen.
   A page that has changed since it was read is answered from the old text. A date it says must be on the screen or
   in a kept page, or the sentence is not said; other facts are not checked.
-- Working an exercise through has run only on tapes and in four scripted live runs on the worksheet's picture
+- Working an exercise through has run only on tapes and in five scripted live runs on the worksheet's picture
   (November 15), never on his real screen; its rings need the sheet found there, as above. Which step comes next,
   and whether the chemistry is right, is the model's: no code checks the steps, only that a step before the last
   does not name the product as the model wrote it. A walk spans one connection; "Start over" begins it again.
