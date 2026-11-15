@@ -28,6 +28,8 @@ export function glanced(look: Look, expect: Expect, truth: Truth[], known: Known
   out.push(trailIsTrue(s, line, known));
   const asAsk = { index: s, moments: look.moments };
   out.push(...marks(asAsk, expect, truth), ...datesSaid(asAsk, expect, truth, known), ...ahead(s, boards.at(-1)?.text ?? null, expect, known));
+  // A date that has passed leaves nothing to do, so nothing is added to what is ahead.
+  if (expect.board === false) out.push(boards.length === 0 ? yes(C, s, "It adds nothing to what is ahead", "no board was drawn") : no(C, s, "It adds nothing to what is ahead", `it drew: ${boards.at(-1)?.text.slice(0, 90)}`));
   return out;
 }
 

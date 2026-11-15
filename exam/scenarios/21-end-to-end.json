@@ -1,0 +1,39 @@
+{
+  "v": 1,
+  "id": "end-to-end",
+  "title": "One sitting: the club page followed down, a room asked for, the page it sends him to, a passed deadline, and what is still ahead",
+  "criteria": ["C18", "C13", "C6", "C10"],
+  "page": "real:rso-recognition",
+  "source": { "url": "https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/" },
+  "others": {
+    "rso-deadlines-closed": { "url": "https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/", "at": "#accordion-item-1", "hide": ".wp-block-accordion-panel" },
+    "rso-resources": { "url": "https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-resources/", "hide": ".wp-block-accordion-panel" }
+  },
+  "steps": [
+    { "say": "Can you hear me?", "circle": null,
+      "expect": { "plain": true } },
+    { "look": true, "waitMs": 12000,
+      "expect": { "shows": true, "says": ["November 22"],
+        "saysThat": { "what": "where on the page the date is", "anyOf": ["deadlines", "important dates", "below", "further down", "scroll", "section"] },
+        "ahead": ["November 22", "December 1"] } },
+    { "look": true, "page": "real:rso-deadlines-closed", "waitMs": 8000,
+      "expect": { "shows": true, "mark": { "on": "Deadlines" }, "ahead": ["November 22", "December 1"] } },
+    { "look": true, "page": "real:rso-deadlines", "waitMs": 8000,
+      "expect": { "shows": true, "mark": { "on": "November 22 at 11:59pm:" }, "countsDaysTo": "November 22", "ahead": ["November 22", "December 1"] } },
+    { "say": "What else do I need before then?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["training"] } },
+    { "say": "Can you help me find where to book this event?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["Space Requests", "RSO Resources"] } },
+    { "look": true, "page": "real:rso-resources", "waitMs": 10000,
+      "expect": { "shows": true, "mark": { "on": "Space Requests" } } },
+    { "look": true, "page": "real:catalina-maymester", "waitMs": 10000,
+      "expect": { "shows": true, "mark": { "on": "Application deadline: November 2, 2026" }, "says": ["November 2"], "countsDaysTo": "November 2", "board": false,
+        "saysThat": { "what": "the date has passed", "anyOf": ["passed", "closed", "missed", "ago", "no longer", "too late", "was due", "deadline was", "already"] },
+        "neverSays": ["you can still apply", "not too late", "still time to apply"] } },
+    { "say": "When does it open again?", "circle": null,
+      "expect": { "plain": true, "sentences": 1,
+        "saysThat": { "what": "no page it read says when", "anyOf": ["no page", "doesn't say", "does not say", "don't have", "do not have", "isn't on", "is not on", "not on", "don't know", "can't tell", "cannot tell", "no date", "nothing"] } } },
+    { "say": "What is still ahead for me?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["November 22", "December 1"] } }
+  ]
+}

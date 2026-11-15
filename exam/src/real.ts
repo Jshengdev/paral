@@ -20,7 +20,9 @@ const shift = (id: string) => `<script>addEventListener("load", () => {
   if (place) document.documentElement.style.marginTop = -(place.getBoundingClientRect().top + scrollY - ${HEADROOM}) + "px";
 });</script>`;
 
-export async function fetchReal(name: string, url: string, at?: string): Promise<string> {
+// `hide` is what the page keeps hidden until he clicks: a closed section's inside. With the page's scripts gone its
+// sections all stand open, so a scenario that needs one closed names what to hide, as the page's own style rule would.
+export async function fetchReal(name: string, url: string, at?: string, hide?: string): Promise<string> {
   const saved = realPage(name);
   if (existsSync(saved)) return saved;
   const dir = join(BUILD, "tmp", "real", name);
@@ -33,7 +35,7 @@ export async function fetchReal(name: string, url: string, at?: string): Promise
     .replace(/<iframe\b[^>]*>[\s\S]*?<\/iframe>/gi, '<div style="background:#d9dce1;aspect-ratio:16/9;max-width:100%"></div>');
   if (!/<head[^>]*>/i.test(html) || !/<\/head>/i.test(html) || !/<\/body>/i.test(html)) throw new Error(`${url} is not a page with a head and a body`);
   const truth = `<script src="${pathToFileURL(join(EXAM, "pages", "truth.js")).href}"></script>`;
-  await writeFile(saved, html.replace(/<head[^>]*>/i, (head) => `${head}<base href="${url}">`).replace(/<\/head>/i, `${PAINTS}</head>`)
+  await writeFile(saved, html.replace(/<head[^>]*>/i, (head) => `${head}<base href="${url}">`).replace(/<\/head>/i, `${PAINTS}${hide ? `<style>${hide}{display:none !important}</style>` : ""}</head>`)
     .replace(/<\/body>/i, `${at ? shift(at.replace(/^#/, "")) : ""}${truth}</body>`));
   return saved;
 }

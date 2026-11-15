@@ -28,7 +28,8 @@ export async function prepare(scenario: Scenario): Promise<string> {
   const dir = runDir(scenario.id);
   await mkdir(dir, { recursive: true });
   const png = join(dir, "page.png");
-  if (scenario.source) await fetchReal(scenario.page.slice(5), scenario.source.url, scenario.source.at);
+  if (scenario.source) await fetchReal(scenario.page.slice(5), scenario.source.url, scenario.source.at, scenario.source.hide);
+  for (const [name, other] of Object.entries(scenario.others ?? {})) await fetchReal(name, other.url, other.at, other.hide);
   const first = await renderPage(scenario.page, DISPLAY, png);
   let truth = first;
   let pages = 0;

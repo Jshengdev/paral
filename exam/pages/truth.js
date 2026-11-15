@@ -9,7 +9,9 @@ addEventListener("load", () => {
   const truth = [];
   const box = (r) => ({ x: r.x, y: r.y, w: r.width, h: r.height });
   for (const el of document.querySelectorAll("[data-id]")) {
-    if (el.children.length > 0) truth.push({ id: el.dataset.id, text: el.textContent.trim().replace(/\s+/g, " ").slice(0, 80), box: box(el.getBoundingClientRect()) });
+    const r = el.getBoundingClientRect();
+    // A real page has data-ids of its own, some inside a section that is closed: a thing with no size is not on the page.
+    if (el.children.length > 0 && r.width > 0 && r.height > 0) truth.push({ id: el.dataset.id, text: el.textContent.trim().replace(/\s+/g, " ").slice(0, 80), box: box(r) });
   }
   const walker = document.createTreeWalker(document.querySelector("main") ?? document.body, NodeFilter.SHOW_TEXT);
   let unnamed = 0;

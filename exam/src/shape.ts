@@ -58,6 +58,9 @@ const Step = z.union([
 ]);
 export type Step = z.infer<typeof Step>;
 
+/** A real public page: its address, the place on it to bring to the top, and what it keeps hidden until he clicks. */
+const Source = z.object({ url: z.string().url(), at: z.string().optional(), hide: z.string().optional() });
+
 export const Scenario = z.object({
   v: z.literal(1),
   id: z.string().regex(/^[a-z0-9-]+$/),
@@ -65,7 +68,9 @@ export const Scenario = z.object({
   criteria: z.array(z.string().regex(/^[CU]\d+$/)).min(1),
   video: z.string().optional(),
   page: z.string().min(1),
-  source: z.object({ url: z.string().url(), at: z.string().optional() }).optional(),   // a real public page, fetched into tmp/real/ and never committed
+  source: Source.optional(),   // a real public page, fetched into tmp/real/ and never committed
+  /** Other real pages a step puts on the screen, by the name a step uses after "real:". */
+  others: z.record(z.string().regex(/^[a-z0-9-]+$/), Source).optional(),
   fault: z.enum(["voice"]).optional(),
   steps: z.array(Step).min(1),
 });
