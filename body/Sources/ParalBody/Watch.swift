@@ -9,8 +9,8 @@ public final class Watch {
     private let screen: NSScreen
     private var timer: Timer?
     private var looking = false
-    /// What the round before read, and what the last reported look read, as letters and digits only: the text reader
-    /// wobbles on marks and spaces from one picture to the next.
+    /// What the round before read, and what the last reported look read: the letters and digits only, since the text
+    /// reader wobbles on marks and spaces from one picture to the next, and where the first line stands.
     private var before = ""
     private var reported = ""
     /// The last picture that was read, as its small grey copy, and the lines read from it.
@@ -49,7 +49,10 @@ public final class Watch {
                 self.looking = false
                 guard let found, !self.busy() else { return }
                 self.lastRead = (found.small, found.lines)
-                let read = found.lines.map(\.text).joined(separator: " ").lowercased().filter { $0.isLetter || $0.isNumber }
+                // What was read is its words and where the first line stands (to about four points): a scroll that
+                // keeps the same lines in view is still a change, and the marks must follow it.
+                let words = found.lines.map(\.text).joined(separator: " ").lowercased().filter { $0.isLetter || $0.isNumber }
+                let read = words + "@\(Int((found.lines.first?.box.y ?? 0) / (8 * found.place.scale / 2)))"
                 defer { self.before = read }
                 guard read == self.before, read != self.reported else { return }
                 let path = NSTemporaryDirectory() + "paral-look.jpg"
