@@ -1,6 +1,6 @@
 // What paral must do. C1 to C15 are what the person in the video does with DuckyHelper (youtu.be/PHswiY3YUO0, times in
 // the scenarios). C16 is the team's own and C17 is ours. C18 is the look he chose on 2026-11-14 at
-// 19:02. U2 to U7 are checks of use, with their sources in src/judge/.
+// 19:02, made quieter by his click of 2026-11-15, 14:55: a look draws no board. U2 to U7 are checks of use, with their sources in src/judge/.
 export const CRITERIA: Record<string, string> = {
   C1: "At rest, one small circle sits at the bottom centre, above other apps.",
   C2: "He holds the key and talks. The circle widens and his words show as he says them.",
@@ -19,7 +19,7 @@ export const CRITERIA: Record<string, string> = {
   C15: "If the voice fails, the words still show and the marks still draw.",
   C16: "The team's own: when his work has a break, a hint first, one step up per ask, never the result.",
   C17: "Ours: for a hard idea, a short rendered lesson plays on the board, on numbers that are not his.",
-  C18: "With no key pressed, on a page it has read, it shows one true line, marks where the thing is, and draws what is ahead. Elsewhere it stays quiet.",
+  C18: "With no key pressed, on a page it has read, it shows one true line and marks where the thing is. It draws no board: what is ahead is drawn when he asks. Elsewhere it stays quiet.",
   C19: "He asks it to keep a date. A calendar file for that date opens, and his own click adds it.",
   C20: "He says \"show me\". It walks what is ahead one step at a time: the step named on the board, said in one sentence, and marked or pointed to.",
   U2: "Use: its first words come within a second of release.",

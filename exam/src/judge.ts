@@ -110,7 +110,7 @@ export async function judge(scenario: Scenario): Promise<Judged> {
     if (step.say !== "") verdicts.push(...timing(ask, step.expect, where, nextDown), ...(seen ? await thinkingShown(seen, ask, where) : thinkingSaid(ask)));
     if (!takenBack(ask, nextDown)) verdicts.push(...heardWhole(ask, step.say));
     verdicts.push(...marks(ask, step.expect, truth, standingBefore(everything, ask)), ...spoken(ask, step.expect, truth, { pages: readBy(turnOf(ask), ask.down), ranOn: ran }), ...voiced(ask, step.expect, all[index + 1]?.down ?? null),
-      ...board(ask, step.expect, truth, where), ...lesson(ask, step.expect), ...cutIn(ask, all[index - 1] ?? null, step.expect, voice), ...pressedAgain(ask, all[index - 1] ?? null, step.expect), ...kept(ask, step.expect), ...walked(ask, step.expect), ...wayShown("C20", ask.index, ask.moments, step.expect), ...(filmed ? wayDrawn("C20", ask.index, ask.moments, step.expect, where, truth, flow.display) : []));
+      ...board(ask, step.expect, truth, where), ...lesson(ask, step.expect), ...cutIn(ask, all[index - 1] ?? null, step.expect, voice), ...pressedAgain(ask, all[index - 1] ?? null, step.expect), ...kept(ask, step.expect), ...walked(ask, step.expect, ran), ...wayShown("C20", ask.index, ask.moments, step.expect), ...(filmed ? wayDrawn("C20", ask.index, ask.moments, step.expect, where, truth, flow.display) : []));
     const drawnBoard = lastBoard(ask.moments, turnOf(ask));
     verdicts.push(...readable("C8", ask.index, drawnBoard.rows, drawnBoard.card, boardLook, drawnBoard.type));
     if (seen) {

@@ -9,7 +9,7 @@
     { "look": true, "waitMs": 12000,
       "expect": { "shows": true, "spoken": true, "says": ["November 22"], "way": { "to": "down", "toward": "Deadlines" }, "ahead": ["November 22", "December 1"] } },
     { "say": "Show me.", "circle": null,
-      "expect": { "step": 1, "way": { "to": "down" } } },
+      "expect": { "step": 1, "way": { "to": "down" }, "ahead": ["November 22", "December 1"] } },
     { "look": true, "page": "real:rso-deadlines", "waitMs": 8000,
       "expect": { "way": { "to": "down" } } },
     { "say": "Show me.", "circle": null,

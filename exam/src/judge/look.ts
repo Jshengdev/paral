@@ -6,8 +6,9 @@ import { dates, datesSaid, daysTo, type Known } from "./dates.ts";
 import { linesUnder, marks } from "./marks.ts";
 
 // A look with no key pressed (his choice of 2026-11-14, 19:02): on a page it has read, paral
-// shows one sentence with a short trail of what it did above it, marks where the thing is, and draws what is still
-// ahead. He did not ask, so everything it shows must be true to what it read, and it must stay quiet otherwise.
+// shows one sentence with a short trail of what it did above it and marks where the thing is. By his click of
+// 2026-11-15, 14:55, it draws no board: what is still ahead is drawn when he asks or says "show me". He did not ask,
+// so everything it shows must be true to what it read, and it must stay quiet otherwise.
 const C = "C18";
 
 /** What the judge holds about one look. `known.pages` is the pages the build's record says the model was asked about for it. */
@@ -33,7 +34,7 @@ export function glanced(look: Look, expect: Expect, truth: Truth[], known: Known
   const markedLines = of(look.moments, "mark").flatMap((m) => linesUnder(m.box, truth).map((t) => t.text));
   out.push(trailIsTrue(s, line, known, markedLines));
   const asAsk = { index: s, moments: look.moments };
-  out.push(...marks(asAsk, expect, truth), ...datesSaid(asAsk, expect, truth, known), ...ahead(s, boards.at(-1)?.text ?? null, expect, known));
+  out.push(...marks(asAsk, expect, truth), ...datesSaid(asAsk, expect, truth, known), ...ahead(s, boards.at(-1)?.text ?? null, expect));
   out.push(...wayShown(C, s, look.moments, expect));
   // A date that has passed leaves nothing to do, so nothing is added to what is ahead.
   if (expect.board === false) out.push(boards.length === 0 ? yes(C, s, "It adds nothing to what is ahead", "no board was drawn") : no(C, s, "It adds nothing to what is ahead", `it drew: ${boards.at(-1)?.text.slice(0, 90)}`));
@@ -60,21 +61,29 @@ function trailIsTrue(s: number, line: { text: string; trail?: string[] }, known:
   return wrong.length === 0 ? yes(C, s, what, trail.join(" > ")) : no(C, s, what, wrong.join("; "));
 }
 
-// What is ahead is drawn as one row. Its dates run soonest first, none of them is already past, and the dates the
-// scenario names are among them in that order.
-function ahead(s: number, board: string | null, expect: Expect, known: Known): Verdict[] {
+// On a page with things still ahead, a look draws no board of them: the board waits for his ask or for "show me".
+function ahead(s: number, board: string | null, expect: Expect): Verdict[] {
   if (expect.ahead === undefined) return [];
+  const what = "A look he did not ask for draws no board: what is ahead waits for his ask";
+  return [board === null ? yes(C, s, what, "no board was drawn") : no(C, s, what, `it drew: ${board.slice(0, 90)}`)];
+}
+
+/**
+ * The board of what is ahead, where it is drawn (the walk's board): its dates run soonest first, none of them is
+ * already past, and the dates the scenario names are among them in that order.
+ */
+export function aheadInOrder(criterion: string, s: number, board: string | null, named: string[], ranOn: Date): Verdict[] {
   const what = "The board of what is ahead runs soonest first, with nothing already past";
-  if (board === null) return [no(C, s, what, "no board was drawn")];
-  const days = dates(board).map((d) => ({ said: d.said, days: daysTo(known.ranOn, d.month, d.day) }));
+  if (board === null) return [no(criterion, s, what, "no board was drawn")];
+  const days = dates(board).map((d) => ({ said: d.said, days: daysTo(ranOn, d.month, d.day) }));
   const past = days.find((d) => d.days < 0);
   const late = days.find((d, index) => index > 0 && d.days < days[index - 1].days);
-  const order = past ? no(C, s, what, `${past.said} was ${-past.days} days ago`) : late ? no(C, s, what, `${late.said} comes after a later date`) : yes(C, s, what, board);
+  const order = past ? no(criterion, s, what, `${past.said} was ${-past.days} days ago`) : late ? no(criterion, s, what, `${late.said} comes after a later date`) : yes(criterion, s, what, board);
   const lower = board.toLowerCase();
-  const places = expect.ahead.map((date) => lower.indexOf(date.toLowerCase()));
-  const named = `The board holds ${expect.ahead.join(", then ")}`;
+  const places = named.map((date) => lower.indexOf(date.toLowerCase()));
+  const holds = `The board holds ${named.join(", then ")}`;
   const held = places.every((at) => at >= 0) && places.every((at, index) => index === 0 || at > places[index - 1]);
-  return [order, held ? yes(C, s, named, board) : no(C, s, named, board)];
+  return [order, held ? yes(criterion, s, holds, board) : no(criterion, s, holds, board)];
 }
 
 // The judge's own proposal, not a bar he was shown: a mark is drawn for one page. When the look sees another page

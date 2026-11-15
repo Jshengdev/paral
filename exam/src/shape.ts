@@ -45,7 +45,10 @@ const Expect = z.object({
   shows: z.boolean().optional(),
   /** This look's line is also said aloud: a page's first look in a sitting that shows a date (his word of 2026-11-15, 00:02). Every other look is shown and not spoken. */
   spoken: z.boolean().optional(),
-  /** On a look: the dates the board of what is still ahead must hold, soonest first, each as a page writes it. */
+  /**
+   * The dates still ahead on this page, soonest first, each as a page writes it. On a look they mean no board may be
+   * drawn (what is ahead waits for his ask); on a "show me" step the walk's board must hold them in this order.
+   */
   ahead: z.array(z.string().min(1)).optional(),
 });
 export type Expect = z.infer<typeof Expect>;

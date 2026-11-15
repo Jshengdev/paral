@@ -140,8 +140,9 @@ walk are kept outside this repo, beside the films, because the record quotes the
   scripts what the app's watcher sends by itself, and `"page"` on a step puts another page on the screen from then on.
   On a page it has read it shows one sentence, not spoken. Each step of the trail above the line must be true: the
   pages it says it read are the ones the record names for that look, and the dates it says it found are the ones in
-  the line. Every date is on a page it read, the mark is on the line the scenario names, and the board of what is
-  ahead runs soonest first with nothing already past. Where the scenario says `"shows": false` (a second look at the
+  the line. Every date is on a page it read and the mark is on the line the scenario names. A look draws no board
+  (his click of 2026-11-15, 14:55): what is ahead is drawn when he asks or says "show me", and the walk's board is
+  where the judge holds that it runs soonest first with nothing already past. Where the scenario says `"shows": false` (a second look at the
   same screen, a page it has not read) it shows nothing. The app's own watcher is not run by any film.
   One bar here is the judge's own proposal and not one he was shown: when a look sees another page come up, the
   marks drawn for the page before are cleared.
