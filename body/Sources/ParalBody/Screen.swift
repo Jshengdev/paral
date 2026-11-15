@@ -7,6 +7,8 @@ import Vision
 public enum Screen {
     public struct Failed: Error { public let why: String }
 
+    /// What he is shown while the grant is missing.
+    public static let off = "the screen is not allowed: switch paral on under Privacy & Security, Screen Recording, then start it again"
     public static var allowed: Bool { CGPreflightScreenCaptureAccess() }
     public static func ask() { CGRequestScreenCaptureAccess() }
 

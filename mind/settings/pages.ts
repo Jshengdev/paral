@@ -14,6 +14,30 @@ export const pages = {
     measured: "not measured on a real window: how much of the Mac a look every 2.5 s costs is unknown",
   } satisfies Setting<number>,
 
+  keepAsks: {
+    value: ["add … to my calendar", "add … to calendar", "put … in my calendar", "put … on my calendar", "save the date"],
+    why: "Words of his that ask to keep the date paral last showed him. No model is asked: the date is written into a calendar file with the page's address, and the Mac opens the file in his calendar app.",
+    measured: "not measured; a first list",
+  } satisfies Setting<string[]>,
+
+  keptLine: {
+    value: "{date} is open in your calendar.",
+    why: "What he hears and sees when the calendar file has gone out. {date} is the month and day read from the page's line. It claims no more than that the file was opened: paral clicks nothing in the calendar.",
+    measured: "not seen live: whether Calendar asks before adding the entry or adds it at once has not been seen on a Mac",
+  } satisfies Setting<string>,
+
+  nothingToKeepLine: {
+    value: "I have not found a date to keep on this page.",
+    why: "Said when he asks to keep a date and no look has found one, or the line it found names no day.",
+    measured: "not seen live",
+  } satisfies Setting<string>,
+
+  followForMs: {
+    value: 180000,
+    why: "For this long after an answer, a look at another kept page is taken as him following that answer: it looks for what he was sent there for, and for nothing else. It is how paral guides from page to page. After it, a new page is looked at afresh.",
+    measured: "not measured; three minutes is a guess at how long a click and a page load can take in a demo",
+  } satisfies Setting<number>,
+
   glanceMaxTokens: {
     value: 3000,
     why: "Room for the deep model's thinking and its short reply to a look he did not ask for: one line, two sentences and three steps at most.",

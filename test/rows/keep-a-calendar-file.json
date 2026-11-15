@@ -1,0 +1,38 @@
+{
+ "name": "keep: a calendar file with the date as the page writes it and the page's address; timed when the line gives a time, all day when it does not, none when it names no day",
+ "run": "keep.file",
+ "in": {
+  "cases": [
+   {
+    "title": "RSO recognition application closes",
+    "written": "November 22 at 11:59pm: Application closes.",
+    "today": "2026-11-14T18:00:00-08:00",
+    "url": "https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/"
+   },
+   {
+    "title": "Advisors' requirements due; tell your advisor, now",
+    "written": "December 1: Deadline for advisors to submit their requirements.",
+    "today": "2026-11-14T18:00:00-08:00",
+    "url": "https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/"
+   },
+   {
+    "title": "Catalina Maymester application",
+    "written": "Application deadline: November 2, 2026",
+    "today": "2026-11-14T18:00:00-08:00",
+    "url": "https://dornsife.usc.edu/wrigley/education/catalina-residential-college/catalina-island-maymester/"
+   },
+   {
+    "title": "Fall study abroad",
+    "written": "Mid-February",
+    "today": "2026-11-14T18:00:00-08:00",
+    "url": "https://dornsife.usc.edu/overseas-studies/apply/"
+   }
+  ]
+ },
+ "out": [
+  "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//lost and found//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:20261122-fv375l@lostandfound\r\nDTSTAMP:20261115T020000Z\r\nDTSTART:20261122T235900\r\nSUMMARY:RSO recognition application closes\r\nDESCRIPTION:The page writes: \"November 22 at 11:59pm: Application closes.\" \r\n It gives no year\\; 2026 is the nearest to the day this was kept.\\nFrom htt\r\n ps://campusactivities.usc.edu/programs/recognized-student-organizations/rs\r\n o-recognition-process/\r\nURL:https://campusactivities.usc.edu/programs/recognized-student-organizati\r\n ons/rso-recognition-process/\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n",
+  "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//lost and found//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:20261201-1cxwfya@lostandfound\r\nDTSTAMP:20261115T020000Z\r\nDTSTART;VALUE=DATE:20261201\r\nDTEND;VALUE=DATE:20261202\r\nSUMMARY:Advisors' requirements due\\; tell your advisor\\, now\r\nDESCRIPTION:The page writes: \"December 1: Deadline for advisors to submit t\r\n heir requirements.\" It gives no year\\; 2026 is the nearest to the day this\r\n  was kept.\\nFrom https://campusactivities.usc.edu/programs/recognized-stud\r\n ent-organizations/rso-recognition-process/\r\nURL:https://campusactivities.usc.edu/programs/recognized-student-organizati\r\n ons/rso-recognition-process/\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n",
+  "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//lost and found//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:20261102-pqu822@lostandfound\r\nDTSTAMP:20261115T020000Z\r\nDTSTART;VALUE=DATE:20261102\r\nDTEND;VALUE=DATE:20261103\r\nSUMMARY:Catalina Maymester application\r\nDESCRIPTION:The page writes: \"Application deadline: November 2\\, 2026\"\\nFro\r\n m https://dornsife.usc.edu/wrigley/education/catalina-residential-college/\r\n catalina-island-maymester/\r\nURL:https://dornsife.usc.edu/wrigley/education/catalina-residential-college\r\n /catalina-island-maymester/\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n",
+  null
+ ]
+}

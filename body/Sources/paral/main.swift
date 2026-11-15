@@ -45,9 +45,6 @@ final class App: NSObject, NSApplicationDelegate {
         painter = Painter(tokens: tokens, width: size.width, height: size.height)
     }
 
-    private static let micOff = "the microphone is not allowed: switch paral on under Privacy & Security, Microphone"
-    private static let screenOff = "the screen is not allowed: switch paral on under Privacy & Security, Screen Recording, then start it again"
-
     private func clock() -> Double { Date().timeIntervalSince(began) * 1000 }
     private func stamp() -> Double { (Date().timeIntervalSince1970 * 1000).rounded() }
     private func tell(_ seen: Seen) { scene.take(seen, at: clock()) }
@@ -74,7 +71,7 @@ final class App: NSObject, NSApplicationDelegate {
         wire.onLine = { [weak self] seen in self?.took(seen) }
         wire.onRefused = { [weak self] why in self?.failed("the body refused a line from the mind (\(why))") }
         wire.onUp = { [weak self] up in if !up { self?.failed("the mind is not running; start it with ./run") } }
-        Mic.ask { [weak self] allowed in if !allowed { self?.failed(Self.micOff) } }
+        Mic.ask { [weak self] allowed in if !allowed { self?.failed(Mic.off) } }
         if !Screen.allowed { Screen.ask() }
         wire.start()
     }
@@ -114,6 +111,7 @@ final class App: NSObject, NSApplicationDelegate {
             voiced.insert(id)
             speaker.play(sound)
         }
+        if case .open(let path) = seen, !Keep.open(path) { failed("the calendar file could not be opened") }
         tell(seen)
     }
 
@@ -135,7 +133,7 @@ final class App: NSObject, NSApplicationDelegate {
         tell(.keyDown)
         wire.send(.keyDown(at: stamp()))
         // A missing grant is said on every press, in the capsule, since that is where he is looking.
-        if !Mic.allowed { failed(Self.micOff) }
+        if !Mic.allowed { failed(Mic.off) }
         mic.start()
         Task { [weak self] in
             guard let self else { return }
@@ -151,7 +149,7 @@ final class App: NSObject, NSApplicationDelegate {
                 }
             } catch {
                 let why = (error as? Screen.Failed)?.why ?? error.localizedDescription
-                await MainActor.run { self.failed(Screen.allowed ? "the screen could not be read (\(why))" : Self.screenOff) }
+                await MainActor.run { self.failed(Screen.allowed ? "the screen could not be read (\(why))" : Screen.off) }
             }
         }
     }

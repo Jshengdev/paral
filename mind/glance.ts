@@ -1,7 +1,9 @@
 import type { Hands, Screen } from "./ask.ts";
+import { unknownDate, worded } from "./cores/dates.ts";
+import { named, type ToKeep } from "./cores/keep.ts";
 import { locate } from "./cores/ground.ts";
 import { whichPage } from "./cores/page.ts";
-import type { Glanced } from "./ports.ts";
+import type { Following, Glanced } from "./ports.ts";
 import { SEAM_VERSION, type FromBody } from "../seam/schema.ts";
 
 const v = SEAM_VERSION;
@@ -10,6 +12,8 @@ const plain = (text: string) => text.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "
 
 /** One thing still ahead for him, as found on a kept page: what, by when as the page writes it, and the page's address. */
 export type Ahead = { step: string; by: string; from: string };
+/** What he asked a moment ago, what he was told, and the kept page he was on then (null if none). */
+export type Asked = Following & { page: string | null };
 
 /**
  * The looks paral takes without being asked, for one connection. A look does something only when his screen is one
@@ -17,12 +21,16 @@ export type Ahead = { step: string; by: string; from: string };
  * whether it holds one thing that will cost him later. Nothing read from his screen is sent for that. If it does,
  * the line is marked where it is on his screen now (the line itself, or the heading it sits under), one sentence is
  * shown in the capsule with the trail of what was done, and what is still ahead is drawn as a board. It is shown,
- * not spoken. When he scrolls or opens a section the mark moves to where the thing now is.
+ * not spoken. When he scrolls or opens a section the mark moves to where the thing now is. A date it shows is
+ * the one he can ask to keep.
+ *
+ * When he has just asked something and then come to another kept page, the look is for what he was sent there for:
+ * that is how paral guides him from page to page without clicking anything itself.
  */
-export function glances({ ports, settings, send, log }: Hands, remember: (ahead: Ahead[]) => void) {
-  /** What each kept page was found to hold, so a page is asked about once. Null: nothing that will cost him later. */
+export function glances({ ports, settings, send, log }: Hands, remember: (ahead: Ahead[]) => void, showed: (date: ToKeep) => void) {
+  /** What each look was found to hold, so the model is asked once: by page, or by page and the question that led there. Null: nothing. */
   const found = new Map<string, Glanced | null>();
-  /** What the mark of the last look sits on ("" when it had none), so the same thing is not shown twice. */
+  /** What the last look showed and where, so the same thing is not shown twice. */
   let shown: string | null = null;
   let looks = 0;
   let running: AbortController | null = null;
@@ -34,26 +42,30 @@ export function glances({ ports, settings, send, log }: Hands, remember: (ahead:
       running = null;
       shown = null;
     },
-    async take(look: Look | Screen) {
+    async take(look: Look | Screen, asked: Asked | null) {
       const page = whichPage(look.lines.map((line) => line.text), ports.pages, settings.pageLeastLines.value);
       if (page === null || ports.glancer === null) return;
+      // He is being followed when he asked something a moment ago and has since come to another kept page.
+      const following = asked !== null && asked.page !== page.name ? asked : null;
+      const key = following ? `${page.name} after "${following.words}"` : page.name;
       running?.abort();
       const mine = new AbortController();
       running = mine;
       const id = `g${++looks}`;
-      const first = !found.has(page.name);
+      const first = !found.has(key);
       if (first) {
-        log(`${id}: an unasked look: his screen is the kept page "${page.title}". Nothing read from his screen leaves the Mac for it: the deep model is asked about the kept page's own text`);
-        const glanced = await ports.glancer.glance(page, look.at, mine.signal).catch((error) => {
+        const why = following ? `a look after his ask "${following.words}": he has come to` : "an unasked look: his screen is";
+        log(`${id}: ${why} the kept page "${page.title}". Nothing read from his screen leaves the Mac for it: the deep model is asked about the kept page's own text${following ? ", with that question and its answer" : ""}`);
+        const glanced = await ports.glancer.glance(page, look.at, mine.signal, following ? { words: following.words, told: following.told } : undefined).catch((error) => {
           if (!mine.signal.aborted) log(`${id}: the look failed (${error instanceof Error ? error.message : error}); nothing is shown`);
           return undefined;
         });
         if (mine.signal.aborted || glanced === undefined) return;
-        found.set(page.name, glanced);
-        if (glanced === null) return log(`${id}: the page holds nothing that will cost him later; nothing is shown`);
-        remember(glanced.ahead.map((step) => ({ ...step, from: page.url })));
+        found.set(key, glanced);
+        if (glanced === null) return log(`${id}: ${following ? "what he was sent for is not on this page" : "the page holds nothing that will cost him later"}; nothing is shown`);
+        if (!following) remember(glanced.ahead.map((step) => ({ ...step, from: page.url })));
       }
-      const glanced = found.get(page.name);
+      const glanced = found.get(key);
       if (!glanced) return;
       // Where the thing is on his screen now: the line itself when it is in view, or the heading it sits under. A
       // kept line can be a whole paragraph where his screen breaks it into several, so the screen's line that the
@@ -62,17 +74,25 @@ export function glances({ ports, settings, send, log }: Hands, remember: (ahead:
       const line = locate(begins?.text ?? glanced.line, look.lines, look.display, settings.groundMinScore.value);
       const heading = glanced.under === "" ? null : locate(glanced.under, look.lines, look.display, settings.groundMinScore.value);
       const target = line.found ? line : heading?.found ? heading : null;
-      const on = target?.line ?? "";
-      if (on === shown) return;
-      shown = on;
+      const text = line.found ? glanced.sayInView : glanced.say;
+      if (`${key} on ${target?.line ?? ""}` === shown) return;
+      shown = `${key} on ${target?.line ?? ""}`;
+      // Push: a date this page does not hold would be made up, so a sentence that names one is not shown.
+      const today = new Date(look.at).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+      const made = unknownDate(text, [today, ...page.lines]);
+      if (made) return log(`${id}: push held back a look's sentence that names a date the page does not hold (${worded(made)}); it was: "${text}"`);
       send({ v, type: "clear" });
       if (target) send({ v, type: "mark", id, beat: 0, kind: "box", box: target.box });
-      const trail = first ? ["saw this page", `read ${ports.pages.length} USC pages`, "found 1 date"] : ["saw this page", line.found ? "found the line" : "found where it is"];
-      send({ v, type: "say", id, beat: 0, text: line.found ? glanced.sayInView : glanced.say, trail });
+      const reached = line.found ? "found the line" : "found where it is";
+      // Each step of the trail is something that was done for this look. The model was given this one kept page, up to a number of lines.
+      const read = page.lines.length <= settings.pageLinesGiven.value ? "read the whole page" : `read its first ${settings.pageLinesGiven.value} lines`;
+      const trail = following ? ["saw this page", "found what you asked for"] : first ? ["saw this page", read, `found 1 ${glanced.kind}`] : ["saw this page", reached];
+      send({ v, type: "say", id, beat: 0, text, trail });
       send({ v, type: "mute", id, why: "a look he did not ask for is shown, not spoken" });
       // What is ahead stays drawn while he is on this page: it is sent again each time the mark moves.
       if (glanced.ahead.length > 0) send({ v, type: "board", id, rows: [glanced.ahead.map((step) => (step.by ? `${step.step}: ${step.by}` : step.step))] });
-      log(`${id}: shown without being asked: "${line.found ? glanced.sayInView : glanced.say}"; the mark is on ${target ? `"${target.line}"` : "nothing, since neither the line nor its heading is in view"}`);
+      if (glanced.kind === "date") showed({ title: named(glanced.line, page.title), written: glanced.line, url: page.url });
+      log(`${id}: shown without being asked: "${text}"; the mark is on ${target ? `"${target.line}"` : "nothing, since neither the line nor its heading is in view"}`);
     },
   };
 }

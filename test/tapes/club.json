@@ -12,6 +12,19 @@
      }
     ]
    }
+  ],
+  "where do i book a room": [
+   {
+    "problem": "Where to book a room for a club",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "Room booking is on the RSO Resources page, under Space Requests.",
+      "mark": null
+     }
+    ]
+   }
   ]
  },
  "leaks": [],
@@ -42,7 +55,9 @@
     "EngageSC +",
     "Review helpful tips on how to use all the features EngageSC has to offer.",
     "Space Requests +",
-    "Recognized Student Organizations in good standing can request to book space on campus."
+    "Recognized Student Organizations in good standing can request to book space on campus.",
+    "Groups interested in requesting a classroom space should submit the Classroom Scheduling form.",
+    "Recognized Student Organizations in good standing can open a USC Credit Union bank account."
    ]
   }
  ],
@@ -65,5 +80,12 @@
     "by": "December 1"
    }
   ]
+ },
+ "glanceAfterAsk": {
+  "line": "Space Requests +",
+  "under": "",
+  "say": "Here it is: open Space Requests to book a room.",
+  "sayInView": "Here it is: open Space Requests to book a room.",
+  "ahead": []
  }
 }

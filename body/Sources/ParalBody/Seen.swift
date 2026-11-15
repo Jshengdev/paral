@@ -26,6 +26,8 @@ public enum Seen {
     case voice(id: String, beat: Int, pcm: Data, last: Bool)
     case words(id: String, beat: Int, start: [Double], end: [Double])
     case mute(id: String)
+    /// A calendar file the mind has written. The scene shows nothing for it; the app opens it (see `Keep`).
+    case open(path: String)
     case mark(id: String, beat: Int, kind: MarkKind, box: Box, label: String?)
     case echo(id: String, box: Box, shape: String)
     case board(id: String, rows: [[String]])
@@ -99,6 +101,9 @@ public enum Seen {
         case "mute":
             guard let id else { return .failure(Refused("mute.id: missing")) }
             return .success(.mute(id: id))
+        case "open":
+            guard let path = s("path"), !path.isEmpty else { return .failure(Refused("open.path: missing")) }
+            return .success(.open(path: path))
         case "mark":
             guard let id, let beat, let kind = MarkKind(rawValue: s("kind") ?? ""), let b = box(f["box"]) else {
                 return .failure(Refused("mark: id, beat, a known kind and a box with positive w and h are needed"))

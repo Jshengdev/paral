@@ -1,6 +1,7 @@
 // The runner for turn rows: the real mind on a tape, lines in over a socket and lines out.
+import { readFileSync } from "node:fs";
 import { connect } from "node:net";
-import { join } from "node:path";
+import { basename, join } from "node:path";
 import { tape } from "../../mind/adapters/tape.ts";
 import { serve } from "../../mind/server.ts";
 import { settings } from "../../mind/settings.ts";
@@ -13,7 +14,10 @@ const shorter = (line: any) =>
     ? { v: line.v, type: line.type, id: line.id, beat: line.beat, bytes: Buffer.from(line.pcm, "base64").length, ...(line.last ? { last: true } : {}) }
     : line.type === "words"
       ? { v: line.v, type: line.type, id: line.id, beat: line.beat, count: line.words.length, ends: Number(line.end.at(-1).toFixed(2)) }
-      : line;
+      : line.type === "open"
+        ? // The file sits in this machine's temporary folder, so a row holds its name and what is in it.
+          { v: line.v, type: line.type, id: line.id, file: basename(line.path), holds: readFileSync(line.path, "utf8") }
+        : line;
 
 export async function playTurn(input: { tape: string; asks: Step[][]; set?: Record<string, unknown>; show?: "drawn" | "saidFirst" | "ahead" }): Promise<unknown> {
   const path = fresh("row") + ".sock";

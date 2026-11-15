@@ -1,0 +1,71 @@
+{
+ "name": "keep: the entry's name is the first sentence of the line's part that is not its date, then the page's title; an answer's date is kept as the first page's line that writes it, and a date no page writes is not kept",
+ "run": "keep.line",
+ "in": {
+  "named": [
+   [
+    "November 22 at 11:59pm: Application closes. You must submit the form on EngageSC before 11:59pm.",
+    "RSO Recognition Process"
+   ],
+   [
+    "Application deadline: November 2, 2026",
+    "Catalina Island Maymester"
+   ],
+   [
+    "Applications are due at noon on April 24, 2026.",
+    "Maymester Programs"
+   ]
+  ],
+  "pages": [
+   {
+    "name": "process",
+    "url": "https://example.edu/process/",
+    "readOn": "2026-11-14",
+    "title": "RSO Recognition Process",
+    "lines": [
+     "Important Dates",
+     "October 27: Application opens",
+     "November 22 at 11:59pm: Application closes.",
+     "December 1: Deadline for advisors to submit their requirements."
+    ]
+   },
+   {
+    "name": "resources",
+    "url": "https://example.edu/resources/",
+    "readOn": "2026-11-14",
+    "title": "RSO Resources",
+    "lines": [
+     "Space Requests",
+     "Requests for December 1 events are due two weeks ahead."
+    ]
+   }
+  ],
+  "said": [
+   "The application closes November 22 at 11:59 pm, which is eight days from today.",
+   "Today is November 14, so your advisor has until December 1.",
+   "Today is November 14, 2026.",
+   "Room booking is on the RSO Resources page."
+  ]
+ },
+ "out": {
+  "named": [
+   "Application closes · RSO Recognition Process",
+   "Application deadline · Catalina Island Maymester",
+   "Maymester Programs"
+  ],
+  "kept": [
+   {
+    "title": "Application closes · RSO Recognition Process",
+    "written": "November 22 at 11:59pm: Application closes.",
+    "url": "https://example.edu/process/"
+   },
+   {
+    "title": "Deadline for advisors to submit their requirements · RSO Recognition Process",
+    "written": "December 1: Deadline for advisors to submit their requirements.",
+    "url": "https://example.edu/process/"
+   },
+   null,
+   null
+  ]
+ }
+}

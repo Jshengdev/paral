@@ -7,8 +7,9 @@ import { join } from "node:path";
 import { tape } from "../mind/adapters/tape.ts";
 import { serve } from "../mind/server.ts";
 import { boxes, fitted, split, wipes } from "../mind/cores/beats.ts";
-import { asksForDrawing, fits, hear, silence } from "../mind/cores/catch.ts";
+import { asksFor, fits, hear, silence } from "../mind/cores/catch.ts";
 import { datesIn, daysFrom, unknownDate, type Named } from "../mind/cores/dates.ts";
+import { calendarFile, dateLine, named, when } from "../mind/cores/keep.ts";
 import { whichPage } from "../mind/cores/page.ts";
 import { showable, unfit } from "../mind/cores/fit.ts";
 import { circled, echo } from "../mind/cores/circle.ts";
@@ -56,9 +57,12 @@ const runs: Record<string, (input: any) => unknown> = {
   "body.card": cardOnFilm,
   "body.pressedAgain": pressedAgain,
   catch: (input) => input.events.reduce(hear, silence),
-  "catch.drawing": (input) => Object.fromEntries(input.asks.map((words: string) => [words, asksForDrawing(words, input.phrases)])),
+  "catch.drawing": (input) => Object.fromEntries(input.asks.map((words: string) => [words, asksFor(words, input.phrases)])),
   "page.which": (input) => whichPage(input.seen, input.kept, input.least)?.name ?? null,
   "dates.in": (input) => input.texts.map((text: string) => datesIn(text)),
+  "keep.when": (input) => input.cases.map(([written, today]: [string, string]) => when(written, new Date(today))),
+  "keep.file": (input) => input.cases.map((entry: any) => calendarFile({ ...entry, today: new Date(entry.today) })),
+  "keep.line": (input) => ({ named: input.named.map(([written, page]: [string, string]) => named(written, page)), kept: input.said.map((said: string) => dateLine(said, input.pages)) }),
   "dates.unknown": (input) => input.cases.map(([said, sources]: [string, string[]]) => unknownDate(said, sources)),
   "dates.days": (input) => input.cases.map(([today, date]: [string, Named]) => daysFrom(new Date(today), date)),
   "catch.fits": (input) => input.cases.map(([drafted, final]: [string, string]) => fits(drafted, final, { share: input.share, least: input.least ?? 0, small: input.small ?? [] })),

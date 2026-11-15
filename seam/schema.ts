@@ -79,6 +79,8 @@ export const FromMind = z.discriminatedUnion("type", [
   z.object({ v, type: z.literal("voice"), id, beat, pcm: z.string(), last: z.boolean().optional() }),
   z.object({ v, type: z.literal("words"), id, beat, words: z.array(z.string()), start: z.array(z.number()), end: z.array(z.number()) }),
   z.object({ v, type: z.literal("mute"), id, why: z.string() }),
+  /** A calendar file the mind has written for him to keep a date; the body opens it and his own click in Calendar adds it. */
+  z.object({ v, type: z.literal("open"), id, path: z.string().min(1) }),
   z.object({ v, type: z.literal("mark"), id, beat, kind: MarkKind, box: Box, label: z.string().optional() }),
   z.object({ v, type: z.literal("echo"), id, box: Box, shape: z.enum(["loop", "ring", "box"]) }),
   z.object({ v, type: z.literal("board"), id, rows: z.array(z.array(z.string().min(1)).min(1)) }),

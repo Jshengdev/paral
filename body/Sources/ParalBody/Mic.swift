@@ -10,6 +10,8 @@ public final class Mic {
 
     public init() {}
 
+    /// What he is shown while the grant is missing.
+    public static let off = "the microphone is not allowed: switch paral on under Privacy & Security, Microphone"
     public static var allowed: Bool { AVCaptureDevice.authorizationStatus(for: .audio) == .authorized }
 
     public static func ask(_ done: @escaping (Bool) -> Void) {

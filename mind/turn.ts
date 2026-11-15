@@ -5,7 +5,9 @@ import { fitted } from "./cores/beats.ts";
 import { circled, drew, echo, type Point } from "./cores/circle.ts";
 import { showable } from "./cores/fit.ts";
 import { empty, type Lesson } from "./cores/hold.ts";
-import { glances, type Ahead } from "./glance.ts";
+import { whichPage } from "./cores/page.ts";
+import { glances, type Ahead, type Asked } from "./glance.ts";
+import { keeps } from "./keep.ts";
 import { drafts } from "./drafts.ts";
 import type { Listening, Ports } from "./ports.ts";
 import type { Settings } from "./settings.ts";
@@ -40,9 +42,11 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
   let ahead: Ahead[] = [];
   /** How many releases are still being answered. A look he did not ask for waits while he holds the key or an answer is on its way. */
   let answering = 0;
-  const glancing = glances({ ports, settings, send, log }, (found) => {
-    ahead = [...ahead.filter((old) => !found.some((step) => step.step === old.step)), ...found];
-  });
+  /** His last ask and what he was told, for a look at the page he goes to next. */
+  let asked: (Asked & { at: number }) | null = null;
+  /** The date paral last showed him, for "add it to my calendar". */
+  const keeping = keeps({ ports, settings, send, log });
+  const glancing = glances({ ports, settings, send, log }, (found) => (ahead = [...ahead.filter((old) => !found.some((step) => step.step === old.step)), ...found]), keeping.found);
   /** The opener, drafted from his words while he is still talking. With no fast model there is no opener at all. */
   const drafting = ports.opener && drafts(ports.opener, settings, () => screen?.lines.map((read) => read.text).filter(Boolean) ?? []);
 
@@ -117,6 +121,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
       }
       send({ v, type: "heard", text: words.text, final: true });
       const id = `t${++asks}`;
+      if (await keeping.asked(id, words.text, at, mine.signal)) return;
       const path = drawn ? trail : carried;
       carried = [];
       // His own loop comes back as a neat ring at once. It claims nothing about his work, so no model is asked.
@@ -145,7 +150,14 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
         log(`${id}: he drew a path of ${path.length} points around line${around.length === 1 ? "" : "s"} ${around.join(", ") || "none"}${drawn ? "" : " on the hold before"}; ${worded} of ${screen.lines.length} lines came with their words${outside}`);
       }
       const asking = { id, words: words.text, seen: screen, circled: around, lesson, ahead, markUp, releasedAt: at, opener, signal: mine.signal };
+      const shownBefore = lesson.shown;
       await ask({ ports, settings, send, log }, asking, (kept) => (lesson = kept));
+      // What he asked and was told is kept for a while: if he now goes to another kept page, the next look is for
+      // what he was sent there for.
+      const told = lesson.shown.filter((line) => !shownBefore.includes(line));
+      const here = whichPage(screen.lines.map((line) => line.text), ports.pages, settings.pageLeastLines.value);
+      if (!mine.signal.aborted && told.length > 0) asked = { words: words.text, told, page: here?.name ?? null, at: Date.now() };
+      keeping.answered(told, here ? [here, ...ports.pages] : ports.pages);
       if (!mine.signal.aborted) send({ v, type: "state", name: "idle" });
     } catch (error) {
       if (mine.signal.aborted) return;
@@ -183,7 +195,8 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
           return up(line.at);
         case "look":
           // A look he did not ask for never cuts into a hold or an answer.
-          return listening !== null || answering > 0 ? undefined : glancing.take(line);
+          if (listening !== null || answering > 0) return;
+          return glancing.take(line, asked !== null && Date.now() - asked.at < settings.followForMs.value ? asked : null);
         case "trail":
           return void trail.push({ x: line.x, y: line.y });
         case "close":

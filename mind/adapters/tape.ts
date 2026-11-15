@@ -11,6 +11,8 @@ const Tape = z.object({
   opener: z.string().optional(),
   /** What a look he did not ask for finds on a kept page; null for a page that holds nothing. Absent: no such looks. */
   glance: z.object({ line: z.string(), under: z.string(), say: z.string(), sayInView: z.string(), ahead: z.array(z.object({ step: z.string(), by: z.string() })) }).nullable().optional(),
+  /** What a look finds when he has just been sent to the page by an answer: the thing he was sent for. */
+  glanceAfterAsk: z.object({ line: z.string(), under: z.string(), say: z.string(), sayInView: z.string(), ahead: z.array(z.object({ step: z.string(), by: z.string() })) }).nullable().optional(),
   pages: z.array(z.object({ name: z.string(), url: z.string(), readOn: z.string(), title: z.string(), lines: z.array(z.string()) })).optional(),
   voice: z.boolean().optional(),
   clip: z.object({ clip: z.string(), still: z.string(), seconds: z.number() }).optional(),
@@ -98,7 +100,15 @@ export function tape(path: string): Ports & { release(kind?: string): void; aske
           },
         } : null,
     lessons: recorded.clip ? { render: async () => recorded.clip! } : null,
-    glancer: recorded.glance !== undefined ? { glance: async () => recorded.glance ?? null } : null,
+    glancer:
+      recorded.glance !== undefined
+        ? {
+            async glance(_page, _today, _signal, following) {
+              const found = following ? recorded.glanceAfterAsk : recorded.glance;
+              return found ? { kind: following ? "step" : "date", ...found } : null;
+            },
+          }
+        : null,
     pages: recorded.pages ?? [],
     voice: recorded.voice
       ? {

@@ -147,10 +147,11 @@ export function anthropic(settings: Settings, prompts: Prompts, log: Log, client
       },
     },
     glancer: {
-      async glance(page, today, signal) {
+      async glance(page, today, signal, following) {
         allowed();
         const model = settings.brainModel.value;
         const date = new Date(today).toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+        const sent = following ? `\n\nA moment ago they asked you: "${following.words}" You told them: "${following.told.join(" ")}" They have now come to this page. Look for what they were sent here for, as the second part of your instructions says.` : "";
         // Only the kept page's own text goes, with today's date: nothing that was read from his screen.
         const reply = await client.messages.parse(
           {
@@ -158,14 +159,14 @@ export function anthropic(settings: Settings, prompts: Prompts, log: Log, client
             max_tokens: settings.glanceMaxTokens.value,
             system: prompts.glance,
             output_config: { effort: settings.brainEffort.value, format: zodOutputFormat(Glance) },
-            messages: [{ role: "user", content: `Today is ${date}. The page on their screen is "${page.title}".\n\n${pagesRead([page], today, settings.pageLinesGiven.value)}` }],
+            messages: [{ role: "user", content: `Today is ${date}. The page on their screen is "${page.title}".${sent}\n\n${pagesRead([page], today, settings.pageLinesGiven.value)}` }],
           },
           { signal },
         );
         count(reply.model, model, reply.usage);
         const seen = reply.parsed_output;
         if (seen === null || !seen.found || seen.line.trim() === "" || seen.say.trim() === "") return null;
-        return { line: seen.line, under: seen.under, say: seen.say, sayInView: seen.sayInView || seen.say, ahead: seen.ahead.filter((step) => step.step.trim() !== "") };
+        return { kind: seen.kind, line: seen.line, under: seen.under, say: seen.say, sayInView: seen.sayInView || seen.say, ahead: seen.ahead.filter((step) => step.step.trim() !== "") };
       },
     },
   };

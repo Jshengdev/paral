@@ -113,7 +113,7 @@ public struct Scene {
         case .ready:
             // The mind is linked. A failure from before the first press (the mind was not running) no longer stands.
             if holds.isEmpty { failed = nil }
-        case .other:
+        case .other, .open:
             break
         }
     }

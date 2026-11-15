@@ -40,10 +40,11 @@ export function hear(words: Words, event: EarEvent): Words {
 }
 
 /**
- * Whether his words ask for a drawing. A phrase counts where it starts a word ("draw" in "drawing", not in
- * "withdraw"), and "…" inside a phrase stands for whatever words come between.
+ * Whether his words hold one of these phrases: it is how an ask for a drawing, or for a date to be kept, is told
+ * with no model. A phrase counts where it starts a word ("draw" in "drawing", not in "withdraw"), and "…" inside a
+ * phrase stands for whatever words come between.
  */
-export function asksForDrawing(words: string, phrases: string[]): boolean {
+export function asksFor(words: string, phrases: string[]): boolean {
   const said = words.toLowerCase();
   const escape = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   return phrases.some((phrase) => new RegExp("\\b" + phrase.toLowerCase().split("…").map((part) => escape(part.trim())).join(".+")).test(said));

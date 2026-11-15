@@ -111,11 +111,18 @@ export interface Lessons {
  * the heading it sits under ("" for none), a sentence for when the line is not in view and one for when it is, and
  * what is still ahead for it, each step with its date as a page writes it ("" when none is given).
  */
-export type Glanced = { line: string; under: string; say: string; sayInView: string; ahead: { step: string; by: string }[] };
+export type Glanced = { kind: "date" | "step"; line: string; under: string; say: string; sayInView: string; ahead: { step: string; by: string }[] };
+
+/** What he asked a moment ago and what he was told, for a look at the page he then went to. */
+export type Following = { words: string; told: string[] };
 
 export interface Glancer {
-  /** Null when the page holds nothing that will cost him later. Only the kept page's own text is sent, with today's date. */
-  glance(page: KeptPage, today: number, signal: AbortSignal): Promise<Glanced | null>;
+  /**
+   * Null when the page holds nothing to show. With no `following` it looks for the one thing that will cost him
+   * later; with it, for what he was just sent to this page for. Only the kept page's own text is sent, with today's
+   * date and, when he is being followed, his question and the answer he was given.
+   */
+  glance(page: KeptPage, today: number, signal: AbortSignal, following?: Following): Promise<Glanced | null>;
 }
 
 /** `pages` is not a service: it is USC's pages as read ahead of time and kept in `pages/kept/`; empty when none are kept. */

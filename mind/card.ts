@@ -1,6 +1,6 @@
 import type { Asking, Hands } from "./ask.ts";
 import { boxes } from "./cores/beats.ts";
-import { asksForDrawing } from "./cores/catch.ts";
+import { asksFor } from "./cores/catch.ts";
 import type { HoldEvent } from "./cores/hold.ts";
 import { SEAM_VERSION } from "../seam/schema.ts";
 
@@ -17,7 +17,7 @@ export function card({ settings, send, log }: Hands, asking: Asking, drew: (even
   let open = false;
   let filled = false;
   // With a wrong line already open the answer will be a hint, and a hint has no board: no card is opened.
-  if (asking.lesson.breakLine === null && asksForDrawing(asking.words, settings.drawingAsks.value)) {
+  if (asking.lesson.breakLine === null && asksFor(asking.words, settings.drawingAsks.value)) {
     open = true;
     send({ v, type: "board", id, rows: [] });
     log(`${id}: he asked for a drawing, so an empty card opens at ${since()} ms from the release`);

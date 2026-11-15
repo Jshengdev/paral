@@ -28,6 +28,7 @@ Promises: one schema for every line between body and mind (`schema.ts`), newline
 | `voice` | a chunk of that sentence's sound, 16-bit PCM at 24 kHz mono, base64; `last` closes the beat |
 | `words` | when each word of the beat is spoken, in seconds from the beat's first sound |
 | `mute` | this answer has no voice, and why |
+| `open` | a calendar file (.ics) the mind has written for a date he asked to keep; the app opens it in his calendar app and clicks nothing there. The scene shows nothing for it, and the scripted stand-in does not open it |
 | `mark` | a ring, underline, wavy line, bracket or hugging box at a box, with the beat it belongs to |
 | `board` | rows of boxes joined by arrows. With no rows it is an empty card, which a later `board` with the same id fills; the mind sends an empty one only when `drawingAsks` holds words, and as set it holds none |
 | `board.close` | take away an empty card, since no board is coming |
