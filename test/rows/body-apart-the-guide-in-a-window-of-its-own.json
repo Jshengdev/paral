@@ -1,0 +1,143 @@
+{
+ "name": "body: the app paints the guide's card apart, so that a recording of his screen can leave it out: nothing before its line; with the card up, the overlay puts no ink on it while the card's own window draws it and nothing beyond it; when the drawn arrow leads to the guide's card (its words name the marked line), the arrow goes with the card into that window",
+ "run": "body.apart",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes.",
+   "Late applications are not accepted.",
+   "Info Sessions, Workshops, and Office Hours"
+  ],
+  "rows": [
+   {
+    "at": 500,
+    "line": {
+     "type": "next",
+     "text": "Hold the key and say: show me",
+     "n": 4,
+     "of": 8
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "g1",
+     "beat": 0,
+     "kind": "box",
+     "on": 3
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "say",
+     "id": "g1",
+     "beat": 0,
+     "text": "This is the date to keep: the application closes in 8 days.",
+     "trail": [
+      "saw this page",
+      "found the line"
+     ],
+     "keep": true
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mute",
+     "id": "g1",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   },
+   {
+    "at": 5000,
+    "line": {
+     "type": "key.down",
+     "at": 1005000
+    }
+   },
+   {
+    "at": 5600,
+    "line": {
+     "type": "key.up",
+     "at": 1005600
+    }
+   },
+   {
+    "at": 5800,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 5800,
+    "line": {
+     "type": "mark",
+     "id": "t1",
+     "beat": 0,
+     "kind": "box",
+     "on": 1
+    }
+   },
+   {
+    "at": 5800,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 0,
+     "text": "The dates are under Deadlines."
+    }
+   },
+   {
+    "at": 5800,
+    "line": {
+     "type": "mute",
+     "id": "t1",
+     "why": "no voice is set up"
+    }
+   },
+   {
+    "at": 5850,
+    "line": {
+     "type": "state",
+     "name": "idle"
+    }
+   },
+   {
+    "at": 5900,
+    "line": {
+     "type": "next",
+     "text": "Open Deadlines",
+     "n": 3,
+     "of": 8
+    }
+   }
+  ],
+  "at": [
+   400,
+   3000,
+   12000
+  ]
+ },
+ "out": [
+  {
+   "guide": null,
+   "overlayDrawsSomething": true
+  },
+  {
+   "guide": "up",
+   "overlayInkOnIt": false,
+   "itsWindowDrawsIt": true,
+   "itsWindowDrawsMore": false
+  },
+  {
+   "guide": "up",
+   "overlayInkOnIt": false,
+   "itsWindowDrawsIt": true,
+   "itsWindowDrawsMore": true
+  }
+ ]
+}

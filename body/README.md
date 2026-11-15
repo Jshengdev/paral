@@ -93,6 +93,26 @@ where and draws it (`PainterNudge.swift`, `Layout.nudge`), as for the guide's ca
 - **Over it.** The cursor and its name tag are drawn above everything, and may pass over the card while they fly in
   and ride the pen; at rest the cursor is clear of it.
 
+## The guide's card on his screen and out of a recording
+
+The guide's card is for him, not for whoever watches a recording of his screen. So the app paints it in a window
+of its own (`GuideWindow.swift`): a panel over the whole display, at the overlay's level, on every space, never
+making the app active, letting every click through, and marked not to be shared (`sharingType = .none`). The
+overlay paints the same picture with the card left out (`Painter.leavesOutGuide`): the card is still placed, so
+everything else keeps off it, and the arrow that leads to the card goes into the card's window with it rather than
+point at nothing. "Show the guide" in the menu hides and shows it as before. A film paints one picture, card and all.
+
+Whether this macOS leaves such a window out of a `screencapture` recording has not been seen: newer ways of capturing
+the screen are said to ignore the setting. To check, with the app running and the guide's card on screen:
+
+```
+screencapture -v -V 5 ~/Desktop/guide-check.mov
+```
+
+It records five seconds of the screen (the Terminal may first need the screen-recording grant). Open the movie: the
+card and its "Step n of 8" should be missing from it while the capsule, the marks and the board are in it. If the
+card is in the movie, this macOS records the window anyway and the setting does nothing here.
+
 ## Deciding what is on screen
 
 | file | job |
@@ -138,6 +158,7 @@ where and draws it (`PainterNudge.swift`, `Layout.nudge`), as for the guide's ca
 | `Speaker.swift` | plays the voice as it arrives; drops what is waiting at the next key press |
 | `Screen.swift` | one picture of a display without paral's own window, the lines read from it, his path drawn on it |
 | `Overlay.swift` | one see-through panel above everything that lets every click through, except where the last picture drew the cross or a nudge button; it never makes the app active |
+| `GuideWindow.swift` | the guide's card, and the arrow that leads to it, in a panel of their own over the display that lets every click through and is marked not to be shared, so a recording of the screen leaves them out |
 | `Press.swift` (in the app) | what a click the overlay took does: the cross closes, "Add to calendar" asks as a tapped cue card does, "Not now" puts the card away |
 | `Wire.swift` | the socket to the mind; reconnects when the mind restarts |
 | `Watch.swift` | looks at the display with no key pressed and reports a look when what it read, or where its first line stands, has changed and stood still. It reads the text only when the picture has changed. It has run on the owner's Mac since 2026-11-14 19:53; its sense of a scroll that keeps the same lines in view has not |

@@ -77,3 +77,20 @@ export function nudge(input: { lines: string[]; rows: Written[]; at: number[]; n
 export function seen(input: { lines: object[] }) {
   return execFileSync(headless, ["lines"], { input: input.lines.map((line) => JSON.stringify(line)).join("\n") + "\n", encoding: "utf8" }).split("\n").filter(Boolean);
 }
+
+/**
+ * Each moment of a hand-written run painted as the app paints it: the overlay with the guide's card left out, and
+ * the card in its own window, which a recording leaves out. Whether the guide's card is up, whether the overlay puts
+ * any ink on it, whether the card's window draws it, and whether that window draws anything beyond it (the arrow
+ * that leads to the card, when one does), past the room its shadow takes.
+ */
+export function apart(input: { lines: string[]; rows: Written[]; at: number[] }) {
+  const dir = handWritten("apart", onTheirLines(input.rows, input.lines), input.lines);
+  const tokens = JSON.parse(readFileSync(join(root, "body", "tokens.json"), "utf8"));
+  const margin = tokens.shadow + tokens.band + 2;
+  return input.at.map((moment) => {
+    const seen = JSON.parse(execFileSync(headless, ["apart", dir, join(root, "body", "tokens.json"), String(moment), String(margin)], { encoding: "utf8" }));
+    if (seen.guide === null) return { guide: null, overlayDrawsSomething: seen.overlayInk > 0 };
+    return { guide: "up", overlayInkOnIt: seen.overlayInkOnTheCard > 0, itsWindowDrawsIt: seen.cardInkOnTheCard > 0, itsWindowDrawsMore: seen.cardInkElsewhere > 0 };
+  });
+}

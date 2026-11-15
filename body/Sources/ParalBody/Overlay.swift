@@ -20,10 +20,12 @@ public enum Hit: Equatable { case cross, button(NudgeButton) }
 /// redraws only when the picture has changed. What takes a click is what the last picture drew as taking one: the
 /// cross on the resting circle, and the nudge card's two buttons while they are up. The window takes the mouse only
 /// while the pointer is over one of them. It is a panel that never makes the app active, so a click on a button is
-/// taken at the first click and the page he is on keeps the keyboard.
+/// taken at the first click and the page he is on keeps the keyboard. The guide's card is not drawn here: it is in
+/// a window of its own that a recording leaves out (`GuideWindow`), painted from the same picture.
 public final class Overlay {
     private let window: NSPanel
     private let canvas: Canvas
+    private let guide: GuideWindow
     /// Swapped when the tokens file changes, so a dial turned on the dials page shows on the real screen.
     public var painter: Painter
     private var timer: Timer?
@@ -48,9 +50,14 @@ public final class Overlay {
         window.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .stationary]
         canvas = Canvas(frame: NSRect(origin: .zero, size: screen.frame.size))
         window.contentView = canvas
+        guide = GuideWindow(screen: screen)
         canvas.paint = { [weak self] ctx in
             guard let self, let shown = self.shown else { return }
-            self.hits = self.painter.paint(shown, into: ctx).compactMap { item in
+            var apart = self.painter
+            apart.leavesOutGuide = true
+            let placed = apart.paint(shown, into: ctx)
+            self.guide.show(shown, placed: placed, painter: self.painter)
+            self.hits = placed.compactMap { item in
                 if item.what == "cross" { return (.cross, item.box) }
                 return item.what == "button" ? NudgeButton(rawValue: item.id ?? "").map { (.button($0), item.box) } : nil
             }
