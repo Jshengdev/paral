@@ -1,5 +1,5 @@
 import type { Expect } from "../shape.ts";
-import { of, type Ask } from "../timeline.ts";
+import { of, spoken as aloud, type Ask } from "../timeline.ts";
 import { no, yes, type Verdict } from "../verdict.ts";
 
 // The ear must hear the whole question. A hold cut short leaves a word or two. The ear mishears a word now and
@@ -33,7 +33,9 @@ function sameWords(ask: Ask, cutAt: number | null): Verdict[] {
 const VOICE_STARTS_MS = 300;   // the voice's first sound comes 95 to 124 ms after a sentence is sent (the mind's log, 20 sentences)
 
 // One writer: every sentence shown is also voiced, unless this run was told the voice is down. `cutAt` is when he
-// held the key again: a sentence sent just before that was stopped before its voice could start, as it should be.
+// held the key again: a sentence whose turn to be spoken had not come by then was stopped before its voice could
+// start, as it should be. Its turn comes when it is sent, or when the sentence before it has been spoken, whichever
+// is later (a sentence sent 323 ms before his press, behind one with 4 s still to say, was failed for it once).
 export function voiced(ask: Ask, expect: Expect, cutAt: number | null): Verdict[] {
   const s = ask.index;
   const says = of(ask.moments, "say");
@@ -45,7 +47,9 @@ export function voiced(ask: Ask, expect: Expect, cutAt: number | null): Verdict[
       failedLook ? yes("C15", s, "It says the voice is down", "the capsule says so") : no("C15", s, "It says the voice is down", "nothing on screen says so"),
     ];
   }
-  const silent = says.filter((m) => !heard.has(m.id) && !(cutAt !== null && cutAt - m.at < VOICE_STARTS_MS));
+  const spokenUntil = (before: number) => Math.max(0, ...aloud(ask).filter((one) => one.start < before).map((one) => one.end));
+  const turnOf = (m: { at: number }) => Math.max(m.at, spokenUntil(m.at));
+  const silent = says.filter((m) => !heard.has(m.id) && !(cutAt !== null && cutAt - turnOf(m) < VOICE_STARTS_MS));
   if (says.length === 0) return [];
   return [...sameWords(ask, cutAt), silent.length === 0 ? yes("C7", s, "Every sentence shown is also spoken", `${says.length} of ${says.length}`)
     : no("C7", s, "Every sentence shown is also spoken", `${says.length - silent.length} of ${says.length}; silent: "${silent[0].text.slice(0, 40)}"`)];
