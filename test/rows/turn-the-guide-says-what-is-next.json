@@ -1,0 +1,509 @@
+{
+ "name": "turn: the guide tells the body what to do next on the club page and moves on as each step is seen to happen: the look, the heading, the walk, the dates opened; a page with no steps gets an empty line",
+ "run": "turn",
+ "in": {
+  "tape": "club.json",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "hello",
+     "body": "row"
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "look",
+     "at": 1794700000000,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Recognition Process",
+       "box": {
+        "x": 200,
+        "y": 200,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "The Spring 2027 RSO Recognition process is now open on EngageSC",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "for new RSOs and RSOs re-establishing after a lapse in recognition.",
+       "box": {
+        "x": 200,
+        "y": 360,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Important Dates",
+       "box": {
+        "x": 200,
+        "y": 500,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Deadlines +",
+       "box": {
+        "x": 200,
+        "y": 600,
+        "w": 900,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "until": "board"
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1794700010000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1794700010005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Recognition Process",
+       "box": {
+        "x": 200,
+        "y": 200,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "The Spring 2027 RSO Recognition process is now open on EngageSC",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "for new RSOs and RSOs re-establishing after a lapse in recognition.",
+       "box": {
+        "x": 200,
+        "y": 400,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Important Dates",
+       "box": {
+        "x": 200,
+        "y": 500,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Deadlines +",
+       "box": {
+        "x": 200,
+        "y": 600,
+        "w": 900,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "show me"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 1794700012000
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1794700020000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1794700010005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Recognition Process",
+       "box": {
+        "x": 200,
+        "y": 200,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "The Spring 2027 RSO Recognition process is now open on EngageSC",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "for new RSOs and RSOs re-establishing after a lapse in recognition.",
+       "box": {
+        "x": 200,
+        "y": 400,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Important Dates",
+       "box": {
+        "x": 200,
+        "y": 500,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Deadlines +",
+       "box": {
+        "x": 200,
+        "y": 600,
+        "w": 900,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "Okay, show me."
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 1794700012000
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "look",
+     "at": 1794700030000,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "If you need accessibility accommodations or have questions related to RSO recognition, please contact Campus Activities.",
+       "box": {
+        "x": 200,
+        "y": 200,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Important Dates",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Deadlines +",
+       "box": {
+        "x": 200,
+        "y": 400,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "October 27: Application opens",
+       "box": {
+        "x": 200,
+        "y": 500,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "November 22 at 11:59pm: Application closes. You must submit the form on EngageSC before 11:59pm.",
+       "box": {
+        "x": 200,
+        "y": 600,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "December 1: Deadline for advisors to submit their requirements.",
+       "box": {
+        "x": 200,
+        "y": 700,
+        "w": 900,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "until": "board"
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1794700040000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1794700010005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "If you need accessibility accommodations or have questions related to RSO recognition, please contact Campus Activities.",
+       "box": {
+        "x": 200,
+        "y": 200,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Important Dates",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Deadlines +",
+       "box": {
+        "x": 200,
+        "y": 400,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "October 27: Application opens",
+       "box": {
+        "x": 200,
+        "y": 500,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "November 22 at 11:59pm: Application closes. You must submit the form on EngageSC before 11:59pm.",
+       "box": {
+        "x": 200,
+        "y": 600,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "December 1: Deadline for advisors to submit their requirements.",
+       "box": {
+        "x": 200,
+        "y": 700,
+        "w": 900,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "show me"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 1794700012000
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1794700050000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1794700010005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "If you need accessibility accommodations or have questions related to RSO recognition, please contact Campus Activities.",
+       "box": {
+        "x": 200,
+        "y": 200,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Important Dates",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Deadlines +",
+       "box": {
+        "x": 200,
+        "y": 400,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "October 27: Application opens",
+       "box": {
+        "x": 200,
+        "y": 500,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "November 22 at 11:59pm: Application closes. You must submit the form on EngageSC before 11:59pm.",
+       "box": {
+        "x": 200,
+        "y": 600,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "December 1: Deadline for advisors to submit their requirements.",
+       "box": {
+        "x": 200,
+        "y": 700,
+        "w": 900,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "show me"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 1794700012000
+    }
+   ]
+  ],
+  "show": "next"
+ },
+ "out": [
+  {
+   "text": "Wait: it looks at this page by itself",
+   "n": 1,
+   "of": 8
+  },
+  {
+   "text": "Open Deadlines",
+   "n": 3,
+   "of": 8
+  },
+  {
+   "text": "Say: add it to my calendar",
+   "n": 6,
+   "of": 8
+  }
+ ]
+}

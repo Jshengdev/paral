@@ -66,6 +66,7 @@ export function shows(hands: Hands, lead: (step: Led | null) => void, showed: (d
       send({ v, type: "board", id, rows, now: on });
       if (kept !== null) showed(kept);
       if (from !== null) lead({ page: from.name, line: kept?.written ?? null, text, rows, now: on, trail: ["show me", `step ${on + 1} of ${of}`] });
+      hands.noted?.({ kind: "showme" });
       log(`${id}: show me, step ${on + 1} of ${of}: ${step.step}${by === "" ? "" : ` (by ${by})`}; ${marked}`);
       await sayLine(hands, id, text, signal);
       return true;

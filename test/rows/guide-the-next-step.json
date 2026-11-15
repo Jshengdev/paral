@@ -1,0 +1,72 @@
+{
+ "name": "guide: the next step is the first not yet seen to happen: a look with no mark, the mark on the heading, an ask done early still counts, the mark on the line, the walk twice, a date kept; then none is left",
+ "run": "guide.next",
+ "in": {
+  "steps": [
+   {
+    "text": "Wait: it looks at this page by itself",
+    "when": "look"
+   },
+   {
+    "text": "Scroll until Deadlines is on screen",
+    "when": "heading"
+   },
+   {
+    "text": "Open Deadlines",
+    "when": "line"
+   },
+   {
+    "text": "Hold the key and say: show me",
+    "when": "showme"
+   },
+   {
+    "text": "Say it again: show me",
+    "when": "showme again"
+   },
+   {
+    "text": "Say: add it to my calendar",
+    "when": "kept"
+   },
+   {
+    "text": "Say: what else do I need before then?",
+    "when": "asked what else"
+   }
+  ],
+  "happens": [
+   {
+    "kind": "look",
+    "on": "nothing"
+   },
+   {
+    "kind": "look",
+    "on": "heading"
+   },
+   {
+    "kind": "asked",
+    "words": "What else do I need before then?"
+   },
+   {
+    "kind": "look",
+    "on": "line"
+   },
+   {
+    "kind": "showme"
+   },
+   {
+    "kind": "showme"
+   },
+   {
+    "kind": "kept"
+   }
+  ]
+ },
+ "out": [
+  "Scroll until Deadlines is on screen",
+  "Open Deadlines",
+  "Open Deadlines",
+  "Hold the key and say: show me",
+  "Say it again: show me",
+  "Say: add it to my calendar",
+  null
+ ]
+}

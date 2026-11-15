@@ -49,6 +49,7 @@ export function keeps(hands: Hands) {
         writeFileSync(path, file);
         const label = new Date(day.year, day.month - 1, day.day).toLocaleDateString("en-US", { month: "long", day: "numeric" });
         send({ v, type: "open", id, path, label });
+        hands.noted?.({ kind: "kept" });
         line = settings.keptLine.value.replace("{date}", label);
         log(`${id}: he asked to keep a date; a calendar file was written for "${last.written.slice(0, 80)}" from ${last.url}, and the body is told to open it`);
       } else {

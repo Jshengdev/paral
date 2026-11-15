@@ -36,6 +36,7 @@ Promises: one schema for every line between body and mind (`schema.ts`), newline
 | `board.close` | take away an empty card, since no board is coming |
 | `clip` | a lesson clip to play in the board's place: its name, the file, a first still, and its length |
 | `clear` | wipe paral's marks, board and clip |
+| `next` | the demo's guide: what to do next on the page on his screen (`text`), step `n` of `of`. Sent when that changes. An empty `text` means no card; `done` is true on the one line sent when every step has happened. `clear` leaves it |
 
 Coordinates: boxes read from a picture are in picture pixels from the picture's top-left. Boxes sent to the body are
 in screen points from the top-left of the main display, y growing downward. The scene converts in one place.

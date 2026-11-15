@@ -33,7 +33,7 @@ export type Asked = Following & { page: string | null };
  * When he has just asked something and then come to another kept page, the look is for what he was sent there for:
  * that is how paral guides him from page to page without clicking anything itself.
  */
-export function glances({ ports, settings, send, log }: Hands, remember: (ahead: Ahead[]) => void, showed: (date: ToKeep) => void) {
+export function glances({ ports, settings, send, log, noted }: Hands, remember: (ahead: Ahead[]) => void, showed: (date: ToKeep) => void) {
   /** What each look was found to hold, so the model is asked once: by page, or by page and the question that led there. Null: nothing. */
   const found = new Map<string, Glanced | null>();
   /** What the last look showed and where, so the same thing is not shown twice. */
@@ -59,6 +59,7 @@ export function glances({ ports, settings, send, log }: Hands, remember: (ahead:
     send({ v, type: "mute", id, why: "a look he did not ask for is shown, not spoken" });
     send({ v, type: "board", id, rows: step.rows, now: step.now });
     log(`${id}: following "show me", ${step.trail[1]}: ${marked}`);
+    noted?.({ kind: "look", on: where?.inView ? "line" : where?.box ? "heading" : "nothing" });
   }
 
   return {
@@ -134,6 +135,7 @@ export function glances({ ports, settings, send, log }: Hands, remember: (ahead:
       // Only a date still ahead is one he can ask to keep: a passed one is told, never offered.
       if (glanced.kind === "date") showed({ title: named(glanced.line, page.title), written: glanced.line, url: page.url });
       log(`${id}: shown without being asked: "${text}"; ${marked}`);
+      noted?.({ kind: "look", on: where.inView ? "line" : where.box ? "heading" : "nothing" });
     },
   };
 }
