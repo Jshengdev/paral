@@ -10,13 +10,13 @@ export const pages = {
 
   lookEveryMs: {
     value: 1000,
-    why: "How often the body looks at the display with no key pressed: a picture and a small grey print of it each round, with the menu bar left out. It sends a look to the mind only when the print has changed since the last look it sent and then stood still for one round, so scrolling sends nothing until he stops, and it reads the text only for a look it sends. The owner, after his first real run: \"the rescan the page at faster intervals also doesnt seem to work\". It was 2500 and compared every letter read off the display, so a timer ticking in the menu bar kept any round from matching the one before. The mind acts on a look only when the screen is one of USC's kept pages. Zero turns the looks off.",
+    why: "How often the body looks at the display with no key pressed: a picture and a small grey print of it each round, with the menu bar left out. It sends a look to the mind only when the print has changed since the last look it sent and then stood still for one round, so scrolling sends nothing until he stops, and it reads the text only for a look it sends. The owner, after his first real run: that the page was not being looked at again fast enough. It was 2500 and compared every letter read off the display, so a timer ticking in the menu bar kept any round from matching the one before. The mind acts on a look only when the screen is one of USC's kept pages. Zero turns the looks off.",
     measured: "not measured on a real window: what a picture and a print every second cost the Mac is unknown. On his first real run at 2500 the looks came about 30 s apart",
   } satisfies Setting<number>,
 
   lookFastMost: {
     value: 30,
-    why: "While the arrow that says the thing is off his screen is up, the body sends a look as soon as the page has changed, without waiting for it to stand still, so the mark lands as the thing comes into view. This is how many looks in a row it may send that way before the page must stand still once. The owner's words: \"can it fire like once every second during that particular phase with a cap of like 30 fires in a row without it\". With a mark up it does not: tried for one commit, a look mid-scroll put the mark where its line had been a moment before, and on his screen the underline sat under the wrong sentence in six frames of seven. A mark is instead taken off the moment the page moves and drawn again once it is still.",
+    why: "While the arrow that says the thing is off his screen is up, the body sends a look as soon as the page has changed, without waiting for it to stand still, so the mark lands as the thing comes into view. This is how many looks in a row it may send that way before the page must stand still once. What the owner asked for: a look about once a second in that phase, thirty at most in a row. With a mark up it does not: tried for one commit, a look mid-scroll put the mark where its line had been a moment before, and on his screen the underline sat under the wrong sentence in six frames of seven. A mark is instead taken off the moment the page moves and drawn again once it is still.",
     measured: "his number. On his screen with the arrow up: looks a second apart and the box about a second after the scroll",
   } satisfies Setting<number>,
 
@@ -56,13 +56,13 @@ export const pages = {
       most: 170,
       steps: { label: "Show me the steps", send: "show me" },
     },
-    why: "After an answer on one of USC's kept pages, the answer stays on a card of its own with the one thing paral can do next. The owner, after his first real run, where each answer was a caption above the pill and then gone: \"we need the card that opens when we ask it for important ifnromation about what the rso is going on\". The trail is what was done for the answer. `most` is how many letters of the answer the card holds, cut at a sentence's end and never less than its first sentence: his designer's card is one sentence and one button, and at 320 a card of two sentences ran to seven lines. The card offers to keep a date the answer named that is still ahead; else, when steps are known, to walk them (the button's words and the words it sends back). It does not offer to scroll: the arrow's own tag carries that button. A page the answer sent him to is offered by `goOffer`.",
+    why: "After an answer on one of USC's kept pages, the answer stays on a card of its own with the one thing paral can do next. The owner, after his first real run, where each answer was a caption above the pill and then gone: a card that opens with the important information when it is asked. The trail is what was done for the answer. `most` is how many letters of the answer the card holds, cut at a sentence's end and never less than its first sentence: his designer's card is one sentence and one button, and at 320 a card of two sentences ran to seven lines. The card offers to keep a date the answer named that is still ahead; else, when steps are known, to walk them (the button's words and the words it sends back). It does not offer to scroll: the arrow's own tag carries that button. A page the answer sent him to is offered by `goOffer`.",
     measured: "not seen on a real screen; one run on the stand-in at 320, read by the judging window as too long",
   } satisfies Setting<{ trail: string[]; most: number; steps: { label: string; send: string } }>,
 
   openOffer: {
     value: { label: "Open it for me", send: "open it for me", found: "Here it is: {name}. It is closed.", inside: "{name} is inside {section}, which is closed." },
-    why: "When paral's box is on a heading that is closed over the thing, the card offers to open it: the button's words, the words it sends back, which are also what he can say, and the line of the card that says so after an answer sent him there ({name} is the heading's name); `inside` is that line when the thing is a section within the closed one ({section}), whose own heading is never on screen. The owner, after his first real run: \"It should have access to scroll and click to find and open pages to then draw on them\".",
+    why: "When paral's box is on a heading that is closed over the thing, the card offers to open it: the button's words, the words it sends back, which are also what he can say, and the line of the card that says so after an answer sent him there ({name} is the heading's name); `inside` is that line when the thing is a section within the closed one ({section}), whose own heading is never on screen. The owner, after his first real run: that it may move the page and press things itself, to reach and open what it then draws on.",
     measured: "not seen on a real screen",
   } satisfies Setting<{ label: string; send: string; found: string; inside: string }>,
 
@@ -80,7 +80,7 @@ export const pages = {
 
   scrollAsks: {
     value: ["scroll for me", "scroll there", "scroll to it", "scroll down for me", "scroll up for me", "scroll there for me", "take me to it on this page"],
-    why: "Words of his that ask the app to scroll to what an arrow is pointing at, off his screen: also what the arrow's button sends. The owner, after his first real run: \"hwne it draws and asks to scroll, there shoudl be a button that just pops up that says, scroll for me and then draws live when it actually finds it\".",
+    why: "Words of his that ask the app to scroll to what an arrow is pointing at, off his screen: also what the arrow's button sends. The owner, after his first real run: that when it asks him to scroll there be a button that scrolls for him, and that it draw when it finds the thing.",
     measured: "not measured; a first list",
   } satisfies Setting<string[]>,
 
@@ -122,7 +122,7 @@ export const pages = {
 
   unaskedVoice: {
     value: true,
-    why: "Whether the first look at a page is also said aloud when it shows a date, ahead or passed: once for the page in a sitting, never while he holds the key or an answer is on its way, and stopped by a press of the key. A look that only moves its mark is never spoken. The owner's word at about midnight on 2026-11-15: \"yes it should speak the unasked line aloud\".",
+    why: "Whether the first look at a page is also said aloud when it shows a date, ahead or passed: once for the page in a sitting, never while he holds the key or an answer is on its way, and stopped by a press of the key. A look that only moves its mark is never spoken. The owner's word at about midnight on 2026-11-15: yes to the unasked line being said aloud.",
     measured: "not heard on a Mac",
   } satisfies Setting<boolean>,
 

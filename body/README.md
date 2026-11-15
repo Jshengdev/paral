@@ -266,8 +266,7 @@ kit ("Lost and Found: brand kit", page 08), drawn here in code; no picture is lo
 
 ## "Scroll for me" on the way's tag
 
-After the owner's take of 2026-11-15 ("hwne it draws and asks to scroll, there shoudl be a button that just pops up
-that says, scroll for me"): under the way's tag is a small ink button with white words, `way.scroll` ("Scroll for
+After the owner's take of 2026-11-15 (he asked for a button, where it tells him to scroll, that does the scrolling): under the way's tag is a small ink button with white words, `way.scroll` ("Scroll for
 me") at `way.buttonType` (14) with `way.buttonPadX`, `way.buttonPadY` round them and `way.buttonGap` below the tag.
 It comes once the arrow is inked, `motion.buttonsAfterMs` after it, rising as a card's line does, and takes a click
 only once it has arrived; with motion reduced it is there with the arrow. Its room is part of the way's place from the
@@ -593,8 +592,7 @@ circled a table.
 
 ## The cursor beside his own pointer
 
-After the owner's take of 2026-11-15 ("the usc curosr thing should move to stick with my cursor once its on and follow
-it, and then move off to draw and create diagrams on screen"): once his pointer has been seen, paral's cursor never
+After the owner's take of 2026-11-15 (he asked that the logo mark keep beside his own pointer and leave it only to draw): once his pointer has been seen, paral's cursor never
 leaves the page. With nothing to draw its tip sits `cursor.followX` (18) right of and `cursor.followY` (20) below his
 pointer's tip, down and to the right of the system's arrow, so it covers neither the tip nor what he points at. It
 follows as a spring that goes past nothing: nine tenths of the way to where he stopped `cursor.followMs` (260) after

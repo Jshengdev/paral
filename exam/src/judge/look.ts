@@ -86,7 +86,7 @@ export function pageChanged(s: number, standing: number): Verdict {
 }
 
 
-// His words of 2026-11-14, 20:00: "arrows to continue scrolling until it finds it". When the thing is on this page
+// What he asked for on 2026-11-14, 20:00: arrows that keep him scrolling until the thing is found. When the thing is on this page
 // and not in view, the build says which way in a mark's place. It must be the right way, lead to the right thing,
 // and come instead of a mark, never beside one. The arrow's drawing is judged on film, not here.
 export function wayShown(criterion: string, s: number, moments: Moment[], expect: Expect): Verdict[] {

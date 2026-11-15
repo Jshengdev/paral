@@ -2,8 +2,7 @@ import type { Expect } from "../shape.ts";
 import { of, type Ask } from "../timeline.ts";
 import { no, yes, type Verdict } from "../verdict.ts";
 
-// His words of 2026-11-14, 20:00: "a funciton called show me which is like autocomplete but for the task and it
-// tries to just guide you adn follow you through the flow". The build's first version walks what the looks found
+// What he asked for on 2026-11-14, 20:00: a "show me" that works like autocomplete for the task and leads him along. The build's first version walks what the looks found
 // to be ahead, one step each time he says "show me": the board with one row a step and his row named, and one
 // sentence, "Step 2 of 3: ...". Where the step is on the page (a box, or the way to it) is held by the mark and way
 // checks; that the walk follows him to the next page is held by the looks after it.

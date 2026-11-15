@@ -5,7 +5,7 @@ import type { Setting } from "./types.ts";
 export const notes = {
   notesAsks: {
     value: ["my notes", "show me the notes", "open the notes", "side notes", "action items"],
-    why: "Words of his that ask for the notes of this sitting: every step the looks found, in order, with its date, where it is, the page's own line and a cut-out picture of its section, written as one page and opened in his browser. No model is asked. The owner, after his first real run: \"I wasnt able to udnerstand the whole flow of the resgistiraiotn process and want to properly end with like a side notes documetn that contain all the action items i need to do and in order and how to find there with a cut out screenhsot of that seciton to hover and view at the end of the session\". The menu's bank ends each scenario with \"show me my notes\" (cueCards).",
+    why: "Words of his that ask for the notes of this sitting: every step the looks found, in order, with its date, where it is, the page's own line and a cut-out picture of its section, written as one page and opened in his browser. No model is asked. The owner, after his first real run: a notes page at the end of a session: every action item in order, where to find it, and a cut-out picture of its section. The menu's bank ends each scenario with \"show me my notes\" (cueCards).",
     measured: "not measured; a first list",
   } satisfies Setting<string[]>,
 
