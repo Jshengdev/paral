@@ -119,7 +119,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
       }
       send({ v, type: "heard", text: words.text, final: true });
       const id = `t${++asks}`;
-      if (await keeping.asked(id, words.text, at, mine.signal)) return;
+      if (await keeping.asked(id, words.text, at, mine.signal, onPage?.url ?? null)) return;
       const path = drawn ? trail : carried;
       carried = [];
       // His own loop comes back as a neat ring at once. It claims nothing about his work, so no model is asked.

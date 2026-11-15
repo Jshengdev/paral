@@ -4,5 +4,13 @@
  { "name": "recognized-student-organizations", "url": "https://campusactivities.usc.edu/programs/recognized-student-organizations/" },
  { "name": "catalina-island-maymester", "url": "https://dornsife.usc.edu/wrigley/education/catalina-residential-college/catalina-island-maymester/" },
  { "name": "overseas-studies-apply", "url": "https://dornsife.usc.edu/overseas-studies/apply/" },
- { "name": "maymester-programs", "url": "https://dornsife.usc.edu/flp/home/programs-and-resources/maymester/" }
+ { "name": "maymester-programs", "url": "https://dornsife.usc.edu/flp/home/programs-and-resources/maymester/" },
+ { "name": "rso-recognition-faq", "url": "https://campusactivities.usc.edu/programs/recognized-student-organizations/faq-rso-recognition-process/" },
+ { "name": "rso-accountability", "url": "https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-accountability/" },
+ { "name": "new-student-organizations", "url": "https://campusactivities.usc.edu/programs/recognized-student-organizations/new-student-organizations/" },
+ { "name": "overseas-studies", "url": "https://dornsife.usc.edu/overseas-studies/" },
+ { "name": "overseas-studies-next-steps", "url": "https://dornsife.usc.edu/overseas-studies/next-steps-after-applying/" },
+ { "name": "stars-report", "url": "https://arr.usc.edu/stars-report/" },
+ { "name": "experience-usc", "url": "https://sites.usc.edu/experience-usc/" },
+ { "name": "brightspace-student-guides", "url": "https://www.brightspacehelp.usc.edu/students/" }
 ]

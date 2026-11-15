@@ -1,0 +1,45 @@
+{
+ "name": "stars-report",
+ "url": "https://arr.usc.edu/stars-report/",
+ "readOn": "2026-11-15",
+ "title": "STARS Report - Office of Academic Records and Registrar",
+ "lines": [
+  "STARS Report",
+  "On This Page",
+  "Jump to a Section",
+  "Overview",
+  "The Student Academic Record System report (STARS) reflects a student’s academic progress toward completion of their degree(s) for their declared major(s). This report contains all USC coursework and accepted transfer work that applies to degree requirements.",
+  "Undergraduate Students​",
+  "The undergraduate STARS report includes all requirements necessary for degree completion, such as skill level, general education, major, minor and grade point average requirements.",
+  "For all currently enrolled undergraduates, STARS reports are updated each fall and spring term. These updates occur immediately following the Add/Drop deadline for the current term. Students are notified via their USC email accounts that STARS reports are available for review on Experience USC .",
+  "Graduate Students",
+  "The graduate STARS report provides a comprehensive evaluation of progress toward degree completion, including time limits, continuous enrollment requirements, and summative experience completion requirements. Students may access their STARS reports on Experience USC .",
+  "Graduate students will have STARS reports made available when their advisor submits an application. Academic advisors may request updated STARS reports at any time, provided students for whom updates are requested have a program of study on file in their academic department. Degree Progress will also provide updated STARS reports as part of the degree application and graduation process.",
+  "Students Following Older Catalogue Years",
+  "STARS reports are not available to:",
+  "Undergraduate students following a catalogue year prior to 1985;",
+  "Master’s degree students following a catalog year prior to 1997; or",
+  "Doctoral students following a catalogue year prior to 1994.",
+  "Back to Top",
+  "How to Request a STARS Report",
+  "Students may request an updated STARS report through their academic advisor. Each department can request STARS report updates. Updates reflect all current (USC and transfer) coursework available and all exceptions in a student’s academic record. Students can view and print STARS report updates on Experience USC .",
+  "Back to Top",
+  "STARS Interactive Audit",
+  "Accessible through Experience USC , the STARS Interactive Audit (STARS IA) provides a graphical representation of a student’s STARS report. These reports are available to all undergraduate students.",
+  "Using STARS IA, students and advisors can:",
+  "Explore alternative majors and minors to determine how completed and in-progress coursework will meet academic requirements for selected programs.",
+  "Track a student’s performance over time, using the “Course History” feature, which displays GPA performance across all terms of USC registration.",
+  "All advisors with appropriate access to OASIS for Advisors can view and request updates for a student’s STARS IA.",
+  "Back to Top"
+ ],
+ "links": [
+  {
+   "text": "Experience USC",
+   "url": "https://experience.usc.edu/"
+  },
+  {
+   "text": "OASIS for Advisors",
+   "url": "http://www.usc.edu/oasis4adv"
+  }
+ ]
+}

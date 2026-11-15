@@ -29,9 +29,17 @@ export function keeps(hands: Hands) {
     answered(told: string[], pages: KeptPage[]) {
       last = dateLine(told.join(" "), pages) ?? last;
     },
-    /** Whether his words asked to keep the date. If so it is done here, to the last sound, and nothing else is asked. */
-    async asked(id: string, words: string, at: number, signal: AbortSignal): Promise<boolean> {
+    /**
+     * Whether his words asked to keep the date. If so it is done here, to the last sound, and nothing else is asked.
+     * `on` is the address of the kept page on his screen, or null when it is none of them: a date shown on another
+     * kept page is not "it" here.
+     */
+    async asked(id: string, words: string, at: number, signal: AbortSignal, on: string | null): Promise<boolean> {
       if (!asksFor(words, settings.keepAsks.value)) return false;
+      if (last !== null && on !== null && on !== last.url) {
+        log(`${id}: the date last shown is from ${last.url}, and his screen is now ${on}; it is not kept from here`);
+        last = null;
+      }
       const today = new Date(at);
       const day = last === null ? null : when(last.written, today);
       const file = last === null ? null : calendarFile({ ...last, today });

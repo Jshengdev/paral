@@ -8,7 +8,11 @@ import { readable } from "./readable.ts";
 
 const here = import.meta.dirname;
 type Listed = { name: string; url: string };
-const listed: Listed[] = JSON.parse(readFileSync(join(here, "list.json"), "utf8"));
+// With names after the command, only those pages are read: `node pages/gather.ts stars-report`. The rest keep the
+// text and the day they were read before.
+const only = process.argv.slice(2);
+const listed: Listed[] = (JSON.parse(readFileSync(join(here, "list.json"), "utf8")) as Listed[]).filter((page) => only.length === 0 || only.includes(page.name));
+if (listed.length === 0) console.log(`no page in list.json is named ${only.join(" or ")}`);
 
 mkdirSync(join(here, "kept"), { recursive: true });
 for (const { name, url } of listed) {

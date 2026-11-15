@@ -1,0 +1,32 @@
+{
+ "name": "experience-usc",
+ "url": "https://sites.usc.edu/experience-usc/",
+ "readOn": "2026-11-15",
+ "title": "Experience USC – School affiliation, if applicable",
+ "lines": [
+  "Welcome!",
+  "What is Experience USC?",
+  "Experience USC is USC’s new one-stop student portal, providing easy access to the university’s many resources, tools, and information that students rely on. This platform keeps students connected with the latest updates about academics, community, wellness, arts and culture, service opportunities, and career services.",
+  "Features",
+  "Explore what Experience USC has to offer",
+  "Student Profile",
+  "Maintain personal and academic information, such as your address, preferred name, pronoun, and gender identity, from your profile.",
+  "Trojan Knowledge",
+  "Find answers to frequently asked questions about academics, wellness, career services, and more!",
+  "USC Events",
+  "Browse hundreds of upcoming events and find out what’s happening at USC .",
+  "Student Organizations",
+  "Search over 1,000 recognized student organiz ations to find a community that aligns with your interests and passions.",
+  "Trojan Talent",
+  "Learn about your peers’ accomplishments, as well as share your own!",
+  "Registered students automatically have access to Experience USC",
+  "Log in at experience.usc.edu.",
+  "Log in"
+ ],
+ "links": [
+  {
+   "text": "Log in",
+   "url": "https://experience.usc.edu/"
+  }
+ ]
+}

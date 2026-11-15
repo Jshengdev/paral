@@ -34,8 +34,13 @@ export function readable(html: string, address: string): Read {
     if (text.length > 1 && /^https?:/.test(url) && !links.some((link) => link.url === url)) links.push({ text, url });
   }
 
-  // Every tag that starts a new line for a reader becomes a line break; what is left between breaks is one line.
-  const broken = main.replace(/<\/?(p|div|section|article|li|ul|ol|h[1-6]|tr|table|br|button|summary|details|dt|dd|blockquote|figcaption|td|th)\b[^>]*>/gi, "\n");
+  // The page's own line breaks mean nothing to a reader, and a tag can run over several of them, so they go first.
+  // Then every tag that starts a new line for a reader becomes a line break, and every other tag goes, whole; what
+  // is left between breaks is one line.
+  const broken = main
+    .replace(/\s+/g, " ")
+    .replace(/<\/?(p|div|section|article|li|ul|ol|h[1-6]|tr|table|br|button|summary|details|dt|dd|blockquote|figcaption|td|th)\b[^>]*>/gi, "\n")
+    .replace(/<[^>]+>/g, " ");
   const lines = broken
     .split("\n")
     .map(tidy)
