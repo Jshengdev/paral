@@ -98,10 +98,14 @@ export type After = { sent: KeptPage | null; target: { line: string; under: stri
  */
 export function wayAfter({ ports, settings, send, log }: Hands, id: string, seen: Seen, page: KeptPage, told: string[], drawn: string[] = []): After {
   const said = told.join(" ");
-  // The page it sent him to comes first. When the answer names another kept page as a page ("on the RSO Resources
-  // page") and that name is on his screen, in the site's menu or as a link, it is boxed: that is where to click.
+  // The page it sent him to comes first. When the answer names another kept page and that name is on his screen, in
+  // the site's menu or as a link, it is boxed: that is where to click.
   const short = (other: KeptPage) => other.title.split(" - ")[0].trim();
-  const [elsewhere] = ports.pages.filter((other) => other.name !== page.name && short(other).length >= 8 && plain(said).includes(`${plain(short(other))} page`)).sort((a, b) => short(b).length - short(a).length);
+  // It sent him there when it says so in words ("the RSO Resources page"), or when it names the page and its own
+  // mark is on that name: a ring on the link is where it sent him, however the sentence is worded.
+  const ringed = (name: string) => drawn.some((thing) => plain(thing).includes(name));
+  const names = (other: KeptPage) => plain(said).includes(`${plain(short(other))} page`) || (plain(said).includes(plain(short(other))) && ringed(plain(short(other))));
+  const [elsewhere] = ports.pages.filter((other) => other.name !== page.name && short(other).length >= 8 && names(other)).sort((a, b) => short(b).length - short(a).length);
   const sent = elsewhere ?? null;
   const gone: After = { sent, target: null, way: false };
   const link = elsewhere === undefined ? null : linkTo(settings, seen, short(elsewhere));

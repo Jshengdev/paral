@@ -85,6 +85,24 @@
      }
     ]
    }
+  ],
+  "can you help me find where to book this event": [
+   {
+    "problem": "Where to book the event",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "Booking isn't on this page; open RSO Resources in the side menu and expand the Space Requests section.",
+      "mark": {
+       "kind": "ring",
+       "index": 1,
+       "quote": "RSO Resources",
+       "label": null
+      }
+     }
+    ]
+   }
   ]
  },
  "leaks": [],
