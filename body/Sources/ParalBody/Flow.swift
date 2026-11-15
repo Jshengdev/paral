@@ -76,7 +76,7 @@ public final class Flow {
         wire.start()
         var seenTo = try await until("ready", limit: 8000, from: 0) { if case .ready = $0 { return true } else { return false } }
         var image = try Screen.load(page)
-        var small = dir.appendingPathComponent("page-for-the-brain.jpg").path
+        var small = dir.appendingPathComponent(FilmPages.sentAs(page: 0)).path
         /// How many times a step has put another page on the screen, and whether the step before was a look.
         var pages = 0
         var afterLook = false
@@ -117,7 +117,7 @@ public final class Flow {
             if let other = ask["page"] as? String {
                 image = try Screen.load(other)
                 pages += 1
-                small = dir.appendingPathComponent("page-\(pages)-for-the-brain.jpg").path
+                small = dir.appendingPathComponent(FilmPages.sentAs(page: pages)).path
                 try Screen.saveSmaller(image, to: small, longEdge: settings.pictureLongEdge)
             }
             // A look with no key pressed: what the app sends by itself when the display has changed and stood still.

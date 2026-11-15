@@ -14,7 +14,7 @@ public enum Film {
     }
     static let rate = 24000.0
 
-    struct Loaded { var page: CGImage; var w, h: Double; var events: [(at: Double, seen: Seen)]; var sound: [String: Data]; var skipped: Int }
+    struct Loaded { var pages: FilmPages; var w, h: Double; var events: [(at: Double, seen: Seen)]; var sound: [String: Data]; var skipped: Int }
 
     /// A recorded run as the film needs it: the page's picture, the display's size, and every line in order.
     static func load(_ dir: URL) throws -> Loaded {
@@ -22,7 +22,7 @@ public enum Film {
               let display = flow["display"] as? [String: Any], let pagePath = flow["page"] as? String,
               let w = (display["w"] as? NSNumber)?.doubleValue, let h = (display["h"] as? NSNumber)?.doubleValue
         else { throw Screen.Failed(why: "flow.json needs display.w, display.h and page") }
-        let page = try Screen.load(pagePath)
+        var pages = try FilmPages(flow: flow, first: try Screen.load(pagePath))
 
         var events: [(at: Double, seen: Seen)] = []
         var sound: [String: Data] = [:]
@@ -40,11 +40,12 @@ public enum Film {
             if case .keyDown = seen, let stamp { down = (at, stamp) }
             if case .keyUp = seen, let stamp, let down { at = min(at, down.record + (stamp - down.stamp)) }
             events.append((at, seen))
+            pages.take(fields, at: at)
             if case .voice(let id, let beat, let pcm, _) = seen { sound["\(id)/\(beat)", default: Data()].append(pcm) }
         }
         // Moving the release earlier can put it ahead of lines that arrived before it; the order is by time again.
         let ordered = events.enumerated().sorted { ($0.element.at, $0.offset) < ($1.element.at, $1.offset) }.map(\.element)
-        return Loaded(page: page, w: w, h: h, events: ordered, sound: sound, skipped: skipped)
+        return Loaded(pages: pages, w: w, h: h, events: ordered, sound: sound, skipped: skipped)
     }
 
     /// One frame of a recorded run at one moment, drawn the way the film draws it. For looking at a change of tokens
@@ -56,7 +57,8 @@ public enum Film {
         var scene = Scene(width: run.w, height: run.h, tokens: tokens)
         for event in run.events where event.at <= moment { scene.take(event.seen, at: event.at) }
         let painter = Painter(tokens: tokens, width: run.w, height: run.h)
-        try save(render(run.page, run.w, run.h) { ctx in _ = painter.paint(scene.picture(at: moment), into: ctx) }, to: URL(fileURLWithPath: out))
+        let page = run.pages.pictures[run.pages.page(at: moment)]
+        try save(render(page, run.w, run.h) { ctx in _ = painter.paint(scene.picture(at: moment), into: ctx) }, to: URL(fileURLWithPath: out))
         return whole.end
     }
 
@@ -71,8 +73,8 @@ public enum Film {
         }
     }
 
-    /// Where the painter puts each thing at each of the given moments of a recorded run, and the way arrow's and the
-    /// cursor's own values then. For rows: a film's record says when a thing's box changes, and not when the thing goes.
+    /// Where the painter puts each thing at each of the given moments of a recorded run, and the way arrow's, the
+    /// cursor's and the board's own values then. For rows: a film's record says when a thing's box changes, and not when the thing goes.
     public static func placed(run: String, tokens: Tokens, at moments: [Double]) throws -> [[String: Any]] {
         let run = try load(URL(fileURLWithPath: run))
         let painter = Painter(tokens: tokens, width: run.w, height: run.h)
@@ -81,17 +83,18 @@ public enum Film {
             for event in run.events where event.at <= moment { scene.take(event.seen, at: event.at) }
             let picture = scene.picture(at: moment)
             var placed: [Drawn] = []
-            _ = render(run.page, run.w, run.h) { ctx in placed = painter.paint(picture, into: ctx) }
+            _ = render(run.pages.pictures[0], run.w, run.h) { ctx in placed = painter.paint(picture, into: ctx) }
             let way: Any = picture.way.map { ["id": $0.id, "to": $0.down ? "down" : "up", "toward": $0.toward, "drawn": $0.drawn, "nod": $0.nod] as [String: Any] } ?? NSNull()
-            let pointer: Any = picture.pointer.map { ["x": $0.x, "y": $0.y, "ripple": $0.ripple ?? NSNull()] as [String: Any] } ?? NSNull()
-            return ["placed": placed.map { item in ["what": item.what, "id": item.id ?? "", "box": item.box.json] as [String: Any] }, "way": way, "pointer": pointer]
+            let pointer: Any = picture.pointer.map { ["x": $0.x, "y": $0.y, "ripple": $0.ripple ?? NSNull(), "flight": $0.withWay?.flight ?? NSNull()] as [String: Any] } ?? NSNull()
+            let board: Any = picture.board.map { ["id": $0.id, "now": $0.now ?? NSNull(), "appear": $0.appear] as [String: Any] } ?? NSNull()
+            return ["placed": placed.map { item in ["what": item.what, "id": item.id ?? "", "box": item.box.json] as [String: Any] }, "way": way, "pointer": pointer, "board": board]
         }
     }
 
     public static func make(run: String, tokens: Tokens, fps: Double = 30) throws -> Made {
         let dir = URL(fileURLWithPath: run)
         let loaded = try load(dir)
-        let page = loaded.page, w = loaded.w, h = loaded.h, events = loaded.events, sound = loaded.sound, skipped = loaded.skipped
+        let pages = loaded.pages, w = loaded.w, h = loaded.h, events = loaded.events, sound = loaded.sound, skipped = loaded.skipped
         var whole = Scene(width: w, height: h, tokens: tokens)
         for event in events { whole.take(event.seen, at: event.at) }
         let end = whole.end
@@ -100,7 +103,11 @@ public enum Film {
         try? FileManager.default.removeItem(at: frames)
         try FileManager.default.createDirectory(at: frames, withIntermediateDirectories: true)
         let painter = Painter(tokens: tokens, width: w, height: h)
-        try save(render(page, w, h) { _ in }, to: frames.appendingPathComponent("f_00000.png"))
+        try save(render(pages.pictures[0], w, h) { _ in }, to: frames.appendingPathComponent("f_00000.png"))
+        // The page under the ink, and for each page that has come up the frame it is under the ink from. A run of one
+        // page writes nothing more than it always did.
+        var page = 0
+        var cameUp: [[String: Int]] = [["page": 0, "fromFrame": 0]]
 
         var scene = Scene(width: w, height: h, tokens: tokens)
         var next = 0, frame = 1
@@ -114,7 +121,12 @@ public enum Film {
             var placed: [Drawn] = []
             let picture = scene.picture(at: t)
             if looks.last?.look != picture.capsule.look.rawValue { looks.append((t.rounded(), picture.capsule.look.rawValue)) }
-            let image = render(page, w, h) { ctx in placed = painter.paint(picture, into: ctx) }
+            if pages.page(at: t) != page {
+                page = pages.page(at: t)
+                try save(render(pages.pictures[page], w, h) { _ in }, to: frames.appendingPathComponent("bare-\(cameUp.count).png"))
+                cameUp.append(["page": cameUp.count, "fromFrame": frame])
+            }
+            let image = render(pages.pictures[page], w, h) { ctx in placed = painter.paint(picture, into: ctx) }
             try save(image, to: frames.appendingPathComponent(String(format: "f_%05d.png", frame)))
             for item in placed {
                 let key = item.what + "/" + (item.id ?? "")
@@ -134,6 +146,7 @@ public enum Film {
             frame += 1
         }
         try drawn.write(to: dir.appendingPathComponent("drawn.jsonl"), atomically: true, encoding: .utf8)
+        if cameUp.count > 1 { try JSONSerialization.data(withJSONObject: cameUp, options: [.sortedKeys]).write(to: frames.appendingPathComponent("pages.json")) }
 
         var track = Data(count: Int(end / 1000 * rate) * 2 + 2)
         var voiced = 0.0

@@ -57,14 +57,15 @@ public enum Layout {
     /// the page's text. To the right first, where a line most often ends in empty page; then under the mark's end
     /// and under its start. The first place that covers no text and is inside the display wins; failing that, the
     /// one that covers least.
-    public static func beside(_ mark: Box, cursor: (w: Double, h: Double), gap: Double, texts: [Box], width: Double, height: Double) -> CGPoint {
+    public static func beside(_ mark: Box, cursor: (w: Double, h: Double), edge: Double, gap: Double, texts: [Box], width: Double, height: Double) -> CGPoint {
         let right = mark.x + mark.w + gap, middle = mark.y + mark.h / 2
         let tips = [
             CGPoint(x: right, y: middle - cursor.h / 4), CGPoint(x: right, y: mark.y + mark.h - cursor.h / 8), CGPoint(x: right, y: mark.y - cursor.h / 2),
             CGPoint(x: mark.x + mark.w - cursor.w, y: mark.y + mark.h + gap), CGPoint(x: mark.x, y: mark.y + mark.h + gap),
         ]
         func cost(_ tip: CGPoint) -> Double {
-            let body = Box(x: tip.x, y: tip.y, w: cursor.w, h: cursor.h)
+            // Its paper edge is part of it, and a point more keeps it from grazing a line.
+            let body = Box(x: tip.x, y: tip.y, w: cursor.w, h: cursor.h).grown(edge + 1)
             let outside = body.x < 0 || body.y < 0 || body.x + body.w > width || body.y + body.h > height
             let covered = texts.reduce(0) { $0 + max(0, min(body.x + body.w, $1.x + $1.w) - max(body.x, $1.x)) * max(0, min(body.y + body.h, $1.y + $1.h) - max(body.y, $1.y)) }
             return covered + (outside ? cursor.w * cursor.h : 0)

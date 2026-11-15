@@ -37,6 +37,8 @@ public struct BoardPicture: Equatable {
     /// 0 while the card is empty; 0 to 1 as the rows that filled it come in; 1 for a board that arrived whole.
     public var filled: Double
     public var room: Box
+    /// On a board of steps, the row that is the step he is on, from 0. That row is lit.
+    public var now: Int?
 }
 
 public struct ClipPicture: Equatable {
@@ -65,6 +67,11 @@ public struct TrailPoint: Equatable { public var x, y, alpha: Double }
 public struct PointerPicture: Equatable {
     public var x, y, alpha: Double
     public var ripple: Double?
+    /// Set while the cursor is with the way arrow, whose place only the painter knows. `x` and `y` are then where it
+    /// set off from; `flight` is how far it has flown to the arrow's tail, 0 to 1; once there it rides the arrow's
+    /// pen; and `aside` is how far it has stepped aside to rest once the arrow is whole, 0 to 1.
+    public var withWay: WithWay?
+    public struct WithWay: Equatable { public var flight, aside: Double }
 }
 
 /// Everything on screen at one moment, as plain values. The painter draws it; nothing else decides what is shown.

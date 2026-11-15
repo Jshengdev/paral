@@ -47,14 +47,28 @@ public struct Painter {
         for mark in picture.marks {
             if let box = self.mark(mark, avoiding: picture.avoid, ctx) { drawn.append(Drawn(what: "mark", id: mark.key, box: box)) }
         }
-        if let board = picture.board { drawn.append(Drawn(what: "board", id: board.id, box: self.board(board, clock: picture.clock, ctx))) }
+        if let board = picture.board {
+            let placed = self.board(board, clock: picture.clock, ctx)
+            drawn.append(Drawn(what: "board", id: board.id, box: placed.card))
+            // The lit row of a board of steps is named too, with its number, so a film's record says which step is lit.
+            if let now = board.now, let lit = placed.lit { drawn.append(Drawn(what: "step", id: "\(board.id)/\(now)", box: lit)) }
+        }
         if let clip = picture.clip { drawn.append(Drawn(what: "clip", id: clip.id, box: self.clip(clip, ctx))) }
-        // The arrow keeps off the page's text and off whatever card is up, so it is placed once those are drawn.
+        var pointer = picture.pointer
+        // The arrow keeps off the page's text and off whatever card is up, so it is placed once those are drawn. Only
+        // then is it known where a cursor that is with the arrow is.
         if let way = picture.way {
             let cards = drawn.filter { $0.what == "board" || $0.what == "clip" }.map(\.box)
-            drawn.append(Drawn(what: "way", id: way.id, box: self.way(way, avoiding: picture.avoid + cards, ctx)))
+            let place = self.place(way, avoiding: picture.avoid + cards)
+            self.way(way, at: place, ctx)
+            drawn.append(Drawn(what: "way", id: way.id, box: place.whole))
+            if let with = pointer {
+                let tip = self.tip(of: with, with: way, at: place)
+                pointer?.x = tip.x
+                pointer?.y = tip.y
+            }
         }
-        if let pointer = picture.pointer { drawn.append(Drawn(what: "pointer", id: nil, box: self.pointer(pointer, ctx))) }
+        if let pointer { drawn.append(Drawn(what: "pointer", id: nil, box: self.pointer(pointer, ctx))) }
         drawn.append(Drawn(what: "capsule", id: nil, box: capsule(picture.capsule, clock: picture.clock, ctx)))
         return drawn
     }

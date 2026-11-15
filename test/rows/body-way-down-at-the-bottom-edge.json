@@ -1,5 +1,5 @@
 {
- "name": "body: a way line draws an arrow at the bottom edge with the name of what it leads to: nothing before the line, the pen part of the way along just after it, then whole, on none of the page's text and clear of the capsule and the board, while the capsule is open and after it has gone back to rest; a clear takes it away",
+ "name": "body: a way line draws an arrow at the bottom edge with the name of what it leads to: nothing before the line; just after it the tag is up and the arrow is not inked yet, since the pen waits for the cursor to fly to it; then the pen is part of the way along, then the arrow is whole, on none of the page's text and clear of the capsule and the board, while the capsule is open and after it has gone back to rest; a clear takes it away",
  "run": "body.way",
  "in": {
   "lines": [
@@ -78,6 +78,7 @@
   "at": [
    900,
    1100,
+   1600,
    3000,
    8900,
    9100
@@ -86,6 +87,18 @@
  "out": [
   {
    "arrow": null
+  },
+  {
+   "arrow": {
+    "to": "down",
+    "toward": "Deadlines",
+    "inked": "none",
+    "edge": "bottom",
+    "insideTheDisplay": true,
+    "onText": false,
+    "onTheCapsule": false,
+    "onTheBoard": false
+   }
   },
   {
    "arrow": {

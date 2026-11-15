@@ -9,7 +9,8 @@ public struct Scene {
     struct Mark { var id: String; var beat: Int; var kind: MarkKind; var box: Box; var label: String?; var at: Double; var withSay: Bool; var clearedAt: Double? }
     struct Echo { var id: String; var box: Box; var shape: String; var at: Double; var clearedAt: Double? }
     struct Way { var id: String; var down: Bool; var toward: String; var at: Double; var clearedAt: Double? }
-    struct Board { var id: String; var rows: [[String]]; var at: Double; var room: Box; var filledAt: Double?; var clearedAt: Double? }
+    /// `upSince` is when its card first came up, which is before `at` for a board that takes the place of the same rows.
+    struct Board { var id: String; var rows: [[String]]; var now: Int?; var at: Double; var upSince: Double; var room: Box; var filledAt: Double?; var clearedAt: Double? }
     struct Clip { var id: String; var path: String; var still: String; var seconds: Double; var at: Double; var room: Box; var clearedAt: Double? }
     struct Hold { var down: Double; var up: Double? }
 
@@ -101,15 +102,21 @@ public struct Scene {
             clips.append(Clip(id: id, path: path, still: still, seconds: seconds, at: at, room: Layout.room(texts: texts, width: width, height: height, tokens: tokens)))
         case .boardClose(let id):
             for i in boards.indices where boards[i].id == id && boards[i].clearedAt == nil && boards[i].rows.isEmpty { boards[i].clearedAt = at }
-        case .board(let id, let rows):
+        case .board(let id, let rows, let now):
             for i in clips.indices where clips[i].clearedAt == nil { clips[i].clearedAt = at }
             // A board for an ask whose empty card is open fills that card; it does not open a second one.
             if let open = boards.lastIndex(where: { $0.id == id && $0.clearedAt == nil && $0.rows.isEmpty }) {
                 boards[open].rows = rows
+                boards[open].now = now
                 boards[open].filledAt = at
                 break
             }
-            boards.append(Board(id: id, rows: rows, at: at, room: Layout.room(texts: texts, width: width, height: height, tokens: tokens)))
+            // The same rows coming again right after a clear are the same card: the next step of a walk, or a look
+            // that moved the box with the page. It does not fade in a second time, and it stays where it is unless
+            // the page has moved and put text where the card was.
+            let same = boards.last { $0.rows == rows && $0.clearedAt.map { at - $0 <= Scene.together } ?? false }
+            let kept = same.flatMap { old in texts.contains { Scene.touch($0, old.room) } ? nil : old.room }
+            boards.append(Board(id: id, rows: rows, now: now, at: at, upSince: same?.upSince ?? at, room: kept ?? Layout.room(texts: texts, width: width, height: height, tokens: tokens)))
         case .clear:
             wipe(at)
         case .close:
@@ -125,6 +132,12 @@ public struct Scene {
             break
         }
     }
+
+    /// The lines of one look or one answer are sent in one go and reach the scene within a few ms of each other. A
+    /// tenth of a second is ample for that and far less than he takes to do anything. Not measured on the real socket.
+    static let together = 100.0
+
+    static func touch(_ a: Box, _ b: Box) -> Bool { a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h }
 
     /// Two boxes are on the same line when they overlap by more than half of the smaller one.
     static func sameLine(_ a: Box, _ b: Box) -> Bool {

@@ -26,21 +26,40 @@ extension Scene {
         let xs = path.map(\.x), ys = path.map(\.y)
         let drawn = Box(x: xs.min() ?? 0, y: ys.min() ?? 0, w: max((xs.max() ?? 0) - (xs.min() ?? 0), 1), h: max((ys.max() ?? 0) - (ys.min() ?? 0), 1))
         let c = tokens.cursor
-        return Layout.beside(drawn, cursor: (c.size * Layout.cursorWide, c.size), gap: c.gap, texts: texts, width: width, height: height)
+        return Layout.beside(drawn, cursor: (c.size * Layout.cursorWide, c.size), edge: c.edge, gap: c.gap, texts: texts, width: width, height: height)
+    }
+
+    /// Where the cursor sets off from for something that begins at `began`, and whether it was with an arrow then.
+    /// It sets off from wherever it was a moment before, and from the capsule when it was nowhere. The scene does not
+    /// know where an arrow is, only that it sits at an edge by the capsule, so from an arrow it also sets off from
+    /// the capsule.
+    private func origin(before began: Double) -> (from: CGPoint, atAnArrow: Bool) {
+        let capsule = Layout.capsule(open: 1, width: width, height: height, tokens: tokens)
+        let home = CGPoint(x: capsule.x + capsule.w / 2, y: capsule.y)
+        guard let before = pointer(at: began - 1) else { return (home, false) }
+        return before.withWay == nil ? (CGPoint(x: before.x, y: before.y), false) : (home, true)
     }
 
     /// Paral's own cursor. It flies in one arc to where the newest stroke starts, rides the pen's tip while the stroke
     /// is drawn, then steps aside to rest just beside the mark, where a ripple spreads from it once to say "here".
-    /// It points and never clicks. It stays with its mark for as long as the mark is on the page, with a key pressed
-    /// or without one, and it is not shown at all when motion is reduced.
+    /// When the newest thing on the page is the arrow that says which way to scroll, it goes to the arrow instead,
+    /// which is how it leads from one place to the next. It points and never clicks. It stays with its mark or its
+    /// arrow for as long as that is on the page, with a key pressed or without one, and it is not shown at all when
+    /// motion is reduced.
     func pointer(at t: Double) -> PointerPicture? {
-        guard !still, let now = strokes(at: t).last, let first = now.path.first, let last = now.path.last else { return nil }
+        guard !still else { return nil }
+        let newest = strokes(at: t).last
+        if let way = wayUp(at: t), way.at >= newest?.began ?? -.infinity {
+            let origin = origin(before: way.at)
+            // From one arrow to the next it does not fly: the next sits where the one before did.
+            let flown = origin.atAnArrow ? 1 : min(max((t - way.at) / max(flight, 1), 0), 1)
+            let aside = Motion.ease((t - inking(way).to) / max(ms(tokens.cursor.settleMs), 1))
+            return PointerPicture(x: origin.from.x, y: origin.from.y, alpha: 1, ripple: nil, withWay: .init(flight: flown, aside: aside))
+        }
+        guard let now = newest, let first = now.path.first, let last = now.path.last else { return nil }
         let inkAt = now.began + flight, inkedAt = inkAt + duration(now.kind)
         if t < inkAt {
-            // It sets off from wherever it was a moment before this stroke, and from the capsule the first time.
-            let home = Layout.capsule(open: 1, width: width, height: height, tokens: tokens)
-            let before = pointer(at: now.began - 1)
-            let from = before.map { CGPoint(x: $0.x, y: $0.y) } ?? CGPoint(x: home.x + home.w / 2, y: home.y)
+            let from = origin(before: now.began).from
             let at = Motion.arc(from: from, to: first, Motion.spring((t - now.began) / flight, bounce: tokens.motion.bounce), lift: tokens.motion.arc)
             return PointerPicture(x: at.x, y: at.y, alpha: 1, ripple: nil)
         }

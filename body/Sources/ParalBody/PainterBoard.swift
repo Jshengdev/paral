@@ -15,12 +15,13 @@ extension Painter {
 
     /// A dark card of chalk boxes joined by arrows, one row at a time, shrunk to fit the room it was given. With no
     /// rows yet it is an empty card with the waiting dots in it; when the rows come the card grows from that size
-    /// to theirs and they fade in.
-    func board(_ board: BoardPicture, clock: Double, _ ctx: CGContext) -> Box {
+    /// to theirs and they fade in. On a board of steps the row he is on is lit: its boxes are filled with chalk and
+    /// written in the card's ink, and the others stay as they are. Gives back the card's box and the lit row's.
+    func board(_ board: BoardPicture, clock: Double, _ ctx: CGContext) -> (card: Box, lit: Box?) {
         let b = tokens.board
         let chalk = paper
-        let sized = board.rows.map { row in row.map { text -> (NSAttributedString, CGSize) in
-            let label = inked(text, size: b.type, color: chalk, weight: .medium)
+        let sized = board.rows.enumerated().map { index, row in row.map { text -> (NSAttributedString, CGSize) in
+            let label = inked(text, size: b.type, color: index == board.now ? ink : chalk, weight: .medium)
             return (label, label.size())
         } }
         let boxHeight = (sized.flatMap { $0 }.map { $0.1.height }.max() ?? b.type) + 2 * b.boxPadY
@@ -52,15 +53,27 @@ extension Painter {
         ctx.setLineWidth(1.5)
         ctx.setLineCap(.round)
         var y = b.pad
+        var lit: Box?
+        // Where a place in the rows' own space is on the display, for the lit row's box.
+        let rowsAt = CGPoint(x: origin.x + (cardW - fullW) / 2 * scale, y: origin.y + (cardH - fullH) / 2 * scale)
         for (index, row) in sized.enumerated() where index < board.shown {
             var x = (fullW - rowWidths[index]) / 2
+            if index == board.now { lit = Box(x: rowsAt.x + x * scale, y: rowsAt.y + y * scale, w: rowWidths[index] * scale, h: boxHeight * scale) }
             for (cell, (label, size)) in row.enumerated() {
                 let boxW = size.width + 2 * b.boxPadX
+                // Writing a label leaves its own colour as the pen's, so the pen is set again for every box and arrow.
+                ctx.setStrokeColor(chalk.copy(alpha: 0.9) ?? chalk)
                 ctx.addPath(CGPath(roundedRect: CGRect(x: x, y: y, width: boxW, height: boxHeight), cornerWidth: 8, cornerHeight: 8, transform: nil))
-                ctx.strokePath()
+                if index == board.now {
+                    ctx.setFillColor(chalk)
+                    ctx.drawPath(using: .fillStroke)
+                } else {
+                    ctx.strokePath()
+                }
                 label.draw(at: CGPoint(x: x + b.boxPadX, y: y + (boxHeight - size.height) / 2))
                 x += boxW
                 if cell < row.count - 1 {
+                    ctx.setStrokeColor(chalk.copy(alpha: 0.9) ?? chalk)
                     let mid = y + boxHeight / 2, from = x + 7, to = x + b.gap - 7
                     ctx.move(to: CGPoint(x: from, y: mid))
                     ctx.addLine(to: CGPoint(x: to, y: mid))
@@ -74,6 +87,6 @@ extension Painter {
             y += boxHeight + b.rowGap
         }
         ctx.restoreGState()
-        return Box(x: origin.x, y: origin.y, w: w, h: h)
+        return (Box(x: origin.x, y: origin.y, w: w, h: h), lit)
     }
 }

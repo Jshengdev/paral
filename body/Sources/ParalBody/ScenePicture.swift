@@ -103,12 +103,13 @@ extension Scene {
         let begun = ask.map { times($0).filter { $0.beat >= 0 && $0.start <= t }.count } ?? board.rows.count
         let over = ask.map { ask in times(ask).last.map { $0.end <= t && $0.beat == ask.beats.keys.max() } ?? false } ?? true
         // A board shown without being asked comes whole: nothing is spoken for its rows to keep step with.
-        let shown = over || ask?.trail != nil ? board.rows.count : min(board.rows.count, max(1, begun))
-        let appear = still ? 1 : Motion.ease((t - board.at) / ms(tokens.motion.boardMs))
+        // A board of steps comes whole too: the step he is on may be its last row.
+        let shown = over || ask?.trail != nil || board.now != nil ? board.rows.count : min(board.rows.count, max(1, begun))
+        let appear = still ? 1 : Motion.ease((t - board.upSince) / ms(tokens.motion.boardMs))
         // Until its rows have arrived the card is empty, whatever a later moment made of it.
         let rows = board.filledAt.map { t >= $0 } ?? true ? board.rows : []
         let filled = rows.isEmpty ? 0 : board.filledAt.map { still ? 1 : Motion.ease((t - $0) / ms(tokens.motion.boardMs)) } ?? 1
-        return BoardPicture(id: board.id, rows: rows, shown: min(shown, rows.count), appear: appear, filled: filled, room: board.room)
+        return BoardPicture(id: board.id, rows: rows, shown: min(shown, rows.count), appear: appear, filled: filled, room: board.room, now: board.now)
     }
 
     /// The clip plays once from the moment its card is up, then holds its last frame.

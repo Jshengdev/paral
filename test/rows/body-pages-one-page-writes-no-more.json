@@ -1,0 +1,21 @@
+{
+ "name": "body: a film of a run with one page writes what it always wrote: frame 0 bare, no other bare picture and no pages.json",
+ "run": "body.pages",
+ "in": {
+  "first": [
+   "Recognition Process",
+   "The Spring 2027 recognition process is now open.",
+   "Important Dates"
+  ],
+  "secondAt": 2000,
+  "endAt": 4000
+ },
+ "out": {
+  "bareFirstFrameReads": "Recognition Process",
+  "anEarlyFrameReads": "Recognition Process",
+  "aLateFrameReads": "Recognition Process",
+  "barePictures": [],
+  "theSecondBarePictureReads": null,
+  "pages": null
+ }
+}

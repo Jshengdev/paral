@@ -29,6 +29,8 @@ those are helpers, not test files.
 | `body.card` | a hand-written run with an empty card and then its rows, filmed: whether the card grew |
 | `body.way` | a hand-written run on a drawn page, looked at at given moments: whether the way arrow is up, how far it is inked, which edge it is at, and whether it lies on the page's text, the capsule or the board |
 | `body.cursor` | a hand-written run on a drawn page in which one line is marked with no key pressed, looked at at given moments: whether the cursor is up, moving, on the mark or beside it, on the page's text, and rippling |
+| `body.steps` | a hand-written walk through steps, looked at at given moments: which row of the board is lit, whether the card moved or faded in again, and where the cursor is while an arrow is up |
+| `body.pages` | a hand-written run of one page or two, filmed: which page the Mac reads off an early frame, a late frame and the bare pictures, and what `pages.json` says |
 | `body.pressedAgain` | a run on a tape where the key is pressed again soon after a release: the order of the key lines the mind got |
 
 Tapes in `tapes/` are recorded answers, so no row needs a key, a microphone or a screen. A tape answer keyed
