@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import { cp, readFile, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
@@ -50,7 +51,10 @@ export async function explain(all: Judged[], names: Record<string, string>, notL
   const template = await readFile(join(EXAM, "explainer.html"), "utf8");
   const total = all.flatMap((j) => j.verdicts);
   const counted = (pass: boolean | null) => total.filter((v) => v.pass === pass).length;
-  const lede = `${counted(true)} checks pass, ${counted(false)} fail and ${counted(null)} could not be shown, over ${all.length} filmed runs.`;
+  // The app that was judged is the code of the folder the runs were made in; the page says which commit that is.
+  let app = "";
+  try { app = ` The app judged is commit ${execFileSync("git", ["log", "-1", "--format=%h (%s)"], { cwd: join(EXAM, ".."), encoding: "utf8" }).trim()}.`; } catch { app = " The app's commit could not be read."; }
+  const lede = `${counted(true)} checks pass, ${counted(false)} fail and ${counted(null)} could not be shown, over ${all.length} filmed runs.${app}`;
   const page = template.replace("<!--LEDE-->", safe(lede)).replace("<!--SUMMARY-->", summary(all, names))
     .replace("<!--RUNS-->", all.map(card).join("\n")).replace("<!--NOTLIVE-->", notLive.map((line) => `<li>${safe(line)}</li>`).join(""))
     .replace("<!--WAITING-->", waiting.map((line) => `<li>${safe(line)}</li>`).join(""));
