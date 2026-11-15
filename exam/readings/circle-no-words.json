@@ -1,13 +1,1 @@
-{
-  "session": "02209e3e0a73",
-  "by": "the judge's reader, 2026-11-14",
-  "verdicts": [
-    {
-      "criterion": "C12",
-      "step": 0,
-      "pass": true,
-      "what": "The one line invites him to go on",
-      "measured": "\"Go ahead, I'm listening.\" It asks for his words and guesses at nothing"
-    }
-  ]
-}
+{"session": "91d4724f67e2", "by": "the judge's reader, 2026-11-15, the pass on fdbef8c", "verdicts": [{"criterion": "C12", "step": 0, "pass": true, "what": "The one line invites him to go on", "measured": "\"Go ahead, I'm listening.\" It asks for his words and guesses at nothing"}]}
