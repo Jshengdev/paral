@@ -72,6 +72,19 @@
      }
     ]
    }
+  ],
+  "where do my officers do that training": [
+   {
+    "problem": "Where the officers' trainings are",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "The links are on this same page, in the Officer Trainings section further down.",
+      "mark": null
+     }
+    ]
+   }
   ]
  },
  "leaks": [],
@@ -92,7 +105,9 @@
     "December 1: Deadline for advisors to submit their requirements.",
     "Info Sessions, Workshops, and Office Hours +",
     "Attend an info session to learn how the recognition process works.",
-    "Office hours are held every week in the Campus Activities office."
+    "Office hours are held every week in the Campus Activities office.",
+    "Officer Trainings: Hazing Prevention and Officer Learning Path +",
+    "Each officer completes both trainings before the application is submitted."
    ]
   },
   {

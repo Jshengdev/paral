@@ -69,10 +69,11 @@ export function wayAfter({ settings, send, log }: Hands, id: string, seen: Seen,
     const where = whereIs(settings, seen, page, { line: kept.written, under: headingOf(page, kept.written, "") });
     if (where.box === null && where.to !== null) return log(`${id}: the answer named a date this page writes out of view; ${point(send, id, where)}`);
   }
-  const name = (heading: string) => heading.replace(/\s*\+\s*$/, "").trim();
-  const [section] = page.lines.filter((line) => /\+\s*$/.test(line) && name(line).length >= 8 && plain(said).includes(plain(name(line)))).sort((a, b) => b.length - a.length);
+  // A section is named in speech by the start of its heading, up to its colon ("the Officer Trainings section"), so
+  // that is what is looked for in what was said, and what the way is named by. The longest such name wins.
+  const name = (heading: string) => heading.replace(/\s*\+\s*$/, "").split(/:\s+/)[0].trim();
+  const [section] = page.lines.filter((line) => /\+\s*$/.test(line) && name(line).length >= 8 && plain(said).includes(plain(name(line)))).sort((a, b) => name(b).length - name(a).length);
   if (section === undefined) return;
   const where = whereIs(settings, seen, page, { line: section, under: "" });
-  // The way is named by the start of the heading, up to its colon: the words he will look for.
-  if (where.box === null && where.to !== null) log(`${id}: the answer named a section of this page that is out of view; ${point(send, id, { ...where, toward: name(section).split(/:\s+/)[0] })}`);
+  if (where.box === null && where.to !== null) log(`${id}: the answer named a section of this page that is out of view; ${point(send, id, { ...where, toward: name(section) })}`);
 }

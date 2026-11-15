@@ -22,6 +22,7 @@ Every decision is a pure function in `cores/`; every outside service is behind `
 | `settings/cues.ts` | the cue cards: lines he can tap instead of saying them |
 | `ready.ts` | the line the mind sends when the body connects: every setting the body needs |
 | `guide.ts` | the demo's guide: what to do next on the kept page on his screen, moving on as the mind sees each step happen; no model asked |
+| `adapters/looked.ts` | a page's first look, kept on disk for the day and asked ahead when the mind starts, so the look does not wait for the model |
 | `showme.ts` | "show me": the walk through what is ahead, one step each time he says it or clicks the step's box, with the board, one sentence and the box or the way; no model asked |
 | `keep.ts` | "add it to my calendar": the date last shown is written into a calendar file and the body is told to open it, with no model asked |
 | `ports.ts` | the interfaces: Brain, SecondLook, Opener, Ear, Voice, Lessons |
