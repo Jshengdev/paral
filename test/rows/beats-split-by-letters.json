@@ -1,0 +1,37 @@
+{
+ "name": "beats: a sentence within its words but over its letters is cut too, since it is the letters that take the time to say: at a comma before \"and\" with a subject and a whole clause after it, and at a semicolon; never at a colon, and never before the last thing of a list (\"..., and the Pembroke Cambridge summer program\"), which would be left standing alone; a list after \"like\" has no place to cut and stays whole; a sentence under the letters is left as it is",
+ "run": "beats.split",
+ "in": {
+  "limits": {
+   "plain": 22,
+   "withNumbers": 14,
+   "letters": 110
+  },
+  "sentences": {
+   "and the": "This year's deadline was November 2, thirteen days ago, and the Faculty Led Programs Maymester page says 2027 applications have closed.",
+   "a semicolon": "Re-establishing groups first submit the officer form; new groups use Register a new Recognized Student Organization in the EngageSC Directory.",
+   "a colon and a list": "Its table lists when each term opens and closes: spring, fall or academic year, and the Pembroke Cambridge summer program.",
+   "a list after like": "The 2027 Courses section lists five options, like marine microbiology, scientific diving, and coastal environmental history.",
+   "short enough": "Yes: each officer must finish Hazing Prevention 101 before the application deadline."
+  }
+ },
+ "out": {
+  "and the": [
+   "This year's deadline was November 2, thirteen days ago.",
+   "And the Faculty Led Programs Maymester page says 2027 applications have closed."
+  ],
+  "a semicolon": [
+   "Re-establishing groups first submit the officer form.",
+   "New groups use Register a new Recognized Student Organization in the EngageSC Directory."
+  ],
+  "a colon and a list": [
+   "Its table lists when each term opens and closes: spring, fall or academic year, and the Pembroke Cambridge summer program."
+  ],
+  "a list after like": [
+   "The 2027 Courses section lists five options, like marine microbiology, scientific diving, and coastal environmental history."
+  ],
+  "short enough": [
+   "Yes: each officer must finish Hazing Prevention 101 before the application deadline."
+  ]
+ }
+}

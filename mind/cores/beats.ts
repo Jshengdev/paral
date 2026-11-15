@@ -30,8 +30,12 @@ export function fitted(kind: MarkKind, text: string, lines: ReadLine[], reach: R
   return nearest < reach.share * h + reach.points * scale ? "box" : "ring";
 }
 
-/** The most words a spoken sentence may have: plain, and when it works a step with numbers, which are slower to say. */
-export type Limits = { plain: number; withNumbers: number };
+/**
+ * The most words a spoken sentence may have: plain, and when it works a step with numbers, which are slower to say.
+ * `letters` is the most letters it may have whatever its words: a sentence of twenty long words and two dates takes
+ * as long to say as one of thirty short ones. With no `letters` only the words count.
+ */
+export type Limits = { plain: number; withNumbers: number; letters?: number };
 
 /** No limit: a lesson's one sentence is never cut. */
 export const WHOLE: Limits = { plain: Infinity, withNumbers: Infinity };
@@ -46,23 +50,29 @@ const NOT_AFTER_SO = /^(that|as|far|long|much|many|to|on|forth)$/i;
  * a colon unless a name follows it, at a comma before "so" ("..., so undoing it means adding"), or at a comma before "and" or "but" when a
  * subject follows ("..., and you add 4"). It is cut at the last such place at or before the limit, or failing that
  * the first one after it; the rest is said next. A comma alone is no place to cut ("..., which is 13" stays whole),
- * and with no place at all the sentence is left as it is.
+ * and with no place at all the sentence is left as it is. A sentence within its words that is over its letters is
+ * cut the same way, but never at a colon, and at a comma only when eight words or more follow it: what follows a
+ * colon in a short sentence, or a few words after ", and", is most often a list or its last thing, which does not
+ * stand alone.
  */
 export function split(sentence: string, limits: Limits): string[] {
   const words = sentence.trim().split(/\s+/);
   // "With numbers" means a worked step: three numbers or more. One number, or the word "equals", does not count.
   const limit = (sentence.match(/\d+/g)?.length ?? 0) >= 3 ? limits.withNumbers : limits.plain;
-  if (words.length <= limit) return [sentence.trim()];
+  const long = sentence.trim().length > (limits.letters ?? Infinity);
+  if (words.length <= limit && !long) return [sentence.trim()];
+  const wordy = words.length > limit;
   const places: number[] = [];
   for (let first = 4; first <= words.length - 3; first++) {
     const before = words[first - 1];
     const next = words[first + 1] ?? "";
     const opens = /^so$/i.test(words[first]) ? !NOT_AFTER_SO.test(next) : /^(and|but)$/i.test(words[first]) && SUBJECT.test(next);
-    const joins = /,$/.test(before) && opens;
+    // Within its words, what follows the comma must be long enough to be a clause: the last thing of a list is short ("..., and the summer program").
+    const joins = /,$/.test(before) && opens && (wordy || words.length - first >= 8);
     // After a colon a clause follows, or a name does ("Officer Trainings: Hazing Prevention and Officer Learning
     // Path"). A capital letter on a word that cannot open a sentence is a name, and a name is not cut in two.
     const named = /:$/.test(before) && /^\p{Lu}/u.test(words[first]) && !SUBJECT.test(words[first]);
-    if ((/[;:]$/.test(before) && !named) || joins) places.push(first);
+    if ((/;$/.test(before) || (wordy && /:$/.test(before) && !named)) || joins) places.push(first);
   }
   const first = places.filter((place) => place <= limit).at(-1) ?? places[0];
   if (first === undefined) return [sentence.trim()];
