@@ -25,10 +25,10 @@ export function spotsOn({ ports, settings, send, log }: Hands, id: string, seen:
 
   return {
     named,
-    /** Rings the places the answer named, with the sentence numbered `beat`: two at most, and only places the sheet has. */
-    ring(names: string[], beat: number, drew: (event: HoldEvent) => void) {
+    /** Rings the places the answer named, with the sentence numbered `beat`: two at most (`most` for a step of the working), and only places the sheet has. */
+    ring(names: string[], beat: number, drew: (event: HoldEvent) => void, most = settings.spotsMost.value) {
       if (on === null) return;
-      for (const name of [...new Set(names)].filter(ringable).slice(0, settings.spotsMost.value)) {
+      for (const name of [...new Set(names)].filter(ringable).slice(0, most)) {
         const spot = on.placed.spots[name];
         if (spot === undefined) {
           log(`${id}: the answer named a place the drawing does not have ("${name}"); nothing is ringed for it`);

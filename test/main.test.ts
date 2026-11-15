@@ -61,7 +61,7 @@ const runs: Record<string, (input: any) => unknown> = {
   "beats.wipes": (input) => input.cases.map(([fresh, last, now]: [boolean, string | null, string | null]) => wipes(fresh, last, now)),
   prompts: () =>
     Object.fromEntries(
-      ["answer", "second-look", "opener", "glance"].map((name) => [
+      ["answer", "second-look", "opener", "glance", "work-through"].map((name) => [
         name,
         createHash("sha256").update(readFileSync(join(import.meta.dirname, "..", "mind", "prompts", `${name}.md`))).digest("hex").slice(0, 12),
       ]),

@@ -28,6 +28,8 @@ export type Asked = {
   lesson: Lesson;
   rung: Rung;
   fresh: boolean;
+  /** Present only when the switch is on and he asked to have the exercise worked through: the steps given so far, in order. */
+  walk?: { steps: string[] };
 };
 
 export const Beat = z.object({
@@ -56,6 +58,8 @@ export const Answered = z.object({
   board: z.array(z.array(z.string().min(1)).min(1)).min(1).nullable().optional(),
   /** The names of at most two places of the drawing that the answer speaks of, to be ringed. */
   spots: z.array(z.string()).optional(),
+  /** Only on a step of the working he asked for: the step in a few words, for the board, and whether it says what the working gives. */
+  walk: z.object({ step: z.string().min(1), last: z.boolean() }).optional(),
 });
 export type Answered = z.infer<typeof Answered>;
 

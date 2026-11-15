@@ -59,9 +59,8 @@ export function pagesRead(known: KeptPage[], now: number, most: number): string 
   ].join("\n\n");
 }
 
-/** The words of the request: today's date, what he said, what was read from his screen, the lesson so far, and the rung to write for. */
-export function asking(asked: Asked): string {
-  const { lesson, rung } = asked;
+/** The head of every request for an answer: today's date, what he said, the line he heard, what was read from his screen and what he drew around. */
+export function heading(asked: Asked): string[] {
   return [
     `Today is ${new Date(asked.today).toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}.`,
     `What the student just said: "${asked.words}"`,
@@ -73,17 +72,30 @@ export function asking(asked: Asked): string {
     ...(asked.circled.length > 0
       ? [`As they spoke, the student drew around line${asked.circled.length === 1 ? "" : "s"} ${asked.circled.join(", ")}; the path is drawn on the picture. "This", "that" and "here" mean what they drew around.`]
       : []),
+  ];
+}
+
+/** What the lesson holds so far, as the model is told it. */
+export function soFar(lesson: Asked["lesson"]): string {
+  return [
+    "The lesson so far:",
+    `- problem: ${lesson.problem ?? "not read yet"}`,
+    `- the line found wrong last time: ${lesson.breakLine ?? "none yet"}`,
+    `- what the student said before: ${lesson.tried.join(" | ") || "nothing yet"}`,
+    `- lines already shown to the student: ${lesson.shown.join(" | ") || "none"}`,
+    `- drawn by you earlier and still on their screen: ${lesson.drawn.join("; ") || "nothing"}`,
+  ].join("\n");
+}
+
+/** The words of the request: today's date, what he said, what was read from his screen, the lesson so far, and the rung to write for. */
+export function asking(asked: Asked): string {
+  const { lesson, rung } = asked;
+  return [
+    ...heading(asked),
     ...(asked.ahead.length > 0
       ? [`What is still ahead for them, as you found it on USC's pages earlier in this sitting. Keep to this list when they ask what is left or what comes next:\n${asked.ahead.map((step) => `- ${step.step}${step.by ? `, by ${step.by}` : ""} (from ${step.from})`).join("\n")}`]
       : []),
-    [
-      "The lesson so far:",
-      `- problem: ${lesson.problem ?? "not read yet"}`,
-      `- the line found wrong last time: ${lesson.breakLine ?? "none yet"}`,
-      `- what the student said before: ${lesson.tried.join(" | ") || "nothing yet"}`,
-      `- lines already shown to the student: ${lesson.shown.join(" | ") || "none"}`,
-      `- drawn by you earlier and still on their screen: ${lesson.drawn.join("; ") || "nothing"}`,
-    ].join("\n"),
+    soFar(lesson),
     `Write the hint for this rung: ${rung.name}. ${rung.may} ${rung.sentences === 1 ? "One sentence." : `At most ${rung.sentences} sentences.`}${asked.fresh ? " The student has seen this rung before for this line, so use new words." : ""}`,
     asked.lessons.length > 0
       ? `Lessons you can show as a short clip (set "lesson" to one of these names when it fits, otherwise null):\n${asked.lessons.map((lesson) => `- ${lesson.name}: ${lesson.idea}`).join("\n")}`

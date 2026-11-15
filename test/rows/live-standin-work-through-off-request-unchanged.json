@@ -1,0 +1,72 @@
+{
+ "name": "live standin: work-through off: on the measured worksheet, \"walk me through it\" sends the deep model the very request it was sent before the switch existed (a fingerprint of the whole request, filled before the switch was written)",
+ "run": "live.standin",
+ "in": {
+  "picture": true,
+  "fingerprint": true,
+  "asked": {
+   "words": "walk me through it",
+   "lines": [
+    "aromatic ring. Draw the structure of the compounds.",
+    "2. Draw mechanism and expect final product"
+   ],
+   "spots": [
+    {
+     "name": "ethanol.O",
+     "what": "the O of ethanol's OH (drawn as a letter)"
+    },
+    {
+     "name": "benzoyl.C",
+     "what": "carbonyl carbon"
+    }
+   ],
+   "lesson": {
+    "problem": "2. Draw mechanism and expect final product",
+    "shown": [
+     "Look at the carbon that carries both the oxygen and the chlorine."
+    ],
+    "tried": [
+     "so what is the final product"
+    ],
+    "drawn": [
+     "ring on \"the drawing's carbonyl carbon\""
+    ]
+   }
+  },
+  "brainReply": {
+   "model": "claude-opus-5-5",
+   "stop_reason": "end_turn",
+   "usage": {
+    "input_tokens": 2000,
+    "output_tokens": 500
+   },
+   "parsed_output": {
+    "problem": "2. Draw mechanism and expect final product",
+    "breakIndex": 1,
+    "breakLine": "2. Draw mechanism and expect final product",
+    "result": "an ester",
+    "beats": [
+     {
+      "say": "Look at the oxygen first.",
+      "mark": null
+     }
+    ],
+    "board": null
+   }
+  },
+  "lookReply": {
+   "model": "claude-haiku-5-5",
+   "stop_reason": "end_turn",
+   "usage": {
+    "input_tokens": 300,
+    "output_tokens": 50
+   },
+   "parsed_output": {
+    "leaks": false
+   }
+  }
+ },
+ "out": {
+  "request": "ca7da4185224"
+ }
+}

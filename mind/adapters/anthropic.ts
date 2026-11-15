@@ -5,6 +5,7 @@ import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import { z } from "zod";
 import { settled } from "../cores/partial.ts";
 import { arriving, asking, cleaned, Glance, pagesRead, Reply } from "./claude-shape.ts";
+import { Walk, walked, walking } from "./claude-walk.ts";
 import { Answered, type Brain, type Glancer, type Opener, type SecondLook } from "../ports.ts";
 import type { Settings } from "../settings.ts";
 
@@ -13,7 +14,8 @@ const Look = z.object({ leaks: z.boolean() });
 
 type Usage = { input_tokens: number; output_tokens: number; cache_creation_input_tokens?: number | null; cache_read_input_tokens?: number | null };
 type Log = (line: string) => void;
-export type Prompts = { answer: string; secondLook: string; opener: string; glance: string };
+/** `workThrough` is added to the answer's prompt only for a step of the working he asked to have worked through. */
+export type Prompts = { answer: string; secondLook: string; opener: string; glance: string; workThrough?: string };
 
 
 /** Claude behind three ports. The client is built here; a row may hand in a stand-in instead. */
@@ -62,21 +64,24 @@ export function anthropic(settings: Settings, prompts: Prompts, log: Log, client
         // ask on that site, so after the first ask they cost a twentieth and no longer slow the answer.
         const read = pagesRead(asked.known, asked.today, settings.pageLinesGiven.value);
         const pages = read === null ? [] : [{ type: "text" as const, text: read, cache_control: { type: "ephemeral" as const, ttl: "1h" as const } }];
+        // A step of the working is asked with the answer's prompt and its own added, in its own shape; nothing else changes.
+        const walk = asked.walk;
+        if (walk && !prompts.workThrough) throw new Error("the work-through prompt was not loaded");
         const stream = client.beta.messages.stream(
           {
             model,
             max_tokens: settings.brainMaxTokens.value,
-            system: prompts.answer,
+            system: walk ? `${prompts.answer}\n\n${prompts.workThrough}` : prompts.answer,
             // Opted in on purpose: when the model will not take a request, the API may answer from its fallback model
             // instead of failing the ask.
             betas: ["server-side-fallback-2026-07-01"],
             fallbacks: "default",
-            output_config: { effort: settings.brainEffort.value, format: betaZodOutputFormat(Reply) },
-            messages: [{ role: "user", content: [...pages, ...picture, { type: "text", text: asking(asked) }] }],
+            output_config: { effort: settings.brainEffort.value, format: walk ? betaZodOutputFormat(Walk) : betaZodOutputFormat(Reply) },
+            messages: [{ role: "user", content: [...pages, ...picture, { type: "text", text: walk ? walking({ ...asked, walk }, settings.workThroughSpotsMost.value) : asking(asked) }] }],
           },
           { signal },
         );
-        if (onPart) {
+        if (onPart && !walk) {
           stream.on("text", (_delta: string, soFar: string) => {
             const part = settled(soFar);
             if (part !== null && !part.whole) onPart(arriving(part));
@@ -90,8 +95,8 @@ export function anthropic(settings: Settings, prompts: Prompts, log: Log, client
         }
         const text = reply.content.flatMap((block) => (block.type === "text" ? [block.text] : [])).join("");
         const whole = settled(text);
-        const parsed = whole?.whole ? Reply.safeParse(whole) : null;
-        const answered = parsed?.success ? Answered.safeParse(cleaned(parsed.data)) : null;
+        const parsed = whole?.whole ? (walk ? Walk : Reply).safeParse(whole) : null;
+        const answered = parsed?.success ? Answered.safeParse(walk ? walked(parsed.data as z.infer<typeof Walk>, walk.steps.length) : cleaned(parsed.data as z.infer<typeof Reply>)) : null;
         if (answered?.success) return answered.data;
         // The reason and the reply's own text are kept, so the log explains a failure by itself. He sees plain words.
         const why = answered ? answered.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`).join("; ") : `it did not fit the contract (it stopped with "${reply.stop_reason}")`;

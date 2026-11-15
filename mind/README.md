@@ -25,6 +25,7 @@ Every decision is a pure function in `cores/`; every outside service is behind `
 | `guide.ts` | the demo's guide: what to do next on the kept page on his screen, moving on as the mind sees each step happen; no model asked |
 | `adapters/looked.ts` | a page's first look, kept on disk for the day and asked ahead when the mind starts, so the look does not wait for the model |
 | `spots.ts` | rings on a measured drawing: finds a sheet on his screen, tells the model its places' names, rings the ones an answer names |
+| `through.ts` | working an exercise through, when the switch `workThrough` is on and his words ask for it on a measured drawing: exactly the next step of the working, its rings (three at most) and the board of every step so far; the deep model is asked with `prompts/work-through.md` added and `adapters/claude-walk.ts`'s shape |
 | `showme.ts` | "show me": the walk through what is ahead, one step each time he says it or clicks the step's box, with the board, one sentence and the box or the way; no model asked |
 | `takes.ts` | what paral does in his browser for him, on his word only: "take me there" (the app is asked to open a kept page's address), "scroll for me" (the app is asked to scroll to what an arrow points at) and "open it for me" (the app is asked to click once on the closed heading paral has boxed; every condition for that click is written out there); and the card an answer stays on; no model asked |
 | `notes.ts` | "show me my notes": the notes of the sitting written as one page into the temporary folder from what the mind holds (his first question, the steps in order, what is done, what it could not tell) and the body told to open it, with no model asked; and after each look, the cut-out of each marked step's section (`adapters/sips.ts`) |
@@ -46,6 +47,6 @@ Every decision is a pure function in `cores/`; every outside service is behind `
 
 Run: `npm run mind`, or let `./flow` and `./run` start it. Environment: `PARAL_TAPE` (recorded answers, no service),
 `PARAL_RECORD` (write every line to a file), `PARAL_SOCKET`, `PARAL_SPEND` (write what the run cost on stop),
-`PARAL_FAULT=voice` (the voice fails on purpose).
+`PARAL_FAULT=voice` (the voice fails on purpose), `PARAL_WORK_THROUGH=1` (turns on working an exercise through).
 
 Checked by: every `turn`, `stop` and `live.standin` row, and one row or more per core.

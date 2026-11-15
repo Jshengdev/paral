@@ -1,0 +1,278 @@
+{
+ "name": "turn: work-through on: after the first step, a plain \"so what is the final product\" is not a step: it goes up the hint ladder, and a hint that names the product is swapped by Push for the rung's fixed line; the step's rings and board stay",
+ "run": "turn",
+ "in": {
+  "tape": "worksheet-walk.json",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "hello",
+     "body": "row"
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "typed",
+     "text": "walk me through it",
+     "at": 1794700010000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1794700010005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "aromatic ring. Draw the structure of the compounds.",
+       "box": {
+        "x": 1181.03232,
+        "y": 707.2263808,
+        "w": 686.99928,
+        "h": 29.7702912
+       }
+      },
+      {
+       "text": "2. Draw mechanism and expect final product",
+       "box": {
+        "x": 977.4328800000001,
+        "y": 2463.4041472,
+        "w": 940.6056000000001,
+        "h": 45.227942399999996
+       }
+      }
+     ]
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "typed",
+     "text": "so what is the final product",
+     "at": 1794700030000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1794700030005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "aromatic ring. Draw the structure of the compounds.",
+       "box": {
+        "x": 1181.03232,
+        "y": 707.2263808,
+        "w": 686.99928,
+        "h": 29.7702912
+       }
+      },
+      {
+       "text": "2. Draw mechanism and expect final product",
+       "box": {
+        "x": 977.4328800000001,
+        "y": 2463.4041472,
+        "w": 940.6056000000001,
+        "h": 45.227942399999996
+       }
+      }
+     ]
+    }
+   ]
+  ],
+  "show": "walk",
+  "set": {
+   "workThrough": true
+  }
+ },
+ "out": {
+  "asked": [
+   {
+    "words": "walk me through it",
+    "walk": {
+     "steps": []
+    },
+    "spots": 7,
+    "shown": []
+   },
+   {
+    "words": "so what is the final product",
+    "walk": null,
+    "spots": 7,
+    "shown": [
+     "The oxygen of ethanol uses a lone pair to attack the carbonyl carbon.",
+     "That carbon is short of electrons, pulled on by both the O and the Cl."
+    ]
+   }
+  ],
+  "lines": [
+   {
+    "v": 1,
+    "type": "ready",
+    "mind": "paral",
+    "holdKey": "rightOption",
+    "drawKey": "shift",
+    "earGraceMs": 300,
+    "markPad": 4,
+    "pictureLongEdge": 1280,
+    "cropAround": {
+     "share": 1,
+     "points": 200
+    }
+   },
+   {
+    "v": 1,
+    "type": "state",
+    "name": "thinking"
+   },
+   {
+    "v": 1,
+    "type": "heard",
+    "text": "walk me through it",
+    "final": true
+   },
+   {
+    "v": 1,
+    "type": "say",
+    "id": "t1",
+    "beat": 0,
+    "text": "The oxygen of ethanol uses a lone pair to attack the carbonyl carbon."
+   },
+   {
+    "v": 1,
+    "type": "mute",
+    "id": "t1",
+    "why": "no voice is set up"
+   },
+   {
+    "v": 1,
+    "type": "say",
+    "id": "t1",
+    "beat": 1,
+    "text": "That carbon is short of electrons, pulled on by both the O and the Cl."
+   },
+   {
+    "v": 1,
+    "type": "mark",
+    "id": "t1",
+    "beat": 0,
+    "kind": "ring",
+    "box": {
+     "x": 597.6600000000001,
+     "y": 1476.9870463999998,
+     "w": 20.836200000000005,
+     "h": 22.024627199999998
+    },
+    "spot": true
+   },
+   {
+    "v": 1,
+    "type": "mark",
+    "id": "t1",
+    "beat": 0,
+    "kind": "ring",
+    "box": {
+     "x": 803.6407200000001,
+     "y": 1381.1428736,
+     "w": 22.02684,
+     "h": 13.6896192
+    },
+    "spot": true
+   },
+   {
+    "v": 1,
+    "type": "mark",
+    "id": "t1",
+    "beat": 0,
+    "kind": "ring",
+    "box": {
+     "x": 806.022,
+     "y": 1309.6975424,
+     "w": 17.8596,
+     "h": 74.4088896
+    },
+    "spot": true
+   },
+   {
+    "v": 1,
+    "type": "board",
+    "id": "t1",
+    "rows": [
+     [
+      "O attacks carbonyl C"
+     ]
+    ],
+    "now": 0
+   },
+   {
+    "v": 1,
+    "type": "state",
+    "name": "idle"
+   },
+   {
+    "v": 1,
+    "type": "state",
+    "name": "thinking"
+   },
+   {
+    "v": 1,
+    "type": "heard",
+    "text": "so what is the final product",
+    "final": true
+   },
+   {
+    "v": 1,
+    "type": "mark",
+    "id": "t2",
+    "beat": 0,
+    "kind": "ring",
+    "box": {
+     "x": 488.71644000000003,
+     "y": 1231.7020736,
+     "w": 470.30280000000005,
+     "h": 22.613971199999998
+    }
+   },
+   {
+    "v": 1,
+    "type": "say",
+    "id": "t2",
+    "beat": 0,
+    "text": "Read the highlighted line again, slowly.",
+    "rung": 0,
+    "of": 4
+   },
+   {
+    "v": 1,
+    "type": "mute",
+    "id": "t2",
+    "why": "no voice is set up"
+   },
+   {
+    "v": 1,
+    "type": "state",
+    "name": "idle"
+   }
+  ]
+ }
+}

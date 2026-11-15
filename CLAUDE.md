@@ -146,6 +146,18 @@ a box with no model pointing at the picture. The model is told the places' names
 sentences speak of (`spots`); `mind/spots.ts` rings them with the sentence. Never the signs between the reactants,
 and never the space the result goes in. With no sheet on screen nothing changes.
 
+**Working an exercise through (a switch, off).** `workThrough` is off unless the mind is started with
+`PARAL_WORK_THROUGH=1` (`PARAL_WORK_THROUGH=1 ./run`, or before `./flow`). Off, nothing changes. On, an ask whose
+words ask for it (`workThroughAsks`: "walk me through", "what happens next", "then what" ...) while a measured sheet
+is on his screen is not a hint: it gives exactly the next step of the exercise's own working (`mind/through.ts`,
+`cores/through.ts`). The deep model gets `prompts/answer.md` with `prompts/work-through.md` added, the steps given so
+far (kept in the lesson, `cores/hold.ts`), and its own reply shape (`adapters/claude-walk.ts`). Each step is one or
+two sentences, up to three rings on the drawing (`workThroughSpotsMost`), and a board of every step so far, one a
+row, the newest lit; nothing drawn for earlier steps is cleared. Only the last step may say what the working gives;
+an earlier step that names the product is held back (`workThroughHeldLine`), and an ask after the last hears
+`workThroughDoneLine` with no model asked. Every other ask, a plain "what is the final product?" too, goes up the
+hint ladder with Push as before. The worksheet's menu ends with "walk me through it".
+
 **A tapped ask, and the demo's centre.** The menu bar's menu is where the demo is run from. The bank of scenarios is
 one setting, `cueCards` (sent in the ready line), his to edit: each scenario has a name, optionally the https usc.edu
 page it is run on, and its lines in the order he would say them. Each is its own submenu: "Open the page" first (the
@@ -336,5 +348,9 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
   browse while it runs, and it does not know the page's address: it recognises a kept page from the lines on screen.
   A page that has changed since it was read is answered from the old text. A date it says must be on the screen or
   in a kept page, or the sentence is not said; other facts are not checked.
+- Working an exercise through has run only on tapes and in four scripted live runs on the worksheet's picture
+  (November 15), never on his real screen; its rings need the sheet found there, as above. Which step comes next,
+  and whether the chemistry is right, is the model's: no code checks the steps, only that a step before the last
+  does not name the product as the model wrote it. A walk spans one connection; "Start over" begins it again.
 - One lesson exists (`balance`), with three fixed examples.
 - Landing a mark on the right line is measured on generated pages only, not on real course pages.

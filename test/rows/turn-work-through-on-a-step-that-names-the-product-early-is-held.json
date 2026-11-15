@@ -1,0 +1,264 @@
+{
+ "name": "turn: work-through on: a first step that names the product before the working reaches it is held back with a fixed line: no ring, no board, no step kept, so the next ask asks for step one again",
+ "run": "turn",
+ "in": {
+  "tape": "worksheet-walk.json",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "hello",
+     "body": "row"
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "typed",
+     "text": "then what",
+     "at": 1794700010000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1794700010005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "aromatic ring. Draw the structure of the compounds.",
+       "box": {
+        "x": 1181.03232,
+        "y": 707.2263808,
+        "w": 686.99928,
+        "h": 29.7702912
+       }
+      },
+      {
+       "text": "2. Draw mechanism and expect final product",
+       "box": {
+        "x": 977.4328800000001,
+        "y": 2463.4041472,
+        "w": 940.6056000000001,
+        "h": 45.227942399999996
+       }
+      }
+     ]
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "typed",
+     "text": "walk me through it",
+     "at": 1794700030000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1794700030005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "aromatic ring. Draw the structure of the compounds.",
+       "box": {
+        "x": 1181.03232,
+        "y": 707.2263808,
+        "w": 686.99928,
+        "h": 29.7702912
+       }
+      },
+      {
+       "text": "2. Draw mechanism and expect final product",
+       "box": {
+        "x": 977.4328800000001,
+        "y": 2463.4041472,
+        "w": 940.6056000000001,
+        "h": 45.227942399999996
+       }
+      }
+     ]
+    }
+   ]
+  ],
+  "show": "walk",
+  "set": {
+   "workThrough": true
+  }
+ },
+ "out": {
+  "asked": [
+   {
+    "words": "then what",
+    "walk": {
+     "steps": []
+    },
+    "spots": 7,
+    "shown": []
+   },
+   {
+    "words": "walk me through it",
+    "walk": {
+     "steps": []
+    },
+    "spots": 7,
+    "shown": [
+     "That step said too much at once. Ask me for it again."
+    ]
+   }
+  ],
+  "lines": [
+   {
+    "v": 1,
+    "type": "ready",
+    "mind": "paral",
+    "holdKey": "rightOption",
+    "drawKey": "shift",
+    "earGraceMs": 300,
+    "markPad": 4,
+    "pictureLongEdge": 1280,
+    "cropAround": {
+     "share": 1,
+     "points": 200
+    }
+   },
+   {
+    "v": 1,
+    "type": "state",
+    "name": "thinking"
+   },
+   {
+    "v": 1,
+    "type": "heard",
+    "text": "then what",
+    "final": true
+   },
+   {
+    "v": 1,
+    "type": "say",
+    "id": "t1",
+    "beat": 0,
+    "text": "That step said too much at once. Ask me for it again."
+   },
+   {
+    "v": 1,
+    "type": "mute",
+    "id": "t1",
+    "why": "no voice is set up"
+   },
+   {
+    "v": 1,
+    "type": "state",
+    "name": "idle"
+   },
+   {
+    "v": 1,
+    "type": "state",
+    "name": "thinking"
+   },
+   {
+    "v": 1,
+    "type": "heard",
+    "text": "walk me through it",
+    "final": true
+   },
+   {
+    "v": 1,
+    "type": "say",
+    "id": "t2",
+    "beat": 0,
+    "text": "The oxygen of ethanol uses a lone pair to attack the carbonyl carbon."
+   },
+   {
+    "v": 1,
+    "type": "mute",
+    "id": "t2",
+    "why": "no voice is set up"
+   },
+   {
+    "v": 1,
+    "type": "say",
+    "id": "t2",
+    "beat": 1,
+    "text": "That carbon is short of electrons, pulled on by both the O and the Cl."
+   },
+   {
+    "v": 1,
+    "type": "mark",
+    "id": "t2",
+    "beat": 0,
+    "kind": "ring",
+    "box": {
+     "x": 597.6600000000001,
+     "y": 1476.9870463999998,
+     "w": 20.836200000000005,
+     "h": 22.024627199999998
+    },
+    "spot": true
+   },
+   {
+    "v": 1,
+    "type": "mark",
+    "id": "t2",
+    "beat": 0,
+    "kind": "ring",
+    "box": {
+     "x": 803.6407200000001,
+     "y": 1381.1428736,
+     "w": 22.02684,
+     "h": 13.6896192
+    },
+    "spot": true
+   },
+   {
+    "v": 1,
+    "type": "mark",
+    "id": "t2",
+    "beat": 0,
+    "kind": "ring",
+    "box": {
+     "x": 806.022,
+     "y": 1309.6975424,
+     "w": 17.8596,
+     "h": 74.4088896
+    },
+    "spot": true
+   },
+   {
+    "v": 1,
+    "type": "board",
+    "id": "t2",
+    "rows": [
+     [
+      "O attacks carbonyl C"
+     ]
+    ],
+    "now": 0
+   },
+   {
+    "v": 1,
+    "type": "state",
+    "name": "idle"
+   }
+  ]
+ }
+}

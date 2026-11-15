@@ -7,6 +7,10 @@ export type Lesson = {
   shown: string[];
   /** What paral has drawn that is still on his screen, in words the model can read. */
   drawn: string[];
+  /** The steps of the working given so far, when he has asked to have the exercise worked through; absent otherwise. */
+  steps?: string[];
+  /** Whether the last step given said what the working gives, so the walk is over. */
+  worked?: boolean;
 };
 
 export type HoldEvent =
@@ -19,7 +23,8 @@ export type HoldEvent =
   | { type: "mark.drawn"; kind: string; line: string }
   | { type: "board.drawn"; rows: string[][] }
   | { type: "clip.drawn"; name: string }
-  | { type: "wiped" };
+  | { type: "wiped" }
+  | { type: "step.given"; step: string; last: boolean };
 
 export const NO_RUNG = -1;
 
@@ -53,5 +58,7 @@ export function fold(lesson: Lesson, event: HoldEvent): Lesson {
       return { ...lesson, drawn: [...lesson.drawn.filter(besideTheBoard), CLIP + event.name] };
     case "wiped":
       return { ...lesson, drawn: [] };
+    case "step.given":
+      return { ...lesson, steps: [...(lesson.steps ?? []), event.step], worked: event.last };
   }
 }

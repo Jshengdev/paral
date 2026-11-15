@@ -1,5 +1,5 @@
 {
- "name": "ready: the real bank (cueCards) crosses the seam in the ready line with its two pages, and the app's menu draws it: a submenu for each scenario, \"Open the page\" first where there is one, then its lines in order ending with \"show me my notes\", nothing ticked, then \"Start over\"",
+ "name": "ready: the real bank (cueCards) crosses the seam in the ready line with its two pages, and the app's menu draws it: a submenu for each scenario, \"Open the page\" first where there is one, then its lines in order, \"show me my notes\" in each and the worksheet's ending with \"walk me through it\", nothing ticked, then \"Start over\"",
  "run": "ready.bank",
  "in": {},
  "out": {
@@ -27,6 +27,7 @@
    "    so, what is the final product? -> asks \"so, what is the final product?\"",
    "    just tell me the answer -> asks \"just tell me the answer\"",
    "    show me my notes -> asks \"show me my notes\"",
+   "    walk me through it -> asks \"walk me through it\"",
    "Maymester page >",
    "    Open the page -> opens https://dornsife.usc.edu/wrigley/education/catalina-residential-college/catalina-island-maymester/",
    "    is it too late to apply? -> asks \"is it too late to apply?\"",
