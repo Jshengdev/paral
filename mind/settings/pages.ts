@@ -38,6 +38,12 @@ export const pages = {
     measured: "not measured; a first list. One live run heard \"Show me.\" as said",
   } satisfies Setting<string[]>,
 
+  unaskedVoice: {
+    value: true,
+    why: "Whether the first look at a page is also said aloud when it shows a date, ahead or passed: once for the page in a sitting, never while he holds the key or an answer is on its way, and stopped by a press of the key. A look that only moves its mark is never spoken. The owner's word at about midnight on 2026-11-15: \"yes it should speak the unasked line aloud\".",
+    measured: "not heard on a Mac",
+  } satisfies Setting<boolean>,
+
   clickGrow: {
     value: 10,
     why: "A click this many points outside the box of the step he is on still counts as a click on it, so the box's own edge counts. A click there is the step done: the walk moves on as if he had said \"show me\" again.",

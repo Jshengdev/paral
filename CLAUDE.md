@@ -88,7 +88,8 @@ stood still. The mind (`mind/glance.ts`) acts only when the screen is one of USC
 sees a page it asks the deep model about the kept page's own text, whether it holds one thing that will cost him
 later; nothing read from his screen is sent for that. If so: a box on the line where it now is on his screen (the
 line itself, or the heading it sits under), one sentence in the capsule with the trail of what was done above it,
-shown and not spoken, and a board of what is still ahead. When he scrolls or opens a section the mark moves. What
+and a board of what is still ahead. The first time a page's look shows a date the sentence is also said aloud,
+once (`unaskedVoice`); every later look of that page is shown and not spoken. When he scrolls or opens a section the mark moves. What
 is ahead is remembered for the sitting and given to every ask. A press of the key takes over at once.
 
 **A page's first look is kept.** Its question is about the kept page's own text and today's date, so the answer is

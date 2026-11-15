@@ -5,6 +5,7 @@ import { named, type ToKeep } from "./cores/keep.ts";
 import { headingOf, whichPage, type KeptPage } from "./cores/page.ts";
 import { point, whereIs } from "./place.ts";
 import type { Following, Glanced } from "./ports.ts";
+import { speech } from "./speech.ts";
 import { SEAM_VERSION, type FromBody } from "../seam/schema.ts";
 
 const v = SEAM_VERSION;
@@ -52,6 +53,8 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
   let last: { look: Look | Screen; page: KeptPage } | null = null;
   /** The looks being answered by the model now, by the same key as `found`. */
   const beingAsked = new Map<string, Promise<Glanced | null | void>>();
+  /** The pages whose look has been said aloud in this sitting: each is said once. */
+  const saidAloud = new Set<string>();
   /** The page on which each ask he followed was found to end, by the words of the ask. */
   const endedOn = new Map<string, string>();
 
@@ -161,7 +164,13 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
       const trail = following ? ["saw this page", "found what you asked for"] : first ? ["saw this page", read, what] : ["saw this page", reached];
       // A date still ahead can be kept: the body may offer it as a button, which sends "add it to my calendar" as a tapped line.
       send({ v, type: "say", id, beat: 0, text, trail, ...(glanced.kind === "date" ? { keep: true } : {}) });
-      send({ v, type: "mute", id, why: "a look he did not ask for is shown, not spoken" });
+      // The first time a page's look shows a date, ahead or passed, it is also said aloud, once for the page. A look
+      // that only moves its mark, a step with no date, and a look after his ask are shown and not spoken. A press of
+      // the key stops it, as it stops the look.
+      if (settings.unaskedVoice.value && first && !following && glanced.kind !== "step" && !saidAloud.has(page.name)) {
+        saidAloud.add(page.name);
+        speech({ ports, settings, send, log }, id, mine.signal).speak(0, text);
+      } else send({ v, type: "mute", id, why: "a look he did not ask for is shown, not spoken" });
       // What is ahead stays drawn while he is on this page: it is sent again each time the mark moves. One step to a
       // row: three steps with their dates side by side were shrunk to fit, down to words no one could read.
       if (glanced.ahead.length > 0) send({ v, type: "board", id, rows: glanced.ahead.map((step) => [step.by ? `${step.step}: ${step.by}` : step.step]) });
