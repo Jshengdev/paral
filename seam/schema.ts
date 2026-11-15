@@ -81,6 +81,8 @@ export const FromMind = z.discriminatedUnion("type", [
     aside: z.boolean().optional(),
     /** Only on a line said without being asked: the steps paral took to get to it, shown small above the line. */
     trail: z.array(z.string().min(1)).optional(),
+    /** Only on a line said without being asked: true when it shows a date he can ask to keep, so the body may offer "Add to calendar". */
+    keep: z.boolean().optional(),
     rung: z.number().int().nonnegative().optional(),
     of: z.number().int().positive().optional(),
   }),

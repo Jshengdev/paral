@@ -26,7 +26,7 @@ Promises: one schema for every line between body and mind (`schema.ts`), newline
 | `state` | idle, listening, thinking or failed (with the reason) |
 | `heard` | his words as the ear hears them, and once more when final |
 | `echo` | his own loop, drawn back as soon as his words are final (the ear takes about 0.4 s after the release): a box and a shape (`loop`, `ring` or `box`). It is his, so `clear` leaves it; his next key press takes it |
-| `say` | one sentence, numbered by `beat`; beat -1 is the opener, and beat -2 is the fixed line said first when the opener is late. A hint carries its rung. `aside` is true for a line said while he waits (an opener, a stall line), which is no part of the answer |
+| `say` | one sentence, numbered by `beat`; beat -1 is the opener, and beat -2 is the fixed line said first when the opener is late. A hint carries its rung. `aside` is true for a line said while he waits (an opener, a stall line), which is no part of the answer. A line said without being asked carries `trail`, the steps taken to get to it, and `keep: true` when it shows a date he can ask to keep: the body may then offer a button, which sends the `typed` line "add it to my calendar" |
 | `voice` | a chunk of that sentence's sound, 16-bit PCM at 24 kHz mono, base64; `last` closes the beat |
 | `words` | when each word of the beat is spoken, in seconds from the beat's first sound |
 | `mute` | this answer has no voice, and why |

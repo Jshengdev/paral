@@ -159,7 +159,8 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
       const read = page.lines.length <= settings.pageLinesGiven.value ? "read the whole page" : `read its first ${settings.pageLinesGiven.value} lines`;
       const what = glanced.kind === "passed" ? "found 1 date that has passed" : `found 1 ${glanced.kind}`;
       const trail = following ? ["saw this page", "found what you asked for"] : first ? ["saw this page", read, what] : ["saw this page", reached];
-      send({ v, type: "say", id, beat: 0, text, trail });
+      // A date still ahead can be kept: the body may offer it as a button, which sends "add it to my calendar" as a tapped line.
+      send({ v, type: "say", id, beat: 0, text, trail, ...(glanced.kind === "date" ? { keep: true } : {}) });
       send({ v, type: "mute", id, why: "a look he did not ask for is shown, not spoken" });
       // What is ahead stays drawn while he is on this page: it is sent again each time the mark moves. One step to a
       // row: three steps with their dates side by side were shrunk to fit, down to words no one could read.

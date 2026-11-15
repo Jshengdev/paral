@@ -356,7 +356,8 @@
     "saw this page",
     "read the whole page",
     "found 1 date"
-   ]
+   ],
+   "keep": true
   },
   {
    "v": 1,
@@ -476,7 +477,8 @@
     "saw this page",
     "read the whole page",
     "found 1 date"
-   ]
+   ],
+   "keep": true
   },
   {
    "v": 1,
