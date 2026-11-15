@@ -1,5 +1,5 @@
 {
- "name": "body: on a page whose only free places are too small for the nudge card even at the smallest it may be shrunk to, no card is drawn, so none lies on the page's words: the look's line is shown in the capsule instead, as it was before the card, with the arrow leading there, and the film's record says so",
+ "name": "body: on a page whose only free places are too small for the nudge card even at the smallest it may be shrunk to, no card is drawn, so none lies on the page's words: the look's line is shown in the capsule instead, as it was before the card, with no arrow, since an arrow leads only to a card, and the film's record says so",
  "run": "body.nudge",
  "in": {
   "lines": [
@@ -74,7 +74,7 @@
    "inTheCapsule": {
     "says": "This is the date to keep: the application closes in 8 days.",
     "onText": false,
-    "arrowLeadsToIt": true
+    "arrowLeadsToIt": false
    },
    "toast": false
   },
@@ -83,7 +83,7 @@
    "inTheCapsule": {
     "says": "This is the date to keep: the application closes in 8 days.",
     "onText": false,
-    "arrowLeadsToIt": true
+    "arrowLeadsToIt": false
    },
    "toast": false
   }

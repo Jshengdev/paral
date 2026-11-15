@@ -74,15 +74,6 @@ extension Painter {
         return Box(x: x, y: words.y, w: max(pill.x + pill.w, words.x + words.w) - x, h: pill.y + pill.h - words.y)
     }
 
-    /// What speaks at the bottom, for the arrow that leads to it: the full pill where it sits open, and above it the
-    /// bubble as it is with the words it holds, so the arrow's way moves only when the words do.
-    func speaker(_ c: CapsulePicture, avoiding texts: [Box]) -> Box {
-        let pill = places(c, avoiding: texts).full
-        guard let words = bubble(c, over: pill, nil) else { return pill }
-        let x = min(pill.x, words.x)
-        return Box(x: x, y: words.y, w: max(pill.x + pill.w, words.x + words.w) - x, h: pill.y + pill.h - words.y)
-    }
-
     /// A row of `count` dots `wave.pitch` apart, centred at `across`, in ink at `ink`.
     func dots(_ count: Int, across: Double, at y: Double, ink share: Double, _ ctx: CGContext) {
         let w = tokens.wave

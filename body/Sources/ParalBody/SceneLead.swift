@@ -1,20 +1,20 @@
 import Foundation
 
 extension Scene {
-    /// The arrow that leads from a mark to what speaks about it, after the design kit's drawn arrow from its ring to
-    /// its card. There is one at most, from the newest of paral's marks on the page, and none while the arrow that
-    /// says which way to scroll is up. It is inked once the pen has finished the mark and the cursor has stepped
+    /// The arrow that leads from a mark to the card that speaks about it, after the design kit's drawn arrow from its
+    /// ring to its card. There is one at most, from the newest of paral's marks on the page, and none while the arrow
+    /// that says which way to scroll is up. It is inked once the pen has finished the mark and the cursor has stepped
     /// aside, and it goes with the mark.
     ///
-    /// The capsule is what speaks about a mark whenever it carries that mark's words: from when the mark's own
-    /// sentence comes up in it, for as long as it holds that answer's words, and the arrow is drawn back as the
-    /// capsule closes. The guide's card says what he does next, which is seldom about the marked line; it is led to
-    /// only once the capsule is at rest, and only when its words name the very line that is marked ("Open Deadlines"
-    /// with the mark on "Deadlines"). In every other case there is no arrow.
+    /// An arrow leads only to a card, as in the kit's pictures: never to the pill or its bubble. The pill sits at the
+    /// foot of the display, so an arrow to it ran down the length of the page and across the page's own drawing. An
+    /// answer in the bubble therefore has its marks and no arrow.
     ///
     /// A line said without being asked is on the nudge card, so the card is what speaks about its mark, from when the
-    /// line comes up on it, and the arrow is drawn back as the card goes. While any card is up the guide's card gets
-    /// no arrow, and once one has gone it waits for that.
+    /// line comes up on it, and the arrow is drawn back as the card goes. The guide's card says what he does next,
+    /// which is seldom about the marked line; it is led to only once the capsule is at rest and no nudge card is up
+    /// (once one has gone it waits for that), and only when its words name the very line that is marked ("Open
+    /// Deadlines" with the mark on "Deadlines"). In every other case there is no arrow.
     func lead(at t: Double, capsule: CapsulePicture, nudge: NudgePicture?) -> LeadPicture? {
         guard wayUp(at: t) == nil else { return nil }
         // A tag is a chip beside a line's ink, not a mark of the line: the arrow leaves the ink. A spot marks a place of
@@ -25,11 +25,6 @@ extension Scene {
         let key = "\(mark.id)/\(mark.beat)"
         func inked(since from: Double) -> Double { still ? 1 : Motion.even((t - from) / max(arrowMs, 1)) }
 
-        if capsule.ask == mark.id {
-            guard let ask = asks.first(where: { $0.id == mark.id }), let said = times(ask).first(where: { $0.beat == mark.beat }), t >= max(ready, said.start) else { return nil }
-            let drawn = inked(since: max(ready, said.start))
-            return LeadPicture(from: key, to: .capsule(trail: ask.trail != nil), drawn: capsule.look == .rest ? min(drawn, capsule.open) : drawn)
-        }
         if let nudge, nudge.id == mark.id {
             guard let ask = asks.first(where: { $0.id == mark.id }), let said = times(ask).first(where: { $0.beat == mark.beat }), t >= max(ready, said.start) else { return nil }
             return LeadPicture(from: key, to: .nudge, drawn: min(inked(since: max(ready, said.start)), 1 - nudge.coming.gone))

@@ -133,10 +133,10 @@ public struct NudgePicture: Equatable {
     public var held: NudgeButton? = nil
 }
 
-/// The drawn arrow that leads from the mark that matters to what is speaking about it.
+/// The drawn arrow that leads from the mark that matters to the card that is speaking about it.
 public struct LeadPicture: Equatable {
-    /// The capsule, which is taller while it carries a trail of steps, the guide's card, or the nudge card.
-    public enum Speaker: Equatable { case capsule(trail: Bool), guide, nudge }
+    /// The guide's card or the nudge card. The pill and its bubble are never led to.
+    public enum Speaker: Equatable { case guide, nudge }
     /// The key of the mark it leaves.
     public var from: String
     public var to: Speaker

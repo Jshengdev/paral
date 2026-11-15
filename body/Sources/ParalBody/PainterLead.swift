@@ -86,7 +86,7 @@ extension Painter {
         return best?.strokes
     }
 
-    /// Draws the arrow that leads from a mark to what speaks about it, as far as the pen has got, and gives back
+    /// Draws the arrow that leads from a mark to the card that speaks about it, as far as the pen has got, and gives back
     /// what was inked. `placed` is everything drawn so far: the arrow keeps off all of it, so it comes after.
     func lead(_ picture: Picture, placed: [Drawn], _ ctx: CGContext) -> Drawn? {
         guard let lead = picture.lead, lead.drawn > 0, let mark = picture.marks.first(where: { $0.key == lead.from }) else { return nil }
@@ -100,13 +100,9 @@ extension Painter {
             guard let card else { return nil }
             (target, name) = (card, "guide")
             taken.append(pillRoom)
-        case .capsule:
-            // The pill at its full size and the bubble with the words it holds: what speaks, wherever it sits.
-            (target, name) = (speaker(picture.capsule, avoiding: picture.avoid), "capsule")
-            if let card { taken.append(card) }
         case .nudge:
-            // A card with no place clear of the words is shown in the capsule, and the arrow goes there.
-            guard let nudge = placed.first(where: { $0.what == "nudge" })?.box else { (target, name) = (Layout.capsule(open: 1, taller: Layout.band(tokens), width: width, height: floor, tokens: tokens), "capsule"); break }
+            // A card with no place clear of the words is shown in the capsule, and nothing leads to the capsule.
+            guard let nudge = placed.first(where: { $0.what == "nudge" })?.box else { return nil }
             (target, name) = (nudge, "nudge")
             taken += [pillRoom] + (card.map { [$0] } ?? [])
         }

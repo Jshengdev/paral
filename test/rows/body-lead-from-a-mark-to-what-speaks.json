@@ -1,5 +1,5 @@
 {
- "name": "body: an arrow leads from the newest mark to what speaks about it, one at a time, and only where a way exists that keeps clear of every read line's words: none until the mark is whole and the cursor has stepped aside; it leads to the capsule whenever the capsule carries that mark's words, and where no way to the capsule is clear of the words and short enough there is none; a line said without being asked is on the nudge card, so a look's mark leads to that card while it is up; to the guide's card only once the capsule is at rest and no nudge card is up and the card's words name the very line that is marked, and it goes when the card's words move on; for an answer he asked for it leads to the capsule from the mark of the sentence being said, goes when a newer mark is begun and is inked again from that one, and is drawn back as the capsule closes; a card that says what he does next and came with a walk's mark gets no arrow, the capsule that says the step does; none while an arrow that says which way to scroll is up; it never lies on the board or off the display",
+ "name": "body: an arrow leads from the newest mark to the card that speaks about it, one at a time, and only where a way exists that keeps clear of every read line's words: none until the mark is whole and the cursor has stepped aside; a line said without being asked is on the nudge card, so a look's mark leads to that card while it is up; to the guide's card only once the capsule is at rest and no nudge card is up and the card's words name the very line that is marked, and it goes when the card's words move on; never to the pill or its bubble: an answer he asked for has its marks and no arrow, through each sentence and as the capsule closes, and so has a walk's step said in the capsule; none while an arrow that says which way to scroll is up; it never lies on the board or off the display",
  "run": "body.lead",
  "in": {
   "lines": [
@@ -290,80 +290,31 @@
    "arrow": null
   },
   {
-   "arrow": {
-    "fromLine": 6,
-    "toward": "the capsule",
-    "ink": "growing",
-    "clearOfEveryLinesWords": true,
-    "onTheBoard": false,
-    "insideTheDisplay": true
-   }
-  },
-  {
-   "arrow": {
-    "fromLine": 6,
-    "toward": "the capsule",
-    "ink": "still",
-    "clearOfEveryLinesWords": true,
-    "onTheBoard": false,
-    "insideTheDisplay": true
-   }
+   "arrow": null
   },
   {
    "arrow": null
   },
   {
-   "arrow": {
-    "fromLine": 5,
-    "toward": "the capsule",
-    "ink": "growing",
-    "clearOfEveryLinesWords": true,
-    "onTheBoard": false,
-    "insideTheDisplay": true
-   }
-  },
-  {
-   "arrow": {
-    "fromLine": 5,
-    "toward": "the capsule",
-    "ink": "still",
-    "clearOfEveryLinesWords": true,
-    "onTheBoard": false,
-    "insideTheDisplay": true
-   }
-  },
-  {
-   "arrow": {
-    "fromLine": 5,
-    "toward": "the capsule",
-    "ink": "going back",
-    "clearOfEveryLinesWords": true,
-    "onTheBoard": false,
-    "insideTheDisplay": true
-   }
+   "arrow": null
   },
   {
    "arrow": null
   },
   {
-   "arrow": {
-    "fromLine": 6,
-    "toward": "the capsule",
-    "ink": "growing",
-    "clearOfEveryLinesWords": true,
-    "onTheBoard": false,
-    "insideTheDisplay": true
-   }
+   "arrow": null
   },
   {
-   "arrow": {
-    "fromLine": 6,
-    "toward": "the capsule",
-    "ink": "still",
-    "clearOfEveryLinesWords": true,
-    "onTheBoard": false,
-    "insideTheDisplay": true
-   }
+   "arrow": null
+  },
+  {
+   "arrow": null
+  },
+  {
+   "arrow": null
+  },
+  {
+   "arrow": null
   },
   {
    "arrow": null

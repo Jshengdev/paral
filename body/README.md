@@ -22,7 +22,7 @@ here clicks.
 | Strike (build's name; after the reference pictures) | "this has passed": one line through the words, rising a little, `mark.strikePast` past each end, inked at even speed in ember. The one mark that crosses the page's words; the cursor rides it | `mark` (kind `strike`) | `clear`, a close, or new ink on the same line | `mark.strikeMs`, `mark.strikePast`, `mark.width`, `ember` |
 | Tag (build's name; the reference pictures' "Next", "Done" and "7 days left") | a chip of two or three words that belongs to a line: `strong` ink with white words, `quiet` mist with stone words, `date` white with a cardinal edge and words, flat, in DM Sans Medium at the cursor's tag's size. After the line's last word and its ink, `chip.gap` clear, level with it; where that is not free (the display's edge, a read line, the board or the clip, another tag, any mark's ink) above the line's end; in the pill's band at the foot, or where neither is free, it is not drawn and the film's record says `chip-unplaced`. It pops out on `pop` once its line's ink is whole. Not ink: the cursor does not go to it but rests clear of it, the arrow from a mark ignores it, and the guide's card, the nudge card, the toast, the way arrow and the leading arrow keep off it | `mark` (kind `tag`, `label` its words, `tone`; no tone is quiet; a tag with no words is refused) | `clear`, a close, or a new tag on the same line | `chip.*`, `ink`, `paper`, `mist`, `stone`, `light`, `cardinal`, `curves.pop` |
 | Highlight (the box) | "this line", where lines sit too close for a ring: a thin cardinal edge and a faint wash laid along the line by the pen | `mark` (kind `box`) | `clear`, a close, or a new mark on the same line | `mark.boxWidth`, `mark.boxPadX`, `mark.boxPadY`, `mark.boxRadius`, `mark.wash`, `mark.ringMs`, `cardinal` |
-| Drawn arrow (the kit's, from its ring to its card) | "this line is what that is about": one curve in ember from the newest mark to whatever is speaking about it, and only where a way exists that keeps clear of every word on the page | no line of its own: the newest `mark` once the pen has finished it, while the capsule carries that mark's own `say`, or the nudge card carries its look's line; or, with the capsule at rest and no nudge card up, while the guide's card (`next`) names the marked line | goes with its mark (`clear`, a close, a newer mark); drawn back as the capsule closes or the nudge card goes; gone when the card's words move on, and while a `way` arrow is up | `lead.*`, `way.head`, `way.halo`, `ember`, `cursor.settleMs`, `mark.shaftMs`, `mark.headMs` |
+| Drawn arrow (the kit's, from its ring to its card) | "this line is what that is about": one curve in ember from the newest mark to the card that is speaking about it, and only where a way exists that keeps clear of every word on the page. It leads only to a card, as in the kit's pictures: never to the pill or its bubble, which sit at the foot, so an answer in the bubble has its marks and no arrow | no line of its own: the newest `mark` once the pen has finished it, while the nudge card carries its look's line; or, with the capsule at rest and no nudge card up, while the guide's card (`next`) names the marked line | goes with its mark (`clear`, a close, a newer mark); drawn back as the nudge card goes; gone when the card's words move on, and while a `way` arrow is up | `lead.*`, `way.head`, `way.halo`, `ember`, `cursor.settleMs`, `mark.shaftMs`, `mark.headMs` |
 | Highlight ring: its echo (a step's mark, waiting) | "this is the step you are on; click it when it is done": an echo of the mark's edge grows out of it and fades, again and again, as the kit's highlight does until its target is clicked | a `mark` whose `board`, with the same id, names the step (`now`) | the step moving on (the mind's `clear` and next mark, also when the next step is on the same line) or the walk ending; none with motion reduced | `mark.echoAfterMs`, `mark.echoEveryMs`, `mark.echoGrows`, `mark.echoStrength`, `curves.arrive`, `curves.travel` |
 | Cursor | paral's own pointer, which is its logo mark: it shows where, never clicks. It flies to the newest mark or arrow, rides the pen, rests beside it; one ripple says "here" | the newest `mark`, `way` or `echo` on the page | goes with its mark or arrow; none with motion reduced | `cursor.*`, `cardinal`, `paper`, `motion.flightMs`, `motion.arc`, `curves.travel` |
 | Cursor: tag | says whose cursor is moving: a light pill with the logo mark and the name, worn only while it comes in from nowhere; it pops out as the cursor comes | the first `mark` or `way` after the page was clean | its arrival | `strings.name`, `cursor.tagFrom`, `motion.usualMs`, `curves.pop`, `light`, `glass`, `shadow` |
@@ -70,7 +70,7 @@ where and draws it (`PainterNudge.swift`, `Layout.nudge`), as for the guide's ca
   With the way to the line and no mark, its home is the right side above the capsule. Only when no place is free at
   full size is it shrunk, a twentieth at a time down to 0.8 (`nudge.least`, the smallest that still reads). Where none
   is free even then, no card is drawn: the line is shown in the capsule as it was before the card, with its trail and
-  no buttons, the arrow leads there, and the film's record names it (`nudge-in-capsule`). A card never lies on the
+  no buttons and no arrow, and the film's record names it (`nudge-in-capsule`). A card never lies on the
   page's words. On the recorded club page at a scale of 1, with the board up, it is drawn at
   0.95 to the left of the board. It keeps its place while that stays free, and a card that is going does not move.
 - **How it moves.** It comes up as the guide's card does, with the same two helpers (`Scene.coming`,
@@ -149,7 +149,7 @@ card is in the movie, this macOS records the window anyway and the setting does 
 | `SceneEcho.swift` | the mark of a walk's step, which sends out echoes of its edge while it waits for his click |
 | `SceneTag.swift`, `LayoutTag.swift` | the tags: when each pops out (once its line's ink is whole), where each sits by its line clear of everything else, and what the cursor rests beside |
 | `PenMore.swift` | the path the pen takes for a tick and a strike |
-| `SceneLead.swift` | the arrow from a mark to what speaks about it: which mark has one, what it leads to, how far it is inked |
+| `SceneLead.swift` | the arrow from a mark to the card that speaks about it: which mark has one, which card it leads to, how far it is inked |
 | `SceneNudge.swift` | the nudge card: which line it shows, what he did with it, when it comes and goes, and which words get no card again |
 | `LayoutNudge.swift` | where the nudge card goes: beside its line, right of the text, else the nearest free place, shrunk only when none is free |
 | `SceneCard.swift` | how a card stands at one moment: the card coming up, then each of its lines in turn |
@@ -161,7 +161,7 @@ card is in the movie, this macOS records the window anyway and the setting does 
 |---|---|
 | `Painter.swift` and `Painter*.swift` | draw a picture into any drawing context, with the tokens |
 | `PainterCapsule.swift`, `PainterBubble.swift` | the voice pill (its dots, its controls and its wave, or the cross) and the bubble above it |
-| `PainterLead.swift` | finds the way the arrow from a mark takes to what speaks about it, and inks it |
+| `PainterLead.swift` | finds the way the arrow from a mark takes to the card that speaks about it, and inks it |
 | `PainterCard.swift` | a card as it comes up and goes, and one line of it rising into place: for the guide's card and any other card |
 | `PainterLogo.swift` | the logo mark, drawn from the kit's outline: the cursor, and paral's face in the tag, on the guide's card and at rest |
 | `PainterNudge.swift` | draws the nudge card and gives back where its buttons take a click |
@@ -228,9 +228,11 @@ nothing crosses the seam for it.
 
 - **One at a time.** Only the newest of paral's marks on the page has an arrow, never his own loop, and none is drawn
   while the arrow that says which way to scroll is up.
-- **What speaks.** The capsule, whenever it carries that mark's words: the arrow comes when the mark's own sentence
-  comes up in the capsule, stays while the capsule holds that answer's words, and is drawn back as the capsule
-  closes. The guide's card says what he does next, which is seldom about the marked line ("Say it again: show me"),
+- **What speaks.** A card, and only a card, as in the kit's pictures: the nudge card while it carries the look's
+  line, drawn back as the card goes. Never the pill or its bubble: they sit at the foot of the display, and an arrow
+  to them ran down the length of the page and, on the chemistry worksheet, across the page's own reaction arrow. An
+  answer in the bubble has its marks and no arrow. The guide's card says what he does next, which is seldom about
+  the marked line ("Say it again: show me"),
   so it is led to only once the capsule is at rest and only when its words name the very line that is marked: the
   whole of a read line the mark is on is among the card's words ("Open Deadlines", with the mark on "Deadlines"). The
   body can tell no more than that from the lines it is sent; in every other case there is no arrow.
@@ -240,8 +242,8 @@ nothing crosses the seam for it.
 - **Its ink never covers the page's words.** A way is refused when its ink or its paper edge comes within
   `lead.clear` (4 points) of any read line, the line it leaves among them. It is refused too when it lies on the
   mark, the resting cursor, the board, the clip, the way arrow, the toast or the other speaker, or off the display,
-  and when it is longer than `lead.longest` (1000 points: on the recorded club page the ways down the right margin
-  to the capsule run 590 to 920). Where no way is left, no arrow is drawn: a missing arrow is fine, an arrow over
+  and when it is longer than `lead.longest` (1000 points, set when the arrow still led to the capsule: on the
+  recorded club page those ways ran 590 to 920; a way to a card is far shorter). Where no way is left, no arrow is drawn: a missing arrow is fine, an arrow over
   words is not.
 - **Its way.** It begins straight out from the mark's edge, on the far side of the cursor where the cursor rests
   there, and stops `lead.gap` (8, the kit's arrow stops about that short of its card) from what it leads to. From
@@ -266,7 +268,7 @@ curve; the `body.curves` row holds each one's values.
 |---|---|---|
 | `arrive` | 0.16, 1, 0.3, 1 | what comes up: the capsule at a press, the board, the clip, the toast, the guide's card, the nudge card and its rows; the way back of a nod; the spread of the cursor's ripple and of a mark's echo. It leaves at once, half the way in the first tenth of the time, and lands very softly; it goes past nothing |
 | `travel` | 0.65, 0, 0.35, 1 | what goes from one place to another: the cursor's flight and its step aside, a card growing from empty to its rows, the dip of a nod, the cursor's breath while paral works, an echo's fading. Slow at both ends |
-| `leave` | 0.55, 0, 1, 0.45 | what goes: the capsule shutting, the toast and the guide's closing line going, the leading arrow drawn back with the capsule, his own trail and the ripple fading. Slow to start, then gone |
+| `leave` | 0.55, 0, 1, 0.45 | what goes: the capsule shutting, the toast and the guide's closing line going, the leading arrow drawn back with its card, his own trail and the ripple fading. Slow to start, then gone |
 | `pop` | 0.34, 1.56, 0.64, 1 | a small thing popping out: the cursor's name tag, from `cursor.tagFrom` of its size (0.6, the handoff's), and the toast's badge. It goes a tenth past its place and comes back. Never a card, never words |
 
 - **Times** (`motion`): `arriveMs` 420; `leaveMs` 180, so what goes is gone in less than half the time it took to

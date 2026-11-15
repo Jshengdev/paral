@@ -44,7 +44,7 @@ export function lead(input: { lines: string[]; rows: Written[]; at: number[] }) 
     return {
       arrow: {
         fromLine,
-        toward: arrow.id?.endsWith(">guide") ? "the guide's card" : arrow.id?.endsWith(">nudge") ? "the nudge card" : "the capsule",
+        toward: arrow.id?.endsWith(">guide") ? "the guide's card" : arrow.id?.endsWith(">nudge") ? "the nudge card" : `something that is no card (${arrow.id})`,
         ink: change > 0.5 ? "growing" : change < -0.5 ? "going back" : "still",
         clearOfEveryLinesWords: path.every((p) => text.every((line) => apart(p, line) >= room)),
         onTheBoard: board ? path.some((p) => within(p, board)) : false,
