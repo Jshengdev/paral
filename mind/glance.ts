@@ -94,6 +94,7 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
   return {
     /** A step takes the lead of the looks on its page, or gives it back (null). `box` is where its own line is now, if it was just placed in view. */
     lead(step: Led | null, box: Box | null = null) {
+      if (step !== null) answer.stop();
       led = step;
       [shown, shownAt] = [null, null];
       ringed = box;
@@ -106,11 +107,22 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
       follow(last.look, last.page, led);
       return true;
     },
+    /**
+     * Which way the thing now pointed at lies, when it is off his screen: the walk's step, else the place his last
+     * answer sent him to, else the page's own thing. From the last look taken. Null when no arrow would be up.
+     */
+    wayNow(): { to: "up" | "down"; toward: string } | null {
+      if (last === null) return null;
+      const held = answer.on(last.page.name);
+      const step = led !== null && led.page === last.page.name ? led : null;
+      const thing = step ? (step.line === null ? null : { line: step.line, under: step.under }) : held ? held.target : (found.get(last.page.name) ?? null);
+      const where = thing ? whereIs(settings, last.look, last.page, thing) : null;
+      return where && where.box === null && where.to !== null ? { to: where.to, toward: where.toward } : null;
+    },
     /** An answer was given: it holds the looks of its page from here (`after.ts`). */
     pointed: answer.pointed,
     /** A press of the key ends a look in progress; what it had shown is his to ask about now. */
     stop() {
-      answer.stop();
       running?.abort();
       running = null;
       [shown, shownAt] = [null, null];

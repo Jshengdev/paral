@@ -1,0 +1,34 @@
+{
+ "name": "seam: the body's own reader takes a scroll line, down or up, and refuses one that says neither",
+ "run": "body.seen",
+ "in": {
+  "lines": [
+   {
+    "v": 1,
+    "type": "scroll",
+    "id": "t4",
+    "to": "down",
+    "toward": "Officer Trainings"
+   },
+   {
+    "v": 1,
+    "type": "scroll",
+    "id": "t5",
+    "to": "up",
+    "toward": "Deadlines"
+   },
+   {
+    "v": 1,
+    "type": "scroll",
+    "id": "t6",
+    "to": "sideways",
+    "toward": "Deadlines"
+   }
+  ]
+ },
+ "out": [
+  "took scroll(id: \"t4\", down: true)",
+  "took scroll(id: \"t5\", down: false)",
+  "refused scroll: id and to (up or down) are needed"
+ ]
+}

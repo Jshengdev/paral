@@ -26,6 +26,7 @@ Every decision is a pure function in `cores/`; every outside service is behind `
 | `adapters/looked.ts` | a page's first look, kept on disk for the day and asked ahead when the mind starts, so the look does not wait for the model |
 | `spots.ts` | rings on a measured drawing: finds a sheet on his screen, tells the model its places' names, rings the ones an answer names |
 | `showme.ts` | "show me": the walk through what is ahead, one step each time he says it or clicks the step's box, with the board, one sentence and the box or the way; no model asked |
+| `takes.ts` | what paral does in his browser for him, on his word only: "take me there" (the app is asked to open a kept page's address) and "scroll for me" (the app is asked to scroll to what an arrow points at); no model asked |
 | `keep.ts` | "add it to my calendar": the date last shown is written into a calendar file and the body is told to open it, with no model asked |
 | `ports.ts` | the interfaces: Brain, SecondLook, Opener, Ear, Voice, Lessons |
 | `settings.ts`, `settings/` | every value, one file per thing it governs |

@@ -57,7 +57,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
   const guide = guides({ settings, send, log });
   const hands: Hands = { ports, settings, send, log, noted: guide.noted };
   const keeping = keeps(hands);
-  const taking = takes(hands);
+  const taking = takes(hands, () => glancing.wayNow());
   const glancing = glances(hands, (found) => (ahead = [...ahead.filter((old) => !found.some((step) => step.step === old.step)), ...found]), keeping.found, keeping.has);
   /** "Show me": the walk through what is ahead, one step each time he says it. */
   const showing = shows(hands, glancing, keeping.found);

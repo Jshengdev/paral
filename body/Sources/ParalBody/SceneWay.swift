@@ -1,9 +1,10 @@
 import Foundation
 
 extension Scene {
-    /// What the watcher asks of the scene: whether an ask is being heard or answered (the capsule is not at rest),
-    /// when a look would cut into it; and whether an arrow says the thing he was pointed to is off screen.
-    public func watching(at t: Double) -> (busy: Bool, waiting: Bool) { (capsule(at: t).look != .rest, wayUp(at: t) != nil) }
+    /// What the watcher and the scroller ask of the scene: whether an ask is being heard or answered (the capsule is
+    /// not at rest), when a look would cut into it; and which way the arrow points when one says the thing he was
+    /// pointed to is off screen (true is down), nil when none is up.
+    public func watching(at t: Double) -> (busy: Bool, down: Bool?) { (capsule(at: t).look != .rest, wayUp(at: t)?.down) }
 
     /// The arrow on the page at `t`, if one is up.
     func wayUp(at t: Double) -> Way? { ways.last { $0.at <= t && ($0.clearedAt.map { t < $0 } ?? true) } }

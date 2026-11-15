@@ -32,6 +32,7 @@ final class App: NSObject, NSApplicationDelegate {
     }
     /// Looks at the display with no key pressed, when the mind asks for it in its ready line.
     private lazy var watch = Watch(screen: screen)
+    private let does = Does()
     private let began = Date()
     /// The cue cards in the menu: lines he can tap instead of saying them.
     private lazy var cues = CueMenu { [weak self] line in self?.typed(line) }
@@ -98,7 +99,7 @@ final class App: NSObject, NSApplicationDelegate {
             key.start()
             self.key = key
             watch.busy = { [weak self] in self.map { $0.held || $0.scene.watching(at: $0.clock()).busy } ?? true }
-            watch.waiting = { [weak self] in self.map { $0.scene.watching(at: $0.clock()).waiting } ?? false }
+            watch.waiting = { [weak self] in self.map { $0.scene.watching(at: $0.clock()).down != nil } ?? false }
             watch.onLook = { [weak self] path, w, h, place, lines in
                 guard let self else { return }
                 self.tell(.screen(display: place, lines: Screen.taken(path, w, lines, below: self.scene.footShare)))
@@ -114,7 +115,7 @@ final class App: NSObject, NSApplicationDelegate {
             speaker.play(sound)
         }
         if case .open(let path, _) = seen, !Keep.open(path) { failed("the calendar file could not be opened") }
-        if case .go(_, let url, _) = seen, !Keep.go(url) { failed("the page could not be opened (\(url))") }
+        does.take(seen, on: screen, way: { [unowned self] in self.held ? nil : self.scene.watching(at: self.clock()).down }, looks: { [unowned self] in self.watch.sent }) { [unowned self] in self.failed($0) }
         tell(seen)
     }
 

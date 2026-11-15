@@ -108,6 +108,11 @@ export const FromMind = z.discriminatedUnion("type", [
    */
   /** A page of USC's that he asked to be taken to: the body opens the address in his browser. Only an https address of a usc.edu site. */
   z.object({ v, type: z.literal("go"), id, url: z.string().min(1), label: z.string().optional() }),
+  /**
+   * He asked to be scrolled to what an arrow points at: the body scrolls the page that way for him until the thing
+   * comes into view (a mark lands, or the arrow goes) or it has tried long enough. It needs his Accessibility grant.
+   */
+  z.object({ v, type: z.literal("scroll"), id, to: z.enum(["up", "down"]), toward: z.string().min(1) }),
   z.object({ v, type: z.literal("mark"), id, beat, kind: MarkKind, box: Box, label: z.string().optional(), tone: z.enum(["strong", "quiet", "date"]).optional(), spot: z.boolean().optional() }),
   /** In place of a mark, when the thing is on this page and not in view: which way to scroll, and the name of what it leads to. `clear` wipes it. */
   z.object({ v, type: z.literal("way"), id, to: z.enum(["up", "down"]), toward: z.string().min(1) }),

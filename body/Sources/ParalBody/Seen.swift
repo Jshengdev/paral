@@ -59,6 +59,8 @@ public enum Seen {
     case open(path: String, label: String?)
     /// A page of USC's he asked to be taken to, and its name for the toast. The app opens it (`Keep.go`).
     case go(id: String, url: String, label: String?)
+    /// He asked to be scrolled to what the arrow points at. The app scrolls for him (`Does`); the scene shows nothing.
+    case scroll(id: String, down: Bool)
     /// `tone` is only for a tag, whose words are its `label`; a tag with no tone is quiet. `spot` is true for a mark on a
     /// place of a drawing (an atom), not a line: no arrow leads from it and the cursor does not go to it.
     case mark(id: String, beat: Int, kind: MarkKind, box: Box, label: String?, tone: Tone?, spot: Bool)
@@ -159,6 +161,9 @@ public enum Seen {
         case "open":
             guard let path = s("path"), !path.isEmpty else { return .failure(Refused("open.path: missing")) }
             return .success(.open(path: path, label: s("label")))
+        case "scroll":
+            guard let id, let to = s("to"), ["up", "down"].contains(to) else { return .failure(Refused("scroll: id and to (up or down) are needed")) }
+            return .success(.scroll(id: id, down: to == "down"))
         case "go":
             guard let id, let url = s("url"), !url.isEmpty else { return .failure(Refused("go: id and url are needed")) }
             return .success(.go(id: id, url: url, label: s("label")))

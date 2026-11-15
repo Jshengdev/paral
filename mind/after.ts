@@ -9,8 +9,8 @@ const v = SEAM_VERSION;
 type Seen = Pick<Screen, "lines" | "display">;
 
 /**
- * What the looks do after an answer, for one connection. An answer is his: until his next ask, the looks of that
- * page do not bring the page's own first thing back over it. A look then does one of two things. While the page has
+ * What the looks do after an answer, for one connection. An answer is his: until his next answer, or a walk, the
+ * looks of that page do not bring the page's own first thing back over it. A look then does one of two things. While the page has
  * not moved under the answer's marks, nothing: what he was shown stays, board and all. When it has (he scrolled, or
  * opened a section), the answer's marks would sit on the wrong lines, so everything drawn is wiped, and the place
  * the answer sent him to on this page, if it named one, is marked where it now stands, or the way to it. A look at
@@ -27,10 +27,12 @@ export function answered({ settings, send, log }: Hands) {
       held = { page, seen, target: after.target, way: null };
       return after.sent;
     },
-    /** His next ask has begun: the answer before it no longer holds the looks. */
+    /** A walk has begun, which leads the looks from here: the answer before it no longer holds them. */
     stop() {
       held = null;
     },
+    /** What the answer that holds this page's looks sent him to, if one holds them: null inside when it named no place. */
+    on: (page: string) => (held !== null && held.page === page ? { target: held.target } : null),
     /** Whether an answer holds this look. If so it is dealt with here, and the page's own thing is not shown. */
     take(look: Seen, page: KeptPage): boolean {
       if (held === null) return false;

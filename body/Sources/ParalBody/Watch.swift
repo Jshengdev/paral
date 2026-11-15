@@ -15,6 +15,8 @@ public final class Watch {
     private var timer: Timer?
     private var looking = false
     private var rounds = Rounds()
+    /// How many looks have been sent so far: the scroller waits for the next one after each reach.
+    public private(set) var sent = 0
     private var next = Date.distantPast
     public var busy: () -> Bool = { false }
     /// Whether something he was pointed to is off screen: the rounds then report at once, `most` in a row at most.
@@ -56,6 +58,7 @@ public final class Watch {
                 guard let shot, let lines, !self.busy() else { return }
                 let path = NSTemporaryDirectory() + "paral-look.jpg"
                 guard (try? Screen.saveSmaller(shot.image, to: path, longEdge: self.longEdge)) != nil else { return }
+                self.sent += 1
                 self.onLook?(path, shot.image.width, shot.image.height, shot.place, lines)
             }
         }

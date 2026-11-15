@@ -40,7 +40,7 @@ export const cues = {
 
   cueCards: {
     value: [
-      { name: "Club recognition page", lines: ["add it to my calendar", "do we need five officers and an advisor? there's only three of us", "show me", "what else do we have to finish by November 22?", "what is still ahead?", "can you help me find where to book this event?"] },
+      { name: "Club recognition page", lines: ["add it to my calendar", "do we need five officers and an advisor? there's only three of us", "show me", "what else do we have to finish by November 22?", "what is still ahead?", "can you help me find where to book this event?", "scroll for me"] },
       { name: "Chemistry worksheet", lines: ["what does this formula tell me?", "can you draw how these steps connect?", "what happens first?", "so, what is the final product?", "just tell me the answer"] },
       { name: "Maymester page", lines: ["is it too late to apply?", "when does it open again?"] },
     ],

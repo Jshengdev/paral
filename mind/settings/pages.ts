@@ -50,6 +50,18 @@ export const pages = {
     measured: "not measured; a first list",
   } satisfies Setting<string[]>,
 
+  scrollAsks: {
+    value: ["scroll for me", "scroll there", "scroll to it", "scroll down for me", "scroll up for me", "scroll there for me", "take me to it on this page"],
+    why: "Words of his that ask the app to scroll to what an arrow is pointing at, off his screen: also what the arrow's button sends. The owner, after his first real run: \"hwne it draws and asks to scroll, there shoudl be a button that just pops up that says, scroll for me and then draws live when it actually finds it\".",
+    measured: "not measured; a first list",
+  } satisfies Setting<string[]>,
+
+  nothingToScrollLine: {
+    value: "Nothing I pointed to is off your screen right now.",
+    why: "What he hears when he asks to be scrolled somewhere and no arrow is up: nothing is scrolled on a guess.",
+    measured: "not heard live",
+  } satisfies Setting<string>,
+
   goingLine: {
     value: "Opening the {page} page.",
     why: "What he hears and sees when the app is asked to open a page for him.",
