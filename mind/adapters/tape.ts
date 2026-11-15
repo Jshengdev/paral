@@ -16,6 +16,8 @@ const Tape = z.object({
   /** What a look finds when he has just been sent to the page by an answer: the thing he was sent for. */
   glanceAfterAsk: z.object({ line: z.string(), under: z.string(), say: z.string(), sayInView: z.string(), ahead: z.array(z.object({ step: z.string(), by: z.string(), at: z.string().optional() })) }).nullable().optional(),
   pages: z.array(z.object({ name: z.string(), url: z.string(), readOn: z.string(), title: z.string(), lines: z.array(z.string()) })).optional(),
+  /** Measured sheets, as in `sheets/`; absent: none. */
+  sheets: z.array(z.any()).optional(),
   voice: z.boolean().optional(),
   clip: z.object({ clip: z.string(), still: z.string(), seconds: z.number() }).optional(),
 });
@@ -113,6 +115,7 @@ export function tape(path: string): Ports & { release(kind?: string): void; aske
           }
         : null,
     pages: recorded.pages ?? [],
+    sheets: recorded.sheets ?? [],
     voice: recorded.voice
       ? {
           async say(text, _signal, onSound, onWords) {

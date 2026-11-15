@@ -72,7 +72,8 @@
      "mark": null
     }
    ],
-   "board": null
+   "board": null,
+   "spots": []
   },
   "leaks": false,
   "calls": [

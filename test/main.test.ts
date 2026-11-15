@@ -12,6 +12,7 @@ import { datesIn, daysFrom, unknownDate, type Named } from "../mind/cores/dates.
 import { calendarFile, dateLine, named, when } from "../mind/cores/keep.ts";
 import { nextStep, note, nothingYet, type Noted, type Step } from "../mind/cores/guide.ts";
 import { headingOf, whichPage, whichWay } from "../mind/cores/page.ts";
+import { place } from "../mind/cores/sheet.ts";
 import { showable, unfit } from "../mind/cores/fit.ts";
 import { circled, echo } from "../mind/cores/circle.ts";
 import { happened } from "../mind/cores/happened.ts";
@@ -98,6 +99,16 @@ const runs: Record<string, (input: any) => unknown> = {
   "guide.next": (input) => {
     let seen = nothingYet;
     return input.happens.map((what: Noted) => (input.steps as Step[])[nextStep(input.steps, (seen = note(seen, what)))]?.text ?? null);
+  },
+  "sheet.place": (input) => {
+    const sheet = JSON.parse(readFileSync(join(root, "sheets", input.sheet), "utf8"));
+    const round = (n: number) => Math.round(n * 10) / 10;
+    return input.cases.map((found: any) => {
+      const placed = place(sheet, found);
+      if (placed === null) return null;
+      const spot = placed.spots[input.spot].box;
+      return { matched: placed.matched.length, scale: round(placed.scale), error: round(placed.error), spot: { x: round(spot.x), y: round(spot.y), w: round(spot.w), h: round(spot.h) } };
+    });
   },
   "page.way": (input) => input.cases.map(([seen, line]: [string[], string]) => whichWay(seen, input.page, line)),
   "dates.in": (input) => input.texts.map((text: string) => datesIn(text)),

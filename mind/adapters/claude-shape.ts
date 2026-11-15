@@ -38,6 +38,7 @@ export const Reply = z.object({
   lesson: z.string().nullable(),
   board: z.array(z.array(z.string())).nullable(),
   beats: z.array(z.object({ mark: Mark, say: z.string() })),
+  spots: z.array(z.string()),
 });
 
 /**
@@ -87,6 +88,9 @@ export function asking(asked: Asked): string {
     asked.lessons.length > 0
       ? `Lessons you can show as a short clip (set "lesson" to one of these names when it fits, otherwise null):\n${asked.lessons.map((lesson) => `- ${lesson.name}: ${lesson.idea}`).join("\n")}`
       : 'No lesson clip can be shown now, so set "lesson" to null.',
+    asked.spots.length > 0
+      ? `The drawing of the exercise on their screen has these named places. When your sentences speak of one or two of them, put their names in "spots" and they are ringed on the drawing as you speak; otherwise leave "spots" empty:\n${asked.spots.map((spot) => `- ${spot.name}: ${spot.what}`).join("\n")}`
+      : 'No place of a drawing can be ringed now, so leave "spots" empty.',
     `If the student's work has a wrong line, they hear this just before your hint: "${asked.leadIn}" Do not say it again; carry on from it.`,
   ].join("\n\n");
 }
@@ -115,6 +119,7 @@ export function cleaned(reply: z.infer<typeof Reply>) {
     lesson: reply.lesson || null,
     beats: reply.beats.map(({ say, mark }) => ({ say, mark: marked(mark) })),
     board: boarded(reply.board),
+    spots: reply.spots.filter(Boolean),
   };
 }
 

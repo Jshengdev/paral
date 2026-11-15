@@ -54,9 +54,9 @@ export function ladderHint({ ports, settings, send, log }: Hands, asking: Asking
     /**
      * The whole answer is here: the hint is cut to the rung's length and judged. A hint that gives his result away,
      * or says a sum that does not add up, is swapped for the rung's fixed line; when that line was already said with
-     * the ring, nothing more is said.
+     * the ring, nothing more is said. Gives back whether the model's own hint was said.
      */
-    async finish(answered: Answered, place: Found, rung: number) {
+    async finish(answered: Answered, place: Found, rung: number): Promise<boolean> {
       const { safe } = ladder[rung];
       const sentences = hint(answered, clip.on() ? 1 : ladder[rung].sentences, clip.on() ? WHOLE : settings.sentenceMaxWords.value);
       const line = sentences.join(" ");
@@ -71,7 +71,7 @@ export function ladderHint({ ports, settings, send, log }: Hands, asking: Asking
           if (!signal.aborted) log(`${id}: the second look failed (${error instanceof Error ? error.message : error}); the hint is treated as a leak`);
           return true;
         });
-        if (signal.aborted) return;
+        if (signal.aborted) return false;
         verdict = judge({ ...judged, secondLook: leaks });
       }
       const swapped = verdict.verdict !== "show";
@@ -90,6 +90,7 @@ export function ladderHint({ ports, settings, send, log }: Hands, asking: Asking
       drew({ type: "rung.given", rung });
       for (const text of shown) drew({ type: "line.shown", text });
       log(`${id}: rung ${rung}; hint at ${since()} ms from the release${verdict.verdict === "leak" ? "; LEAK CAUGHT" : verdict.verdict === "wrong" ? "; WRONG SUM CAUGHT" : ""}`);
+      return !swapped;
     },
   };
 }

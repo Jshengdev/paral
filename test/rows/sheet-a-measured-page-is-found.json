@@ -1,0 +1,161 @@
+{
+ "name": "sheet: a measured page is found on a screen from its own printed lines, and each place of its drawing is carried there by one scale and one shift: at twice its size and moved; with two lines only, a letter or two misread; refused with one line, and when the lines do not sit as the page has them",
+ "run": "sheet.place",
+ "in": {
+  "sheet": "chem-worksheet-question-2.json",
+  "spot": "benzoyl.C",
+  "cases": [
+   [
+    {
+     "text": "1.",
+     "box": {
+      "x": 489.31176000000005,
+      "y": 222.17464959999998,
+      "w": 14.287680000000002,
+      "h": 17.25936
+     }
+    },
+    {
+     "text": "22. The NMR spectra are shown for two isomeric compounds with formula C10H12O. Their in-",
+     "box": {
+      "x": 560.75016,
+      "y": 284.0894464,
+      "w": 652.4707200000001,
+      "h": 13.100275199999999
+     }
+    },
+    {
+     "text": "frared spectra show strong bands near 1715 cm-1. Make no attempt to interpret the aromatic",
+     "box": {
+      "x": 591.11148,
+      "y": 297.77906559999997,
+      "w": 621.51408,
+      "h": 20.2397568
+     }
+    },
+    {
+     "text": "proton area between 7.1 and 7.4 ppm except to determine the number of protons attached to the",
+     "box": {
+      "x": 591.11148,
+      "y": 323.3734336,
+      "w": 621.51408,
+      "h": 14.8851456
+     }
+    },
+    {
+     "text": "aromatic ring. Draw the structure of the compounds.",
+     "box": {
+      "x": 590.51616,
+      "y": 343.6131904,
+      "w": 343.49964,
+      "h": 14.8851456
+     }
+    },
+    {
+     "text": "(a)",
+     "box": {
+      "x": 838.7646000000001,
+      "y": 725.8111935999999,
+      "w": 16.668960000000002,
+      "h": 11.9047488
+     }
+    },
+    {
+     "text": "(b)",
+     "box": {
+      "x": 838.7646000000001,
+      "y": 1095.4982656,
+      "w": 16.668960000000002,
+      "h": 13.100275199999999
+     }
+    },
+    {
+     "text": "2. Draw mechanism and expect final product",
+     "box": {
+      "x": 488.71644000000003,
+      "y": 1221.7020736,
+      "w": 470.30280000000005,
+      "h": 22.613971199999998
+     }
+    }
+   ],
+   [
+    {
+     "text": "aromatic ring. Draw the structure of the cornpounds.",
+     "box": {
+      "x": 590.51616,
+      "y": 343.6131904,
+      "w": 343.49964,
+      "h": 14.8851456
+     }
+    },
+    {
+     "text": "2. Draw mechanism and expect flnal product",
+     "box": {
+      "x": 488.71644000000003,
+      "y": 1221.7020736,
+      "w": 470.30280000000005,
+      "h": 22.613971199999998
+     }
+    }
+   ],
+   [
+    {
+     "text": "2. Draw mechanism and expect final product",
+     "box": {
+      "x": 488.71644000000003,
+      "y": 1221.7020736,
+      "w": 470.30280000000005,
+      "h": 22.613971199999998
+     }
+    }
+   ],
+   [
+    {
+     "text": "aromatic ring. Draw the structure of the compounds.",
+     "box": {
+      "x": 590.51616,
+      "y": 343.6131904,
+      "w": 343.49964,
+      "h": 14.8851456
+     }
+    },
+    {
+     "text": "2. Draw mechanism and expect final product",
+     "box": {
+      "x": 900,
+      "y": 80,
+      "w": 300,
+      "h": 20
+     }
+    }
+   ]
+  ]
+ },
+ "out": [
+  {
+   "matched": 8,
+   "scale": 2,
+   "error": 0,
+   "spot": {
+    "x": 803.6,
+    "y": 1371.1,
+    "w": 22,
+    "h": 13.7
+   }
+  },
+  {
+   "matched": 2,
+   "scale": 2,
+   "error": 0,
+   "spot": {
+    "x": 803.6,
+    "y": 1371.1,
+    "w": 22,
+    "h": 13.7
+   }
+  },
+  null,
+  null
+ ]
+}

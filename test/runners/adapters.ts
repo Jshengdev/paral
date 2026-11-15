@@ -51,7 +51,7 @@ export async function standIn(input: StandIn) {
     seen("brain", params, options);
     // Written in the order the model writes in: the board before the sentences.
     const { beats = [], ...head } = input.brainReply.parsed_output ?? {};
-    const text = input.brainReply.parsed_output ? JSON.stringify({ lesson: null, ...head, board: input.board ?? null, beats }) : "";
+    const text = input.brainReply.parsed_output ? JSON.stringify({ lesson: null, spots: [], ...head, board: input.board ?? null, beats }) : "";
     const hearers: ((delta: string, soFar: string) => void)[] = [];
     return {
       on: (_event: string, hearer: (delta: string, soFar: string) => void) => hearers.push(hearer),
@@ -72,7 +72,7 @@ export async function standIn(input: StandIn) {
   const changed = { ...settings, spendCapUsd: { ...settings.spendCapUsd, value: input.capUsd ?? settings.spendCapUsd.value }, brainModel: { ...settings.brainModel, value: input.brainModel ?? settings.brainModel.value } };
   const logged: string[] = [];
   const signal = new AbortController().signal;
-  const asked = { words: "", lines: [], fresh: false, circled: [], leadIn: settings.ladder.value[0].safe, saidFirst: null, today: Date.UTC(2026, 10, 14, 20), known: [], ahead: [], lessons: [], ...input.asked, lesson: { ...empty, ...input.asked.lesson }, picturePath: input.picture ? picturePath : null, rung: settings.ladder.value[0] };
+  const asked = { words: "", lines: [], fresh: false, circled: [], leadIn: settings.ladder.value[0].safe, saidFirst: null, today: Date.UTC(2026, 10, 14, 20), known: [], ahead: [], lessons: [], spots: [], ...input.asked, lesson: { ...empty, ...input.asked.lesson }, picturePath: input.picture ? picturePath : null, rung: settings.ladder.value[0] };
   try {
     const live = anthropic(changed, { answer: "answer prompt", secondLook: "second look prompt", opener: "opener prompt", glance: "glance prompt" }, (line) => logged.push(line), client);
     let answered = null;

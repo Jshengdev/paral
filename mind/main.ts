@@ -101,12 +101,21 @@ function keptPages(): KeptPage[] {
   return kept;
 }
 
+/** The pages measured once, with a box for each place of a drawing (`sheets/`). */
+function measuredSheets(): Ports["sheets"] {
+  const dir = join(here, "..", "sheets");
+  if (!existsSync(dir)) return [];
+  const sheets = readdirSync(dir).filter((file) => file.endsWith(".json")).map((file) => JSON.parse(readFileSync(join(dir, file), "utf8")));
+  if (sheets.length > 0) using.push(`${sheets.length} measured sheet${sheets.length === 1 ? "" : "s"}`);
+  return sheets;
+}
+
 const live = !PARAL_TAPE;
 let ports: Ports = tape(PARAL_TAPE ?? join(here, "..", "test", "tapes", "algebra.json"));
 if (live && ANTHROPIC_API_KEY) ports = { ...ports, ...claude() };
 if (live && CARTESIA_API_KEY) ports = { ...ports, ...cartesia(CARTESIA_API_KEY) };
 if (live && ANTHROPIC_API_KEY) ports = { ...ports, ...lessonClips() };
-if (live) ports = { ...ports, pages: keptPages() };
+if (live) ports = { ...ports, pages: keptPages(), sheets: measuredSheets() };
 if (live) looksAhead(ports.pages);
 if (PARAL_FAULT === "voice") {
   ports = { ...ports, voice: silenced };

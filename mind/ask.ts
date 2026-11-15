@@ -14,6 +14,7 @@ import { ladderHint } from "./hint.ts";
 import type { Answered, Part, Ports } from "./ports.ts";
 import type { Settings } from "./settings.ts";
 import { speech } from "./speech.ts";
+import { spotsOn } from "./spots.ts";
 import { SEAM_VERSION, type FromBody, type FromMind } from "../seam/schema.ts";
 
 export type Screen = Extract<FromBody, { type: "screen" }>;
@@ -60,6 +61,7 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
     arriving: () => headed !== null,
     shown: () => board.filled() || explained.markOut() || headed?.place?.found === true,
   });
+  const spots = spotsOn(hands, id, seen);
   const explained = explanation(hands, asking, { talk, board, clip, lead, drew, sources });
   const hinted = ladderHint(hands, asking, { talk, clip, lead, drew });
 
@@ -115,6 +117,7 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
       circled: asking.circled,
       leadIn: ladder[rung.rung].safe,
       lessons: clip.catalogue,
+      spots: spots.named,
       lesson: from,
       rung: ladder[rung.rung],
       fresh: rung.fresh,
@@ -144,9 +147,10 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
   // head() has run by here, in the stream or just above. It sets `headed` from inside a closure, which is why the "!".
   const place = headed!.place;
   drew({ type: "he.tried", words });
-  if (place === null) explained.finish(answered);
-  else await hinted.finish(answered, place, move.rung);
+  // What the model wrote may be held back by Push; the places it named are ringed only when its own words were said.
+  const said = place === null ? explained.finish(answered) : await hinted.finish(answered, place, move.rung);
   if (signal.aborted) return;
+  if (said) spots.ring(answered.spots ?? [], lead.count() + (place === null ? 0 : Math.max(hinted.told() - 1, 0)), drew);
   keep(draft);
   if (await clip.show()) keep(draft);
   await talk.finished();

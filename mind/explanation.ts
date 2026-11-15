@@ -87,9 +87,10 @@ export function explanation({ settings, send, log }: Hands, asking: Asking, { ta
     },
     /**
      * The whole answer is here: the sentences still to say, then the board. An answer that gives his result away is
-     * held back whole, with one fixed line in its place and no board or clip.
+     * held back whole, with one fixed line in its place and no board or clip. Gives back whether the model's own
+     * sentences were said.
      */
-    finish(answered: Answered) {
+    finish(answered: Answered): boolean {
       let sentences = planned(answered);
       const leak = givesAway(sentences, answered.result);
       if (leak) {
@@ -107,6 +108,7 @@ export function explanation({ settings, send, log }: Hands, asking: Asking, { ta
       if (kept < sentences.length) tell([...sentences, { say: kept === 0 ? settings.noPageLine.value : settings.leftOutLine.value, mark: null }]);
       for (const { say } of sentences) if (!held.has(say)) drew({ type: "line.shown", text: say });
       log(`${id}: ${sentences.length} sentence${sentences.length === 1 ? "" : "s"}, all sent at ${since()} ms from the release`);
+      return !leak;
     },
   };
 }

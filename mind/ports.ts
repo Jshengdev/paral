@@ -2,6 +2,7 @@ import { z } from "zod";
 import { MarkKind } from "../seam/schema.ts";
 import type { Lesson } from "./cores/hold.ts";
 import type { KeptPage } from "./cores/page.ts";
+import type { Anchors } from "./cores/sheet.ts";
 import type { Rung } from "./settings.ts";
 
 export type Asked = {
@@ -20,6 +21,8 @@ export type Asked = {
   known: KeptPage[];
   /** What is still ahead for him, as found on kept pages earlier in this sitting: each step, its date as the page writes it, and the page. */
   ahead: { step: string; by: string; from: string }[];
+  /** The named places of a measured drawing on his screen that an answer may have ringed; empty when his screen holds none. */
+  spots: { name: string; what: string }[];
   /** The lessons that can be shown as a clip, each with the idea it shows; empty when none can. */
   lessons: { name: string; idea: string }[];
   lesson: Lesson;
@@ -51,6 +54,8 @@ export const Answered = z.object({
   lesson: z.string().min(1).nullable().optional(),
   beats: z.array(Beat).min(1),
   board: z.array(z.array(z.string().min(1)).min(1)).min(1).nullable().optional(),
+  /** The names of at most two places of the drawing that the answer speaks of, to be ringed. */
+  spots: z.array(z.string()).optional(),
 });
 export type Answered = z.infer<typeof Answered>;
 
@@ -127,5 +132,8 @@ export interface Glancer {
   glance(page: KeptPage, today: number, signal: AbortSignal, following?: Following): Promise<Glanced | null>;
 }
 
-/** `pages` is not a service: it is USC's pages as read ahead of time and kept in `pages/kept/`; empty when none are kept. */
-export type Ports = { brain: Brain; secondLook: SecondLook; ear: Ear; voice: Voice | null; opener: Opener | null; lessons: Lessons | null; glancer: Glancer | null; pages: KeptPage[] };
+/**
+ * `pages` is not a service: it is USC's pages as read ahead of time and kept in `pages/kept/`; empty when none are kept.
+ * Nor is `sheets`: pages measured once, with a box for each place of a drawing (`sheets/`).
+ */
+export type Ports = { brain: Brain; secondLook: SecondLook; ear: Ear; voice: Voice | null; opener: Opener | null; lessons: Lessons | null; glancer: Glancer | null; pages: KeptPage[]; sheets: Anchors[] };

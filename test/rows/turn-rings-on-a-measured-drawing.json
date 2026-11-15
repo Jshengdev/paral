@@ -1,0 +1,155 @@
+{
+ "name": "turn: on a measured worksheet he asks for the final product: the line that sets the exercise is ringed, the hint is said, and the two places of the drawing the hint names are ringed where the sheet's own lines put them; a third name and the space the product goes in are not",
+ "run": "turn",
+ "in": {
+  "tape": "worksheet.json",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "hello",
+     "body": "row"
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "typed",
+     "text": "so what is the final product",
+     "at": 1794700010000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1794700010005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "aromatic ring. Draw the structure of the compounds.",
+       "box": {
+        "x": 1181.03232,
+        "y": 707.2263808,
+        "w": 686.99928,
+        "h": 29.7702912
+       }
+      },
+      {
+       "text": "2. Draw mechanism and expect final product",
+       "box": {
+        "x": 977.4328800000001,
+        "y": 2463.4041472,
+        "w": 940.6056000000001,
+        "h": 45.227942399999996
+       }
+      }
+     ]
+    }
+   ]
+  ]
+ },
+ "out": [
+  {
+   "v": 1,
+   "type": "ready",
+   "mind": "paral",
+   "holdKey": "rightOption",
+   "drawKey": "shift",
+   "earGraceMs": 300,
+   "markPad": 4,
+   "pictureLongEdge": 1280,
+   "cropAround": {
+    "share": 1,
+    "points": 200
+   }
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "thinking"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "so what is the final product",
+   "final": true
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "t1",
+   "beat": 0,
+   "kind": "ring",
+   "box": {
+    "x": 488.71644000000003,
+    "y": 1231.7020736,
+    "w": 470.30280000000005,
+    "h": 22.613971199999998
+   }
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t1",
+   "beat": 0,
+   "text": "Read the highlighted line again, slowly.",
+   "rung": 0,
+   "of": 4
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "t1",
+   "why": "no voice is set up"
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t1",
+   "beat": 1,
+   "text": "Look at the carbon that carries both the oxygen and the chlorine.",
+   "rung": 0,
+   "of": 4
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "t1",
+   "beat": 1,
+   "kind": "ring",
+   "box": {
+    "x": 803.6407200000001,
+    "y": 1381.1428736,
+    "w": 22.02684,
+    "h": 13.6896192
+   }
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "t1",
+   "beat": 1,
+   "kind": "ring",
+   "box": {
+    "x": 712.5567599999999,
+    "y": 1419.8375168,
+    "w": 25.003440000000005,
+    "h": 22.613971199999998
+   }
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "idle"
+  }
+ ]
+}

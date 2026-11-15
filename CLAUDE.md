@@ -39,6 +39,7 @@ Scene → Picture → Painter                                    (parts)   of on
                                                              adapters/ one file per vendor, and a tape for each
                                                              settings/ every value, with why and what was measured
 pages/   USC's public pages, read ahead of time and kept as text: what paral knows beyond the screen
+sheets/  pages measured once: a box for each place of a drawing (an atom, a bond), found on screen by the page's own lines
 ```
 
 - **The body draws what it is told and decides nothing about teaching.** `Scene` turns the lines that crossed the seam
@@ -115,6 +116,13 @@ the mind sees the step happen (`mind/guide.ts`, `cores/guide.ts`): the look show
 heading or the line, a "show me" step was given, a date was kept, an ask holding certain words was answered. A step
 done out of order counts. It asks no model. The body draws the card and can hide it.
 
+**Rings on a drawing.** A sheet in `sheets/` is a page measured once: some of its printed lines, and a box for each
+place of a drawing on it. On each ask the mind tries to find the sheet on his screen from those lines
+(`cores/sheet.ts`: one scale and one shift, refused under two lines or when the fit is poor), which gives every place
+a box with no model pointing at the picture. The model is told the places' names and may name at most two its
+sentences speak of (`spots`); `mind/spots.ts` rings them with the sentence. Never the signs between the reactants,
+and never the space the result goes in. With no sheet on screen nothing changes.
+
 **A tapped ask.** The menu bar's menu lists cue cards (`cueCards`, sent in the ready line): lines he can tap instead
 of saying them, for a hall too loud for the microphone. A tapped line crosses the seam as `typed` and is asked exactly
 as a spoken one, with the same picture of the screen and no ear. In a flow file the step is `{"typed": "the words"}`.
@@ -190,6 +198,10 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
   the system for its state sixty times a second, with no event tap; that reading is compiled and has never run, and
   whether it needs a grant on his Mac is not known. A step with no date has no box to click. A click on the page
   near the boxed line for any other reason also moves the walk on.
+- One sheet is measured: the second question of one chemistry worksheet. Rings on its drawing have run once live in
+  the scripted stand-in and never on a real screen. The sheet is found from two of its printed lines; scrolled so
+  that only one shows, it is not found and the ask is answered as before. Which places a hint may ring is bound only
+  by the prompt's rule and the cap of two: no code checks that two rings together do not show the result.
 - The opening line (`openingLine`, shown once by the app when it starts) has never been seen: no scripted run shows it.
 - The nudge card's buttons have never been clicked on a Mac: the overlay as a panel that never makes the app active,
   its first click and the button held down are compiled and unrun. They are checked only as the boxes the picture
