@@ -64,6 +64,24 @@ public struct Tokens: Codable {
     /// every read line of the page, and the longest it may be. Where no such way is found, none is drawn. The pen's
     /// time over it is `mark.shaftMs` and `mark.headMs`.
     public struct Lead: Codable { public var width, gap, clear, longest: Double }
+    /// The nudge card, after the design kit's: a line said without being asked, with "Add to calendar" and "Not now"
+    /// when its date can be kept. Its look, where it may go, and how it moves are all here (`PainterNudge.swift`).
+    public struct Nudge: Codable {
+        /// The card: how wide, the room inside, its corner, the space between its rows, the avatar's size and the gap
+        /// after it, the size of the name, of the trail of steps under it and the gap above that, and of the message.
+        public var width, pad, radius, gap, avatar, nameGap, nameType, trailType, trailGap, type: Double
+        /// The pill buttons: the size of their words and the tracking, the room round the words, and the gap between two.
+        public var buttonType, tracking, buttonPadX, buttonPadY, buttonGap: Double
+        /// The kit's stone, for the name and the trail; the buttons' words.
+        public var stone, add, notNow: String
+        /// Where it may go: how far it keeps from the page's words and from every other piece, how far beyond the
+        /// text column it sits, how far from the display's side and from its top (below the menu bar), the step of
+        /// the search for a free place, and the least it may be shrunk to and by how much at a time when no place is free.
+        public var clear, beside, edge, top, cell, least, shrink: Double
+        /// How it moves: its arrival and leaving; the first row's wait and the wait between rows; how far the card
+        /// and each row rise as they come; the size the card comes from and goes to; and the size of a held button.
+        public var arriveMs, leaveMs, rowMs, rowStepMs, rise, rowRise, from, leaveTo, pressed: Double
+    }
     /// `opened` is what the toast says when a date has been opened in his calendar. It does not say "added": whether
     /// Calendar asks first or adds at once is not known.
     /// `name` is what the cursor's tag says: whose cursor it is.
@@ -96,6 +114,7 @@ public struct Tokens: Codable {
     public var toast: Toast
     public var guide: Guide
     public var lead: Lead
+    public var nudge: Nudge
     public var motion: Motion
     /// The four curves everything moves on (`Motion.swift`).
     public var curves: Curves

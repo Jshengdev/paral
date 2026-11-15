@@ -1,5 +1,5 @@
 {
- "name": "body: a line stands a least time before the next takes its place, a fifth of a second a word and never less than the least reading time, and a newer line waits its turn; none is dropped: three lines sent to the guide's card within a fifth of a second are shown one after another, each for its time; a card is taken away only when its line has stood, and a line that comes after an empty card comes at once; three lines said without being asked within half a second come up in the capsule one after another; in an answer said aloud a sentence of half a second stands its least time while the voice goes on to the next, whose words then come up no later than that time allows, and the capsule rests when the answer is over",
+ "name": "body: a line stands a least time before the next takes its place, a fifth of a second a word and never less than the least reading time, and a newer line waits its turn; none is dropped: three lines sent to the guide's card within a fifth of a second are shown one after another, each for its time; a card is taken away only when its line has stood, and a line that comes after an empty card comes at once; three lines said without being asked within half a second come up on the nudge card one after another; in an answer said aloud a sentence of half a second stands its least time while the voice goes on to the next, whose words then come up no later than that time allows, and the capsule rests when the answer is over",
  "run": "body.stands",
  "in": {
   "rows": [
@@ -198,75 +198,93 @@
  "out": [
   {
    "pill": null,
-   "card": "Wait: it looks at this page by itself"
+   "card": "Wait: it looks at this page by itself",
+   "nudge": null
   },
   {
    "pill": null,
-   "card": "Wait: it looks at this page by itself"
+   "card": "Wait: it looks at this page by itself",
+   "nudge": null
   },
   {
    "pill": null,
-   "card": "Scroll until Deadlines is on screen"
+   "card": "Scroll until Deadlines is on screen",
+   "nudge": null
   },
   {
    "pill": null,
-   "card": "Scroll until Deadlines is on screen"
+   "card": "Scroll until Deadlines is on screen",
+   "nudge": null
   },
   {
    "pill": null,
-   "card": "Open Deadlines"
+   "card": "Open Deadlines",
+   "nudge": null
   },
   {
    "pill": null,
-   "card": null
+   "card": null,
+   "nudge": null
   },
   {
    "pill": null,
-   "card": "Say: add it to my calendar"
+   "card": "Say: add it to my calendar",
+   "nudge": null
   },
   {
    "pill": null,
-   "card": "Say: add it to my calendar"
+   "card": "Say: add it to my calendar",
+   "nudge": null
   },
   {
    "pill": null,
-   "card": null
+   "card": null,
+   "nudge": null
   },
   {
-   "pill": "The application closes November 22 at 11:59pm.",
-   "card": null
+   "pill": null,
+   "card": null,
+   "nudge": "The application closes November 22 at 11:59pm."
   },
   {
-   "pill": "The application closes November 22 at 11:59pm.",
-   "card": null
+   "pill": null,
+   "card": null,
+   "nudge": "The application closes November 22 at 11:59pm."
   },
   {
-   "pill": "Open this section to see the dates.",
-   "card": null
+   "pill": null,
+   "card": null,
+   "nudge": "Open this section to see the dates."
   },
   {
-   "pill": "Open this section to see the dates.",
-   "card": null
+   "pill": null,
+   "card": null,
+   "nudge": "Open this section to see the dates."
   },
   {
-   "pill": "Advisors have a date of their own.",
-   "card": null
+   "pill": null,
+   "card": null,
+   "nudge": "Advisors have a date of their own."
   },
   {
    "pill": "One moment.",
-   "card": null
+   "card": null,
+   "nudge": null
   },
   {
    "pill": "One moment.",
-   "card": null
+   "card": null,
+   "nudge": null
   },
   {
    "pill": "The application closes November 22 at 11:59pm.",
-   "card": null
+   "card": null,
+   "nudge": null
   },
   {
    "pill": null,
-   "card": null
+   "card": null,
+   "nudge": null
   }
  ]
 }

@@ -43,6 +43,10 @@ public struct Scene {
     public var guideOn = true
     /// The date last opened in his calendar, and when: the toast says so for a while.
     var opened: (at: Double, label: String?)?
+    /// The nudge card of each line said without being asked, by its ask's id (`SceneNudge.swift`).
+    var cards: [String: Card] = [:]
+    /// The words of every card he has answered or whose date was opened, and when: those words get no card again.
+    var answered: [(text: String, at: Double)] = []
     var clips: [Clip] = []
     var trail: [(x: Double, y: Double, at: Double)] = []
     var failed: (detail: String, at: Double)?
@@ -61,6 +65,7 @@ public struct Scene {
         lastAt = max(lastAt, at)
         switch seen {
         case .keyDown:
+            goes(at)
             for i in asks.indices where asks[i].cutAt == nil { asks[i].cutAt = at }
             for i in echoes.indices where echoes[i].clearedAt == nil { echoes[i].clearedAt = at }
             // A card still empty when he presses again was never filled, and goes.
@@ -69,10 +74,14 @@ public struct Scene {
             heard = []; trail = []; failed = nil; idleAt = nil; closedAt = nil
         case .keyUp:
             if let last = holds.indices.last, holds[last].up == nil { holds[last].up = at }
-        case .typed:
+        case .typed(let text):
             // A tapped or typed ask is a hold of no length: what a press does to the screen, and its release, at once.
+            // When its words are the nudge card's own ask, it answers the card first, and the card waits for the date.
+            if text.lowercased().trimmingCharacters(in: .whitespaces) == Nudge.asks { answer(.add, at) }
             take(.keyDown, at: at)
             take(.keyUp, at: at)
+        case .notNow:
+            answer(.notNow, at)
         case .trail(let x, let y):
             trail.append((x - origin.x, y - origin.y, at))
         case .screen(let display, let lines):
@@ -83,13 +92,16 @@ public struct Scene {
             // The first failure since the last press is the cause; one that follows it is its consequence.
             if name == "failed", failed == nil { failed = (detail ?? "", at) }
             if name == "idle" { idleAt = at }
+            // The ask the card's button made is over and no date was opened: the card does not wait any longer.
+            if name == "idle" || name == "failed" { goes(at, onlyAnswered: true) }
         case .heard(let text, _):
             let words = text.split(separator: " ").map(String.init)
             heard = words.enumerated().map { i, word in i < heard.count && heard[i].word == word ? heard[i] : (word, at) }
-        case .say(let id, let beat, let text, _, let trail):
+        case .say(let id, let beat, let text, _, let trail, let keep):
             // A line said without being asked waits its turn: the line before it stands its time first.
             let fresh = !asks.contains { $0.id == id }
             let comes = fresh && trail != nil ? turn(after: at) : at
+            if fresh, trail != nil { cards[id] = card(text, keep: keep, comes: comes) }
             if fresh { asks.append(Ask(id: id, beganAt: comes)) }
             edit(id) {
                 $0.beats[beat] = Beat(text: text, sayAt: comes)
@@ -152,6 +164,7 @@ public struct Scene {
         case .clear:
             wipe(at)
         case .close:
+            goes(at)
             wipe(at)
             for i in echoes.indices where echoes[i].clearedAt == nil { echoes[i].clearedAt = at }
             closedAt = at
@@ -162,6 +175,7 @@ public struct Scene {
             if holds.isEmpty { failed = nil }
         case .open(_, let label):
             opened = (at, label)
+            kept(at)
         // Nothing is drawn for his own click yet.
         case .other, .click:
             break

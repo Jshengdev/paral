@@ -48,12 +48,12 @@ final class App: NSObject, NSApplicationDelegate {
 
     private func clock() -> Double { Date().timeIntervalSince(began) * 1000 }
     private func stamp() -> Double { (Date().timeIntervalSince1970 * 1000).rounded() }
-    private func tell(_ seen: Seen) { scene.take(seen, at: clock()) }
+    func tell(_ seen: Seen) { scene.take(seen, at: clock()) }
     private func failed(_ why: String) { tell(.state(name: "failed", detail: why)) }
 
     func applicationDidFinishLaunching(_ note: Notification) {
         overlay = Overlay(screen: screen, painter: painter) { [unowned self] in self.scene.picture(at: self.clock()) }
-        overlay?.onClose = { [weak self] in self?.close() }
+        overlay?.onPress = { [weak self] in self?.pressed($0) }
         let watch = Timer(timeInterval: 0.5, repeats: true) { [weak self] _ in self?.reloadTokens() }
         RunLoop.main.add(watch, forMode: .common)
         let status = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -108,7 +108,7 @@ final class App: NSObject, NSApplicationDelegate {
             }
             watch.start(everyMs: settings.lookEveryMs, longEdge: settings.pictureLongEdge)
             cues.show(settings.cues, in: status?.menu)
-            if !settings.opening.isEmpty { [Seen.say(id: "hello", beat: 0, text: settings.opening, aside: false, trail: ["Lost and Found"]), .mute(id: "hello")].forEach(tell) }
+            if !settings.opening.isEmpty { [Seen.say(id: "hello", beat: 0, text: settings.opening, aside: false, trail: ["Lost and Found"], keep: false), .mute(id: "hello")].forEach(tell) }
         }
         if case .voice(let id, _, let sound, _) = seen {
             guard !cut.contains(id) else { return }
@@ -164,13 +164,13 @@ final class App: NSObject, NSApplicationDelegate {
     }
 
     /// A line tapped in the menu is asked as if he had said it: the same picture of the screen, and no microphone.
-    private func typed(_ text: String) {
+    func typed(_ text: String) {
         release.now()
         hush()
         shot = nil
         trail = []
         holds += 1
-        tell(.typed)
+        tell(.typed(text: text))
         wire.send(.typed(text: text, at: stamp()))
         picture(for: holds)
     }
@@ -209,7 +209,7 @@ final class App: NSObject, NSApplicationDelegate {
         release.letGo(at: released, graceMs: settings?.earGraceMs ?? 0)
     }
 
-    @objc private func close() {
+    @objc func close() {
         hush()
         tell(.close)
         wire.send(.close(at: stamp()))

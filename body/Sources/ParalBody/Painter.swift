@@ -23,6 +23,7 @@ public struct Painter {
     public let accent: CGColor
     let frames = ClipFrames()
     let ways = LeadWays()
+    let nudges = NudgePlaces()
     let faces: Faces
 
     public init(tokens: Tokens, width: Double, height: Double) {
@@ -113,6 +114,11 @@ public struct Painter {
             let up = drawn.filter { ["board", "clip", "way", "toast", "mark", "echo"].contains($0.what) }.map(\.box)
             drawn.append(Drawn(what: "guide", id: nil, box: self.guide(guide, avoiding: picture.avoid + up, ctx)))
         }
+        // The nudge card keeps off the page's words and every card placed so far, so it comes after them.
+        if let nudge = picture.nudge {
+            let up = drawn.filter { ["board", "clip", "way", "toast", "guide"].contains($0.what) }.map(\.box)
+            drawn += self.nudge(nudge, avoiding: picture.avoid, taken: up, marks: picture.marks + (picture.echo.map { [$0] } ?? []), cursor: picture.pointer != nil, ctx)
+        }
         // The cursor stays on the display: where its mark or its arrow runs to an edge, it stops short of the edge.
         pointer = pointer.map(inside)
         // The arrow from a mark to what speaks about it keeps off every other piece, so it is found a way last.
@@ -126,7 +132,7 @@ public struct Painter {
         }
         let pill = capsule(picture.capsule, clock: picture.clock, ctx)
         drawn.append(Drawn(what: "capsule", id: nil, box: pill.box))
-        // The cross is named too, since it is the one thing on the overlay that takes a click.
+        // The cross is named too, since it takes a click, as the nudge card's buttons do (`Overlay` takes both lists).
         if let cross = pill.cross { drawn.append(Drawn(what: "cross", id: nil, box: cross)) }
         return drawn
     }

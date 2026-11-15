@@ -1,0 +1,332 @@
+{
+ "name": "body: a line said without being asked comes up on the nudge card and not in the capsule, which stays at rest: nothing before the line; then the card beside the line the look marked, level with it and to the right of the page's text, inside the display, on none of the page's read lines and on none of the marks, the cursor, the capsule and its cross or the guide's card, with the drawn arrow leading to it once the mark is whole; when a board has taken the place level with the line, the card is still to the right of the text and on none of those nor the board; when the look sends the way to the line instead of a mark, the card is at the right side above the capsule, clear of the way arrow too",
+ "run": "body.nudge",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Important Dates",
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes.",
+   "December 1: Deadline for advisors.",
+   "Info Sessions, Workshops, and Office Hours"
+  ],
+  "rows": [
+   {
+    "at": 500,
+    "line": {
+     "type": "next",
+     "text": "Wait: it looks at this page by itself",
+     "n": 1,
+     "of": 8
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "g1",
+     "beat": 0,
+     "kind": "ring",
+     "on": 4
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "say",
+     "id": "g1",
+     "beat": 0,
+     "text": "This is the date to keep: the application closes in 8 days.",
+     "trail": [
+      "saw this page",
+      "read the whole page",
+      "found 1 date"
+     ],
+     "keep": true
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mute",
+     "id": "g1",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   },
+   {
+    "at": 5000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 5000,
+    "line": {
+     "type": "mark",
+     "id": "g2",
+     "beat": 0,
+     "kind": "ring",
+     "on": 4
+    }
+   },
+   {
+    "at": 5000,
+    "line": {
+     "type": "say",
+     "id": "g2",
+     "beat": 0,
+     "text": "Submit the application on EngageSC before 11:59pm; late ones are not accepted.",
+     "trail": [
+      "saw this page",
+      "read the whole page",
+      "found 1 date"
+     ],
+     "keep": true
+    }
+   },
+   {
+    "at": 5000,
+    "line": {
+     "type": "mute",
+     "id": "g2",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   },
+   {
+    "at": 5000,
+    "line": {
+     "type": "board",
+     "rows": [
+      [
+       "Officers finish their training"
+      ],
+      [
+       "Submit the application: November 22 at 11:59pm"
+      ],
+      [
+       "Advisor requirements: December 1"
+      ]
+     ],
+     "id": "g2"
+    }
+   },
+   {
+    "at": 9000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 9000,
+    "line": {
+     "type": "way",
+     "id": "g3",
+     "to": "down",
+     "toward": "Deadlines"
+    }
+   },
+   {
+    "at": 9000,
+    "line": {
+     "type": "say",
+     "id": "g3",
+     "beat": 0,
+     "text": "The application closes November 22 at 11:59pm; that is under Deadlines, further down.",
+     "trail": [
+      "saw this page",
+      "read the whole page",
+      "found 1 date"
+     ],
+     "keep": true
+    }
+   },
+   {
+    "at": 9000,
+    "line": {
+     "type": "mute",
+     "id": "g3",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   },
+   {
+    "at": 9000,
+    "line": {
+     "type": "board",
+     "rows": [
+      [
+       "Officers finish their training"
+      ],
+      [
+       "Submit the application: November 22 at 11:59pm"
+      ],
+      [
+       "Advisor requirements: December 1"
+      ]
+     ],
+     "id": "g3"
+    }
+   }
+  ],
+  "at": [
+   900,
+   1100,
+   3000,
+   5100,
+   7000,
+   9100,
+   11000
+  ]
+ },
+ "out": [
+  {
+   "card": null,
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "read the whole page",
+     "found 1 date"
+    ],
+    "look": "coming up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": false
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "read the whole page",
+     "found 1 date"
+    ],
+    "look": "up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": true
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "Submit the application on EngageSC before 11:59pm; late ones are not accepted.",
+    "steps": [
+     "saw this page",
+     "read the whole page",
+     "found 1 date"
+    ],
+    "look": "coming up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "right of the text",
+    "arrowLeadsToIt": false
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "Submit the application on EngageSC before 11:59pm; late ones are not accepted.",
+    "steps": [
+     "saw this page",
+     "read the whole page",
+     "found 1 date"
+    ],
+    "look": "up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "right of the text",
+    "arrowLeadsToIt": true
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "The application closes November 22 at 11:59pm; that is under Deadlines, further down.",
+    "steps": [
+     "saw this page",
+     "read the whole page",
+     "found 1 date"
+    ],
+    "look": "coming up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "no line: at the right, above the capsule",
+    "arrowLeadsToIt": false
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "The application closes November 22 at 11:59pm; that is under Deadlines, further down.",
+    "steps": [
+     "saw this page",
+     "read the whole page",
+     "found 1 date"
+    ],
+    "look": "up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "no line: at the right, above the capsule",
+    "arrowLeadsToIt": false
+   },
+   "capsule": "rest",
+   "toast": false
+  }
+ ]
+}

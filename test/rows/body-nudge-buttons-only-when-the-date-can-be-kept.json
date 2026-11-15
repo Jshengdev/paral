@@ -1,0 +1,211 @@
+{
+ "name": "body: the nudge card offers \"Add to calendar\" and \"Not now\" only for a line that carries keep: a line that can be kept shows both buttons, inside the card, and offers both to be clicked, and stays up past the time a line without buttons stays; a line without keep, after a clear, takes its place with no buttons and nothing to click, and goes by itself after its reading time and the stay after it; the capsule stays at rest throughout",
+ "run": "body.nudge",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Important Dates",
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes.",
+   "December 1: Deadline for advisors.",
+   "Info Sessions, Workshops, and Office Hours"
+  ],
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "g1",
+     "beat": 0,
+     "kind": "ring",
+     "on": 4
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "say",
+     "id": "g1",
+     "beat": 0,
+     "text": "This is the date to keep: the application closes in 8 days.",
+     "trail": [
+      "saw this page",
+      "found the line"
+     ],
+     "keep": true
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mute",
+     "id": "g1",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   },
+   {
+    "at": 20000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 20000,
+    "line": {
+     "type": "mark",
+     "id": "g2",
+     "beat": 0,
+     "kind": "ring",
+     "on": 5
+    }
+   },
+   {
+    "at": 20000,
+    "line": {
+     "type": "say",
+     "id": "g2",
+     "beat": 0,
+     "text": "Advisors have a date of their own, under Deadlines.",
+     "trail": [
+      "saw this page",
+      "found the line"
+     ]
+    }
+   },
+   {
+    "at": 20000,
+    "line": {
+     "type": "mute",
+     "id": "g2",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   }
+  ],
+  "at": [
+   2600,
+   9000,
+   19000,
+   20600,
+   25000,
+   30000
+  ]
+ },
+ "out": [
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "found the line"
+    ],
+    "look": "up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": true
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "found the line"
+    ],
+    "look": "up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": true
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "found the line"
+    ],
+    "look": "up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": true
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "Advisors have a date of their own, under Deadlines.",
+    "steps": [
+     "saw this page",
+     "found the line"
+    ],
+    "look": "up",
+    "offers": [],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": false
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "Advisors have a date of their own, under Deadlines.",
+    "steps": [
+     "saw this page",
+     "found the line"
+    ],
+    "look": "up",
+    "offers": [],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": true
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": null,
+   "capsule": "rest",
+   "toast": false
+  }
+ ]
+}

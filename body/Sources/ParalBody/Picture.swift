@@ -78,10 +78,39 @@ public struct GuidePicture: Equatable {
     public var appear: Double
 }
 
+/// The two buttons of the nudge card.
+public enum NudgeButton: String { case add, notNow }
+
+/// The nudge card: a line said without being asked, the steps paral took to it, and its two buttons when its date
+/// can be kept. Its place is the painter's (`Layout.nudge`); the scene says only which line it sits beside.
+public struct NudgePicture: Equatable {
+    /// The ask the line belongs to: a mark with the same id is the line it is about.
+    public var id: String
+    public var text: String
+    /// The message's words: each is in stone until it is said and in ink once it has been, when the line has a
+    /// voice; a line shown and not spoken is in ink at once.
+    public var words: [Word]
+    /// The steps paral took, each lit once it is reached.
+    public var trail: [Word]
+    public var buttons: Bool
+    /// The box of the line it is about, or nil when the look sent the way to it and no mark.
+    public var beside: Box?
+    /// How far the card has come up, 0 to 1, and each of its rows: the name and the trail, the message, the buttons.
+    public var appear: Double
+    public var rows: [Double]
+    /// How far it has gone, 0 while it stays. A card that is going offers no buttons.
+    public var leave: Double
+    /// The button he pressed, while the card waits for what it asked (the date to be opened). It is drawn held and
+    /// the card offers no buttons meanwhile, so one press asks once.
+    public var answered: NudgeButton?
+    /// The button held down just then. Only the window sets it, while the mouse is down on that button.
+    public var held: NudgeButton? = nil
+}
+
 /// The drawn arrow that leads from the mark that matters to what is speaking about it.
 public struct LeadPicture: Equatable {
-    /// The capsule, which is taller while it carries a trail of steps, or the guide's card.
-    public enum Speaker: Equatable { case capsule(trail: Bool), guide }
+    /// The capsule, which is taller while it carries a trail of steps, the guide's card, or the nudge card.
+    public enum Speaker: Equatable { case capsule(trail: Bool), guide, nudge }
     /// The key of the mark it leaves.
     public var from: String
     public var to: Speaker
@@ -125,4 +154,6 @@ public struct Picture: Equatable {
     public var trail: [TrailPoint]
     /// Where the page's own text is, so nothing written beside a mark lands on it.
     public var avoid: [Box]
+    /// The nudge card, while a line said without being asked is up.
+    public var nudge: NudgePicture? = nil
 }
