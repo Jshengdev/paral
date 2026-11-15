@@ -101,3 +101,17 @@ export function scaled(input: { lines: string[]; rows: Written[]; at: number; sc
   const against = (what: string, side: "w" | "h" = "w") => places(size(small, what, side) / Math.max(size(full, what, side), 1));
   return { card: against("guide"), cursor: against("pointer"), toast: against("toast", "h"), board: against("board") };
 }
+
+/**
+ * The guide's card at each moment of a hand-written run: how strong the card is, 0 to 1, and how many points below
+ * its place each of its two lines is just then, the name and then the words (null for a line that has not begun to
+ * come). A line's place is where it is at `wholeAt`, a moment that shows the card whole.
+ */
+export function cardLines(input: { lines: string[]; rows: Written[]; at: number[]; wholeAt: number }) {
+  const dir = handWritten("card-lines", onTheirLines(input.rows, input.lines), input.lines);
+  type Shown = ReturnType<typeof at>[number];
+  const line = (moment: Shown, index: number) => moment.placed.find((item) => item.what === "line" && item.id === `guide/${index}`)?.box;
+  const whole = at(dir, [input.wholeAt])[0];
+  const low = (moment: Shown, index: number) => (line(moment, index) ? places(line(moment, index)!.y - line(whole, index)!.y, 1) : null);
+  return at(dir, input.at).map((moment) => (moment.guide ? { card: places(moment.guide.appear), nameLow: low(moment, 0), wordsLow: low(moment, 1) } : { card: null }));
+}

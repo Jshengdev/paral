@@ -72,11 +72,20 @@ public struct ToastPicture: Equatable {
     public var appear: Double
 }
 
-/// The guide's card: what to do next, which step it is of how many, and how far the card has come up, 0 to 1.
+/// How a card stands at one moment: how far the card itself has come up, 0 to 1; how far it has gone again, 0 to
+/// 1; and how far each of its lines has come up, in order, 0 to 1.
+public struct CardArrival: Equatable {
+    public var card, gone: Double
+    public var lines: [Double]
+}
+
+/// The guide's card: what to do next, which step it is of how many, how strong the card is, 0 to 1, and how it and
+/// its two lines (the name, then the words) have come up.
 public struct GuidePicture: Equatable {
     public var text: String
     public var n, of: Int?
     public var appear: Double
+    public var coming: CardArrival
 }
 
 /// The drawn arrow that leads from the mark that matters to what is speaking about it.

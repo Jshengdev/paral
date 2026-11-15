@@ -126,7 +126,10 @@ public struct Painter {
         // The guide's card keeps off everything else, so it is placed last of the things that are placed.
         if let guide = picture.guide {
             let up = drawn.filter { ["board", "clip", "way", "toast", "mark", "echo"].contains($0.what) }.map(\.box)
-            drawn.append(Drawn(what: "guide", id: nil, box: self.guide(guide, avoiding: picture.avoid + up, ctx)))
+            let card = self.guide(guide, avoiding: picture.avoid + up, ctx)
+            drawn.append(Drawn(what: "guide", id: nil, box: card.card))
+            // Its lines are named too, each where it is just then, so a film's record says how the card came up.
+            for (index, line) in card.lines.enumerated() { drawn.append(Drawn(what: "line", id: "guide/\(index)", box: line)) }
         }
         // The cursor stays on the display: where its mark or its arrow runs to an edge, it stops short of the edge.
         pointer = pointer.map(inside)

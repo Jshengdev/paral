@@ -64,6 +64,10 @@ public struct Tokens: Codable {
     /// its words and of the small line above them, the logo's width and the gap from it to the name, the gap between the two lines, and how far from
     /// the top and the side of the display it sits (the top clears the Mac's menu bar, 37 points on a notched display).
     public struct Guide: Codable { public var width, pad, radius, type, small, avatar, nameGap, gap, top, side: Double }
+    /// How a card comes up and goes, after the design kit's cards: how small it is when it sets off, as a share of
+    /// its size, and how far below its place; how far each of its lines rises into place; how long after the card
+    /// its first line sets off, and each next line after the one before; and how small it gets as it goes.
+    public struct Card: Codable { public var from, drop, rise, firstMs, nextMs, goneTo: Double }
     /// The arrow that leads from a mark to what speaks about it, after the design kit's drawn arrow: how wide its
     /// ink is, how far it stays from the mark and from what it leads to, how far its ink and paper edge keep from
     /// every read line of the page, and the longest it may be. Where no such way is found, none is drawn. The pen's
@@ -106,6 +110,7 @@ public struct Tokens: Codable {
     public var cursor: Cursor
     public var toast: Toast
     public var guide: Guide
+    public var card: Card
     public var lead: Lead
     public var motion: Motion
     /// The four curves everything moves on (`Motion.swift`).
@@ -121,6 +126,7 @@ public struct Tokens: Codable {
         var t = self
         let sizes: [WritableKeyPath<Tokens, Double>] = [
             \.cursor.size, \.cursor.gap, \.cursor.ripple,
+            \.card.drop, \.card.rise,
             \.guide.width, \.guide.pad, \.guide.radius, \.guide.type, \.guide.small, \.guide.avatar, \.guide.nameGap, \.guide.gap,
             \.toast.type, \.toast.pad, \.toast.gap,
             \.mark.width, \.mark.boxWidth, \.mark.boxPadX, \.mark.boxPadY, \.mark.boxRadius, \.lead.width,
