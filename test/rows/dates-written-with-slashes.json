@@ -1,0 +1,67 @@
+{
+ "name": "dates: a page that writes its dates with slashes (\"11/25/2026\", \"12/2/26\") holds those days: a true date said in words or with its month's name is let through, a made-up one is still caught whichever way it is written, and \"24/7\" or \"1/2\" is no date",
+ "run": "dates.unknown",
+ "in": {
+  "cases": [
+   [
+    "For non-Gould students, the last day to give your professor the letter is Wednesday, November 25th.",
+    [
+     "USC Students (Excluding Gould Students) : The last day to submit your OSAS accommodation letter to your faculty/program contact is Wednesday, 11/25/2026, by 11:59 pm (PST) ."
+    ]
+   ],
+   [
+    "Gould students must get their letter to Gould Student Life by Monday, November 16.",
+    [
+     "USC Gould School of Law Students Only : Approved Accommodation letters must be provided to the Gould School of Law Student Life department by Monday, 11/16/2026, at 5 pm (PST)"
+    ]
+   ],
+   [
+    "The deadline to schedule final exams is December second.",
+    [
+     "USC Students (Excluding Gould Students) : The deadline to schedule all final exams, make-up exams, and exams for Incomplete courses with the OSAS Testing Center is Wednesday, 12/2/26, by 11:59 pm (PST) ."
+    ]
+   ],
+   [
+    "Your letter is due November 30.",
+    [
+     "USC Students (Excluding Gould Students) : The last day to submit your OSAS accommodation letter to your faculty/program contact is Wednesday, 11/25/2026, by 11:59 pm (PST) ."
+    ]
+   ],
+   [
+    "Your letter is due 11/30/2026.",
+    [
+     "USC Students (Excluding Gould Students) : The last day to submit your OSAS accommodation letter to your faculty/program contact is Wednesday, 11/25/2026, by 11:59 pm (PST) ."
+    ]
+   ],
+   [
+    "It is due 11/25/2026, as the page writes it.",
+    [
+     "USC Students (Excluding Gould Students) : The last day to submit your OSAS accommodation letter to your faculty/program contact is Wednesday, 11/25/2026, by 11:59 pm (PST) ."
+    ]
+   ],
+   [
+    "The center answers 24/7, and 1/2 a day counts.",
+    [
+     "USC Students (Excluding Gould Students) : The last day to submit your OSAS accommodation letter to your faculty/program contact is Wednesday, 11/25/2026, by 11:59 pm (PST) ."
+    ]
+   ]
+  ]
+ },
+ "out": [
+  null,
+  null,
+  null,
+  {
+   "month": 11,
+   "day": 30,
+   "year": null
+  },
+  {
+   "month": 11,
+   "day": 30,
+   "year": 2026
+  },
+  null,
+  null
+ ]
+}
