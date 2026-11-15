@@ -1,4 +1,5 @@
-import type { Expect, Truth } from "../shape.ts";
+import type { Placed } from "../session.ts";
+import type { Box, Display, Expect, Truth } from "../shape.ts";
 import { of, type Look, type Moment } from "../timeline.ts";
 import { no, yes, type Verdict } from "../verdict.ts";
 import { dates, datesSaid, daysTo, type Known } from "./dates.ts";
@@ -100,3 +101,24 @@ export function wayShown(criterion: string, s: number, moments: Moment[], expect
   const measured = `${way.to}, toward "${way.toward}"${marked > 0 ? `, with ${marked} marks beside it` : ""}`;
   return [right && marked === 0 ? yes(C, s, what, measured) : no(C, s, what, measured)];
 }
+
+// The arrow itself, from where the painter says it put it (the film's drawn.jsonl). It stands at the edge he must
+// scroll toward, in the outer third of the screen, and on none of the page's words. A build whose body reads the
+// way and draws nothing fails here: he asked to see the arrow.
+export function wayDrawn(criterion: string, s: number, moments: Moment[], expect: Expect, placed: Placed[], truth: Truth[], display: Display): Verdict[] {
+  if (expect.way === undefined) return [];
+  const sent = of(moments, "way").at(-1);
+  if (!sent) return [];   // that no way was sent is already said by the check above
+  const edge = `An arrow is drawn at the ${expect.way.to === "down" ? "bottom" : "top"} edge`;
+  const arrow = placed.filter((p) => p.what === "way" && p.at >= sent.at - 50).at(0);
+  if (!arrow) return [no(criterion, s, edge, "the way was sent and no arrow was drawn")];
+  const middle = arrow.box.y + arrow.box.h / 2;
+  const there = expect.way.to === "down" ? middle > (display.h * 2) / 3 : middle < display.h / 3;
+  const measured = `its middle is ${Math.round(middle)} points down a screen ${display.h} tall`;
+  const covered = truth.filter((t) => t.box.h < 90 && overlap(arrow.box, t.box) > 0);
+  const clear = "The arrow covers no words on the page";
+  return [there ? yes(criterion, s, edge, measured) : no(criterion, s, edge, measured),
+    covered.length === 0 ? yes(criterion, s, clear, `it stands clear of all ${truth.length} pieces of text`) : no(criterion, s, clear, `it covers "${covered[0].text.slice(0, 40)}"`)];
+}
+
+const overlap = (a: Box, b: Box) => Math.max(0, Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x)) * Math.max(0, Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y));

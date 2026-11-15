@@ -10,7 +10,7 @@ import { atEnd, atRest, inked, look, thinkingShown, trail } from "./judge/frames
 import { marks, standingBefore } from "./judge/marks.ts";
 import { kept } from "./judge/keep.ts";
 import { walked } from "./judge/showme.ts";
-import { glanced, pageChanged, wayShown } from "./judge/look.ts";
+import { glanced, pageChanged, wayDrawn, wayShown } from "./judge/look.ts";
 import { pagesGiven, readSoFar, type PageRead } from "./judge/pages.ts";
 import { pictureSent } from "./judge/picture.ts";
 import { drawnIn } from "./judge/motion.ts";
@@ -109,7 +109,7 @@ export async function judge(scenario: Scenario): Promise<Judged> {
     if (step.say !== "") verdicts.push(...timing(ask, step.expect, where, nextDown), ...(seen ? await thinkingShown(seen, ask, where) : thinkingSaid(ask)));
     if (!takenBack(ask, nextDown)) verdicts.push(...heardWhole(ask, step.say));
     verdicts.push(...marks(ask, step.expect, truth, standingBefore(everything, ask)), ...spoken(ask, step.expect, truth, { pages: readBy(turnOf(ask), ask.down), ranOn: ran }), ...voiced(ask, step.expect, all[index + 1]?.down ?? null),
-      ...board(ask, step.expect, truth, where), ...lesson(ask, step.expect), ...cutIn(ask, all[index - 1] ?? null, step.expect, voice), ...pressedAgain(ask, all[index - 1] ?? null, step.expect), ...kept(ask, step.expect), ...walked(ask, step.expect), ...wayShown("C20", ask.index, ask.moments, step.expect));
+      ...board(ask, step.expect, truth, where), ...lesson(ask, step.expect), ...cutIn(ask, all[index - 1] ?? null, step.expect, voice), ...pressedAgain(ask, all[index - 1] ?? null, step.expect), ...kept(ask, step.expect), ...walked(ask, step.expect), ...wayShown("C20", ask.index, ask.moments, step.expect), ...(filmed ? wayDrawn("C20", ask.index, ask.moments, step.expect, where, truth, flow.display) : []));
     const drawnBoard = lastBoard(ask.moments, turnOf(ask));
     verdicts.push(...readable("C8", ask.index, drawnBoard.rows, drawnBoard.card, boardLook));
     if (seen) {
@@ -133,6 +133,7 @@ export async function judge(scenario: Scenario): Promise<Judged> {
     const name = first(seenLook.moments, "say")?.id.split(":")[0] ?? "";
     asked = given.get(name) ?? asked;
     verdicts.push(...glanced(seenLook, step.expect, truth, { pages: readBy(name, seenLook.at), ranOn: ran, forThis: asked }));
+    if (filmed) verdicts.push(...wayDrawn("C18", seenLook.index, seenLook.moments, step.expect, where, truth, flow.display));
     const drawnBoard = lastBoard(seenLook.moments, name);
     verdicts.push(...readable("C18", seenLook.index, drawnBoard.rows, drawnBoard.card, boardLook));
     if (step.page) verdicts.push(pageChanged(seenLook.index, standingBefore(everything, { down: seenLook.at, moments: seenLook.moments }).length));
