@@ -13,7 +13,7 @@
       "expect": { "plain": true, "sentences": 1, "says": ["Space Requests"] } },
     { "say": "What happens if I turn it in a day late?", "circle": null,
       "expect": { "plain": true, "sentences": 1,
-        "saysThat": { "what": "late applications are not accepted", "anyOf": ["not accepted", "aren't accepted", "won't be accepted", "will not be accepted", "no late", "not be accepted", "rejected", "won't take", "don't take"] } } },
+        "saysThat": { "what": "late applications are not accepted", "anyOf": ["not accepted", "isn't accepted", "is not accepted", "aren't accepted", "are not accepted", "won't be accepted", "will not be accepted", "no late", "not be accepted", "rejected", "won't take", "don't take"] } } },
     { "say": "Do my officers have to do anything before then?", "circle": null,
       "expect": { "plain": true, "sentences": 1,
         "saysThat": { "what": "the officers have trainings to finish", "anyOf": ["training", "trainings", "hazing prevention", "learning path"] } } },
