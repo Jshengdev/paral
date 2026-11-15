@@ -90,24 +90,25 @@ extension Painter {
     /// what was inked. `placed` is everything drawn so far: the arrow keeps off all of it, so it comes after.
     func lead(_ picture: Picture, placed: [Drawn], _ ctx: CGContext) -> Drawn? {
         guard let lead = picture.lead, lead.drawn > 0, let mark = picture.marks.first(where: { $0.key == lead.from }) else { return nil }
-        // The capsule at its full size, whatever it is doing at this moment, so the arrow's way does not move with it.
-        func pill(_ trail: Bool) -> Box { Layout.capsule(open: 1, taller: trail ? Layout.band(tokens) : 0, width: width, height: floor, tokens: tokens) }
         let card = placed.first { $0.what == "guide" }?.box
         var taken = placed.filter { ["board", "clip", "way", "toast"].contains($0.what) }.map(\.box)
+        // An arrow to a card keeps off the pill's band at the foot, which is the pill's and its bubble's alone.
+        let pillRoom = Layout.foot(width: width, height: floor, tokens: tokens)
         let target: Box, name: String
         switch lead.to {
         case .guide:
             guard let card else { return nil }
             (target, name) = (card, "guide")
-            taken.append(pill(true))
-        case .capsule(let trail):
-            (target, name) = (pill(trail), "capsule")
+            taken.append(pillRoom)
+        case .capsule:
+            // The pill at its full size and the bubble with the words it holds: what speaks, wherever it sits.
+            (target, name) = (speaker(picture.capsule, avoiding: picture.avoid), "capsule")
             if let card { taken.append(card) }
         case .nudge:
             // A card with no place clear of the words is shown in the capsule, and the arrow goes there.
-            guard let nudge = placed.first(where: { $0.what == "nudge" })?.box else { (target, name) = (pill(true), "capsule"); break }
+            guard let nudge = placed.first(where: { $0.what == "nudge" })?.box else { (target, name) = (Layout.capsule(open: 1, taller: Layout.band(tokens), width: width, height: floor, tokens: tokens), "capsule"); break }
             (target, name) = (nudge, "nudge")
-            taken += [pill(true)] + (card.map { [$0] } ?? [])
+            taken += [pillRoom] + (card.map { [$0] } ?? [])
         }
         // The mark is its line and the ink round it.
         let ink = Pen.path(of: mark, tokens: tokens, avoiding: picture.avoid, inside: (width, height))

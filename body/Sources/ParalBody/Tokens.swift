@@ -2,7 +2,24 @@ import Foundation
 
 /// The look, in one file a designer can swap: colour, type, line widths, corners and motion times.
 public struct Tokens: Codable {
-    public struct Capsule: Codable { public var rest, restClose, width, height, radius, bottom, pad, type, tagType: Double }
+    /// The voice pill, after the design kit's: open it is `width` by `height`, with a stop control, the wave and a
+    /// send control of `control` across, `pad` in from its edge and `gap` apart, its foot `bottom` above the Dock.
+    /// At rest it is collapsed to `collapsedWidth` by `collapsedHeight` with a row of `dots` in ink at `dotInk`; at
+    /// rest with paral's ink on the page it is the cross of `restClose` with the logo mark of `rest` and the name in
+    /// `tagType`. The stop square, its corner and the send arrow's line; `face`, the logo mark that breathes by the
+    /// pill while paral works and no cursor is on the page. `type` is the bubble's words.
+    public struct Capsule: Codable {
+        public var rest, restClose, width, height, radius, bottom, pad, gap, control, type, tagType: Double
+        public var collapsedWidth, collapsedHeight, dots, dotInk, stopSquare, stopCorner, arrowLine, face: Double
+    }
+    /// The pill's wave, after the kit's: `width` by `height`, one sample every `sampleMs` at a `pitch` apart, each a
+    /// dot of `dot` (a level under `quiet`, drawn at `quietInk`), a bar `bar` by `short` (under `loud`) or `bar` by
+    /// `tall`, fading over `fade` of its width at each end. Still, it is `idleDots` dots in ink at `idleInk`.
+    public struct Wave: Codable { public var width, height, pitch, dot, bar, short, tall, quiet, loud, quietInk, idleDots, idleInk, fade, sampleMs: Double }
+    /// The bubble above the pill that carries its words, after the kit's transcript bubble: the room inside it, its
+    /// corner, its gap above the pill, its widest, the height of a line as a share of the type, the caret's size,
+    /// its gap after the words and its blink, how far the bubble rises as it comes, and how soon it goes.
+    public struct Bubble: Codable { public var padX, padY, radius, gap, maxWidth, leading, caretWidth, caretHeight, caretGap, caretMs, rise, leaveMs: Double }
     public struct Mark: Codable {
         public var width, pad, ringMs, lineMs, bracketMs, overshoot, wobble, ringWide, ringTall, labelType: Double
         /// A drawn arrow is two strokes, each at even speed: how long the pen takes over its shaft, then over its head.
@@ -107,10 +124,12 @@ public struct Tokens: Codable {
     public struct Strings: Codable { public var thinking, listening, failed, opened, name, step: String }
 
     public var ink, paper, accent: String
-    /// The design kit's grey for a quiet line: the name above a card's words, and the step's number.
+    /// The design kit's grey for a quiet line: the name above a card's words and the step's number; the words in
+    /// the pill's bubble still to come (his words still being heard, an answer's words not yet said); the wave while
+    /// paral answers.
     public var stone: String
     /// One dial over the sizes the design kit gives (the cursor and its tag, the guide's card, the nudge card, the
-    /// toast, the highlight's box and the width of drawn ink): 1 is the kit's own size. The kit asks for one such scale and not
+    /// toast, the highlight's box, the width of drawn ink, and the voice pill, its wave and its bubble): 1 is the kit's own size. The kit asks for one such scale and not
     /// for changed sizes. `load` gives the look with it already applied.
     public var scale: Double
     /// The typeface everything is written in (empty for the system's), and its optical size where it has one. The
@@ -132,6 +151,8 @@ public struct Tokens: Codable {
     public var band: Double
     public var dim: Double
     public var capsule: Capsule
+    public var wave: Wave
+    public var bubble: Bubble
     public var mark: Mark
     public var board: Board
     public var way: Way
@@ -159,6 +180,10 @@ public struct Tokens: Codable {
             \.guide.width, \.guide.pad, \.guide.radius, \.guide.type, \.guide.small, \.guide.avatar, \.guide.nameGap, \.guide.gap,
             \.toast.type, \.toast.pad, \.toast.gap,
             \.mark.width, \.mark.boxWidth, \.mark.boxPadX, \.mark.boxPadY, \.mark.boxRadius, \.lead.width,
+            \.capsule.width, \.capsule.height, \.capsule.radius, \.capsule.pad, \.capsule.gap, \.capsule.control, \.capsule.type,
+            \.capsule.collapsedWidth, \.capsule.collapsedHeight, \.capsule.stopSquare, \.capsule.stopCorner, \.capsule.arrowLine, \.capsule.face,
+            \.wave.width, \.wave.height, \.wave.pitch, \.wave.dot, \.wave.bar, \.wave.short, \.wave.tall,
+            \.bubble.padX, \.bubble.padY, \.bubble.radius, \.bubble.gap, \.bubble.maxWidth, \.bubble.caretWidth, \.bubble.caretHeight, \.bubble.caretGap, \.bubble.rise,
             \.nudge.width, \.nudge.pad, \.nudge.radius, \.nudge.gap, \.nudge.avatar, \.nudge.nameGap, \.nudge.nameType, \.nudge.trailType,
             \.nudge.trailGap, \.nudge.type, \.nudge.buttonType, \.nudge.tracking, \.nudge.buttonPadX, \.nudge.buttonPadY, \.nudge.buttonGap,
         ]

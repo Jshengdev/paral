@@ -65,10 +65,7 @@ final class App: NSObject, NSApplicationDelegate {
         status.menu = GuideSwitch.shared.added(to: menu) { [weak self] on in self?.scene.guideOn = on }
         self.status = status
 
-        mic.onSound = { [weak self] sound in
-            guard let self else { return }
-            self.wire.send(.mic(pcm: sound, at: self.stamp()))
-        }
+        mic.onSound = { [weak self] sound in self?.wire.send(.mic(pcm: sound, at: self?.stamp() ?? 0)); self?.tell(.sound(sound)) }
         mic.onFailed = { [weak self] why in self?.failed(why) }
         wire.onLine = { [weak self] seen in self?.took(seen) }
         wire.onRefused = { [weak self] why in self?.failed("the body refused a line from the mind (\(why))") }
@@ -103,7 +100,7 @@ final class App: NSObject, NSApplicationDelegate {
             watch.busy = { [weak self] in self?.held ?? true }
             watch.onLook = { [weak self] path, w, h, place, lines in
                 guard let self else { return }
-                self.tell(.screen(display: place, lines: lines))
+                self.tell(.screen(display: place, lines: Screen.taken(path, w, lines, below: self.scene.footShare)))
                 self.wire.send(.look(at: self.stamp(), display: place, path: path, w: w, h: h, lines: lines))
             }
             watch.start(everyMs: settings.lookEveryMs, longEdge: settings.pictureLongEdge)
@@ -153,7 +150,7 @@ final class App: NSObject, NSApplicationDelegate {
                     // A picture that comes back after he has pressed again belongs to the press before, and is dropped.
                     guard mine == self.holds else { return }
                     self.shot = (image, place, lines)
-                    self.tell(.screen(display: place, lines: lines))
+                    self.tell(.screen(display: place, lines: Screen.taken(image, lines, below: self.scene.footShare)))
                     self.sendShot()
                 }
             } catch {

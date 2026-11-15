@@ -20,7 +20,8 @@ extension Layout {
     /// `was` is the place it had a moment before: it is kept while it is still free, so the card does not move.
     public static func nudge(size: (w: Double, h: Double), beside line: Box?, texts: [Box], taken: [Box], was: (box: Box, scale: Double)? = nil, width: Double, height: Double, tokens: Tokens) -> (box: Box, scale: Double)? {
         let n = tokens.nudge
-        let capsule = capsule(open: 1, taller: band(tokens), width: width, height: height, tokens: tokens)
+        // The pill's band at the foot is the pill's alone.
+        let capsule = foot(width: width, height: height, tokens: tokens)
         let shut = (texts + taken + [capsule]).map { $0.grown(n.clear) }
         func covered(_ b: Box) -> Double {
             let rising = Box(x: b.x, y: b.y, w: b.w, h: b.h + tokens.card.drop)

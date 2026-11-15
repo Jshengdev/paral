@@ -1,0 +1,34 @@
+{
+ "name": "body: the page's own ink at the foot is for the scene only: in a scripted run on a page with lines down to its foot, every look and screen line the mind is sent holds exactly the lines read off the page, none of them a line with no words",
+ "run": "body.linesToTheMind",
+ "in": {
+  "lines": [
+   "2. Draw mechanism and expect final product",
+   "b",
+   "c",
+   "d",
+   "e",
+   "f",
+   "g",
+   "h",
+   "Deadlines and dates for every club"
+  ],
+  "tape": "pill-ink.json",
+  "typed": "so what is the final product"
+ },
+ "out": {
+  "readOffThePage": 8,
+  "sent": [
+   {
+    "type": "look",
+    "lines": 8,
+    "withNoWords": 0
+   },
+   {
+    "type": "screen",
+    "lines": 8,
+    "withNoWords": 0
+   }
+  ]
+ }
+}

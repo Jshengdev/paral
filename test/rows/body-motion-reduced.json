@@ -25,10 +25,10 @@
   "marks": 1,
   "markCoversTheLine": true,
   "capsuleRestsAt": {
-   "h": 18,
-   "w": 18,
-   "x": 791,
-   "y": 929
+   "h": 19,
+   "w": 78,
+   "x": 761,
+   "y": 953
   },
   "voiceSeconds": 7.5,
   "aPointerFlies": false

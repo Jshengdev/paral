@@ -1,0 +1,107 @@
+{
+ "name": "body: at rest the collapsed pill, and the cross with its name while paral's ink is on the page, keep off the page's read lines: with a line of the page across the middle of the foot, each slides along the foot to the nearest place that lies on no line; open, the pill keeps off it too",
+ "run": "body.pill",
+ "in": {
+  "rows": [
+   {
+    "at": 0,
+    "line": {
+     "type": "look",
+     "at": 1,
+     "display": {
+      "id": 2,
+      "scale": 1,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "page.png",
+      "w": 1600,
+      "h": 1000
+     },
+     "lines": [
+      {
+       "text": "Recognition Process",
+       "box": {
+        "x": 120,
+        "y": 110,
+        "w": 400,
+        "h": 40
+       }
+      },
+      {
+       "text": "please contact Campus Activities at stuacts@usc.edu.",
+       "box": {
+        "x": 560,
+        "y": 935,
+        "w": 480,
+        "h": 24
+       }
+      }
+     ]
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "g1",
+     "beat": 0,
+     "kind": "underline",
+     "box": {
+      "x": 120,
+      "y": 110,
+      "w": 400,
+      "h": 40
+     }
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "key.down",
+     "at": 3000
+    }
+   },
+   {
+    "at": 3200,
+    "line": {
+     "type": "heard",
+     "text": "what is this",
+     "final": false
+    }
+   }
+  ],
+  "at": [
+   500,
+   2000,
+   3600
+  ],
+  "watch": [
+   "look",
+   "pill",
+   "middle",
+   "onText"
+  ]
+ },
+ "out": [
+  {
+   "look": "rest",
+   "pill": "78x19",
+   "middle": 512,
+   "onText": false
+  },
+  {
+   "look": "rest",
+   "pill": "the cross, 28x28",
+   "middle": 536,
+   "onText": false
+  },
+  {
+   "look": "listening",
+   "pill": "234x50",
+   "middle": 416,
+   "onText": false
+  }
+ ]
+}

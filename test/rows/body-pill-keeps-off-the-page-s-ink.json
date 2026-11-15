@@ -1,0 +1,83 @@
+{
+ "name": "body: the pill and its bubble keep off the page's own ink at the foot, not only its read lines: on a page whose foot holds ink the reader read no words from (a drawing), the pill opens beside it rather than over it, its bubble too, and at rest the collapsed pill stays at the middle below it",
+ "run": "body.pillOnInk",
+ "in": {
+  "ink": [
+   "a",
+   "b",
+   "c",
+   "d",
+   "e",
+   "f",
+   "g",
+   "h",
+   "Deadlines and dates for every club"
+  ],
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "key.down",
+     "at": 1000
+    }
+   },
+   {
+    "at": 1200,
+    "line": {
+     "type": "heard",
+     "text": "so what is the final product",
+     "final": false
+    }
+   },
+   {
+    "at": 2000,
+    "line": {
+     "type": "key.up",
+     "at": 2000
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "say",
+     "id": "a1",
+     "beat": 0,
+     "text": "Look at the carbon that carries both the oxygen and the chlorine, and at what is bonded to it."
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "mute",
+     "id": "a1",
+     "why": "no voice is set up"
+    }
+   }
+  ],
+  "at": [
+   500,
+   1500,
+   2700
+  ]
+ },
+ "out": [
+  {
+   "look": "rest",
+   "atTheMiddle": true,
+   "pillOnTheInk": false,
+   "bubbleOnTheInk": null
+  },
+  {
+   "look": "listening",
+   "atTheMiddle": false,
+   "pillOnTheInk": false,
+   "bubbleOnTheInk": false
+  },
+  {
+   "look": "speaking",
+   "atTheMiddle": false,
+   "pillOnTheInk": false,
+   "bubbleOnTheInk": false
+  }
+ ]
+}

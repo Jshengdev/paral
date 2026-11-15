@@ -1,0 +1,130 @@
+{
+ "name": "body: a failure is written in the bubble above the full pill with its reason, before any press and while the key is held, and stays until the next press; the wave is the still dots",
+ "run": "body.pill",
+ "in": {
+  "rows": [
+   {
+    "at": 100,
+    "line": {
+     "type": "state",
+     "name": "failed",
+     "detail": "the mind is not running; start it with ./run"
+    }
+   },
+   {
+    "at": 2000,
+    "line": {
+     "type": "ready",
+     "mind": "paral",
+     "holdKey": "rightOption",
+     "drawKey": "shift",
+     "earGraceMs": 300,
+     "markPad": 4,
+     "pictureLongEdge": 1280,
+     "cropAround": {
+      "share": 1,
+      "points": 200
+     }
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "key.down",
+     "at": 3000
+    }
+   },
+   {
+    "at": 3200,
+    "line": {
+     "type": "state",
+     "name": "failed",
+     "detail": "the microphone is not allowed: switch paral on under Privacy & Security, Microphone"
+    }
+   },
+   {
+    "at": 4000,
+    "line": {
+     "type": "key.up",
+     "at": 4000
+    }
+   },
+   {
+    "at": 7000,
+    "line": {
+     "type": "key.down",
+     "at": 7000
+    }
+   }
+  ],
+  "at": [
+   1000,
+   2500,
+   3600,
+   6000,
+   7600
+  ],
+  "watch": [
+   "look",
+   "pill",
+   "bubble",
+   "wave"
+  ]
+ },
+ "out": [
+  {
+   "look": "failed",
+   "pill": "234x50",
+   "bubble": {
+    "says": "the mind is not running; start it with ./run",
+    "stone": [],
+    "caret": null,
+    "aboveThePill": 8,
+    "onText": false
+   },
+   "wave": "still dots"
+  },
+  {
+   "look": "rest",
+   "pill": "78x19",
+   "bubble": null,
+   "wave": "still dots"
+  },
+  {
+   "look": "failed",
+   "pill": "234x50",
+   "bubble": {
+    "says": "the microphone is not allowed: switch paral on under Privacy & Security, Microphone",
+    "stone": [],
+    "caret": null,
+    "aboveThePill": 8,
+    "onText": false
+   },
+   "wave": "still dots"
+  },
+  {
+   "look": "failed",
+   "pill": "234x50",
+   "bubble": {
+    "says": "the microphone is not allowed: switch paral on under Privacy & Security, Microphone",
+    "stone": [],
+    "caret": null,
+    "aboveThePill": 8,
+    "onText": false
+   },
+   "wave": "still dots"
+  },
+  {
+   "look": "listening",
+   "pill": "234x50",
+   "bubble": {
+    "says": "Listening",
+    "stone": [],
+    "caret": false,
+    "aboveThePill": 8,
+    "onText": false
+   },
+   "wave": "ink: dot dot dot dot dot dot dot dot dot"
+  }
+ ]
+}

@@ -1,0 +1,110 @@
+{
+ "name": "body: the band across the foot that holds the pill and the room its bubble may take is the pill's alone: with the way arrow pointing down, a toast, a board, the guide's card and the pill open with his words, none of the others lies in it, and with a Dock of 80 points the band is above the Dock",
+ "run": "body.pill",
+ "in": {
+  "dock": 80,
+  "lines": [
+   "Recognition Process",
+   "Deadlines +",
+   "Info Sessions, Workshops, and Office Hours"
+  ],
+  "rows": [
+   {
+    "at": 500,
+    "line": {
+     "type": "way",
+     "id": "g1",
+     "to": "down",
+     "toward": "Deadlines"
+    }
+   },
+   {
+    "at": 500,
+    "line": {
+     "type": "next",
+     "text": "Scroll until Deadlines is on screen",
+     "n": 2,
+     "of": 8
+    }
+   },
+   {
+    "at": 600,
+    "line": {
+     "type": "open",
+     "path": "/tmp/paral-pill-row.ics",
+     "label": "November 22"
+    }
+   },
+   {
+    "at": 700,
+    "line": {
+     "type": "board",
+     "id": "g1",
+     "rows": [
+      [
+       "Officers finish their training"
+      ],
+      [
+       "Submit the application: November 22"
+      ]
+     ]
+    }
+   },
+   {
+    "at": 2000,
+    "line": {
+     "type": "key.down",
+     "at": 2000
+    }
+   },
+   {
+    "at": 2200,
+    "line": {
+     "type": "heard",
+     "text": "where do i book a room for my club",
+     "final": false
+    }
+   }
+  ],
+  "at": [
+   1500,
+   2700
+  ],
+  "watch": [
+   "look",
+   "foot",
+   "upElsewhere",
+   "inTheBand"
+  ]
+ },
+ "out": [
+  {
+   "look": "rest",
+   "foot": 39,
+   "upElsewhere": [
+    "board",
+    "way",
+    "toast",
+    "badge",
+    "guide",
+    "line",
+    "line"
+   ],
+   "inTheBand": []
+  },
+  {
+   "look": "listening",
+   "foot": 28,
+   "upElsewhere": [
+    "board",
+    "way",
+    "toast",
+    "badge",
+    "guide",
+    "line",
+    "line"
+   ],
+   "inTheBand": []
+  }
+ ]
+}

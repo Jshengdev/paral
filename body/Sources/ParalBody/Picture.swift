@@ -7,13 +7,27 @@ public struct Word: Equatable {
     public var bright: Double
 }
 
+/// The voice pill and the bubble above it. A word at `bright` 1 is written in ink; below 1 it is still to come (his
+/// word still being heard, or an answer's word not yet said) and is written in stone.
 public struct CapsulePicture: Equatable {
     public var look: Look
-    /// 0 is the resting circle, 1 the full capsule.
+    /// 0 is the collapsed pill (or the resting cross), 1 the full pill.
     public var open: Double
     public var words: [Word]
-    /// The small tag while thinking, the placeholder while listening, or the reason it failed.
+    /// What the bubble says when there are no words (the placeholder while listening, the tag while thinking), or
+    /// the reason it failed.
     public var note: String?
+    /// How far the bubble has come up out of the pill, 0 to 1: it rises with the pill and goes sooner than the pill shuts.
+    public var bubble = 0.0
+    /// The caret after his words while the key is held: whether it is shown at this moment of its blink. Nil for no caret.
+    public var caret: Bool?
+    /// The wave's samples, oldest first, each a level 0 to 1, and how far it has scrolled since the newest came in,
+    /// as a share of one pitch. Empty for the still dots.
+    public var wave: [Double] = []
+    public var scrolled = 0.0
+    /// While paral works and no cursor is on the page to breathe, the logo mark breathes by the pill: how far it has
+    /// swollen, 0 to 1. Nil for none.
+    public var working: Double?
     /// At rest with paral's ink still on the page, the circle carries a cross that clears it.
     public var closes = false
     /// The steps paral took before a line it said without being asked, each lit once it is reached. Empty otherwise.

@@ -30,6 +30,8 @@ public enum Seen {
     /// He pressed "Not now" on the nudge card. It never crosses the seam: the body tells itself.
     case notNow
     case trail(x: Double, y: Double)
+    /// A chunk of the microphone's sound: how loud it was, 0 to 1 (`Meter`), and how long it lasts. Only the wave shows it.
+    case mic(level: Double, ms: Double)
     case screen(display: DisplayPlace, lines: [ReadLine])
     case state(name: String, detail: String?)
     case heard(text: String, final: Bool)
@@ -97,7 +99,10 @@ public enum Seen {
         case "next":
             guard let text = s("text") else { return .failure(Refused("next.text: missing")) }
             return .success(.next(text: text, n: (f["n"] as? NSNumber)?.intValue ?? 0, of: (f["of"] as? NSNumber)?.intValue ?? 0, done: f["done"] as? Bool ?? false))
-        case "hello", "mic": return .success(.other)
+        case "hello": return .success(.other)
+        case "mic":
+            guard let pcm = s("pcm"), let sound = Data(base64Encoded: pcm) else { return .failure(Refused("mic: pcm is needed")) }
+            return .success(.sound(sound))
         case "click":
             guard let x = n("x"), let y = n("y") else { return .failure(Refused("click: x and y are needed")) }
             return .success(.click(x: x, y: y))

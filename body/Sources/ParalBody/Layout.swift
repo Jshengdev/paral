@@ -3,30 +3,32 @@ import Foundation
 
 /// Where things go on a display, in points from its top-left corner.
 public enum Layout {
-    /// `taller` is extra height when the capsule carries a trail above its words. It grows upward, so the foot stays put.
+    /// What the voice pill takes at the bottom, for what keeps off it: open, the pill at the display's middle and the
+    /// room above it its bubble may take (`LayoutPill.swift`), `taller` higher when the bubble carries a trail above
+    /// its words; at rest, the collapsed pill or, with `closes`, the cross alone, which is where a click on it is taken.
     public static func capsule(open: Double, closes: Bool = false, taller: Double = 0, width: Double, height: Double, tokens: Tokens) -> Box {
-        let c = tokens.capsule
-        let rest = closes ? c.restClose : c.rest
-        let w = rest + (min(c.width, width - 48) - rest) * open
-        let h = rest + (c.height + taller - rest) * open
-        return Box(x: (width - w) / 2, y: height - c.bottom - c.height / 2 - h / 2 - taller * open / 2, w: w, h: h)
+        let shut = pill(open: open, closes: closes, width: width, height: height, tokens: tokens)
+        guard open > 0 else { return shut }
+        let room = bubbleRoom(over: pill(open: 1, width: width, height: height, tokens: tokens), trail: taller, tokens: tokens)
+        let x = min(shut.x, room.x), y = min(shut.y, room.y)
+        return Box(x: x, y: y, w: max(shut.x + shut.w, room.x + room.w) - x, h: max(shut.y + shut.h, room.y + room.h) - y)
     }
 
-    /// How much taller the capsule is while it carries a trail of steps above its words.
+    /// How much taller the bubble is while it carries a trail of steps above its words.
     public static func band(_ tokens: Tokens) -> Double { tokens.capsule.tagType + 12 }
 
     /// Where the arrow that says which way to scroll goes: at the edge he must scroll toward, as near as it can be
-    /// to its home there (beside the open capsule at the bottom, the middle at the top), and on none of `taken` nor
-    /// on the capsule. Where every place at that edge is taken, it goes where it covers least.
-    /// A toast is placed the same way, at the bottom; `rise` lifts its home from the edge, to sit level with the capsule.
+    /// to its home there (at the bottom just above the pill's band (`foot`), to the right of the pill's room; at the
+    /// top in the middle), and on none of `taken` nor in the pill's band. Where every place at that edge is taken,
+    /// it goes where it covers least. A toast is placed the same way, at the bottom; `rise` lifts a home at the top.
     public static func way(down: Bool, size: (w: Double, h: Double), rise: Double = 0, taken: [Box], width: Double, height: Double, tokens: Tokens) -> Box {
         let w = tokens.way
         let cell = 24.0
         // Room for the nod and the pen's width, so that nothing it avoids is touched while it moves.
         let around = w.nod + tokens.mark.width
-        let capsule = capsule(open: 1, taller: band(tokens), width: width, height: height, tokens: tokens)
-        let avoid = taken + [capsule]
-        let home = down ? (x: capsule.x + capsule.w + w.edge, y: height - w.edge - size.h - rise) : (x: (width - size.w) / 2, y: w.edge + rise)
+        let capsule = capsule(open: 1, taller: band(tokens), width: width, height: height, tokens: tokens), foot = foot(width: width, height: height, tokens: tokens)
+        let avoid = taken + [foot]
+        let home = down ? (x: capsule.x + capsule.w + w.edge, y: foot.y - w.edge - size.h) : (x: (width - size.w) / 2, y: w.edge + rise)
         func covered(_ box: Box) -> Double {
             let b = box.grown(around)
             return avoid.reduce(0) { $0 + max(0, min(b.x + b.w, $1.x + $1.w) - max(b.x, $1.x)) * max(0, min(b.y + b.h, $1.y + $1.h) - max(b.y, $1.y)) }
@@ -55,7 +57,7 @@ public enum Layout {
     /// place that covers nothing wins, and failing that the one that covers least.
     public static func corner(size: (w: Double, h: Double), taken: [Box], width: Double, height: Double, tokens: Tokens) -> Box {
         let g = tokens.guide, cell = 24.0
-        let avoid = taken + [capsule(open: 1, taller: band(tokens), width: width, height: height, tokens: tokens)]
+        let avoid = taken + [foot(width: width, height: height, tokens: tokens)]
         func covered(_ b: Box) -> Double {
             avoid.reduce(0) { $0 + max(0, min(b.x + b.w, $1.x + $1.w) - max(b.x, $1.x)) * max(0, min(b.y + b.h, $1.y + $1.h) - max(b.y, $1.y)) }
         }
@@ -109,7 +111,7 @@ public enum Layout {
         func fit(_ w: Int, _ h: Int) -> Double { min(1, Double(w) * cell / card.w, Double(h) * cell / card.h) }
         let cols = Int(width / cell), rows = Int(height / cell)
         guard cols > 2, rows > 2 else { return Box(x: 0, y: 0, w: max(width, 1), h: max(height, 1)) }
-        let taken = texts.map { $0.grown(margin) } + [capsule(open: 1, width: width, height: height, tokens: tokens).grown(margin)]
+        let taken = texts.map { $0.grown(margin) } + [foot(width: width, height: height, tokens: tokens).grown(margin)]
         func free(_ col: Int, _ row: Int) -> Bool {
             if col == 0 || row == 0 || col == cols - 1 || row == rows - 1 { return false }
             let x = Double(col) * cell, y = Double(row) * cell

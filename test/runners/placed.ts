@@ -14,7 +14,7 @@ type Moment = {
   pointer: { x: number; y: number; ripple: number | null; flight: number | null; tag: boolean; thinking: boolean } | null;
   board: { id: string; now: number | null; appear: number } | null;
   toast: string | null;
-  capsule: { look: string; says: string };
+  capsule: { look: string; says: string; stone: string[]; note: string | null; trail: string[]; caret: boolean | null; wave: string[]; working: boolean };
   guide: { text: string; n: number | null; of: number | null; appear: number } | null;
   nudge: { text: string; inked: number; trail: string[]; buttons: boolean; appear: number; rows: number[]; leave: number } | null;
 };

@@ -1,0 +1,122 @@
+{
+ "name": "body: the pill's wave is the microphone's sound, read from the record's mic lines: each sample, one every 0.11 s, is a dot when quiet (a level under 0.22), a short bar when under 0.55 and a tall bar above that; the newest comes in at the right, in ink while he holds the key and in stone once he lets go, and with no sound left the wave is dots again",
+ "run": "body.pill",
+ "in": {
+  "rows": [
+   {
+    "at": 900,
+    "line": {
+     "type": "key.down",
+     "at": 900
+    }
+   },
+   {
+    "at": 990,
+    "line": {
+     "type": "mic",
+     "amp": 100,
+     "ms": 110
+    }
+   },
+   {
+    "at": 1100,
+    "line": {
+     "type": "mic",
+     "amp": 100,
+     "ms": 110
+    }
+   },
+   {
+    "at": 1210,
+    "line": {
+     "type": "mic",
+     "amp": 100,
+     "ms": 110
+    }
+   },
+   {
+    "at": 1320,
+    "line": {
+     "type": "mic",
+     "amp": 1000,
+     "ms": 110
+    }
+   },
+   {
+    "at": 1430,
+    "line": {
+     "type": "mic",
+     "amp": 1000,
+     "ms": 110
+    }
+   },
+   {
+    "at": 1540,
+    "line": {
+     "type": "mic",
+     "amp": 1000,
+     "ms": 110
+    }
+   },
+   {
+    "at": 1650,
+    "line": {
+     "type": "mic",
+     "amp": 10000,
+     "ms": 110
+    }
+   },
+   {
+    "at": 1760,
+    "line": {
+     "type": "mic",
+     "amp": 10000,
+     "ms": 110
+    }
+   },
+   {
+    "at": 1870,
+    "line": {
+     "type": "mic",
+     "amp": 10000,
+     "ms": 110
+    }
+   },
+   {
+    "at": 2000,
+    "line": {
+     "type": "key.up",
+     "at": 2000
+    }
+   }
+  ],
+  "at": [
+   800,
+   1900,
+   2100,
+   4000
+  ],
+  "watch": [
+   "look",
+   "wave"
+  ]
+ },
+ "out": [
+  {
+   "look": "rest",
+   "wave": "still dots"
+  },
+  {
+   "look": "listening",
+   "wave": "ink: dot dot dot short short short tall tall tall"
+  },
+  {
+   "look": "thinking",
+   "wave": "stone: dot short short short tall tall tall tall dot"
+  },
+  {
+   "look": "thinking",
+   "wave": "stone: dot dot dot dot dot dot dot dot dot"
+  }
+ ]
+}

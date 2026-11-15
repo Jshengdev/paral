@@ -1,0 +1,151 @@
+{
+ "name": "body: the voice pill, with a Dock 80 points tall: at rest it is the collapsed pill, 78 by 19; listening, thinking, answering and failed it is the full pill, 234 by 50; at rest with paral's ink on the page it is the cross; its foot is 28 above the Dock's top in every state but the cross, which is centred where the full pill's middle is, and it stands at the display's middle",
+ "run": "body.pill",
+ "in": {
+  "dock": 80,
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "key.down",
+     "at": 1000
+    }
+   },
+   {
+    "at": 1001,
+    "line": {
+     "type": "state",
+     "name": "listening"
+    }
+   },
+   {
+    "at": 1200,
+    "line": {
+     "type": "heard",
+     "text": "where is it",
+     "final": false
+    }
+   },
+   {
+    "at": 2000,
+    "line": {
+     "type": "key.up",
+     "at": 2000
+    }
+   },
+   {
+    "at": 2001,
+    "line": {
+     "type": "state",
+     "name": "thinking"
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "mark",
+     "id": "a1",
+     "beat": 0,
+     "kind": "underline",
+     "box": {
+      "x": 120,
+      "y": 110,
+      "w": 300,
+      "h": 48
+     }
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "say",
+     "id": "a1",
+     "beat": 0,
+     "text": "It is under Deadlines."
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "mute",
+     "id": "a1",
+     "why": "no voice is set up"
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "state",
+     "name": "idle"
+    }
+   },
+   {
+    "at": 7000,
+    "line": {
+     "type": "key.down",
+     "at": 7000
+    }
+   },
+   {
+    "at": 7100,
+    "line": {
+     "type": "state",
+     "name": "failed",
+     "detail": "the screen could not be read (not allowed)"
+    }
+   }
+  ],
+  "at": [
+   500,
+   1600,
+   2300,
+   3000,
+   6000,
+   7600
+  ],
+  "watch": [
+   "look",
+   "pill",
+   "foot",
+   "middle"
+  ]
+ },
+ "out": [
+  {
+   "look": "rest",
+   "pill": "78x19",
+   "foot": 28,
+   "middle": "the display's middle"
+  },
+  {
+   "look": "listening",
+   "pill": "234x50",
+   "foot": 28,
+   "middle": "the display's middle"
+  },
+  {
+   "look": "thinking",
+   "pill": "234x50",
+   "foot": 28,
+   "middle": "the display's middle"
+  },
+  {
+   "look": "speaking",
+   "pill": "234x50",
+   "foot": 28,
+   "middle": "the display's middle"
+  },
+  {
+   "look": "rest",
+   "pill": "the cross, 28x28",
+   "foot": 39,
+   "middle": "the display's middle"
+  },
+  {
+   "look": "failed",
+   "pill": "234x50",
+   "foot": 28,
+   "middle": "the display's middle"
+  }
+ ]
+}

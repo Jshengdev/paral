@@ -3,7 +3,8 @@ import Foundation
 /// What has happened so far. `take` records one event; `picture(at:)` says what is on screen at a moment.
 /// It holds no clock and draws nothing, so the windows and the film show the same thing from the same events.
 public struct Scene {
-    struct Beat { var text: String; var sayAt: Double; var soundAt: Double?; var bytes = 0; var wordStart: [Double] = [] }
+    /// `levels` is how loud each chunk of its voice is, from the byte of the beat's sound where that chunk begins.
+    struct Beat { var text: String; var sayAt: Double; var soundAt: Double?; var bytes = 0; var wordStart: [Double] = []; var levels: [(from: Int, level: Double)] = [] }
     /// `trail` is set only for a line paral said without being asked: the steps it took, shown above the line.
     /// `beganAt` is when its first line came; for a line said without being asked, when that line gets its turn in
     /// the capsule, which is when it came or later.
@@ -51,6 +52,8 @@ public struct Scene {
     /// His last click on a mark that waited for it: when, where paral's cursor's tip was then, and which mark.
     var clicked: (at: Double, x: Double, y: Double, mark: String)?
     var trail: [(x: Double, y: Double, at: Double)] = []
+    /// Each chunk of the microphone's sound: when it came, how long it lasts and how loud it was. The wave reads it.
+    var sounds: [(at: Double, ms: Double, level: Double)] = []
     var failed: (detail: String, at: Double)?
     var idleAt: Double?
     var closedAt: Double?
@@ -86,6 +89,8 @@ public struct Scene {
             answer(.notNow, at)
         case .trail(let x, let y):
             trail.append((x - origin.x, y - origin.y, at))
+        case .mic(let level, let ms):
+            sounds.append((at, ms, level))
         case .screen(let display, let lines):
             origin = (display.x, display.y)
             texts = lines.map { Box(x: $0.box.x / display.scale, y: $0.box.y / display.scale, w: $0.box.w / display.scale, h: $0.box.h / display.scale) }
@@ -113,6 +118,7 @@ public struct Scene {
             edit(id) { ask in
                 guard ask.beats[beat] != nil, !pcm.isEmpty else { return }
                 if ask.beats[beat]!.soundAt == nil { ask.beats[beat]!.soundAt = at }
+                ask.beats[beat]!.levels.append((ask.beats[beat]!.bytes, Meter.level(pcm)))
                 ask.beats[beat]!.bytes += pcm.count
             }
         case .words(let id, let beat, let start, _):

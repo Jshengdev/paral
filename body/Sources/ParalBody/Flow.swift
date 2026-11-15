@@ -126,7 +126,7 @@ public final class Flow {
             if ask["look"] as? Bool == true {
                 seenTo = got.count
                 let lines = try Screen.read(image)
-                send(.look(at: stamp(), display: display, path: small, w: image.width, h: image.height, lines: lines), as: .screen(display: display, lines: lines))
+                send(.look(at: stamp(), display: display, path: small, w: image.width, h: image.height, lines: lines), as: .screen(display: display, lines: Screen.taken(image, lines, below: scene.footShare)))
                 await pause((ask["waitMs"] as? NSNumber)?.doubleValue ?? 6000)
                 afterLook = true
                 continue
@@ -150,7 +150,7 @@ public final class Flow {
                 release.now()
                 send(.typed(text: text, at: stamp()), as: .typed(text: text))
                 let lines = try Screen.read(image)
-                send(.screen(at: stamp(), display: display, path: small, w: image.width, h: image.height, lines: lines), as: .screen(display: display, lines: lines))
+                send(.screen(at: stamp(), display: display, path: small, w: image.width, h: image.height, lines: lines), as: .screen(display: display, lines: Screen.taken(image, lines, below: scene.footShare)))
                 releasedAt = clock()
                 continue
             }
@@ -166,7 +166,7 @@ public final class Flow {
             let picture: @MainActor ([ReadLine], [ReadLine], String) -> Void = { [weak self] all, forTheMind, path in
                 guard let self, !self.pictureSent else { return }
                 self.pictureSent = true
-                self.send(.screen(at: self.stamp(), display: display, path: path, w: image.width, h: image.height, lines: forTheMind), as: .screen(display: display, lines: all))
+                self.send(.screen(at: self.stamp(), display: display, path: path, w: image.width, h: image.height, lines: forTheMind), as: .screen(display: display, lines: Screen.taken(image, all, below: self.scene.footShare)))
             }
 
             var pcm = Data()
@@ -208,7 +208,7 @@ public final class Flow {
                 try Screen.saveSmaller(part.image, to: shown, longEdge: settings.pictureLongEdge)
                 // From here the whole-page picture is not sent any more, should the page only now have been read.
                 pictureSent = true
-                send(.screen(at: stamp(), display: display, path: shown, w: image.width, h: image.height, lines: part.lines), as: .screen(display: display, lines: lines))
+                send(.screen(at: stamp(), display: display, path: shown, w: image.width, h: image.height, lines: part.lines), as: .screen(display: display, lines: Screen.taken(image, lines, below: scene.footShare)))
             }
         }
         // A page that could not be read stops the run here, with its reason.

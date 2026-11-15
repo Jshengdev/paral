@@ -1,0 +1,108 @@
+{
+ "name": "body: a line said without being asked is the nudge card's and not the bubble's, said aloud or shown only: the pill stays collapsed at rest and no bubble comes up for it",
+ "run": "body.pill",
+ "in": {
+  "rows": [
+   {
+    "at": 500,
+    "line": {
+     "type": "say",
+     "id": "g1",
+     "beat": 0,
+     "text": "The application closes November 22.",
+     "trail": [
+      "saw this page",
+      "found 1 date"
+     ]
+    }
+   },
+   {
+    "at": 500,
+    "line": {
+     "type": "voice",
+     "id": "g1",
+     "beat": 0,
+     "amp": 6000,
+     "ms": 2000,
+     "last": true
+    }
+   },
+   {
+    "at": 500,
+    "line": {
+     "type": "words",
+     "id": "g1",
+     "beat": 0,
+     "start": [
+      0,
+      0.4,
+      0.8,
+      1.2,
+      1.6
+     ],
+     "end": [
+      0.4,
+      0.8,
+      1.2,
+      1.6,
+      2
+     ]
+    }
+   },
+   {
+    "at": 12000,
+    "line": {
+     "type": "say",
+     "id": "g2",
+     "beat": 0,
+     "text": "This is the date to keep.",
+     "trail": [
+      "saw this page",
+      "found the line"
+     ]
+    }
+   },
+   {
+    "at": 12000,
+    "line": {
+     "type": "mute",
+     "id": "g2",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   }
+  ],
+  "at": [
+   700,
+   1500,
+   2700,
+   12100
+  ],
+  "watch": [
+   "look",
+   "pill",
+   "bubble"
+  ]
+ },
+ "out": [
+  {
+   "look": "rest",
+   "pill": "78x19",
+   "bubble": null
+  },
+  {
+   "look": "rest",
+   "pill": "78x19",
+   "bubble": null
+  },
+  {
+   "look": "rest",
+   "pill": "78x19",
+   "bubble": null
+  },
+  {
+   "look": "rest",
+   "pill": "78x19",
+   "bubble": null
+  }
+ ]
+}

@@ -1,0 +1,225 @@
+{
+ "name": "body: the bubble above the pill carries his words as they are heard, a word still being registered in stone and settling to ink, with a caret after them that blinks every half second; while it thinks his words are all ink and the caret is gone; answering, it holds the sentence being said, each word stone until it is said and ink from then on; the bubble sits 10 above the pill",
+ "run": "body.pill",
+ "in": {
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "key.down",
+     "at": 1000
+    }
+   },
+   {
+    "at": 1001,
+    "line": {
+     "type": "state",
+     "name": "listening"
+    }
+   },
+   {
+    "at": 1200,
+    "line": {
+     "type": "heard",
+     "text": "where do",
+     "final": false
+    }
+   },
+   {
+    "at": 1700,
+    "line": {
+     "type": "heard",
+     "text": "where do i book",
+     "final": false
+    }
+   },
+   {
+    "at": 2200,
+    "line": {
+     "type": "key.up",
+     "at": 2200
+    }
+   },
+   {
+    "at": 2201,
+    "line": {
+     "type": "state",
+     "name": "thinking"
+    }
+   },
+   {
+    "at": 2300,
+    "line": {
+     "type": "heard",
+     "text": "where do i book",
+     "final": true
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "say",
+     "id": "a1",
+     "beat": 0,
+     "text": "You book it on EngageSC."
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "voice",
+     "id": "a1",
+     "beat": 0,
+     "amp": 8000,
+     "ms": 1000,
+     "last": true
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "words",
+     "id": "a1",
+     "beat": 0,
+     "start": [
+      0,
+      0.2,
+      0.4,
+      0.6,
+      0.75
+     ],
+     "end": [
+      0.2,
+      0.4,
+      0.6,
+      0.75,
+      1
+     ]
+    }
+   },
+   {
+    "at": 3600,
+    "line": {
+     "type": "state",
+     "name": "idle"
+    }
+   }
+  ],
+  "at": [
+   1050,
+   1300,
+   1600,
+   1750,
+   2100,
+   2400,
+   2650,
+   3300
+  ],
+  "watch": [
+   "look",
+   "bubble",
+   "wave"
+  ]
+ },
+ "out": [
+  {
+   "look": "listening",
+   "bubble": {
+    "says": "Listening",
+    "stone": [],
+    "caret": true,
+    "aboveThePill": 21.5,
+    "onText": false
+   },
+   "wave": "ink: dot dot dot dot dot dot dot dot dot"
+  },
+  {
+   "look": "listening",
+   "bubble": {
+    "says": "where do",
+    "stone": [
+     "where",
+     "do"
+    ],
+    "caret": true,
+    "aboveThePill": 8,
+    "onText": false
+   },
+   "wave": "ink: dot dot dot dot dot dot dot dot dot"
+  },
+  {
+   "look": "listening",
+   "bubble": {
+    "says": "where do",
+    "stone": [],
+    "caret": false,
+    "aboveThePill": 8,
+    "onText": false
+   },
+   "wave": "ink: dot dot dot dot dot dot dot dot dot"
+  },
+  {
+   "look": "listening",
+   "bubble": {
+    "says": "where do i book",
+    "stone": [
+     "i",
+     "book"
+    ],
+    "caret": false,
+    "aboveThePill": 8,
+    "onText": false
+   },
+   "wave": "ink: dot dot dot dot dot dot dot dot dot"
+  },
+  {
+   "look": "listening",
+   "bubble": {
+    "says": "where do i book",
+    "stone": [],
+    "caret": true,
+    "aboveThePill": 8,
+    "onText": false
+   },
+   "wave": "ink: dot dot dot dot dot dot dot dot dot"
+  },
+  {
+   "look": "thinking",
+   "bubble": {
+    "says": "where do i book",
+    "stone": [],
+    "caret": null,
+    "aboveThePill": 8,
+    "onText": false
+   },
+   "wave": "stone: dot dot dot dot dot dot dot dot dot"
+  },
+  {
+   "look": "speaking",
+   "bubble": {
+    "says": "You book it on EngageSC.",
+    "stone": [
+     "book",
+     "it",
+     "on",
+     "EngageSC."
+    ],
+    "caret": null,
+    "aboveThePill": 8,
+    "onText": false
+   },
+   "wave": "stone: dot dot dot dot dot dot dot tall tall"
+  },
+  {
+   "look": "speaking",
+   "bubble": {
+    "says": "You book it on EngageSC.",
+    "stone": [],
+    "caret": null,
+    "aboveThePill": 8,
+    "onText": false
+   },
+   "wave": "stone: dot tall tall tall tall tall tall tall tall"
+  }
+ ]
+}
