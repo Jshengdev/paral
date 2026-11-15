@@ -8,6 +8,8 @@ public final class Flow {
 
     private let wire: Wire
     private let file: [String: Any]
+    /// The flow file itself, which a live flow reads again for each step (FlowSteps).
+    private let path: URL
     private let dir: URL
     private var got: [Seen] = []
     private var scene: Scene
@@ -26,6 +28,7 @@ public final class Flow {
               let display = file["display"] as? [String: Any], let w = (display["w"] as? NSNumber)?.doubleValue, let h = (display["h"] as? NSNumber)?.doubleValue
         else { throw Failed(why: "the flow file needs display.w and display.h") }
         self.file = file
+        self.path = URL(fileURLWithPath: path)
         dir = URL(fileURLWithPath: path).deletingLastPathComponent()
         scene = Scene(width: w, height: h, tokens: tokens)
         self.tokens = tokens
@@ -87,7 +90,8 @@ public final class Flow {
         var first = true
         var releasedAt = 0.0
         var readings: [Task<[ReadLine], Error>] = []
-        for ask in asks {
+        var steps = FlowSteps(path: path, live: file["live"] as? Bool == true, asks: asks)
+        while let ask = await steps.next() {
             if !first {
                 let after = ask["startAfter"] as? [String: Any]
                 // A start it does not know is a mistake in the flow file, not "idle".
