@@ -31,7 +31,7 @@ export function lead(input: { lines: string[]; rows: Written[]; at: number[] }) 
   const dir = handWritten("lead", onTheirLines(input.rows, input.lines), input.lines);
   const text = textOf(dir);
   const tokens = JSON.parse(readFileSync(join(import.meta.dirname, "..", "..", "body", "tokens.json"), "utf8"));
-  const room = tokens.mark.width / 2 + tokens.way.halo + tokens.lead.clear - 0.01;
+  const room = tokens.lead.width / 2 + tokens.way.halo + tokens.lead.clear - 0.01;
   const inked = (moment: { placed: { what: string; path?: Point[] }[] }) => long(moment.placed.find((item) => item.what === "lead")?.path ?? []);
   const soonAfter = at(dir, input.at.map((moment) => moment + 50)).map(inked);
   return at(dir, input.at).map((moment, index) => {

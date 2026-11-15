@@ -43,7 +43,7 @@ extension Painter {
     /// `lead.longest`. Of the ways left the shortest and the nearest the kit's plain bow wins.
     func way(_ asked: LeadWays.Asked) -> [[CGPoint]]? {
         if ways.asked == asked { return ways.found }
-        let gap = tokens.lead.gap, half = tokens.mark.width / 2, edge = half + tokens.way.halo
+        let gap = tokens.lead.gap, edge = tokens.lead.width / 2 + tokens.way.halo
         let shut = asked.texts.map { $0.grown(edge + tokens.lead.clear) } + [asked.mark.grown(1)] + (asked.cursor.map { [$0.grown(1)] } ?? [])
             + asked.taken.map { $0.grown(tokens.band + edge) } + [asked.target.grown(gap - 1)]
         func on(_ p: CGPoint, _ boxes: [Box]) -> Bool { boxes.contains { p.x > $0.x && p.x < $0.x + $0.w && p.y > $0.y && p.y < $0.y + $0.h } }
@@ -112,7 +112,7 @@ extension Painter {
         let asked = LeadWays.Asked(mark: Box(x: left, y: top, w: right - left, h: bottom - top), target: target, taken: taken, cursor: cursor, texts: picture.avoid)
         guard let strokes = way(asked) else { return nil }
         let inked = Pen.reach(strokes: strokes, lead.drawn)
-        self.ink(inked, ctx)
+        self.ink(inked, wide: tokens.lead.width, ctx)
         let points = Array(inked.joined())
         let xs = points.map(\.x), ys = points.map(\.y)
         let box = Box(x: xs.min() ?? 0, y: ys.min() ?? 0, w: max((xs.max() ?? 0) - (xs.min() ?? 0), 1), h: max((ys.max() ?? 0) - (ys.min() ?? 0), 1))
