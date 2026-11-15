@@ -20,7 +20,7 @@ func inked(_ text: String, size: Double, color: CGColor, weight: NSFont.Weight =
 public struct Painter {
     public let tokens: Tokens
     public let width, height: Double
-    let ink, paper: CGColor
+    let ink, paper, ember: CGColor
     public let accent: CGColor
     let frames = ClipFrames()
 
@@ -31,6 +31,7 @@ public struct Painter {
         ink = color(tokens.ink)
         paper = color(tokens.paper)
         accent = color(tokens.accent)
+        ember = color(tokens.ember)
     }
 
     /// The context's origin must be the display's top-left corner, y growing downward, one unit a point.
@@ -46,6 +47,11 @@ public struct Painter {
         }
         if let board = picture.board { drawn.append(Drawn(what: "board", id: board.id, box: self.board(board, clock: picture.clock, ctx))) }
         if let clip = picture.clip { drawn.append(Drawn(what: "clip", id: clip.id, box: self.clip(clip, ctx))) }
+        // The arrow keeps off the page's text and off whatever card is up, so it is placed once those are drawn.
+        if let way = picture.way {
+            let cards = drawn.filter { $0.what == "board" || $0.what == "clip" }.map(\.box)
+            drawn.append(Drawn(what: "way", id: way.id, box: self.way(way, avoiding: picture.avoid + cards, ctx)))
+        }
         if let pointer = picture.pointer { drawn.append(Drawn(what: "pointer", id: nil, box: self.pointer(pointer, ctx))) }
         drawn.append(Drawn(what: "capsule", id: nil, box: capsule(picture.capsule, clock: picture.clock, ctx)))
         return drawn

@@ -1,0 +1,18 @@
+{
+ "name": "seam: a way line from the mind is read: which way to scroll, and the name of what it leads to",
+ "run": "seam.read",
+ "in": {
+  "from": "mind",
+  "text": "{\"v\": 1, \"type\": \"way\", \"id\": \"g3\", \"to\": \"down\", \"toward\": \"Deadlines\"}"
+ },
+ "out": {
+  "ok": true,
+  "line": {
+   "v": 1,
+   "type": "way",
+   "id": "g3",
+   "to": "down",
+   "toward": "Deadlines"
+  }
+ }
+}

@@ -71,6 +71,22 @@ public enum Film {
         }
     }
 
+    /// Where the painter puts each thing at each of the given moments of a recorded run, and the way arrow's own
+    /// values then. For rows: a film's record says when a thing's box changes, and not when the thing goes.
+    public static func placed(run: String, tokens: Tokens, at moments: [Double]) throws -> [[String: Any]] {
+        let run = try load(URL(fileURLWithPath: run))
+        let painter = Painter(tokens: tokens, width: run.w, height: run.h)
+        return moments.map { moment in
+            var scene = Scene(width: run.w, height: run.h, tokens: tokens)
+            for event in run.events where event.at <= moment { scene.take(event.seen, at: event.at) }
+            let picture = scene.picture(at: moment)
+            var placed: [Drawn] = []
+            _ = render(run.page, run.w, run.h) { ctx in placed = painter.paint(picture, into: ctx) }
+            let way: Any = picture.way.map { ["id": $0.id, "to": $0.down ? "down" : "up", "toward": $0.toward, "drawn": $0.drawn, "nod": $0.nod] as [String: Any] } ?? NSNull()
+            return ["placed": placed.map { item in ["what": item.what, "id": item.id ?? "", "box": item.box.json] as [String: Any] }, "way": way]
+        }
+    }
+
     public static func make(run: String, tokens: Tokens, fps: Double = 30) throws -> Made {
         let dir = URL(fileURLWithPath: run)
         let loaded = try load(dir)

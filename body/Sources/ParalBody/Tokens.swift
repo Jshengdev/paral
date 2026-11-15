@@ -11,13 +11,27 @@ public struct Tokens: Codable {
         public var unaskedStayMs, trailStepMs: Double
         public var reduce: Bool
     }
+    /// The arrow that says which way to scroll, and the tag beside it that names what it leads to.
+    public struct Way: Codable {
+        /// The arrow: how far it runs toward the edge, how far it swings out from the tag before it turns, and how long each barb of its head is.
+        public var tall, wide, head: Double
+        /// The tag: its type size, the room round its words, the widest it may be, and the gap between it and the arrow.
+        public var type, padX, padY, maxWidth, gap: Double
+        /// How far from the display's edge it stays, and how wide the paper edge round the arrow's ink is (0 for none).
+        public var edge, halo: Double
+        /// How long the pen takes over the arrow; then how far a nod dips, how long one lasts, and the rest between two (0 for no nods).
+        public var drawMs, nod, nodMs, nodEveryMs: Double
+    }
     public struct Strings: Codable { public var thinking, listening, failed: String }
 
     public var ink, paper, accent: String
+    /// The design kit's red for what is drawn by hand on the page (its ring and its arrow).
+    public var ember: String
     public var dim: Double
     public var capsule: Capsule
     public var mark: Mark
     public var board: Board
+    public var way: Way
     public var motion: Motion
     public var strings: Strings
 

@@ -1,0 +1,52 @@
+{
+ "name": "body: with the page's text running along the bottom edge and under the place beside the capsule, the arrow still lies on none of it, at that edge and inside the display",
+ "run": "body.way",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "The Spring 2027 recognition process is now open.",
+   "All student organizations must complete recognition",
+   "through the online portal, on an annual basis.",
+   "Recognition status runs for one academic year.",
+   "If you hope to re-establish your club, submit this form.",
+   "For questions, contact Campus Activities.",
+   "Important Dates",
+   "If you need accessibility accommodations or have questions, please contact us.",
+   "The recognition application is submitted on EngageSC by an officer of the club."
+  ],
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "way",
+     "id": "g1",
+     "to": "down",
+     "toward": "Deadlines"
+    }
+   }
+  ],
+  "at": [
+   3000
+  ]
+ },
+ "out": [
+  {
+   "arrow": {
+    "to": "down",
+    "toward": "Deadlines",
+    "inked": "whole",
+    "edge": "bottom",
+    "insideTheDisplay": true,
+    "onText": false,
+    "onTheCapsule": false,
+    "onTheBoard": false
+   }
+  }
+ ]
+}

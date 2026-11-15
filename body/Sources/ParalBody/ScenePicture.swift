@@ -3,11 +3,11 @@ import Foundation
 
 extension Scene {
     public func picture(at t: Double) -> Picture {
-        let marks = marksUp(at: t), board = board(at: t)
+        let marks = marksUp(at: t), board = board(at: t), way = way(at: t)
         var capsule = capsule(at: t)
         let clip = clip(at: t)
-        capsule.closes = capsule.look == .rest && (!marks.isEmpty || board != nil || clip != nil)
-        return Picture(clock: t, capsule: capsule, marks: marks, echo: echo(at: t), pointer: pointer(at: t, capsule), board: board, clip: clip, trail: trailUp(at: t), avoid: texts)
+        capsule.closes = capsule.look == .rest && (!marks.isEmpty || way != nil || board != nil || clip != nil)
+        return Picture(clock: t, capsule: capsule, marks: marks, echo: echo(at: t), way: way, pointer: pointer(at: t, capsule), board: board, clip: clip, trail: trailUp(at: t), avoid: texts)
     }
 
     func capsule(at t: Double) -> CapsulePicture {
