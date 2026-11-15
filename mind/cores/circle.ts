@@ -63,3 +63,14 @@ export function echo(trail: Point[], seen: { lines: ReadLine[]; display: Display
   const box = { x, y, w: Math.max(...boxes.map((box) => box.x + box.w)) - x, h: Math.max(...boxes.map((box) => box.y + box.h)) - y };
   return { box, shape: whole.length === 1 && !tight(seen.lines[whole[0]]) ? "ring" : "box" };
 }
+
+/**
+ * What became of the path he drew, for the log: how many points, around which lines, whether on this hold or the one
+ * before, and how many of the lines came with their words. A line outside the part he drew around comes with its
+ * place and no words, so the count shows the cut.
+ */
+export function drewAround(id: string, points: number, around: number[], now: boolean, lines: { text: string }[]): string {
+  const worded = lines.filter((line) => line.text !== "").length;
+  const outside = worded < lines.length ? "; the rest lie outside the part he drew around" : "";
+  return `${id}: he drew a path of ${points} points around line${around.length === 1 ? "" : "s"} ${around.join(", ") || "none"}${now ? "" : " on the hold before"}; ${worded} of ${lines.length} lines came with their words${outside}`;
+}

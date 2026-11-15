@@ -30,7 +30,10 @@ export type WhereNow = () => { where: Where; page: KeptPage } | null;
  * on that heading. Only that: a heading paral has itself marked on a kept page, which the kept page writes with its
  * + sign. With no such box up he is told so, and nothing is clicked.
  */
-export function takes(hands: Hands, whereNow: WhereNow = () => null, kept: (line: string) => boolean = () => false) {
+/** What his words are handed on to when none of these asked for them (`notes.ts`): true when it took them. */
+export type Then = (id: string, words: string, signal: AbortSignal, at: number) => Promise<boolean>;
+
+export function takes(hands: Hands, whereNow: WhereNow = () => null, kept: (line: string) => boolean = () => false, then: Then = async () => false) {
   const { settings, send, log } = hands;
   /** The page the last answer sent him to; null until one has. */
   let to: KeptPage | null = null;
@@ -61,8 +64,11 @@ export function takes(hands: Hands, whereNow: WhereNow = () => null, kept: (line
       send({ v, type: "mute", id: `${id}o`, why: "an answer's card is shown, not spoken" });
       log(`${id}: the answer stays on a card${keep ? ", which offers to keep the date it named" : offer ? ", which offers to walk the steps" : ""}`);
     },
-    /** Whether his words asked to be taken there, with a page to go to. If so the app is asked to open it and he is told. */
-    async asked(id: string, words: string, signal: AbortSignal): Promise<boolean> {
+    /**
+     * Whether his words asked to be taken there, with a page to go to. If so the app is asked to open it and he is
+     * told. Words none of these take are handed on (`then`), with the moment he asked (`at`).
+     */
+    async asked(id: string, words: string, signal: AbortSignal, at = Date.now()): Promise<boolean> {
       if (asksFor(words, settings.scrollAsks.value)) {
         const where = whereNow()?.where ?? null;
         const way = where !== null && where.box === null && where.to !== null ? { to: where.to, toward: where.toward } : null;
@@ -97,7 +103,7 @@ export function takes(hands: Hands, whereNow: WhereNow = () => null, kept: (line
         log(`${id}: he asked for the closed section to be opened; the app is asked to click once on "${now.where.on ?? now.where.toward}", the heading paral has boxed on "${now.page.title}"`);
         return true;
       }
-      if (to === null || !asksFor(words, settings.goAsks.value)) return false;
+      if (to === null || !asksFor(words, settings.goAsks.value)) return then(id, words, signal, at);
       send({ v, type: "go", id, url: to.url, label: short(to) });
       log(`${id}: he asked to be taken there; the app is asked to open ${to.url}`);
       await sayLine(hands, id, settings.goingLine.value.replace("{page}", short(to)), signal);

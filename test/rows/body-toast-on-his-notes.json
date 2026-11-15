@@ -1,0 +1,112 @@
+{
+ "name": "body: an open line for his notes page shows the toast that a page is opening, named by the line's label, and not the calendar's words",
+ "run": "body.toast",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "The Spring 2027 recognition process is now open.",
+   "All student organizations must complete recognition",
+   "through the online portal, on an annual basis.",
+   "Recognition status runs for one academic year.",
+   "If you hope to re-establish your club, submit this form.",
+   "For questions, contact Campus Activities.",
+   "Important Dates"
+  ],
+  "rows": [
+   {
+    "at": 500,
+    "line": {
+     "type": "way",
+     "id": "g1",
+     "to": "down",
+     "toward": "Deadlines"
+    }
+   },
+   {
+    "at": 500,
+    "line": {
+     "type": "board",
+     "id": "g1",
+     "rows": [
+      [
+       "Officers finish their training"
+      ],
+      [
+       "Submit the application: November 22 at 11:59pm"
+      ],
+      [
+       "Advisor requirements: December 1"
+      ]
+     ]
+    }
+   },
+   {
+    "at": 2000,
+    "line": {
+     "type": "key.down",
+     "at": 1002000
+    }
+   },
+   {
+    "at": 2900,
+    "line": {
+     "type": "key.up",
+     "at": 1002900
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "open",
+     "id": "t1",
+     "path": "/tmp/lost-and-found-notes.html",
+     "label": "your notes"
+    }
+   },
+   {
+    "at": 3001,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 0,
+     "text": "Your notes are open in your browser."
+    }
+   },
+   {
+    "at": 3001,
+    "line": {
+     "type": "mute",
+     "id": "t1",
+     "why": "no voice is set up"
+    }
+   },
+   {
+    "at": 3100,
+    "line": {
+     "type": "state",
+     "name": "idle"
+    }
+   }
+  ],
+  "at": [
+   2950,
+   3600
+  ]
+ },
+ "out": [
+  {
+   "toast": null
+  },
+  {
+   "toast": {
+    "says": "Opening your notes",
+    "insideTheDisplay": true,
+    "atTheBottom": true,
+    "onText": false,
+    "onTheCapsule": false,
+    "onTheBoard": false,
+    "onTheArrow": false
+   }
+  }
+ ]
+}

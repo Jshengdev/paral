@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { z } from "zod";
-import { Answered, type Asked, type Ports } from "../ports.ts";
+import { Answered, type Asked, type CutJob, type Ports } from "../ports.ts";
 
 const Tape = z.object({
   answers: z.record(z.string(), z.array(Answered.extend({ hold: z.boolean().optional(), late: z.boolean().optional() }))),
@@ -20,6 +20,8 @@ const Tape = z.object({
   sheets: z.array(z.any()).optional(),
   voice: z.boolean().optional(),
   clip: z.object({ clip: z.string(), still: z.string(), seconds: z.number() }).optional(),
+  /** Whether a section asked to be cut comes back cut; absent: it does. The tape cuts nothing and writes no file. */
+  cut: z.boolean().optional(),
 });
 
 const plain = (words: string) => words.toLowerCase().replace(/[^\p{L}\p{N} ]/gu, "").replace(/\s+/g, " ").trim();
@@ -30,10 +32,10 @@ const RATE = 24000;
 
 /**
  * Recorded answers in place of every outside service. `asked` lists what the brain was asked, for rows to read. The tape ear reads the sound's bytes as text. An answer keyed
- * "his words @ 1,2" is the one for those words when he drew around lines 1 and 2.
+ * "his words @ 1,2" is the one for those words when he drew around lines 1 and 2. `over` changes fields of the tape for one row.
  */
-export function tape(path: string): Ports & { release(kind?: string): void; asked: Asked[] } {
-  const recorded = Tape.parse(JSON.parse(readFileSync(path, "utf8")));
+export function tape(path: string, over: Partial<z.infer<typeof Tape>> = {}): Ports & { release(kind?: string): void; asked: Asked[]; cuts: CutJob[] } {
+  const recorded = Tape.parse({ ...JSON.parse(readFileSync(path, "utf8")), ...over });
   const played = new Map<string, number>();
   const gates = new Map<() => void, string>();
 
@@ -51,8 +53,11 @@ export function tape(path: string): Ports & { release(kind?: string): void; aske
     });
 
   const asked: Asked[] = [];
+  /** Every section it was asked to cut, for rows to read. */
+  const cuts: CutJob[] = [];
   return {
     asked,
+    cuts,
     /** Lets through what is being held: everything, or only one kind ("answer", "second look" or "opener"). */
     release(kind) {
       for (const [open, held] of [...gates]) if (kind === undefined || kind === held) open();
@@ -114,6 +119,7 @@ export function tape(path: string): Ports & { release(kind?: string): void; aske
             },
           }
         : null,
+    cutter: { cut: async (job) => (cuts.push(job), recorded.cut ?? true) },
     pages: recorded.pages ?? [],
     sheets: recorded.sheets ?? [],
     voice: recorded.voice

@@ -1,13 +1,32 @@
 import AppKit
 
 /// Opens what the mind asks the app to open, and nothing else. A calendar file the mind has written, in his calendar
-/// app, for "add it to my calendar": only a file that exists and whose name ends in .ics. A page of USC's he asked to
-/// be taken to, in his browser: only an https address on usc.edu or a site under it. It clicks nothing in either.
+/// app, for "add it to my calendar": only a file that exists and whose name ends in .ics. His notes, for "show me my
+/// notes", in his default browser: only the one file named lost-and-found-notes.html in the temporary folder. A page
+/// of USC's he asked to be taken to, in his browser: only an https address on usc.edu or a site under it. It clicks
+/// nothing in any of them.
 public enum Keep {
-    /// False when the path is not a calendar file, or the Mac could not open it.
+    /// The one name the notes page has, as the mind writes it (`mind/notes.ts`).
+    public static let notesName = "lost-and-found-notes.html"
+
+    /// False when the path is neither a calendar file nor the notes page, or the Mac could not open it.
     public static func open(_ path: String) -> Bool {
+        if let page = notes(path) {
+            guard let browser = NSWorkspace.shared.urlForApplication(toOpen: URL(string: "https://www.usc.edu/")!) else { return false }
+            NSWorkspace.shared.open([page], withApplicationAt: browser, configuration: NSWorkspace.OpenConfiguration())
+            return true
+        }
         guard path.hasSuffix(".ics"), FileManager.default.fileExists(atPath: path) else { return false }
         return NSWorkspace.shared.open(URL(fileURLWithPath: path))
+    }
+
+    /// The notes page, when the path is the file that exists in the temporary folder under that one name. Nil for any
+    /// other path: another name there, the same name in any other folder, a file that is not there.
+    public static func notes(_ path: String) -> URL? {
+        let page = URL(fileURLWithPath: path).standardizedFileURL.resolvingSymlinksInPath()
+        let only = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(notesName).standardizedFileURL.resolvingSymlinksInPath()
+        guard page.path == only.path, FileManager.default.fileExists(atPath: page.path) else { return nil }
+        return page
     }
 
     /// The address, when it is one the app may open: https, and a host that is usc.edu or ends in .usc.edu. Nil for

@@ -21,7 +21,7 @@ func why(_ error: Error) -> String {
 // the cure; it costs nothing.
 _ = Bundle.main.infoDictionary
 
-let usage = "usage: read PICTURE | smaller PICTURE OUT.jpg LONG_EDGE | same PICTURE PICTURE | rounds ROUNDS.json | page OUT.png LINE... | lines | keys SECONDS rightOption|fn|controlOption | flow FLOW.json SOCKET TOKENS.json | film RUN_DIR TOKENS.json | frame RUN_DIR TOKENS.json MS OUT.png | capsule RUN_DIR TOKENS.json MS... | placed RUN_DIR TOKENS.json MS... | apart RUN_DIR TOKENS.json MS MARGIN | hits RUN_DIR TOKENS.json MS... | usc ADDRESS... | centre < BANK.json | curves TOKENS.json SHARE..."
+let usage = "usage: read PICTURE | smaller PICTURE OUT.jpg LONG_EDGE | same PICTURE PICTURE | rounds ROUNDS.json | page OUT.png LINE... | lines | keys SECONDS rightOption|fn|controlOption | flow FLOW.json SOCKET TOKENS.json | film RUN_DIR TOKENS.json | frame RUN_DIR TOKENS.json MS OUT.png | capsule RUN_DIR TOKENS.json MS... | placed RUN_DIR TOKENS.json MS... | apart RUN_DIR TOKENS.json MS MARGIN | hits RUN_DIR TOKENS.json MS... | usc ADDRESS... | notes PATH... | centre < BANK.json | curves TOKENS.json SHARE..."
 let arguments = Array(CommandLine.arguments.dropFirst())
 
 switch arguments.first {
@@ -124,6 +124,10 @@ case "hits":
 case "usc":
     // Whether the app would open each address in his browser (`Keep.usc`), for rows.
     out(arguments.dropFirst().map { Keep.usc($0) != nil })
+
+case "notes":
+    // Whether the app would open each path as his notes page in his browser (`Keep.notes`), for rows.
+    out(arguments.dropFirst().map { Keep.notes($0) != nil })
 
 case "centre":
     // The demo's centre in the menu as plain values (`Sitting`), from a bank (or a ready line's), after each event:

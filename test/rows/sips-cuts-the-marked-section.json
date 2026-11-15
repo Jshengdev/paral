@@ -1,0 +1,46 @@
+{
+ "name": "sips.cut: the live cutting port cuts a marked section out of a look's smaller saved copy: the part is scaled to the copy, and the cut holds the boxed heading and the line under it and nothing above; a picture that is not there is not cut",
+ "run": "sips.cut",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Important Dates",
+   "Deadlines +",
+   "October 27: Application opens",
+   "Officer Trainings +",
+   "Each officer completes both trainings"
+  ],
+  "box": {
+   "x": 60,
+   "y": 247,
+   "w": 156,
+   "h": 24
+  },
+  "room": {
+   "above": 12,
+   "below": 60,
+   "side": 12,
+   "least": 340
+  },
+  "longEdge": 800
+ },
+ "out": {
+  "part": {
+   "x": 96,
+   "y": 470,
+   "w": 728,
+   "h": 192
+  },
+  "cut": true,
+  "size": [
+   364,
+   96
+  ],
+  "reads": [
+   "Officer Trainings +",
+   "Each officer completes both trainings"
+  ],
+  "logged": [],
+  "aMissingPictureIsNotCut": true
+ }
+}

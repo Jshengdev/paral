@@ -9,8 +9,9 @@ On the student's own work, when a line is wrong, it gives one hint at a time and
 What it sees, sends and keeps: it takes a picture of one display, reads the text off it on the Mac, and sends the
 sound of a question, one scaled picture and the lines read to the two services named below, only when the key is
 held or a line is tapped. A look it takes by itself sends nothing from the screen. It keeps one temporary picture
-and no history. It acts in another app only when asked: it opens a usc.edu page, scrolls, or clicks one closed
-heading it has itself marked.
+and no history; for his notes it also cuts the sections it marked out of the looks' pictures, and writes the notes
+page, all in the temporary folder. It acts in another app only when asked: it opens a usc.edu page or his notes,
+scrolls, or clicks one closed heading it has itself marked.
 
 Written at AI@USC, November 14-15 2026. Every line in this folder is written here; nothing is copied from another
 project. Libraries: zod (MIT), the Anthropic SDK (MIT), DialKit (MIT, in `dials/vendor/` and `exam/vendor/`). Tools:
@@ -181,6 +182,20 @@ needs the Accessibility grant. Nothing else is ever clicked, and nothing is ever
 page writes it and the page's address, an `open` line crosses the seam, and the app opens the file in his calendar
 app (`Keep.swift`). The app opens nothing but a file ending in .ics, and clicks nothing in the calendar.
 
+**"Show me my notes."** What he takes away at the end of a sitting (`mind/notes.ts`, `notesAsks`; the last line of
+each scenario in the menu). No model is asked: one page is made from what the mind already holds
+(`cores/sitting.ts` `notesOf`, `cores/notes.ts` `notesPage`) and written as `lost-and-found-notes.html` in the
+temporary folder, an `open` line crosses the seam, and the app opens it in his default browser; he hears one fixed
+line. The page holds his first question in his own words, every step the looks found in order, each with its date as
+the page writes it and the days left, the page's title and address, the heading it sits under and the kept page's own
+line; which are done (a date he kept, a step of the walk he clicked or said "show me" past); and what it could not
+tell (a step with no date, a date its page does not write, a step with no line, a page it has not read). For a step
+whose section paral marked on his screen, a cut-out of that section, small beside it and full size on hover or
+focus: after each look on a kept page, each step whose line or heading is where the mark now is gets that part cut
+from the look's saved picture (`notesCut`), by macOS's `sips` (`adapters/sips.ts`, a port with a tape that records
+what it was asked to cut). A picture that cannot be cut is left out. With no step found yet he is told so and no page
+is written. The app opens no .html file but that one, in that folder.
+
 ## Adding a capability
 
 Do these in order. Each step has a row before the next one starts.
@@ -236,6 +251,12 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
   Calendar asks before adding the entry or adds it at once is not known, so the line he hears says only that the date
   is open in his calendar. A line with a clock time becomes an entry at that time in the Mac's own time zone, since
   the pages write none. "It" is the last date shown; after an answer that named two dates it is the first of them.
+- "Show me my notes" has run only on a tape: the app has never opened the page, and `Keep.open`'s browser half is
+  compiled and unrun. The mind writes it to Node's temporary folder and the app allows only its own; on a Mac both are
+  the user's folder, which no run has confirmed. `sips` has cut only a page drawn for a row, never a real look's
+  picture; the room round a marked box (`notesCut`) is a guess. A section is cut only from a look: a box placed by
+  "show me" or by an answer on a page that has not moved since gives no picture until the next look. The goal is the
+  first ask that is not a command, whatever it was about.
 - The demo's guide has run only on a tape. It has steps for two pages, the club recognition page and the Catalina
   Maymester page; the chemistry worksheet has none, since the mind cannot yet tell that page is on screen. It knows
   a step happened only from what the mind itself did: a click in Calendar, or a section opened with the date's line

@@ -2,10 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
-import { connect } from "node:net";
 import { join } from "node:path";
-import { tape } from "../mind/adapters/tape.ts";
-import { serve } from "../mind/server.ts";
 import { boxes, fitted, split, wipes } from "../mind/cores/beats.ts";
 import { asksFor, fits, hear, saysOnly, silence, unasked } from "../mind/cores/catch.ts";
 import { away, datesIn, daysFrom, unknownDate, type Named } from "../mind/cores/dates.ts";
@@ -27,7 +24,8 @@ import { keptLook, keptVoice, standIn } from "./runners/adapters.ts";
 import { capsule, cardOnFilm, filmed, landing, pressedAgain, sameToTheWatcher } from "./runners/body.ts";
 import { pill } from "./runners/pill.ts";
 import { linesToTheMind, pillOnInk } from "./runners/ink.ts";
-import { fresh } from "./runners/temp.ts";
+import { stopped } from "./runners/stop.ts";
+import { notesRuns } from "./runners/notes.ts";
 import { playTurn } from "./runners/turn.ts";
 import { boardFits, boardType } from "./runners/boards.ts";
 import { filmedPages } from "./runners/pages.ts";
@@ -152,16 +150,8 @@ const runs: Record<string, (input: any) => unknown> = {
     });
   },
   happened: (input) => happened(input.seen, input.justTellMe, input.sameLineScore),
-  stop: async (input) => {
-    const path = fresh("row") + ".sock";
-    const mind = await serve(path, tape(join(import.meta.dirname, "tapes", input.tape)), settings, () => {});
-    const socket = connect(path);
-    await new Promise((resolve) => socket.once("connect", resolve));
-    const closed = new Promise<boolean>((resolve) => socket.once("close", () => resolve(true)));
-    const began = Date.now();
-    await mind.stop();
-    return { bodySawTheEnd: await closed, insideTheLimit: Date.now() - began < settings.stopLimitMs.value };
-  },
+  stop: stopped,
+  ...notesRuns,
   push: (input) => judge(input),
   "push.sums": (input) => input.lines.map((line: string) => wrongSum(line)),
   "push.count": (input) => {

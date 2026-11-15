@@ -1,0 +1,32 @@
+{
+ "name": "turn: \"show me my notes\" before any look has found a step: he is told there is nothing yet, no page is written and nothing is opened",
+ "run": "turn",
+ "in": {
+  "tape": "club.json",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "hello",
+     "body": "row"
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "typed",
+     "text": "show me my notes",
+     "at": 1794700050000
+    }
+   ]
+  ],
+  "show": "cuts"
+ },
+ "out": {
+  "cuts": [],
+  "opened": [],
+  "said": [
+   "t1: There is nothing for your notes yet. Open a USC page I have read and I will find the steps."
+  ]
+ }
+}

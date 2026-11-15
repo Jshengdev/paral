@@ -7,6 +7,7 @@ import { ink } from "./adapters/ink.ts";
 import { kept } from "./adapters/kept.ts";
 import { looked } from "./adapters/looked.ts";
 import { raea } from "./adapters/raea.ts";
+import { sips } from "./adapters/sips.ts";
 import { sonic } from "./adapters/sonic.ts";
 import { tape } from "./adapters/tape.ts";
 import type { KeptPage } from "./cores/page.ts";
@@ -116,7 +117,7 @@ let ports: Ports = tape(PARAL_TAPE ?? join(here, "..", "test", "tapes", "algebra
 if (live && ANTHROPIC_API_KEY) ports = { ...ports, ...claude() };
 if (live && CARTESIA_API_KEY) ports = { ...ports, ...cartesia(CARTESIA_API_KEY) };
 if (live && ANTHROPIC_API_KEY) ports = { ...ports, ...lessonClips() };
-if (live) ports = { ...ports, pages: keptPages(), sheets: measuredSheets() };
+if (live) ports = { ...ports, pages: keptPages(), sheets: measuredSheets(), cutter: sips(log) };
 if (live) looksAhead(ports.pages);
 if (PARAL_FAULT === "voice") {
   ports = { ...ports, voice: silenced };

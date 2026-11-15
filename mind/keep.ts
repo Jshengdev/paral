@@ -25,6 +25,8 @@ export function keeps(hands: Hands) {
   return {
     /** Whether the date on this line has been kept in this sitting. */
     has: (written: string) => done.has(written),
+    /** The lines whose dates he has kept in this sitting, for his notes. */
+    kept: () => [...done],
     /** A look showed him this date. */
     found(date: ToKeep) {
       last = date;

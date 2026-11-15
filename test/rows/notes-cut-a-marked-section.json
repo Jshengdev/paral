@@ -1,0 +1,146 @@
+{
+ "name": "notes.cut: the part of a look's picture cut for a section paral marked: the box with room round it, from screen points into the pixels the lines were read at (a display at 2x, one to the left of the main one at 1x), kept inside the picture, then into the smaller saved copy in whole pixels; a box off the picture gives nothing",
+ "run": "notes.cut",
+ "in": {
+  "room": {
+   "above": 24,
+   "below": 150,
+   "side": 24,
+   "least": 520
+  },
+  "cases": [
+   [
+    {
+     "x": 100,
+     "y": 300,
+     "w": 450,
+     "h": 20
+    },
+    {
+     "x": 0,
+     "y": 0,
+     "scale": 2
+    },
+    {
+     "w": 3456,
+     "h": 2234
+    },
+    {
+     "w": 1280,
+     "h": 827
+    }
+   ],
+   [
+    {
+     "x": -1500,
+     "y": 40,
+     "w": 300,
+     "h": 18
+    },
+    {
+     "x": -1920,
+     "y": 0,
+     "scale": 1
+    },
+    {
+     "w": 1920,
+     "h": 1080
+    },
+    {
+     "w": 1280,
+     "h": 720
+    }
+   ],
+   [
+    {
+     "x": 1600,
+     "y": 1000,
+     "w": 200,
+     "h": 20
+    },
+    {
+     "x": 0,
+     "y": 0,
+     "scale": 2
+    },
+    {
+     "w": 3456,
+     "h": 2234
+    },
+    {
+     "w": 1280,
+     "h": 827
+    }
+   ],
+   [
+    {
+     "x": 4000,
+     "y": 3000,
+     "w": 100,
+     "h": 20
+    },
+    {
+     "x": 0,
+     "y": 0,
+     "scale": 2
+    },
+    {
+     "w": 3456,
+     "h": 2234
+    },
+    {
+     "w": 1280,
+     "h": 827
+    }
+   ]
+  ]
+ },
+ "out": [
+  {
+   "part": {
+    "x": 152,
+    "y": 552,
+    "w": 1136,
+    "h": 388
+   },
+   "inCopy": {
+    "x": 56,
+    "y": 204,
+    "w": 421,
+    "h": 144
+   }
+  },
+  {
+   "part": {
+    "x": 396,
+    "y": 16,
+    "w": 568,
+    "h": 192
+   },
+   "inCopy": {
+    "x": 264,
+    "y": 10,
+    "w": 379,
+    "h": 128
+   }
+  },
+  {
+   "part": {
+    "x": 3152,
+    "y": 1952,
+    "w": 304,
+    "h": 282
+   },
+   "inCopy": {
+    "x": 1167,
+    "y": 722,
+    "w": 113,
+    "h": 105
+   }
+  },
+  {
+   "part": null,
+   "inCopy": null
+  }
+ ]
+}

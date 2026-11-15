@@ -1,0 +1,119 @@
+{
+ "name": "notes.of: a sitting's notes, from what the mind holds and no model: one item for each step ahead in order, the step he walked past done, the date he kept in his calendar, the date as the page writes it with the days left, the heading the line sits under and the page's own whole line; what it could not tell is said (a step with no date, a date the page does not write, a step with no line, a page it has not read); with nothing ahead there are no notes",
+ "run": "notes.of",
+ "in": {
+  "sittings": [
+   {
+    "goal": "do we need five officers and an advisor? there's only three of us",
+    "pages": [
+     {
+      "name": "club",
+      "url": "https://campusactivities.usc.edu/x/",
+      "readOn": "2026-11-14",
+      "title": "Recognition Process - Campus Activities",
+      "lines": [
+       "Recognition Process",
+       "Deadlines +",
+       "October 27: Application opens",
+       "November 22 at 11:59pm: Application closes. You must submit the form on EngageSC before 11:59pm.",
+       "December 1: Deadline for advisors to submit their requirements.",
+       "Officer Trainings: Hazing Prevention and Officer Learning Path +",
+       "Each officer completes both trainings before the application is submitted."
+      ]
+     }
+    ],
+    "ahead": [
+     {
+      "step": "Officers finish their training",
+      "by": "",
+      "from": "https://campusactivities.usc.edu/x/",
+      "at": "Each officer completes both trainings"
+     },
+     {
+      "step": "Submit the application",
+      "by": "November 22 at 11:59pm",
+      "from": "https://campusactivities.usc.edu/x/"
+     },
+     {
+      "step": "Advisor requirements",
+      "by": "December 1",
+      "from": "https://campusactivities.usc.edu/x/"
+     },
+     {
+      "step": "Book a room",
+      "by": "December 9",
+      "from": "https://campusactivities.usc.edu/x/"
+     },
+     {
+      "step": "Pay the fee",
+      "by": "",
+      "from": "https://other.usc.edu/fees/"
+     }
+    ],
+    "kept": [
+     "November 22 at 11:59pm: Application closes. You must submit the form on EngageSC before 11:59pm."
+    ],
+    "walked": [
+     "Officers finish their training"
+    ],
+    "pictures": {
+     "Submit the application": "lost-and-found-cut-a.jpg"
+    },
+    "today": "2026-11-15T12:00:00-08:00"
+   },
+   {
+    "goal": "do we need five officers and an advisor? there's only three of us",
+    "pages": [
+     {
+      "name": "club",
+      "url": "https://campusactivities.usc.edu/x/",
+      "readOn": "2026-11-14",
+      "title": "Recognition Process - Campus Activities",
+      "lines": [
+       "Recognition Process",
+       "Deadlines +",
+       "October 27: Application opens",
+       "November 22 at 11:59pm: Application closes. You must submit the form on EngageSC before 11:59pm.",
+       "December 1: Deadline for advisors to submit their requirements.",
+       "Officer Trainings: Hazing Prevention and Officer Learning Path +",
+       "Each officer completes both trainings before the application is submitted."
+      ]
+     }
+    ],
+    "ahead": [],
+    "kept": [
+     "November 22 at 11:59pm: Application closes. You must submit the form on EngageSC before 11:59pm."
+    ],
+    "walked": [
+     "Officers finish their training"
+    ],
+    "pictures": {
+     "Submit the application": "lost-and-found-cut-a.jpg"
+    },
+    "today": "2026-11-15T12:00:00-08:00"
+   }
+  ]
+ },
+ "out": [
+  {
+   "title": "Recognition Process",
+   "goal": "do we need five officers and an advisor? there's only three of us",
+   "made": "November 15, 2026",
+   "items": [
+    "[done] Officers finish their training · Recognition Process - Campus Activities > Officer Trainings: Hazing Prevention and Officer Learning Path · \"Each officer completes both trainings before the application is submitted.\"",
+    "[in your calendar] Submit the application · November 22 at 11:59pm · 7 days left · Recognition Process - Campus Activities > Deadlines · \"November 22 at 11:59pm: Application closes. You must submit the form on EngageSC before 11:59pm.\" · lost-and-found-cut-a.jpg",
+    "[ ] Advisor requirements · December 1 · 16 days left · Recognition Process - Campus Activities > Deadlines · \"December 1: Deadline for advisors to submit their requirements.\"",
+    "[ ] Book a room · Recognition Process - Campus Activities · \"\"",
+    "[ ] Pay the fee · https://other.usc.edu/fees/ · \"\""
+   ],
+   "couldNotTell": [
+    "No date is given for \"Officers finish their training\".",
+    "\"Book a room\": the date \"December 9\" is not written on the page as it was read, so it is left out.",
+    "No line of \"Recognition Process\" was found for \"Book a room\".",
+    "\"Pay the fee\" was found on a page Lost and Found has not read (https://other.usc.edu/fees/), so where it is cannot be shown.",
+    "No date is given for \"Pay the fee\"."
+   ]
+  },
+  null
+ ]
+}

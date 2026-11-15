@@ -1,0 +1,19 @@
+{
+ "name": "notes.page: the notes page keeps its items in the order given and numbers them; a done item says why and loses its date; a date shows the days left; every word is escaped, so an item holding <script> or a javascript: link becomes no markup; no picture, or an unsafe one, gives no image, and a picture gives a thumbnail and its full size; the could-not-tell list sits under its heading; with no goal, quote or section none is shown; with no links it stands alone, and DialKit is linked when given",
+ "run": "notes.page",
+ "in": {},
+ "out": {
+  "inOrderAndNumbered": true,
+  "doneSaysWhyAndLosesItsDate": true,
+  "dateWithDaysLeft": true,
+  "countsDone": true,
+  "scriptIsText": true,
+  "noInjectedTags": true,
+  "noPictureNoImage": true,
+  "aPictureIsSmallAndBig": 2,
+  "couldNotTellUnderItsHeading": true,
+  "noGoalNoQuoteNoSection": true,
+  "standsAloneWithNoLinks": true,
+  "dialkitWhenLinked": true
+ }
+}

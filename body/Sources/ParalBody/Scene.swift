@@ -42,8 +42,8 @@ public struct Scene {
     var nexts: [Next] = []
     /// The menu's "Show the guide". Off, the card is not drawn; the steps are still taken.
     public var guideOn = true
-    /// The date last opened in his calendar, or the page of USC's opened in his browser (`page`), and when: the toast
-    /// says so for a while.
+    /// The date last opened in his calendar, or a page opened in his browser (`page`: one of USC's, or his notes), and
+    /// when: the toast says so for a while.
     var opened: (at: Double, label: String?, page: Bool)?
     /// The nudge card of each line said without being asked, by its ask's id (`SceneNudge.swift`).
     var cards: [String: Card] = [:]
@@ -184,8 +184,8 @@ public struct Scene {
         case .ready:
             // The mind is linked. A failure from before the first press (the mind was not running) no longer stands.
             if holds.isEmpty { failed = nil }
-        case .open(_, let label):
-            opened = (at, label, false)
+        case .open(let path, let label):
+            opened = (at, label, path.hasSuffix(".html"))
             kept(at)
         case .go(_, let url, let label): went(to: url, label, at)
         case .click(let x, let y): click(x: x, y: y, at: at)

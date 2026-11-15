@@ -28,6 +28,8 @@ export function shows(hands: Hands, looks: Looks, showed: (date: ToKeep) => void
   /** The step he is on, counted from 0; -1 before the first "show me". */
   let on = -1;
   let clicks = 0;
+  /** The steps he has walked past, by saying "show me" again or clicking the step's box: done, for his notes. */
+  const walked = new Set<string>();
 
   /** Step `at` of what is ahead, worked out for the page on his screen: its sentence, the board, and the kept line that writes its date. */
   function step(at: number, ahead: Ahead[], page: KeptPage | null) {
@@ -62,6 +64,8 @@ export function shows(hands: Hands, looks: Looks, showed: (date: ToKeep) => void
   }
 
   return {
+    /** The steps he has walked past in this sitting. */
+    walked: () => [...walked],
     /** Whether his words were a bare "show me" with steps to walk. If so it is done here, to the last sound. */
     async asked(id: string, words: string, ahead: Ahead[], seen: Screen, page: KeptPage | null, signal: AbortSignal): Promise<boolean> {
       if (!saysOnly(words, settings.showMeAsks.value)) {
@@ -73,6 +77,7 @@ export function shows(hands: Hands, looks: Looks, showed: (date: ToKeep) => void
         log(`${id}: he said "${words}" and nothing is ahead yet, so it is asked as an ordinary question`);
         return false;
       }
+      if (on >= 0 && on < ahead.length) walked.add(ahead[on].step);
       on += 1;
       if (on >= ahead.length) {
         on = -1;
@@ -109,6 +114,7 @@ export function shows(hands: Hands, looks: Looks, showed: (date: ToKeep) => void
       if (on < 0 || box === null || !inside(at, box, settings.clickGrow.value)) return false;
       const id = `c${++clicks}`;
       const done = on + 1;
+      if (on < ahead.length) walked.add(ahead[on].step);
       on += 1;
       hands.noted?.({ kind: "showme" });
       const next = on < ahead.length ? stepWithDone(on, ahead, page) : null;

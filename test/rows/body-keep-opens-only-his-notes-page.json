@@ -1,0 +1,21 @@
+{
+ "name": "body: of html, the app opens only his notes page: the one file named lost-and-found-notes.html in the temporary folder, once it is there; not another name there, not the same name in a folder under it, and a path that only goes round to it is the same file",
+ "run": "body.notesOpen",
+ "in": {
+  "paths": [
+   "lost-and-found-notes.html",
+   "lost-and-found-other.html",
+   "paral-row-notes/lost-and-found-notes.html",
+   "paral-row-notes/../lost-and-found-notes.html",
+   "lost-and-found-notes.html.ics/x"
+  ]
+ },
+ "out": {
+  "the notes page, before it is written": false,
+  "lost-and-found-notes.html": true,
+  "lost-and-found-other.html": false,
+  "paral-row-notes/lost-and-found-notes.html": false,
+  "paral-row-notes/../lost-and-found-notes.html": true,
+  "lost-and-found-notes.html.ics/x": false
+ }
+}

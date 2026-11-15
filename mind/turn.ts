@@ -2,13 +2,14 @@ import { setTimeout as wait } from "node:timers/promises";
 import { ask, type Hands, type Screen } from "./ask.ts";
 import { hear, silence, unasked, type Words } from "./cores/catch.ts";
 import { fitted } from "./cores/beats.ts";
-import { circled, drew, echo, type Point } from "./cores/circle.ts";
+import { circled, drew, drewAround, echo, type Point } from "./cores/circle.ts";
 import { showable } from "./cores/fit.ts";
 import { empty, fold, type Lesson } from "./cores/hold.ts";
 import { whichPage, type KeptPage } from "./cores/page.ts";
 import { glances, type Ahead, type Asked } from "./glance.ts";
 import { guides } from "./guide.ts";
 import { keeps } from "./keep.ts";
+import { notes } from "./notes.ts";
 import { drafts } from "./drafts.ts";
 import type { Listening, Ports } from "./ports.ts";
 import { wayAfter } from "./place.ts";
@@ -57,7 +58,9 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
   const guide = guides({ settings, send, log }, () => ahead);
   const hands: Hands = { ports, settings, send, log, noted: guide.noted };
   const keeping = keeps(hands);
-  const taking = takes(hands, () => glancing.whereNow(), keeping.has);
+  /** His notes for the sitting: his first question, the steps in order, what is done, and the cut-out of each marked section. */
+  const noting = notes(hands, { ahead: () => ahead, kept: keeping.kept, walked: () => showing.walked(), whereNow: () => glancing.whereNow() });
+  const taking = takes(hands, () => glancing.whereNow(), keeping.has, noting.asked);
   const glancing = glances(hands, (found) => (ahead = [...ahead.filter((old) => !found.some((step) => step.step === old.step)), ...found]), keeping.found, keeping.has);
   /** "Show me": the walk through what is ahead, one step each time he says it. */
   const showing = shows(hands, glancing, keeping.found);
@@ -120,7 +123,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
       }
       send({ v, type: "heard", text: words.text, final: true });
       const id = `t${++asks}`;
-      if ((await keeping.asked(id, words.text, at, mine.signal, onPage?.url ?? null)) || (await taking.asked(id, words.text, mine.signal))) return;
+      if ((await keeping.asked(id, words.text, at, mine.signal, onPage?.url ?? null)) || (await taking.asked(id, words.text, mine.signal, at))) return;
       const path = drawn ? trail : carried;
       carried = [];
       // His own loop comes back as a neat ring at once. It claims nothing about his work, so no model is asked.
@@ -144,12 +147,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
       // The quick line: none with no fast model.
       const opener = drafting ? drafting.line(lesson.breakLine !== null, words.text, mine.signal) : null;
       const around = circled(path, screen.lines, screen.display, settings.circleLeast.value);
-      if (path.length > 0) {
-        const worded = screen.lines.filter((line) => line.text !== "").length;
-        // A line outside the part he drew around comes with its place and no words, so the count shows the cut.
-        const outside = worded < screen.lines.length ? "; the rest lie outside the part he drew around" : "";
-        log(`${id}: he drew a path of ${path.length} points around line${around.length === 1 ? "" : "s"} ${around.join(", ") || "none"}${drawn ? "" : " on the hold before"}; ${worded} of ${screen.lines.length} lines came with their words${outside}`);
-      }
+      if (path.length > 0) log(drewAround(id, path.length, around, drawn, screen.lines));
       const asking = { id, words: words.text, seen: screen, circled: around, lesson, ahead, markUp, releasedAt: at, opener, signal: mine.signal };
       const shownBefore = lesson.shown;
       await ask(hands, asking, (kept) => (lesson = kept));
@@ -203,7 +201,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
             send({ v, type: "clear" });
             log(`the page on his screen is no longer "${drawnOn.title}"; what was drawn for it is cleared`);
           }
-          return glancing.take(line, asked !== null && Date.now() - asked.at < settings.followForMs.value ? asked : null);
+          return noting.looked(line, glancing.take(line, asked !== null && Date.now() - asked.at < settings.followForMs.value ? asked : null));
         case "trail":
           return void trail.push({ x: line.x, y: line.y });
         case "close":

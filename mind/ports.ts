@@ -132,8 +132,14 @@ export interface Glancer {
   glance(page: KeptPage, today: number, signal: AbortSignal, following?: Following): Promise<Glanced | null>;
 }
 
+/** What a cut was asked: the picture a look saved, the size its lines were read at, the part to cut in those pixels, and the file to write. */
+export type CutJob = { from: string; read: { w: number; h: number }; part: { x: number; y: number; w: number; h: number }; to: string };
+/** Cuts a part out of a saved picture into a file of its own, on the Mac. False when it could not: the picture is then left out. */
+export interface Cutter {
+  cut(job: CutJob): Promise<boolean>;
+}
 /**
  * `pages` is not a service: it is USC's pages as read ahead of time and kept in `pages/kept/`; empty when none are kept.
  * Nor is `sheets`: pages measured once, with a box for each place of a drawing (`sheets/`).
  */
-export type Ports = { brain: Brain; secondLook: SecondLook; ear: Ear; voice: Voice | null; opener: Opener | null; lessons: Lessons | null; glancer: Glancer | null; pages: KeptPage[]; sheets: Anchors[] };
+export type Ports = { brain: Brain; secondLook: SecondLook; ear: Ear; voice: Voice | null; opener: Opener | null; lessons: Lessons | null; glancer: Glancer | null; cutter: Cutter | null; pages: KeptPage[]; sheets: Anchors[] };

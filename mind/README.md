@@ -27,8 +27,9 @@ Every decision is a pure function in `cores/`; every outside service is behind `
 | `spots.ts` | rings on a measured drawing: finds a sheet on his screen, tells the model its places' names, rings the ones an answer names |
 | `showme.ts` | "show me": the walk through what is ahead, one step each time he says it or clicks the step's box, with the board, one sentence and the box or the way; no model asked |
 | `takes.ts` | what paral does in his browser for him, on his word only: "take me there" (the app is asked to open a kept page's address), "scroll for me" (the app is asked to scroll to what an arrow points at) and "open it for me" (the app is asked to click once on the closed heading paral has boxed; every condition for that click is written out there); and the card an answer stays on; no model asked |
+| `notes.ts` | "show me my notes": the notes of the sitting written as one page into the temporary folder from what the mind holds (his first question, the steps in order, what is done, what it could not tell) and the body told to open it, with no model asked; and after each look, the cut-out of each marked step's section (`adapters/sips.ts`) |
 | `keep.ts` | "add it to my calendar": the date last shown is written into a calendar file and the body is told to open it, with no model asked |
-| `ports.ts` | the interfaces: Brain, SecondLook, Opener, Ear, Voice, Lessons |
+| `ports.ts` | the interfaces: Brain, SecondLook, Opener, Ear, Voice, Lessons, Glancer, Cutter |
 | `settings.ts`, `settings/` | every value, one file per thing it governs |
 | `prompts/` | one prompt per job; a row holds each one's fingerprint |
 | `cores/page.ts`, `cores/dates.ts` | which of USC's kept pages (`../pages/kept/`) is on his screen; the dates a text names, counted from today, and whether a date said is on a page that was read |

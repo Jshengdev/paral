@@ -1,5 +1,5 @@
 {
- "name": "ready: the real bank (cueCards) crosses the seam in the ready line with its two pages, and the app's menu draws it: a submenu for each scenario, \"Open the page\" first where there is one, then its lines in order, nothing ticked, then \"Start over\"",
+ "name": "ready: the real bank (cueCards) crosses the seam in the ready line with its two pages, and the app's menu draws it: a submenu for each scenario, \"Open the page\" first where there is one, then its lines in order ending with \"show me my notes\", nothing ticked, then \"Start over\"",
  "run": "ready.bank",
  "in": {},
  "out": {
@@ -19,16 +19,19 @@
    "    what is still ahead? -> asks \"what is still ahead?\"",
    "    can you help me find where to book this event? -> asks \"can you help me find where to book this event?\"",
    "    scroll for me -> asks \"scroll for me\"",
+   "    show me my notes -> asks \"show me my notes\"",
    "Chemistry worksheet >",
    "    what does this formula tell me? -> asks \"what does this formula tell me?\"",
    "    can you draw how these steps connect? -> asks \"can you draw how these steps connect?\"",
    "    what happens first? -> asks \"what happens first?\"",
    "    so, what is the final product? -> asks \"so, what is the final product?\"",
    "    just tell me the answer -> asks \"just tell me the answer\"",
+   "    show me my notes -> asks \"show me my notes\"",
    "Maymester page >",
    "    Open the page -> opens https://dornsife.usc.edu/wrigley/education/catalina-residential-college/catalina-island-maymester/",
    "    is it too late to apply? -> asks \"is it too late to apply?\"",
    "    when does it open again? -> asks \"when does it open again?\"",
+   "    show me my notes -> asks \"show me my notes\"",
    "Start over -> starts over"
   ]
  }
