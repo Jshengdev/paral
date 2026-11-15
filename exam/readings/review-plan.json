@@ -1,5 +1,5 @@
 {
-  "session": "427ec7a4e4af",
+  "session": "31d66be86e81",
   "by": "the judge's reader, 2026-11-14",
   "verdicts": [
     {
@@ -7,14 +7,14 @@
       "step": 0,
       "pass": true,
       "what": "It answers what he asked",
-      "measured": "he asked whether the plan looks right and what to worry about in the file layout; it says the layout mostly holds up and names one worry, the rate limiter's buckets in memory, with why and a fix"
+      "measured": "he asked whether the plan looks right and what to worry about in the file layout; it says the layout looks sensible overall and names one worry, the rate limiter kept in memory, with why and a fix"
     },
     {
       "criterion": "C5",
       "step": 0,
       "pass": true,
       "what": "The opener is short and names the act",
-      "measured": "6 words: \"Let's go through your plan together.\"",
+      "measured": "7 words: \"Let's go through your plan with care.\"",
       "limit": "about ten words (the video: nine)"
     },
     {

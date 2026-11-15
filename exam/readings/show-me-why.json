@@ -1,27 +1,27 @@
 {
-  "session": "0d551f8d85f8",
+  "session": "79943aa8cbd6",
   "by": "the judge's reader, 2026-11-14",
   "verdicts": [
     {
       "criterion": "C17",
       "step": 0,
-      "pass": null,
+      "pass": true,
       "what": "The lesson is on numbers that are not his",
-      "measured": "no lesson played in this run, so there was nothing to read. The machine check for the clip fails on this run"
+      "measured": "the clip that played works x minus 4 equals 9 and comes to 13. His equation has 3, 2, 5 and 6, and his answer is 11; none of the clip's numbers is one of those"
     },
     {
       "criterion": "C16",
       "step": 0,
       "pass": true,
-      "what": "What he hears gives no result",
-      "measured": "he got two hint lines: read the highlighted line again, and keep your eye on what happens to the six as it goes from the left side to the right. Neither gives a result"
+      "what": "The lesson's sentence gives no result",
+      "measured": "\"This clip shows an equation as a balance, where doing the same thing to both sides keeps it true.\" It names the idea and no number"
     },
     {
       "criterion": "U6",
       "step": 0,
       "pass": true,
       "what": "It speaks to him about his page, never about its own workings",
-      "measured": "both lines speak of his line and his six"
+      "measured": "one sentence, about the clip he is about to see"
     }
   ]
 }

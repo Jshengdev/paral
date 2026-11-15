@@ -1,5 +1,5 @@
 {
-  "session": "df717644795e",
+  "session": "94e3f4e4cea1",
   "by": "the judge's reader, 2026-11-14",
   "verdicts": [
     {
@@ -7,14 +7,14 @@
       "step": 0,
       "pass": true,
       "what": "The first ask gets a hint about where to look, not the mistake",
-      "measured": "\"Read the highlighted line again, slowly.\", with the ring on his line 3x − 2x = 5 − 6. Only this fixed line was said: the leak guard replaced the model's own hint, and the log does not keep what it replaced"
+      "measured": "\"Read the highlighted line again, slowly.\" then \"Keep your eye on the right-hand side, on what happened to the six as it crossed over.\", with the ring on his line 3x − 2x = 5 − 6. It says where to look and not what is wrong"
     },
     {
       "criterion": "C16",
       "step": 1,
       "pass": true,
       "what": "When he asks for the answer, it goes one step up and no more",
-      "measured": "rung 2 of 4, the idea: a term that crosses the equals sign has the opposite operation done to both sides, so its sign flips. It names no number of his",
+      "measured": "rung 2 of 4, the idea, in general words: moving a term across the equals sign means doing the opposite operation to both sides, so its sign flips. It names no number of his and shows no step",
       "limit": "one step up per ask (the team's rule)"
     },
     {

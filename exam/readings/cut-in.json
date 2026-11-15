@@ -1,5 +1,5 @@
 {
-  "session": "78bc68b68efe",
+  "session": "ff22a81352ff",
   "by": "the judge's reader, 2026-11-14",
   "verdicts": [
     {
@@ -14,7 +14,7 @@
       "step": 1,
       "pass": true,
       "what": "It speaks to him about his page, never about its own workings",
-      "measured": "both sentences speak of his check and his server"
+      "measured": "both sentences speak of his app and its login cookies"
     }
   ]
 }
