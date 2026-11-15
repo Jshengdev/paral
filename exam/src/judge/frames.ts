@@ -1,5 +1,7 @@
 import { existsSync } from "node:fs";
+import { readFile } from "node:fs/promises";
 import { join } from "node:path";
+import { z } from "zod";
 import { frameAt, frameCount, framePath } from "../film.ts";
 import { COVERS, count, drawn, pixels, type Size } from "../pixels.ts";
 import { findNamed, rowOf, type Box, type Display, type Expect, type Truth } from "../shape.ts";
@@ -17,13 +19,25 @@ const JUST_DRAWN_MS = 800;               // the slowest pen in the tokens takes 
 /** `ink` is everything drawn at a moment; `cover` is only what is strong enough to hide what is under it (a pen's stroke, not a faint wash). */
 export type Seen = { size: Size; ink(ms: number): Promise<Uint8Array>; cover(ms: number): Promise<Uint8Array>; changed(fromMs: number, toMs: number): Promise<Uint8Array>; last(): Promise<Uint8Array>; restZone: Box };
 
-// Frame 0 is the bare page drawn by the same painter, so any difference from it is something the app drew.
+// Frame 0 is the bare page drawn by the same painter, so any difference from it is something the app drew. When he
+// scrolls or goes to another page, the film goes on over that page: it then writes each later page bare as
+// frames/bare-N.png and says in frames/pages.json which frame each page starts at. A frame is compared with the
+// bare page it was drawn over. A film with no pages.json has one page.
+const Pages = z.array(z.object({ fromFrame: z.number().int().nonnegative(), page: z.number().int().nonnegative() })).min(1);
+
 export async function look(dir: string, display: Display): Promise<Seen> {
   const size = { w: display.w, h: display.h };
   const bare = existsSync(framePath(dir, 0)) ? framePath(dir, 0) : join(dir, "page.png");
-  const page = await pixels(bare, size);
+  const listed = join(dir, "frames", "pages.json");
+  const starts = existsSync(listed) ? Pages.parse(JSON.parse(await readFile(listed, "utf8"))) : [{ fromFrame: 0, page: 0 }];
+  const read = new Map<number, Promise<Buffer>>();
+  const pageUnder = (frame: number) => {
+    const page = starts.filter((start) => start.fromFrame <= frame).at(-1)?.page ?? 0;
+    if (!read.has(page)) read.set(page, pixels(page === 0 ? bare : join(dir, "frames", `bare-${page}.png`), size));
+    return read.get(page)!;
+  };
   const frames = await frameCount(dir) - (existsSync(framePath(dir, 0)) ? 1 : 0);
-  const at = async (frame: number, over?: number) => drawn(await pixels(framePath(dir, Math.min(frames, frame)), size), page, size, over);
+  const at = async (frame: number, over?: number) => drawn(await pixels(framePath(dir, Math.min(frames, frame)), size), await pageUnder(Math.min(frames, frame)), size, over);
   const frame = (ms: number) => pixels(framePath(dir, Math.max(1, Math.min(frames, frameAt(ms)))), size);
   return { size, ink: (ms) => at(frameAt(ms)), cover: (ms) => at(frameAt(ms), COVERS), last: () => at(frames), changed: async (fromMs, toMs) => drawn(await frame(toMs), await frame(fromMs), size),
     restZone: { x: (size.w - REST_ZONE.w) / 2, y: size.h - REST_ZONE.h, w: REST_ZONE.w, h: REST_ZONE.h } };

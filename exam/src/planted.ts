@@ -198,6 +198,8 @@ const CASES: Case[] = [
   { name: "he circles and the whole display is sent", check: "When he circles, the answer is made from", mustPass: false, verdicts: () => [onlyThePart(0, { w: 1280, h: 827 }, { lines: 20, unread: 0 }, DISPLAY)] },
   { name: "he circles and a part is sent", check: "When he circles, the answer is made from", mustPass: true, verdicts: () => [onlyThePart(0, { w: 1136, h: 948 }, { lines: 20, unread: 6 }, DISPLAY)] },
   { name: "a mark that pops in", check: "Each mark is drawn by a pen", mustPass: false, verdicts: () => drawnIn(film((ms) => (ms >= 1000 ? 1 : 0)), ask([]), [{ at: 1000, what: "mark", id: "t1/0", box }], Infinity) },
+  { name: "a box wiped and drawn again on the same line, in 400 ms", check: "Each mark is drawn by a pen", mustPass: true, verdicts: () => drawnIn(film((ms) => (ms < 1000 ? 1 : (ms - 1000) / 400)), ask([]), [{ at: 1000, what: "mark", id: "t2/0", box }], Infinity) },
+  { name: "a box wiped and popped back on the same line", check: "Each mark is drawn by a pen", mustPass: false, verdicts: () => drawnIn(film((ms) => (ms < 1000 ? 1 : ms < 1067 ? 0 : 1)), ask([]), [{ at: 1000, what: "mark", id: "t2/0", box }], Infinity) },
   { name: "a mark drawn in 400 ms", check: "Each mark is drawn by a pen", mustPass: true, verdicts: () => drawnIn(film((ms) => (ms - 1000) / 400), ask([]), [{ at: 1000, what: "mark", id: "t1/0", box }], Infinity) },
 ];
 
