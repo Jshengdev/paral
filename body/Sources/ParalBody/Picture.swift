@@ -16,6 +16,8 @@ public struct CapsulePicture: Equatable {
     public var note: String?
     /// At rest with paral's ink still on the page, the circle carries a cross that clears it.
     public var closes = false
+    /// The steps paral took before a line it said without being asked, each lit once it is reached. Empty otherwise.
+    public var trail: [Word] = []
 }
 
 public struct MarkPicture: Equatable {

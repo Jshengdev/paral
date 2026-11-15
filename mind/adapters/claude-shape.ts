@@ -19,6 +19,16 @@ export const Mark = z
 
 // The order is the order the model writes in. The board comes before the sentences and a mark before its words, so
 // each can be shown the moment it is whole, ahead of the sentence it goes with.
+/** What the model writes for a look he did not ask for. `found` false means the page holds nothing that will cost him later. */
+export const Glance = z.object({
+  found: z.boolean(),
+  line: z.string(),
+  under: z.string(),
+  say: z.string(),
+  sayInView: z.string(),
+  ahead: z.array(z.object({ step: z.string(), by: z.string() })),
+});
+
 export const Reply = z.object({
   problem: z.string(),
   breakIndex: z.number().int().nullable(),
@@ -34,9 +44,8 @@ export const Reply = z.object({
  * counts days itself. It is the same for every ask on that site on one day, so the adapter sends it as a block of
  * its own, ahead of everything that changes, where the service can keep it between asks. Null when no page is known.
  */
-export function pagesRead(asked: Asked, most: number): string | null {
-  const { known } = asked;
-  const today = new Date(asked.today);
+export function pagesRead(known: KeptPage[], now: number, most: number): string | null {
+  const today = new Date(now);
   if (known.length === 0) return null;
   const away = new Map<string, number>();
   for (const page of known) for (const date of datesIn(page.lines.slice(0, most).join("\n"))) away.set(worded(date), daysFrom(today, date));
@@ -61,6 +70,9 @@ export function asking(asked: Asked): string {
     `Lines read from the screen:\n${asked.lines.flatMap((line, index) => (line ? [`${index}: ${line}`] : [])).join("\n") || "(none were read)"}`,
     ...(asked.circled.length > 0
       ? [`As they spoke, the student drew around line${asked.circled.length === 1 ? "" : "s"} ${asked.circled.join(", ")}; the path is drawn on the picture. "This", "that" and "here" mean what they drew around.`]
+      : []),
+    ...(asked.ahead.length > 0
+      ? [`What is still ahead for them, as you found it on USC's pages earlier in this sitting. Keep to this list when they ask what is left or what comes next:\n${asked.ahead.map((step) => `- ${step.step}${step.by ? `, by ${step.by}` : ""} (from ${step.from})`).join("\n")}`]
       : []),
     [
       "The lesson so far:",

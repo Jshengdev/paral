@@ -5,6 +5,7 @@ import { fitted } from "./cores/beats.ts";
 import { circled, drew, echo, type Point } from "./cores/circle.ts";
 import { showable } from "./cores/fit.ts";
 import { empty, type Lesson } from "./cores/hold.ts";
+import { glances, type Ahead } from "./glance.ts";
 import { drafts } from "./drafts.ts";
 import type { Listening, Ports } from "./ports.ts";
 import type { Settings } from "./settings.ts";
@@ -35,6 +36,13 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
   let trail: Point[] = [];
   /** What he drew around with no words waits here for his next ask. */
   let carried: Point[] = [];
+  /** What is still ahead for him, as found on the kept pages he has been on. It lasts for the connection. */
+  let ahead: Ahead[] = [];
+  /** How many releases are still being answered. A look he did not ask for waits while he holds the key or an answer is on its way. */
+  let answering = 0;
+  const glancing = glances({ ports, settings, send, log }, (found) => {
+    ahead = [...ahead.filter((old) => !found.some((step) => step.step === old.step)), ...found];
+  });
   /** The opener, drafted from his words while he is still talking. With no fast model there is no opener at all. */
   const drafting = ports.opener && drafts(ports.opener, settings, () => screen?.lines.map((read) => read.text).filter(Boolean) ?? []);
 
@@ -48,6 +56,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
 
   function down(at: number) {
     running?.abort();
+    glancing.stop();
     const mine = new AbortController();
     running = mine;
     screen = null;
@@ -72,6 +81,15 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
   }
 
   async function up(at: number) {
+    answering++;
+    try {
+      await released(at);
+    } finally {
+      answering--;
+    }
+  }
+
+  async function released(at: number) {
     const mine = running;
     const ears = listening;
     listening = null;
@@ -126,7 +144,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
         const outside = worded < screen.lines.length ? "; the rest lie outside the part he drew around" : "";
         log(`${id}: he drew a path of ${path.length} points around line${around.length === 1 ? "" : "s"} ${around.join(", ") || "none"}${drawn ? "" : " on the hold before"}; ${worded} of ${screen.lines.length} lines came with their words${outside}`);
       }
-      const asking = { id, words: words.text, seen: screen, circled: around, lesson, markUp, releasedAt: at, opener, signal: mine.signal };
+      const asking = { id, words: words.text, seen: screen, circled: around, lesson, ahead, markUp, releasedAt: at, opener, signal: mine.signal };
       await ask({ ports, settings, send, log }, asking, (kept) => (lesson = kept));
       if (!mine.signal.aborted) send({ v, type: "state", name: "idle" });
     } catch (error) {
@@ -151,6 +169,8 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
             markPad: settings.markPad.value,
             pictureLongEdge: settings.pictureLongEdge.value,
             cropAround: settings.cropAround.value,
+            // The body looks without a key only when there is something to look for: kept pages, and a model to ask.
+            ...(ports.glancer !== null && ports.pages.length > 0 && settings.lookEveryMs.value > 0 ? { lookEveryMs: settings.lookEveryMs.value } : {}),
           });
         case "key.down":
           return down(line.at);
@@ -161,6 +181,9 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
           return screenCame?.();
         case "key.up":
           return up(line.at);
+        case "look":
+          // A look he did not ask for never cuts into a hold or an answer.
+          return listening !== null || answering > 0 ? undefined : glancing.take(line);
         case "trail":
           return void trail.push({ x: line.x, y: line.y });
         case "close":

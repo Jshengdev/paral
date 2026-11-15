@@ -2,7 +2,9 @@ import AppKit
 
 extension Painter {
     func capsule(_ c: CapsulePicture, clock: Double, _ ctx: CGContext) -> Box {
-        let box = Layout.capsule(open: c.open, closes: c.closes, width: width, height: height, tokens: tokens)
+        // A trail of steps sits in its own band above the words, so the capsule is that much taller while it shows one.
+        let band = c.trail.isEmpty ? 0 : tokens.capsule.tagType + 12
+        let box = Layout.capsule(open: c.open, closes: c.closes, taller: band, width: width, height: height, tokens: tokens)
         let rect = CGRect(x: box.x, y: box.y, width: box.w, height: box.h)
         let radius = min(box.h / 2, tokens.capsule.radius)
         let shape = CGPath(roundedRect: rect, cornerWidth: radius, cornerHeight: radius, transform: nil)
@@ -32,7 +34,21 @@ extension Painter {
         case .listening:
             if c.words.isEmpty { write([Word(text: c.note ?? "", bright: tokens.dim)], in: inner) } else { write(c.words, in: inner) }
         case .speaking:
-            write(c.words, in: inner)
+            guard !c.trail.isEmpty else { write(c.words, in: inner); break }
+            // The steps paral took, small and in a row, each lit once it is reached; the words go below them.
+            let steps = c.trail.map { inked($0.text.uppercased(), size: tokens.capsule.tagType, color: ($0.bright >= 1 ? accent : paper).copy(alpha: $0.bright >= 1 ? 1 : $0.bright) ?? paper, weight: .semibold) }
+            let gap = 18.0
+            let total = steps.reduce(0) { $0 + $1.size().width } + gap * Double(steps.count - 1)
+            var x = inner.midX - total / 2
+            for (index, step) in steps.enumerated() {
+                step.draw(at: CGPoint(x: x, y: inner.minY + 1))
+                x += step.size().width
+                if index < steps.count - 1 {
+                    inked("›", size: tokens.capsule.tagType, color: paper.copy(alpha: 0.5) ?? paper, weight: .semibold).draw(at: CGPoint(x: x + gap / 2 - 3, y: inner.minY + 1))
+                    x += gap
+                }
+            }
+            write(c.words, in: CGRect(x: inner.minX, y: inner.minY + band, width: inner.width, height: inner.height - band))
         case .thinking:
             let tag = inked((c.note ?? "").uppercased(), size: tokens.capsule.tagType, color: paper.copy(alpha: 0.7) ?? paper, weight: .semibold)
             let size = tag.size()

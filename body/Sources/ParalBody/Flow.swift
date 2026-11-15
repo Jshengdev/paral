@@ -75,8 +75,11 @@ public final class Flow {
         wire.onRefused = { why in FileHandle.standardError.write(Data("flow: refused a line from the mind (\(why))\n".utf8)) }
         wire.start()
         var seenTo = try await until("ready", limit: 8000, from: 0) { if case .ready = $0 { return true } else { return false } }
-        let image = try Screen.load(page)
-        let small = dir.appendingPathComponent("page-for-the-brain.jpg").path
+        var image = try Screen.load(page)
+        var small = dir.appendingPathComponent("page-for-the-brain.jpg").path
+        /// How many times a step has put another page on the screen, and whether the step before was a look.
+        var pages = 0
+        var afterLook = false
         // Everything the mind sets comes from its ready line, which has just arrived; there is no second copy here.
         guard let settings else { throw Failed(why: "the mind's ready line carried no settings") }
         try Screen.saveSmaller(image, to: small, longEdge: settings.pictureLongEdge)
@@ -100,14 +103,32 @@ public final class Flow {
                     await pause(plus)
                 } else if let plus = (after?["firstAnswerPlusMs"] as? NSNumber)?.doubleValue {
                     // The first sentence of the answer itself, not a line said while he waits: a cut in the middle of an answer.
-                    _ = try await until("the answer's first sentence", limit: 60_000, from: seenTo) { if case .say(_, _, _, let aside) = $0 { return !aside } else { return false } }
+                    _ = try await until("the answer's first sentence", limit: 60_000, from: seenTo) { if case .say(_, _, _, let aside, _) = $0 { return !aside } else { return false } }
                     await pause(plus)
-                } else {
+                } else if !afterLook {
+                    // A look ends in no state line; it has waited its own time already.
                     try await settled(from: seenTo)
                     await pause(500)
                 }
             }
             first = false
+            afterLook = false
+            // A step may put another page on the screen: he clicked a link, scrolled, or opened a section.
+            if let other = ask["page"] as? String {
+                image = try Screen.load(other)
+                pages += 1
+                small = dir.appendingPathComponent("page-\(pages)-for-the-brain.jpg").path
+                try Screen.saveSmaller(image, to: small, longEdge: settings.pictureLongEdge)
+            }
+            // A look with no key pressed: what the app sends by itself when the display has changed and stood still.
+            if ask["look"] as? Bool == true {
+                seenTo = got.count
+                let lines = try Screen.read(image)
+                send(.look(at: stamp(), display: display, path: small, w: image.width, h: image.height, lines: lines), as: .screen(display: display, lines: lines))
+                await pause((ask["waitMs"] as? NSNumber)?.doubleValue ?? 6000)
+                afterLook = true
+                continue
+            }
             if ask["close"] as? Bool == true {
                 seenTo = got.count
                 send(.close(at: stamp()), as: .close)
@@ -172,7 +193,7 @@ public final class Flow {
         }
         // A page that could not be read stops the run here, with its reason.
         for reading in readings { _ = try await reading.value }
-        try await settled(from: seenTo)
+        if !afterLook { try await settled(from: seenTo) }
         await pause(300)
     }
 }

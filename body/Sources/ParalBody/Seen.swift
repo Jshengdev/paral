@@ -9,6 +9,8 @@ public struct BodySettings: Equatable {
     public var earGraceMs, markPad, pictureLongEdge: Double
     /// The room kept round what he drew around when the picture is cut down: a share of the loop's size, or points.
     public var cropShare = 1.0, cropPoints = 200.0
+    /// How often to look at the display with no key pressed; 0 is never.
+    public var lookEveryMs = 0.0
 }
 
 /// Everything the scene can be told, from either side of the seam. The windows and the film feed it the same way.
@@ -19,7 +21,8 @@ public enum Seen {
     case screen(display: DisplayPlace, lines: [ReadLine])
     case state(name: String, detail: String?)
     case heard(text: String, final: Bool)
-    case say(id: String, beat: Int, text: String, aside: Bool)
+    /// `trail` is nil for a line of an answer he asked for. A line said without being asked carries the steps paral took.
+    case say(id: String, beat: Int, text: String, aside: Bool, trail: [String]?)
     case voice(id: String, beat: Int, pcm: Data, last: Bool)
     case words(id: String, beat: Int, start: [Double], end: [Double])
     case mute(id: String)
@@ -58,6 +61,7 @@ public enum Seen {
                 settings.cropShare = share
                 settings.cropPoints = points
             }
+            settings.lookEveryMs = n("lookEveryMs") ?? 0
             return .success(.ready(settings))
         case "key.down": return .success(.keyDown)
         case "key.up": return .success(.keyUp)
@@ -67,7 +71,8 @@ public enum Seen {
         case "trail":
             guard let x = n("x"), let y = n("y") else { return .failure(Refused("trail: x and y are needed")) }
             return .success(.trail(x: x, y: y))
-        case "screen":
+        // A look with no key pressed tells the scene the same thing a screen line does: where the page's text is.
+        case "screen", "look":
             guard let d = f["display"] as? [String: Any], let scale = n("scale", d), let x = n("x", d), let y = n("y", d), let rows = f["lines"] as? [[String: Any]] else {
                 return .failure(Refused("screen: display and lines are needed"))
             }
@@ -84,7 +89,7 @@ public enum Seen {
             return .success(.heard(text: text, final: final))
         case "say":
             guard let id, let beat, let text = s("text"), !text.isEmpty else { return .failure(Refused("say: id, beat and text are needed")) }
-            return .success(.say(id: id, beat: beat, text: text, aside: f["aside"] as? Bool ?? false))
+            return .success(.say(id: id, beat: beat, text: text, aside: f["aside"] as? Bool ?? false, trail: f["trail"] as? [String]))
         case "voice":
             guard let id, let beat, let pcm = s("pcm"), let sound = Data(base64Encoded: pcm) else { return .failure(Refused("voice: id, beat and pcm are needed")) }
             return .success(.voice(id: id, beat: beat, pcm: sound, last: f["last"] as? Bool ?? false))

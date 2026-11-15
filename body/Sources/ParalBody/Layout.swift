@@ -2,12 +2,13 @@ import Foundation
 
 /// Where things go on a display, in points from its top-left corner.
 public enum Layout {
-    public static func capsule(open: Double, closes: Bool = false, width: Double, height: Double, tokens: Tokens) -> Box {
+    /// `taller` is extra height when the capsule carries a trail above its words. It grows upward, so the foot stays put.
+    public static func capsule(open: Double, closes: Bool = false, taller: Double = 0, width: Double, height: Double, tokens: Tokens) -> Box {
         let c = tokens.capsule
         let rest = closes ? c.restClose : c.rest
         let w = rest + (min(c.width, width - 48) - rest) * open
-        let h = rest + (c.height - rest) * open
-        return Box(x: (width - w) / 2, y: height - c.bottom - c.height / 2 - h / 2, w: w, h: h)
+        let h = rest + (c.height + taller - rest) * open
+        return Box(x: (width - w) / 2, y: height - c.bottom - c.height / 2 - h / 2 - taller * open / 2, w: w, h: h)
     }
 
     /// The largest empty rectangle left by the page's text and the capsule, found on a coarse grid.

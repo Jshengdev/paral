@@ -7,6 +7,8 @@ public struct Tokens: Codable {
     public struct Board: Codable { public var pad, boxPadX, boxPadY, gap, rowGap, type, radius, maxWidth, margin, emptyWidth, emptyHeight: Double }
     public struct Motion: Codable {
         public var tempo, openMs, lingerMs, wordMs, trailFadeMs, boardMs, readMsAWord, readMsLeast, flightMs, arc, bounce: Double
+        /// For a line said without being asked: how long it stays after its reading time, and how long each step of its trail takes to light.
+        public var unaskedStayMs, trailStepMs: Double
         public var reduce: Bool
     }
     public struct Strings: Codable { public var thinking, listening, failed: String }

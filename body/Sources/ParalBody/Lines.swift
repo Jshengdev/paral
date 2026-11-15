@@ -35,6 +35,8 @@ public enum ToMind {
     case trail(x: Double, y: Double, at: Double)
     case keyUp(at: Double)
     case screen(at: Double, display: DisplayPlace, path: String, w: Int, h: Int, lines: [ReadLine])
+    /// A look with no key pressed: what is on the display now, sent when it has changed and then stood still.
+    case look(at: Double, display: DisplayPlace, path: String, w: Int, h: Int, lines: [ReadLine])
     case close(at: Double)
 
     public var line: String {
@@ -46,9 +48,11 @@ public enum ToMind {
         case .trail(let x, let y, let at): fields = ["type": "trail", "x": x, "y": y, "at": at]
         case .keyUp(let at): fields = ["type": "key.up", "at": at]
         case .close(let at): fields = ["type": "close", "at": at]
-        case .screen(let at, let display, let path, let w, let h, let lines):
+        case .screen(let at, let display, let path, let w, let h, let lines), .look(let at, let display, let path, let w, let h, let lines):
+            var type = "screen"
+            if case .look = self { type = "look" }
             fields = [
-                "type": "screen", "at": at,
+                "type": type, "at": at,
                 "display": ["id": display.id, "scale": display.scale, "x": display.x, "y": display.y],
                 "picture": ["path": path, "w": w, "h": h],
                 "lines": lines.map { ["text": $0.text, "box": $0.box.json] },

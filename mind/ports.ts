@@ -18,6 +18,8 @@ export type Asked = {
   today: number;
   /** USC's kept pages that bear on this ask: the one on his screen first, then others of the same site. Empty when his screen is none of them. */
   known: KeptPage[];
+  /** What is still ahead for him, as found on kept pages earlier in this sitting: each step, its date as the page writes it, and the page. */
+  ahead: { step: string; by: string; from: string }[];
   /** The lessons that can be shown as a clip, each with the idea it shows; empty when none can. */
   lessons: { name: string; idea: string }[];
   lesson: Lesson;
@@ -104,5 +106,17 @@ export interface Lessons {
   render(name: string, example: Record<string, string | string[]>, signal: AbortSignal): Promise<Clip>;
 }
 
+/**
+ * What a look he did not ask for found on a kept page: the line that holds the one thing that will cost him later,
+ * the heading it sits under ("" for none), a sentence for when the line is not in view and one for when it is, and
+ * what is still ahead for it, each step with its date as a page writes it ("" when none is given).
+ */
+export type Glanced = { line: string; under: string; say: string; sayInView: string; ahead: { step: string; by: string }[] };
+
+export interface Glancer {
+  /** Null when the page holds nothing that will cost him later. Only the kept page's own text is sent, with today's date. */
+  glance(page: KeptPage, today: number, signal: AbortSignal): Promise<Glanced | null>;
+}
+
 /** `pages` is not a service: it is USC's pages as read ahead of time and kept in `pages/kept/`; empty when none are kept. */
-export type Ports = { brain: Brain; secondLook: SecondLook; ear: Ear; voice: Voice | null; opener: Opener | null; lessons: Lessons | null; pages: KeptPage[] };
+export type Ports = { brain: Brain; secondLook: SecondLook; ear: Ear; voice: Voice | null; opener: Opener | null; lessons: Lessons | null; glancer: Glancer | null; pages: KeptPage[] };

@@ -13,6 +13,14 @@ extension Scene {
     func capsule(at t: Double) -> CapsulePicture {
         let m = tokens.motion
         let grown = { (since: Double) in self.still ? 1 : Motion.spring((t - since) / self.ms(m.openMs), bounce: m.bounce) }
+        // A line said without being asked opens the capsule by itself, for its reading time and a little longer, with
+        // the steps paral took lighting up one after another above it. A press of the key takes the capsule over.
+        if let ask = asks.last(where: { $0.trail != nil && $0.beganAt <= t }), !holds.contains(where: { $0.down >= ask.beganAt && $0.down <= t }),
+           let now = times(ask).last(where: { $0.start <= t }), t < now.end + m.unaskedStayMs, let said = ask.beats[now.beat] {
+            let words = said.text.split(separator: " ").map { Word(text: String($0), bright: 1) }
+            let steps = (ask.trail ?? []).enumerated().map { index, step in Word(text: step, bright: t - ask.beganAt >= Double(index) * ms(m.trailStepMs) ? 1 : tokens.dim) }
+            return CapsulePicture(look: .speaking, open: grown(ask.beganAt), words: words, note: nil, trail: steps)
+        }
         guard let hold = holds.last(where: { $0.down <= t }) else {
             // Before the first press a failure still shows: a grant not given, or the mind not running.
             if let failed, t >= failed.at { return CapsulePicture(look: .failed, open: grown(failed.at), words: [], note: failed.detail) }

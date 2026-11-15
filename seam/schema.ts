@@ -34,6 +34,15 @@ export const FromBody = z.discriminatedUnion("type", [
     picture: z.object({ path: z.string().min(1), w: z.number().int().positive(), h: z.number().int().positive() }),
     lines: z.array(ReadLine),
   }),
+  /** A look with no key pressed: the same as `screen`, sent when what is on the display has changed and then stood still. */
+  z.object({
+    v,
+    type: z.literal("look"),
+    at,
+    display: Display,
+    picture: z.object({ path: z.string().min(1), w: z.number().int().positive(), h: z.number().int().positive() }),
+    lines: z.array(ReadLine),
+  }),
 ]);
 export type FromBody = z.infer<typeof FromBody>;
 
@@ -49,6 +58,8 @@ export const FromMind = z.discriminatedUnion("type", [
     pictureLongEdge: z.number().int().positive(),
     /** The room kept round what he drew around when the picture is cut down to that part. */
     cropAround: z.object({ share: z.number().nonnegative(), points: z.number().nonnegative() }),
+    /** How often the body looks at the display with no key pressed, to send a `look` when it has changed. Absent or 0: never. */
+    lookEveryMs: z.number().nonnegative().optional(),
   }),
   z.object({ v, type: z.literal("state"), name: z.enum(["idle", "listening", "thinking", "failed"]), detail: z.string().optional() }),
   z.object({ v, type: z.literal("heard"), text: z.string(), final: z.boolean() }),
@@ -60,6 +71,8 @@ export const FromMind = z.discriminatedUnion("type", [
     text: z.string().min(1),
     /** True for a line said while he waits (an opener, a stall line): it is no part of the answer. */
     aside: z.boolean().optional(),
+    /** Only on a line said without being asked: the steps paral took to get to it, shown small above the line. */
+    trail: z.array(z.string().min(1)).optional(),
     rung: z.number().int().nonnegative().optional(),
     of: z.number().int().positive().optional(),
   }),

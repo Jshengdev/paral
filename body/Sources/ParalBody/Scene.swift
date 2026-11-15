@@ -4,7 +4,8 @@ import Foundation
 /// It holds no clock and draws nothing, so the windows and the film show the same thing from the same events.
 public struct Scene {
     struct Beat { var text: String; var sayAt: Double; var soundAt: Double?; var bytes = 0; var wordStart: [Double] = [] }
-    struct Ask { var id: String; var beganAt: Double; var beats: [Int: Beat] = [:]; var mutedAt: Double?; var cutAt: Double? }
+    /// `trail` is set only for a line paral said without being asked: the steps it took, shown above the line.
+    struct Ask { var id: String; var beganAt: Double; var beats: [Int: Beat] = [:]; var mutedAt: Double?; var cutAt: Double?; var trail: [String]? }
     struct Mark { var id: String; var beat: Int; var kind: MarkKind; var box: Box; var label: String?; var at: Double; var withSay: Bool; var clearedAt: Double? }
     struct Echo { var id: String; var box: Box; var shape: String; var at: Double; var clearedAt: Double? }
     struct Board { var id: String; var rows: [[String]]; var at: Double; var room: Box; var filledAt: Double?; var clearedAt: Double? }
@@ -59,9 +60,12 @@ public struct Scene {
         case .heard(let text, _):
             let words = text.split(separator: " ").map(String.init)
             heard = words.enumerated().map { i, word in i < heard.count && heard[i].word == word ? heard[i] : (word, at) }
-        case .say(let id, let beat, let text, _):
+        case .say(let id, let beat, let text, _, let trail):
             if !asks.contains(where: { $0.id == id }) { asks.append(Ask(id: id, beganAt: at)) }
-            edit(id) { $0.beats[beat] = Beat(text: text, sayAt: at) }
+            edit(id) {
+                $0.beats[beat] = Beat(text: text, sayAt: at)
+                if let trail { $0.trail = trail }
+            }
         case .voice(let id, let beat, let pcm, _):
             edit(id) { ask in
                 guard ask.beats[beat] != nil, !pcm.isEmpty else { return }

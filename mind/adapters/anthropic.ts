@@ -4,8 +4,8 @@ import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import { z } from "zod";
 import { settled } from "../cores/partial.ts";
-import { arriving, asking, cleaned, pagesRead, Reply } from "./claude-shape.ts";
-import { Answered, type Brain, type Opener, type SecondLook } from "../ports.ts";
+import { arriving, asking, cleaned, Glance, pagesRead, Reply } from "./claude-shape.ts";
+import { Answered, type Brain, type Glancer, type Opener, type SecondLook } from "../ports.ts";
 import type { Settings } from "../settings.ts";
 
 
@@ -13,11 +13,11 @@ const Look = z.object({ leaks: z.boolean() });
 
 type Usage = { input_tokens: number; output_tokens: number; cache_creation_input_tokens?: number | null; cache_read_input_tokens?: number | null };
 type Log = (line: string) => void;
-export type Prompts = { answer: string; secondLook: string; opener: string };
+export type Prompts = { answer: string; secondLook: string; opener: string; glance: string };
 
 
 /** Claude behind three ports. The client is built here; a row may hand in a stand-in instead. */
-export function anthropic(settings: Settings, prompts: Prompts, log: Log, client: Anthropic = new Anthropic()): { brain: Brain; secondLook: SecondLook; opener: Opener; spentUsd(): number } {
+export function anthropic(settings: Settings, prompts: Prompts, log: Log, client: Anthropic = new Anthropic()): { brain: Brain; secondLook: SecondLook; opener: Opener; glancer: Glancer; spentUsd(): number } {
   const prices = settings.pricesUsdPerMTok.value;
   // A model with no price would be asked, and paid for, and fail only when its cost is counted. It is refused here.
   for (const model of [settings.brainModel.value, settings.secondLookModel.value, settings.openerModel.value]) {
@@ -60,7 +60,7 @@ export function anthropic(settings: Settings, prompts: Prompts, log: Log, client
           : [];
         // USC's kept pages go first and are marked to be kept by the service for an hour: they are the same for every
         // ask on that site, so after the first ask they cost a twentieth and no longer slow the answer.
-        const read = pagesRead(asked, settings.pageLinesGiven.value);
+        const read = pagesRead(asked.known, asked.today, settings.pageLinesGiven.value);
         const pages = read === null ? [] : [{ type: "text" as const, text: read, cache_control: { type: "ephemeral" as const, ttl: "1h" as const } }];
         const stream = client.beta.messages.stream(
           {
@@ -144,6 +144,28 @@ export function anthropic(settings: Settings, prompts: Prompts, log: Log, client
           return true;
         }
         return reply.parsed_output.leaks;
+      },
+    },
+    glancer: {
+      async glance(page, today, signal) {
+        allowed();
+        const model = settings.brainModel.value;
+        const date = new Date(today).toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+        // Only the kept page's own text goes, with today's date: nothing that was read from his screen.
+        const reply = await client.messages.parse(
+          {
+            model,
+            max_tokens: settings.glanceMaxTokens.value,
+            system: prompts.glance,
+            output_config: { effort: settings.brainEffort.value, format: zodOutputFormat(Glance) },
+            messages: [{ role: "user", content: `Today is ${date}. The page on their screen is "${page.title}".\n\n${pagesRead([page], today, settings.pageLinesGiven.value)}` }],
+          },
+          { signal },
+        );
+        count(reply.model, model, reply.usage);
+        const seen = reply.parsed_output;
+        if (seen === null || !seen.found || seen.line.trim() === "" || seen.say.trim() === "") return null;
+        return { line: seen.line, under: seen.under, say: seen.say, sayInView: seen.sayInView || seen.say, ahead: seen.ahead.filter((step) => step.step.trim() !== "") };
       },
     },
   };

@@ -23,11 +23,16 @@ final class App: NSObject, NSApplicationDelegate {
     private var trail: [CGPoint] = []
     private var cut: Set<String> = []
     private var holds = 0
+    /// True from the key going down until that hold has ended. The watch does not look meanwhile.
+    private var held = false
     /// Ends each hold: the microphone closes and the mind is told when the key came up.
     private lazy var release = Release { [weak self] released in
         self?.mic.stop()
         self?.wire.send(.keyUp(at: released))
+        self?.held = false
     }
+    /// Looks at the display with no key pressed, when the mind asks for it in its ready line.
+    private lazy var watch = Watch(screen: screen)
     private let began = Date()
 
     init(socket: String, tokens: Tokens, tokensPath: String, screen: NSScreen) {
@@ -96,6 +101,13 @@ final class App: NSObject, NSApplicationDelegate {
             key.onHeld = { [weak self] in self?.draw() }
             key.start()
             self.key = key
+            watch.busy = { [weak self] in self?.held ?? true }
+            watch.onLook = { [weak self] path, w, h, place, lines in
+                guard let self else { return }
+                self.tell(.screen(display: place, lines: lines))
+                self.wire.send(.look(at: self.stamp(), display: place, path: path, w: w, h: h, lines: lines))
+            }
+            watch.start(everyMs: settings.lookEveryMs, longEdge: settings.pictureLongEdge)
         }
         if case .voice(let id, _, let sound, _) = seen {
             guard !cut.contains(id) else { return }
@@ -118,6 +130,7 @@ final class App: NSObject, NSApplicationDelegate {
         shot = nil
         trail = []
         holds += 1
+        held = true
         let mine = holds
         tell(.keyDown)
         wire.send(.keyDown(at: stamp()))

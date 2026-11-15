@@ -33,6 +33,7 @@ Three programs come from one package: `ParalBody` (everything), `paral` (the app
 | `Screen.swift` | one picture of a display without paral's own window, the lines read from it, his path drawn on it |
 | `Overlay.swift` | one see-through window above everything that lets every click through, except the cross |
 | `Wire.swift` | the socket to the mind; reconnects when the mind restarts |
+| `Watch.swift` | looks at the display with no key pressed and reports a look when what it read has changed and stood still. Never run |
 | `Release.swift` | the end of a hold: the microphone's grace after the key is let go, and a new press that ends the hold before it first. Used by the app and by the scripted flow |
 
 ## With no window
@@ -54,6 +55,8 @@ cross. `startAfter` says when the key goes down for an ask after the first:
 | `{ "firstSayPlusMs": N }` | N ms after the first line of the ask before it is said: a cut-in |
 | `{ "firstAnswerPlusMs": N }` | N ms after the first sentence of its answer, not a line said while he waits |
 | `{ "releasePlusMs": N }` | N ms after the key was let go; under 300 it is inside the microphone's grace |
+
+A step with `"look": true` in place of a `wav` is a look with no key pressed: what the app's watcher sends by itself. `"page": PATH` on any step puts another page on the screen from that step on (he clicked, scrolled or opened a section), and `"waitMs": N` is how long a look step waits before the next one (6000 if left out).
 
 `paral-headless` commands: `read`, `smaller`, `page`, `lines`, `keys SECONDS NAME` (watch a key), `flow`, `film`,
 `frame RUN TOKENS MS OUT.png` (one moment of a run, for the dials page), `capsule RUN TOKENS MS...` (what the capsule

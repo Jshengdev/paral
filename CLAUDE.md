@@ -80,6 +80,17 @@ pages/   USC's public pages, read ahead of time and kept as text: what paral kno
 6. It rests. Marks stay. A follow-up is told what was said and what is still drawn. The cross on the resting circle
    clears it.
 
+## What a look without the key does
+
+When the mind has kept pages and a model, its ready line asks the body to look by itself (`lookEveryMs`). The app's
+`Watch` takes a picture every so often, reads it, and sends a `look` line when what it read has changed and then
+stood still. The mind (`mind/glance.ts`) acts only when the screen is one of USC's kept pages. The first time it
+sees a page it asks the deep model about the kept page's own text, whether it holds one thing that will cost him
+later; nothing read from his screen is sent for that. If so: a box on the line where it now is on his screen (the
+line itself, or the heading it sits under), one sentence in the capsule with the trail of what was done above it,
+shown and not spoken, and a board of what is still ahead. When he scrolls or opens a section the mark moves. What
+is ahead is remembered for the sitting and given to every ask. A press of the key takes over at once.
+
 ## Adding a capability
 
 Do these in order. Each step has a row before the next one starts.
@@ -125,6 +136,9 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
 
 ## Known limits
 
+- The look without the key has run only through the scripted stand-in. The app's own watcher (`Watch.swift`) is
+  compiled and has never run: how often it fires on a real page, whether the text reader's wobble makes it fire
+  twice or never, and what a look every 2.5 s costs the Mac are all unknown. `lookEveryMs` 0 turns it off.
 - The real windows are compiled and bundled and have never been started. The key, the microphone, the screen picture
   and the overlay over real apps are unproven until a person runs `./run`.
 - One display, chosen when the app starts. After plugging in a display or a projector, start it again.

@@ -30,10 +30,10 @@ const ahead = new AbortController();
 
 /** Claude for the answer, the second look and the fast lines. */
 function claude(): Partial<Ports> {
-  const live = anthropic(settings, { answer: prompt("answer"), secondLook: prompt("second-look"), opener: prompt("opener") }, log);
+  const live = anthropic(settings, { answer: prompt("answer"), secondLook: prompt("second-look"), opener: prompt("opener"), glance: prompt("glance") }, log);
   spent.usd = live.spentUsd;
   using.push(`brain ${settings.brainModel.value} (cap $${settings.spendCapUsd.value})`);
-  return { brain: live.brain, secondLook: live.secondLook, opener: live.opener };
+  return { brain: live.brain, secondLook: live.secondLook, opener: live.opener, glancer: live.glancer };
 }
 
 /** Cartesia for the ear and the voice. The lines whose words never change are spoken from kept sound. */

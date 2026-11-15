@@ -7,6 +7,7 @@ import { together, whichPage } from "./cores/page.ts";
 import { fold, type HoldEvent, type Lesson } from "./cores/hold.ts";
 import { next, type Move } from "./cores/teach.ts";
 import { explanation } from "./explanation.ts";
+import type { Ahead } from "./glance.ts";
 import { fast } from "./fast.ts";
 import { ladderHint } from "./hint.ts";
 import type { Answered, Part, Ports } from "./ports.ts";
@@ -16,7 +17,7 @@ import { SEAM_VERSION, type FromBody, type FromMind } from "../seam/schema.ts";
 
 export type Screen = Extract<FromBody, { type: "screen" }>;
 export type Hands = { ports: Ports; settings: Settings; send: (line: FromMind) => void; log: (line: string) => void };
-export type Asking = { id: string; words: string; seen: Screen; circled: number[]; lesson: Lesson; markUp: boolean; releasedAt: number; opener: Promise<string> | null; signal: AbortSignal };
+export type Asking = { id: string; words: string; seen: Screen; circled: number[]; lesson: Lesson; ahead: Ahead[]; markUp: boolean; releasedAt: number; opener: Promise<string> | null; signal: AbortSignal };
 
 const v = SEAM_VERSION;
 
@@ -103,6 +104,7 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
       saidFirst,
       today: asking.releasedAt,
       known,
+      ahead: asking.ahead,
       picturePath: seen.picture.path,
       lines: seen.lines.map((line) => line.text),
       circled: asking.circled,

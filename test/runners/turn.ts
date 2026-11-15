@@ -15,7 +15,7 @@ const shorter = (line: any) =>
       ? { v: line.v, type: line.type, id: line.id, beat: line.beat, count: line.words.length, ends: Number(line.end.at(-1).toFixed(2)) }
       : line;
 
-export async function playTurn(input: { tape: string; asks: Step[][]; set?: Record<string, unknown>; show?: "drawn" | "saidFirst" }): Promise<unknown> {
+export async function playTurn(input: { tape: string; asks: Step[][]; set?: Record<string, unknown>; show?: "drawn" | "saidFirst" | "ahead" }): Promise<unknown> {
   const path = fresh("row") + ".sock";
   const played = tape(join(import.meta.dirname, "..", "tapes", input.tape));
   const changed: any = { ...settings };
@@ -58,8 +58,10 @@ export async function playTurn(input: { tape: string; asks: Step[][]; set?: Reco
         else if (step.say) socket.write(JSON.stringify({ v: 1, type: "mic", pcm: Buffer.from(step.say).toString("base64"), at: 0 }) + "\n");
         else socket.write(JSON.stringify(step) + "\n");
       }
-      await until(settled, "a settled state");
+      // A look he did not ask for ends in no state line; a group with one says itself what it waits for.
+      if (!ask.some((step) => step.type === "look")) await until(settled, "a settled state");
     }
+    if (input.show === "ahead") return played.asked.map((asked) => ({ words: asked.words, ahead: asked.ahead }));
     if (input.show === "drawn") return played.asked.map((asked) => ({ words: asked.words, drawn: asked.lesson.drawn }));
     if (input.show === "saidFirst") return { toldTheDeepModel: played.asked.map((asked) => ({ words: asked.words, saidFirst: asked.saidFirst })), said: got.filter((line) => line.type === "say").map((line) => ({ beat: line.beat, text: line.text })) };
     return got.map(shorter);

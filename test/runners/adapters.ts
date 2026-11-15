@@ -70,9 +70,9 @@ export async function standIn(input: StandIn) {
   const changed = { ...settings, spendCapUsd: { ...settings.spendCapUsd, value: input.capUsd ?? settings.spendCapUsd.value }, brainModel: { ...settings.brainModel, value: input.brainModel ?? settings.brainModel.value } };
   const logged: string[] = [];
   const signal = new AbortController().signal;
-  const asked = { words: "", lines: [], fresh: false, circled: [], leadIn: settings.ladder.value[0].safe, saidFirst: null, today: Date.UTC(2026, 10, 14, 20), known: [], lessons: [], ...input.asked, lesson: { ...empty, ...input.asked.lesson }, picturePath: input.picture ? picturePath : null, rung: settings.ladder.value[0] };
+  const asked = { words: "", lines: [], fresh: false, circled: [], leadIn: settings.ladder.value[0].safe, saidFirst: null, today: Date.UTC(2026, 10, 14, 20), known: [], ahead: [], lessons: [], ...input.asked, lesson: { ...empty, ...input.asked.lesson }, picturePath: input.picture ? picturePath : null, rung: settings.ladder.value[0] };
   try {
-    const live = anthropic(changed, { answer: "answer prompt", secondLook: "second look prompt", opener: "opener prompt" }, (line) => logged.push(line), client);
+    const live = anthropic(changed, { answer: "answer prompt", secondLook: "second look prompt", opener: "opener prompt", glance: "glance prompt" }, (line) => logged.push(line), client);
     let answered = null;
     let early = false;
     const boards = new Set<string>();
