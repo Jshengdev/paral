@@ -334,9 +334,12 @@ the name opens as the capsule shuts, and the name is written from the cross left
   where neither it nor the room its bubble may take (520 wide, two lines tall) lies on any of the page's read lines
   (`Layout.pillMiddle`); where no place is clear, the one that covers least. At rest the collapsed pill, and the
   cross with its logo and name, slide the same way to the nearest place that lies on no read line, and stay at the
-  middle where none is clear (`Layout.restMiddle`); the window takes a click on the cross where it was drawn. What
-  else keeps off the capsule (the way arrow, the toast, the board, the guide's card) keeps off the pill and its
-  bubble's room at the display's middle.
+  middle where none is clear (`Layout.restMiddle`); the window takes a click on the cross where it was drawn.
+- **The foot is the pill's alone.** The band across the whole foot, from the top of the room the bubble may take
+  above the full pill down to the Dock (`Layout.foot`), holds the pill and its bubble and nothing else of paral's,
+  after the designer's pictures: the way arrow pointing down and the toast sit just above it, and the board, the
+  guide's card, the nudge card and an arrow to a card keep out of it. An arrow to the pill ends at it. A mark on a
+  line of the page that lies in the band is still drawn there.
 - **His question stays.** Once paral draws on the page for his ask (a mark or a board of that ask), his question
   stays in the bubble as the reason for what is drawn, and the pill keeps its look, until the answer's own words
   take the bubble: a line said while he waits shows only until then.

@@ -29,6 +29,15 @@ extension Layout {
         return Box(x: pill.x + pill.w / 2 - b.maxWidth / 2, y: pill.y - b.gap - h, w: b.maxWidth, h: h)
     }
 
+    /// The band across the foot of the display that is the pill's and its bubble's alone: from the top of the room
+    /// the bubble may take above the full pill down to the floor, the display's whole width. Nothing else of paral's
+    /// is placed in it (the way arrow, the toast, the board, the guide's card, the nudge card), after the designer's
+    /// pictures, where the foot holds the pill and its bubble and nothing else.
+    public static func foot(width: Double, height: Double, tokens: Tokens) -> Box {
+        let top = bubbleRoom(over: pill(open: 1, width: width, height: height, tokens: tokens), tokens: tokens).y
+        return Box(x: 0, y: top, w: width, h: height - top)
+    }
+
     /// Where the open pill's middle goes across the display, so that neither it nor the room above it for its bubble
     /// lies on the page's read text: the display's middle when that is clear, or else the nearest place along the
     /// floor that is; where every place lies on some text, the one that lies on least.

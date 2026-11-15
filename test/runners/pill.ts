@@ -1,5 +1,7 @@
 // The runner for rows about the voice pill and the bubble above it: moments of a hand-written run, through the real
 // scene and painter, with a Dock as tall as the row says. No mind, no service, no window.
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { handWritten, type Written } from "./body.ts";
 import { at, DISPLAY, textOf, type Box } from "./placed.ts";
 
@@ -26,13 +28,20 @@ function sounded(rows: Written[]): Written[] {
  * page); how far its foot stands above the Dock's top; its middle across the display; the bubble (what it says,
  * which of its words are in stone, whether its caret is up, how far above the pill it is, and whether it lies on the
  * page's read text, as the pill does, and the trail it carries); whether the logo mark by the pill breathes to say
- * paral is working; and the wave's marks, newest last, with its colour.
+ * paral is working; the wave's marks, newest last, with its colour; and which of the other pieces up (the way
+ * arrow, the toast, the board, the cards) lie in the pill's band at the foot, and which are up at all.
  */
 export function pill(input: { lines?: string[]; rows: Written[]; at: number[]; dock?: number; watch: string[] }) {
   const dir = handWritten("pill", sounded(input.rows), input.lines);
   // The page's read lines: the drawn page's, or those of a look the row writes first.
   const text = input.lines || input.rows[0]?.line.type === "look" ? textOf(dir) : [];
   const dock = input.dock ?? 0;
+  // The pill's band at the foot: from the top of the room its bubble may take down to the Dock, the display's width.
+  const tokens = JSON.parse(readFileSync(join(import.meta.dirname, "..", "..", "body", "tokens.json"), "utf8"));
+  const { capsule: k, bubble: b } = tokens;
+  const top = DISPLAY.h - dock - k.bottom - k.height - b.gap - (2 * k.type * b.leading + 2 * b.padY);
+  const band: Box = { x: 0, y: top, w: DISPLAY.w, h: DISPLAY.h - dock - top };
+  const own = ["capsule", "cross", "bubble", "pointer", "tag", "lead", "mark", "echo", "pulse", "trail"];
   return at(dir, input.at, false, dock).map(({ placed, capsule }) => {
     const box = placed.find((item) => item.what === "capsule")!.box;
     const cross = placed.find((item) => item.what === "cross")?.box;
@@ -47,6 +56,8 @@ export function pill(input: { lines?: string[]; rows: Written[]; at: number[]; d
         ? { says: capsule.says || capsule.note, stone: capsule.stone, caret: capsule.caret, aboveThePill: round(box.y - (bubble.y + bubble.h)), onText: text.some((line) => touches(line, bubble)), ...(capsule.trail.length ? { trail: capsule.trail } : {}) }
         : null,
       working: capsule.working ? "the logo mark by the pill breathes" : null,
+      inTheBand: placed.filter((item) => !own.includes(item.what) && touches(item.box, band)).map((item) => item.what),
+      upElsewhere: placed.filter((item) => !own.includes(item.what)).map((item) => item.what),
       wave: capsule.wave.length === 0 ? "still dots" : `${capsule.look === "listening" ? "ink" : "stone"}: ${capsule.wave.slice(-9).join(" ")}`,
     };
     return Object.fromEntries(input.watch.map((name) => [name, all[name]]));
