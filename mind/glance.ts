@@ -42,6 +42,8 @@ export function glances({ ports, settings, send, log }: Hands, remember: (ahead:
   let running: AbortController | null = null;
   /** The step that leads the looks on its page, when he has said "show me": they place it, not the page's own thing. */
   let led: Led | null = null;
+  /** The page on which each ask he followed was found to end, by the words of the ask. */
+  const endedOn = new Map<string, string>();
 
   /** A look while a step leads: the box or the way for that step, where it now is, with its sentence and the board. */
   function follow(look: Look | Screen, page: KeptPage, step: Led) {
@@ -71,12 +73,15 @@ export function glances({ ports, settings, send, log }: Hands, remember: (ahead:
       running = null;
       shown = null;
     },
-    async take(look: Look | Screen, asked: Asked | null) {
+    async take(look: Look | Screen, asked: Asked | null): Promise<void> {
       const page = whichPage(look.lines.map((line) => line.text), ports.pages, settings.pageLeastLines.value);
       if (page === null || ports.glancer === null) return;
       if (led !== null && led.page === page.name) return follow(look, page, led);
-      // He is being followed when he asked something a moment ago and has since come to another kept page.
-      const following = asked !== null && asked.page !== page.name ? asked : null;
+      // He is being followed when he asked something a moment ago and has since come to another kept page. That ends
+      // on the page that holds what he was sent for: a page he opens after it, or one found not to hold it, gets a
+      // look of its own.
+      const sent = asked !== null && asked.page !== page.name && [undefined, page.name].includes(endedOn.get(asked.words)) ? asked : null;
+      const following = sent !== null && found.get(`${page.name} after "${sent.words}"`) !== null ? sent : null;
       const key = following ? `${page.name} after "${following.words}"` : page.name;
       running?.abort();
       const mine = new AbortController();
@@ -92,8 +97,13 @@ export function glances({ ports, settings, send, log }: Hands, remember: (ahead:
         });
         if (mine.signal.aborted || glanced === undefined) return;
         found.set(key, glanced);
-        if (glanced === null) return log(`${id}: ${following ? "what he was sent for is not on this page" : "the page holds nothing that will cost him later"}; nothing is shown`);
-        if (!following) remember(glanced.ahead.map((step) => ({ ...step, from: page.url })));
+        if (glanced === null && following) {
+          log(`${id}: what he was sent for is not on this page; the page gets a look of its own`);
+          return this.take(look, asked);
+        }
+        if (glanced === null) return log(`${id}: the page holds nothing that will cost him later; nothing is shown`);
+        if (following) endedOn.set(following.words, page.name);
+        else remember(glanced.ahead.map((step) => ({ ...step, from: page.url })));
       }
       const glanced = found.get(key);
       if (!glanced) return log(`${id}: this page was looked at before and holds nothing; nothing is shown`);
