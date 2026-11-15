@@ -27,7 +27,8 @@ export function glanced(look: Look, expect: Expect, truth: Truth[], known: Known
   const line = says[0];
   const out = [yes(C, s, one, `"${line.text}", ${Math.round(line.at - look.at)} ms after the look`)];
   const sound = of(look.moments, "voice").length;
-  out.push(sound === 0 ? yes(C, s, "What a look shows is not spoken", "no sound was made for it") : no(C, s, "What a look shows is not spoken", `${sound} pieces of sound were sent for it`));
+  if (expect.spoken) out.push(sound > 0 ? yes(C, s, "A page's first look is also said aloud", `${sound} pieces of sound were sent for it`) : no(C, s, "A page's first look is also said aloud", "no sound was made for it"));
+  else out.push(sound === 0 ? yes(C, s, "What a look shows is not spoken", "no sound was made for it") : no(C, s, "What a look shows is not spoken", `${sound} pieces of sound were sent for it`));
   // The lines its marks sit on: a date it found may be shown as a box on the date's own line, with no date in the words.
   const markedLines = of(look.moments, "mark").flatMap((m) => linesUnder(m.box, truth).map((t) => t.text));
   out.push(trailIsTrue(s, line, known, markedLines));
