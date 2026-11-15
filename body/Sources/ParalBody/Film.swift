@@ -88,7 +88,9 @@ public enum Film {
             let way: Any = picture.way.map { ["id": $0.id, "to": $0.down ? "down" : "up", "toward": $0.toward, "drawn": $0.drawn, "nod": $0.nod] as [String: Any] } ?? NSNull()
             let pointer: Any = picture.pointer.map { ["x": $0.x, "y": $0.y, "ripple": $0.ripple ?? NSNull(), "flight": $0.withWay?.flight ?? NSNull(), "tag": $0.tag, "thinking": $0.thinking] as [String: Any] } ?? NSNull()
             let board: Any = picture.board.map { ["id": $0.id, "now": $0.now ?? NSNull(), "appear": $0.appear] as [String: Any] } ?? NSNull()
-            return ["placed": placed.map { item in ["what": item.what, "id": item.id ?? "", "box": item.box.json] as [String: Any] }, "way": way, "pointer": pointer, "board": board, "toast": picture.toast?.text ?? NSNull(),
+            // A drawn arrow's row also gives the points the pen has inked, so a row can say what it lies on.
+            let items = placed.map { item in ["what": item.what, "id": item.id ?? "", "box": item.box.json].merging(item.path.map { ["path": $0.map { [$0.x, $0.y] }] } ?? [:]) { $1 } as [String: Any] }
+            return ["placed": items, "way": way, "pointer": pointer, "board": board, "toast": picture.toast?.text ?? NSNull(),
                     "guide": picture.guide.map { ["text": $0.text, "n": $0.n ?? NSNull(), "of": $0.of ?? NSNull(), "appear": $0.appear] as [String: Any] } ?? NSNull()]
         }
     }

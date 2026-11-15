@@ -1,0 +1,425 @@
+{
+ "name": "body: an arrow leads from the newest mark to what speaks about it, one at a time: none until the mark is whole and the cursor has stepped aside; then it is inked toward the guide's card when the card's words came with the mark and the card is the nearer, and stands; none while an arrow that says which way to scroll is up; for an answer he asked for it leads to the capsule from the mark of the sentence being said, goes when a newer mark is begun and is inked again from that one, and is drawn back as the capsule closes; it goes when the card's words move on; with both speaking and the capsule the nearer it leads to the capsule and is not handed to the card when the capsule lets go; it never lies on the words of the line it leaves, on another line's words, on the board or off the display",
+ "run": "body.lead",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "November 22 at 11:59pm: Application closes.",
+   "You must submit the form on EngageSC before 11:59pm.",
+   "Late applications are not accepted.",
+   "Advisor requirements are collected separately.",
+   "Info Sessions, Workshops, and Office Hours",
+   "Application deadline: November 2, 2026",
+   "Apply for the Catalina Maymester"
+  ],
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "g1",
+     "beat": 0,
+     "kind": "box",
+     "on": 1
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "say",
+     "id": "g1",
+     "beat": 0,
+     "text": "The application closes November 22 at 11:59pm.",
+     "trail": [
+      "saw this page",
+      "found the line"
+     ]
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mute",
+     "id": "g1",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "board",
+     "id": "g1",
+     "rows": [
+      [
+       "Officers finish their training"
+      ],
+      [
+       "Submit the application: November 22 at 11:59pm"
+      ],
+      [
+       "Advisor requirements: December 1"
+      ]
+     ]
+    }
+   },
+   {
+    "at": 1001,
+    "line": {
+     "type": "next",
+     "text": "Open Deadlines",
+     "n": 3,
+     "of": 8
+    }
+   },
+   {
+    "at": 4000,
+    "line": {
+     "type": "way",
+     "id": "g9",
+     "to": "down",
+     "toward": "Deadlines"
+    }
+   },
+   {
+    "at": 5000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 6000,
+    "line": {
+     "type": "key.down",
+     "at": 1006000
+    }
+   },
+   {
+    "at": 6800,
+    "line": {
+     "type": "key.up",
+     "at": 1006800
+    }
+   },
+   {
+    "at": 7000,
+    "line": {
+     "type": "mark",
+     "id": "t1",
+     "beat": 1,
+     "kind": "ring",
+     "on": 6
+    }
+   },
+   {
+    "at": 7000,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 1,
+     "text": "The deadline was November 2, which was twelve days ago."
+    }
+   },
+   {
+    "at": 7000,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 2,
+     "text": "The sessions are listed under this heading."
+    }
+   },
+   {
+    "at": 7000,
+    "line": {
+     "type": "mark",
+     "id": "t1",
+     "beat": 2,
+     "kind": "underline",
+     "on": 5
+    }
+   },
+   {
+    "at": 7001,
+    "line": {
+     "type": "mute",
+     "id": "t1",
+     "why": "no voice is set up"
+    }
+   },
+   {
+    "at": 7100,
+    "line": {
+     "type": "state",
+     "name": "idle"
+    }
+   },
+   {
+    "at": 15000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 15000,
+    "line": {
+     "type": "mark",
+     "id": "g2",
+     "beat": 0,
+     "kind": "box",
+     "on": 1
+    }
+   },
+   {
+    "at": 15000,
+    "line": {
+     "type": "say",
+     "id": "g2",
+     "beat": 0,
+     "text": "The application closes November 22 at 11:59pm.",
+     "trail": [
+      "saw this page",
+      "found the line"
+     ]
+    }
+   },
+   {
+    "at": 15000,
+    "line": {
+     "type": "mute",
+     "id": "g2",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   },
+   {
+    "at": 15001,
+    "line": {
+     "type": "next",
+     "text": "Hold the key and say: show me",
+     "n": 4,
+     "of": 8
+    }
+   },
+   {
+    "at": 18000,
+    "line": {
+     "type": "next",
+     "text": "Say: add it to my calendar",
+     "n": 6,
+     "of": 8
+    }
+   },
+   {
+    "at": 19000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 20000,
+    "line": {
+     "type": "mark",
+     "id": "g3",
+     "beat": 0,
+     "kind": "box",
+     "on": 6
+    }
+   },
+   {
+    "at": 20000,
+    "line": {
+     "type": "say",
+     "id": "g3",
+     "beat": 0,
+     "text": "The Maymester application deadline was November 2, 2026, which closed 12 days ago.",
+     "trail": [
+      "saw this page",
+      "found 1 date that has passed"
+     ]
+    }
+   },
+   {
+    "at": 20000,
+    "line": {
+     "type": "mute",
+     "id": "g3",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   },
+   {
+    "at": 20001,
+    "line": {
+     "type": "next",
+     "text": "Say: is it too late to apply?",
+     "n": 2,
+     "of": 3
+    }
+   }
+  ],
+  "at": [
+   1500,
+   2600,
+   3500,
+   4600,
+   8500,
+   9500,
+   10300,
+   11200,
+   12500,
+   13330,
+   13600,
+   16500,
+   17500,
+   18500,
+   21500,
+   23000,
+   30500
+  ]
+ },
+ "out": [
+  {
+   "arrow": null
+  },
+  {
+   "arrow": {
+    "fromLine": 1,
+    "toward": "the guide's card",
+    "ink": "growing",
+    "onItsOwnLine": false,
+    "otherLinesCrossed": 0,
+    "onTheBoard": false,
+    "insideTheDisplay": true
+   }
+  },
+  {
+   "arrow": {
+    "fromLine": 1,
+    "toward": "the guide's card",
+    "ink": "still",
+    "onItsOwnLine": false,
+    "otherLinesCrossed": 0,
+    "onTheBoard": false,
+    "insideTheDisplay": true
+   }
+  },
+  {
+   "arrow": null
+  },
+  {
+   "arrow": {
+    "fromLine": 6,
+    "toward": "the capsule",
+    "ink": "growing",
+    "onItsOwnLine": false,
+    "otherLinesCrossed": 0,
+    "onTheBoard": false,
+    "insideTheDisplay": true
+   }
+  },
+  {
+   "arrow": {
+    "fromLine": 6,
+    "toward": "the capsule",
+    "ink": "still",
+    "onItsOwnLine": false,
+    "otherLinesCrossed": 0,
+    "onTheBoard": false,
+    "insideTheDisplay": true
+   }
+  },
+  {
+   "arrow": null
+  },
+  {
+   "arrow": {
+    "fromLine": 5,
+    "toward": "the capsule",
+    "ink": "growing",
+    "onItsOwnLine": false,
+    "otherLinesCrossed": 0,
+    "onTheBoard": false,
+    "insideTheDisplay": true
+   }
+  },
+  {
+   "arrow": {
+    "fromLine": 5,
+    "toward": "the capsule",
+    "ink": "still",
+    "onItsOwnLine": false,
+    "otherLinesCrossed": 0,
+    "onTheBoard": false,
+    "insideTheDisplay": true
+   }
+  },
+  {
+   "arrow": {
+    "fromLine": 5,
+    "toward": "the capsule",
+    "ink": "going back",
+    "onItsOwnLine": false,
+    "otherLinesCrossed": 0,
+    "onTheBoard": false,
+    "insideTheDisplay": true
+   }
+  },
+  {
+   "arrow": null
+  },
+  {
+   "arrow": {
+    "fromLine": 1,
+    "toward": "the guide's card",
+    "ink": "growing",
+    "onItsOwnLine": false,
+    "otherLinesCrossed": 0,
+    "onTheBoard": false,
+    "insideTheDisplay": true
+   }
+  },
+  {
+   "arrow": {
+    "fromLine": 1,
+    "toward": "the guide's card",
+    "ink": "still",
+    "onItsOwnLine": false,
+    "otherLinesCrossed": 0,
+    "onTheBoard": false,
+    "insideTheDisplay": true
+   }
+  },
+  {
+   "arrow": null
+  },
+  {
+   "arrow": {
+    "fromLine": 6,
+    "toward": "the capsule",
+    "ink": "growing",
+    "onItsOwnLine": false,
+    "otherLinesCrossed": 0,
+    "onTheBoard": false,
+    "insideTheDisplay": true
+   }
+  },
+  {
+   "arrow": {
+    "fromLine": 6,
+    "toward": "the capsule",
+    "ink": "still",
+    "onItsOwnLine": false,
+    "otherLinesCrossed": 0,
+    "onTheBoard": false,
+    "insideTheDisplay": true
+   }
+  },
+  {
+   "arrow": null
+  }
+ ]
+}

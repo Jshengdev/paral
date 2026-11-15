@@ -4,8 +4,9 @@ import { execFileSync } from "node:child_process";
 import { join } from "node:path";
 import { handWritten, session, type Written } from "./body.ts";
 
-type Box = { x: number; y: number; w: number; h: number };
-type Placed = { what: string; id?: string; box: Box };
+export type Box = { x: number; y: number; w: number; h: number };
+// `path` is given for a drawn arrow only: the points the pen has inked so far, in the order it draws them.
+type Placed = { what: string; id?: string; box: Box; path?: [number, number][] };
 type Moment = {
   placed: Placed[];
   way: { id: string; to: string; toward: string; drawn: number } | null;
@@ -17,11 +18,11 @@ type Moment = {
 
 const root = join(import.meta.dirname, "..", "..");
 const headless = join(root, "body", ".build", "debug", "paral-headless");
-const DISPLAY = { w: 1600, h: 1000 };
+export const DISPLAY = { w: 1600, h: 1000 };
 const touches = (a: Box, b: Box) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
-const textOf = (dir: string): Box[] => session(dir)[0].lines.map((line: { box: Box }) => line.box);
+export const textOf = (dir: string): Box[] => session(dir)[0].lines.map((line: { box: Box }) => line.box);
 // `guideOff` is the menu's "Show the guide" unticked: no seam line carries it, so the probe is told by the environment.
-const at = (dir: string, moments: number[], guideOff = false): Moment[] =>
+export const at = (dir: string, moments: number[], guideOff = false): Moment[] =>
   JSON.parse(execFileSync(headless, ["placed", dir, join(root, "body", "tokens.json"), ...moments.map(String)], { encoding: "utf8", env: { ...process.env, PARAL_GUIDE: guideOff ? "off" : "on" } }));
 
 /**
@@ -163,4 +164,16 @@ export function guide(input: { lines: string[]; rows: Written[]; at: number[] })
   });
   const cardsWithTheGuideOff = at(dir, input.at, true).filter(({ placed }) => placed.some((item) => item.what === "guide")).length;
   return { shown, cardsWithTheGuideOff };
+}
+
+/**
+ * The ink of every mark and of his own loop at each moment of a hand-written run: how many are up, and whether all of
+ * their ink lies inside the display, a pen's width in from its edges.
+ */
+export function inkInside(input: { lines: string[]; rows: Written[]; at: number[] }) {
+  const dir = handWritten("ink", input.rows, input.lines);
+  return at(dir, input.at).map(({ placed }) => {
+    const ink = placed.filter((item) => item.what === "mark" || item.what === "echo").map((item) => item.box);
+    return { marks: ink.length, insideTheDisplay: ink.every((box) => box.x >= 3.5 && box.y >= 3.5 && box.x + box.w <= DISPLAY.w - 3.5 && box.y + box.h <= DISPLAY.h - 3.5) };
+  });
 }

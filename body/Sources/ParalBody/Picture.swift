@@ -18,6 +18,8 @@ public struct CapsulePicture: Equatable {
     public var closes = false
     /// The steps paral took before a line it said without being asked, each lit once it is reached. Empty otherwise.
     public var trail: [Word] = []
+    /// The ask whose words the capsule holds, while it holds any and while it closes after them.
+    public var ask: String?
 }
 
 public struct MarkPicture: Equatable {
@@ -74,6 +76,17 @@ public struct GuidePicture: Equatable {
     public var appear: Double
 }
 
+/// The drawn arrow that leads from the mark that matters to what is speaking about it.
+public struct LeadPicture: Equatable {
+    /// The capsule, which is taller while it carries a trail of steps, or the guide's card.
+    public enum Speaker: Equatable { case capsule(trail: Bool), guide }
+    /// The key of the mark it leaves.
+    public var from: String
+    public var to: Speaker
+    /// How far the ink has gone along it, 0 to 1.
+    public var drawn: Double
+}
+
 public struct TrailPoint: Equatable { public var x, y, alpha: Double }
 
 /// Paral's own cursor: where its tip is, and how far the ripple that says "here" has spread, 0 to 1, or nil for none.
@@ -104,6 +117,7 @@ public struct Picture: Equatable {
     public var clip: ClipPicture?
     public var toast: ToastPicture?
     public var guide: GuidePicture?
+    public var lead: LeadPicture?
     public var trail: [TrailPoint]
     /// Where the page's own text is, so nothing written beside a mark lands on it.
     public var avoid: [Box]

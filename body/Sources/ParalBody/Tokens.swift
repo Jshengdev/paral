@@ -44,6 +44,10 @@ public struct Tokens: Codable {
     /// its words and of the small line above them, the orb's width, the gap between the two lines, and how far from
     /// the top and the side of the display it sits (the top clears the Mac's menu bar, 37 points on a notched display).
     public struct Guide: Codable { public var width, pad, radius, type, small, orb, gap, top, side: Double }
+    /// The arrow that leads from a mark to what speaks about it, after the design kit's drawn arrow: how far it stays
+    /// from the mark and from what it leads to, how long the pen takes over it, the largest share of its length that
+    /// may lie on the page's words, and the longest it may be. Where no way within those two is found, none is drawn.
+    public struct Lead: Codable { public var gap, drawMs, overText, longest: Double }
     /// `opened` is what the toast says when a date has been opened in his calendar. It does not say "added": whether
     /// Calendar asks first or adds at once is not known.
     /// `name` is what the cursor's tag says: whose cursor it is.
@@ -75,6 +79,7 @@ public struct Tokens: Codable {
     public var cursor: Cursor
     public var toast: Toast
     public var guide: Guide
+    public var lead: Lead
     public var motion: Motion
     public var strings: Strings
 

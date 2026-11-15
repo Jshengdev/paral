@@ -67,7 +67,7 @@ extension Scene {
         for way in ways { end = max(end, min(way.clearedAt ?? .infinity, inking(way).to + ms(tokens.cursor.settleMs))) }
         for clip in clips { end = max(end, min(clip.clearedAt ?? .infinity, clip.at + ms(tokens.motion.boardMs) + clip.seconds * 1000)) }
         if let opened { end = max(end, opened.at + 2 * ms(tokens.motion.boardMs) + tokens.toast.stayMs) }
-        if let guide, guide.done { end = max(end, guide.at + tokens.toast.stayMs + ms(tokens.motion.boardMs)) }
+        if let guide = nexts.last, guide.done { end = max(end, guide.at + tokens.toast.stayMs + ms(tokens.motion.boardMs)) }
         if let closed = closedAt { end = max(end, closed + ms(tokens.motion.openMs)) }
         return end + 200
     }
