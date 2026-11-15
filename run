@@ -1,6 +1,6 @@
 #!/bin/sh
 # ./run          the first look: says which grants paral needs, then builds, signs and starts the mind and the app
-# ./run build    builds and signs tmp/Paral.app and starts nothing
+# ./run build    builds and signs tmp/Paral.app and starts nothing; a running paral is ended first, as below
 # ./run grants   only says which grants paral needs
 # ./run stop     ends the mind and the app
 # PARAL_KEYS names the key file (default ~/.config/paral/keys.env). PARAL_SIGN=- signs without an identity.
@@ -56,6 +56,15 @@ if [ "${1:-}" = grants ]; then grants "$key" "$pen"; exit 0; fi
 
 echo "run: building the app"
 (cd body && swift build -c release 2>&1 | tail -1 | grep -q "Build complete") || { echo "run: the body did not build; run (cd body && swift build -c release) to see why" >&2; exit 1; }
+# A running paral is ended before its file is replaced. Replaced under it, the old app goes on looking at the screen
+# from a file that is no longer there; macOS then cannot tell which app is looking, and puts its box that asks to
+# allow the app to see the screen in front of everything until it is answered.
+if pgrep -f "$app/Contents/MacOS/paral" >/dev/null 2>&1; then
+  stop
+  tries=0
+  while pgrep -f "$app/Contents/MacOS/paral" >/dev/null 2>&1 && [ "$tries" -lt 60 ]; do sleep 0.05; tries=$((tries + 1)); done
+  [ "${1:-}" = build ] && echo "run: the paral that was running is stopped, so its file can be replaced"
+fi
 mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources"
 cp body/.build/release/paral "$app/Contents/MacOS/paral"
 cp body/tokens.json "$app/Contents/Resources/tokens.json"
