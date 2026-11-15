@@ -95,7 +95,7 @@ public enum Film {
             return ["placed": items, "way": way, "pointer": pointer, "board": board, "toast": picture.toast?.text ?? NSNull(),
                     "capsule": ["look": picture.capsule.look.rawValue, "says": picture.capsule.words.map(\.text).joined(separator: " ")],
                     "guide": picture.guide.map { ["text": $0.text, "n": $0.n ?? NSNull(), "of": $0.of ?? NSNull(), "appear": $0.appear] as [String: Any] } ?? NSNull(),
-                    "nudge": picture.nudge.map { ["text": $0.text, "inked": $0.words.filter { $0.bright >= 1 }.count, "trail": $0.trail.map(\.text), "buttons": $0.buttons, "appear": $0.appear, "rows": $0.rows, "leave": $0.leave] as [String: Any] } ?? NSNull()]
+                    "nudge": picture.nudge.map { ["text": $0.text, "inked": $0.words.filter { $0.bright >= 1 }.count, "trail": $0.trail.map(\.text), "buttons": $0.buttons, "appear": $0.coming.card, "rows": $0.coming.lines, "leave": $0.coming.gone] as [String: Any] } ?? NSNull()]
         }
     }
 

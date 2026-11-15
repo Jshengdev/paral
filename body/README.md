@@ -63,12 +63,17 @@ where and draws it (`PainterNudge.swift`, `Layout.nudge`), as for the guide's ca
   the display below the menu bar and `nudge.clear` from every read line, every mark's whole ink, the cursor's resting
   place, the board, the clip, the way arrow, the toast, the guide's card and the open capsule, with room for its rise.
   With the way to the line and no mark, its home is the right side above the capsule. Only when no place is free at
-  full size is it shrunk, a twentieth at a time down to 0.7, and only if none is free even then does it go where it
-  covers least: no row has seen that. On the recorded club page at a scale of 1, with the board up, it is drawn at
+  full size is it shrunk, a twentieth at a time down to 0.8 (`nudge.least`, the smallest that still reads). Where none
+  is free even then, no card is drawn: the line is shown in the capsule as it was before the card, with its trail and
+  no buttons, the arrow leads there, and the film's record names it (`nudge-in-capsule`). A card never lies on the
+  page's words. On the recorded club page at a scale of 1, with the board up, it is drawn at
   0.95 to the left of the board. It keeps its place while that stays free, and a card that is going does not move.
-- **How it moves.** It comes up on `arrive` in 420 ms from 0.96 of its size, anchored at its top, and 10 points low;
-  its rows follow 60, 110 and 160 ms after it began, each rising 6. It goes on `leave` in 160. The kit's blur on
-  arrival is not drawn. With motion reduced it is there or not.
+- **How it moves.** It comes up as the guide's card does, with the same two helpers (`Scene.coming`,
+  `Painter.card` and `Painter.line`, tokens `card`): on `arrive` in 420 ms from 0.96 of its size, anchored at its
+  top, and 10 points low; its three lines follow 60, 110 and 160 ms after it began, each rising 6. It goes on `leave`
+  in `nudge.leaveMs` (160), to 0.98 of its size. The kit's blur on arrival is not drawn. With motion reduced it is
+  there or not. The drawn arrow lands on the card's near end about a third of the way down (`nudge.landing`), as the
+  kit's newer pictures have it.
 - **When it goes.** With buttons it stays until a button is pressed, the hold key is pressed, the cross closes the
   conversation, or a newer such line takes its place (the same words sent again as the page scrolls are the same card,
   which does not come up again). "Add to calendar" sends the typed line `Nudge.asks` exactly as a tapped cue card does;

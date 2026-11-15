@@ -43,6 +43,10 @@ export function nudge(input: { lines: string[]; rows: Written[]; at: number[]; n
   return moments.map(({ placed, nudge, capsule, toast }) => {
     const card = placed.find((item) => item.what === "nudge");
     const also = { capsule: capsule.look, toast: toast !== null };
+    // With no place clear of the page's words the card is not drawn and its line is in the capsule: what it says
+    // there, whether the capsule lies on any read line, and whether the arrow leads there.
+    const instead = placed.find((item) => item.what === "nudge-in-capsule");
+    if (nudge && instead) return { card: null, inTheCapsule: { says: nudge.text, onText: text.some((other) => touches(other, instead.box)), arrowLeadsToIt: placed.some((item) => item.what === "lead" && item.id?.endsWith(">capsule")) }, toast: toast !== null };
     if (!nudge || !card) return { card: null, ...also };
     const box = card.box, pill = placed.find((item) => item.what === "capsule")!.box;
     const buttons = placed.filter((item) => item.what === "button");
