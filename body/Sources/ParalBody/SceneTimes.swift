@@ -58,10 +58,11 @@ extension Scene {
     }
 
     /// When a line said without being asked, arriving at `at`, gets its turn in the capsule: once the line the
-    /// capsule holds has stood its time, and after every such line that is still waiting for its own turn.
+    /// capsule holds has stood its time, and after every such line that is still waiting for its own turn. A line
+    /// whose words got no card (he had answered them) holds no line back.
     func turn(after at: Double) -> Double {
         var waits = [standing(at: at)].compactMap { $0 }
-        if let last = asks.last(where: { $0.trail != nil }), let text = last.beats.keys.max().flatMap({ last.beats[$0]?.text }) {
+        if let last = asks.last(where: { $0.trail != nil && !unseen($0) }), let text = last.beats.keys.max().flatMap({ last.beats[$0]?.text }) {
             waits.append((text, shown(last).last?.start ?? last.beganAt))
         }
         return max(at, waits.map { $0.since + stand($0.text) }.max() ?? at)
@@ -113,6 +114,7 @@ extension Scene {
         for way in ways { end = max(end, min(way.clearedAt ?? .infinity, inking(way).to + ms(tokens.cursor.settleMs))) }
         for clip in clips { end = max(end, min(clip.clearedAt ?? .infinity, clip.at + ms(tokens.motion.arriveMs) + clip.seconds * 1000)) }
         if let opened { end = max(end, opened.at + ms(tokens.motion.arriveMs) + tokens.toast.stayMs + ms(tokens.motion.leaveMs)) }
+        if let gone = cardGone(before: .infinity) { end = max(end, gone) }
         if let guide = nexts.last { end = max(end, guide.shownAt + (guide.done ? tokens.toast.stayMs + ms(tokens.motion.leaveMs) : 0)) }
         if let closed = closedAt { end = max(end, closed + ms(tokens.motion.leaveMs)) }
         return end + 200

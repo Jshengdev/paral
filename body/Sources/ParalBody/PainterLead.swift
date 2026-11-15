@@ -101,6 +101,10 @@ extension Painter {
         case .capsule(let trail):
             (target, name) = (pill(trail), "capsule")
             if let card { taken.append(card) }
+        case .nudge:
+            guard let nudge = placed.first(where: { $0.what == "nudge" })?.box else { return nil }
+            (target, name) = (nudge, "nudge")
+            taken += [pill(true)] + (card.map { [$0] } ?? [])
         }
         // The mark is its line and the ink round it.
         let ink = Pen.path(of: mark, tokens: tokens, avoiding: picture.avoid, inside: (width, height))

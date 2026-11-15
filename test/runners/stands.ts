@@ -4,7 +4,8 @@ import { handWritten, type Written } from "./body.ts";
 import { at } from "./placed.ts";
 
 /**
- * At each moment: the words the capsule holds (nothing unless it is speaking) and the words on the guide's card.
+ * At each moment: the words the capsule holds (nothing unless it is speaking), the words on the guide's card, and the
+ * words on the nudge card, which is where a line said without being asked comes up.
  * A row writes a voice line by its length (`ms`); here it becomes that much silence at the voice's 24 kHz.
  */
 export function stands(input: { rows: Written[]; at: number[] }) {
@@ -13,5 +14,5 @@ export function stands(input: { rows: Written[]; at: number[] }) {
     const { ms, ...line } = row.line;
     return { at: row.at, line: { ...line, pcm: Buffer.alloc(ms * 48).toString("base64") } };
   });
-  return at(handWritten("stands", rows), input.at).map(({ capsule, guide }) => ({ pill: capsule.look === "speaking" ? capsule.says : null, card: guide?.text ?? null }));
+  return at(handWritten("stands", rows), input.at).map(({ capsule, guide, nudge }) => ({ pill: capsule.look === "speaking" ? capsule.says : null, card: guide?.text ?? null, nudge: nudge?.text ?? null }));
 }

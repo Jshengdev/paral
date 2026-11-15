@@ -75,13 +75,15 @@ public enum Film {
 
     /// Where the painter puts each thing at each of the given moments of a recorded run, and the way arrow's, the
     /// cursor's and the board's own values then. For rows: a film's record says when a thing's box changes, and not when the thing goes.
-    public static func placed(run: String, tokens: Tokens, at moments: [Double], guide: Bool = true, inset: Double = 0) throws -> [[String: Any]] {
+    /// `notNow` are the moments he pressed "Not now" on the nudge card, which no line of a record carries.
+    public static func placed(run: String, tokens: Tokens, at moments: [Double], guide: Bool = true, inset: Double = 0, notNow: [Double] = []) throws -> [[String: Any]] {
         let run = try load(URL(fileURLWithPath: run))
         let painter = Painter(tokens: tokens, width: run.w, height: run.h)
+        let events = (run.events + notNow.map { ($0, Seen.notNow) }).enumerated().sorted { ($0.element.at, $0.offset) < ($1.element.at, $1.offset) }.map(\.element)
         return moments.map { moment in
             var scene = Scene(width: run.w, height: run.h, tokens: tokens, bottomInset: inset)
             scene.guideOn = guide
-            for event in run.events where event.at <= moment { scene.take(event.seen, at: event.at) }
+            for event in events where event.at <= moment { scene.take(event.seen, at: event.at) }
             let picture = scene.picture(at: moment)
             var placed: [Drawn] = []
             _ = render(run.pages.pictures[0], run.w, run.h) { ctx in placed = painter.paint(picture, into: ctx) }
@@ -92,7 +94,8 @@ public enum Film {
             let items = placed.map { item in ["what": item.what, "id": item.id ?? "", "box": item.box.json].merging(item.path.map { ["path": $0.map { [$0.x, $0.y] }] } ?? [:]) { $1 } as [String: Any] }
             return ["placed": items, "way": way, "pointer": pointer, "board": board, "toast": picture.toast?.text ?? NSNull(),
                     "capsule": ["look": picture.capsule.look.rawValue, "says": picture.capsule.words.map(\.text).joined(separator: " ")],
-                    "guide": picture.guide.map { ["text": $0.text, "n": $0.n ?? NSNull(), "of": $0.of ?? NSNull(), "appear": $0.appear] as [String: Any] } ?? NSNull()]
+                    "guide": picture.guide.map { ["text": $0.text, "n": $0.n ?? NSNull(), "of": $0.of ?? NSNull(), "appear": $0.appear] as [String: Any] } ?? NSNull(),
+                    "nudge": picture.nudge.map { ["text": $0.text, "inked": $0.words.filter { $0.bright >= 1 }.count, "trail": $0.trail.map(\.text), "buttons": $0.buttons, "appear": $0.appear, "rows": $0.rows, "leave": $0.leave] as [String: Any] } ?? NSNull()]
         }
     }
 

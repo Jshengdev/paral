@@ -1,0 +1,161 @@
+{
+ "name": "body: on a page whose text runs across the display, with the board up, there is no room to the right of the marked line: the nudge card goes to the nearest free place instead, still inside the display, on none of the page's read lines and on none of the marks, the cursor, the capsule, the board or the guide's card, with its two buttons inside it and the arrow leading to it",
+ "run": "body.nudge",
+ "in": {
+  "lines": [
+   "Campus Activities   About   Programs   RSO Resources   EngageSC",
+   "Recognition Process",
+   "The Spring 2027 RSO Recognition process is now open on EngageSC for new RSOs and",
+   "re-establishing after a lapse in recognition.",
+   "Important Dates",
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes. You must submit the form on EngageSC",
+   "December 1: Deadline for advisors to submit their requirements."
+  ],
+  "rows": [
+   {
+    "at": 500,
+    "line": {
+     "type": "next",
+     "text": "Hold the key and say: show me",
+     "n": 4,
+     "of": 8
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "g1",
+     "beat": 0,
+     "kind": "ring",
+     "on": 7
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "say",
+     "id": "g1",
+     "beat": 0,
+     "text": "This is the date to keep: the application closes in 8 days.",
+     "trail": [
+      "saw this page",
+      "read the whole page",
+      "found 1 date"
+     ],
+     "keep": true
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mute",
+     "id": "g1",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "board",
+     "id": "g1",
+     "rows": [
+      [
+       "Officers finish their training"
+      ],
+      [
+       "Submit the application: November 22 at 11:59pm"
+      ],
+      [
+       "Advisor requirements: December 1"
+      ]
+     ]
+    }
+   }
+  ],
+  "at": [
+   1100,
+   3000,
+   6000
+  ]
+ },
+ "out": [
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "read the whole page",
+     "found 1 date"
+    ],
+    "look": "coming up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "right of the text",
+    "arrowLeadsToIt": false
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "read the whole page",
+     "found 1 date"
+    ],
+    "look": "up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "right of the text",
+    "arrowLeadsToIt": true
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "read the whole page",
+     "found 1 date"
+    ],
+    "look": "up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "right of the text",
+    "arrowLeadsToIt": true
+   },
+   "capsule": "rest",
+   "toast": false
+  }
+ ]
+}

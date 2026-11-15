@@ -34,6 +34,7 @@ import { lead } from "./runners/leads.ts";
 import { waiting } from "./runners/echo.ts";
 import { stands } from "./runners/stands.ts";
 import { curves, lifted, moves, scaled } from "./runners/motion.ts";
+import { nudge, seen } from "./runners/nudge.ts";
 
 // A row is JSON on disk: its "in" is whatever its runner takes, so it is typed where the runner reads it.
 type Row = { name: string; run: string; in: any; out: unknown };
@@ -83,6 +84,8 @@ const runs: Record<string, (input: any) => unknown> = {
   "body.inkInside": inkInside,
   "body.boardType": boardType,
   "body.pages": filmedPages,
+  "body.nudge": nudge,
+  "body.seen": seen,
   catch: (input) => input.events.reduce(hear, silence),
   "catch.unasked": (input) => Object.fromEntries(input.holds.map((words: string) => [words, unasked(words, input.filler)])),
   "catch.only": (input) => Object.fromEntries(input.asks.map((words: string) => [words, saysOnly(words, input.phrases)])),

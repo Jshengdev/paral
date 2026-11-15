@@ -24,14 +24,18 @@ public enum Seen {
     case keyDown, keyUp, close
     /// He pressed the left button here, in display points from the top-left corner. The scene draws nothing for it yet.
     case click(x: Double, y: Double)
-    /// An ask whose words were tapped or typed: for what is on screen, a press and a release at the same moment.
-    case typed
+    /// An ask whose words were tapped or typed: for what is on screen, a press and a release at the same moment. Its
+    /// words are read only to see whether they are the nudge card's own ask (`Nudge.asks`).
+    case typed(text: String)
+    /// He pressed "Not now" on the nudge card. It never crosses the seam: the body tells itself.
+    case notNow
     case trail(x: Double, y: Double)
     case screen(display: DisplayPlace, lines: [ReadLine])
     case state(name: String, detail: String?)
     case heard(text: String, final: Bool)
-    /// `trail` is nil for a line of an answer he asked for. A line said without being asked carries the steps paral took.
-    case say(id: String, beat: Int, text: String, aside: Bool, trail: [String]?)
+    /// `trail` is nil for a line of an answer he asked for. A line said without being asked carries the steps paral took,
+    /// and `keep` when it shows a date he can ask to keep: its card then offers "Add to calendar" (false when absent).
+    case say(id: String, beat: Int, text: String, aside: Bool, trail: [String]?, keep: Bool)
     case voice(id: String, beat: Int, pcm: Data, last: Bool)
     case words(id: String, beat: Int, start: [Double], end: [Double])
     case mute(id: String)
@@ -87,7 +91,7 @@ public enum Seen {
             return .success(.ready(settings))
         case "key.down": return .success(.keyDown)
         case "key.up": return .success(.keyUp)
-        case "typed": return .success(.typed)
+        case "typed": return .success(.typed(text: s("text") ?? ""))
         case "close": return .success(.close)
         case "clear": return .success(.clear)
         case "next":
@@ -118,7 +122,7 @@ public enum Seen {
             return .success(.heard(text: text, final: final))
         case "say":
             guard let id, let beat, let text = s("text"), !text.isEmpty else { return .failure(Refused("say: id, beat and text are needed")) }
-            return .success(.say(id: id, beat: beat, text: text, aside: f["aside"] as? Bool ?? false, trail: f["trail"] as? [String]))
+            return .success(.say(id: id, beat: beat, text: text, aside: f["aside"] as? Bool ?? false, trail: f["trail"] as? [String], keep: f["keep"] as? Bool ?? false))
         case "voice":
             guard let id, let beat, let pcm = s("pcm"), let sound = Data(base64Encoded: pcm) else { return .failure(Refused("voice: id, beat and pcm are needed")) }
             return .success(.voice(id: id, beat: beat, pcm: sound, last: f["last"] as? Bool ?? false))
