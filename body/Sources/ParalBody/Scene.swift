@@ -17,6 +17,9 @@ public struct Scene {
     struct Hold { var down: Double; var up: Double? }
 
     public let width, height: Double
+    /// How much of the display's foot is taken by the Dock, in points: what sits at the bottom is placed above it. 0
+    /// with the Dock hidden or at the side, and in a scripted run and a film, which have no Dock.
+    public let bottomInset: Double
     public var tokens: Tokens
     public var reduceMotion = false
     var origin = (x: 0.0, y: 0.0)
@@ -47,10 +50,11 @@ public struct Scene {
     var closedAt: Double?
     var lastAt = 0.0
 
-    public init(width: Double, height: Double, tokens: Tokens) {
+    public init(width: Double, height: Double, tokens: Tokens, bottomInset: Double = 0) {
         self.width = width
         self.height = height
         self.tokens = tokens
+        self.bottomInset = bottomInset
     }
 
     public mutating func take(_ seen: Seen, at: Double) {
@@ -158,7 +162,8 @@ public struct Scene {
             if holds.isEmpty { failed = nil }
         case .open(_, let label):
             opened = (at, label)
-        case .other:
+        // Nothing is drawn for his own click yet.
+        case .other, .click:
             break
         }
     }

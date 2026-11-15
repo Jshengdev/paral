@@ -22,6 +22,8 @@ public struct BodySettings: Equatable {
 public enum Seen {
     case ready(BodySettings)
     case keyDown, keyUp, close
+    /// He pressed the left button here, in display points from the top-left corner. The scene draws nothing for it yet.
+    case click(x: Double, y: Double)
     /// An ask whose words were tapped or typed: for what is on screen, a press and a release at the same moment.
     case typed
     case trail(x: Double, y: Double)
@@ -91,7 +93,10 @@ public enum Seen {
         case "next":
             guard let text = s("text") else { return .failure(Refused("next.text: missing")) }
             return .success(.next(text: text, n: (f["n"] as? NSNumber)?.intValue ?? 0, of: (f["of"] as? NSNumber)?.intValue ?? 0, done: f["done"] as? Bool ?? false))
-        case "hello", "mic", "click": return .success(.other)
+        case "hello", "mic": return .success(.other)
+        case "click":
+            guard let x = n("x"), let y = n("y") else { return .failure(Refused("click: x and y are needed")) }
+            return .success(.click(x: x, y: y))
         case "trail":
             guard let x = n("x"), let y = n("y") else { return .failure(Refused("trail: x and y are needed")) }
             return .success(.trail(x: x, y: y))

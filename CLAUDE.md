@@ -6,7 +6,7 @@ never the answer.
 
 Written at AI@USC, November 14-15 2026. Every line in this folder is written here; nothing is copied from another
 project. Libraries: zod (MIT), the Anthropic SDK (MIT), DialKit (MIT, in `dials/vendor/` and `exam/vendor/`). Tools:
-raea renders the lesson clips (FSL-1.1, used as a tool like ffmpeg). Outside services: Claude for the answers,
+raea renders the lesson clips (FSL-1.1, used as a tool like ffmpeg). The app's icon (`body/AppIcon.icns`) is the team's own logo, drawn by its designer this weekend. Outside services: Claude for the answers,
 Cartesia for the ear and the voice.
 
 ## Commands
