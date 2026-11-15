@@ -215,5 +215,5 @@ final class App: NSObject, NSApplicationDelegate {
         wire.send(.close(at: stamp()))
     }
 
-    @objc private func quit() { NSApp.terminate(nil) }
+    @objc private func quit() { Screen.end { NSApp.terminate(nil) } }
 }
