@@ -1,8 +1,8 @@
 import AppKit
 import CoreGraphics
 
-/// The hold key, and the left button, read by asking the system for their state sixty times a second. It installs no
-/// event tap.
+/// The hold key, read by asking the system for the keys' state sixty times a second, and the left button, read that
+/// way and also by being told of each press. It installs no event tap.
 public final class Key {
     public enum Which: String { case rightOption, fn, controlOption, shift, control, command }
 
@@ -16,6 +16,10 @@ public final class Key {
     /// Called with the pointer's place each time the left button goes down.
     private let onClick: ((CGPoint) -> Void)?
     private var pressed = false
+    private var monitor: Any?
+    private var lastClick = Date.distantPast
+    /// Two sights of a press closer together than this, in seconds, are the same press.
+    private static let sameClick = 0.15
 
     public init(_ which: Which, onClick: ((CGPoint) -> Void)? = nil) {
         self.which = which
@@ -43,6 +47,9 @@ public final class Key {
         let timer = Timer(timeInterval: 1.0 / 60, repeats: true) { [weak self] _ in self?.look() }
         RunLoop.main.add(timer, forMode: .common)
         self.timer = timer
+        // The system tells of each left press in any other app as it happens. Watching the mouse this way asks for no
+        // grant and takes no click away from the page.
+        if onClick != nil { monitor = NSEvent.addGlobalMonitorForEvents(matching: .leftMouseDown) { [weak self] _ in self?.clicked() } }
     }
 
     private func look() {
@@ -53,9 +60,19 @@ public final class Key {
         } else if down {
             onHeld?()
         }
-        // A press of the left button is read the same way: the system is asked for the button's state. No event tap.
+        // A press of the left button is also read this way, as a second sight of it: see `clicked`.
         let button = CGEventSource.buttonState(.combinedSessionState, button: .left)
-        if button, !pressed, let at = Key.pointer { onClick?(at) }
+        if button, !pressed { clicked() }
         pressed = button
+    }
+
+    /// One press of the left button, however it was seen. A tap on the trackpad can be over between two readings of
+    /// the button's state, so the system is also asked to tell of each press as it happens (`start`); a press seen
+    /// both ways counts once.
+    private func clicked() {
+        let now = Date()
+        guard now.timeIntervalSince(lastClick) > Key.sameClick, let at = Key.pointer else { return }
+        lastClick = now
+        onClick?(at)
     }
 }
