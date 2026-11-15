@@ -95,6 +95,15 @@ is ahead is remembered for the sitting and given to every ask. A press of the ke
 taken as him following that answer: the model is asked only whether this page holds what he was sent for, and if so
 the place is boxed with one line ("found what you asked for"). paral clicks nothing; he goes there himself.
 
+**"Show me."** When those are his whole words (`showMeAsks`), paral walks him through what is still ahead, one step
+each time he says it (`mind/showme.ts`). For the step he is on: the board of all the steps with `now` naming his
+row, one spoken sentence from a fixed pattern, and a box on the kept line that writes the step's date, or the way
+to it, or the name of the kept page it is on. No model is asked. Until his next ordinary ask the looks follow that
+step, so the box moves as he scrolls. paral cannot know a step is done: "show me" again moves on.
+
+**The way.** When the thing is on this page and neither its line nor its heading is in view, a `way` line goes out
+in the mark's place: up or down, and what it leads to (`mind/place.ts`, `cores/page.ts` `whichWay`).
+
 **"Add it to my calendar."** The date paral last showed him, from a look or from an answer, can be kept
 (`mind/keep.ts`, `keepAsks`). No model is asked: the date is written into a calendar file (.ics) with the line as the
 page writes it and the page's address, an `open` line crosses the seam, and the app opens the file in his calendar
@@ -155,7 +164,10 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
   Calendar asks before adding the entry or adds it at once is not known, so the line he hears says only that the date
   is open in his calendar. A line with a clock time becomes an entry at that time in the Mac's own time zone, since
   the pages write none. "It" is the last date shown; after an answer that named two dates it is the first of them.
-- The page-to-page guide has run only on a tape and in the scripted stand-in.
+- The page-to-page guide, the way line and "show me" have run only on a tape and in the scripted stand-in. The body
+  on main draws nothing for a way line and does not read the board's `now`: both are drawn on a branch by a second
+  session. "Show me" walks the steps in the order the looks found them, in the look's own words for each, and has
+  no way to know a step is done. A step with no date has no line to box.
 - The real windows have been started by the owner on his own Mac, twice. Seen there: the hold key, the microphone,
   the ear, the voice, and answers with marks once the screen grant was on. Not yet seen there: a circle, the cross,
   the board over real windows, a headset, and everything added since 368e4da except what the watcher cost.

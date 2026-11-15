@@ -66,3 +66,15 @@ export function speech({ ports, send, log }: Hands, id: string, signal: AbortSig
     finished: () => queue,
   };
 }
+
+/**
+ * One line, shown and spoken to its end, and then paral is at rest. For an ask that is answered with no model: a
+ * path drawn with no words, a date kept, a step shown.
+ */
+export async function sayLine(hands: Hands, id: string, text: string, signal: AbortSignal): Promise<void> {
+  const talk = speech(hands, id, signal);
+  hands.send({ v, type: "say", id, beat: 0, text });
+  talk.speak(0, text);
+  await talk.finished();
+  if (!signal.aborted) hands.send({ v, type: "state", name: "idle" });
+}

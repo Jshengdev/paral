@@ -5,7 +5,7 @@ import type { Hands } from "./ask.ts";
 import { asksFor } from "./cores/catch.ts";
 import { calendarFile, dateLine, when, type ToKeep } from "./cores/keep.ts";
 import type { KeptPage } from "./cores/page.ts";
-import { speech } from "./speech.ts";
+import { sayLine } from "./speech.ts";
 import { SEAM_VERSION } from "../seam/schema.ts";
 
 const v = SEAM_VERSION;
@@ -45,11 +45,7 @@ export function keeps(hands: Hands) {
       } else {
         log(`${id}: he asked to keep a date and there is none to keep${last === null ? "" : ` (the line names no day: "${last.written.slice(0, 80)}")`}`);
       }
-      const talk = speech(hands, id, signal);
-      send({ v, type: "say", id, beat: 0, text: line });
-      talk.speak(0, line);
-      await talk.finished();
-      if (!signal.aborted) send({ v, type: "state", name: "idle" });
+      await sayLine(hands, id, line, signal);
       return true;
     },
   };

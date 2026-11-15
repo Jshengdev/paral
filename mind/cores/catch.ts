@@ -49,3 +49,14 @@ export function asksFor(words: string, phrases: string[]): boolean {
   const escape = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   return phrases.some((phrase) => new RegExp("\\b" + phrase.toLowerCase().split("…").map((part) => escape(part.trim())).join(".+")).test(said));
 }
+
+/**
+ * Whether his whole words are one of these phrases and nothing more: "show me", "Okay, show me the next step.". A
+ * word of starting ("ok", "so", "now", "please") before or "please" after does not count. It keeps a bare command
+ * apart from a question that begins the same way ("show me where to book a room").
+ */
+export function saysOnly(words: string, phrases: string[]): boolean {
+  const bare = (text: string) => text.toLowerCase().replace(/[’']/g, "'").replace(/[^\p{L}\p{N}' ]+/gu, " ").replace(/\s+/g, " ").trim();
+  const said = bare(words).replace(/^((ok|okay|so|now|and|then|please|alright)\s)+/, "").replace(/(\splease)$/, "");
+  return phrases.some((phrase) => bare(phrase) === said);
+}

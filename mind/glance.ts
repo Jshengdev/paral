@@ -1,7 +1,7 @@
 import type { Hands, Screen } from "./ask.ts";
 import { unknownDate, worded } from "./cores/dates.ts";
 import { named, type ToKeep } from "./cores/keep.ts";
-import { whichPage } from "./cores/page.ts";
+import { whichPage, type KeptPage } from "./cores/page.ts";
 import { point, whereIs } from "./place.ts";
 import type { Following, Glanced } from "./ports.ts";
 import { SEAM_VERSION, type FromBody } from "../seam/schema.ts";
@@ -11,6 +11,11 @@ type Look = Extract<FromBody, { type: "look" }>;
 
 /** One thing still ahead for him, as found on a kept page: what, by when as the page writes it, and the page's address. */
 export type Ahead = { step: string; by: string; from: string };
+/**
+ * A step he asked to be shown ("show me"): the kept page it is on, the line of that page that writes its date (null
+ * when none is known), its sentence, and the board of all the steps with the row he is on.
+ */
+export type Led = { page: string; line: string | null; text: string; rows: string[][]; now: number; trail: string[] };
 /** What he asked a moment ago, what he was told, and the kept page he was on then (null if none). */
 export type Asked = Following & { page: string | null };
 
@@ -35,8 +40,31 @@ export function glances({ ports, settings, send, log }: Hands, remember: (ahead:
   let shown: string | null = null;
   let looks = 0;
   let running: AbortController | null = null;
+  /** The step that leads the looks on its page, when he has said "show me": they place it, not the page's own thing. */
+  let led: Led | null = null;
+
+  /** A look while a step leads: the box or the way for that step, where it now is, with its sentence and the board. */
+  function follow(look: Look | Screen, page: KeptPage, step: Led) {
+    running?.abort();
+    const id = `g${++looks}`;
+    const where = step.line === null ? null : whereIs(settings, look, page, { line: step.line, under: "" });
+    const at = `step ${step.now} on ${where?.on ?? where?.to ?? ""}`;
+    if (at === shown) return log(`${id}: nothing has moved since the last look; what is shown stays`);
+    shown = at;
+    send({ v, type: "clear" });
+    const marked = where ? point(send, id, where) : "no line of this page is known for the step, so nothing is marked";
+    send({ v, type: "say", id, beat: 0, text: step.text, trail: step.trail });
+    send({ v, type: "mute", id, why: "a look he did not ask for is shown, not spoken" });
+    send({ v, type: "board", id, rows: step.rows, now: step.now });
+    log(`${id}: following "show me", ${step.trail[1]}: ${marked}`);
+  }
 
   return {
+    /** A step takes the lead of the looks on its page, or gives it back (null). */
+    lead(step: Led | null) {
+      led = step;
+      shown = null;
+    },
     /** A press of the key ends a look in progress; what it had shown is his to ask about now. */
     stop() {
       running?.abort();
@@ -46,6 +74,7 @@ export function glances({ ports, settings, send, log }: Hands, remember: (ahead:
     async take(look: Look | Screen, asked: Asked | null) {
       const page = whichPage(look.lines.map((line) => line.text), ports.pages, settings.pageLeastLines.value);
       if (page === null || ports.glancer === null) return;
+      if (led !== null && led.page === page.name) return follow(look, page, led);
       // He is being followed when he asked something a moment ago and has since come to another kept page.
       const following = asked !== null && asked.page !== page.name ? asked : null;
       const key = following ? `${page.name} after "${following.words}"` : page.name;
