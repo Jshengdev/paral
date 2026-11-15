@@ -75,11 +75,11 @@ public enum Film {
 
     /// Where the painter puts each thing at each of the given moments of a recorded run, and the way arrow's, the
     /// cursor's and the board's own values then. For rows: a film's record says when a thing's box changes, and not when the thing goes.
-    public static func placed(run: String, tokens: Tokens, at moments: [Double], guide: Bool = true) throws -> [[String: Any]] {
+    public static func placed(run: String, tokens: Tokens, at moments: [Double], guide: Bool = true, inset: Double = 0) throws -> [[String: Any]] {
         let run = try load(URL(fileURLWithPath: run))
         let painter = Painter(tokens: tokens, width: run.w, height: run.h)
         return moments.map { moment in
-            var scene = Scene(width: run.w, height: run.h, tokens: tokens)
+            var scene = Scene(width: run.w, height: run.h, tokens: tokens, bottomInset: inset)
             scene.guideOn = guide
             for event in run.events where event.at <= moment { scene.take(event.seen, at: event.at) }
             let picture = scene.picture(at: moment)
@@ -91,9 +91,17 @@ public enum Film {
             // A drawn arrow's row also gives the points the pen has inked, so a row can say what it lies on.
             let items = placed.map { item in ["what": item.what, "id": item.id ?? "", "box": item.box.json].merging(item.path.map { ["path": $0.map { [$0.x, $0.y] }] } ?? [:]) { $1 } as [String: Any] }
             return ["placed": items, "way": way, "pointer": pointer, "board": board, "toast": picture.toast?.text ?? NSNull(),
-                    "capsule": ["look": picture.capsule.look.rawValue, "says": picture.capsule.words.map(\.text).joined(separator: " ")],
+                    "capsule": pill(picture.capsule, painter),
                     "guide": picture.guide.map { ["text": $0.text, "n": $0.n ?? NSNull(), "of": $0.of ?? NSNull(), "appear": $0.appear] as [String: Any] } ?? NSNull()]
         }
+    }
+
+    /// The capsule's look and words for a row: what it says, which of its words are in stone, its note, the steps of
+    /// its trail, whether its caret is up, its wave as the marks the painter draws, oldest first (none for the still
+    /// dots), and whether the logo mark by it breathes to say paral is working.
+    static func pill(_ c: CapsulePicture, _ painter: Painter) -> [String: Any] {
+        ["look": c.look.rawValue, "says": c.words.map(\.text).joined(separator: " "), "stone": c.words.filter { $0.bright < 1 }.map(\.text),
+         "note": c.note ?? NSNull(), "trail": c.trail.map(\.text), "caret": c.caret ?? NSNull(), "wave": painter.marks(of: c.wave), "working": c.working != nil]
     }
 
     public static func make(run: String, tokens: Tokens, fps: Double = 30) throws -> Made {

@@ -3,16 +3,18 @@ import Foundation
 
 /// Where things go on a display, in points from its top-left corner.
 public enum Layout {
-    /// `taller` is extra height when the capsule carries a trail above its words. It grows upward, so the foot stays put.
+    /// What the voice pill takes at the bottom, for what keeps off it: open, the pill at the display's middle and the
+    /// room above it its bubble may take (`LayoutPill.swift`), `taller` higher when the bubble carries a trail above
+    /// its words; at rest, the collapsed pill or, with `closes`, the cross alone, which is where a click on it is taken.
     public static func capsule(open: Double, closes: Bool = false, taller: Double = 0, width: Double, height: Double, tokens: Tokens) -> Box {
-        let c = tokens.capsule
-        let rest = closes ? c.restClose : c.rest
-        let w = rest + (min(c.width, width - 48) - rest) * open
-        let h = rest + (c.height + taller - rest) * open
-        return Box(x: (width - w) / 2, y: height - c.bottom - c.height / 2 - h / 2 - taller * open / 2, w: w, h: h)
+        let shut = pill(open: open, closes: closes, width: width, height: height, tokens: tokens)
+        guard open > 0 else { return shut }
+        let room = bubbleRoom(over: pill(open: 1, width: width, height: height, tokens: tokens), trail: taller, tokens: tokens)
+        let x = min(shut.x, room.x), y = min(shut.y, room.y)
+        return Box(x: x, y: y, w: max(shut.x + shut.w, room.x + room.w) - x, h: max(shut.y + shut.h, room.y + room.h) - y)
     }
 
-    /// How much taller the capsule is while it carries a trail of steps above its words.
+    /// How much taller the bubble is while it carries a trail of steps above its words.
     public static func band(_ tokens: Tokens) -> Double { tokens.capsule.tagType + 12 }
 
     /// Where the arrow that says which way to scroll goes: at the edge he must scroll toward, as near as it can be

@@ -88,8 +88,6 @@ extension Painter {
     /// what was inked. `placed` is everything drawn so far: the arrow keeps off all of it, so it comes after.
     func lead(_ picture: Picture, placed: [Drawn], _ ctx: CGContext) -> Drawn? {
         guard let lead = picture.lead, lead.drawn > 0, let mark = picture.marks.first(where: { $0.key == lead.from }) else { return nil }
-        // The capsule at its full size, whatever it is doing at this moment, so the arrow's way does not move with it.
-        func pill(_ trail: Bool) -> Box { Layout.capsule(open: 1, taller: trail ? Layout.band(tokens) : 0, width: width, height: height, tokens: tokens) }
         let card = placed.first { $0.what == "guide" }?.box
         var taken = placed.filter { ["board", "clip", "way", "toast"].contains($0.what) }.map(\.box)
         let target: Box, name: String
@@ -97,9 +95,10 @@ extension Painter {
         case .guide:
             guard let card else { return nil }
             (target, name) = (card, "guide")
-            taken.append(pill(true))
-        case .capsule(let trail):
-            (target, name) = (pill(trail), "capsule")
+            taken.append(Layout.capsule(open: 1, taller: Layout.band(tokens), width: width, height: floor, tokens: tokens))
+        case .capsule:
+            // The pill at its full size and the bubble with the words it holds: what speaks, wherever it sits.
+            (target, name) = (speaker(picture.capsule, avoiding: picture.avoid), "capsule")
             if let card { taken.append(card) }
         }
         // The mark is its line and the ink round it.

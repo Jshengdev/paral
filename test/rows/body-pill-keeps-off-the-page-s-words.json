@@ -1,0 +1,110 @@
+{
+ "name": "body: the open pill and its bubble keep off the page's read text: with a line of the page where the bubble would stand at the display's middle, the pill opens to the nearest place along the foot where neither lies on any line, and at rest it is the collapsed pill at the middle again, off the text too",
+ "run": "body.pill",
+ "in": {
+  "lines": [
+   "Clubs",
+   "a",
+   "b",
+   "c",
+   "d",
+   "e",
+   "f",
+   "g",
+   "Deadlines and dates for every club"
+  ],
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "key.down",
+     "at": 1000
+    }
+   },
+   {
+    "at": 1001,
+    "line": {
+     "type": "state",
+     "name": "listening"
+    }
+   },
+   {
+    "at": 1200,
+    "line": {
+     "type": "heard",
+     "text": "when is the deadline for my club",
+     "final": false
+    }
+   },
+   {
+    "at": 2000,
+    "line": {
+     "type": "key.up",
+     "at": 2000
+    }
+   },
+   {
+    "at": 2400,
+    "line": {
+     "type": "state",
+     "name": "idle"
+    }
+   }
+  ],
+  "at": [
+   500,
+   1600,
+   2200,
+   5000
+  ],
+  "watch": [
+   "look",
+   "pill",
+   "middle",
+   "onText",
+   "bubble"
+  ]
+ },
+ "out": [
+  {
+   "look": "rest",
+   "pill": "78x19",
+   "middle": "the display's middle",
+   "onText": false,
+   "bubble": null
+  },
+  {
+   "look": "listening",
+   "pill": "234x50",
+   "middle": 968,
+   "onText": false,
+   "bubble": {
+    "says": "when is the deadline for my club",
+    "stone": [],
+    "caret": false,
+    "aboveThePill": 10,
+    "onText": false
+   }
+  },
+  {
+   "look": "thinking",
+   "pill": "234x50",
+   "middle": 968,
+   "onText": false,
+   "bubble": {
+    "says": "when is the deadline for my club",
+    "stone": [],
+    "caret": null,
+    "aboveThePill": 10,
+    "onText": false
+   }
+  },
+  {
+   "look": "rest",
+   "pill": "78x19",
+   "middle": "the display's middle",
+   "onText": false,
+   "bubble": null
+  }
+ ]
+}

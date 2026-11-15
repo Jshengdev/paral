@@ -10,40 +10,60 @@ extension Scene {
         if capsule.look == .thinking { pointer?.working = working(at: t) }
         let clip = clip(at: t)
         capsule.closes = capsule.look == .rest && (!marks.isEmpty || way != nil || board != nil || clip != nil)
-        return Picture(clock: t, capsule: capsule, marks: marks, echo: echo(at: t), way: way, pointer: pointer, board: board, clip: clip, toast: toast(at: t), guide: guide(at: t), lead: lead(at: t, capsule: capsule), trail: trailUp(at: t), avoid: texts)
+        dress(&capsule, at: t, cursorUp: pointer != nil)
+        return Picture(clock: t, capsule: capsule, marks: marks, echo: echo(at: t), way: way, pointer: pointer, board: board, clip: clip, toast: toast(at: t), guide: guide(at: t), lead: lead(at: t, capsule: capsule), trail: trailUp(at: t), avoid: texts, bottomInset: bottomInset)
     }
 
+    /// What the pill and its bubble say at `t`. The bubble carries every word the pill has to say: his words while
+    /// he holds the key and while it thinks, each sentence as it is said, a line said without being asked with its
+    /// trail, and a failure's reason.
     func capsule(at t: Double) -> CapsulePicture {
         let m = tokens.motion
         let grown = { (since: Double) in self.still ? 1 : self.arriving(since: since, at: t) }
         // A line said without being asked opens the capsule by itself, for its reading time and a little longer, with
         // the steps paral took lighting up one after another above it. A press of the key takes the capsule over.
+        // When it is also said aloud, its words go from stone to ink as they are said; shown only, it comes whole.
         if let ask = asks.last(where: { $0.trail != nil && $0.beganAt <= t }), !holds.contains(where: { $0.down >= ask.beganAt && $0.down <= t }),
            let now = times(ask).last(where: { $0.start <= t }), t < now.end + m.unaskedStayMs, let said = ask.beats[now.beat] {
-            let words = said.text.split(separator: " ").map { Word(text: String($0), bright: 1) }
+            let voiced = said.soundAt != nil && t < now.end
+            let words = voiced ? words(of: said, from: now, at: t) : said.text.split(separator: " ").map { Word(text: String($0), bright: 1) }
             let steps = (ask.trail ?? []).enumerated().map { index, step in Word(text: step, bright: t - ask.beganAt >= Double(index) * ms(m.trailStepMs) ? 1 : tokens.dim) }
-            return CapsulePicture(look: .speaking, open: grown(ask.beganAt), words: words, note: nil, trail: steps, ask: ask.id)
+            return CapsulePicture(look: .speaking, open: grown(ask.beganAt), words: words, note: nil, bubble: grown(ask.beganAt), trail: steps, ask: ask.id)
         }
         guard let hold = holds.last(where: { $0.down <= t }) else {
             // Before the first press a failure still shows: a grant not given, or the mind not running.
-            if let failed, t >= failed.at { return CapsulePicture(look: .failed, open: grown(failed.at), words: [], note: failed.detail) }
+            if let failed, t >= failed.at { return CapsulePicture(look: .failed, open: grown(failed.at), words: [], note: failed.detail, bubble: grown(failed.at)) }
             return CapsulePicture(look: .rest, open: 0, words: [], note: nil)
         }
         func open(_ look: Look, _ words: [Word] = [], _ note: String? = nil, of ask: String? = nil) -> CapsulePicture {
-            CapsulePicture(look: look, open: grown(hold.down), words: words, note: note, ask: ask)
+            CapsulePicture(look: look, open: grown(hold.down), words: words, note: note, bubble: grown(hold.down), ask: ask)
         }
-        // While it closes after an answer it is still that answer's, so what leads to it can go back with it.
+        // While it closes after an answer it is still that answer's, so what leads to it can go back with it. The
+        // bubble goes in less time than the pill takes to shut.
         func rest(since: Double, of ask: String? = nil) -> CapsulePicture {
             let open = still ? 0 : 1 - leaving(since: since, at: t)
-            return CapsulePicture(look: .rest, open: open, words: [], note: nil, ask: open > 0 ? ask : nil)
+            let bubble = still ? 0 : 1 - tokens.curves.leave((t - since) / max(ms(tokens.bubble.leaveMs), 1))
+            var resting = CapsulePicture(look: .rest, open: open, words: [], note: nil, bubble: bubble, ask: open > 0 ? ask : nil)
+            // The bubble keeps the words it held while it goes.
+            if bubble > 0 {
+                let before = capsule(at: since - 1)
+                resting.words = before.words.map { Word(text: $0.text, bright: 1) }
+                resting.trail = before.trail
+            }
+            return resting
         }
         if let closed = closedAt, closed >= hold.down, t >= closed { return rest(since: closed) }
         // A failure since this press shows at once, while the key is still down too, and stays until the next press.
         if let failed, failed.at >= hold.down, t >= failed.at { return open(.failed, [], failed.detail) }
+        // His words: one still being heard is in stone, and in ink once it has settled.
+        let his = heard.filter { $0.at <= t }
         guard let up = hold.up, t >= up else {
-            let words = heard.filter { $0.at <= t }.map { Word(text: $0.word, bright: t - $0.at < m.wordMs ? 1 : 0.7) }
-            return open(.listening, words, words.isEmpty ? tokens.strings.listening : nil)
+            var listening = open(.listening, his.map { Word(text: $0.word, bright: t - $0.at < m.wordMs ? tokens.dim : 1) }, his.isEmpty ? tokens.strings.listening : nil)
+            listening.caret = still || Int(((t - hold.down) / max(ms(tokens.bubble.caretMs), 1)).rounded(.down)) % 2 == 0
+            return listening
         }
+        // While it thinks the bubble holds his words, all in ink and with no caret.
+        let thinking = open(.thinking, his.map { Word(text: $0.word, bright: 1) }, tokens.strings.thinking)
         let done = idleAt.map { $0 >= up && $0 <= t } ?? false
         // The sentence whose words are up is the one being said, or the one before it while that still stands its time.
         if let ask = asks.last(where: { $0.beganAt >= hold.down }), let up = shown(ask).last(where: { $0.start <= t }), let now = times(ask).first(where: { $0.beat == up.beat }) {
@@ -52,12 +72,12 @@ extension Scene {
             let whole = said.text.split(separator: " ").map { Word(text: String($0), bright: 1) }
             let more = ask.beats.keys.contains { $0 > now.beat }
             if more { return open(.speaking, whole, of: ask.id) }
-            if !done { return now.beat < 0 ? open(.thinking, [], tokens.strings.thinking) : open(.speaking, whole, of: ask.id) }
+            if !done { return now.beat < 0 ? thinking : open(.speaking, whole, of: ask.id) }
             let restAt = max(now.end, idleAt ?? now.end) + m.lingerMs
             return t < restAt ? open(.speaking, whole, of: ask.id) : rest(since: restAt, of: ask.id)
         }
         if done, let idle = idleAt { return rest(since: idle) }
-        return open(.thinking, [], tokens.strings.thinking)
+        return thinking
     }
 
     /// Words step from dim to bright as they are said. Text never fades or slides.

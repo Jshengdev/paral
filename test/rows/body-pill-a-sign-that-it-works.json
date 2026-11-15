@@ -1,0 +1,174 @@
+{
+ "name": "body: while paral thinks with no cursor on the page, the logo mark by the pill breathes to say it is working, and his words stay in the bubble; with a cursor on the page the cursor breathes and the mark by the pill does not",
+ "run": "body.pill",
+ "in": {
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "key.down",
+     "at": 1000
+    }
+   },
+   {
+    "at": 1100,
+    "line": {
+     "type": "heard",
+     "text": "what is left",
+     "final": false
+    }
+   },
+   {
+    "at": 1500,
+    "line": {
+     "type": "key.up",
+     "at": 1500
+    }
+   },
+   {
+    "at": 1501,
+    "line": {
+     "type": "state",
+     "name": "thinking"
+    }
+   },
+   {
+    "at": 2400,
+    "line": {
+     "type": "state",
+     "name": "idle"
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "mark",
+     "id": "g1",
+     "beat": 0,
+     "kind": "box",
+     "box": {
+      "x": 120,
+      "y": 110,
+      "w": 300,
+      "h": 48
+     }
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "say",
+     "id": "g1",
+     "beat": 0,
+     "text": "This is the date to keep.",
+     "trail": [
+      "saw this page",
+      "found the line"
+     ]
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "mute",
+     "id": "g1",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   },
+   {
+    "at": 12000,
+    "line": {
+     "type": "key.down",
+     "at": 12000
+    }
+   },
+   {
+    "at": 12100,
+    "line": {
+     "type": "heard",
+     "text": "what is left",
+     "final": false
+    }
+   },
+   {
+    "at": 12500,
+    "line": {
+     "type": "key.up",
+     "at": 12500
+    }
+   },
+   {
+    "at": 12501,
+    "line": {
+     "type": "state",
+     "name": "thinking"
+    }
+   }
+  ],
+  "at": [
+   1200,
+   1700,
+   12300,
+   12700
+  ],
+  "watch": [
+   "look",
+   "working",
+   "bubble"
+  ]
+ },
+ "out": [
+  {
+   "look": "listening",
+   "working": null,
+   "bubble": {
+    "says": "what is left",
+    "stone": [
+     "what",
+     "is",
+     "left"
+    ],
+    "caret": true,
+    "aboveThePill": 11,
+    "onText": false
+   }
+  },
+  {
+   "look": "thinking",
+   "working": "the logo mark by the pill breathes",
+   "bubble": {
+    "says": "what is left",
+    "stone": [],
+    "caret": null,
+    "aboveThePill": 10,
+    "onText": false
+   }
+  },
+  {
+   "look": "listening",
+   "working": null,
+   "bubble": {
+    "says": "what is left",
+    "stone": [
+     "what",
+     "is",
+     "left"
+    ],
+    "caret": true,
+    "aboveThePill": 10,
+    "onText": false
+   }
+  },
+  {
+   "look": "thinking",
+   "working": null,
+   "bubble": {
+    "says": "what is left",
+    "stone": [],
+    "caret": null,
+    "aboveThePill": 10,
+    "onText": false
+   }
+  }
+ ]
+}

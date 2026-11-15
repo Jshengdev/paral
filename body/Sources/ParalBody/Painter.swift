@@ -24,6 +24,10 @@ public struct Painter {
     let frames = ClipFrames()
     let ways = LeadWays()
     let faces: Faces
+    /// How much of the display's foot the Dock takes in the picture being painted, and the height left above it:
+    /// the capsule and what sits beside it at the bottom are laid out above the Dock.
+    var inset = 0.0
+    var floor: Double { height - inset }
 
     public init(tokens: Tokens, width: Double, height: Double) {
         self.tokens = tokens
@@ -68,6 +72,12 @@ public struct Painter {
 
     /// The context's origin must be the display's top-left corner, y growing downward, one unit a point.
     public func paint(_ picture: Picture, into ctx: CGContext) -> [Drawn] {
+        var lifted = self
+        lifted.inset = picture.bottomInset
+        return lifted.draw(picture, into: ctx)
+    }
+
+    private func draw(_ picture: Picture, into ctx: CGContext) -> [Drawn] {
         let before = NSGraphicsContext.current
         NSGraphicsContext.current = NSGraphicsContext(cgContext: ctx, flipped: true)
         defer { NSGraphicsContext.current = before }
@@ -122,10 +132,11 @@ public struct Painter {
             drawn.append(Drawn(what: "pointer", id: nil, box: cursor.box))
             if let tag = cursor.tag { drawn.append(Drawn(what: "tag", id: nil, box: tag)) }
         }
-        let pill = capsule(picture.capsule, clock: picture.clock, ctx)
+        let pill = capsule(picture.capsule, avoiding: picture.avoid, ctx)
         drawn.append(Drawn(what: "capsule", id: nil, box: pill.box))
-        // The cross is named too, since it is the one thing on the overlay that takes a click.
+        // The cross is named too, since it is the one thing on the overlay that takes a click; and the bubble, which carries the words.
         if let cross = pill.cross { drawn.append(Drawn(what: "cross", id: nil, box: cross)) }
+        if let bubble = pill.bubble { drawn.append(Drawn(what: "bubble", id: nil, box: bubble)) }
         return drawn
     }
 }

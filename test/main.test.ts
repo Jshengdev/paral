@@ -25,6 +25,7 @@ import { FromBody, FromMind, read, write } from "../seam/schema.ts";
 import { settings } from "../mind/settings.ts";
 import { keptLook, keptVoice, standIn } from "./runners/adapters.ts";
 import { capsule, cardOnFilm, filmed, landing, pressedAgain, sameToTheWatcher } from "./runners/body.ts";
+import { pill } from "./runners/pill.ts";
 import { fresh } from "./runners/temp.ts";
 import { playTurn } from "./runners/turn.ts";
 import { boardType } from "./runners/boards.ts";
@@ -79,6 +80,7 @@ const runs: Record<string, (input: any) => unknown> = {
   "body.resting": resting,
   "body.cursorInside": cursorInside,
   "body.inkInside": inkInside,
+  "body.pill": pill,
   "body.boardType": boardType,
   "body.pages": filmedPages,
   catch: (input) => input.events.reduce(hear, silence),

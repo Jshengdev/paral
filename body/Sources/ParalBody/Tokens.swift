@@ -2,7 +2,24 @@ import Foundation
 
 /// The look, in one file a designer can swap: colour, type, line widths, corners and motion times.
 public struct Tokens: Codable {
-    public struct Capsule: Codable { public var rest, restClose, width, height, radius, bottom, pad, type, tagType: Double }
+    /// The voice pill, after the design kit's: open it is `width` by `height`, with a stop control, the wave and a
+    /// send control of `control` across, `pad` in from its edge and `gap` apart, its foot `bottom` above the Dock.
+    /// At rest it is collapsed to `collapsedWidth` by `collapsedHeight` with a row of `dots` in ink at `dotInk`; at
+    /// rest with paral's ink on the page it is the cross of `restClose` with the logo mark of `rest` and the name in
+    /// `tagType`. The stop square, its corner and the send arrow's line; `face`, the logo mark that breathes by the
+    /// pill while paral works and no cursor is on the page. `type` is the bubble's words.
+    public struct Capsule: Codable {
+        public var rest, restClose, width, height, radius, bottom, pad, gap, control, type, tagType: Double
+        public var collapsedWidth, collapsedHeight, dots, dotInk, stopSquare, stopCorner, arrowLine, face: Double
+    }
+    /// The pill's wave, after the kit's: `width` by `height`, one sample every `sampleMs` at a `pitch` apart, each a
+    /// dot of `dot` (a level under `quiet`, drawn at `quietInk`), a bar `bar` by `short` (under `loud`) or `bar` by
+    /// `tall`, fading over `fade` of its width at each end. Still, it is `idleDots` dots in ink at `idleInk`.
+    public struct Wave: Codable { public var width, height, pitch, dot, bar, short, tall, quiet, loud, quietInk, idleDots, idleInk, fade, sampleMs: Double }
+    /// The bubble above the pill that carries its words, after the kit's transcript bubble: the room inside it, its
+    /// corner, its gap above the pill, its widest, the height of a line as a share of the type, the caret's size,
+    /// its gap after the words and its blink, how far the bubble rises as it comes, and how soon it goes.
+    public struct Bubble: Codable { public var padX, padY, radius, gap, maxWidth, leading, caretWidth, caretHeight, caretGap, caretMs, rise, leaveMs: Double }
     public struct Mark: Codable {
         public var width, pad, ringMs, lineMs, bracketMs, overshoot, wobble, ringWide, ringTall, labelType: Double
         /// A drawn arrow is two strokes, each at even speed: how long the pen takes over its shaft, then over its head.
@@ -72,6 +89,9 @@ public struct Tokens: Codable {
     public struct Strings: Codable { public var thinking, listening, failed, opened, name, step: String }
 
     public var ink, paper, accent: String
+    /// The design kit's grey for words still to come: his words still being heard, and an answer's words before
+    /// they are said; and the wave while paral answers.
+    public var stone: String
     /// The typeface everything is written in (empty for the system's), and its optical size where it has one. The
     /// design kit writes everything in DM Sans at an optical size of 14.
     public var font: String
@@ -91,6 +111,8 @@ public struct Tokens: Codable {
     public var band: Double
     public var dim: Double
     public var capsule: Capsule
+    public var wave: Wave
+    public var bubble: Bubble
     public var mark: Mark
     public var board: Board
     public var way: Way

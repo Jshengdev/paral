@@ -1,0 +1,151 @@
+{
+ "name": "body: a line said without being asked is in the bubble with its trail small above it; said aloud (a page's first look), its words go from stone to ink as they are said; shown only, with a mute line, it comes whole at once",
+ "run": "body.pill",
+ "in": {
+  "rows": [
+   {
+    "at": 500,
+    "line": {
+     "type": "say",
+     "id": "g1",
+     "beat": 0,
+     "text": "The application closes November 22.",
+     "trail": [
+      "saw this page",
+      "found 1 date"
+     ]
+    }
+   },
+   {
+    "at": 500,
+    "line": {
+     "type": "voice",
+     "id": "g1",
+     "beat": 0,
+     "amp": 6000,
+     "ms": 2000,
+     "last": true
+    }
+   },
+   {
+    "at": 500,
+    "line": {
+     "type": "words",
+     "id": "g1",
+     "beat": 0,
+     "start": [
+      0,
+      0.4,
+      0.8,
+      1.2,
+      1.6
+     ],
+     "end": [
+      0.4,
+      0.8,
+      1.2,
+      1.6,
+      2
+     ]
+    }
+   },
+   {
+    "at": 12000,
+    "line": {
+     "type": "say",
+     "id": "g2",
+     "beat": 0,
+     "text": "This is the date to keep.",
+     "trail": [
+      "saw this page",
+      "found the line"
+     ]
+    }
+   },
+   {
+    "at": 12000,
+    "line": {
+     "type": "mute",
+     "id": "g2",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   }
+  ],
+  "at": [
+   700,
+   1500,
+   2700,
+   12100
+  ],
+  "watch": [
+   "look",
+   "bubble"
+  ]
+ },
+ "out": [
+  {
+   "look": "speaking",
+   "bubble": {
+    "says": "The application closes November 22.",
+    "stone": [
+     "application",
+     "closes",
+     "November",
+     "22."
+    ],
+    "caret": null,
+    "aboveThePill": 11,
+    "onText": false,
+    "trail": [
+     "saw this page",
+     "found 1 date"
+    ]
+   }
+  },
+  {
+   "look": "speaking",
+   "bubble": {
+    "says": "The application closes November 22.",
+    "stone": [
+     "November",
+     "22."
+    ],
+    "caret": null,
+    "aboveThePill": 10,
+    "onText": false,
+    "trail": [
+     "saw this page",
+     "found 1 date"
+    ]
+   }
+  },
+  {
+   "look": "speaking",
+   "bubble": {
+    "says": "The application closes November 22.",
+    "stone": [],
+    "caret": null,
+    "aboveThePill": 10,
+    "onText": false,
+    "trail": [
+     "saw this page",
+     "found 1 date"
+    ]
+   }
+  },
+  {
+   "look": "speaking",
+   "bubble": {
+    "says": "This is the date to keep.",
+    "stone": [],
+    "caret": null,
+    "aboveThePill": 16,
+    "onText": false,
+    "trail": [
+     "saw this page",
+     "found the line"
+    ]
+   }
+  }
+ ]
+}
