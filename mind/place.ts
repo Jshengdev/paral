@@ -2,7 +2,7 @@ import type { Hands, Screen } from "./ask.ts";
 import { fitted } from "./cores/beats.ts";
 import { locate, type Box } from "./cores/ground.ts";
 import { dateLine } from "./cores/keep.ts";
-import { whichWay, type KeptPage } from "./cores/page.ts";
+import { headingOf, whichWay, type KeptPage } from "./cores/page.ts";
 import type { Settings } from "./settings.ts";
 import { SEAM_VERSION, type MarkKind } from "../seam/schema.ts";
 
@@ -39,8 +39,10 @@ export function whereIs(settings: Settings, seen: Seen, page: KeptPage, thing: {
   const line = locate(begins?.text ?? thing.line, seen.lines, seen.display, settings.groundMinScore.value);
   const heading = thing.under === "" ? null : locate(thing.under, seen.lines, seen.display, settings.groundMinScore.value);
   const target = line.found ? line : heading?.found ? heading : null;
-  // What the way leads to: the heading without the sign that opens it, or the start of the line up to its colon.
-  const toward = thing.under.replace(/\s*[+\-–−]\s*$/, "").trim() || thing.line.split(/:\s+/)[0].slice(0, 40).trim();
+  // What the way leads to: the heading without the sign that opens it, or the start of the line up to its colon, cut
+  // at a whole word when it is long.
+  const start = thing.line.split(/:\s+/)[0].trim();
+  const toward = thing.under.replace(/\s*[+\-–−]\s*$/, "").trim() || (start.length <= 40 ? start : start.slice(0, 40).replace(/\s+\S*$/, "") + "…");
   const to = target ? null : whichWay(seen.lines.map((read) => read.text), page, thing.line);
   const kind = line.found ? fitted("ring", line.line, seen.lines, settings.ringReach.value, seen.display.scale) : "box";
   return { box: target?.box ?? null, on: target?.line ?? null, inView: line.found, kind, to, toward };
@@ -54,10 +56,13 @@ export function point(send: Hands["send"], id: string, where: Where): string {
   return where.to ? `the way is ${where.to}, toward "${where.toward}"` : "nothing is marked, since neither the line nor its heading is in view and the way cannot be told";
 }
 
-/** After an answer: when it named a date this kept page writes on a line that is not in view, the way to that line. */
+/**
+ * After an answer: when it named a date this kept page writes on a line that is not in view, the way to that line,
+ * named by the heading the page puts it under. With that heading in view there is nothing to scroll to, and no way.
+ */
 export function wayToDate({ settings, send, log }: Hands, id: string, seen: Seen, page: KeptPage, told: string[]): void {
   const kept = dateLine(told.join(" "), [page]);
   if (kept === null) return;
-  const where = whereIs(settings, seen, page, { line: kept.written, under: "" });
+  const where = whereIs(settings, seen, page, { line: kept.written, under: headingOf(page, kept.written, "") });
   if (where.box === null && where.to !== null) log(`${id}: the answer named a date this page writes out of view; ${point(send, id, where)}`);
 }

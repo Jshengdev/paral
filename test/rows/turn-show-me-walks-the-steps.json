@@ -644,10 +644,16 @@
   },
   {
    "v": 1,
-   "type": "way",
+   "type": "mark",
    "id": "t2",
-   "to": "down",
-   "toward": "November 22 at 11:59pm"
+   "beat": 0,
+   "kind": "box",
+   "box": {
+    "x": 100,
+    "y": 300,
+    "w": 450,
+    "h": 20
+   }
   },
   {
    "v": 1,

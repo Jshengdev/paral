@@ -1,0 +1,28 @@
+{
+ "name": "beats: a colon inside a name is no place to cut: \"Officer Trainings: Hazing Prevention and Officer Learning Path\" stays in one sentence, where a colon before a clause is still cut",
+ "run": "beats.split",
+ "in": {
+  "limits": {
+   "plain": 22,
+   "withNumbers": 14
+  },
+  "sentences": {
+   "a section's name": "That list of what each officer has to finish is further down this page, in the section called Officer Trainings: Hazing Prevention and Officer Learning Path.",
+   "a clause after the colon": "There is only one more thing left for you to do before the deadline that is written on this page: you submit the form on EngageSC before it closes.",
+   "an order after the colon": "The fix on the highlighted line is the same as it was before for this kind of step in your working: move the three across and flip its sign."
+  }
+ },
+ "out": {
+  "a section's name": [
+   "That list of what each officer has to finish is further down this page, in the section called Officer Trainings: Hazing Prevention and Officer Learning Path."
+  ],
+  "a clause after the colon": [
+   "There is only one more thing left for you to do before the deadline that is written on this page.",
+   "You submit the form on EngageSC before it closes."
+  ],
+  "an order after the colon": [
+   "The fix on the highlighted line is the same as it was before for this kind of step in your working.",
+   "Move the three across and flip its sign."
+  ]
+ }
+}

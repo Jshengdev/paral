@@ -14,9 +14,10 @@ type Look = Extract<FromBody, { type: "look" }>;
 export type Ahead = { step: string; by: string; from: string };
 /**
  * A step he asked to be shown ("show me"): the kept page it is on, the line of that page that writes its date (null
- * when none is known), its sentence, and the board of all the steps with the row he is on.
+ * when none is known) and the heading the page puts that line under, its sentence, and the board of all the steps
+ * with the row he is on.
  */
-export type Led = { page: string; line: string | null; text: string; rows: string[][]; now: number; trail: string[] };
+export type Led = { page: string; line: string | null; under: string; text: string; rows: string[][]; now: number; trail: string[] };
 /** What he asked a moment ago, what he was told, and the kept page he was on then (null if none). */
 export type Asked = Following & { page: string | null };
 
@@ -54,7 +55,7 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
   function follow(look: Look | Screen, page: KeptPage, step: Led) {
     running?.abort();
     const id = `g${++looks}`;
-    const where = step.line === null ? null : whereIs(settings, look, page, { line: step.line, under: "" });
+    const where = step.line === null ? null : whereIs(settings, look, page, { line: step.line, under: step.under });
     ringed = where?.inView ? where.box : null;
     const at = `step ${step.now} on ${where?.on ?? where?.to ?? ""}`;
     if (at === shown) return log(`${id}: nothing has moved since the last look; what is shown stays`);
