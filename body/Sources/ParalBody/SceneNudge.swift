@@ -105,7 +105,7 @@ extension Scene {
     /// same look made. It comes up as any card does (`Scene.coming`), its rows one after another, and goes on `leave`
     /// in `nudge.leaveMs`, less time; with motion reduced it is there or not, with no rise. Words he has answered before it came up get no card.
     func nudge(at t: Double) -> NudgePicture? {
-        guard let ask = unasked(at: t), let card = cards[ask.id], let now = times(ask).first, now.start <= t, let said = ask.beats[now.beat] else { return nil }
+        guard !scrolling(at: t), let ask = unasked(at: t), let card = cards[ask.id], let now = times(ask).first, now.start <= t, let said = ask.beats[now.beat] else { return nil }
         let text = words(ask), n = tokens.nudge
         guard !unseen(ask) else { return nil }
         let end = ends(ask)

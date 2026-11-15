@@ -103,7 +103,8 @@ once the page is still has been answered: placed anew by the mind, or left to st
 sees a page it asks the deep model about the kept page's own text, whether it holds one thing that will cost him
 later; nothing read from his screen is sent for that. If so: a box on the line where it now is on his screen (the
 line itself, or the heading it sits under), one sentence on the nudge card with the trail of what was done under its name,
-and a board of what is still ahead. The first time a page's look shows a date the sentence is also said aloud,
+and the steps still ahead remembered for "show me" (they are not drawn with the look: a board beside every first
+look crowded the page). The first time a page's look shows a date the sentence is also said aloud,
 once (`unaskedVoice`); every later look of that page is shown and not spoken. When he scrolls or opens a section the mark moves. After an
 answer the looks of that page are the answer's until his next ask (`mind/after.ts`): while the page has not moved
 under it they change nothing, and when it has they wipe what was drawn and mark the place the answer sent him to,

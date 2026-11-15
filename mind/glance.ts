@@ -207,9 +207,8 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
         saidAloud.add(page.name);
         speech({ ports, settings, send, log }, id, mine.signal).speak(0, text);
       } else send({ v, type: "mute", id, why: "a look he did not ask for is shown, not spoken" });
-      // What is ahead stays drawn while he is on this page: it is sent again each time the mark moves. One step to a
-      // row: three steps with their dates side by side were shrunk to fit, down to words no one could read.
-      if (glanced.ahead.length > 0) send({ v, type: "board", id, rows: glanced.ahead.map((step) => [step.by ? `${step.step}: ${step.by}` : step.step]) });
+      // What is ahead is remembered and not drawn: a board of steps beside every first look crowded the page before he
+      // had asked for steps at all. "Show me", or an ask about what is ahead, draws them.
       // Only a date still ahead is one he can ask to keep: a passed one is told, never offered.
       if (glanced.kind === "date") showed({ title: named(glanced.line, page.title), written: glanced.line, url: page.url });
       log(`${id}: shown without being asked: "${text}"; ${marked}`);

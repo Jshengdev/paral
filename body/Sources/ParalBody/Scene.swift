@@ -57,7 +57,7 @@ public struct Scene {
     /// Each chunk of the microphone's sound: when it came, how long it lasts and how loud it was. The wave reads it.
     var sounds: [(at: Double, ms: Double, level: Double)] = []
     var failed: (detail: String, at: Double)?
-    var idleAt: Double?, staleAt: Double?  // when the page moved away from under the marks (`SceneStale.swift`)
+    var idleAt: Double?, staleAt: Double?, handAt: Double?  // the page moved under the marks; the app is scrolling (`SceneStale.swift`)
     var closedAt: Double?
     var lastAt = 0.0
 
@@ -189,7 +189,7 @@ public struct Scene {
             kept(at)
         case .go(_, let url, let label): went(to: url, label, at)
         case .click(let x, let y): click(x: x, y: y, at: at)
-        case .stale(let moved): staleAt = moved ? (staleAt ?? at) : nil
+        case .stale(let moved, let hand): if hand { handAt = moved ? at : nil } else { staleAt = moved ? (staleAt ?? at) : nil }
         case .other, .scroll, .press: break
         }
     }

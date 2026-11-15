@@ -27,8 +27,8 @@ export const cues = {
   } satisfies Setting<Record<string, Step[]>>,
 
   openingLine: {
-    value: "I sit on top of the page you have open. When a USC page hides something that will cost you later, I box it, and I can keep the date for you.",
-    why: "Shown once in the capsule when the app starts, so a student who has just opened it knows what it is. It goes to the body in the ready line; the app shows it, not spoken, and a scripted run does not show it. An empty line shows nothing.",
+    value: "Open a USC page and I will mark what matters. Hold right Option to ask.",
+    why: "Shown once in the capsule when the app starts, so a student who has just opened it knows what it is. It goes to the body in the ready line; the app shows it, not spoken, and a scripted run does not show it. An empty line shows nothing. It was three sentences and stood about nine seconds over an empty tab; one short line is read and gone.",
     measured: "not seen on a Mac",
   } satisfies Setting<string>,
 

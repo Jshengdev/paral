@@ -76,7 +76,7 @@
      ]
     },
     {
-     "until": "board"
+     "until": "mute"
     }
    ],
    [
@@ -309,7 +309,7 @@
      ]
     },
     {
-     "until": "board"
+     "until": "mute"
     }
    ],
    [
@@ -689,22 +689,6 @@
    "type": "mute",
    "id": "g1",
    "why": "no voice is set up"
-  },
-  {
-   "v": 1,
-   "type": "board",
-   "id": "g1",
-   "rows": [
-    [
-     "Officers finish their training"
-    ],
-    [
-     "Submit the application: November 22 at 11:59pm"
-    ],
-    [
-     "Advisor requirements: December 1"
-    ]
-   ]
   },
   {
    "v": 1,

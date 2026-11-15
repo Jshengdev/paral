@@ -76,7 +76,7 @@
      ]
     },
     {
-     "until": "board"
+     "until": "mute"
     }
    ],
    [
@@ -309,7 +309,7 @@
      ]
     },
     {
-     "until": "board"
+     "until": "mute"
     }
    ],
    [

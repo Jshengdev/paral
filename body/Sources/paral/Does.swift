@@ -22,10 +22,15 @@ final class Does {
         if let handle = try? FileHandle(forWritingTo: log) { handle.seekToEndOfFile(); handle.write(data); try? handle.close() } else { try? data.write(to: log) }
     }
 
-    /// Stops a scroll under way: "Start over".
+    /// What tells the scene the scrolling is over, while one is under way.
+    private var ended: (() -> Void)?
+
+    /// Stops a scroll under way, and lets the scene draw again: its own end, a new one beginning, or "Start over".
     func stop() {
         timer?.invalidate()
         timer = nil
+        ended?()
+        ended = nil
     }
 
     private enum Phase { case aiming(since: Date, down: Bool), moving(turns: ArraySlice<Double>, down: Bool), settling(since: Date), looking(asked: Date), answering(since: Date) }
@@ -33,7 +38,8 @@ final class Does {
     /// Takes a line from the mind. `watch` says what the scene and the key are doing now, takes a look when asked,
     /// and says whether the page stands as its last look saw it; `boxed` says whether a point lies inside a box paral
     /// is drawing now.
-    func take(_ seen: Seen, on screen: NSScreen, watch: Watch, boxed: (Double, Double) -> Bool, failed: @escaping (String) -> Void) {
+    /// `tell` gives the scene a line of the app's own: that the scrolling has begun, and that it has ended.
+    func take(_ seen: Seen, on screen: NSScreen, watch: Watch, boxed: (Double, Double) -> Bool, tell: @escaping (Seen) -> Void, failed: @escaping (String) -> Void) {
         if case .go(_, let url, _) = seen, !Keep.go(url) { failed("the page could not be opened (\(url))") }
         if case .press(_, let x, let y) = seen {
             // The one click the app ever makes. The mind names the point only for a heading paral has itself boxed on
@@ -52,7 +58,10 @@ final class Does {
         guard case .scroll = seen else { return }
         guard Hand.trusted(ask: true) else { note("scroll: no Accessibility grant"); return failed(Hand.off) }
         guard let first = watch.sees()?.scene.down else { return note("scroll: no arrow is up; nothing to scroll to") }
-        timer?.invalidate()
+        stop()
+        // Until the scrolling ends the scene draws no mark and no card: they come up once, where the page comes to rest.
+        tell(.stale(true, hand: true))
+        ended = { tell(.stale(false, hand: true)) }
         let began = Date(), high = Double(screen.frame.height)
         /// A reach of `points`, as the turns of the wheel that make it, eased.
         func reach(_ points: Double) -> ArraySlice<Double> { Hand.eased(points, turns: Int(Hand.perSecond * Hand.reachTakes * min(1, max(0.3, abs(points) / (Hand.reach * high)))))[...] }
@@ -63,8 +72,7 @@ final class Does {
         let timer = Timer(timeInterval: 1 / Hand.perSecond, repeats: true) { [weak self] timer in
             let now = Date()
             func end(_ how: String, _ why: String? = nil) {
-                timer.invalidate()
-                self?.timer = nil
+                self?.stop()
                 self?.note("scroll: ended after \(reaches) reach\(reaches == 1 ? "" : "es"), \(how)")
                 if let why { failed(why) }
             }

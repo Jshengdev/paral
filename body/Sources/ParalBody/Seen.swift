@@ -64,8 +64,10 @@ public enum Seen {
     case scroll(id: String, down: Bool)
     case press(id: String, x: Double, y: Double)
     /// From the app's own watcher, never from the mind: the page has moved away from under paral's marks (true), or
-    /// stands again as it did (false). While it has, the scene does not draw them (`SceneStale.swift`).
-    case stale(Bool)
+    /// stands again as it did (false). While it has, the scene does not draw them (`SceneStale.swift`). With `hand`
+    /// it is the app's own scrolling that begins (true) or has ended (false): until it ends the marks and the card
+    /// wait, so nothing is drawn in a place it will not stay.
+    case stale(Bool, hand: Bool = false)
     /// `tone` is only for a tag, whose words are its `label`; a tag with no tone is quiet. `spot` is true for a mark on a
     /// place of a drawing (an atom), not a line: no arrow leads from it and the cursor does not go to it.
     case mark(id: String, beat: Int, kind: MarkKind, box: Box, label: String?, tone: Tone?, spot: Bool)
@@ -167,7 +169,7 @@ public enum Seen {
             guard let id, let to = s("to"), ["up", "down"].contains(to) else { return .failure(Refused("scroll: id and to (up or down) are needed")) }
             return .success(.scroll(id: id, down: to == "down"))
         case "stale":
-            return .success(.stale(f["moved"] as? Bool ?? false))
+            return .success(.stale(f["moved"] as? Bool ?? false, hand: f["hand"] as? Bool ?? false))
         case "press":
             guard let id, let x = n("x"), let y = n("y") else { return .failure(Refused("press: id, x and y are needed")) }
             return .success(.press(id: id, x: x, y: y))
