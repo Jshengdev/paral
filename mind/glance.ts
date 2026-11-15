@@ -3,7 +3,7 @@ import { away, unknownDate, worded } from "./cores/dates.ts";
 import type { Box } from "./cores/ground.ts";
 import { named, type ToKeep } from "./cores/keep.ts";
 import { headingOf, whichPage, type KeptPage } from "./cores/page.ts";
-import { finished, point, whereIs, type More } from "./place.ts";
+import { finished, point, whereIs, type After, type More } from "./place.ts";
 import type { Following, Glanced } from "./ports.ts";
 import { speech } from "./speech.ts";
 import { SEAM_VERSION, type FromBody } from "../seam/schema.ts";
@@ -38,7 +38,7 @@ export type Asked = Following & { page: string | null };
  * When he has just asked something and then come to another kept page, the look is for what he was sent there for:
  * that is how paral guides him from page to page without clicking anything itself.
  */
-export function glances({ ports, settings, send, log, noted }: Hands, remember: (ahead: Ahead[]) => void, showed: (date: ToKeep) => void) {
+export function glances({ ports, settings, send, log, noted }: Hands, remember: (ahead: Ahead[]) => void, showed: (date: ToKeep) => void, kept: (line: string) => boolean = () => false) {
   /** What each look was found to hold, so the model is asked once: by page, or by page and the question that led there. Null: nothing. */
   const found = new Map<string, Glanced | null>();
   /** What the last look showed, on which line, and where that line's box was, so the same thing is not shown twice. */
@@ -67,6 +67,8 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
   const beingAsked = new Map<string, Promise<Glanced | null | void>>();
   /** The pages whose look has been said aloud in this sitting: each is said once. */
   const saidAloud = new Set<string>();
+  /** Where the last answer pointed on its page. The looks of that page keep to it, and not to the page's own first thing, until his next press of the key. */
+  let pointedAt: { page: string; line: string; under: string } | null = null;
   /** The page on which each ask he followed was found to end, by the words of the ask. */
   const endedOn = new Map<string, string>();
 
@@ -103,8 +105,14 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
       follow(last.look, last.page, led);
       return true;
     },
+    /** An answer was given on `page`: where it pointed is kept for the looks that follow. Gives back the page it sent him to. */
+    pointed(page: string, after: After): KeptPage | null {
+      pointedAt = after.target === null ? null : { page, ...after.target };
+      return after.sent;
+    },
     /** A press of the key ends a look in progress; what it had shown is his to ask about now. */
     stop() {
+      pointedAt = null;
       running?.abort();
       running = null;
       [shown, shownAt] = [null, null];
@@ -114,6 +122,15 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
       if (page === null || ports.glancer === null) return;
       last = { look, page };
       if (led !== null && led.page === page.name) return follow(look, page, led);
+      if (pointedAt !== null && pointedAt.page === page.name) {
+        // He has scrolled since his answer: the mark goes to where the answer sent him, as it now stands, and the
+        // page's own first thing does not come back over it.
+        running?.abort();
+        const where = whereIs(settings, look, page, pointedAt);
+        if (stays(`answer on ${where.on ?? where.to ?? ""}`, where.box)) return log(`g${++looks}: nothing has moved since the last look; what is shown stays`);
+        send({ v, type: "clear" });
+        return log(`g${++looks}: the page has moved since his answer; the looks keep to where it sent him: ${point(send, `g${looks}`, where)}`);
+      }
       // He is being followed when he asked something a moment ago and has since come to another kept page. That ends
       // on the page that holds what he was sent for: a page he opens after it, or one found not to hold it, gets a
       // look of its own.
@@ -175,8 +192,9 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
       const read = page.lines.length <= settings.pageLinesGiven.value ? "read the whole page" : `read its first ${settings.pageLinesGiven.value} lines`;
       const what = glanced.kind === "passed" ? "found 1 date that has passed" : `found 1 ${glanced.kind}`;
       const trail = following ? ["saw this page", "found what you asked for"] : first ? ["saw this page", read, what] : ["saw this page", reached];
-      // A date still ahead can be kept: the body may offer it as a button, which sends "add it to my calendar" as a tapped line.
-      send({ v, type: "say", id, beat: 0, text, trail, ...(glanced.kind === "date" ? { keep: true } : {}) });
+      // A date still ahead can be kept: the body may offer it as a button, which sends "add it to my calendar" as a tapped
+      // line. A date he has already kept in this sitting is not offered again.
+      send({ v, type: "say", id, beat: 0, text, trail, ...(glanced.kind === "date" && !kept(glanced.line) ? { keep: true } : {}) });
       // The first time a page's look shows a date, ahead or passed, it is also said aloud, once for the page. A look
       // that only moves its mark, a step with no date, and a look after his ask are shown and not spoken. A press of
       // the key stops it, as it stops the look.

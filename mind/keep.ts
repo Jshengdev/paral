@@ -19,8 +19,12 @@ const v = SEAM_VERSION;
 export function keeps(hands: Hands) {
   const { settings, send, log } = hands;
   let last: ToKeep | null = null;
+  /** The lines whose dates he has kept in this sitting: a look does not offer them again. */
+  const done = new Set<string>();
 
   return {
+    /** Whether the date on this line has been kept in this sitting. */
+    has: (written: string) => done.has(written),
     /** A look showed him this date. */
     found(date: ToKeep) {
       last = date;
@@ -50,6 +54,7 @@ export function keeps(hands: Hands) {
         const label = new Date(day.year, day.month - 1, day.day).toLocaleDateString("en-US", { month: "long", day: "numeric" });
         send({ v, type: "open", id, path, label });
         hands.noted?.({ kind: "kept" });
+        done.add(last.written);
         line = settings.keptLine.value.replace("{date}", label);
         log(`${id}: he asked to keep a date; a calendar file was written for "${last.written.slice(0, 80)}" from ${last.url}, and the body is told to open it`);
       } else {

@@ -1,0 +1,216 @@
+{
+ "name": "turn: an answer sent him further down the page to a section; he scrolls and the section comes into view: the look marks that section and does not go back to the page's first line and its card",
+ "run": "turn",
+ "in": {
+  "tape": "club.json",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "hello",
+     "body": "row"
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "typed",
+     "text": "where do my officers do that training",
+     "at": 1794700010000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1794700010005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Recognition Process",
+       "box": {
+        "x": 200,
+        "y": 200,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "The Spring 2027 RSO Recognition process is now open on EngageSC",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "for new RSOs and RSOs re-establishing after a lapse in recognition.",
+       "box": {
+        "x": 200,
+        "y": 360,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Important Dates",
+       "box": {
+        "x": 200,
+        "y": 500,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Deadlines +",
+       "box": {
+        "x": 200,
+        "y": 600,
+        "w": 900,
+        "h": 40
+       }
+      }
+     ]
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "look",
+     "at": 1794700040000,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Attend an info session to learn how the recognition process works.",
+       "box": {
+        "x": 200,
+        "y": 200,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Office hours are held every week in the Campus Activities office.",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Officer Trainings: Hazing Prevention and Officer Learning Path +",
+       "box": {
+        "x": 200,
+        "y": 400,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Each officer completes both trainings before the application is submitted.",
+       "box": {
+        "x": 200,
+        "y": 500,
+        "w": 900,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "until": "mark"
+    }
+   ]
+  ]
+ },
+ "out": [
+  {
+   "v": 1,
+   "type": "ready",
+   "mind": "paral",
+   "holdKey": "rightOption",
+   "drawKey": "shift",
+   "earGraceMs": 300,
+   "markPad": 4,
+   "pictureLongEdge": 1280,
+   "cropAround": {
+    "share": 1,
+    "points": 200
+   },
+   "lookEveryMs": 2500
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "thinking"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "where do my officers do that training",
+   "final": true
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t1",
+   "beat": 0,
+   "text": "The links are on this same page, in the Officer Trainings section further down."
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "t1",
+   "why": "no voice is set up"
+  },
+  {
+   "v": 1,
+   "type": "way",
+   "id": "t1",
+   "to": "down",
+   "toward": "Officer Trainings"
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "idle"
+  },
+  {
+   "v": 1,
+   "type": "clear"
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "g1",
+   "beat": 0,
+   "kind": "box",
+   "box": {
+    "x": 100,
+    "y": 200,
+    "w": 450,
+    "h": 20
+   }
+  }
+ ]
+}

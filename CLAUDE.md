@@ -90,7 +90,9 @@ sees a page it asks the deep model about the kept page's own text, whether it ho
 later; nothing read from his screen is sent for that. If so: a box on the line where it now is on his screen (the
 line itself, or the heading it sits under), one sentence on the nudge card with the trail of what was done under its name,
 and a board of what is still ahead. The first time a page's look shows a date the sentence is also said aloud,
-once (`unaskedVoice`); every later look of that page is shown and not spoken. When he scrolls or opens a section the mark moves. What
+once (`unaskedVoice`); every later look of that page is shown and not spoken. When he scrolls or opens a section the mark moves. After an
+answer that pointed at a date or a section of this page, the looks keep to that place until his next ask, and the
+page's own first thing does not come back over it. A date he has kept is not offered to be kept again. What
 is ahead is remembered for the sitting and given to every ask. A press of the key takes over at once.
 
 **A page's first look is kept.** Its question is about the kept page's own text and today's date, so the answer is

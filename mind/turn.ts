@@ -58,7 +58,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
   const hands: Hands = { ports, settings, send, log, noted: guide.noted };
   const keeping = keeps(hands);
   const taking = takes(hands);
-  const glancing = glances(hands, (found) => (ahead = [...ahead.filter((old) => !found.some((step) => step.step === old.step)), ...found]), keeping.found);
+  const glancing = glances(hands, (found) => (ahead = [...ahead.filter((old) => !found.some((step) => step.step === old.step)), ...found]), keeping.found, keeping.has);
   /** "Show me": the walk through what is ahead, one step each time he says it. */
   const showing = shows(hands, glancing, keeping.found);
   /** The opener, drafted from his words while he is still talking. With no fast model there is no opener at all. */
@@ -159,7 +159,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
       if (!mine.signal.aborted && told.length > 0) guide.noted({ kind: "asked", words: words.text });
       if (!mine.signal.aborted && told.length > 0) asked = { words: words.text, told, page: onPage?.name ?? null, at: Date.now() };
       keeping.answered(told, onPage ? [onPage, ...ports.pages] : ports.pages);
-      if (onPage && !mine.signal.aborted) taking.sent(id, wayAfter(hands, id, screen, onPage, told, lesson.drawn));
+      if (onPage && !mine.signal.aborted) taking.sent(id, glancing.pointed(onPage.name, wayAfter(hands, id, screen, onPage, told, lesson.drawn)));
       if (!mine.signal.aborted) send({ v, type: "state", name: "idle" });
     } catch (error) {
       if (mine.signal.aborted) return;
