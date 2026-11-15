@@ -67,7 +67,7 @@ export function glances({ ports, settings, send, log }: Hands, remember: (ahead:
         if (!following) remember(glanced.ahead.map((step) => ({ ...step, from: page.url })));
       }
       const glanced = found.get(key);
-      if (!glanced) return;
+      if (!glanced) return log(`${id}: this page was looked at before and holds nothing; nothing is shown`);
       // Where the thing is on his screen now: the line itself when it is in view, or the heading it sits under. A
       // kept line can be a whole paragraph where his screen breaks it into several, so the screen's line that the
       // kept one begins with counts as the line.
@@ -76,7 +76,7 @@ export function glances({ ports, settings, send, log }: Hands, remember: (ahead:
       const heading = glanced.under === "" ? null : locate(glanced.under, look.lines, look.display, settings.groundMinScore.value);
       const target = line.found ? line : heading?.found ? heading : null;
       const text = line.found ? glanced.sayInView : glanced.say;
-      if (`${key} on ${target?.line ?? ""}` === shown) return;
+      if (`${key} on ${target?.line ?? ""}` === shown) return log(`${id}: nothing has moved since the last look; what is shown stays`);
       shown = `${key} on ${target?.line ?? ""}`;
       // Push: a date this page does not hold would be made up, so a sentence that names one is not shown.
       const today = new Date(look.at).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });

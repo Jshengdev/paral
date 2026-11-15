@@ -188,8 +188,9 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
           return up(line.at);
         case "look":
           // A look he did not ask for never cuts into a hold or an answer.
-          if (listening !== null || answering > 0) return;
+          if (listening !== null || answering > 0) return log("look: not used, he is holding the key or an answer is on its way");
           onPage = which(line);
+          log(`look: ${line.lines.length} lines read; ${onPage ? `the kept page "${onPage.title}"` : "none of the kept pages"}`);
           // Another page has come up: what was drawn for the kept page before it points at nothing now, and goes.
           if (markUp && drawnOn !== null && onPage !== drawnOn) {
             glancing.stop();
