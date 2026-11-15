@@ -21,7 +21,7 @@ func why(_ error: Error) -> String {
 // the cure; it costs nothing.
 _ = Bundle.main.infoDictionary
 
-let usage = "usage: read PICTURE | smaller PICTURE OUT.jpg LONG_EDGE | page OUT.png LINE... | lines | keys SECONDS rightOption|fn|controlOption | flow FLOW.json SOCKET TOKENS.json | film RUN_DIR TOKENS.json | frame RUN_DIR TOKENS.json MS OUT.png | capsule RUN_DIR TOKENS.json MS..."
+let usage = "usage: read PICTURE | smaller PICTURE OUT.jpg LONG_EDGE | same PICTURE PICTURE | page OUT.png LINE... | lines | keys SECONDS rightOption|fn|controlOption | flow FLOW.json SOCKET TOKENS.json | film RUN_DIR TOKENS.json | frame RUN_DIR TOKENS.json MS OUT.png | capsule RUN_DIR TOKENS.json MS..."
 let arguments = Array(CommandLine.arguments.dropFirst())
 
 switch arguments.first {
@@ -41,6 +41,14 @@ case "smaller":
         let small = try Screen.load(arguments[2])
         let bytes = (try FileManager.default.attributesOfItem(atPath: arguments[2])[.size] as? Int) ?? 0
         out(["w": small.width, "h": small.height, "bytes": bytes])
+    } catch { fail(why(error)) }
+
+case "same":
+    // Whether two pictures look the same to the watcher, which reads a picture's text only when they do not.
+    guard arguments.count == 3 else { fail(usage) }
+    do {
+        let one = Screen.small(try Screen.load(arguments[1])), other = Screen.small(try Screen.load(arguments[2]))
+        out(["same": !one.isEmpty && one == other])
     } catch { fail(why(error)) }
 
 case "page":

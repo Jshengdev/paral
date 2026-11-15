@@ -23,7 +23,7 @@ import { empty, fold, NO_RUNG } from "../mind/cores/hold.ts";
 import { FromBody, FromMind, read, write } from "../seam/schema.ts";
 import { settings } from "../mind/settings.ts";
 import { keptVoice, standIn } from "./runners/adapters.ts";
-import { capsule, cardOnFilm, filmed, landing, pressedAgain } from "./runners/body.ts";
+import { capsule, cardOnFilm, filmed, landing, pressedAgain, sameToTheWatcher } from "./runners/body.ts";
 import { fresh } from "./runners/temp.ts";
 import { playTurn } from "./runners/turn.ts";
 
@@ -56,6 +56,7 @@ const runs: Record<string, (input: any) => unknown> = {
   "body.capsule": capsule,
   "body.card": cardOnFilm,
   "body.pressedAgain": pressedAgain,
+  "body.same": sameToTheWatcher,
   catch: (input) => input.events.reduce(hear, silence),
   "catch.drawing": (input) => Object.fromEntries(input.asks.map((words: string) => [words, asksFor(words, input.phrases)])),
   "page.which": (input) => whichPage(input.seen, input.kept, input.least)?.name ?? null,

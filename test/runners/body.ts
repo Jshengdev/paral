@@ -194,3 +194,15 @@ export function pressedAgain(input: { lines: string[]; tape: string; asks: strin
     secondAskAnswered: said(secondPress, lines.length).some((line) => !oldAsk.has(line.id)),
   };
 }
+
+/** Pages drawn and compared the way the watcher compares two pictures of the display: is each the same as the first? */
+export function sameToTheWatcher(input: { pages: string[][] }) {
+  const dir = fresh("same");
+  mkdirSync(dir, { recursive: true });
+  const pictures = input.pages.map((lines, index) => {
+    const picture = join(dir, `page-${index}.png`);
+    body("page", picture, ...lines);
+    return picture;
+  });
+  return pictures.slice(1).map((picture) => body("same", pictures[0], picture).same as boolean);
+}

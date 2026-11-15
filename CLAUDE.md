@@ -145,16 +145,20 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
 
 ## Known limits
 
-- The look without the key has run only through the scripted stand-in. The app's own watcher (`Watch.swift`) is
-  compiled and has never run: how often it fires on a real page, whether the text reader's wobble makes it fire
-  twice or never, and what a look every 2.5 s costs the Mac are all unknown. `lookEveryMs` 0 turns it off.
+- The look without the key has been checked only through the scripted stand-in. The app's own watcher
+  (`Watch.swift`) first ran on the owner's Mac at 0f437af, and no look of its own has been read back yet: how often
+  it fires on a real page, and whether the text reader's wobble makes it fire twice or never, are unknown. At rest it
+  held about a third of one core there, because the text was read on every look. Since then a picture that is the
+  same as the last one read is not read again; what that leaves has not been measured on a real screen.
+  `lookEveryMs` 0 turns it off.
 - The calendar file has never been opened on a Mac by the app: `Keep.swift` is compiled and has never run. Whether
   Calendar asks before adding the entry or adds it at once is not known, so the line he hears says only that the date
   is open in his calendar. A line with a clock time becomes an entry at that time in the Mac's own time zone, since
   the pages write none. "It" is the last date shown; after an answer that named two dates it is the first of them.
 - The page-to-page guide has run only on a tape and in the scripted stand-in.
-- The real windows are compiled and bundled and have never been started. The key, the microphone, the screen picture
-  and the overlay over real apps are unproven until a person runs `./run`.
+- The real windows have been started by the owner on his own Mac, twice. Seen there: the hold key, the microphone,
+  the ear, the voice, and answers with marks once the screen grant was on. Not yet seen there: a circle, the cross,
+  the board over real windows, a headset, and everything added since 368e4da except what the watcher cost.
 - One display, chosen when the app starts. After plugging in a display or a projector, start it again.
 - The capsule is placed on the whole display, so with the Dock at the bottom it sits over the Dock.
 - Every press of the hold key starts an ask, also when the key is used for typing.

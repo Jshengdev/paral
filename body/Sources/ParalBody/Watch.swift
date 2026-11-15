@@ -3,7 +3,8 @@ import AppKit
 /// Looks at a display with no key pressed. Every so often it takes a picture and reads its lines. When what it read
 /// has changed since the last look it reported, and is the same as the round before (so he has stopped scrolling),
 /// it reports the look, once. It does not look while `busy` says the key is down, and paral's own window is left
-/// out of the picture, so what paral draws never counts as a change.
+/// out of the picture, so what paral draws never counts as a change. Reading the text is what a look costs, so a
+/// picture that is the same as the last one read is not read again: at rest a look is one picture and a compare.
 public final class Watch {
     private let screen: NSScreen
     private var timer: Timer?
@@ -12,6 +13,8 @@ public final class Watch {
     /// wobbles on marks and spaces from one picture to the next.
     private var before = ""
     private var reported = ""
+    /// The last picture that was read, as its small grey copy, and the lines read from it.
+    private var lastRead = (small: Data(), lines: [ReadLine]())
     public var busy: () -> Bool = { false }
     /// A look to send: where its smaller copy was saved, the picture's size, where its display is, and the lines read from it.
     public var onLook: ((String, Int, Int, DisplayPlace, [ReadLine]) -> Void)?
@@ -32,15 +35,20 @@ public final class Watch {
     private func look() {
         guard !looking, !busy(), Screen.allowed else { return }
         looking = true
-        let screen = self.screen
+        let screen = self.screen, last = lastRead
         Task { [weak self] in
-            var seen: (image: CGImage, place: DisplayPlace, lines: [ReadLine])?
-            if let (image, place) = try? await Screen.picture(of: screen), let lines = try? Screen.read(image) { seen = (image, place, lines) }
+            var seen: (image: CGImage, place: DisplayPlace, lines: [ReadLine], small: Data)?
+            if let (image, place) = try? await Screen.picture(of: screen) {
+                let small = Screen.small(image)
+                let same = !small.isEmpty && small == last.small
+                if let lines = same ? last.lines : try? Screen.read(image) { seen = (image, place, lines, small) }
+            }
             let found = seen
             await MainActor.run {
                 guard let self else { return }
                 self.looking = false
                 guard let found, !self.busy() else { return }
+                self.lastRead = (found.small, found.lines)
                 let read = found.lines.map(\.text).joined(separator: " ").lowercased().filter { $0.isLetter || $0.isNumber }
                 defer { self.before = read }
                 guard read == self.before, read != self.reported else { return }
