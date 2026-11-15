@@ -38,6 +38,12 @@ export const pages = {
     measured: "not measured; a first list. One live run heard \"Show me.\" as said",
   } satisfies Setting<string[]>,
 
+  clickGrow: {
+    value: 10,
+    why: "A click this many points outside the box of the step he is on still counts as a click on it, so the box's own edge counts. A click there is the step done: the walk moves on as if he had said \"show me\" again.",
+    measured: "not measured on a Mac; ten is the reach the idea window's study of another guide found it gives its ring",
+  } satisfies Setting<number>,
+
   showMeLine: {
     value: "Step {n} of {of}: {step}{by}.",
     why: "What he hears and sees for the step he is on. {step} is the step in the words the look found it in, and {by} is \", by\" and its date as the page writes it, or nothing when the page gives none.",

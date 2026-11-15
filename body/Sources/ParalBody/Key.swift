@@ -1,7 +1,8 @@
 import AppKit
 import CoreGraphics
 
-/// The hold key, read by asking the system for the keys' state sixty times a second. It installs no event tap.
+/// The hold key, and the left button, read by asking the system for their state sixty times a second. It installs no
+/// event tap.
 public final class Key {
     public enum Which: String { case rightOption, fn, controlOption, shift, control, command }
 
@@ -12,8 +13,14 @@ public final class Key {
     public var onUp: (() -> Void)?
     /// Called on every look while the key stays down.
     public var onHeld: (() -> Void)?
+    /// Called with the pointer's place each time the left button goes down.
+    private let onClick: ((CGPoint) -> Void)?
+    private var pressed = false
 
-    public init(_ which: Which) { self.which = which }
+    public init(_ which: Which, onClick: ((CGPoint) -> Void)? = nil) {
+        self.which = which
+        self.onClick = onClick
+    }
 
     public static func isDown(_ which: Which) -> Bool {
         let flags = CGEventSource.flagsState(.combinedSessionState)
@@ -46,5 +53,9 @@ public final class Key {
         } else if down {
             onHeld?()
         }
+        // A press of the left button is read the same way: the system is asked for the button's state. No event tap.
+        let button = CGEventSource.buttonState(.combinedSessionState, button: .left)
+        if button, !pressed, let at = Key.pointer { onClick?(at) }
+        pressed = button
     }
 }

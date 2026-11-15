@@ -59,7 +59,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
   const keeping = keeps(hands);
   const glancing = glances(hands, (found) => (ahead = [...ahead.filter((old) => !found.some((step) => step.step === old.step)), ...found]), keeping.found);
   /** "Show me": the walk through what is ahead, one step each time he says it. */
-  const showing = shows(hands, glancing.lead, keeping.found);
+  const showing = shows(hands, glancing, keeping.found);
   /** The opener, drafted from his words while he is still talking. With no fast model there is no opener at all. */
   const drafting = ports.opener && drafts(ports.opener, settings, () => screen?.lines.map((read) => read.text).filter(Boolean) ?? []);
 
@@ -183,6 +183,9 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
           return screenCame?.();
         case "key.up":
           return up(line.at);
+        case "click":
+          // A click is the walk's only when he is not holding the key and no answer is on its way.
+          return void (listening === null && answering === 0 && showing.clicked(line, ahead, onPage));
         case "typed":
           log(`an ask was tapped or typed, not spoken: "${line.text}"`);
           down(line.at, line.text);
