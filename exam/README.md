@@ -8,7 +8,9 @@ a run leaves on disk.
 
 ## What it promises
 
-- `criteria.ts` is the list: seventeen things paral must do (C1 to C17), and six checks of use (U2 to U7).
+- `criteria.ts` is the list: twenty things paral must do (C1 to C20), and six checks of use (U2 to U7). C1 to C15
+  are what the video shows; C16 and C17 are the team's own (the hint ladder, the rendered lesson); C18 to C20 came
+  on the night of 2026-11-14 (the look with no key, keeping a date, "show me").
 - Two bars were chosen by the person this is built for (2026-11-14): his first words show within about 2 s of the
   press (2.5 s in the judge), and the board opens on its first row, never empty, and is open before the first
   sentence of the answer ends. The second replaced his earlier choice of an empty card inside two seconds, once he had
@@ -17,8 +19,10 @@ a run leaves on disk.
 - `node exam/run.ts prepare [scenario]` makes, under `tmp/runs/<scenario>/`: the page as a picture, `truth.json` (where
   every line of the page really is), each ask as a sound file, and `flow.json` for the app's `./flow`.
 - `node exam/run.ts judge [scenario]` reads the run's `session.jsonl` and its frames, writes `verdicts.json`, makes
-  `run.mp4` from the frames and the voice, and prints what fails.
-- `node exam/run.ts explain` writes `tmp/runs/index.html`: one page of what works, with each film.
+  `run.mp4` from the frames and the voice, and prints what fails. With the verdicts it writes the commit of the app
+  the run was made on: the newest commit in that folder that touched the app's code, never one of the judge's own.
+- `node exam/run.ts explain` writes `tmp/runs/index.html`: one page of what works, with each film. Each run's
+  card says which commit of the app it is of, and the top names the commit once when every run shares it.
 - `node exam/run.ts sheet <scenario> <fromMs> <everyMs>` tiles twelve frames into one picture, to look at by eye.
 - `node exam/run.ts planted` is the judge's own test. It runs made-up asks with one fault planted in each, and
   says whether each check fails where it must. It calls no service.
@@ -33,8 +37,24 @@ node exam/run.ts judge            # verdicts and films
 node exam/run.ts explain          # the page
 ```
 
-A live pass spends money, and a run against a tree that is being edited fails for no real reason. So a pass starts
-only when the builder says the tree is frozen, and the builder edits again only after the judge says it is judged.
+A live pass spends money, and a run against a tree that is being edited fails for no real reason. So a pass is made
+in a clone checked out at a named commit, and whoever is building never has to stop:
+
+```
+git clone . /tmp/judging && (cd /tmp/judging && git checkout --detach <commit> && cd body && swift build)
+exam/pass.sh /tmp/judging <round> <scenario>...   # flow, film and judge each; receipts under /tmp/paral-passes/<round>
+(cd /tmp/judging && node exam/run.ts explain)     # the page, of that commit
+```
+
+`exam/pass.sh` copies this folder's judge and each scenario's prepared page and asks into the clone, so the app is
+the commit's and the judge is the newest.
+
+## One step at a time
+
+A pass plays a script. To meet the app as a person does, the stand-in can also be walked: a flow file with
+`"live": true` is read again for each step (`body/README.md`), so whoever writes the file adds a step, reads what
+the app did, looks at a frame, and only then chooses the next step. The judge's tool for that and the record of each
+walk are kept outside this repo, beside the films, because the record quotes the person it was made for.
 
 ## What a run must leave for the judge
 
