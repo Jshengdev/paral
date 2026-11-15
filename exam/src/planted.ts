@@ -205,6 +205,7 @@ const CASES: Case[] = [
   { name: "a mark that pops in", check: "Each mark is drawn by a pen", mustPass: false, verdicts: () => drawnIn(film((ms) => (ms >= 1000 ? 1 : 0)), ask([]), [{ at: 1000, what: "mark", id: "t1/0", box }], Infinity) },
   { name: "a box wiped and drawn again on the same line, in 400 ms", check: "Each mark is drawn by a pen", mustPass: true, verdicts: () => drawnIn(film((ms) => (ms < 1000 ? 1 : (ms - 1000) / 400)), ask([]), [{ at: 1000, what: "mark", id: "t2/0", box }], Infinity) },
   { name: "a box wiped and popped back on the same line", check: "Each mark is drawn by a pen", mustPass: false, verdicts: () => drawnIn(film((ms) => (ms < 1000 ? 1 : ms < 1067 ? 0 : 1)), ask([]), [{ at: 1000, what: "mark", id: "t2/0", box }], Infinity) },
+  { name: "a ring drawn in 400 ms that pulses a second later while it waits", check: "Each mark is drawn by a pen", mustPass: true, verdicts: () => drawnIn(film((ms) => (ms < 2100 ? 0.7 * Math.min(1, (ms - 1000) / 400) : 1)), ask([]), [{ at: 1000, what: "mark", id: "t1/0", box }], Infinity) },
   { name: "a mark drawn in 400 ms", check: "Each mark is drawn by a pen", mustPass: true, verdicts: () => drawnIn(film((ms) => (ms - 1000) / 400), ask([]), [{ at: 1000, what: "mark", id: "t1/0", box }], Infinity) },
 ];
 

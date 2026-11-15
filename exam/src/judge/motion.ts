@@ -12,6 +12,7 @@ const ROOM = 8;           // points round the mark's box, so the pen's width is 
 const FEW = 30;           // drawn pixels below this are noise from scaling
 const POPPED_MS = 100;    // Nielsen: a change under 0.1 s reads as instant, so ink that arrives faster was not drawn
 const SLOW_MS = 1000;     // Nielsen: past 1 s the eye waits on the pen and stops following the voice
+const STILL = 0.03;       // ink that grows by less than this share over two steps has stopped: the pen is done
 
 // A mark is drawn by a pen, so its ink grows. The pen's time is from a tenth of the mark's ink to nine tenths of it.
 // The ink is counted from the least there was as the mark began: nothing, for a mark on a clean line; and for a
@@ -37,10 +38,14 @@ async function penTime(seen: Seen, mark: Placed, pointers: Placed[]): Promise<nu
   const began = samples.filter((s) => s.ms <= mark.at + 2 * STEP_MS);
   const least = began.reduce((low, s) => (s.ink <= low.ink ? s : low));
   const grown = samples.filter((s) => s.ms >= least.ms).map((s) => ({ ms: s.ms, ink: s.ink - least.ink }));
-  const full = grown[grown.length - 1].ink;   // the window always holds at least one sample
-  if (full < FEW) return null;
-  // The last sample holds all the ink, so some sample always reaches any share of it.
-  const reached = (share: number) => (grown.find((s) => s.ink >= full * share) ?? grown[grown.length - 1]).ms;
+  if (grown[grown.length - 1].ink < FEW) return null;   // the window always holds at least one sample
+  // The mark's own ink is whole when it stops growing. What is drawn round it afterwards is not the pen: the ring of
+  // a step that waits for his click pulses about a second later, and counted as ink that made a 450 ms pen read as
+  // a second long. So the pen's time is taken up to the first moment the ink holds still, or the window's end.
+  const still = grown.findIndex((s, i) => s.ink >= FEW && i + 2 < grown.length && grown[i + 1].ink - s.ink <= s.ink * STILL && grown[i + 2].ink - s.ink <= s.ink * STILL);
+  const pen = still >= 0 ? grown.slice(0, still + 1) : grown;
+  const full = pen[pen.length - 1].ink;
+  const reached = (share: number) => (pen.find((s) => s.ink >= full * share) ?? pen[pen.length - 1]).ms;
   return reached(0.9) - reached(0.1);
 }
 
