@@ -65,6 +65,8 @@ public struct Tokens: Codable {
     /// spreads. The kit fills at 0.85 over a blur of the page; the overlay cannot blur what is under it, so the fill
     /// is nearly solid, to keep the page's words from showing through the words written on it.
     public var glass, shadow: Double
+    /// How wide the band of the surface's own colour is outside its edge: the page's letters stop short of the edge by this much.
+    public var band: Double
     public var dim: Double
     public var capsule: Capsule
     public var mark: Mark

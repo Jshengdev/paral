@@ -41,6 +41,13 @@ public struct Painter {
     /// The light surface every card and pill is made of, after the design kit's: a nearly solid light fill with a
     /// soft shadow, and a hairline edge in mist, so that on a white page it does not run into the page's own lines.
     func surface(_ shape: CGPath, _ ctx: CGContext) {
+        // A band of the surface's own colour outside its edge, so that no letter of the page touches the edge.
+        if tokens.band > 0 {
+            ctx.addPath(shape)
+            ctx.setStrokeColor(light.copy(alpha: 0.92) ?? light)
+            ctx.setLineWidth(2 * tokens.band)
+            ctx.strokePath()
+        }
         ctx.saveGState()
         ctx.setShadow(offset: .zero, blur: tokens.shadow, color: CGColor(gray: 0, alpha: 0.28))
         ctx.addPath(shape)
