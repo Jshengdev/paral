@@ -13,7 +13,8 @@ import type { Listening, Ports } from "./ports.ts";
 import { wayToDate } from "./place.ts";
 import { ready } from "./ready.ts";
 import type { Settings } from "./settings.ts";
-import { speech } from "./speech.ts";
+import { shows } from "./showme.ts";
+import { sayLine } from "./speech.ts";
 import { SEAM_VERSION, type FromBody, type FromMind } from "../seam/schema.ts";
 
 type Send = (line: FromMind) => void;
@@ -53,6 +54,8 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
   /** The date paral last showed him, for "add it to my calendar". */
   const keeping = keeps({ ports, settings, send, log });
   const glancing = glances({ ports, settings, send, log }, (found) => (ahead = [...ahead.filter((old) => !found.some((step) => step.step === old.step)), ...found]), keeping.found);
+  /** "Show me": the walk through what is ahead, one step each time he says it. */
+  const showing = shows({ ports, settings, send, log }, glancing.lead, keeping.found);
   /** The opener, drafted from his words while he is still talking. With no fast model there is no opener at all. */
   const drafting = ports.opener && drafts(ports.opener, settings, () => screen?.lines.map((read) => read.text).filter(Boolean) ?? []);
 
@@ -118,12 +121,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
         carried = trail;
         const id = `t${++asks}`;
         log(`${id}: he drew a path of ${trail.length} points and said nothing; it waits for his next ask`);
-        const talk = speech({ ports, settings, send, log }, id, mine.signal);
-        send({ v, type: "say", id, beat: 0, text: settings.circleNoWordsLine.value });
-        talk.speak(0, settings.circleNoWordsLine.value);
-        await talk.finished();
-        if (!mine.signal.aborted) send({ v, type: "state", name: "idle" });
-        return;
+        return sayLine({ ports, settings, send, log }, id, settings.circleNoWordsLine.value, mine.signal);
       }
       send({ v, type: "heard", text: words.text, final: true });
       const id = `t${++asks}`;
@@ -147,6 +145,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
         log(`no picture of the screen arrived within ${settings.screenWaitMs.value} ms of his words; this ask fails and nothing is asked (the body says why in the capsule: the screen grant, most likely)`);
         return send({ v, type: "state", name: "failed", detail: "no picture of the screen arrived with this ask" });
       }
+      if (await showing.asked(id, words.text, ahead, screen, onPage, mine.signal)) return;
       const opener = opening(mine.signal);
       const around = circled(path, screen.lines, screen.display, settings.circleLeast.value);
       if (path.length > 0) {

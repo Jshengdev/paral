@@ -1,5 +1,5 @@
 import { existsSync } from "node:fs";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { BUILD, EXAM, run } from "./tools.ts";
@@ -22,13 +22,29 @@ const shift = (id: string) => `<script>addEventListener("load", () => {
 
 // `hide` is what the page keeps hidden until he clicks: a closed section's inside. With the page's scripts gone its
 // sections all stand open, so a scenario that needs one closed names what to hide, as the page's own style rule would.
+/** The saved original of a page fetched from this address before, under any name; null when there is none. */
+async function alreadyFetched(url: string): Promise<string | null> {
+  const root = join(BUILD, "tmp", "real");
+  if (!existsSync(root)) return null;
+  for (const name of await readdir(root)) {
+    const saved = join(root, name, "page.html");
+    const original = join(root, name, "page.orig.html");
+    if (existsSync(saved) && existsSync(original) && (await readFile(saved, "utf8")).includes(`<base href="${url}">`)) return original;
+  }
+  return null;
+}
+
 export async function fetchReal(name: string, url: string, at?: string, hide?: string): Promise<string> {
   const saved = realPage(name);
   if (existsSync(saved)) return saved;
   const dir = join(BUILD, "tmp", "real", name);
   await mkdir(dir, { recursive: true });
   const original = join(dir, "page.orig.html");
-  await run("curl", ["--silent", "--fail", "--location", "--max-time", "30", "--user-agent", "Mozilla/5.0 (Macintosh)", "--output", original, url]);
+  // One fetch for each address: another view of a page already saved is made from that copy. It spares the
+  // publisher, and a view can still be made when their site is failing (it answered 504 at 20:18 on 2026-11-14).
+  const fetched = await alreadyFetched(url);
+  if (fetched) await copyFile(fetched, original);
+  else await run("curl", ["--silent", "--fail", "--location", "--max-time", "30", "--user-agent", "Mozilla/5.0 (Macintosh)", "--output", original, url]);
   // Scripts go, so two renders are the same. An embedded frame goes too: it is another site's page, whose own scripts
   // would run here, and it holds a video, not words on the page. A grey box of a video's shape stands in its place.
   const html = (await readFile(original, "utf8")).replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "")

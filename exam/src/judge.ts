@@ -9,7 +9,8 @@ import { closing, cutIn, ending, pressedAgain } from "./judge/ending.ts";
 import { atEnd, atRest, inked, look, thinkingShown, trail } from "./judge/frames.ts";
 import { marks, standingBefore } from "./judge/marks.ts";
 import { kept } from "./judge/keep.ts";
-import { glanced, pageChanged } from "./judge/look.ts";
+import { walked } from "./judge/showme.ts";
+import { glanced, pageChanged, wayShown } from "./judge/look.ts";
 import { pagesGiven, readSoFar, type PageRead } from "./judge/pages.ts";
 import { pictureSent } from "./judge/picture.ts";
 import { drawnIn } from "./judge/motion.ts";
@@ -100,7 +101,7 @@ export async function judge(scenario: Scenario): Promise<Judged> {
     if (step.say !== "") verdicts.push(...timing(ask, step.expect, where, nextDown), ...(seen ? await thinkingShown(seen, ask, where) : thinkingSaid(ask)));
     if (!takenBack(ask, nextDown)) verdicts.push(...heardWhole(ask, step.say));
     verdicts.push(...marks(ask, step.expect, truth, standingBefore(everything, ask)), ...spoken(ask, step.expect, truth, { pages: sofar.get(turnOf(ask)) ?? [], ranOn: ran }), ...voiced(ask, step.expect, all[index + 1]?.down ?? null),
-      ...board(ask, step.expect, truth, where), ...lesson(ask, step.expect), ...cutIn(ask, all[index - 1] ?? null, step.expect, voice), ...pressedAgain(ask, all[index - 1] ?? null, step.expect), ...kept(ask, step.expect));
+      ...board(ask, step.expect, truth, where), ...lesson(ask, step.expect), ...cutIn(ask, all[index - 1] ?? null, step.expect, voice), ...pressedAgain(ask, all[index - 1] ?? null, step.expect), ...kept(ask, step.expect), ...walked(ask, step.expect), ...wayShown("C20", ask.index, ask.moments, step.expect));
     const drawnBoard = lastBoard(ask.moments, turnOf(ask));
     verdicts.push(...readable("C8", ask.index, drawnBoard.rows, drawnBoard.card, boardLook));
     if (seen) {

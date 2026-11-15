@@ -27,7 +27,7 @@ function moment(at: number, line: Record<string, unknown> & { type: string }): M
     case "words": return { at, kind: "voiced", of: sayId(line), words: (line.words as string[]).map(String) };
     case "mark": return { at, kind: "mark", id: sayId(line), mark: String(line.kind), box: Box.parse(line.box), label: line.label === undefined ? undefined : String(line.label) };
     case "echo": return { at, kind: "echo", box: Box.parse(line.box) };
-    case "board": return { at, kind: "board", text: (line.rows as string[][]).map((row) => row.join(" → ")).join(" | ") };
+    case "board": return { at, kind: "board", text: (line.rows as string[][]).map((row) => row.join(" → ")).join(" | "), now: typeof line.now === "number" ? line.now : undefined };
     case "clip": return { at, kind: "clip", path: String(line.clip), seconds: Number(line.seconds) };
     case "screen": {
       const lines = line.lines as { text: string }[];
@@ -35,6 +35,7 @@ function moment(at: number, line: Record<string, unknown> & { type: string }): M
     }
     case "look": return { at, kind: "glance", lines: (line.lines as unknown[]).length };
     case "open": return { at, kind: "opened", path: String(line.path) };
+    case "way": return { at, kind: "way", to: line.to === "up" ? "up" : "down", toward: String(line.toward) };
     case "board.close": return { at, kind: "board-closed" };
     case "clear": return { at, kind: "clear" };
     case "close": return { at, kind: "close" };

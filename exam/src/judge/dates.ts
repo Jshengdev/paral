@@ -18,14 +18,15 @@ export const monthNumber = (month: string) => MONTHS.findIndex((name) => name.st
 /**
  * Each month in the text with the day numbers written after it: "December 5 through 8" gives dec 5 and dec 8. A
  * number with a colon and a digit after it is a time ("11:59"), not a day; "December 1: Deadline" is still a day
- * (the judge once read no date in that line, and failed three right answers for it).
+ * (the judge once read no date in that line, and failed three right answers for it). A number
+ * with "days" after it is a count ("December 1, which is 17 days away" names one date, not two).
  */
 export function dates(text: string): { month: string; day: number; said: string }[] {
   const found = [...text.matchAll(MONTH)];
   return found.flatMap((m, index) => {
     const from = (m.index ?? 0) + m[0].length;
     const until = Math.min(index + 1 < found.length ? found[index + 1].index ?? text.length : text.length, from + 40);
-    const days = [...text.slice(from, until).matchAll(/\b([12]?\d|3[01])(?:st|nd|rd|th)?\b(?!:\d)/g)].map((d) => Number(d[1])).filter((d) => d >= 1 && d <= 31);
+    const days = [...text.slice(from, until).matchAll(/\b([12]?\d|3[01])(?:st|nd|rd|th)?\b(?!:\d| days?\b)/g)].map((d) => Number(d[1])).filter((d) => d >= 1 && d <= 31);
     return days.map((day) => ({ month: key(m[1]), day, said: `${m[1]} ${day}` }));
   });
 }

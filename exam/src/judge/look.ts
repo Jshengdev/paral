@@ -1,8 +1,8 @@
 import type { Expect, Truth } from "../shape.ts";
-import { of, type Look } from "../timeline.ts";
+import { of, type Look, type Moment } from "../timeline.ts";
 import { no, yes, type Verdict } from "../verdict.ts";
 import { dates, datesSaid, daysTo, type Known } from "./dates.ts";
-import { marks } from "./marks.ts";
+import { marks, nearestLine } from "./marks.ts";
 
 // A look with no key pressed (his choice of 2026-11-14, 19:02: "lets try the B"): on a page it has read, paral
 // shows one sentence with a short trail of what it did above it, marks where the thing is, and draws what is still
@@ -19,15 +19,20 @@ export function glanced(look: Look, expect: Expect, truth: Truth[], known: Known
     const what = "A look shows nothing when it has nothing new to show";
     return [says.length === 0 && drawn === 0 ? yes(C, s, what, "nothing said, marked or drawn") : no(C, s, what, says[0] ? `it showed: "${says[0].text.slice(0, 90)}"` : `${drawn} things drawn`)];
   }
+  // A look that only follows him (after "show me" it re-places the step's box or arrow) is held to its mark or its way alone.
+  if (expect.shows === undefined) return [...marks({ index: s, moments: look.moments }, expect, truth), ...wayShown(C, s, look.moments, expect)];
   const one = "A look he did not ask for shows one sentence";
   if (says.length !== 1) return [no(C, s, one, says.length === 0 ? "nothing was shown" : `${says.length} lines: "${says.map((m) => m.text.slice(0, 40)).join('" / "')}"`)];
   const line = says[0];
   const out = [yes(C, s, one, `"${line.text}", ${Math.round(line.at - look.at)} ms after the look`)];
   const sound = of(look.moments, "voice").length;
   out.push(sound === 0 ? yes(C, s, "What a look shows is not spoken", "no sound was made for it") : no(C, s, "What a look shows is not spoken", `${sound} pieces of sound were sent for it`));
-  out.push(trailIsTrue(s, line, known));
+  // The lines its marks sit on: a date it found may be shown as a box on the date's own line, with no date in the words.
+  const markedLines = of(look.moments, "mark").map((m) => nearestLine(m.box, truth)?.text ?? "");
+  out.push(trailIsTrue(s, line, known, markedLines));
   const asAsk = { index: s, moments: look.moments };
   out.push(...marks(asAsk, expect, truth), ...datesSaid(asAsk, expect, truth, known), ...ahead(s, boards.at(-1)?.text ?? null, expect, known));
+  out.push(...wayShown(C, s, look.moments, expect));
   // A date that has passed leaves nothing to do, so nothing is added to what is ahead.
   if (expect.board === false) out.push(boards.length === 0 ? yes(C, s, "It adds nothing to what is ahead", "no board was drawn") : no(C, s, "It adds nothing to what is ahead", `it drew: ${boards.at(-1)?.text.slice(0, 90)}`));
   return out;
@@ -35,18 +40,19 @@ export function glanced(look: Look, expect: Expect, truth: Truth[], known: Known
 
 // The trail says what was done, a step at a time, so each step must be so. Two of its steps carry a number: the
 // pages read and the dates found. The pages read are the ones the record names for this look; the dates found are
-// the ones in the sentence it shows.
-function trailIsTrue(s: number, line: { text: string; trail?: string[] }, known: Known): Verdict {
+// the ones in the sentence it shows or on the lines it marks (once the date is in view it boxes the date's own line
+// and says what to do, without saying the date again).
+function trailIsTrue(s: number, line: { text: string; trail?: string[] }, known: Known, markedLines: string[]): Verdict {
   const what = "Each step of the trail above the line is true";
   const trail = line.trail ?? [];
   if (trail.length === 0) return no(C, s, what, "the line came with no trail");
-  const found = new Set(dates(line.text).map((d) => `${d.month} ${d.day}`)).size;
+  const found = new Set([line.text, ...markedLines].flatMap(dates).map((d) => `${d.month} ${d.day}`)).size;
   const wrong = trail.flatMap((step) => {
     const pages = /^read (\d+) .*pages?$/i.exec(step);
     const forThis = (known.forThis ?? known.pages).length;
     if (pages && Number(pages[1]) !== forThis) return [`"${step}", and the record names ${forThis} for this look`];
     const named = /^found (\d+) dates?$/i.exec(step);
-    if (named && Number(named[1]) !== found) return [`"${step}", and the line it shows names ${found}`];
+    if (named && Number(named[1]) !== found) return [`"${step}", and the line it shows and the lines it marks name ${found}`];
     return [];
   });
   return wrong.length === 0 ? yes(C, s, what, trail.join(" > ")) : no(C, s, what, wrong.join("; "));
@@ -75,4 +81,22 @@ function ahead(s: number, board: string | null, expect: Expect, known: Known): V
 export function pageChanged(s: number, standing: number): Verdict {
   const what = "When another page comes up, the marks drawn for the page before are cleared";
   return standing === 0 ? yes(C, s, what, "nothing of the page before is left over it") : no(C, s, what, `${standing} marks drawn for the page before are still on the screen`);
+}
+
+
+// His words of 2026-11-14, 20:00: "arrows to continue scrolling until it finds it". When the thing is on this page
+// and not in view, the build says which way in a mark's place. It must be the right way, lead to the right thing,
+// and come instead of a mark, never beside one. The arrow's drawing is judged on film, not here.
+export function wayShown(criterion: string, s: number, moments: Moment[], expect: Expect): Verdict[] {
+  if (expect.way === undefined) return [];
+  const C = criterion;
+  const toward = expect.way.toward;
+  const what = `It shows the way to scroll: ${expect.way.to}${toward ? `, toward ${toward}` : ""}`;
+  const ways = of(moments, "way");
+  const marked = of(moments, "mark").length;
+  if (ways.length === 0) return [no(C, s, what, marked > 0 ? "a mark was drawn and no way was shown" : "no way was shown")];
+  const way = ways.at(-1)!;
+  const right = way.to === expect.way.to && (toward === undefined || way.toward.toLowerCase().includes(toward.toLowerCase()));
+  const measured = `${way.to}, toward "${way.toward}"${marked > 0 ? `, with ${marked} marks beside it` : ""}`;
+  return [right && marked === 0 ? yes(C, s, what, measured) : no(C, s, what, measured)];
 }

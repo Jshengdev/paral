@@ -32,6 +32,30 @@ export const pages = {
     measured: "not seen live",
   } satisfies Setting<string>,
 
+  showMeAsks: {
+    value: ["show me", "show me the way", "show me what to do", "show me what's next", "show me what is next", "show me the next step", "show me the next one", "show me next", "what's next", "what is next", "next step"],
+    why: "His whole words, and nothing more, that start or move on the walk through what is ahead. A question that only begins this way (\"show me where to book a room\") is an ordinary ask.",
+    measured: "not measured; a first list. One live run heard \"Show me.\" as said",
+  } satisfies Setting<string[]>,
+
+  showMeLine: {
+    value: "Step {n} of {of}: {step}{by}.",
+    why: "What he hears and sees for the step he is on. {step} is the step in the words the look found it in, and {by} is \", by\" and its date as the page writes it, or nothing when the page gives none.",
+    measured: "not measured",
+  } satisfies Setting<string>,
+
+  showMeElsewhere: {
+    value: " It is on the page {page}.",
+    why: "Added to the step's sentence when the step was found on a kept page that is not the one on his screen. paral clicks nothing; when he gets there the looks place the step.",
+    measured: "not seen live",
+  } satisfies Setting<string>,
+
+  showMeDoneLine: {
+    value: "That was the last step I found.",
+    why: "Said when he says \"show me\" after the last step. The next one starts again from the first.",
+    measured: "not seen live",
+  } satisfies Setting<string>,
+
   followForMs: {
     value: 180000,
     why: "For this long after an answer, a look at another kept page is taken as him following that answer: it looks for what he was sent there for, and for nothing else. It is how paral guides from page to page. After it, a new page is looked at afresh.",

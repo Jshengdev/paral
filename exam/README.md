@@ -124,6 +124,10 @@ only when the builder says the tree is frozen, and the builder edits again only 
 - **Keeping a date** (`src/judge/keep.ts`). Asked to keep a date, the build writes a calendar file and hands it to
   the Mac; he adds it with his own click in Calendar. The judge holds that one such file was handed over and that it
   starts on the day the scenario names. It may say the date is open in his calendar, never that it was added.
+- **"Show me"** (`src/judge/showme.ts`; his words of 2026-11-14, 20:00). Each time he says it the build is held to
+  the next step of what the looks found: the board names his row, and one sentence begins "Step 2 of 3". Where the
+  step is on the page is held by the mark check, or by the way check when it is not in view; a look after it is
+  held to re-placing that box or arrow. A longer question that only begins "show me" is an ordinary ask.
 - **A board that can be read.** A board is shrunk to fit its room and its words shrink with it. Their size is worked
   out from the card the painter drew, and must be 10 points or more, the smallest text style the Mac itself uses.
   A look once drew a one-row board of three long steps 17.5 points tall, its words about 3.5 points.

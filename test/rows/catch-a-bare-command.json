@@ -1,0 +1,33 @@
+{
+ "name": "catch: a bare command is his whole words and nothing more: \"show me\" with a word of starting or a please counts, a question that begins the same way does not",
+ "run": "catch.only",
+ "in": {
+  "phrases": [
+   "show me",
+   "show me the next step",
+   "what's next"
+  ],
+  "asks": [
+   "Show me.",
+   "Okay, show me.",
+   "show me please",
+   "So, show me the next step.",
+   "What’s next?",
+   "show me where to book a room",
+   "can you show me",
+   "show me how you got that",
+   ""
+  ]
+ },
+ "out": {
+  "Show me.": true,
+  "Okay, show me.": true,
+  "show me please": true,
+  "So, show me the next step.": true,
+  "What’s next?": true,
+  "show me where to book a room": false,
+  "can you show me": false,
+  "show me how you got that": false,
+  "": false
+ }
+}
