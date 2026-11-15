@@ -13,8 +13,8 @@ const v = SEAM_VERSION;
 const never = new AbortController().signal;
 type Look = Extract<FromBody, { type: "look" }>;
 
-/** One thing still ahead for him, as found on a kept page: what, by when as the page writes it, and the page's address. */
-export type Ahead = { step: string; by: string; from: string };
+/** One thing still ahead for him, as found on a kept page: what, by when as the page writes it, the page's address, and the line of that page where it is written, when it has one. */
+export type Ahead = { step: string; by: string; from: string; at?: string };
 /**
  * A step he asked to be shown ("show me"): the kept page it is on, the line of that page that writes its date (null
  * when none is known) and the heading the page puts that line under, its sentence, and the board of all the steps

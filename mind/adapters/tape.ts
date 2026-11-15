@@ -12,9 +12,9 @@ const Tape = z.object({
   holdGlance: z.boolean().optional(),
   opener: z.string().optional(),
   /** What a look he did not ask for finds on a kept page; null for a page that holds nothing. Absent: no such looks. */
-  glance: z.object({ kind: z.enum(["date", "step", "passed"]).optional(), line: z.string(), under: z.string(), say: z.string(), sayInView: z.string(), ahead: z.array(z.object({ step: z.string(), by: z.string() })) }).nullable().optional(),
+  glance: z.object({ kind: z.enum(["date", "step", "passed"]).optional(), line: z.string(), under: z.string(), say: z.string(), sayInView: z.string(), ahead: z.array(z.object({ step: z.string(), by: z.string(), at: z.string().optional() })) }).nullable().optional(),
   /** What a look finds when he has just been sent to the page by an answer: the thing he was sent for. */
-  glanceAfterAsk: z.object({ line: z.string(), under: z.string(), say: z.string(), sayInView: z.string(), ahead: z.array(z.object({ step: z.string(), by: z.string() })) }).nullable().optional(),
+  glanceAfterAsk: z.object({ line: z.string(), under: z.string(), say: z.string(), sayInView: z.string(), ahead: z.array(z.object({ step: z.string(), by: z.string(), at: z.string().optional() })) }).nullable().optional(),
   pages: z.array(z.object({ name: z.string(), url: z.string(), readOn: z.string(), title: z.string(), lines: z.array(z.string()) })).optional(),
   voice: z.boolean().optional(),
   clip: z.object({ clip: z.string(), still: z.string(), seconds: z.number() }).optional(),
