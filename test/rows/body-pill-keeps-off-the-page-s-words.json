@@ -82,7 +82,7 @@
     "says": "when is the deadline for my club",
     "stone": [],
     "caret": false,
-    "aboveThePill": 10,
+    "aboveThePill": 8,
     "onText": false
    }
   },
@@ -95,7 +95,7 @@
     "says": "when is the deadline for my club",
     "stone": [],
     "caret": null,
-    "aboveThePill": 10,
+    "aboveThePill": 8,
     "onText": false
    }
   },

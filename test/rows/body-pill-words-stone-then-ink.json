@@ -128,7 +128,7 @@
     "says": "Listening",
     "stone": [],
     "caret": true,
-    "aboveThePill": 23.5,
+    "aboveThePill": 21.5,
     "onText": false
    },
    "wave": "ink: dot dot dot dot dot dot dot dot dot"
@@ -142,7 +142,7 @@
      "do"
     ],
     "caret": true,
-    "aboveThePill": 10,
+    "aboveThePill": 8,
     "onText": false
    },
    "wave": "ink: dot dot dot dot dot dot dot dot dot"
@@ -153,7 +153,7 @@
     "says": "where do",
     "stone": [],
     "caret": false,
-    "aboveThePill": 10,
+    "aboveThePill": 8,
     "onText": false
    },
    "wave": "ink: dot dot dot dot dot dot dot dot dot"
@@ -167,7 +167,7 @@
      "book"
     ],
     "caret": false,
-    "aboveThePill": 10,
+    "aboveThePill": 8,
     "onText": false
    },
    "wave": "ink: dot dot dot dot dot dot dot dot dot"
@@ -178,7 +178,7 @@
     "says": "where do i book",
     "stone": [],
     "caret": true,
-    "aboveThePill": 10,
+    "aboveThePill": 8,
     "onText": false
    },
    "wave": "ink: dot dot dot dot dot dot dot dot dot"
@@ -189,7 +189,7 @@
     "says": "where do i book",
     "stone": [],
     "caret": null,
-    "aboveThePill": 10,
+    "aboveThePill": 8,
     "onText": false
    },
    "wave": "stone: dot dot dot dot dot dot dot dot dot"
@@ -205,7 +205,7 @@
      "EngageSC."
     ],
     "caret": null,
-    "aboveThePill": 10,
+    "aboveThePill": 8,
     "onText": false
    },
    "wave": "stone: dot dot dot dot dot dot dot tall tall"
@@ -216,7 +216,7 @@
     "says": "You book it on EngageSC.",
     "stone": [],
     "caret": null,
-    "aboveThePill": 10,
+    "aboveThePill": 8,
     "onText": false
    },
    "wave": "stone: dot tall tall tall tall tall tall tall tall"

@@ -1,0 +1,169 @@
+{
+ "name": "body: once paral draws on the page for his ask, his question stays in the bubble as the reason for what is drawn, and the pill keeps its look, until the answer's own words take the bubble: a line said while he waits shows only until the first mark or board of that ask is up",
+ "run": "body.pill",
+ "in": {
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "key.down",
+     "at": 1000
+    }
+   },
+   {
+    "at": 1200,
+    "line": {
+     "type": "heard",
+     "text": "when does it close",
+     "final": false
+    }
+   },
+   {
+    "at": 2000,
+    "line": {
+     "type": "key.up",
+     "at": 2000
+    }
+   },
+   {
+    "at": 2001,
+    "line": {
+     "type": "state",
+     "name": "thinking"
+    }
+   },
+   {
+    "at": 2300,
+    "line": {
+     "type": "say",
+     "id": "a1",
+     "beat": -1,
+     "text": "One moment, let me look.",
+     "aside": true
+    }
+   },
+   {
+    "at": 2300,
+    "line": {
+     "type": "voice",
+     "id": "a1",
+     "beat": -1,
+     "amp": 6000,
+     "ms": 1500,
+     "last": true
+    }
+   },
+   {
+    "at": 2700,
+    "line": {
+     "type": "board",
+     "id": "a1",
+     "rows": [
+      [
+       "Submit the application"
+      ],
+      [
+       "November 22 at 11:59pm"
+      ]
+     ]
+    }
+   },
+   {
+    "at": 2700,
+    "line": {
+     "type": "mark",
+     "id": "a1",
+     "beat": 0,
+     "kind": "underline",
+     "box": {
+      "x": 120,
+      "y": 110,
+      "w": 300,
+      "h": 48
+     }
+    }
+   },
+   {
+    "at": 4000,
+    "line": {
+     "type": "say",
+     "id": "a1",
+     "beat": 0,
+     "text": "It closes November 22."
+    }
+   },
+   {
+    "at": 4000,
+    "line": {
+     "type": "voice",
+     "id": "a1",
+     "beat": 0,
+     "amp": 6000,
+     "ms": 1500,
+     "last": true
+    }
+   }
+  ],
+  "at": [
+   2500,
+   2800,
+   3900,
+   4100
+  ],
+  "watch": [
+   "look",
+   "bubble"
+  ]
+ },
+ "out": [
+  {
+   "look": "speaking",
+   "bubble": {
+    "says": "One moment, let me look.",
+    "stone": [
+     "moment,",
+     "let",
+     "me",
+     "look."
+    ],
+    "caret": null,
+    "aboveThePill": 8,
+    "onText": false
+   }
+  },
+  {
+   "look": "thinking",
+   "bubble": {
+    "says": "when does it close",
+    "stone": [],
+    "caret": null,
+    "aboveThePill": 8,
+    "onText": false
+   }
+  },
+  {
+   "look": "thinking",
+   "bubble": {
+    "says": "when does it close",
+    "stone": [],
+    "caret": null,
+    "aboveThePill": 8,
+    "onText": false
+   }
+  },
+  {
+   "look": "speaking",
+   "bubble": {
+    "says": "It closes November 22.",
+    "stone": [
+     "closes",
+     "November",
+     "22."
+    ],
+    "caret": null,
+    "aboveThePill": 8,
+    "onText": false
+   }
+  }
+ ]
+}

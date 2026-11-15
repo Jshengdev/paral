@@ -129,7 +129,7 @@
      "left"
     ],
     "caret": true,
-    "aboveThePill": 11,
+    "aboveThePill": 9,
     "onText": false
    }
   },
@@ -140,7 +140,7 @@
     "says": "what is left",
     "stone": [],
     "caret": null,
-    "aboveThePill": 10,
+    "aboveThePill": 8,
     "onText": false
    }
   },
@@ -155,7 +155,7 @@
      "left"
     ],
     "caret": true,
-    "aboveThePill": 10,
+    "aboveThePill": 8,
     "onText": false
    }
   },
@@ -166,7 +166,7 @@
     "says": "what is left",
     "stone": [],
     "caret": null,
-    "aboveThePill": 10,
+    "aboveThePill": 8,
     "onText": false
    }
   }

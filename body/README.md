@@ -15,7 +15,7 @@ here clicks.
 | piece (kit's name) | what it is for | the line that brings it | what ends it | tokens |
 |---|---|---|---|---|
 | Voice pill (the capsule) | paral's one voice on screen, bottom centre, its foot 28 above the Dock: one capsule whose size changes between the collapsed pill (a row of dots) at rest and the full pill, a stop control, the wave and a send control. The wave scrolls in ink with the microphone's sound while he holds the key, and in stone with the voice's while paral works and answers; still dots on a failure. At rest with paral's ink on the page, a cross that clears it, with the logo mark and the name to its left. Open, it moves along the foot off the page's read text. While paral works with no cursor on the page, the logo mark by it breathes. The two controls take no click | `key.down` (listening), `key.up` (working), `say` with `voice` or `mute` (answering), `state` failed; the wave reads the microphone's sound in the body (and a film reads the record's `mic` lines), and the voice's | the answer's end and a short linger, then it rests; the next press takes it over | `capsule.*`, `wave.*`, `light`, `mist`, `ink`, `stone`, `paper`, `glass`, `shadow`, `cursor.workGrows`, `cursor.workMs`, `motion.arriveMs`, `motion.leaveMs`, `motion.lingerMs`, `curves.arrive`, `curves.leave`, `strings.name` (beside the cross) |
-| Transcript bubble (the kit's) | every word the pill has to say, in a light card 10 above it: his words as they are heard (a word still being registered in stone, settling to ink; a caret that blinks; the oldest words dropped so the newest stay in view), his words in ink while paral works, each sentence as it is said (its words stone until said) and a failure, FAILED in cardinal and the reason | the pill's own lines; `heard` for his words | rises out of the pill as it opens and goes in 0.16 s as it shuts; a line stands its least time before the next takes its place | `bubble.*`, `capsule.type`, `ink`, `stone`, `cardinal`, `motion.wordMs`, `motion.standMsAWord`, `motion.readMsLeast`, `motion.unaskedStayMs`, `strings.listening`, `strings.thinking`, `strings.failed` |
+| Transcript bubble (the kit's) | every word the pill has to say, in a light card 8 above it: his words as they are heard (a word still being registered in stone, settling to ink; a caret that blinks; the oldest words dropped so the newest stay in view), his words in ink while paral works, each sentence as it is said (its words stone until said) and a failure, FAILED in cardinal and the reason | the pill's own lines; `heard` for his words | rises out of the pill as it opens and goes in 0.16 s as it shuts; a line stands its least time before the next takes its place | `bubble.*`, `capsule.type`, `ink`, `stone`, `cardinal`, `motion.wordMs`, `motion.standMsAWord`, `motion.readMsLeast`, `motion.unaskedStayMs`, `strings.listening`, `strings.thinking`, `strings.failed` |
 | The trail (build's name; the kit has no frame) | the steps paral took before a line it said without being asked, small in stone under the nudge card's name, joined by › as the capsule joined them, each lit once reached | `say` with `trail` | with its line | `nudge.trailType`, `nudge.trailGap`, `stone`, `dim`, `motion.trailStepMs` |
 | Highlight ring, and drawn notes | "this line": a ring, underline, wavy line or bracket drawn by hand in ember, with a note beside it when the mind sends one | `mark` (kind `ring`, `underline`, `wavy`, `bracket`; `label` for the note) | `clear`, a close, or a new mark on the same line | `mark.*`, `ember`, `cardinal` (the note) |
 | Highlight (the box) | "this line", where lines sit too close for a ring: a thin cardinal edge and a faint wash laid along the line by the pen | `mark` (kind `box`) | `clear`, a close, or a new mark on the same line | `mark.boxWidth`, `mark.boxPadX`, `mark.boxPadY`, `mark.boxRadius`, `mark.wash`, `mark.ringMs`, `cardinal` |
@@ -321,7 +321,7 @@ the name opens as the capsule shuts, and the name is written from the cross left
   crosses the seam. While paral speaks it is the voice's, at the moment of the voice being played. With motion reduced
   the samples step and do not glide.
 - **The bubble** (`PainterBubble.swift`), the kit's transcript bubble, carries every word the capsule used to: centred
-  10 above the pill, 16 in across and 10 up and down, corner 14, at most 520 wide, in DM Sans Regular 16. Listening,
+  8 above the pill, 16 in across and 10 up and down, corner 14, at most 520 wide, in DM Sans Regular 16. Listening,
   his words on one line, a word still being registered (heard less than `motion.wordMs` ago) in stone and in ink once
   it has settled, a caret 1.5 by 18 after them that blinks every half second, and the oldest words dropped behind an
   ellipsis so the newest stay in view; before any word, `strings.listening` in stone. Thinking, his words in ink and no
@@ -332,9 +332,14 @@ the name opens as the capsule shuts, and the name is written from the cross left
   `arrive`) and goes in `bubble.leaveMs` (160, the handoff's exit) as the pill shuts, holding its last words while it goes.
 - **Off the page's words.** Open, the pill moves along the foot, a step of 24 points at a time, to the nearest place
   where neither it nor the room its bubble may take (520 wide, two lines tall) lies on any of the page's read lines
-  (`Layout.pillMiddle`); where no place is clear, the one that covers least. At rest the collapsed pill and the cross
-  stay at the display's middle. What else keeps off the capsule (the way arrow, the toast, the board, the guide's
-  card) keeps off the pill and its bubble's room at the display's middle.
+  (`Layout.pillMiddle`); where no place is clear, the one that covers least. At rest the collapsed pill, and the
+  cross with its logo and name, slide the same way to the nearest place that lies on no read line, and stay at the
+  middle where none is clear (`Layout.restMiddle`); the window takes a click on the cross where it was drawn. What
+  else keeps off the capsule (the way arrow, the toast, the board, the guide's card) keeps off the pill and its
+  bubble's room at the display's middle.
+- **His question stays.** Once paral draws on the page for his ask (a mark or a board of that ask), his question
+  stays in the bubble as the reason for what is drawn, and the pill keeps its look, until the answer's own words
+  take the bubble: a line said while he waits shows only until then.
 - **That it works.** While paral thinks, a cursor on the page breathes; with none on the page, the logo mark by the
   pill's left end breathes the same way (`capsule.face`, `cursor.workGrows`, `cursor.workMs`).
 - **What leads to it.** The arrow from a mark leads to the full pill and the bubble as they are, so its way changes

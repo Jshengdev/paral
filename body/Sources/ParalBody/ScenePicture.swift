@@ -59,6 +59,9 @@ extension Scene {
         // The sentence whose words are up is the one being said, or the one before it while that still stands its time.
         if let ask = asks.last(where: { $0.beganAt >= hold.down && $0.trail == nil }), let up = shown(ask).last(where: { $0.start <= t }), let now = times(ask).first(where: { $0.beat == up.beat }) {
             let said = ask.beats[now.beat]!
+            // Once paral draws on the page for this ask, his question stays in the bubble as the reason for what is
+            // drawn, until the answer's own words take it: a line said while he waits no longer does.
+            if now.beat < 0, marks.contains(where: { $0.id == ask.id && $0.at <= t }) || boards.contains(where: { $0.id == ask.id && $0.at <= t }) { return thinking }
             if t < now.end { return open(.speaking, words(of: said, from: now, at: t), of: ask.id) }
             let whole = said.text.split(separator: " ").map { Word(text: String($0), bright: 1) }
             let more = ask.beats.keys.contains { $0 > now.beat }

@@ -79,7 +79,7 @@
     "says": "the mind is not running; start it with ./run",
     "stone": [],
     "caret": null,
-    "aboveThePill": 10,
+    "aboveThePill": 8,
     "onText": false
    },
    "wave": "still dots"
@@ -97,7 +97,7 @@
     "says": "the microphone is not allowed: switch paral on under Privacy & Security, Microphone",
     "stone": [],
     "caret": null,
-    "aboveThePill": 10,
+    "aboveThePill": 8,
     "onText": false
    },
    "wave": "still dots"
@@ -109,7 +109,7 @@
     "says": "the microphone is not allowed: switch paral on under Privacy & Security, Microphone",
     "stone": [],
     "caret": null,
-    "aboveThePill": 10,
+    "aboveThePill": 8,
     "onText": false
    },
    "wave": "still dots"
@@ -121,7 +121,7 @@
     "says": "Listening",
     "stone": [],
     "caret": false,
-    "aboveThePill": 10,
+    "aboveThePill": 8,
     "onText": false
    },
    "wave": "ink: dot dot dot dot dot dot dot dot dot"

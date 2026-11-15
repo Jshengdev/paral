@@ -30,7 +30,8 @@ function sounded(rows: Written[]): Written[] {
  */
 export function pill(input: { lines?: string[]; rows: Written[]; at: number[]; dock?: number; watch: string[] }) {
   const dir = handWritten("pill", sounded(input.rows), input.lines);
-  const text = input.lines ? textOf(dir) : [];
+  // The page's read lines: the drawn page's, or those of a look the row writes first.
+  const text = input.lines || input.rows[0]?.line.type === "look" ? textOf(dir) : [];
   const dock = input.dock ?? 0;
   return at(dir, input.at, false, dock).map(({ placed, capsule }) => {
     const box = placed.find((item) => item.what === "capsule")!.box;

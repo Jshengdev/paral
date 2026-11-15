@@ -5,23 +5,16 @@ extension Painter {
     /// row of dots) and the full pill (a stop control, the wave, a send control), with the bubble that carries its
     /// words above it (`PainterBubble.swift`). At rest with paral's ink on the page it is the cross that clears it,
     /// wearing the logo mark and the name. The two controls are drawn as the kit draws them and take no click: paral
-    /// is held and let go. Open, it sits where neither it nor its bubble lies on the page's read text
-    /// (`Layout.pillMiddle`). Gives back the capsule's box, the cross's own when it carries one, and the bubble's.
+    /// is held and let go. Open, it sits where neither it nor its bubble lies on the page's read text, and at rest
+    /// where it lies on none (`Layout.pillMiddle`, `Layout.restMiddle`). Gives back the capsule's box, the cross's own
+    /// when it carries one, and the bubble's.
     func capsule(_ c: CapsulePicture, avoiding texts: [Box], _ ctx: CGContext) -> (box: Box, cross: Box?, bubble: Box?) {
         let k = tokens.capsule
-        let middle = Layout.pillMiddle(texts: texts, width: width, height: floor, tokens: tokens)
-        let core = Layout.pill(open: c.open, closes: c.closes, middle: middle, width: width, height: floor, tokens: tokens)
-        // At rest with paral's ink on the page the capsule is a cross that clears it. A cross alone over a line of the
-        // page reads as a stray button, so it wears the logo and the name to its left: whose cross this is. The cross
-        // keeps its place, which is where a click is taken; the room for the name opens as the capsule shuts. The
-        // logo is the resting one, and the room round it is what is left of the cross's circle.
+        let (core, box, full) = places(c, avoiding: texts)
         let name = inked(tokens.strings.name, size: k.tagType, color: ink, weight: .medium)
         let room = (k.restClose - k.rest) / 2
-        let worn = c.closes ? (3 * room + k.rest + name.size().width) * (1 - c.open) : 0
-        let box = Box(x: core.x - worn, y: core.y, w: core.w + worn, h: core.h)
         let rect = CGRect(x: box.x, y: box.y, width: box.w, height: box.h)
         let radius = min(box.h / 2, k.radius)
-        let full = Layout.pill(open: 1, middle: middle, width: width, height: floor, tokens: tokens)
         let bubble = c.bubble > 0 ? self.bubble(c, over: full, ctx) : nil
         surface(CGPath(roundedRect: rect, cornerWidth: radius, cornerHeight: radius, transform: nil), ctx)
         if c.closes, c.open < 0.05 {
@@ -59,16 +52,27 @@ extension Painter {
         return (box, nil, bubble)
     }
 
+    /// Where the capsule is at this moment: its own shape (the pill, or the cross alone), all it takes with the logo
+    /// and name the cross wears, and the full pill where it sits open. At rest with paral's ink on the page the
+    /// capsule is a cross that clears it. A cross alone over a line of the page reads as a stray button, so it wears
+    /// the logo and the name to its left: whose cross this is. The room for the name opens as the capsule shuts. The
+    /// logo is the resting one, and the room round it is what is left of the cross's circle.
+    func places(_ c: CapsulePicture, avoiding texts: [Box]) -> (core: Box, box: Box, full: Box) {
+        let k = tokens.capsule
+        let name = inked(tokens.strings.name, size: k.tagType, color: ink, weight: .medium).size().width
+        let wear = 3 * (k.restClose - k.rest) / 2 + k.rest + name
+        let middle = Layout.pillMiddle(texts: texts, width: width, height: floor, tokens: tokens)
+        let resting = Layout.restMiddle(texts: texts, closes: c.closes, wear: wear, width: width, height: floor, tokens: tokens)
+        let core = Layout.pill(open: c.open, closes: c.closes, middle: middle, resting: resting, width: width, height: floor, tokens: tokens)
+        let worn = c.closes ? wear * (1 - c.open) : 0
+        return (core, Box(x: core.x - worn, y: core.y, w: core.w + worn, h: core.h), Layout.pill(open: 1, middle: middle, width: width, height: floor, tokens: tokens))
+    }
+
     /// What the capsule takes at this moment, for an arrow to keep off: the pill, or the cross with its name, and the
     /// bubble while it is up.
     func takes(_ c: CapsulePicture, avoiding texts: [Box]) -> Box {
-        let k = tokens.capsule
-        let middle = Layout.pillMiddle(texts: texts, width: width, height: floor, tokens: tokens)
-        let core = Layout.pill(open: c.open, closes: c.closes, middle: middle, width: width, height: floor, tokens: tokens)
-        let name = inked(tokens.strings.name, size: k.tagType, color: ink, weight: .medium).size().width
-        let worn = c.closes ? (3 * (k.restClose - k.rest) / 2 + k.rest + name) * (1 - c.open) : 0
-        let pill = Box(x: core.x - worn, y: core.y, w: core.w + worn, h: core.h)
-        guard c.bubble > 0, let words = bubble(c, over: Layout.pill(open: 1, middle: middle, width: width, height: floor, tokens: tokens), nil) else { return pill }
+        let (_, pill, full) = places(c, avoiding: texts)
+        guard c.bubble > 0, let words = bubble(c, over: full, nil) else { return pill }
         let x = min(pill.x, words.x)
         return Box(x: x, y: words.y, w: max(pill.x + pill.w, words.x + words.w) - x, h: pill.y + pill.h - words.y)
     }
@@ -76,8 +80,7 @@ extension Painter {
     /// What speaks at the bottom, for the arrow that leads to it: the full pill where it sits open, and above it the
     /// bubble as it is with the words it holds, so the arrow's way moves only when the words do.
     func speaker(_ c: CapsulePicture, avoiding texts: [Box]) -> Box {
-        let middle = Layout.pillMiddle(texts: texts, width: width, height: floor, tokens: tokens)
-        let pill = Layout.pill(open: 1, middle: middle, width: width, height: floor, tokens: tokens)
+        let pill = places(c, avoiding: texts).full
         guard let words = bubble(c, over: pill, nil) else { return pill }
         let x = min(pill.x, words.x)
         return Box(x: x, y: words.y, w: max(pill.x + pill.w, words.x + words.w) - x, h: pill.y + pill.h - words.y)
