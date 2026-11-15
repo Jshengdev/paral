@@ -24,6 +24,9 @@ public struct Tokens: Codable {
         public var tempo, openMs, lingerMs, wordMs, trailFadeMs, boardMs, readMsAWord, readMsLeast, flightMs, arc, bounce: Double
         /// For a line said without being asked: how long it stays after its reading time, and how long each step of its trail takes to light.
         public var unaskedStayMs, trailStepMs: Double
+        /// How long a line stands, for each of its words, before another line may take its place in the capsule or on
+        /// the guide's card; never less than `readMsLeast`.
+        public var standMsAWord: Double
         public var reduce: Bool
     }
     /// The arrow that says which way to scroll, and the tag beside it that names what it leads to.

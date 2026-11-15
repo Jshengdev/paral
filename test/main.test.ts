@@ -32,6 +32,7 @@ import { filmedPages } from "./runners/pages.ts";
 import { cursor, guide, inkInside, steps, toast, way } from "./runners/placed.ts";
 import { lead } from "./runners/leads.ts";
 import { breath } from "./runners/breath.ts";
+import { stands } from "./runners/stands.ts";
 
 // A row is JSON on disk: its "in" is whatever its runner takes, so it is typed where the runner reads it.
 type Row = { name: string; run: string; in: any; out: unknown };
@@ -71,6 +72,7 @@ const runs: Record<string, (input: any) => unknown> = {
   "body.guide": guide,
   "body.lead": lead,
   "body.breath": breath,
+  "body.stands": stands,
   "body.inkInside": inkInside,
   "body.boardType": boardType,
   "body.pages": filmedPages,

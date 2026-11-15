@@ -1,0 +1,272 @@
+{
+ "name": "body: a line stands a least time before the next takes its place, a fifth of a second a word and never less than the least reading time, and a newer line waits its turn; none is dropped: three lines sent to the guide's card within a fifth of a second are shown one after another, each for its time; a card is taken away only when its line has stood, and a line that comes after an empty card comes at once; three lines said without being asked within half a second come up in the capsule one after another; in an answer said aloud a sentence of half a second stands its least time while the voice goes on to the next, whose words then come up no later than that time allows, and the capsule rests when the answer is over",
+ "run": "body.stands",
+ "in": {
+  "rows": [
+   {
+    "at": 500,
+    "line": {
+     "type": "next",
+     "text": "Wait: it looks at this page by itself",
+     "n": 1,
+     "of": 8
+    }
+   },
+   {
+    "at": 600,
+    "line": {
+     "type": "next",
+     "text": "Scroll until Deadlines is on screen",
+     "n": 2,
+     "of": 8
+    }
+   },
+   {
+    "at": 700,
+    "line": {
+     "type": "next",
+     "text": "Open Deadlines",
+     "n": 3,
+     "of": 8
+    }
+   },
+   {
+    "at": 5000,
+    "line": {
+     "type": "next",
+     "text": ""
+    }
+   },
+   {
+    "at": 5100,
+    "line": {
+     "type": "next",
+     "text": "Say: add it to my calendar",
+     "n": 6,
+     "of": 8
+    }
+   },
+   {
+    "at": 5200,
+    "line": {
+     "type": "next",
+     "text": ""
+    }
+   },
+   {
+    "at": 8000,
+    "line": {
+     "type": "say",
+     "id": "g1",
+     "beat": 0,
+     "text": "The application closes November 22 at 11:59pm.",
+     "trail": [
+      "saw this page",
+      "found the line"
+     ]
+    }
+   },
+   {
+    "at": 8000,
+    "line": {
+     "type": "mute",
+     "id": "g1",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   },
+   {
+    "at": 8300,
+    "line": {
+     "type": "say",
+     "id": "g2",
+     "beat": 0,
+     "text": "Open this section to see the dates.",
+     "trail": [
+      "saw this page",
+      "found the line"
+     ]
+    }
+   },
+   {
+    "at": 8300,
+    "line": {
+     "type": "mute",
+     "id": "g2",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   },
+   {
+    "at": 8400,
+    "line": {
+     "type": "say",
+     "id": "g3",
+     "beat": 0,
+     "text": "Advisors have a date of their own.",
+     "trail": [
+      "saw this page",
+      "found the line"
+     ]
+    }
+   },
+   {
+    "at": 8400,
+    "line": {
+     "type": "mute",
+     "id": "g3",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   },
+   {
+    "at": 20000,
+    "line": {
+     "type": "key.down",
+     "at": 1020000
+    }
+   },
+   {
+    "at": 20800,
+    "line": {
+     "type": "key.up",
+     "at": 1020800
+    }
+   },
+   {
+    "at": 21000,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 1,
+     "text": "One moment."
+    }
+   },
+   {
+    "at": 21000,
+    "line": {
+     "type": "voice",
+     "id": "t1",
+     "beat": 1,
+     "ms": 500
+    }
+   },
+   {
+    "at": 21100,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 2,
+     "text": "The application closes November 22 at 11:59pm."
+    }
+   },
+   {
+    "at": 21100,
+    "line": {
+     "type": "voice",
+     "id": "t1",
+     "beat": 2,
+     "ms": 3000
+    }
+   },
+   {
+    "at": 21200,
+    "line": {
+     "type": "state",
+     "name": "idle"
+    }
+   }
+  ],
+  "at": [
+   550,
+   2050,
+   2150,
+   3250,
+   3350,
+   5050,
+   5150,
+   6250,
+   6350,
+   8200,
+   9350,
+   9450,
+   10750,
+   10850,
+   21300,
+   21800,
+   22250,
+   26000
+  ]
+ },
+ "out": [
+  {
+   "pill": null,
+   "card": "Wait: it looks at this page by itself"
+  },
+  {
+   "pill": null,
+   "card": "Wait: it looks at this page by itself"
+  },
+  {
+   "pill": null,
+   "card": "Scroll until Deadlines is on screen"
+  },
+  {
+   "pill": null,
+   "card": "Scroll until Deadlines is on screen"
+  },
+  {
+   "pill": null,
+   "card": "Open Deadlines"
+  },
+  {
+   "pill": null,
+   "card": null
+  },
+  {
+   "pill": null,
+   "card": "Say: add it to my calendar"
+  },
+  {
+   "pill": null,
+   "card": "Say: add it to my calendar"
+  },
+  {
+   "pill": null,
+   "card": null
+  },
+  {
+   "pill": "The application closes November 22 at 11:59pm.",
+   "card": null
+  },
+  {
+   "pill": "The application closes November 22 at 11:59pm.",
+   "card": null
+  },
+  {
+   "pill": "Open this section to see the dates.",
+   "card": null
+  },
+  {
+   "pill": "Open this section to see the dates.",
+   "card": null
+  },
+  {
+   "pill": "Advisors have a date of their own.",
+   "card": null
+  },
+  {
+   "pill": "One moment.",
+   "card": null
+  },
+  {
+   "pill": "One moment.",
+   "card": null
+  },
+  {
+   "pill": "The application closes November 22 at 11:59pm.",
+   "card": null
+  },
+  {
+   "pill": null,
+   "card": null
+  }
+ ]
+}

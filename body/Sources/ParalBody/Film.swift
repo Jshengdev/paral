@@ -91,6 +91,7 @@ public enum Film {
             // A drawn arrow's row also gives the points the pen has inked, so a row can say what it lies on.
             let items = placed.map { item in ["what": item.what, "id": item.id ?? "", "box": item.box.json].merging(item.path.map { ["path": $0.map { [$0.x, $0.y] }] } ?? [:]) { $1 } as [String: Any] }
             return ["placed": items, "way": way, "pointer": pointer, "board": board, "toast": picture.toast?.text ?? NSNull(),
+                    "capsule": ["look": picture.capsule.look.rawValue, "says": picture.capsule.words.map(\.text).joined(separator: " ")],
                     "guide": picture.guide.map { ["text": $0.text, "n": $0.n ?? NSNull(), "of": $0.of ?? NSNull(), "appear": $0.appear] as [String: Any] } ?? NSNull()]
         }
     }

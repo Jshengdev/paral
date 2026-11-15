@@ -32,6 +32,41 @@ extension Scene {
         return out
     }
 
+    /// How long a line stands before another may take its place: a time for each of its words, and never less than
+    /// the least reading time. Shorter than the time a line is given to be read, and than it takes to say aloud.
+    func stand(_ text: String) -> Double {
+        max(tokens.motion.readMsLeast, Double(text.split(separator: " ").count) * tokens.motion.standMsAWord)
+    }
+
+    /// When each sentence's words come up in the capsule: with its voice, and not before the sentence before it has
+    /// stood its time. So the words run behind the voice by no more than that time, and no sentence is passed over.
+    func shown(_ ask: Ask) -> [BeatTime] {
+        var out: [BeatTime] = []
+        for var time in times(ask) {
+            if let before = out.last, let said = ask.beats[before.beat] { time.start = max(time.start, before.start + stand(said.text)) }
+            out.append(time)
+        }
+        return out
+    }
+
+    /// The line the capsule holds at `t` and since when, if it holds one.
+    func standing(at t: Double) -> (text: String, since: Double)? {
+        let capsule = capsule(at: t)
+        guard capsule.look == .speaking, let ask = asks.first(where: { $0.id == capsule.ask }),
+              let up = shown(ask).last(where: { $0.start <= t }), let said = ask.beats[up.beat] else { return nil }
+        return (said.text, up.start)
+    }
+
+    /// When a line said without being asked, arriving at `at`, gets its turn in the capsule: once the line the
+    /// capsule holds has stood its time, and after every such line that is still waiting for its own turn.
+    func turn(after at: Double) -> Double {
+        var waits = [standing(at: at)].compactMap { $0 }
+        if let last = asks.last(where: { $0.trail != nil }), let text = last.beats.keys.max().flatMap({ last.beats[$0]?.text }) {
+            waits.append((text, shown(last).last?.start ?? last.beganAt))
+        }
+        return max(at, waits.map { $0.since + stand($0.text) }.max() ?? at)
+    }
+
     /// Every spoken sentence so far, for laying the voice onto one sound track.
     public var spoken: [BeatTime] { asks.flatMap(times) }
 
@@ -67,7 +102,7 @@ extension Scene {
         for way in ways { end = max(end, min(way.clearedAt ?? .infinity, inking(way).to + ms(tokens.cursor.settleMs))) }
         for clip in clips { end = max(end, min(clip.clearedAt ?? .infinity, clip.at + ms(tokens.motion.boardMs) + clip.seconds * 1000)) }
         if let opened { end = max(end, opened.at + 2 * ms(tokens.motion.boardMs) + tokens.toast.stayMs) }
-        if let guide = nexts.last, guide.done { end = max(end, guide.at + tokens.toast.stayMs + ms(tokens.motion.boardMs)) }
+        if let guide = nexts.last { end = max(end, guide.shownAt + (guide.done ? tokens.toast.stayMs + ms(tokens.motion.boardMs) : 0)) }
         if let closed = closedAt { end = max(end, closed + ms(tokens.motion.openMs)) }
         return end + 200
     }

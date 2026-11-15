@@ -44,7 +44,8 @@ extension Scene {
             return open(.listening, words, words.isEmpty ? tokens.strings.listening : nil)
         }
         let done = idleAt.map { $0 >= up && $0 <= t } ?? false
-        if let ask = asks.last(where: { $0.beganAt >= hold.down }), let now = times(ask).last(where: { $0.start <= t }) {
+        // The sentence whose words are up is the one being said, or the one before it while that still stands its time.
+        if let ask = asks.last(where: { $0.beganAt >= hold.down }), let up = shown(ask).last(where: { $0.start <= t }), let now = times(ask).first(where: { $0.beat == up.beat }) {
             let said = ask.beats[now.beat]!
             if t < now.end { return open(.speaking, words(of: said, from: now, at: t), of: ask.id) }
             let whole = said.text.split(separator: " ").map { Word(text: String($0), bright: 1) }

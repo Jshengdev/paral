@@ -5,6 +5,8 @@ import Foundation
 public struct Scene {
     struct Beat { var text: String; var sayAt: Double; var soundAt: Double?; var bytes = 0; var wordStart: [Double] = [] }
     /// `trail` is set only for a line paral said without being asked: the steps it took, shown above the line.
+    /// `beganAt` is when its first line came; for a line said without being asked, when that line gets its turn in
+    /// the capsule, which is when it came or later.
     struct Ask { var id: String; var beganAt: Double; var beats: [Int: Beat] = [:]; var mutedAt: Double?; var cutAt: Double?; var trail: [String]? }
     struct Mark { var id: String; var beat: Int; var kind: MarkKind; var box: Box; var label: String?; var at: Double; var withSay: Bool; var clearedAt: Double? }
     struct Echo { var id: String; var box: Box; var shape: String; var at: Double; var clearedAt: Double? }
@@ -29,9 +31,10 @@ public struct Scene {
     var echoes: [Echo] = []
     var ways: [Way] = []
     /// One line of the guide's card: what to do next and which step it is, or the closing line when every step is
-    /// done; no words take the card away. `at` is when the line came, `upSince` since when its card has been up.
-    struct Next { var text: String; var n, of: Int; var done: Bool; var at: Double; var upSince: Double }
-    /// Every line the guide's card has been sent, in order. The last one that has come is the one it shows.
+    /// done; no words take the card away. `shownAt` is when the line gets its turn on the card, which is when it
+    /// came or later, and `upSince` since when its card has been up.
+    struct Next { var text: String; var n, of: Int; var done: Bool; var shownAt: Double; var upSince: Double }
+    /// Every line the guide's card has been sent, in order. The last one whose turn has come is the one it shows.
     var nexts: [Next] = []
     /// The menu's "Show the guide". Off, the card is not drawn; the steps are still taken.
     public var guideOn = true
@@ -80,9 +83,12 @@ public struct Scene {
             let words = text.split(separator: " ").map(String.init)
             heard = words.enumerated().map { i, word in i < heard.count && heard[i].word == word ? heard[i] : (word, at) }
         case .say(let id, let beat, let text, _, let trail):
-            if !asks.contains(where: { $0.id == id }) { asks.append(Ask(id: id, beganAt: at)) }
+            // A line said without being asked waits its turn: the line before it stands its time first.
+            let fresh = !asks.contains { $0.id == id }
+            let comes = fresh && trail != nil ? turn(after: at) : at
+            if fresh { asks.append(Ask(id: id, beganAt: comes)) }
             edit(id) {
-                $0.beats[beat] = Beat(text: text, sayAt: at)
+                $0.beats[beat] = Beat(text: text, sayAt: comes)
                 if let trail { $0.trail = trail }
             }
         case .voice(let id, let beat, let pcm, _):
@@ -106,9 +112,11 @@ public struct Scene {
             for i in ways.indices where ways[i].clearedAt == nil && ways[i].id == id { ways[i].clearedAt = at }
             marks.append(Mark(id: id, beat: beat, kind: kind, box: box.moved(dx: -origin.x, dy: -origin.y), label: label, at: at, withSay: withSay))
         case .next(let text, let n, let of, let done):
-            // New words take the place of the old in the same card; no words take the card away.
+            // New words take the place of the old in the same card once the old have stood their time, and no words
+            // take the card away the same way. After an empty card a line comes at once.
             let card = nexts.last.flatMap { $0.text.isEmpty ? nil : $0 }
-            nexts.append(Next(text: text, n: n, of: of, done: done, at: at, upSince: card?.upSince ?? at))
+            let comes = max(at, card.map { $0.shownAt + stand($0.text) } ?? nexts.last?.shownAt ?? at)
+            nexts.append(Next(text: text, n: n, of: of, done: done, shownAt: comes, upSince: card?.upSince ?? comes))
         case .way(let id, let to, let toward):
             // One arrow at a time: a newer one takes the place of the one before. A clear wipes it, as it does a mark.
             for i in ways.indices where ways[i].clearedAt == nil { ways[i].clearedAt = at }

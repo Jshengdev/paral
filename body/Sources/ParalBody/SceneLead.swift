@@ -25,7 +25,7 @@ extension Scene {
             return LeadPicture(from: key, to: .capsule(trail: ask.trail != nil), drawn: capsule.look == .rest ? min(drawn, capsule.open) : drawn)
         }
         guard capsule.look == .rest, capsule.open <= 0, let card = next(at: t), !card.done, names(card.text, mark) else { return nil }
-        let from = max(ready, card.at, rested(before: t) ?? 0)
+        let from = max(ready, card.shownAt, rested(before: t) ?? 0)
         return t >= from ? LeadPicture(from: key, to: .guide, drawn: inked(since: from)) : nil
     }
 

@@ -3,7 +3,7 @@ import Foundation
 extension Scene {
     /// The line the guide's card shows at `t`, if a card is up then.
     func next(at t: Double) -> Next? {
-        guard guideOn, let line = nexts.last(where: { $0.at <= t }), !line.text.isEmpty else { return nil }
+        guard guideOn, let line = nexts.last(where: { $0.shownAt <= t }), !line.text.isEmpty else { return nil }
         return line
     }
 
@@ -13,7 +13,7 @@ extension Scene {
     /// guide switched off (the menu's "Show the guide") there is no card.
     func guide(at t: Double) -> GuidePicture? {
         guard let guide = next(at: t) else { return nil }
-        let fade = max(ms(tokens.motion.boardMs), 1), leaves = guide.at + tokens.toast.stayMs
+        let fade = max(ms(tokens.motion.boardMs), 1), leaves = guide.shownAt + tokens.toast.stayMs
         if guide.done, t >= leaves + fade { return nil }
         let going = guide.done ? 1 - Motion.ease((t - leaves) / fade) : 1
         let appear = still ? 1 : min(Motion.ease((t - guide.upSince) / fade), going)
