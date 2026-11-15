@@ -1,0 +1,47 @@
+{
+ "name": "body: a board of three long steps on a page whose text leaves only a strip narrower than the steps: its words are still drawn at the tokens' size, since a long step wraps onto more lines inside its box and the card is not shrunk to squeeze it in",
+ "run": "body.boardType",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "The Spring 2027 recognition process is now open on EngageSC",
+   "for new clubs and clubs coming back after a lapse.",
+   "All student organizations must complete recognition",
+   "through the online portal, on an annual basis.",
+   "Recognition status runs for one academic year.",
+   "If you hope to re-establish your club, submit this form.",
+   "For questions, contact Campus Activities at the office.",
+   "Important Dates"
+  ],
+  "rows": [
+   {
+    "at": 500,
+    "line": {
+     "type": "board",
+     "id": "g1",
+     "rows": [
+      [
+       "Five officers finish their trainings and the Commitment form: November 22 at 11:59pm"
+      ],
+      [
+       "Submit the application on EngageSC: November 22 at 11:59pm"
+      ],
+      [
+       "Your advisor submits the advisor requirements: December 1"
+      ]
+     ],
+     "now": 1
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "clear"
+    }
+   }
+  ]
+ },
+ "out": {
+  "g1": "at the tokens' size"
+ }
+}

@@ -11,8 +11,8 @@ const headless = join(root, "body", ".build", "debug", "paral-headless");
  * For each board of a hand-written run, by its id: whether the film's record says how large its words were drawn,
  * and how that size stands to the size the tokens ask for (a card too wide for its room is shrunk, words and all).
  */
-export function boardType(input: { rows: Written[] }) {
-  const dir = handWritten("board-type", input.rows);
+export function boardType(input: { rows: Written[]; lines?: string[] }) {
+  const dir = handWritten("board-type", input.rows, input.lines);
   const tokens = join(root, "body", "tokens.json");
   execFileSync(headless, ["film", dir, tokens], { encoding: "utf8" });
   const asked: number = JSON.parse(readFileSync(tokens, "utf8")).board.type;

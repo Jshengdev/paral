@@ -1,5 +1,5 @@
 {
- "name": "body: a film's record says of each board how large its words were drawn: the tokens' size for a card that fits, and a smaller size for a card that was shrunk to fit",
+ "name": "body: a film's record says of each board how large its words were drawn: the tokens' size for a card that fits, and a smaller size for a card that had to be shrunk, here one of twenty-six rows that is too tall for its place",
  "run": "body.boardType",
  "in": {
   "rows": [
@@ -28,11 +28,85 @@
     "at": 2500,
     "line": {
      "type": "board",
-     "id": "wide",
+     "id": "tall",
      "rows": [
       [
-       "Five officers finish their trainings and the Commitment form: November 22 at 11:59pm",
-       "Submit the application on EngageSC: November 22 at 11:59pm"
+       "Step 1 of the long way"
+      ],
+      [
+       "Step 2 of the long way"
+      ],
+      [
+       "Step 3 of the long way"
+      ],
+      [
+       "Step 4 of the long way"
+      ],
+      [
+       "Step 5 of the long way"
+      ],
+      [
+       "Step 6 of the long way"
+      ],
+      [
+       "Step 7 of the long way"
+      ],
+      [
+       "Step 8 of the long way"
+      ],
+      [
+       "Step 9 of the long way"
+      ],
+      [
+       "Step 10 of the long way"
+      ],
+      [
+       "Step 11 of the long way"
+      ],
+      [
+       "Step 12 of the long way"
+      ],
+      [
+       "Step 13 of the long way"
+      ],
+      [
+       "Step 14 of the long way"
+      ],
+      [
+       "Step 15 of the long way"
+      ],
+      [
+       "Step 16 of the long way"
+      ],
+      [
+       "Step 17 of the long way"
+      ],
+      [
+       "Step 18 of the long way"
+      ],
+      [
+       "Step 19 of the long way"
+      ],
+      [
+       "Step 20 of the long way"
+      ],
+      [
+       "Step 21 of the long way"
+      ],
+      [
+       "Step 22 of the long way"
+      ],
+      [
+       "Step 23 of the long way"
+      ],
+      [
+       "Step 24 of the long way"
+      ],
+      [
+       "Step 25 of the long way"
+      ],
+      [
+       "Step 26 of the long way"
       ]
      ]
     }
@@ -47,6 +121,6 @@
  },
  "out": {
   "fits": "at the tokens' size",
-  "wide": "smaller than the tokens' size"
+  "tall": "smaller than the tokens' size"
  }
 }

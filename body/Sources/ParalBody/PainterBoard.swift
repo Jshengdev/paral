@@ -13,21 +13,29 @@ extension Painter {
         }
     }
 
-    /// A dark card of chalk boxes joined by arrows, one row at a time, shrunk to fit the room it was given. With no
-    /// rows yet it is an empty card with the waiting dots in it; when the rows come the card grows from that size
-    /// to theirs and they fade in. On a board of steps the row he is on is lit: its boxes are filled with chalk and
-    /// written in the card's ink, and the others stay as they are. Gives back the card's box, the lit row's, and the size the words were drawn at.
+    /// A dark card of chalk boxes joined by arrows, one row at a time. Words that are too long for the card's widest
+    /// wrap onto more lines inside their box at full size; only a card that is still too large for its room is
+    /// shrunk, words and all. With no rows yet it is an empty card with the waiting dots in it; when the rows come the
+    /// card grows from that size to theirs and they fade in. On a board of steps the row he is on is lit: its boxes
+    /// are filled with chalk and written in the card's ink, and the others stay as they are. Gives back the card's
+    /// box, the lit row's, and the size the words were drawn at.
     func board(_ board: BoardPicture, clock: Double, _ ctx: CGContext) -> (card: Box, lit: Box?, type: Double) {
         let b = tokens.board
         let chalk = paper
+        let wrapped: NSString.DrawingOptions = [.usesLineFragmentOrigin, .usesFontLeading]
+        // The widest the words of one row may run: the card at its widest, or the room when that is narrower, less
+        // the card's own edge. The boxes of a row share it.
+        let widest = min(board.room.w, b.maxWidth) - 2 * b.pad
         let sized = board.rows.enumerated().map { index, row in row.map { text -> (NSAttributedString, CGSize) in
             let label = inked(text, size: b.type, color: index == board.now ? ink : chalk, weight: .medium)
-            return (label, label.size())
+            let share = max((widest - b.gap * Double(row.count - 1)) / Double(row.count) - 2 * b.boxPadX, 4 * b.type)
+            let size = label.boundingRect(with: CGSize(width: share, height: .greatestFiniteMagnitude), options: wrapped).size
+            return (label, CGSize(width: size.width.rounded(.up), height: size.height.rounded(.up)))
         } }
-        let boxHeight = (sized.flatMap { $0 }.map { $0.1.height }.max() ?? b.type) + 2 * b.boxPadY
+        let rowHeights = sized.map { row in (row.map { $0.1.height }.max() ?? b.type) + 2 * b.boxPadY }
         let rowWidths = sized.map { row in row.reduce(0) { $0 + $1.1.width + 2 * b.boxPadX } + b.gap * Double(max(0, row.count - 1)) }
         let fullW = (rowWidths.max() ?? 0) + 2 * b.pad
-        let fullH = Double(sized.count) * boxHeight + Double(max(0, sized.count - 1)) * b.rowGap + 2 * b.pad
+        let fullH = rowHeights.reduce(0, +) + Double(max(0, sized.count - 1)) * b.rowGap + 2 * b.pad
         let grown = sized.isEmpty ? 0 : min(max(board.filled, 0), 1)
         let cardW = b.emptyWidth + (fullW - b.emptyWidth) * grown
         let cardH = b.emptyHeight + (fullH - b.emptyHeight) * grown
@@ -58,6 +66,7 @@ extension Painter {
         let rowsAt = CGPoint(x: origin.x + (cardW - fullW) / 2 * scale, y: origin.y + (cardH - fullH) / 2 * scale)
         for (index, row) in sized.enumerated() where index < board.shown {
             var x = (fullW - rowWidths[index]) / 2
+            let boxHeight = rowHeights[index]
             if index == board.now { lit = Box(x: rowsAt.x + x * scale, y: rowsAt.y + y * scale, w: rowWidths[index] * scale, h: boxHeight * scale) }
             for (cell, (label, size)) in row.enumerated() {
                 let boxW = size.width + 2 * b.boxPadX
@@ -70,7 +79,7 @@ extension Painter {
                 } else {
                     ctx.strokePath()
                 }
-                label.draw(at: CGPoint(x: x + b.boxPadX, y: y + (boxHeight - size.height) / 2))
+                label.draw(with: CGRect(x: x + b.boxPadX, y: y + (boxHeight - size.height) / 2, width: size.width, height: size.height), options: wrapped)
                 x += boxW
                 if cell < row.count - 1 {
                     ctx.setStrokeColor(chalk.copy(alpha: 0.9) ?? chalk)
