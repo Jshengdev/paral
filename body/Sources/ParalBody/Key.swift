@@ -13,7 +13,8 @@ public final class Key {
     public var onUp: (() -> Void)?
     /// Called on every look while the key stays down.
     public var onHeld: (() -> Void)?
-    /// Called with the pointer's place each time the left button goes down.
+    /// Called with the pointer's place each time the left button goes down. The app sends it to the mind, which knows
+    /// whether it was on a step's box, and tells the scene, which answers it with a picture.
     private let onClick: ((CGPoint) -> Void)?
     private var pressed = false
     private var monitor: Any?
