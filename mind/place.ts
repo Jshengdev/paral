@@ -57,13 +57,39 @@ export function point(send: Hands["send"], id: string, where: Where): string {
 }
 
 /**
- * After an answer on a kept page: the way to what it sent him to, when that is out of view. A date it named that the
+ * Where a page's name stands on his screen, as a link to click: the shortest line that holds the name, which is the
+ * likeliest to be the link itself. A reader often takes a row of menu items for one line, so when the line holds
+ * more than the name, the name's share of the line's letters gives its part of the box. Null when it is not there.
+ */
+function linkTo(settings: Settings, seen: Seen, name: string): { box: Box; on: string } | null {
+  const [holds] = seen.lines.filter((read) => ` ${plain(read.text)} `.includes(` ${plain(name)} `)).sort((a, b) => a.text.length - b.text.length);
+  if (holds === undefined) return null;
+  const whole = locate(holds.text, seen.lines, seen.display, settings.groundMinScore.value);
+  const at = holds.text.toLowerCase().indexOf(name.toLowerCase());
+  if (!whole.found) return null;
+  if (at < 0 || holds.text.length === name.length) return { box: whole.box, on: holds.text };
+  const { x, y, w, h } = whole.box;
+  return { box: { x: x + (w * at) / holds.text.length, y, w: (w * name.length) / holds.text.length, h }, on: name };
+}
+
+/**
+ * After an answer on a kept page: where it sent him. Another kept page it named, when that page's name is on his
+ * screen, is boxed where it stands (see `linkTo`). Otherwise the way to what is out of view: a date it named that the
  * page writes on a line out of view comes first, named by the heading the page puts it under; with that heading in
  * view there is nothing to scroll to. Failing a date, a folded section of the page that the answer names by its
  * heading ("in the section called Officer Trainings") and that is out of view. One way at most.
  */
-export function wayAfter({ settings, send, log }: Hands, id: string, seen: Seen, page: KeptPage, told: string[]): void {
+export function wayAfter({ ports, settings, send, log }: Hands, id: string, seen: Seen, page: KeptPage, told: string[]): void {
   const said = told.join(" ");
+  // The page it sent him to comes first. When the answer names another kept page as a page ("on the RSO Resources
+  // page") and that name is on his screen, in the site's menu or as a link, it is boxed: that is where to click.
+  const short = (other: KeptPage) => other.title.split(" - ")[0].trim();
+  const [elsewhere] = ports.pages.filter((other) => other.name !== page.name && short(other).length >= 8 && plain(said).includes(`${plain(short(other))} page`)).sort((a, b) => short(b).length - short(a).length);
+  const link = elsewhere === undefined ? null : linkTo(settings, seen, short(elsewhere));
+  if (elsewhere !== undefined && link !== null) {
+    send({ v, type: "mark", id, beat: 0, kind: "box", box: link.box });
+    return log(`${id}: the answer sent him to the page "${elsewhere.title}", whose name is on his screen; the mark is on "${link.on}"`);
+  }
   const kept = dateLine(said, [page]);
   if (kept !== null) {
     const where = whereIs(settings, seen, page, { line: kept.written, under: headingOf(page, kept.written, "") });
