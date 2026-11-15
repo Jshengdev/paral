@@ -11,12 +11,16 @@ public struct BodySettings: Equatable {
     public var cropShare = 1.0, cropPoints = 200.0
     /// How often to look at the display with no key pressed; 0 is never.
     public var lookEveryMs = 0.0
+    /// Lines he can tap in the menu instead of saying them, in groups.
+    public var cues: [Cue] = []
 }
 
 /// Everything the scene can be told, from either side of the seam. The windows and the film feed it the same way.
 public enum Seen {
     case ready(BodySettings)
     case keyDown, keyUp, close
+    /// An ask whose words were tapped or typed: for what is on screen, a press and a release at the same moment.
+    case typed
     case trail(x: Double, y: Double)
     case screen(display: DisplayPlace, lines: [ReadLine])
     case state(name: String, detail: String?)
@@ -66,9 +70,14 @@ public enum Seen {
                 settings.cropPoints = points
             }
             settings.lookEveryMs = n("lookEveryMs") ?? 0
+            settings.cues = (f["cues"] as? [[String: Any]] ?? []).compactMap { cue in
+                guard let name = cue["name"] as? String, let lines = cue["lines"] as? [String] else { return nil }
+                return Cue(name: name, lines: lines)
+            }
             return .success(.ready(settings))
         case "key.down": return .success(.keyDown)
         case "key.up": return .success(.keyUp)
+        case "typed": return .success(.typed)
         case "close": return .success(.close)
         case "clear": return .success(.clear)
         case "hello", "mic": return .success(.other)

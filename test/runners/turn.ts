@@ -9,15 +9,17 @@ import { fresh } from "./temp.ts";
 
 type Step = { until?: string; release?: boolean | string; say?: string } & Record<string, unknown>;
 
-const shorter = (line: any) =>
-  line.type === "voice"
-    ? { v: line.v, type: line.type, id: line.id, beat: line.beat, bytes: Buffer.from(line.pcm, "base64").length, ...(line.last ? { last: true } : {}) }
-    : line.type === "words"
-      ? { v: line.v, type: line.type, id: line.id, beat: line.beat, count: line.words.length, ends: Number(line.end.at(-1).toFixed(2)) }
-      : line.type === "open"
-        ? // The file sits in this machine's temporary folder, so a row holds its name and what is in it.
-          { v: line.v, type: line.type, id: line.id, file: basename(line.path), holds: readFileSync(line.path, "utf8") }
-        : line;
+/** A line as a row holds it: sound and word timings by their size, a calendar file by what is in it. */
+function shorter(line: any) {
+  const { v, type, id, beat } = line;
+  // The cue cards are a setting, the same in every row, so the ready line is held without them; they have a row of their own.
+  if (type === "ready") return (({ cues: _cues, ...rest }) => rest)(line);
+  if (type === "voice") return { v, type, id, beat, bytes: Buffer.from(line.pcm, "base64").length, ...(line.last ? { last: true } : {}) };
+  if (type === "words") return { v, type, id, beat, count: line.words.length, ends: Number(line.end.at(-1).toFixed(2)) };
+  // The file sits in this machine's temporary folder, so a row holds its name and what is in it.
+  if (type === "open") return { v, type, id, file: basename(line.path), holds: readFileSync(line.path, "utf8") };
+  return line;
+}
 
 export async function playTurn(input: { tape: string; asks: Step[][]; set?: Record<string, unknown>; show?: "drawn" | "saidFirst" | "ahead" }): Promise<unknown> {
   const path = fresh("row") + ".sock";

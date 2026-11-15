@@ -1,0 +1,17 @@
+{
+ "name": "seam: the body's typed line is read: an ask whose words were tapped or typed",
+ "run": "seam.read",
+ "in": {
+  "from": "body",
+  "text": "{\"v\":1,\"type\":\"typed\",\"text\":\"show me\",\"at\":1794700010000}"
+ },
+ "out": {
+  "ok": true,
+  "line": {
+   "v": 1,
+   "type": "typed",
+   "text": "show me",
+   "at": 1794700010000
+  }
+ }
+}

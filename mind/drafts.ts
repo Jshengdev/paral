@@ -44,5 +44,12 @@ export function drafts(opener: Opener, settings: Settings, seen: () => string[])
       if (fitting.length === 0) return ask(final, false, signal);
       return Promise.any(fitting.map((draft) => draft.line)).catch(() => ask(final, false, signal));
     },
+    /**
+     * The quick line of one ask: a fixed line while a wrong line of his is open, otherwise the drafted one. With a
+     * wrong line open a model that sees his page could name the mistake a rung early, so the line is fixed.
+     */
+    line(wrongLineOpen: boolean, final: string, signal: AbortSignal): Promise<string> {
+      return wrongLineOpen ? Promise.resolve(settings.openerInLesson.value) : this.choose(final, signal);
+    },
   };
 }

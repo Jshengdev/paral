@@ -101,6 +101,10 @@ row, one spoken sentence from a fixed pattern, and a box on the kept line that w
 to it, or the name of the kept page it is on. No model is asked. Until his next ordinary ask the looks follow that
 step, so the box moves as he scrolls. paral cannot know a step is done: "show me" again moves on.
 
+**A tapped ask.** The menu bar's menu lists cue cards (`cueCards`, sent in the ready line): lines he can tap instead
+of saying them, for a hall too loud for the microphone. A tapped line crosses the seam as `typed` and is asked exactly
+as a spoken one, with the same picture of the screen and no ear. In a flow file the step is `{"typed": "the words"}`.
+
 **The way.** When the thing is on this page and neither its line nor its heading is in view, a `way` line goes out
 in the mark's place: up or down, and what it leads to (`mind/place.ts`, `cores/page.ts` `whichWay`).
 
@@ -164,6 +168,9 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
   Calendar asks before adding the entry or adds it at once is not known, so the line he hears says only that the date
   is open in his calendar. A line with a clock time becomes an entry at that time in the Mac's own time zone, since
   the pages write none. "It" is the last date shown; after an answer that named two dates it is the first of them.
+- The cue cards in the menu and the tapped ask have never been used on a Mac: `Cues.swift` and the app's `typed` are
+  compiled and unrun. The scripted stand-in has run tapped asks live. The menu bar says "Lost and Found"; the app's
+  file, its grants in System Settings and this repo still say paral.
 - The page-to-page guide, the way line and "show me" have run only on a tape and in the scripted stand-in. The body
   on main draws nothing for a way line and does not read the board's `now`: both are drawn on a branch by a second
   session. "Show me" walks the steps in the order the looks found them, in the look's own words for each, and has

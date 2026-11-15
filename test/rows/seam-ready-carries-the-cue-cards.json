@@ -1,0 +1,31 @@
+{
+ "name": "seam: the ready line may carry the cue cards, groups of lines he can tap instead of saying",
+ "run": "seam.write",
+ "in": {
+  "from": "mind",
+  "line": {
+   "v": 1,
+   "type": "ready",
+   "mind": "paral",
+   "holdKey": "rightOption",
+   "drawKey": "shift",
+   "earGraceMs": 300,
+   "markPad": 4,
+   "pictureLongEdge": 1280,
+   "cropAround": {
+    "share": 1,
+    "points": 200
+   },
+   "cues": [
+    {
+     "name": "Club recognition page",
+     "lines": [
+      "add it to my calendar",
+      "show me"
+     ]
+    }
+   ]
+  }
+ },
+ "out": "{\"v\":1,\"type\":\"ready\",\"mind\":\"paral\",\"holdKey\":\"rightOption\",\"drawKey\":\"shift\",\"earGraceMs\":300,\"markPad\":4,\"pictureLongEdge\":1280,\"cropAround\":{\"share\":1,\"points\":200},\"cues\":[{\"name\":\"Club recognition page\",\"lines\":[\"add it to my calendar\",\"show me\"]}]}\n"
+}

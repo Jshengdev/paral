@@ -50,6 +50,10 @@ public struct Scene {
             heard = []; trail = []; failed = nil; idleAt = nil; closedAt = nil
         case .keyUp:
             if let last = holds.indices.last, holds[last].up == nil { holds[last].up = at }
+        case .typed:
+            // A tapped or typed ask is a hold of no length: what a press does to the screen, and its release, at once.
+            take(.keyDown, at: at)
+            take(.keyUp, at: at)
         case .trail(let x, let y):
             trail.append((x - origin.x, y - origin.y, at))
         case .screen(let display, let lines):

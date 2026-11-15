@@ -59,15 +59,8 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
   /** The opener, drafted from his words while he is still talking. With no fast model there is no opener at all. */
   const drafting = ports.opener && drafts(ports.opener, settings, () => screen?.lines.map((read) => read.text).filter(Boolean) ?? []);
 
-  /** The quick line of this ask: none with no fast model, a fixed line while a wrong line is open, otherwise the drafted one. */
-  function opening(signal: AbortSignal): Promise<string> | null {
-    if (!drafting) return null;
-    // With a wrong line open a model that sees his page could name the mistake a rung early, so the line is fixed.
-    if (lesson.breakLine !== null) return Promise.resolve(settings.openerInLesson.value);
-    return drafting.choose(words.text, signal);
-  }
-
-  function down(at: number) {
+  /** A press of the key. With `typed`, an ask whose words were tapped or typed: no ear, and the words are these. */
+  function down(at: number, typed?: string) {
     running?.abort();
     glancing.stop();
     const mine = new AbortController();
@@ -76,6 +69,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
     drafting?.reset();
     trail = [];
     words = hear(silence, { type: "key.down", at });
+    if (typed !== undefined) return void (listening = { sound() {}, finish: async () => typed });
     send({ v, type: "state", name: "listening" });
     // The voice connects while he talks, so its first words do not wait for a connection.
     ports.voice?.warm?.();
@@ -146,7 +140,8 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
         return send({ v, type: "state", name: "failed", detail: "no picture of the screen arrived with this ask" });
       }
       if (await showing.asked(id, words.text, ahead, screen, onPage, mine.signal)) return;
-      const opener = opening(mine.signal);
+      // The quick line: none with no fast model.
+      const opener = drafting ? drafting.line(lesson.breakLine !== null, words.text, mine.signal) : null;
       const around = circled(path, screen.lines, screen.display, settings.circleLeast.value);
       if (path.length > 0) {
         const worded = screen.lines.filter((line) => line.text !== "").length;
@@ -186,6 +181,10 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
           onPage = which(line);
           return screenCame?.();
         case "key.up":
+          return up(line.at);
+        case "typed":
+          log(`an ask was tapped or typed, not spoken: "${line.text}"`);
+          down(line.at, line.text);
           return up(line.at);
         case "look":
           // A look he did not ask for never cuts into a hold or an answer.

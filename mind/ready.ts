@@ -16,5 +16,6 @@ export function ready(ports: Ports, settings: Settings): FromMind {
     cropAround: settings.cropAround.value,
     // The body looks without a key only when there is something to look for: kept pages, and a model to ask.
     ...(ports.glancer !== null && ports.pages.length > 0 && settings.lookEveryMs.value > 0 ? { lookEveryMs: settings.lookEveryMs.value } : {}),
+    ...(settings.cueCards.value.length > 0 ? { cues: settings.cueCards.value } : {}),
   };
 }
