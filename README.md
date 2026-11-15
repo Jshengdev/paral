@@ -217,8 +217,9 @@ mark, and the board of steps comes when asked for; the pages a question is given
 service as soon as the page is seen, so a first question on a page no longer waits for them; dates written with
 slashes are read; a long sentence that ends by saying where a thing is written is said as two; the app finishes
 the look it is taking before it exits; and an exercise can be worked through step by step behind a switch that
-is off (`PARAL_WORK_THROUGH=1 ./run`). On the
-build with all but the two-sentence change, the judge's pass was 1,900 of 1,903 checks.
+is off (`PARAL_WORK_THROUGH=1 ./run`). With all of
+that in, the judge's pass over the same 24 students is 1,901 of 1,902 checks; the one that does not pass is a
+sentence that takes 8.2 seconds to say against a limit of 8.
 
 ## What it does not do yet
 
