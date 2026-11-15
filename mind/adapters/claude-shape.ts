@@ -27,7 +27,7 @@ export const Glance = z.object({
   under: z.string(),
   say: z.string(),
   sayInView: z.string(),
-  ahead: z.array(z.object({ step: z.string(), by: z.string() })),
+  ahead: z.array(z.object({ step: z.string(), by: z.string(), at: z.string() })),
 });
 
 export const Reply = z.object({

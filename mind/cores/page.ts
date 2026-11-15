@@ -38,6 +38,9 @@ function placesOf(kept: string[], line: string): number[] {
   return begins.length > 0 ? begins : kept.flatMap((held, at) => (held.length >= 15 && want.startsWith(held) ? [at] : []));
 }
 
+/** Whether a kept page holds a line: a guard for a line a model says the page writes. */
+export const holds = (page: KeptPage, line: string): boolean => placesOf(page.lines.map(plain), line).length > 0;
+
 /**
  * Which way a kept line lies from what is on his screen: up, down, or null when it cannot be told or the line is
  * within what is in view. The lines on screen that the page holds exactly once give the stretch of the page in view;
