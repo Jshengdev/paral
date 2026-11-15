@@ -13,11 +13,6 @@ func color(_ hex: String, alpha: Double = 1) -> CGColor {
     return CGColor(srgbRed: Double((value >> 16) & 255) / 255, green: Double((value >> 8) & 255) / 255, blue: Double(value & 255) / 255, alpha: alpha)
 }
 
-func inked(_ text: String, size: Double, color: CGColor, weight: NSFont.Weight = .regular, hand: Bool = false) -> NSAttributedString {
-    let font = (hand ? NSFont(name: "Bradley Hand", size: size) : nil) ?? NSFont.systemFont(ofSize: size, weight: weight)
-    return NSAttributedString(string: text, attributes: [.font: font, .foregroundColor: NSColor(cgColor: color) ?? .black])
-}
-
 /// Draws a picture. It decides nothing about what is shown, only how it looks, and every size and colour is a token.
 public struct Painter {
     public let tokens: Tokens
@@ -25,6 +20,7 @@ public struct Painter {
     let ink, paper, ember, cardinal, cardinalDeep, light: CGColor
     public let accent: CGColor
     let frames = ClipFrames()
+    let faces: Faces
 
     public init(tokens: Tokens, width: Double, height: Double) {
         self.tokens = tokens
@@ -37,6 +33,12 @@ public struct Painter {
         cardinal = color(tokens.cardinal)
         cardinalDeep = color(tokens.cardinalDeep)
         light = color(tokens.light)
+        faces = Faces(family: tokens.font, optical: tokens.fontOptical)
+    }
+
+    /// Words in the look's typeface, ready to be measured and drawn.
+    func inked(_ text: String, size: Double, color: CGColor, weight: NSFont.Weight = .regular) -> NSAttributedString {
+        NSAttributedString(string: text, attributes: [.font: faces.face(size, weight), .foregroundColor: NSColor(cgColor: color) ?? .black])
     }
 
     /// The context's origin must be the display's top-left corner, y growing downward, one unit a point.

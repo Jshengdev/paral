@@ -47,6 +47,10 @@ public struct Tokens: Codable {
     public struct Strings: Codable { public var thinking, listening, failed, opened: String }
 
     public var ink, paper, accent: String
+    /// The typeface everything is written in (empty for the system's), and its optical size where it has one. The
+    /// design kit writes everything in DM Sans at an optical size of 14.
+    public var font: String
+    public var fontOptical: Double
     /// The design kit's reds. Ember is for what is drawn by hand on the page (its ring and its arrow); cardinal for
     /// the neat box and for names; the cursor runs from deep cardinal through cardinal to ember.
     public var ember, cardinal, cardinalDeep: String

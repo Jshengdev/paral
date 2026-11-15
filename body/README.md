@@ -76,12 +76,20 @@ takes the place of the one before, and `clear` or a close wipes it. While it is 
 cross. Its looks are the `way` group and `ember` in `tokens.json`. Its shape is after the drawn arrow of the design
 kit ("Lost and Found: brand kit", page 08), drawn here in code; no picture is loaded.
 
+## Type and ink, after the design kit
+
+Everything is written in the typeface the `font` token names (the kit's DM Sans), at the optical size in
+`fontOptical` where the family has one (the kit's 14). `Faces.swift` makes each size and weight once. When the Mac
+does not have the family the system's font is used and that is said once on the error stream; nothing is downloaded.
+An empty `font` asks for the system's font. `ink` is the kit's #141414. `paper` stays white: in the kit, paper
+#F4F4F4 is for page backgrounds, and what it writes on ink is white.
+
 ## Marks and the cursor, after the design kit
 
 The seam's mark kinds are unchanged; the kit's look comes through tokens. A ring, an underline, a wavy line and a
 bracket are drawn by hand in `ember`. A box is the kit's neat highlight: a thinner edge (`mark.boxWidth`) in
-`cardinal` and a faint wash of cardinal inside it (`mark.wash`, the kit's 8 percent). The wash tints the words of
-the line and does not hide them.
+`cardinal` and a faint wash of cardinal inside it (`mark.wash`, the kit's 8 percent), laid across the line from its
+start as the edge is drawn, the way a highlighter is pulled along. The wash tints the words and does not hide them.
 
 The pointer is the kit's cursor: an arrow filled from `cardinalDeep` through `cardinal` to `ember` with a paper edge,
 its outline written in `PainterCursor.swift` from the corners of the kit's shape. It flies to where the newest mark
