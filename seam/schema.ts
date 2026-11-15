@@ -16,7 +16,11 @@ export type Display = z.infer<typeof Display>;
 export const ReadLine = z.object({ text: z.string(), box: Box });
 export type ReadLine = z.infer<typeof ReadLine>;
 
-export const MarkKind = z.enum(["ring", "underline", "wavy", "bracket", "box"]);
+/**
+ * The first five mark a line or a thing. `tick` says a line is done, `strike` that it has passed (the one mark that
+ * crosses words), and `tag` is a chip of two or three words (`label`) beside the line, in a `tone`.
+ */
+export const MarkKind = z.enum(["ring", "underline", "wavy", "bracket", "box", "tick", "strike", "tag"]);
 export type MarkKind = z.infer<typeof MarkKind>;
 
 export const FromBody = z.discriminatedUnion("type", [
@@ -91,7 +95,8 @@ export const FromMind = z.discriminatedUnion("type", [
   z.object({ v, type: z.literal("mute"), id, why: z.string() }),
   /** A calendar file the mind has written for a date he asked to keep; the body opens it in his calendar app. `label` is the date in a few words ("November 22"), for the body to show. */
   z.object({ v, type: z.literal("open"), id, path: z.string().min(1), label: z.string().optional() }),
-  z.object({ v, type: z.literal("mark"), id, beat, kind: MarkKind, box: Box, label: z.string().optional() }),
+  /** `tone` is only on a tag: strong for what is next, quiet for what is done or passed, date for a count of days. */
+  z.object({ v, type: z.literal("mark"), id, beat, kind: MarkKind, box: Box, label: z.string().optional(), tone: z.enum(["strong", "quiet", "date"]).optional() }),
   /** In place of a mark, when the thing is on this page and not in view: which way to scroll, and the name of what it leads to. `clear` wipes it. */
   z.object({ v, type: z.literal("way"), id, to: z.enum(["up", "down"]), toward: z.string().min(1) }),
   z.object({ v, type: z.literal("echo"), id, box: Box, shape: z.enum(["loop", "ring", "box"]) }),
