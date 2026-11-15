@@ -33,6 +33,9 @@ export function standingBefore(everything: Moment[], ask: { down: number; moment
 
 // A line that an earlier ask marked, and that nothing cleared, is marked: paral says "the one I already underlined"
 // and draws nothing new, and the ink is on his page (seen on film, 2026-11-14, 19:13).
+/** Every line of the page a mark lies on: a box round a row takes each piece of that row, a date and the words after it. */
+export const linesUnder = (box: Box, truth: Truth[]): Truth[] => truth.filter((t) => t.box.h < 90 && overlap(box, t.box) > 0);
+
 export function marks(ask: Pick<Ask, "index" | "moments">, expect: Expect, truth: Truth[], standing: Standing[] = []): Verdict[] {
   const s = ask.index;
   const echoes = of(ask.moments, "echo").map((m) => ({ ...m, mark: "his circle, as a ring" }));

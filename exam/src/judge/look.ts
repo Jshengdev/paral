@@ -3,7 +3,7 @@ import type { Box, Display, Expect, Truth } from "../shape.ts";
 import { of, type Look, type Moment } from "../timeline.ts";
 import { no, yes, type Verdict } from "../verdict.ts";
 import { dates, datesSaid, daysTo, type Known } from "./dates.ts";
-import { marks, nearestLine } from "./marks.ts";
+import { linesUnder, marks } from "./marks.ts";
 
 // A look with no key pressed (his choice of 2026-11-14, 19:02: "lets try the B"): on a page it has read, paral
 // shows one sentence with a short trail of what it did above it, marks where the thing is, and draws what is still
@@ -29,7 +29,7 @@ export function glanced(look: Look, expect: Expect, truth: Truth[], known: Known
   const sound = of(look.moments, "voice").length;
   out.push(sound === 0 ? yes(C, s, "What a look shows is not spoken", "no sound was made for it") : no(C, s, "What a look shows is not spoken", `${sound} pieces of sound were sent for it`));
   // The lines its marks sit on: a date it found may be shown as a box on the date's own line, with no date in the words.
-  const markedLines = of(look.moments, "mark").map((m) => nearestLine(m.box, truth)?.text ?? "");
+  const markedLines = of(look.moments, "mark").flatMap((m) => linesUnder(m.box, truth).map((t) => t.text));
   out.push(trailIsTrue(s, line, known, markedLines));
   const asAsk = { index: s, moments: look.moments };
   out.push(...marks(asAsk, expect, truth), ...datesSaid(asAsk, expect, truth, known), ...ahead(s, boards.at(-1)?.text ?? null, expect, known));
