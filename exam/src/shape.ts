@@ -30,6 +30,11 @@ const Expect = z.object({
 });
 export type Expect = z.infer<typeof Expect>;
 
+// A table's row is one thing to him, but the page gives each of its cells as a line of its own. A mark on any cell of
+// a row is on the row: once a bracket took the two rows by their names and left the date cells alone.
+export const rowOf = (want: Truth, truth: Truth[]): Truth[] =>
+  truth.filter((t) => t.box.h < 90 && Math.abs(t.box.y + t.box.h / 2 - (want.box.y + want.box.h / 2)) <= want.box.h / 2);
+
 const Step = z.union([
   // A step may cut in on the ask before it: `cutInAfterMs` after its first line of any kind,
   // `cutInAnswerAfterMs` after the first sentence of the answer itself, or `pressAgainAfterMs` after its release.

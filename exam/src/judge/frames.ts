@@ -2,7 +2,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { frameAt, frameCount, framePath } from "../film.ts";
 import { count, drawn, pixels, type Size } from "../pixels.ts";
-import { findNamed, type Box, type Display, type Expect, type Truth } from "../shape.ts";
+import { findNamed, rowOf, type Box, type Display, type Expect, type Truth } from "../shape.ts";
 import type { Placed } from "../session.ts";
 import { of, type Ask } from "../timeline.ts";
 import { no, unseen, within, yes, type Verdict } from "../verdict.ts";
@@ -94,7 +94,7 @@ export async function inked(seen: Seen, ask: Ask, expect: Expect, truth: Truth[]
   const others = lines.filter((t) => !named.includes(t));
   const worstNamed = named.map((t) => ({ t, share: share(t.box) })).sort((x, y) => y.share - x.share)[0];
   const covered = others.map((t) => ({ t, share: share(t.box) })).filter((c) => c.share > COVERED).sort((x, y) => y.share - x.share);
-  const near = most(grow(want.box, MARK_ROOM));
+  const near = Math.max(...rowOf(want, truth).map((t) => most(grow(t.box, MARK_ROOM))));
   const own = "A mark does not cover the words it marks";
   const clear = "Its ink covers no other text on the page";
   return [

@@ -95,6 +95,8 @@ only when the builder says the tree is frozen, and the builder edits again only 
 - **From a reader:** some things only a reader can judge, such as whether a follow-up built on the answer before it.
   Whoever reads a run writes `readings/<scenario>.json`. A reading names the run it read by a mark made from the
   run's record, so it never counts for a later run. A reading may also carry a note for him, as `not shown`.
+- **A table's row is one thing.** The page gives each cell of a row as a line of its own. A mark on any cell of the
+  row the scenario names counts as on it: once a bracket took two rows by their names and left the date cells alone.
 - **Which line a mark names:** the one line it overlaps most. His own circle, come back as an echo, names no line.
   Ink on a line that no mark names counts against U5.
 - Every bar names its source: the video, Nielsen's response-time limits, or the scenario.

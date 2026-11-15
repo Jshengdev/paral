@@ -1,4 +1,4 @@
-import { findNamed, type Box, type Expect, type Truth } from "../shape.ts";
+import { findNamed, rowOf, type Box, type Expect, type Truth } from "../shape.ts";
 import { of, type Ask } from "../timeline.ts";
 import { no, yes, type Verdict } from "../verdict.ts";
 
@@ -26,7 +26,9 @@ export function marks(ask: Ask, expect: Expect, truth: Truth[]): Verdict[] {
   const want = findNamed(truth, expect.mark.on);
   if (!want) throw new Error(`the page has no "${expect.mark.on}" to mark`);
   if (drawn.length === 0) return [no("C6", s, `A mark lands on "${want.text.slice(0, 40)}"`, "no mark was drawn")];
-  const hits = drawn.filter((m) => inside(m.box, grow(want.box, GROWN)) >= 0.6 || inside(want.box, grow(m.box, GROWN)) >= 0.6);
+  const row = rowOf(want, truth);
+  const on = (mark: Box, line: Box) => inside(mark, grow(line, GROWN)) >= 0.6 || inside(line, grow(mark, GROWN)) >= 0.6;
+  const hits = drawn.filter((m) => row.some((t) => on(m.box, t.box)));
   const where = drawn.map((m) => `${m.mark} on "${nearestLine(m.box, truth)?.text.slice(0, 28) ?? "no line"}"`).join("; ");
   const out = [hits.length > 0 ? yes("C6", s, `A mark lands on "${want.text.slice(0, 40)}"`, where) : no("C6", s, `A mark lands on "${want.text.slice(0, 40)}"`, where)];
   const kinds = expect.mark.kinds;

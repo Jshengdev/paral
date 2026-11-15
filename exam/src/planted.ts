@@ -1,4 +1,5 @@
 import { board } from "./judge/board.ts";
+import { marks } from "./judge/marks.ts";
 import { drawnIn } from "./judge/motion.ts";
 import { onlyThePart } from "./judge/picture.ts";
 import { cutIn, pressedAgain } from "./judge/ending.ts";
@@ -6,6 +7,7 @@ import { timing } from "./judge/timing.ts";
 import { heardWhole, voiced } from "./judge/voice.ts";
 import { spoken } from "./judge/words.ts";
 import type { Placed } from "./session.ts";
+import type { Box } from "./shape.ts";
 import type { Ask, Moment } from "./timeline.ts";
 import type { Verdict } from "./verdict.ts";
 
@@ -16,6 +18,13 @@ const cutting = (extra: Moment[]): Ask => ({ index: 1, down: 20000, up: 22000, m
 
 // An ask he took back before it said anything.
 const SILENT: Ask = { index: 0, down: 17000, up: 19900, moments: [{ at: 17000, kind: "key-down" }, { at: 19900, kind: "key-up" }] };
+
+// Two rows of a table, as the page gives them: a name and a date in each.
+const TABLE = [
+  { id: "a1", text: "Study Days", box: { x: 88, y: 770, w: 76, h: 16 } }, { id: "a3", text: "December 5-8", box: { x: 545, y: 770, w: 89, h: 16 } },
+  { id: "b1", text: "Exams", box: { x: 88, y: 822, w: 45, h: 16 } }, { id: "b3", text: "December 9-16", box: { x: 545, y: 822, w: 96, h: 16 } },
+];
+const marked = (kind: string, at: Box): Moment => ({ at: 7000, kind: "mark", id: "t1:0", mark: kind, box: at });
 
 type Case = { name: string; check: string; mustPass: boolean; verdicts: () => Verdict[] | Promise<Verdict[]> };
 
@@ -88,6 +97,8 @@ const CASES: Case[] = [
   { name: "a worked example with a right sum", check: "A sum it says aloud", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "Adding 4 to both sides gives y equals 9 plus 4, which is 13.", { hint: true })]), {}, []) },
   { name: "the top rung's example says what it comes to", check: "On the last rung", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "Adding 4 to both sides gives y equals 9 plus 4, which is 13.", { hint: true, top: true })]), {}, []) },
   { name: "the top rung's example stops at the move", check: "On the last rung", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "Adding 4 to both sides gives y equals 9 plus 4.", { hint: true, top: true })]), {}, []) },
+  { name: "a bracket takes two rows by their names", check: "A mark lands on", mustPass: true, verdicts: () => marks(ask([marked("bracket", { x: 83, y: 768, w: 86, h: 73 })]), { mark: { on: "December 9-16" } }, TABLE) },
+  { name: "the only mark is on the row above the one he means", check: "A mark lands on", mustPass: false, verdicts: () => marks(ask([marked("underline", { x: 545, y: 770, w: 90, h: 15 })]), { mark: { on: "December 9-16" } }, TABLE) },
   { name: "a hint on a plain question", check: "A plain question gets an answer", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "Read the highlighted line again, slowly.", { hint: true })]), { plain: true }, []) },
   { name: "his number in a worked example", check: "It never gives the result", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "So a equals 2 plus 9, which is 11.")]), { never: ["11", "eleven"] }, []) },
   { name: "an ask that ends in the failed look", check: "The ask is answered", mustPass: false, verdicts: () => spoken(ask([{ at: 5000, kind: "look", name: "failed", detail: "I lost that answer on my side. Ask me again." }]), {}, []) },
