@@ -1,9 +1,10 @@
+import { answered } from "./after.ts";
 import type { Hands, Screen } from "./ask.ts";
 import { away, unknownDate, worded } from "./cores/dates.ts";
 import type { Box } from "./cores/ground.ts";
 import { named, type ToKeep } from "./cores/keep.ts";
 import { headingOf, whichPage, type KeptPage } from "./cores/page.ts";
-import { finished, point, whereIs, type After, type More } from "./place.ts";
+import { finished, point, whereIs, type More } from "./place.ts";
 import type { Following, Glanced } from "./ports.ts";
 import { speech } from "./speech.ts";
 import { SEAM_VERSION, type FromBody } from "../seam/schema.ts";
@@ -67,8 +68,8 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
   const beingAsked = new Map<string, Promise<Glanced | null | void>>();
   /** The pages whose look has been said aloud in this sitting: each is said once. */
   const saidAloud = new Set<string>();
-  /** Where the last answer pointed on its page. The looks of that page keep to it, and not to the page's own first thing, until his next press of the key. */
-  let pointedAt: { page: string; line: string; under: string } | null = null;
+  /** The last answer, which holds the looks of its page until his next ask (`after.ts`). */
+  const answer = answered({ ports, settings, send, log, noted });
   /** The page on which each ask he followed was found to end, by the words of the ask. */
   const endedOn = new Map<string, string>();
 
@@ -105,14 +106,11 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
       follow(last.look, last.page, led);
       return true;
     },
-    /** An answer was given on `page`: where it pointed is kept for the looks that follow. Gives back the page it sent him to. */
-    pointed(page: string, after: After): KeptPage | null {
-      pointedAt = after.target === null ? null : { page, ...after.target };
-      return after.sent;
-    },
+    /** An answer was given: it holds the looks of its page from here (`after.ts`). */
+    pointed: answer.pointed,
     /** A press of the key ends a look in progress; what it had shown is his to ask about now. */
     stop() {
-      pointedAt = null;
+      answer.stop();
       running?.abort();
       running = null;
       [shown, shownAt] = [null, null];
@@ -122,15 +120,7 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
       if (page === null || ports.glancer === null) return;
       last = { look, page };
       if (led !== null && led.page === page.name) return follow(look, page, led);
-      if (pointedAt !== null && pointedAt.page === page.name) {
-        // He has scrolled since his answer: the mark goes to where the answer sent him, as it now stands, and the
-        // page's own first thing does not come back over it.
-        running?.abort();
-        const where = whereIs(settings, look, page, pointedAt);
-        if (stays(`answer on ${where.on ?? where.to ?? ""}`, where.box)) return log(`g${++looks}: nothing has moved since the last look; what is shown stays`);
-        send({ v, type: "clear" });
-        return log(`g${++looks}: the page has moved since his answer; the looks keep to where it sent him: ${point(send, `g${looks}`, where)}`);
-      }
+      if (answer.take(look, page)) return;
       // He is being followed when he asked something a moment ago and has since come to another kept page. That ends
       // on the page that holds what he was sent for: a page he opens after it, or one found not to hold it, gets a
       // look of its own.

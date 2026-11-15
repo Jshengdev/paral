@@ -11,7 +11,7 @@ import { asksFor, fits, hear, saysOnly, silence, unasked } from "../mind/cores/c
 import { away, datesIn, daysFrom, unknownDate, type Named } from "../mind/cores/dates.ts";
 import { calendarFile, dateLine, named, when } from "../mind/cores/keep.ts";
 import { nextStep, note, nothingYet, type Noted, type Step } from "../mind/cores/guide.ts";
-import { headingOf, whichPage, whichWay } from "../mind/cores/page.ts";
+import { headingOf, movedUnder, whichPage, whichWay } from "../mind/cores/page.ts";
 import { place } from "../mind/cores/sheet.ts";
 import { showable, unfit } from "../mind/cores/fit.ts";
 import { circled, echo } from "../mind/cores/circle.ts";
@@ -104,6 +104,7 @@ const runs: Record<string, (input: any) => unknown> = {
   "catch.only": (input) => Object.fromEntries(input.asks.map((words: string) => [words, saysOnly(words, input.phrases)])),
   "catch.drawing": (input) => Object.fromEntries(input.asks.map((words: string) => [words, asksFor(words, input.phrases)])),
   "page.which": (input) => whichPage(input.seen, input.kept, input.least)?.name ?? null,
+  "page.moved": (input) => input.cases.map(([then, now]: [any[], any[]]) => movedUnder(then, now, input.least)),
   "page.heading": (input) => input.cases.map(([line, named]: [string, string]) => headingOf(input.page, line, named)),
   "guide.next": (input) => {
     let seen = nothingYet;

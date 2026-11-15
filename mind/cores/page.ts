@@ -72,3 +72,21 @@ export function headingOf(page: KeptPage, line: string, named: string): string {
   const above = page.lines.slice(0, at);
   return above.findLast(folds) ?? (above.map(plain).includes(plain(named)) ? named : "");
 }
+
+/** A line read off the screen, as far as `movedUnder` needs it: its words and where its box begins. */
+type Read = { text: string; box: { x: number; y: number } };
+
+/**
+ * Whether the page has moved under what was drawn on it, between two readings of the screen. Only a line read once
+ * in each reading is compared, by its words, so a line is never taken for its twin. The page has moved when fewer
+ * than half of the earlier reading's lines are found again (another part of the page is up, whatever a menu that
+ * stays put says), or when more than half of those found again now begin `least` or more from where they began,
+ * across or down. `least` is in the readings' own units. Less than that is the text reader's wobble.
+ */
+export function movedUnder(then: Read[], now: Read[], least: number): boolean {
+  const once = (lines: Read[]) => new Map(lines.filter((line) => lines.filter((other) => other.text === line.text).length === 1).map((line) => [line.text, line.box]));
+  const [before, after] = [once(then), once(now)];
+  const again = [...before].flatMap(([text, was]) => (after.has(text) ? [{ was, is: after.get(text)! }] : []));
+  const elsewhere = again.filter(({ was, is }) => Math.abs(is.x - was.x) >= least || Math.abs(is.y - was.y) >= least);
+  return again.length * 2 < before.size || elsewhere.length * 2 > again.length;
+}

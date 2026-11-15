@@ -1,0 +1,674 @@
+{
+ "name": "page: the page has moved under what was drawn when most of the lines read both times begin somewhere else, or when fewer than half of the earlier lines are read again: a still page whose boxes wobble by 3 has not moved; a scroll of 200 has, though the site's bar at the top stays put; another part of the page with only that bar in common has; a still page with paral's own card read on top of it and one line covered has not; a line read twice is never compared",
+ "run": "page.moved",
+ "in": {
+  "least": 12,
+  "cases": [
+   [
+    [
+     {
+      "text": "USC",
+      "box": {
+       "x": 100,
+       "y": 40,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Recognition Process",
+      "box": {
+       "x": 200,
+       "y": 200,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "The Spring 2027 RSO Recognition process is now open",
+      "box": {
+       "x": 200,
+       "y": 300,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Important Dates",
+      "box": {
+       "x": 200,
+       "y": 500,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Deadlines +",
+      "box": {
+       "x": 200,
+       "y": 600,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Zoom",
+      "box": {
+       "x": 300,
+       "y": 700,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Zoom",
+      "box": {
+       "x": 300,
+       "y": 760,
+       "w": 900,
+       "h": 40
+      }
+     }
+    ],
+    [
+     {
+      "text": "USC",
+      "box": {
+       "x": 100,
+       "y": 40,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Recognition Process",
+      "box": {
+       "x": 200,
+       "y": 200,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "The Spring 2027 RSO Recognition process is now open",
+      "box": {
+       "x": 200,
+       "y": 300,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Important Dates",
+      "box": {
+       "x": 200,
+       "y": 500,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Deadlines +",
+      "box": {
+       "x": 200,
+       "y": 600,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Zoom",
+      "box": {
+       "x": 300,
+       "y": 700,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Zoom",
+      "box": {
+       "x": 300,
+       "y": 760,
+       "w": 900,
+       "h": 40
+      }
+     }
+    ]
+   ],
+   [
+    [
+     {
+      "text": "USC",
+      "box": {
+       "x": 100,
+       "y": 40,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Recognition Process",
+      "box": {
+       "x": 200,
+       "y": 200,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "The Spring 2027 RSO Recognition process is now open",
+      "box": {
+       "x": 200,
+       "y": 300,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Important Dates",
+      "box": {
+       "x": 200,
+       "y": 500,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Deadlines +",
+      "box": {
+       "x": 200,
+       "y": 600,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Zoom",
+      "box": {
+       "x": 300,
+       "y": 700,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Zoom",
+      "box": {
+       "x": 300,
+       "y": 760,
+       "w": 900,
+       "h": 40
+      }
+     }
+    ],
+    [
+     {
+      "text": "USC",
+      "box": {
+       "x": 100,
+       "y": 43,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Recognition Process",
+      "box": {
+       "x": 200,
+       "y": 203,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "The Spring 2027 RSO Recognition process is now open",
+      "box": {
+       "x": 200,
+       "y": 303,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Important Dates",
+      "box": {
+       "x": 200,
+       "y": 503,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Deadlines +",
+      "box": {
+       "x": 200,
+       "y": 603,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Zoom",
+      "box": {
+       "x": 300,
+       "y": 703,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Zoom",
+      "box": {
+       "x": 300,
+       "y": 763,
+       "w": 900,
+       "h": 40
+      }
+     }
+    ]
+   ],
+   [
+    [
+     {
+      "text": "USC",
+      "box": {
+       "x": 100,
+       "y": 40,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Recognition Process",
+      "box": {
+       "x": 200,
+       "y": 200,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "The Spring 2027 RSO Recognition process is now open",
+      "box": {
+       "x": 200,
+       "y": 300,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Important Dates",
+      "box": {
+       "x": 200,
+       "y": 500,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Deadlines +",
+      "box": {
+       "x": 200,
+       "y": 600,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Zoom",
+      "box": {
+       "x": 300,
+       "y": 700,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Zoom",
+      "box": {
+       "x": 300,
+       "y": 760,
+       "w": 900,
+       "h": 40
+      }
+     }
+    ],
+    [
+     {
+      "text": "USC",
+      "box": {
+       "x": 100,
+       "y": 40,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Recognition Process",
+      "box": {
+       "x": 200,
+       "y": 0,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "The Spring 2027 RSO Recognition process is now open",
+      "box": {
+       "x": 200,
+       "y": 100,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Important Dates",
+      "box": {
+       "x": 200,
+       "y": 300,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Deadlines +",
+      "box": {
+       "x": 200,
+       "y": 400,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Zoom",
+      "box": {
+       "x": 300,
+       "y": 500,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Zoom",
+      "box": {
+       "x": 300,
+       "y": 560,
+       "w": 900,
+       "h": 40
+      }
+     }
+    ]
+   ],
+   [
+    [
+     {
+      "text": "USC",
+      "box": {
+       "x": 100,
+       "y": 40,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Recognition Process",
+      "box": {
+       "x": 200,
+       "y": 200,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "The Spring 2027 RSO Recognition process is now open",
+      "box": {
+       "x": 200,
+       "y": 300,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Important Dates",
+      "box": {
+       "x": 200,
+       "y": 500,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Deadlines +",
+      "box": {
+       "x": 200,
+       "y": 600,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Zoom",
+      "box": {
+       "x": 300,
+       "y": 700,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Zoom",
+      "box": {
+       "x": 300,
+       "y": 760,
+       "w": 900,
+       "h": 40
+      }
+     }
+    ],
+    [
+     {
+      "text": "USC",
+      "box": {
+       "x": 100,
+       "y": 40,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Officer Trainings: Hazing Prevention and Officer Learning Path +",
+      "box": {
+       "x": 200,
+       "y": 300,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Each officer completes both trainings",
+      "box": {
+       "x": 200,
+       "y": 400,
+       "w": 900,
+       "h": 40
+      }
+     }
+    ]
+   ],
+   [
+    [
+     {
+      "text": "USC",
+      "box": {
+       "x": 100,
+       "y": 40,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Recognition Process",
+      "box": {
+       "x": 200,
+       "y": 200,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "The Spring 2027 RSO Recognition process is now open",
+      "box": {
+       "x": 200,
+       "y": 300,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Important Dates",
+      "box": {
+       "x": 200,
+       "y": 500,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Deadlines +",
+      "box": {
+       "x": 200,
+       "y": 600,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Zoom",
+      "box": {
+       "x": 300,
+       "y": 700,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Zoom",
+      "box": {
+       "x": 300,
+       "y": 760,
+       "w": 900,
+       "h": 40
+      }
+     }
+    ],
+    [
+     {
+      "text": "USC",
+      "box": {
+       "x": 100,
+       "y": 40,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Recognition Process",
+      "box": {
+       "x": 200,
+       "y": 200,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "The Spring 2027 RSO Recognition process is now open",
+      "box": {
+       "x": 200,
+       "y": 300,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Important Dates",
+      "box": {
+       "x": 200,
+       "y": 500,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Three things are left",
+      "box": {
+       "x": 600,
+       "y": 900,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Officers finish their training",
+      "box": {
+       "x": 1200,
+       "y": 300,
+       "w": 900,
+       "h": 40
+      }
+     }
+    ]
+   ],
+   [
+    [
+     {
+      "text": "Zoom",
+      "box": {
+       "x": 300,
+       "y": 700,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Zoom",
+      "box": {
+       "x": 300,
+       "y": 760,
+       "w": 900,
+       "h": 40
+      }
+     }
+    ],
+    [
+     {
+      "text": "Zoom",
+      "box": {
+       "x": 300,
+       "y": 760,
+       "w": 900,
+       "h": 40
+      }
+     },
+     {
+      "text": "Zoom",
+      "box": {
+       "x": 300,
+       "y": 700,
+       "w": 900,
+       "h": 40
+      }
+     }
+    ]
+   ]
+  ]
+ },
+ "out": [
+  false,
+  false,
+  true,
+  true,
+  false,
+  false
+ ]
+}
