@@ -102,7 +102,8 @@ extension Painter {
             (target, name) = (pill(trail), "capsule")
             if let card { taken.append(card) }
         case .nudge:
-            guard let nudge = placed.first(where: { $0.what == "nudge" })?.box else { return nil }
+            // A card with no place clear of the words is shown in the capsule, and the arrow goes there.
+            guard let nudge = placed.first(where: { $0.what == "nudge" })?.box else { (target, name) = (pill(true), "capsule"); break }
             (target, name) = (nudge, "nudge")
             taken += [pill(true)] + (card.map { [$0] } ?? [])
         }

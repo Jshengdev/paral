@@ -6,6 +6,8 @@ final class NudgePlaces {
     struct Asked: Equatable { var text: String; var w, h: Double; var beside: Box?; var texts: [Box] }
     var asked: Asked?
     var found: (box: Box, scale: Double)?
+    /// What it kept off when it was found, so a search that found no place is made again only when that moves.
+    var taken: [Box] = []
 }
 
 extension Painter {
@@ -43,7 +45,8 @@ extension Painter {
     /// beside the line it is about, clear of the page's words, the marks, the resting cursor and `taken`
     /// (`Layout.nudge`). It comes up from a little low and a little small, anchored at its top, and its rows after it,
     /// each rising; it goes faster, fading and shrinking a little. A held button is drawn smaller. Gives back the card's
-    /// place, and each button's while the card can be pressed.
+    /// place, and each button's while the card can be pressed; or nothing, drawing nothing, when no place is free
+    /// even at its smallest, and then the line is shown in the capsule (`Painter.paint`).
     func nudge(_ card: NudgePicture, avoiding texts: [Box], taken: [Box], marks: [MarkPicture], cursor: Bool, _ ctx: CGContext) -> [Drawn] {
         let n = tokens.nudge, stone = color(tokens.stone)
         let wrapped: NSString.DrawingOptions = [.usesLineFragmentOrigin, .usesFontLeading]
@@ -67,10 +70,14 @@ extension Painter {
         let full = CGSize(width: n.width, height: n.pad + head + trailTall + n.gap + said.height.rounded(.up) + (pills.isEmpty ? 0 : n.gap + pillTall) + n.pad)
 
         let asked = NudgePlaces.Asked(text: card.text, w: full.width, h: full.height, beside: card.beside, texts: texts)
-        let was = nudges.asked == asked ? nudges.found : nil
+        let was = nudges.asked == asked ? nudges.found : nil, kept = taken + held(marks, of: card.id, cursor: cursor, avoiding: texts)
         // A card that is going stays where it was, whatever has come up since.
-        let place = card.leave > 0 && was != nil ? was! : Layout.nudge(size: (full.width, full.height), beside: card.beside, texts: texts, taken: taken + held(marks, of: card.id, cursor: cursor, avoiding: texts), was: was, width: width, height: floor, tokens: tokens)
-        (nudges.asked, nudges.found) = (asked, place)
+        let place: (box: Box, scale: Double)?
+        if card.leave > 0, let was { place = was } else if nudges.asked == asked, was == nil, nudges.taken == kept { place = nil } else {
+            place = Layout.nudge(size: (full.width, full.height), beside: card.beside, texts: texts, taken: kept, was: was, width: width, height: floor, tokens: tokens)
+        }
+        (nudges.asked, nudges.found, nudges.taken) = (asked, place, kept)
+        guard let place else { return [] }
 
         ctx.saveGState()
         defer { ctx.restoreGState() }

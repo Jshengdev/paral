@@ -15,9 +15,10 @@ extension Layout {
     /// the right of the text when there is room there. Free means inside the display and below the menu bar
     /// (`nudge.edge`, `nudge.top`), and `nudge.clear` from every read line, every box in `taken` and the open
     /// capsule, with room below for the rise it comes up with. Where no place is free at its full size it is shrunk
-    /// by `nudge.shrink` at a time down to `nudge.least`; where none is free even then, it goes where it covers least.
+    /// by `nudge.shrink` at a time down to `nudge.least`, the smallest that still reads; where none is free even then,
+    /// there is no place for it, and nothing is given back: a card is never put on the page's words.
     /// `was` is the place it had a moment before: it is kept while it is still free, so the card does not move.
-    public static func nudge(size: (w: Double, h: Double), beside line: Box?, texts: [Box], taken: [Box], was: (box: Box, scale: Double)? = nil, width: Double, height: Double, tokens: Tokens) -> (box: Box, scale: Double) {
+    public static func nudge(size: (w: Double, h: Double), beside line: Box?, texts: [Box], taken: [Box], was: (box: Box, scale: Double)? = nil, width: Double, height: Double, tokens: Tokens) -> (box: Box, scale: Double)? {
         let n = tokens.nudge
         let capsule = capsule(open: 1, taller: band(tokens), width: width, height: height, tokens: tokens)
         let shut = (texts + taken + [capsule]).map { $0.grown(n.clear) }
@@ -27,7 +28,6 @@ extension Layout {
             return shut.reduce(0) { $0 + overlap(rising, $1) } + (outside ? b.w * b.h : 0)
         }
         if let was, covered(was.box) == 0 { return was }
-        var least: (cost: Double, box: Box, scale: Double)?
         let steps = n.shrink > 0 ? max(0, Int(((1 - n.least) / n.shrink).rounded())) : 0
         for step in 0...steps {
             let scale = 1 - Double(step) * n.shrink, w = size.w * scale, h = size.h * scale
@@ -49,10 +49,9 @@ extension Layout {
             for box in places {
                 let cost = covered(box), far = hypot(box.x - home.x, box.y - home.y)
                 if cost == 0, far < (nearest?.far ?? .infinity) { nearest = (far, box) }
-                if cost > 0, cost < (least?.cost ?? .infinity) { least = (cost, box, scale) }
             }
             if let nearest { return (nearest.box, scale) }
         }
-        return least.map { ($0.box, $0.scale) } ?? (Box(x: n.edge, y: n.top, w: size.w * n.least, h: size.h * n.least), n.least)
+        return nil
     }
 }
