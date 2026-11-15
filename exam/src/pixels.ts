@@ -22,15 +22,20 @@ export function sizeOf(png: string): Promise<Size> {
   });
 }
 
+// How far a pixel must be from the bare page, its three colours' differences added, to count as drawn at all.
 const DIFFERENT = 40;
+// How far it must be to cover what is under it. A pen's stroke moves a white page's pixel by 300 and more. A faint
+// wash inside a box is drawn too, and leaves the words as readable as before: the designer's kit asks for 8 percent
+// of cardinal, which moves a pixel by 49. Covering starts at 120, a tint of about a fifth.
+export const COVERS = 120;
 
-// The pixels where a frame differs from the bare page: everything the app drew.
-export function drawn(frame: Buffer, page: Buffer, size: Size): Uint8Array {
+// The pixels where a frame differs from the bare page by more than `over`: with the default, everything the app drew.
+export function drawn(frame: Buffer, page: Buffer, size: Size, over = DIFFERENT): Uint8Array {
   const ink = new Uint8Array(size.w * size.h);
   for (let i = 0; i < ink.length; i++) {
     const at = i * 3;
     const far = Math.abs(frame[at] - page[at]) + Math.abs(frame[at + 1] - page[at + 1]) + Math.abs(frame[at + 2] - page[at + 2]);
-    if (far > DIFFERENT) ink[i] = 1;
+    if (far > over) ink[i] = 1;
   }
   return ink;
 }

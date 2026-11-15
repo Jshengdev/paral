@@ -53,6 +53,9 @@ only when the builder says the tree is frozen, and the builder edits again only 
   box sits on the right line, what was said, whether every sentence was voiced in the same words.
 - **From the frames:** a frame is compared with frame 0. Any pixel that differs is something the app drew. The judge
   counts drawn pixels where a thing should be, and where nothing should be.
+  What covers words is counted apart from what is merely drawn: a pen's stroke hides what is under it, and a faint
+  wash inside a box does not (the designer's kit asks for one), so a line's covered share is counted from pixels
+  that moved by 120 or more, a tint of about a fifth.
 - **The truth** about where a line is comes from the page itself (`pages/truth.js` asks the browser), never from the
   app's own reading of the page. So a wrong reading shows as a wrong landing.
 - **What the video's times can prove.** The video is cut, so most of its times show order, not speed. One turn runs

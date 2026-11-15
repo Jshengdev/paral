@@ -89,7 +89,7 @@ function film(grow: (ms: number) => number) {
     for (let y = box.y; y < box.y + box.h; y++) for (let x = box.x; x < box.x + columns; x++) ink[y * size.w + x] = 1;
     return ink;
   };
-  return { size, ink: async (ms: number) => filled(grow(ms)), changed: async () => filled(0), last: async () => filled(1), restZone: box };
+  return { size, ink: async (ms: number) => filled(grow(ms)), cover: async (ms: number) => filled(grow(ms)), changed: async () => filled(0), last: async () => filled(1), restZone: box };
 }
 
 const CASES: Case[] = [

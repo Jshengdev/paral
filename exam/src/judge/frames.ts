@@ -1,7 +1,7 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { frameAt, frameCount, framePath } from "../film.ts";
-import { count, drawn, pixels, type Size } from "../pixels.ts";
+import { COVERS, count, drawn, pixels, type Size } from "../pixels.ts";
 import { findNamed, rowOf, type Box, type Display, type Expect, type Truth } from "../shape.ts";
 import type { Placed } from "../session.ts";
 import { of, type Ask } from "../timeline.ts";
@@ -14,7 +14,8 @@ const TRAIL_GONE_MS = 1000;              // the video: the trail is gone in the 
 const FEW = 30;                          // drawn pixels below this are noise from scaling
 const JUST_DRAWN_MS = 800;               // the slowest pen in the tokens takes 650 ms, so by now a mark is whole
 
-export type Seen = { size: Size; ink(ms: number): Promise<Uint8Array>; changed(fromMs: number, toMs: number): Promise<Uint8Array>; last(): Promise<Uint8Array>; restZone: Box };
+/** `ink` is everything drawn at a moment; `cover` is only what is strong enough to hide what is under it (a pen's stroke, not a faint wash). */
+export type Seen = { size: Size; ink(ms: number): Promise<Uint8Array>; cover(ms: number): Promise<Uint8Array>; changed(fromMs: number, toMs: number): Promise<Uint8Array>; last(): Promise<Uint8Array>; restZone: Box };
 
 // Frame 0 is the bare page drawn by the same painter, so any difference from it is something the app drew.
 export async function look(dir: string, display: Display): Promise<Seen> {
@@ -22,9 +23,9 @@ export async function look(dir: string, display: Display): Promise<Seen> {
   const bare = existsSync(framePath(dir, 0)) ? framePath(dir, 0) : join(dir, "page.png");
   const page = await pixels(bare, size);
   const frames = await frameCount(dir) - (existsSync(framePath(dir, 0)) ? 1 : 0);
-  const at = async (frame: number) => drawn(await pixels(framePath(dir, Math.min(frames, frame)), size), page, size);
+  const at = async (frame: number, over?: number) => drawn(await pixels(framePath(dir, Math.min(frames, frame)), size), page, size, over);
   const frame = (ms: number) => pixels(framePath(dir, Math.max(1, Math.min(frames, frameAt(ms)))), size);
-  return { size, ink: (ms) => at(frameAt(ms)), last: () => at(frames), changed: async (fromMs, toMs) => drawn(await frame(toMs), await frame(fromMs), size),
+  return { size, ink: (ms) => at(frameAt(ms)), cover: (ms) => at(frameAt(ms), COVERS), last: () => at(frames), changed: async (fromMs, toMs) => drawn(await frame(toMs), await frame(fromMs), size),
     restZone: { x: (size.w - REST_ZONE.w) / 2, y: size.h - REST_ZONE.h, w: REST_ZONE.w, h: REST_ZONE.h } };
 }
 
@@ -83,8 +84,10 @@ export async function inked(seen: Seen, ask: Ask, expect: Expect, truth: Truth[]
   // Ink is looked at just after each mark is drawn, and once more when the ask has settled, so ink that fades is still judged.
   const drawnAt = placed.filter((p) => (p.what === "mark" || p.what === "echo") && p.at >= ask.down && p.at + JUST_DRAWN_MS < until).map((p) => p.at + JUST_DRAWN_MS);
   const inks = await Promise.all([...drawnAt, settledAt].map((ms) => seen.ink(ms)));
+  const covers = await Promise.all([...drawnAt, settledAt].map((ms) => seen.cover(ms)));
   const most = (b: Box) => Math.max(...inks.map((ink) => count(ink, seen.size, b)));
-  const share = (b: Box) => most(b) / (b.w * b.h);
+  // Words are covered by what hides them, so a line's share is counted from the strong ink alone.
+  const share = (b: Box) => Math.max(...covers.map((ink) => count(ink, seen.size, b))) / (b.w * b.h);
   const holds = (outer: Box, inner: Box) => outer !== inner && outer.x <= inner.x && outer.y <= inner.y && outer.x + outer.w >= inner.x + inner.w && outer.y + outer.h >= inner.y + inner.h;
   const lines = truth.filter((t) => !truth.some((other) => holds(t.box, other.box)));
   // A mark names the one line it overlaps most. His circle, come back as a ring, goes round lines and names none.
