@@ -113,7 +113,7 @@ inside the box of the step he is on, when that box is on the step's own line, an
 speaking.
 
 **The demo's guide.** For a kept page that has steps (`demoSteps`, by the page's name), the mind tells the body what
-to do next, one step at a time, with a `next` line: "Scroll until Deadlines is on screen", 2 of 8. It moves on when
+to do next, one step at a time, with a `next` line: "Scroll until Deadlines is on screen", 2 of 9. It moves on when
 the mind sees the step happen (`mind/guide.ts`, `cores/guide.ts`): the look showed its line, its mark reached the
 heading or the line, a "show me" step was given, a date was kept, an ask holding certain words was answered. A step
 done out of order counts. It asks no model. The body draws the card and can hide it.

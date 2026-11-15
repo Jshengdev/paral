@@ -9,20 +9,21 @@ export const cues = {
         { text: "Wait: it looks at this page by itself", when: "look" },
         { text: "Scroll until Deadlines is on screen", when: "heading" },
         { text: "Open Deadlines", when: "line" },
+        { text: "Press Add to calendar on the card, or say: add it to my calendar", when: "kept" },
+        { text: "Hold the right Option key and ask: do we need five officers and an advisor? There's only three of us", when: "asked officers" },
         { text: "Hold the key and say: show me", when: "showme" },
-        { text: "Say it again: show me", when: "showme again" },
-        { text: "Say: add it to my calendar", when: "kept" },
-        { text: "Say: what else do I need before then?", when: "asked what else" },
-        { text: "Say: can you help me find where to book this event?", when: "asked book" },
+        { text: "Click the boxed line, or say it again: show me", when: "showme again" },
+        { text: "Ask: what else do we have to finish by November 22?", when: "asked what else" },
+        { text: "Ask: can you help me find where to book this event?", when: "asked book" },
       ],
       "catalina-island-maymester": [
         { text: "Wait: it looks at this page by itself", when: "look" },
-        { text: "Say: is it too late to apply?", when: "asked too late" },
-        { text: "Say: when does it open again?", when: "asked open again" },
+        { text: "Hold the right Option key and ask: is it too late to apply?", when: "asked too late" },
+        { text: "Ask: when does it open again?", when: "asked open again" },
       ],
     } as Record<string, Step[]>,
-    why: "The demo's guide: for a kept page, by its name, what to do next, in the order of the demo, each with what the mind must see happen for it to count (see cores/guide.ts). The body shows the first step not yet done as a small card. A page with no list shows no card; an empty object turns the guide off.",
-    measured: "not seen on a Mac; the club page's steps are the take's own",
+    why: "The demo's guide: for a kept page, by its name, what to do next, in the order of the demo, each with what the mind must see happen for it to count (see cores/guide.ts). The body shows the first step not yet done as a small card. A page with no list shows no card; an empty object turns the guide off. The club page's steps follow the take (takes/scenario.md in the event's folder): the calendar and the officers' ask come before the walk, since those are the five a first-time student ran cleanly. The first ask of a page names the key, which that student could not tell from \"the key\".",
+    measured: "not seen on a Mac; the club page's steps are the take's own, in its order of 02:49 on November 15. The key is named as the right Option key, which is what holdKey is set to; the two are not tied together",
   } satisfies Setting<Record<string, Step[]>>,
 
   openingLine: {
@@ -39,7 +40,7 @@ export const cues = {
 
   cueCards: {
     value: [
-      { name: "Club recognition page", lines: ["add it to my calendar", "what else do I need before then?", "what is still ahead?", "can you help me find where to book this event?", "show me"] },
+      { name: "Club recognition page", lines: ["add it to my calendar", "do we need five officers and an advisor? there's only three of us", "show me", "what else do we have to finish by November 22?", "what is still ahead?", "can you help me find where to book this event?"] },
       { name: "Chemistry worksheet", lines: ["what does this formula tell me?", "can you draw how these steps connect?", "what happens first?", "so, what is the final product?", "just tell me the answer"] },
       { name: "Maymester page", lines: ["is it too late to apply?", "when does it open again?"] },
     ],

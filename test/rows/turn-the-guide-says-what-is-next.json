@@ -493,17 +493,17 @@
   {
    "text": "Wait: it looks at this page by itself",
    "n": 1,
-   "of": 8
+   "of": 9
   },
   {
    "text": "Open Deadlines",
    "n": 3,
-   "of": 8
+   "of": 9
   },
   {
-   "text": "Say: add it to my calendar",
-   "n": 6,
-   "of": 8
+   "text": "Press Add to calendar on the card, or say: add it to my calendar",
+   "n": 4,
+   "of": 9
   }
  ]
 }

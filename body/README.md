@@ -126,7 +126,7 @@ screencapture -v -V 5 ~/Desktop/guide-check.mov
 ```
 
 It records five seconds of the screen (the Terminal may first need the screen-recording grant). Open the movie: the
-card and its "Step n of 8" should be missing from it while the capsule, the marks and the board are in it. If the
+card and its "Step n of 9" should be missing from it while the capsule, the marks and the board are in it. If the
 card is in the movie, this macOS records the window anyway and the setting does nothing here.
 
 ## Deciding what is on screen
@@ -232,7 +232,7 @@ nothing crosses the seam for it.
   line, drawn back as the card goes. Never the pill or its bubble: they sit at the foot of the display, and an arrow
   to them ran down the length of the page and, on the chemistry worksheet, across the page's own reaction arrow. An
   answer in the bubble has its marks and no arrow. The guide's card says what he does next, which is seldom about
-  the marked line ("Say it again: show me"),
+  the marked line ("Hold the key and say: show me"),
   so it is led to only once the capsule is at rest and only when its words name the very line that is marked: the
   whole of a read line the mark is on is among the card's words ("Open Deadlines", with the mark on "Deadlines"). The
   body can tell no more than that from the lines it is sent; in every other case there is no arrow.
