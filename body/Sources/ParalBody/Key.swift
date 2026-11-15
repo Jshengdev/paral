@@ -13,6 +13,8 @@ public final class Key {
     public var onUp: (() -> Void)?
     /// Called on every look while the key stays down.
     public var onHeld: (() -> Void)?
+    /// Called on every look with where his pointer is, for paral's cursor to keep beside it. Never sent to the mind.
+    public var onMove: ((CGPoint) -> Void)?
     /// Called with the pointer's place each time the left button goes down. The app sends it to the mind, which knows
     /// whether it was on a step's box, and tells the scene, which answers it with a picture.
     private let onClick: ((CGPoint) -> Void)?
@@ -61,6 +63,7 @@ public final class Key {
         } else if down {
             onHeld?()
         }
+        if let onMove, let at = Key.pointer { onMove(at) }
         // A press of the left button is also read this way, as a second sight of it: see `clicked`.
         let button = CGEventSource.buttonState(.combinedSessionState, button: .left)
         if button, !pressed { clicked() }

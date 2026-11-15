@@ -61,10 +61,19 @@ extension Scene {
     /// which is how it leads from one place to the next. It points and never clicks. It stays with its mark or its
     /// arrow for as long as that is on the page, with a key pressed or without one, and it is not shown at all when
     /// motion is reduced.
+    ///
+    /// Once his own pointer has been seen it never leaves the page: with nothing to draw it follows his pointer
+    /// (`SceneFollow.swift`), it flies from there to draw, and `cursor.stayMs` after it has come to rest it flies back.
     func pointer(at t: Double) -> PointerPicture? {
         guard !still else { return nil }
-        let newest = strokes(at: t).last
+        let newest = strokes(at: t).last, his = following(at: t), stay = ms(tokens.cursor.settleMs + tokens.cursor.stayMs)
+        func back(since: Double) -> Double? { his != nil && t >= since ? min((t - since) / max(flight, 1), 1) : nil }
+        let follows = { (at: CGPoint) in PointerPicture(x: at.x, y: at.y, alpha: 1, ripple: nil, follows: true) }
         if let way = wayUp(at: t), way.at >= newest?.began ?? -.infinity {
+            // From the arrow back to his pointer: only the painter knows where the arrow is, so it flies the way there.
+            if let u = back(since: inking(way).to + stay), let his {
+                return u >= 1 ? follows(his) : PointerPicture(x: his.x, y: his.y, alpha: 1, ripple: nil, withWay: .init(flight: 1, aside: 1, back: tokens.curves.travel(u)), follows: true)
+            }
             let origin = origin(before: way.at)
             // From one arrow to the next it does not fly: the next sits where the one before did.
             let flown = origin.atAnArrow ? 1 : min(max((t - way.at) / max(flight, 1), 0), 1)
@@ -72,7 +81,7 @@ extension Scene {
             let tagged = t < inking(way).to && pointer(at: way.at - 1) == nil
             return PointerPicture(x: origin.from.x, y: origin.from.y, alpha: 1, ripple: nil, withWay: .init(flight: flown, aside: aside), tag: tagged, tagGrown: popped(since: way.at, at: t))
         }
-        guard let now = newest, let first = now.path.first, let last = now.path.last else { return nil }
+        guard let now = newest, let first = now.path.first, let last = now.path.last else { return his.map(follows) }
         let inkAt = now.began + flight, inkedAt = inkAt + duration(now.kind)
         // While it flies in and draws, having come from nowhere, it wears its name tag. At rest it wears nothing.
         let tagged = t < inkedAt && pointer(at: now.began - 1) == nil
@@ -86,6 +95,9 @@ extension Scene {
             return PointerPicture(x: tip.x, y: tip.y, alpha: 1, ripple: nil, tag: tagged, tagGrown: popped(since: now.began, at: t))
         }
         let settle = ms(tokens.cursor.settleMs), place = rest(beside: now, at: t)
+        if let u = back(since: inkedAt + stay), let his {
+            return follows(u >= 1 ? his : Motion.arc(from: place, to: his, tokens.curves.travel(u), lift: tokens.motion.arc))
+        }
         let aside = tokens.curves.travel((t - inkedAt) / max(settle, 1))
         let spread = (t - inkedAt - settle) / max(ms(tokens.cursor.rippleMs), 1)
         // The ripple is given in fiftieths, so the picture changes only when it would be seen to.

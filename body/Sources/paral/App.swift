@@ -95,7 +95,7 @@ final class App: NSObject, NSApplicationDelegate {
             let key = Key(which) { [weak self] at in self?.wire.send(.click(x: at.x, y: at.y, at: self?.stamp() ?? 0)); self?.tell(.click(x: at.x, y: at.y)) }
             key.onDown = { [weak self] in self?.down() }
             key.onUp = { [weak self] in self?.up() }
-            key.onHeld = { [weak self] in self?.draw() }
+            key.onHeld = { [weak self] in self?.draw() }; key.onMove = { [weak self] at in if let self { self.scene.moved(x: at.x, y: at.y, at: self.clock()) } }
             key.start()
             self.key = key
             watch.busy = { [weak self] in self.map { $0.held || $0.scene.watching(at: $0.clock()).busy } ?? true }

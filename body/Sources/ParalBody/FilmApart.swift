@@ -7,7 +7,7 @@ extension Film {
     /// (beyond `margin`, the room its shadow takes). For rows; nothing is shown.
     public static func apart(run: String, tokens: Tokens, at moment: Double, margin: Double) throws -> [String: Any] {
         let run = try load(URL(fileURLWithPath: run), tokens: tokens)
-        var scene = Scene(width: run.w, height: run.h, tokens: tokens)
+        var scene = run.scene(tokens)
         for event in run.events where event.at <= moment { scene.take(event.seen, at: event.at) }
         let picture = scene.picture(at: moment)
         var overlay = Painter(tokens: tokens, width: run.w, height: run.h)

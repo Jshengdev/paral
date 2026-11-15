@@ -24,7 +24,7 @@ here clicks.
 | Highlight (the box) | "this line", where lines sit too close for a ring: a thin cardinal edge and a faint wash laid along the line by the pen | `mark` (kind `box`) | `clear`, a close, or a new mark on the same line | `mark.boxWidth`, `mark.boxPadX`, `mark.boxPadY`, `mark.boxRadius`, `mark.wash`, `mark.ringMs`, `cardinal` |
 | Drawn arrow (the kit's, from its ring to its card) | "this line is what that is about": one curve in ember from the newest mark to the card that is speaking about it, and only where a way exists that keeps clear of every word on the page. It leads only to a card, as in the kit's pictures: never to the pill or its bubble, which sit at the foot, so an answer in the bubble has its marks and no arrow | no line of its own: the newest `mark` once the pen has finished it, while the nudge card carries its look's line; or, with the capsule at rest and no nudge card up, while the guide's card (`next`) names the marked line | goes with its mark (`clear`, a close, a newer mark); drawn back as the nudge card goes; gone when the card's words move on, and while a `way` arrow is up | `lead.*`, `way.head`, `way.halo`, `ember`, `cursor.settleMs`, `mark.shaftMs`, `mark.headMs` |
 | Highlight ring: its echo (a step's mark, waiting) | "this is the step you are on; click it when it is done": an echo of the mark's edge grows out of it and fades, again and again, as the kit's highlight does until its target is clicked | a `mark` whose `board`, with the same id, names the step (`now`) | the step moving on (the mind's `clear` and next mark, also when the next step is on the same line) or the walk ending; none with motion reduced | `mark.echoAfterMs`, `mark.echoEveryMs`, `mark.echoGrows`, `mark.echoStrength`, `curves.arrive`, `curves.travel` |
-| Cursor | paral's own pointer, which is its logo mark: it shows where, never clicks. It flies to the newest mark or arrow, rides the pen, rests beside it; one ripple says "here" | the newest `mark`, `way` or `echo` on the page | goes with its mark or arrow; none with motion reduced | `cursor.*`, `cardinal`, `paper`, `motion.flightMs`, `motion.arc`, `curves.travel` |
+| Cursor | paral's own pointer, which is its logo mark: it shows where, never clicks. With nothing to draw it sits just beside his own pointer and follows it; it flies from there to the newest mark or arrow, rides the pen, rests beside it (one ripple says "here"), stays a while and flies back to his pointer | his pointer's place, read by the body and never sent to the mind; the newest `mark`, `way` or `echo` on the page | none before his pointer is first seen and nothing is drawn; none with motion reduced | `cursor.*`, `cursor.followX`, `cursor.followY`, `cursor.followMs`, `cursor.stayMs`, `cursor.followLeast`, `cursor.followEveryMs`, `cardinal`, `paper`, `motion.flightMs`, `motion.arc`, `curves.travel` |
 | Cursor: tag | says whose cursor is moving: a light pill with the logo mark and the name, worn only while it comes in from nowhere; it pops out as the cursor comes | the first `mark` or `way` after the page was clean | its arrival | `strings.name`, `cursor.tagFrom`, `motion.usualMs`, `curves.pop`, `light`, `glass`, `shadow` |
 | Cursor: thinking | says paral is working: a cursor that is already on the page breathes, swelling a little and coming back | `key.up`, until the answer begins | the answer's first sentence | `cursor.workGrows`, `cursor.workMs`, `curves.travel` |
 | Cursor: click | answers his own click on the mark of the step he is on: paral's cursor presses and two rings spread from under its tip, come to rest and fade. Paral clicks nothing | his `click` (from the body) on a mark whose board names the step | a moment later, by itself; none with motion reduced | `cursor.pressTo`, `cursor.clickMs`, `cursor.clickStayMs`, `cursor.ripple`, `motion.pressMs`, `motion.usualMs`, `motion.leaveMs`, `cardinal` |
@@ -140,7 +140,8 @@ card is in the movie, this macOS records the window anyway and the setting does 
 | `Meter.swift` | how loud a chunk of sound is, 0 to 1, for the wave |
 | `ScreenInk.swift` | the page's own ink in the band at the foot, for the scene only; kept for an arrow to keep off a drawing |
 | `SceneWay.swift` | the arrow that says which way to scroll: how far the pen has inked it, and its nod |
-| `ScenePointer.swift` | paral's own cursor: its flight to a mark, its ride on the pen, its rest beside the mark and the ripple there |
+| `ScenePointer.swift` | paral's own cursor: its flight to a mark, its ride on the pen, its rest beside the mark and the ripple there, and its flight back to his pointer |
+| `SceneFollow.swift` | his own pointer: which sights of it are kept, and where paral's cursor is as it follows it |
 | `Picture.swift` | what is on screen at one moment, as plain values |
 | `Layout.swift`, `LayoutPill.swift` | where the pill and its bubble sit, and the band at the foot that is theirs alone, the largest empty place for a board, the place at an edge for the way arrow, and where the cursor rests beside a mark |
 | `Motion.swift` | how things move: the four curves, even speed for ink, and the cursor's arc |
@@ -174,7 +175,7 @@ card is in the movie, this macOS records the window anyway and the setting does 
 
 | file | job |
 |---|---|
-| `Key.swift` | the hold key and the draw key, read by asking the system for the keys' state. No event tap |
+| `Key.swift` | the hold key and the draw key, read by asking the system for the keys' state, and where his pointer is, on the same sixty looks a second (`onMove`). No event tap, no grant |
 | `Mic.swift` | the microphone as 16 kHz chunks, only while the key is held |
 | `Speaker.swift` | plays the voice as it arrives; drops what is waiting at the next key press |
 | `Screen.swift` | one picture of a display without paral's own window, the lines read from it, his path drawn on it |
@@ -192,6 +193,7 @@ card is in the movie, this macOS records the window anyway and the setting does 
 | file | job |
 |---|---|
 | `Flow.swift` | plays a scripted run against the real mind: key, sound, pointer path, a picture of a page |
+| `FlowMove.swift`, `FilmMoves.swift` | his pointer moving with no key pressed: the flow's `move` step writes each sight the scene kept to `pointer.jsonl`, and the film reads it back |
 | `Film.swift` | replays a recorded run into frames, a voice track and a list of where each thing was drawn |
 | `FilmPages.swift` | the pages of a recorded run and when each came up, so the frames are drawn over the page that was on the screen |
 | `Page.swift` | draws a page of text lines, for rows |
@@ -208,7 +210,7 @@ cross. `startAfter` says when the key goes down for an ask after the first:
 | `{ "firstAnswerPlusMs": N }` | N ms after the first sentence of its answer, not a line said while he waits |
 | `{ "releasePlusMs": N }` | N ms after the key was let go; under 300 it is inside the microphone's grace |
 
-A step with `"look": true` in place of a `wav` is a look with no key pressed: what the app's watcher sends by itself. `"page": PATH` on any step puts another page on the screen from that step on (he clicked, scrolled or opened a section), and `"waitMs": N` is how long a look step waits before the next one (6000 if left out). A flow with `"live": true` is walked a step at a time by whoever writes the file: when the steps so far are played it waits for another to be added, and `"end": true` closes it. Any other flow ends with its last step.
+A step with `"look": true` in place of a `wav` is a look with no key pressed: what the app's watcher sends by itself. `"page": PATH` on any step puts another page on the screen from that step on (he clicked, scrolled or opened a section), and `"waitMs": N` is how long a look step waits before the next one (6000 if left out). A flow with `"live": true` is walked a step at a time by whoever writes the file: when the steps so far are played it waits for another to be added, and `"end": true` closes it. Any other flow ends with its last step. `{"move": [x, y]}` puts his pointer at a place on the display with no key pressed, and `{"move": [[ms, x, y], ...]}` moves it along a path, each point that many ms after the step began; it is seen sixty times a second along the way, as the app sees it, and the step then waits `waitMs` (1500 if left out). Nothing of it goes to the mind: the sights the scene kept are written to `pointer.jsonl` beside the record, `{"at": the body's stamp, "x", "y"}` a line, and the film reads them from there.
 
 ## The way arrow
 
@@ -500,6 +502,28 @@ with a circle draws his path in `accent` too, and the lesson clips take their ac
 drawn by hand whatever its shape, with no wash: the wash is the kit's highlight for one line, and he may have
 circled a table.
 
+## The cursor beside his own pointer
+
+After the owner's take of 2026-11-15 ("the usc curosr thing should move to stick with my cursor once its on and follow
+it, and then move off to draw and create diagrams on screen"): once his pointer has been seen, paral's cursor never
+leaves the page. With nothing to draw its tip sits `cursor.followX` (18) right of and `cursor.followY` (20) below his
+pointer's tip, down and to the right of the system's arrow, so it covers neither the tip nor what he points at. It
+follows as a spring that goes past nothing: nine tenths of the way to where he stopped `cursor.followMs` (260) after
+he stopped, given in half points so the overlay stands still once it has come. When a mark or a way arrow is drawn it
+flies from where it is, draws, rests beside it with its ripple as before, and `cursor.stayMs` (1400) after it has
+settled it flies back on the cursor's flight and follows him again. While paral works it breathes where it is, beside
+his pointer too. All of it is chosen, not measured.
+
+The app reads his pointer on the key's sixty looks a second (`Key.onMove`, `CGEvent`'s place: no event tap and no
+grant) and gives it to the scene (`Scene.moved`). The scene keeps a sight only when the pointer has moved
+`cursor.followLeast` (2 points) from the last one kept and either `cursor.followEveryMs` (50) has passed or the
+pointer has stood still since the look before, so where he stopped is always kept and a steady drag keeps twenty a
+second. The scene reads nothing else of it, so a scripted run that writes the kept sights (`pointer.jsonl`) films
+exactly what a window would show. The mind is never told where his pointer is: no line crosses the seam for it, and a
+record has none. The app does not write the sights anywhere. Before his pointer is first seen, and in a film of a run
+with no `pointer.jsonl`, the cursor is as it was: it comes from the capsule for a mark and goes with it. With motion
+reduced there is no cursor.
+
 ## A walk through steps ("show me")
 
 The body draws a walk and decides nothing of it; the steps and when they move on come from the mind. A `board` line
@@ -576,5 +600,5 @@ tokens' size times whatever the card was shrunk by.
 shows at those moments), `curves TOKENS SHARE...` (each of the four curves at those shares of its time), `placed RUN TOKENS MS...` (where the painter puts each thing at those moments, the points
 the pen has inked of a mark and of a drawn arrow, the capsule's look, words, stone words, note, trail, caret, wave and breathing mark (`PARAL_INSET` for a Dock's height), and the way arrow's, the cursor's and the board's own values).
 
-Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way`, `body.cursor`, `body.steps`, `body.pages`, `body.toast`, `body.boardType`, `body.guide`, `body.lead`, `body.nudge`, `body.seen`, `body.echo`, `body.stands`, `body.resting`, `body.cursorInside`, `body.inkInside`, `body.curves`, `body.moves`, `body.pill`, `body.lifted`, `body.scaled`, `body.cardLines`, `body.toastTick`, `body.click`, `body.marks`, `body.order` rows, with no window. The look of the mark, the white surfaces, the trail's colour and the kit's sizes are checked on stills. The hosts are compiled and have never been run:
+Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way`, `body.cursor`, `body.steps`, `body.pages`, `body.toast`, `body.boardType`, `body.guide`, `body.lead`, `body.nudge`, `body.seen`, `body.echo`, `body.stands`, `body.resting`, `body.cursorInside`, `body.inkInside`, `body.curves`, `body.moves`, `body.pill`, `body.lifted`, `body.scaled`, `body.cardLines`, `body.toastTick`, `body.click`, `body.marks`, `body.order`, `body.follow` rows, with no window. The look of the mark, the white surfaces, the trail's colour and the kit's sizes are checked on stills. The hosts are compiled and have never been run:
 the key, the microphone, the screen picture and the overlay wait for a person and their grants (`./run`).

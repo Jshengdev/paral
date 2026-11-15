@@ -55,6 +55,9 @@ public struct Tokens: Codable {
         /// At his click on a mark that waits for it: how small the cursor presses, as a share of its size; how long
         /// the two rings take to spread to rest; and how long they rest before they go.
         public var pressTo, clickMs, clickStayMs: Double
+        /// Beside his own pointer (`SceneFollow.swift`): how far right of and below its tip, how long the chase takes,
+        /// how long it stays by what it drew before it flies back, and how far and how often a sight of it is kept.
+        public var followX, followY, followMs, stayMs, followLeast, followEveryMs: Double
     }
     public struct Board: Codable { public var pad, boxPadX, boxPadY, gap, rowGap, type, radius, maxWidth, margin, emptyWidth, emptyHeight: Double }
     public struct Motion: Codable {
@@ -193,7 +196,7 @@ public struct Tokens: Codable {
     func scaled() -> Tokens {
         var t = self
         let sizes: [WritableKeyPath<Tokens, Double>] = [
-            \.cursor.size, \.cursor.gap, \.cursor.ripple,
+            \.cursor.size, \.cursor.gap, \.cursor.ripple, \.cursor.followX, \.cursor.followY,
             \.card.drop, \.card.rise,
             \.guide.width, \.guide.pad, \.guide.radius, \.guide.type, \.guide.small, \.guide.avatar, \.guide.nameGap, \.guide.gap,
             \.toast.type, \.toast.pad, \.toast.gap,

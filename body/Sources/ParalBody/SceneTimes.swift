@@ -113,10 +113,13 @@ extension Scene {
     public var end: Double {
         var end = lastAt
         for ask in asks { if let last = times(ask).last { end = max(end, last.end + tokens.motion.lingerMs + ms(tokens.motion.leaveMs)) } }
-        for mark in marks { if let began = start(mark) { end = max(end, began + flight + duration(mark.kind)) } }
+        // With his pointer seen, the cursor flies back to it after its stay, and follows it until it has come.
+        let back = his.kept.isEmpty ? 0 : ms(tokens.cursor.settleMs + tokens.cursor.stayMs) + flight
+        for mark in marks { if let began = start(mark) { end = max(end, began + flight + duration(mark.kind) + back) } }
+        if let last = his.kept.last { end = max(end, last.at + 3 * ms(tokens.cursor.followMs)) }
         for tag in marks where tag.kind == .tag { if let came = arrives(tag) { end = max(end, came + duration(.tag)) } }
         for echo in echoes { end = max(end, echo.at + flight + duration(.ring)) }
-        for way in ways { end = max(end, min(way.clearedAt ?? .infinity, inking(way).to + ms(tokens.cursor.settleMs))) }
+        for way in ways { end = max(end, min(way.clearedAt ?? .infinity, inking(way).to + ms(tokens.cursor.settleMs) + back)) }
         for clip in clips { end = max(end, min(clip.clearedAt ?? .infinity, clip.at + ms(tokens.motion.arriveMs) + clip.seconds * 1000)) }
         if let opened { end = max(end, opened.at + ms(tokens.motion.arriveMs) + tokens.toast.stayMs + ms(tokens.motion.leaveMs)) }
         if let gone = cardGone(before: .infinity) { end = max(end, gone) }

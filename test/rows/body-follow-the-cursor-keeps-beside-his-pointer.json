@@ -1,0 +1,227 @@
+{
+ "name": "body: paral's cursor keeps beside his own pointer: before any sight of his pointer and with nothing drawn there is none; from the first sight it sits just right of and below his pointer's tip, never on it; as he moves it chases his pointer smoothly and is beside it again once he stops; when a look marks a line it flies from there to the mark, rests by it with its ripple, stays a while, then flies back and follows him again; after a clear it is still beside his pointer",
+ "run": "body.follow",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Important Dates",
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes.",
+   "December 1: Deadline for advisors.",
+   "Info Sessions, Workshops, and Office Hours"
+  ],
+  "rows": [
+   {
+    "at": 4000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 4000,
+    "line": {
+     "type": "mark",
+     "id": "g1",
+     "beat": 0,
+     "kind": "box",
+     "on": 4
+    }
+   },
+   {
+    "at": 4000,
+    "line": {
+     "type": "say",
+     "id": "g1",
+     "beat": 0,
+     "text": "This is the date to keep.",
+     "trail": [
+      "saw this page",
+      "found the line"
+     ]
+    }
+   },
+   {
+    "at": 4000,
+    "line": {
+     "type": "mute",
+     "id": "g1",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   },
+   {
+    "at": 14000,
+    "line": {
+     "type": "clear"
+    }
+   }
+  ],
+  "moves": [
+   [
+    500,
+    1200,
+    800
+   ],
+   [
+    2000,
+    1200,
+    800
+   ],
+   [
+    2050,
+    1150,
+    760
+   ],
+   [
+    2100,
+    1080,
+    720
+   ],
+   [
+    2150,
+    1000,
+    680
+   ],
+   [
+    2200,
+    950,
+    650
+   ],
+   [
+    2250,
+    940,
+    640
+   ],
+   [
+    2300,
+    940,
+    640
+   ],
+   [
+    8000,
+    940,
+    640
+   ],
+   [
+    8050,
+    880,
+    700
+   ],
+   [
+    8100,
+    820,
+    760
+   ],
+   [
+    8150,
+    800,
+    780
+   ],
+   [
+    8200,
+    800,
+    780
+   ]
+  ],
+  "at": [
+   400,
+   600,
+   1500,
+   2150,
+   2400,
+   3000,
+   4200,
+   5200,
+   6000,
+   6600,
+   7200,
+   8100,
+   9000,
+   14500
+  ]
+ },
+ "out": [
+  {
+   "cursor": null
+  },
+  {
+   "cursor": "beside his pointer",
+   "coversHisPointer": false,
+   "onText": false,
+   "ripple": "none"
+  },
+  {
+   "cursor": "beside his pointer",
+   "coversHisPointer": false,
+   "onText": false,
+   "ripple": "none"
+  },
+  {
+   "cursor": "on its way",
+   "coversHisPointer": false,
+   "onText": false,
+   "ripple": "none"
+  },
+  {
+   "cursor": "on its way",
+   "coversHisPointer": false,
+   "onText": false,
+   "ripple": "none"
+  },
+  {
+   "cursor": "beside his pointer",
+   "coversHisPointer": false,
+   "onText": false,
+   "ripple": "none"
+  },
+  {
+   "cursor": "on its way",
+   "coversHisPointer": false,
+   "onText": true,
+   "ripple": "none"
+  },
+  {
+   "cursor": "by the mark",
+   "coversHisPointer": false,
+   "onText": false,
+   "ripple": "spreading"
+  },
+  {
+   "cursor": "by the mark",
+   "coversHisPointer": false,
+   "onText": false,
+   "ripple": "none"
+  },
+  {
+   "cursor": "on its way",
+   "coversHisPointer": false,
+   "onText": false,
+   "ripple": "none"
+  },
+  {
+   "cursor": "beside his pointer",
+   "coversHisPointer": false,
+   "onText": false,
+   "ripple": "none"
+  },
+  {
+   "cursor": "on its way",
+   "coversHisPointer": false,
+   "onText": false,
+   "ripple": "none"
+  },
+  {
+   "cursor": "beside his pointer",
+   "coversHisPointer": false,
+   "onText": false,
+   "ripple": "none"
+  },
+  {
+   "cursor": "beside his pointer",
+   "coversHisPointer": false,
+   "onText": false,
+   "ripple": "none"
+  }
+ ]
+}
+

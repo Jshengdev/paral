@@ -154,7 +154,7 @@ public struct PointerPicture: Equatable {
     /// set off from; `flight` is how far it has flown to the arrow's tail, 0 to 1; once there it rides the arrow's
     /// pen; and `aside` is how far it has stepped aside to rest once the arrow is whole, 0 to 1.
     public var withWay: WithWay?
-    public struct WithWay: Equatable { public var flight, aside: Double }
+    public struct WithWay: Equatable { public var flight, aside: Double; public var back = 0.0 }
     /// It wears its name tag while it comes in from nowhere, so he can tell whose cursor is moving. The tag pops
     /// out as the cursor comes: `tagGrown` is how far, 0 to 1 and a little past on the way.
     public var tag = false
@@ -164,6 +164,9 @@ public struct PointerPicture: Equatable {
     /// It says paral is working, while the capsule says so, by breathing: `working` is how far it has swollen, 0 to 1.
     public var thinking = false
     public var working = 0.0
+    /// Set while it follows his own pointer, or flies back to it: what is laid out does not keep off it. With the way
+    /// arrow, `back` is how far it has flown from beside the arrow toward `x`, `y`, beside his pointer, 0 to 1.
+    public var follows = false
 }
 
 /// Everything on screen at one moment, as plain values. The painter draws it; nothing else decides what is shown.

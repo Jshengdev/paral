@@ -63,6 +63,8 @@ extension Painter {
     /// as the arrow is inked, then stepping aside to rest beside it.
     func tip(of pointer: PointerPicture, with way: WayPicture, at place: WayPlace) -> CGPoint {
         guard let with = pointer.withWay else { return CGPoint(x: pointer.x, y: pointer.y) }
+        // Flying back from beside the arrow to beside his own pointer, which is where `x` and `y` are then.
+        if with.back > 0 { return Motion.arc(from: place.rest, to: CGPoint(x: pointer.x, y: pointer.y), with.back, lift: tokens.motion.arc) }
         let all = strokes(way, place)
         let tail = all.first?.first ?? place.rest
         if with.flight < 1 {

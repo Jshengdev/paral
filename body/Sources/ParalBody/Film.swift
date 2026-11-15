@@ -14,7 +14,7 @@ public enum Film {
     }
     static let rate = 24000.0
 
-    struct Loaded { var pages: FilmPages; var w, h: Double; var events: [(at: Double, seen: Seen)]; var sound: [String: Data]; var skipped: Int }
+    struct Loaded { var pages: FilmPages; var w, h: Double; var events: [(at: Double, seen: Seen)]; var sound: [String: Data]; var skipped: Int; var moves: [(x: Double, y: Double, at: Double)] }
 
     /// A recorded run as the film needs it: the page's picture, the display's size, and every line in order. The
     /// scene is told of the page's ink at the foot as the app tells it (`Screen.taken`), for `tokens` and a Dock of
@@ -51,16 +51,16 @@ public enum Film {
         }
         // Moving the release earlier can put it ahead of lines that arrived before it; the order is by time again.
         let ordered = events.enumerated().sorted { ($0.element.at, $0.offset) < ($1.element.at, $1.offset) }.map(\.element)
-        return Loaded(pages: pages, w: w, h: h, events: ordered, sound: sound, skipped: skipped)
+        return Loaded(pages: pages, w: w, h: h, events: ordered, sound: sound, skipped: skipped, moves: try moves(dir))
     }
 
     /// One frame of a recorded run at one moment, drawn the way the film draws it. For looking at a change of tokens
     /// without filming the whole run. Gives back when the run ends, in ms.
     public static func frame(run: String, tokens: Tokens, at moment: Double, to out: String) throws -> Double {
         let run = try load(URL(fileURLWithPath: run), tokens: tokens)
-        var whole = Scene(width: run.w, height: run.h, tokens: tokens)
+        var whole = run.scene(tokens)
         for event in run.events { whole.take(event.seen, at: event.at) }
-        var scene = Scene(width: run.w, height: run.h, tokens: tokens)
+        var scene = run.scene(tokens)
         for event in run.events where event.at <= moment { scene.take(event.seen, at: event.at) }
         let painter = Painter(tokens: tokens, width: run.w, height: run.h)
         let page = run.pages.pictures[run.pages.page(at: moment)]
@@ -72,7 +72,7 @@ public enum Film {
     public static func capsule(run: String, tokens: Tokens, at moments: [Double]) throws -> [(look: String, note: String?)] {
         let run = try load(URL(fileURLWithPath: run), tokens: tokens)
         return moments.map { moment in
-            var scene = Scene(width: run.w, height: run.h, tokens: tokens)
+            var scene = run.scene(tokens)
             for event in run.events where event.at <= moment { scene.take(event.seen, at: event.at) }
             let capsule = scene.picture(at: moment).capsule
             return (capsule.look.rawValue, capsule.note)
@@ -87,7 +87,7 @@ public enum Film {
         let painter = Painter(tokens: tokens, width: run.w, height: run.h)
         let events = (run.events + notNow.map { ($0, Seen.notNow) }).enumerated().sorted { ($0.element.at, $0.offset) < ($1.element.at, $1.offset) }.map(\.element)
         return moments.map { moment in
-            var scene = Scene(width: run.w, height: run.h, tokens: tokens, bottomInset: inset)
+            var scene = run.scene(tokens, inset: inset)
             scene.guideOn = guide
             for event in events where event.at <= moment { scene.take(event.seen, at: event.at) }
             let picture = scene.picture(at: moment)
@@ -117,7 +117,7 @@ public enum Film {
         let dir = URL(fileURLWithPath: run)
         let loaded = try load(dir, tokens: tokens)
         let pages = loaded.pages, w = loaded.w, h = loaded.h, events = loaded.events, sound = loaded.sound, skipped = loaded.skipped
-        var whole = Scene(width: w, height: h, tokens: tokens)
+        var whole = loaded.scene(tokens)
         for event in events { whole.take(event.seen, at: event.at) }
         let end = whole.end
 
@@ -131,7 +131,7 @@ public enum Film {
         var page = 0
         var cameUp: [[String: Int]] = [["page": 0, "fromFrame": 0]]
 
-        var scene = Scene(width: w, height: h, tokens: tokens)
+        var scene = loaded.scene(tokens)
         var next = 0, frame = 1
         var lastBox: [String: Box] = [:]
         var lastLook = ""

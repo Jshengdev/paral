@@ -9,9 +9,9 @@ public final class Flow {
     private let wire: Wire
     private let file: [String: Any]
     private let path: URL   // the flow file itself, which a live flow reads again for each step (FlowSteps)
-    private var dir: URL { path.deletingLastPathComponent() }
+    var dir: URL { path.deletingLastPathComponent() }
     private var got: [Seen] = []
-    private var scene: Scene
+    var scene: Scene
     private let tokens: Tokens
     private var settings: BodySettings?
     private var pictureSent = false
@@ -33,9 +33,9 @@ public final class Flow {
         wire = Wire(path: socket)
     }
 
-    private func clock() -> Double { Date().timeIntervalSince(began) * 1000 }
-    private func stamp() -> Double { (Date().timeIntervalSince1970 * 1000).rounded() }
-    private func pause(_ ms: Double) async { try? await Task.sleep(nanoseconds: UInt64(max(ms, 0) * 1_000_000)) }
+    func clock() -> Double { Date().timeIntervalSince(began) * 1000 }
+    func stamp() -> Double { (Date().timeIntervalSince1970 * 1000).rounded() }
+    func pause(_ ms: Double) async { try? await Task.sleep(nanoseconds: UInt64(max(ms, 0) * 1_000_000)) }
 
     private func send(_ line: ToMind, as seen: Seen? = nil) {
         wire.send(line)
@@ -131,11 +131,9 @@ public final class Flow {
                 afterLook = true
                 continue
             }
-            if ask["close"] as? Bool == true {
-                seenTo = got.count
-                send(.close(at: stamp()), as: .close)
-                continue
-            }
+            if ask["close"] as? Bool == true { seenTo = got.count; send(.close(at: stamp()), as: .close); continue }
+            // His pointer moving with no key pressed: each sight goes to the scene and to pointer.jsonl, never to the mind.
+            if let move = ask["move"] { try await moved(move, waitMs: (ask["waitMs"] as? NSNumber)?.doubleValue ?? 1500); afterLook = true; continue }
             // A press of the left button at a place on the display, as the app sends one.
             if let at = ask["click"] as? [NSNumber], at.count == 2 {
                 seenTo = got.count

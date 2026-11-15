@@ -53,6 +53,7 @@ public struct Scene {
     /// His last click on a mark that waited for it: when, where paral's cursor's tip was then, and which mark.
     var clicked: (at: Double, x: Double, y: Double, mark: String)?
     var trail: [(x: Double, y: Double, at: Double)] = []
+    var his: (kept: [(x: Double, y: Double, at: Double)], last: (x: Double, y: Double)?) = ([], nil)  // his own pointer (`SceneFollow.swift`)
     /// Each chunk of the microphone's sound: when it came, how long it lasts and how loud it was. The wave reads it.
     var sounds: [(at: Double, ms: Double, level: Double)] = []
     var failed: (detail: String, at: Double)?
