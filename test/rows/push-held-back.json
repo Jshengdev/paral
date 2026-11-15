@@ -1,6 +1,6 @@
 {
- "name": "beats: an explanation whose sentence or label holds the result is caught by the code check",
- "run": "beats.givesAway",
+ "name": "push: an explanation whose sentence or label holds the result is caught by the code check",
+ "run": "push.givesAway",
  "in": {
   "result": "x = 4",
   "planned": [

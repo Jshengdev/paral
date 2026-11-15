@@ -15,6 +15,7 @@ type StandIn = {
   brainReply: { parsed_output?: { beats?: unknown[] } & Record<string, unknown> } & Record<string, unknown>;
   lookReply: unknown;
   capUsd?: number;
+  brainModel?: string;
   asks?: number;
   board?: string[][];
 };
@@ -65,12 +66,12 @@ export async function standIn(input: StandIn) {
   } as unknown as Anthropic;
   const picturePath = fresh("stand-in") + ".jpg";
   if (input.picture) writeFileSync(picturePath, "not a real picture");
-  const capped = { ...settings, spendCapUsd: { ...settings.spendCapUsd, value: input.capUsd ?? settings.spendCapUsd.value } };
+  const changed = { ...settings, spendCapUsd: { ...settings.spendCapUsd, value: input.capUsd ?? settings.spendCapUsd.value }, brainModel: { ...settings.brainModel, value: input.brainModel ?? settings.brainModel.value } };
   const logged: string[] = [];
-  const live = anthropic(capped, { answer: "answer prompt", secondLook: "second look prompt", opener: "opener prompt" }, (line) => logged.push(line), client);
   const signal = new AbortController().signal;
   const asked = { words: "", lines: [], fresh: false, circled: [], leadIn: settings.ladder.value[0].safe, lessons: [], ...input.asked, lesson: { ...empty, ...input.asked.lesson }, picturePath: input.picture ? picturePath : null, rung: settings.ladder.value[0] };
   try {
+    const live = anthropic(changed, { answer: "answer prompt", secondLook: "second look prompt", opener: "opener prompt" }, (line) => logged.push(line), client);
     let answered = null;
     let early = false;
     const boards = new Set<string>();

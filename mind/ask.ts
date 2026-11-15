@@ -89,12 +89,21 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
     head(part);
     if (headed?.explains) explained.arriving(part);
   };
-  const think = (from: Lesson, rung: Move, onPart?: (part: Part) => void): Promise<Answered> =>
-    ports.brain.answer(
-      { words, picturePath: seen.picture.path, lines: seen.lines.map((line) => line.text), circled: asking.circled, leadIn: ladder[rung.rung].safe, lessons: clip.catalogue, lesson: from, rung: ladder[rung.rung], fresh: rung.fresh },
-      signal,
-      onPart,
-    );
+  /** Asks the deep model, telling it the lesson so far and the rung to write for. */
+  const think = (from: Lesson, rung: Move, onPart?: (part: Part) => void): Promise<Answered> => {
+    const asked = {
+      words,
+      picturePath: seen.picture.path,
+      lines: seen.lines.map((line) => line.text),
+      circled: asking.circled,
+      leadIn: ladder[rung.rung].safe,
+      lessons: clip.catalogue,
+      lesson: from,
+      rung: ladder[rung.rung],
+      fresh: rung.fresh,
+    };
+    return ports.brain.answer(asked, signal, onPart);
+  };
 
   let answered = await think(draft, move, arriving).catch((error) => {
     board.close("the ask failed");

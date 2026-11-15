@@ -16,7 +16,7 @@ export const brain = {
 
   brainMaxTokens: {
     value: 16000,
-    why: "Room for the brain's thinking and its short reply in one response that is not streamed.",
+    why: "Room for the brain's thinking and its short reply in one response. The reply is streamed, so this is a ceiling and not a wait.",
     measured: "not measured",
   } satisfies Setting<number>,
 
@@ -39,9 +39,9 @@ export const brain = {
   } satisfies Setting<number>,
 
   pricesUsdPerMTok: {
-    value: { "claude-opus-5-5": { input: 4, output: 20 }, "claude-haiku-5-5": { input: 0.1, output: 0.5 } } as Record<string, { input: number; output: number }>,
-    why: "Used only to count what the live brain has spent against the cap. Dollars per million tokens.",
-    measured: "from the API reference cached 2026-11-03; not checked against a bill",
+    value: { "claude-opus-5-5": { input: 4, output: 20 }, "claude-sonnet-5-5": { input: 2, output: 10 }, "claude-haiku-5-5": { input: 0.1, output: 0.5 } } as Record<string, { input: number; output: number }>,
+    why: "Used only to count what the live brain has spent against the cap. Dollars per million tokens. Every model a setting names must have its price here: the mind refuses to start without it, since a model with no price would be asked and paid for before its cost could be counted. A call cut short by a new press is not counted.",
+    measured: "from the API reference's model list, read 2026-11-14: Opus 5.5 $4 and $20, Sonnet 5.5 $2 and $10, Haiku 5.5 $0.10 and $0.50 for prompts of 100,000 tokens or fewer; not checked against a bill",
   } satisfies Setting<Record<string, { input: number; output: number }>>,
 
   lostAnswerLine: {

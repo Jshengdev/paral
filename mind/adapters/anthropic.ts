@@ -19,6 +19,10 @@ export type Prompts = { answer: string; secondLook: string; opener: string };
 /** Claude behind three ports. The client is built here; a row may hand in a stand-in instead. */
 export function anthropic(settings: Settings, prompts: Prompts, log: Log, client: Anthropic = new Anthropic()): { brain: Brain; secondLook: SecondLook; opener: Opener; spentUsd(): number } {
   const prices = settings.pricesUsdPerMTok.value;
+  // A model with no price would be asked, and paid for, and fail only when its cost is counted. It is refused here.
+  for (const model of [settings.brainModel.value, settings.secondLookModel.value, settings.openerModel.value]) {
+    if (!prices[model]) throw new Error(`no price is set for the model "${model}"; add it to pricesUsdPerMTok in mind/settings/brain.ts or choose another model`);
+  }
   let spentUsd = 0;
 
   function allowed() {

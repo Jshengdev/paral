@@ -1,6 +1,5 @@
 import type { MarkKind } from "../../seam/schema.ts";
 import { locate, type Box, type Display, type ReadLine } from "./ground.ts";
-import { holdsResult } from "./push.ts";
 
 type Pointed = { kind: MarkKind; index: number | null; quote: string; label: string | null; toIndex?: number | null; toQuote?: string | null };
 type Reply = { result: string | null; beats: { say: string; mark: Pointed | null }[] };
@@ -101,11 +100,6 @@ export function explain(reply: Reply, lines: ReadLine[], display: Display, minSc
 export function boxes(rows: string[][]): string[][] {
   const arrows = /^(\s*(→|⇒|➜|->|=>)\s*)+|(\s*(→|⇒|➜|->|=>)\s*)+$/g;
   return rows.map((row) => row.map((box) => box.replace(arrows, "").trim()).filter(Boolean)).filter((row) => row.length > 0);
-}
-
-export function givesAway(planned: Planned[], result: string | null): boolean {
-  if (result === null) return false;
-  return planned.some(({ say, mark }) => holdsResult(say, result) || (mark?.label != null && holdsResult(mark.label, result)));
 }
 
 /** What was drawn before stays through a follow-up. It goes when the problem is new, or when the line that was wrong is no longer the wrong one. */

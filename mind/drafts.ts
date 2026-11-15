@@ -32,8 +32,13 @@ export function drafts(opener: Opener, settings: Settings, seen: () => string[])
       if (!due || words.split(" ").length < settings.openerDraftWords.value) return;
       const draft: Draft = { words, line: ask(words, signal), at: Date.now() };
       newest = draft;
-      // A draft that fails is simply never "written"; the ask then waits for a newer one or asks afresh.
-      draft.line.then(() => signal.aborted || (written !== null && written.at > draft.at) || (written = draft)).catch(() => {});
+      // Once its line is written it becomes the newest written draft, unless a later one got there first. A draft
+      // that fails is simply never "written"; the ask then waits for a newer one or asks afresh.
+      const whenWritten = () => {
+        const overtaken = written !== null && written.at > draft.at;
+        if (!signal.aborted && !overtaken) written = draft;
+      };
+      draft.line.then(whenWritten, () => {});
     },
     /**
      * The opener for his final words. A draft already written is used before a newer one still being written,

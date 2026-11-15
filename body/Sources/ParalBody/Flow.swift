@@ -77,7 +77,9 @@ public final class Flow {
         var seenTo = try await until("ready", limit: 8000, from: 0) { if case .ready = $0 { return true } else { return false } }
         let image = try Screen.load(page)
         let small = dir.appendingPathComponent("page-for-the-brain.jpg").path
-        try Screen.saveSmaller(image, to: small, longEdge: settings?.pictureLongEdge ?? 2000)
+        // Everything the mind sets comes from its ready line, which has just arrived; there is no second copy here.
+        guard let settings else { throw Failed(why: "the mind's ready line carried no settings") }
+        try Screen.saveSmaller(image, to: small, longEdge: settings.pictureLongEdge)
 
         var first = true
         var releasedAt = 0.0
@@ -85,6 +87,11 @@ public final class Flow {
         for ask in asks {
             if !first {
                 let after = ask["startAfter"] as? [String: Any]
+                // A start it does not know is a mistake in the flow file, not "idle".
+                if let after, !["releasePlusMs", "firstSayPlusMs", "firstAnswerPlusMs"].contains(where: { after[$0] != nil }) {
+                    throw Failed(why: "startAfter has no start this flow knows: \(after.keys.sorted().joined(separator: ", "))")
+                }
+                if let named = ask["startAfter"] as? String, named != "idle" { throw Failed(why: "startAfter \"\(named)\" is not a start this flow knows") }
                 if let plus = (after?["releasePlusMs"] as? NSNumber)?.doubleValue {
                     // A second press this soon after the release before it: inside the microphone's grace when it is short.
                     await pause(plus - (clock() - releasedAt))
@@ -128,8 +135,9 @@ public final class Flow {
                 pcm = bytes.subdata(in: (data.upperBound + 4)..<bytes.count)
             }
             let trail = (ask["trail"] as? [[NSNumber]] ?? []).map { $0.map(\.doubleValue) }.filter { $0.count == 3 }
-            // With no circle the picture is the one taken as he starts; with a circle it is taken at the release, the path on it.
-            if trail.isEmpty { Task { @MainActor in if let lines = try? await reading.value { picture(lines, lines, small) } } }
+            // With no circle (a path of fewer than two points) the picture is the one taken as he starts; with a circle
+            // it is taken at the release, the path on it.
+            if trail.count < 2 { Task { @MainActor in if let lines = try? await reading.value { picture(lines, lines, small) } } }
             let chunk = 3200, chunkMs = 100.0
             var sent = 0, drawn = 0
             let holdMs = max(Double(pcm.count) / Double(chunk) * chunkMs, trail.last?[0] ?? 0)
@@ -148,14 +156,14 @@ public final class Flow {
             }
             releasedAt = clock()
             scene.take(.keyUp, at: releasedAt)
-            release.letGo(at: stamp(), graceMs: settings?.earGraceMs ?? 0)
+            release.letGo(at: stamp(), graceMs: settings.earGraceMs)
             // With a circle the picture goes now, ahead of the key-up line, as in the app. Without one it went, or goes, when the page is read.
             if trail.count > 1 {
                 let lines = try await reading.value
                 let path = trail.map { CGPoint(x: $0[1], y: $0[2]) }
-                let part = Screen.around(image, lines: lines, path: path, on: display, share: settings?.cropShare ?? 1, points: settings?.cropPoints ?? 200, color: color(tokens.accent), width: tokens.mark.width + 1)
+                let part = Screen.around(image, lines: lines, path: path, on: display, share: settings.cropShare, points: settings.cropPoints, color: color(tokens.accent), width: tokens.mark.width + 1)
                 let shown = dir.appendingPathComponent("page-with-his-path.jpg").path
-                try Screen.saveSmaller(part.image, to: shown, longEdge: settings?.pictureLongEdge ?? 2000)
+                try Screen.saveSmaller(part.image, to: shown, longEdge: settings.pictureLongEdge)
                 picture(lines, part.lines, shown)
             }
         }

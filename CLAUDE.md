@@ -32,7 +32,8 @@ Keys never live in this folder. The start scripts read `~/.config/paral/keys.env
 body (Swift)                      seam                       mind (TypeScript, Node 26, no build step)
 key, mic, screen picture  ──────► one schema, one line  ───► turn.ts   one hold of the key = one ask
 overlay window, speaker   ◄────── of JSON per event    ◄──── ask.ts    one ask: a hint (hint.ts) or an explanation
-Scene → Picture → Painter                                    cores/    the logic: values in, values out
+Scene → Picture → Painter                                    (parts)   of one ask, a file each: see mind/README.md
+                                                             cores/    the logic: values in, values out
                                                              ports.ts  one small interface per outside service
                                                              adapters/ one file per vendor, and a tape for each
                                                              settings/ every value, with why and what was measured
@@ -51,7 +52,7 @@ Scene → Picture → Painter                                    cores/    the l
 |---|---|---|
 | Catch | his words while the key is held, and what he drew around | `cores/catch.ts`, `cores/circle.ts` |
 | Ground | a quoted line becomes one box on his screen, or "not found" | `cores/ground.ts` |
-| Show | marks, the board, the clip, the pointer | `cores/beats.ts`, the body's scene and painter |
+| Show | marks fitted to their room, sentences cut to be said, the board, the clip, the pointer | `cores/beats.ts`, the body's scene and painter |
 | Teach | which rung of the ladder comes next | `cores/happened.ts`, `cores/teach.ts` |
 | Push | nothing that holds the result is ever said or shown | `cores/push.ts`, `cores/lesson.ts` |
 | Hold | what this conversation has said and drawn so far | `cores/hold.ts` |
@@ -60,8 +61,9 @@ Scene → Picture → Painter                                    cores/    the l
 
 1. Key down: the body sends `key.down`, the microphone's sound, the pointer's path if the draw key is held, and a
    picture of the screen with the lines read from it. The mind sends his words back as they are heard.
-2. Key up: "thinking" at once. If he drew, his loop comes back as a ring (`echo`), with no model asked. If his words ask for
-   a drawing, an empty card opens, to be filled by the board or taken away.
+2. Key up: "thinking" at once. When his words are final, about 0.4 s later: if he drew, his loop comes back as a ring
+   (`echo`), with no model asked; if his words ask for a drawing, an empty card opens, to be filled by the board or
+   taken away.
 3. The opener, one short line from the fast model, as soon as it is written. If none is out 0.8 s after release, a fixed line is said first and the opener follows. If the deep answer has not begun to arrive 1.3 s after that has been heard, a fixed stall line, and up to two more.
 4. When the deep answer's first fields arrive, it is one of two things. **A wrong line in his work:** a ring on that
    line, the rung's fixed line said with it, then the model's hint once Push has passed it. One rung per ask, one sentence
@@ -87,7 +89,10 @@ Do these in order. Each step has a row before the next one starts.
    field in `adapters/tape.ts`. Look at `adapters/raea.ts`.
 5. **Turn or ask.** Call the core from `mind/turn.ts` (things that happen once per hold), `mind/ask.ts` (things that
    depend on the answer's first fields), or one of the ask's two roads: `mind/hint.ts` when his work has a wrong line,
-   `mind/explanation.ts` when it has none. Add a `turn` row that plays the lines in and checks the lines out.
+   `mind/explanation.ts` when it has none. The parts of one ask each have their own file, and a new part gets one
+   too: `fast.ts` (lines said while he waits), `drafts.ts` (the opener drafted while he talks), `card.ts` (the
+   board), `clip.ts` (the lesson clip), `speech.ts` (the voice, one sentence after another). Add a `turn` row that
+   plays the lines in and checks the lines out.
 6. **Scene.** Teach `Scene.take` the new line and give `Picture` the new plain values, in `ScenePicture.swift`.
 7. **Painter.** Draw the new values in a `Painter*.swift` file. Every size, colour and time is a token in
    `body/tokens.json`, so it shows up on the dials page by itself.
@@ -95,7 +100,7 @@ Do these in order. Each step has a row before the next one starts.
    `./film` of your own in `tmp/dev/`, and look at the frames.
 
 The lesson clip was added in this order: the `clip` line, `cores/lesson.ts`, the `lessons` setting, `adapters/raea.ts`,
-`ask.ts`, the scene, `PainterClip.swift`, then one live run.
+`clip.ts` (called from `ask.ts`), the scene, `PainterClip.swift`, then one live run.
 
 ## Rules
 

@@ -1,0 +1,100 @@
+{
+ "name": "live brain, stand-in: the other deep model he may choose, claude-sonnet-5-5, has its price, so an ask on it is counted and answered",
+ "run": "live.standin",
+ "in": {
+  "picture": false,
+  "asks": 1,
+  "asked": {
+   "words": "why is this wrong",
+   "lines": [
+    "Solve for x: 2(x + 3) = 14",
+    "2x + 6 = 14, so x = 10"
+   ],
+   "fresh": false,
+   "lesson": {
+    "problem": null,
+    "breakLine": null,
+    "breakRead": null,
+    "tried": [],
+    "rung": -1,
+    "shown": []
+   }
+  },
+  "brainReply": {
+   "model": "claude-sonnet-5-5",
+   "stop_reason": "end_turn",
+   "usage": {
+    "input_tokens": 2000,
+    "output_tokens": 500
+   },
+   "parsed_output": {
+    "problem": "Solve for x: 2(x + 3) = 14",
+    "breakIndex": 1,
+    "breakLine": "2x + 6 = 14, so x = 10",
+    "result": "x = 4",
+    "beats": [
+     {
+      "say": "Read the last line again: what did you do to the 6?",
+      "mark": null
+     }
+    ],
+    "board": null
+   }
+  },
+  "lookReply": {
+   "model": "claude-haiku-5-5",
+   "stop_reason": "end_turn",
+   "usage": {
+    "input_tokens": 300,
+    "output_tokens": 50
+   },
+   "parsed_output": {
+    "leaks": false
+   }
+  },
+  "brainModel": "claude-sonnet-5-5"
+ },
+ "out": {
+  "answered": {
+   "problem": "Solve for x: 2(x + 3) = 14",
+   "breakLine": "2x + 6 = 14, so x = 10",
+   "breakIndex": 1,
+   "result": "x = 4",
+   "lesson": null,
+   "beats": [
+    {
+     "say": "Read the last line again: what did you do to the 6?",
+     "mark": null
+    }
+   ],
+   "board": null
+  },
+  "leaks": false,
+  "calls": [
+   {
+    "kind": "brain",
+    "model": "claude-sonnet-5-5",
+    "effort": "low",
+    "structured": "json_schema",
+    "fallbacks": "default",
+    "picture": false,
+    "signal": true,
+    "numbered": true,
+    "namesRung": true
+   },
+   {
+    "kind": "look",
+    "model": "claude-haiku-5-5",
+    "effort": "low",
+    "structured": "json_schema",
+    "fallbacks": null,
+    "picture": false,
+    "signal": true,
+    "numbered": false,
+    "namesRung": false
+   }
+  ],
+  "spentUsd": 0.009055,
+  "toldTheLineEarly": true
+ }
+}

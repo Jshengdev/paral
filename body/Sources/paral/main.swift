@@ -14,6 +14,8 @@ final class App: NSObject, NSApplicationDelegate {
     private let mic = Mic()
     private let speaker = Speaker()
     private var key: Key?
+    /// What the mind sets, from its ready line. The key is armed only after that line, so every "?? value" below is
+    /// a fallback that cannot fire, and each repeats the setting's own value.
     private var settings: BodySettings?
     private var status: NSStatusItem?
     private var voiced: Set<String> = []

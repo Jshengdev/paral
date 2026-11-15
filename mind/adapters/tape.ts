@@ -6,6 +6,7 @@ const Tape = z.object({
   answers: z.record(z.string(), z.array(Answered.extend({ hold: z.boolean().optional(), late: z.boolean().optional() }))),
   leaks: z.array(z.string()),
   holdSecondLook: z.boolean().optional(),
+  failSecondLook: z.boolean().optional(),
   holdOpener: z.boolean().optional(),
   opener: z.string().optional(),
   seen: z.string().optional(),
@@ -72,6 +73,7 @@ export function tape(path: string): Ports & { release(kind?: string): void; aske
     secondLook: {
       async leaks(line, _problem, signal) {
         if (recorded.holdSecondLook) await held(signal, "second look");
+        if (recorded.failSecondLook) throw new Error("the tape's second look fails on purpose");
         return recorded.leaks.includes(line);
       },
     },

@@ -80,6 +80,12 @@ export function wrongSum(line: string): { sum: string; comesTo: number; said: nu
   return null;
 }
 
+/** Whether an explanation gives his result away: in one of its sentences, or in the label of one of its marks. */
+export function givesAway(planned: { say: string; mark: { label: string | null } | null }[], result: string | null): boolean {
+  if (result === null) return false;
+  return planned.some(({ say, mark }) => holdsResult(say, result) || (mark?.label != null && holdsResult(mark.label, result)));
+}
+
 export function judge({ line, result, secondLook, safe, onHisLine = "" }: Judged): Verdict {
   // A hint may be kept from naming his answer; it may never get there by saying a sum that is not true.
   const wrong = wrongSum(line);

@@ -16,13 +16,13 @@ export const teach = {
 
   justTellMe: {
     value: ["just tell me", "give me the answer", "what is the answer", "what's the answer", "tell me the answer"],
-    why: "Words that mean he wants the result. They raise the rung by one, like any other ask, and never more.",
+    why: "Words that mean he wants the result. They raise the rung by one, like any other ask, and never more. Their one effect of their own: said after he has changed the wrong line and it is still wrong, they still climb a rung, where the changed line alone would get the same rung again in new words.",
     measured: "not measured; a first list, to grow from what students actually say",
   } satisfies Setting<string[]>,
 
   sentenceMaxWords: {
     value: { plain: 22, withNumbers: 14 },
-    why: "A spoken sentence longer than this is cut where both parts stand as sentences (after a colon or semicolon, at a comma before \"so\", or before \"and\" or \"but\" with a subject after it) and the rest is said as the next sentence. With no such place it stays whole, so a low limit cuts nothing badly. The prompt asks for eighteen; this is the guard for when the model runs over. A sentence that holds numbers or an equation has a lower limit, since numbers are slow to say. A lesson's one sentence is left whole.",
+    why: "A spoken sentence longer than this is cut where both parts stand as sentences (after a colon or semicolon, at a comma before \"so\", or before \"and\" or \"but\" with a subject after it) and the rest is said as the next sentence. With no such place it stays whole, so a low limit cuts nothing badly. The prompt asks for eighteen; this is the guard for when the model runs over. A worked step, which is a sentence with three numbers or more, has a lower limit, since numbers are slow to say. A lesson's one sentence is left whole.",
     measured: "a 28-word sentence took 8.2 s to say and a 22-word one 7.9 s; on the top rung five worked examples of about 21 words took 8.1 to 9.1 s, for example \"Take y minus 4 equals 9: to get y alone you add 4 to both sides, so y equals 9 plus 4.\" (2026-11-14, the outside judge). Three sentences in six later passes still ran 8.0 to 8.2 s (20, 26 and 27 words), each with a clean place at \", so\" that the rule then turned down; the rule now takes it, which cuts the two long ones. A limit of 19 was tried on the 829 sentences of the recorded runs and dropped: of 58 it cut, two were lists cut at \", and the\" (\"And the same six-character code, about a third as long.\"). The 20-word one stays whole",
   } satisfies Setting<{ plain: number; withNumbers: number }>,
 

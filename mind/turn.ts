@@ -6,7 +6,7 @@ import { circled, drew, echo, type Point } from "./cores/circle.ts";
 import { showable } from "./cores/fit.ts";
 import { empty, type Lesson } from "./cores/hold.ts";
 import { drafts } from "./drafts.ts";
-import type { Listening, Ports } from "./ports.ts";
+import type { Listening, Opened, Ports } from "./ports.ts";
 import type { Settings } from "./settings.ts";
 import { speech } from "./speech.ts";
 import { SEAM_VERSION, type FromBody, type FromMind } from "../seam/schema.ts";
@@ -37,6 +37,14 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
   let carried: Point[] = [];
   /** The opener, drafted from his words while he is still talking. With no fast model there is no opener at all. */
   const drafting = ports.opener && drafts(ports.opener, settings, () => screen?.lines.map((read) => read.text).filter(Boolean) ?? []);
+
+  /** The opener of this ask: none with no fast model, a fixed line while a wrong line is open, otherwise the drafted one. */
+  function opening(signal: AbortSignal): Promise<Opened> | null {
+    if (!drafting) return null;
+    // With a wrong line open a model that sees his page could name the mistake a rung early, so the line is fixed.
+    if (lesson.breakLine !== null) return Promise.resolve({ line: settings.openerInLesson.value, seen: Promise.resolve(null) });
+    return drafting.choose(words.text, signal);
+  }
 
   function down(at: number) {
     running?.abort();
@@ -100,9 +108,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
       }
       if (mine.signal.aborted) return;
       if (screen === null) return send({ v, type: "state", name: "failed", detail: "no picture of the screen arrived with this ask" });
-      // With a wrong line open, the opener is a fixed line: a model that sees his page could name the mistake a rung early.
-      const fixed = { line: settings.openerInLesson.value, seen: Promise.resolve(null) };
-      const opener = drafting ? (lesson.breakLine !== null ? Promise.resolve(fixed) : drafting.choose(words.text, mine.signal)) : null;
+      const opener = opening(mine.signal);
       const around = circled(path, screen.lines, screen.display, settings.circleLeast.value);
       const asking = { id, words: words.text, seen: screen, circled: around, lesson, markUp, releasedAt: at, opener, signal: mine.signal };
       await ask({ ports, settings, send, log }, asking, (kept) => (lesson = kept));

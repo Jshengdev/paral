@@ -6,7 +6,7 @@ import { connect } from "node:net";
 import { join } from "node:path";
 import { tape } from "../mind/adapters/tape.ts";
 import { serve } from "../mind/server.ts";
-import { boxes, fitted, givesAway, split, wipes } from "../mind/cores/beats.ts";
+import { boxes, fitted, split, wipes } from "../mind/cores/beats.ts";
 import { asksForDrawing, fits, hear, silence } from "../mind/cores/catch.ts";
 import { showable, unfit } from "../mind/cores/fit.ts";
 import { circled, echo } from "../mind/cores/circle.ts";
@@ -15,7 +15,7 @@ import { settled } from "../mind/cores/partial.ts";
 import { locate } from "../mind/cores/ground.ts";
 import { pick, seconds } from "../mind/cores/lesson.ts";
 import { next, type Happened } from "../mind/cores/teach.ts";
-import { judge, wrongSum, type Judged } from "../mind/cores/push.ts";
+import { givesAway, judge, wrongSum, type Judged } from "../mind/cores/push.ts";
 import { empty, fold, NO_RUNG } from "../mind/cores/hold.ts";
 import { FromBody, FromMind, read, write } from "../seam/schema.ts";
 import { settings } from "../mind/settings.ts";
@@ -37,7 +37,7 @@ const runs: Record<string, (input: any) => unknown> = {
   fit: (input) => Object.fromEntries(input.lines.map((line: string) => [line, unfit(line)])),
   "fit.showable": (input) => Object.fromEntries(input.messages.map((message: string) => [message.slice(0, 60), showable(message)])),
   "beats.boxes": (input) => Object.fromEntries(Object.entries(input.boards).map(([name, rows]) => [name, boxes(rows as string[][])])),
-  "beats.givesAway": (input) => givesAway(input.planned, input.result),
+  "push.givesAway": (input) => givesAway(input.planned, input.result),
   partial: (input) => Object.fromEntries(Object.entries(input.cases).map(([name, text]) => [name, settled(text as string)])),
   "beats.wipes": (input) => input.cases.map(([fresh, last, now]: [boolean, string | null, string | null]) => wipes(fresh, last, now)),
   prompts: () =>

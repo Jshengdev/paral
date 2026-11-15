@@ -3,7 +3,7 @@ import type { lessonClip } from "./clip.ts";
 import { fitted, hint, WHOLE } from "./cores/beats.ts";
 import type { Found } from "./cores/ground.ts";
 import type { HoldEvent } from "./cores/hold.ts";
-import { holdsResult, holdsValue, judge, wrongSum } from "./cores/push.ts";
+import { judge } from "./cores/push.ts";
 import type { Answered } from "./ports.ts";
 import { SEAM_VERSION } from "../seam/schema.ts";
 
@@ -62,11 +62,18 @@ export function ladderHint({ ports, settings, send, log }: Hands, asking: Asking
       const line = sentences.join(" ");
       // Numbers that stand on his own wrong line may be spoken of; any other number of his result may not.
       const onHisLine = [answered.breakLine, place.found ? place.line : "", asking.lesson.breakRead ?? ""].join(" ");
-      const codeSaysLeak = answered.result !== null && (holdsResult(line, answered.result) || holdsValue(line, answered.result, onHisLine));
-      // The second look is asked only about a hint that code has not already ruled out.
-      const secondLook = codeSaysLeak || wrongSum(line) ? null : await ports.secondLook.leaks(line, answered.problem, signal);
-      if (signal.aborted) return;
-      const verdict = judge({ line, result: answered.result, secondLook, safe, onHisLine });
+      const judged = { line, result: answered.result, safe, onHisLine };
+      // Code judges first. The second look is asked only about a hint code has not ruled out; if it cannot answer,
+      // the hint counts as a leak, since the rung's fixed line is the safe thing to say when a hint cannot be checked.
+      let verdict = judge({ ...judged, secondLook: null });
+      if (verdict.verdict === "show") {
+        const leaks = await ports.secondLook.leaks(line, answered.problem, signal).catch((error) => {
+          if (!signal.aborted) log(`${id}: the second look failed (${error instanceof Error ? error.message : error}); the hint is treated as a leak`);
+          return true;
+        });
+        if (signal.aborted) return;
+        verdict = judge({ ...judged, secondLook: leaks });
+      }
       const swapped = verdict.verdict !== "show";
       if (verdict.verdict !== "show") {
         const what = verdict.verdict === "leak" ? "a leaked hint" : "a hint with a wrong sum";
