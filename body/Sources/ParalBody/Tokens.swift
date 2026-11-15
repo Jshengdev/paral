@@ -59,6 +59,9 @@ public struct Tokens: Codable {
         public var type, pad, gap: Double
         /// How long it stays once it is up.
         public var stayMs: Double
+        /// Its badge pops out a moment after the toast comes: how long after, and how small it is before, as a
+        /// share of its size.
+        public var badgeAfterMs, badgeFrom: Double
     }
     /// The guide's card, after the design kit's nudge: how wide it is, the room inside it, its corner, the size of
     /// its words and of the small line above them, the logo's width and the gap from it to the name, the gap between the two lines, and how far from

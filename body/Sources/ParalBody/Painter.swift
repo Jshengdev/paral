@@ -121,7 +121,10 @@ public struct Painter {
         // The toast keeps off the text, the cards and the arrow, so it comes after them.
         if let toast = picture.toast {
             let up = drawn.filter { ["board", "clip", "way"].contains($0.what) }.map(\.box)
-            drawn.append(Drawn(what: "toast", id: nil, box: self.toast(toast, avoiding: picture.avoid + up, ctx)))
+            let made = self.toast(toast, avoiding: picture.avoid + up, ctx)
+            drawn.append(Drawn(what: "toast", id: nil, box: made.place))
+            // Its badge is named too, at the size it has just then and with as much of its tick as is drawn.
+            drawn.append(Drawn(what: "badge", id: nil, box: made.badge, path: made.tick))
         }
         // The guide's card keeps off everything else, so it is placed last of the things that are placed.
         if let guide = picture.guide {

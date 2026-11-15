@@ -66,10 +66,13 @@ public struct WayPicture: Equatable {
     public var nod: Double
 }
 
-/// The toast that confirms something paral did: its words, and how far it has come up or gone, 0 to 1.
+/// The toast that confirms something paral did: its words, how strong it is, 0 to 1, how it has come up as a card,
+/// how far its badge has popped out (0 to 1, and a little past on the way) and how much of its tick is drawn, 0 to 1.
 public struct ToastPicture: Equatable {
     public var text: String
     public var appear: Double
+    public var coming: CardArrival
+    public var badge, tick: Double
 }
 
 /// How a card stands at one moment: how far the card itself has come up, 0 to 1; how far it has gone again, 0 to

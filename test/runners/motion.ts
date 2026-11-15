@@ -115,3 +115,22 @@ export function cardLines(input: { lines: string[]; rows: Written[]; at: number[
   const low = (moment: Shown, index: number) => (line(moment, index) ? places(line(moment, index)!.y - line(whole, index)!.y, 1) : null);
   return at(dir, input.at).map((moment) => (moment.guide ? { card: places(moment.guide.appear), nameLow: low(moment, 0), wordsLow: low(moment, 1) } : { card: null }));
 }
+
+/**
+ * The toast's badge at each moment of a hand-written run: how large it is against its size at `wholeAt`, a moment
+ * that shows it whole, and how much of its tick the pen has drawn, as a share of the whole tick at the badge's size
+ * just then; null with no toast.
+ */
+export function toastTick(input: { lines: string[]; rows: Written[]; at: number[]; wholeAt: number }) {
+  const dir = handWritten("toast-tick", onTheirLines(input.rows, input.lines), input.lines);
+  type Shown = ReturnType<typeof at>[number];
+  const badge = (moment: Shown) => moment.placed.find((item) => item.what === "badge");
+  const whole = badge(at(dir, [input.wholeAt])[0])!;
+  return at(dir, input.at).map((moment) => {
+    const now = badge(moment);
+    if (!now) return { badge: null };
+    // The tick is drawn in the badge, so it is measured at the badge's size just then.
+    const size = now.box.w / whole.box.w;
+    return { badge: places(size), tick: places(long(now.path) / size / long(whole.path)) };
+  });
+}
