@@ -5,18 +5,30 @@ import Foundation
 /// pill stands on: the display's foot, or the Dock's top.
 extension Layout {
     /// The pill's own box, always at the bottom centre (the owner's word, 01:56: the pill is at the bottom, as the
-    /// designer's pictures have it, and covers what is under it with its solid surface). `open` 0 is the collapsed
-    /// pill, 1 the full one, and between them one capsule changes size: the two share their foot, `bottom` above the
-    /// floor. With `closes` the rest is the cross instead, at the height of the full pill's middle.
-    public static func pill(open: Double, closes: Bool = false, width: Double, height: Double, tokens: Tokens) -> Box {
-        let c = tokens.capsule
-        let rest = closes ? (w: c.restClose, h: c.restClose) : (w: c.collapsedWidth, h: c.collapsedHeight)
-        let w = rest.w + (min(c.width, width - 48) - rest.w) * open
-        let h = rest.h + (c.height - rest.h) * open
+    /// designer's pictures have it, and covers what is under it with its solid surface). `open` 0 is the pill shut
+    /// into the orb, the orb's blob (`orb`), 1 the full pill, and between them one capsule changes size: the two share
+    /// their foot, `bottom` above the floor.
+    public static func pill(open: Double, width: Double, height: Double, tokens: Tokens) -> Box {
+        let c = tokens.capsule, blob = tokens.orb.size * tokens.orb.blob
+        let w = blob + (min(c.width, width - 48) - blob) * open
+        let h = blob + (c.height - blob) * open
         let full = height - c.bottom - c.height / 2
-        let resting = closes ? full : height - c.bottom - rest.h / 2
+        let resting = height - c.bottom - blob / 2
         let y = resting + (full - resting) * open
         return Box(x: (width - w) / 2, y: y - h / 2, w: w, h: h)
+    }
+
+    /// The orb's square of light, `orb.size` across, centred on the shut pill: its blob is the shut pill's box.
+    public static func orb(width: Double, height: Double, tokens: Tokens) -> Box {
+        let blob = pill(open: 0, width: width, height: height, tokens: tokens), side = tokens.orb.size
+        return Box(x: blob.x + blob.w / 2 - side / 2, y: blob.y + blob.h / 2 - side / 2, w: side, h: side)
+    }
+
+    /// The cross that clears paral's ink, at rest: a circle `capsule.restClose` across, level with the orb's middle
+    /// and `orb.crossGap` right of its blob, so the orb stays in the middle and says whose cross it is.
+    public static func cross(width: Double, height: Double, tokens: Tokens) -> Box {
+        let blob = pill(open: 0, width: width, height: height, tokens: tokens), side = tokens.capsule.restClose
+        return Box(x: blob.x + blob.w + tokens.orb.crossGap, y: blob.y + blob.h / 2 - side / 2, w: side, h: side)
     }
 
     /// The room above the full pill that its bubble may take at most: its widest, two lines of words tall, and

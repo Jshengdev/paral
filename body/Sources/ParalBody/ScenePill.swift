@@ -4,6 +4,8 @@ extension Scene {
     /// What the pill shows besides its words: its wave, and the logo mark that breathes by it while paral works.
     func dress(_ capsule: inout CapsulePicture, at t: Double, cursorUp: Bool) {
         if capsule.look == .thinking, !cursorUp { capsule.working = still ? 0 : working(at: t) }
+        // The orb shows while the pill is not fully open: it is what the pill shuts into.
+        capsule.orb = capsule.open < 1 ? orb(at: t) : nil
         // The wave moves while he speaks and while paral thinks or answers; at rest and on a failure it is still dots.
         guard [.listening, .thinking, .speaking].contains(capsule.look) else { return }
         let w = tokens.wave, step = max(ms(w.sampleMs), 1)

@@ -1,0 +1,48 @@
+{
+ "name": "body: with motion reduced the orb's light is one still frame: a second, five and thirty seconds on, no pixel differs from the first frame's",
+ "run": "body.orbLight",
+ "in": {
+  "side": 112,
+  "seconds": [
+   0,
+   1,
+   5,
+   30
+  ],
+  "still": true
+ },
+ "out": [
+  {
+   "changed": 0,
+   "colours": 7,
+   "cornersClear": true,
+   "lit": 0.55,
+   "middle": "#FFF6CC",
+   "second": 0
+  },
+  {
+   "changed": 0,
+   "colours": 7,
+   "cornersClear": true,
+   "lit": 0.55,
+   "middle": "#FFF6CC",
+   "second": 1
+  },
+  {
+   "changed": 0,
+   "colours": 7,
+   "cornersClear": true,
+   "lit": 0.55,
+   "middle": "#FFF6CC",
+   "second": 5
+  },
+  {
+   "changed": 0,
+   "colours": 7,
+   "cornersClear": true,
+   "lit": 0.55,
+   "middle": "#FFF6CC",
+   "second": 30
+  }
+ ]
+}

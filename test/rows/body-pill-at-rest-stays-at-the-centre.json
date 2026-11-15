@@ -1,5 +1,5 @@
 {
- "name": "body: at rest the collapsed pill, and the cross with its name while paral's ink is on the page, stay at the bottom centre over a line of the page there, and so does the open pill",
+ "name": "body: at rest the orb, and the orb with the cross beside it while paral's ink is on the page, stay at the bottom centre over a line of the page there, and so does the open pill",
  "run": "body.pill",
  "in": {
   "rows": [
@@ -87,13 +87,13 @@
  "out": [
   {
    "look": "rest",
-   "pill": "78x19",
+   "pill": "the orb, 46x46",
    "middle": "the display's middle",
    "onText": true
   },
   {
    "look": "rest",
-   "pill": "the cross, 28x28",
+   "pill": "the orb, 46x46, and the cross beside it",
    "middle": "the display's middle",
    "onText": true
   },

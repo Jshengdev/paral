@@ -1,5 +1,5 @@
 {
- "name": "body: the voice pill, with a Dock 80 points tall: at rest it is the collapsed pill, 78 by 19; listening, thinking, answering and failed it is the full pill, 234 by 50; at rest with paral's ink on the page it is the cross; its foot is 28 above the Dock's top in every state but the cross, which is centred where the full pill's middle is, and it stands at the display's middle",
+ "name": "body: the voice pill, with a Dock 80 points tall: at rest it is shut into the orb, its blob 46 across; listening, thinking, answering and failed it is the full pill, 234 by 50; at rest with paral's ink on the page it is the orb with the cross beside it; its foot is 28 above the Dock's top in every state, and it stands at the display's middle",
  "run": "body.pill",
  "in": {
   "dock": 80,
@@ -113,7 +113,7 @@
  "out": [
   {
    "look": "rest",
-   "pill": "78x19",
+   "pill": "the orb, 46x46",
    "foot": 28,
    "middle": "the display's middle"
   },
@@ -137,8 +137,8 @@
   },
   {
    "look": "rest",
-   "pill": "the cross, 28x28",
-   "foot": 39,
+   "pill": "the orb, 46x46, and the cross beside it",
+   "foot": 28,
    "middle": "the display's middle"
   },
   {

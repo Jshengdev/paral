@@ -24,8 +24,8 @@ function sounded(rows: Written[]): Written[] {
 }
 
 /**
- * At each moment, only what `watch` names: the capsule's look; the pill's size (the cross's, at rest with ink on the
- * page); how far its foot stands above the Dock's top; its middle across the display; the bubble (what it says,
+ * At each moment, only what `watch` names: the capsule's look; the pill's size (at rest, the orb's blob, and whether
+ * the cross is beside it); how far its foot stands above the Dock's top; its middle across the display; the bubble (what it says,
  * which of its words are in stone, whether its caret is up, how far above the pill it is, and whether it lies on the
  * page's read text, as the pill does, and the trail it carries); whether the logo mark by the pill breathes to say
  * paral is working; the wave's marks, newest last, with its colour; and which of the other pieces up (the way
@@ -38,19 +38,23 @@ export function pill(input: { lines?: string[]; rows: Written[]; at: number[]; d
   const dock = input.dock ?? 0;
   // The pill's band at the foot: from the top of the room its bubble may take down to the Dock, the display's width.
   const tokens = JSON.parse(readFileSync(join(import.meta.dirname, "..", "..", "body", "tokens.json"), "utf8"));
-  const { capsule: k, bubble: b } = tokens;
+  const { capsule: k, bubble: b, orb: o } = tokens;
   const top = DISPLAY.h - dock - k.bottom - k.height - b.gap - (2 * k.type * b.leading + 2 * b.padY);
   const band: Box = { x: 0, y: top, w: DISPLAY.w, h: DISPLAY.h - dock - top };
-  const own = ["capsule", "cross", "bubble", "pointer", "tag", "lead", "mark", "echo", "pulse", "trail"];
+  const own = ["capsule", "cross", "orb", "bubble", "pointer", "tag", "lead", "mark", "echo", "pulse", "trail"];
   return at(dir, input.at, false, dock).map(({ placed, capsule }) => {
-    const box = placed.find((item) => item.what === "capsule")!.box;
     const cross = placed.find((item) => item.what === "cross")?.box;
+    const light = placed.find((item) => item.what === "orb")?.box;
+    // At rest the pill is shut into the orb: its blob, the middle of the orb's square of light, is what is measured.
+    const across = light ? light.w * o.blob : 0;
+    const blob: Box | undefined = light && capsule.look === "rest" ? { x: light.x + (light.w - across) / 2, y: light.y + (light.h - across) / 2, w: across, h: across } : undefined;
+    const box = blob ?? placed.find((item) => item.what === "capsule")!.box;
     const bubble = placed.find((item) => item.what === "bubble")?.box;
     const all: Record<string, unknown> = {
       look: capsule.look,
-      pill: cross ? `the cross, ${round(cross.w)}x${round(cross.h)}` : `${round(box.w)}x${round(box.h)}`,
-      foot: round(DISPLAY.h - dock - ((cross ?? box).y + (cross ?? box).h)),
-      middle: round((cross ?? box).x + (cross ?? box).w / 2) === DISPLAY.w / 2 ? "the display's middle" : round((cross ?? box).x + (cross ?? box).w / 2),
+      pill: blob ? `the orb, ${round(blob.w)}x${round(blob.h)}${cross ? ", and the cross beside it" : ""}` : `${round(box.w)}x${round(box.h)}`,
+      foot: round(DISPLAY.h - dock - (box.y + box.h)),
+      middle: round(box.x + box.w / 2) === DISPLAY.w / 2 ? "the display's middle" : round(box.x + box.w / 2),
       onText: text.some((line) => touches(line, box)),
       bubble: bubble
         ? { says: capsule.says || capsule.note, stone: capsule.stone, caret: capsule.caret, aboveThePill: round(box.y - (bubble.y + bubble.h)), onText: text.some((line) => touches(line, bubble)), ...(capsule.trail.length ? { trail: capsule.trail } : {}) }

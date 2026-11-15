@@ -15,7 +15,7 @@ scrolls, or clicks one closed heading it has itself marked.
 
 Written at AI@USC, November 14-15 2026. Every line in this folder is written here; nothing is copied from another
 project. Libraries: zod (MIT), the Anthropic SDK (MIT), DialKit (MIT, in `dials/vendor/` and `exam/vendor/`). Tools:
-raea renders the lesson clips (FSL-1.1, used as a tool like ffmpeg). The app's icon (`body/AppIcon.icns`) is the team's own logo, drawn by its designer this weekend. Outside services: Claude for the answers,
+raea renders the lesson clips (FSL-1.1, used as a tool like ffmpeg). The app's icon (`body/AppIcon.icns`) is the team's own logo, drawn by its designer this weekend. The orb the voice pill rests as (`body/Sources/ParalBody/OrbLight.swift`) is ported from the same designer's orb handoff, also made this weekend: her shader's formula, worked out on the CPU here. Outside services: Claude for the answers,
 Cartesia for the ear and the voice.
 
 ## Commands
@@ -293,6 +293,9 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
 - The real windows have been started by the owner on his own Mac, twice. Seen there: the hold key, the microphone,
   the ear, the voice, and answers with marks once the screen grant was on. Not yet seen there: a circle, the cross,
   the board over real windows, a headset, and everything added since 368e4da except what the watcher cost.
+- The orb at rest has been seen only in films and stills: on a real screen it has never been drawn. Its light costs
+  under a millisecond a frame at its Retina size in a release build, measured once; the window then draws only the
+  orb's square again, thirty times a second, and what that costs on his Mac is not measured.
 - One display, chosen when the app starts. After plugging in a display or a projector, start it again.
 - The pill sits above the Dock's height as the display gave it when the app started. Not seen on a real screen; if the
   Dock is moved or shown after that, start the app again.

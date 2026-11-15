@@ -1,5 +1,5 @@
 {
- "name": "body: the open pill and its bubble stay at the bottom centre over the page's words (the owner's word at 01:56): with a line of the page where the bubble stands, the pill opens at the display's middle and covers it with its solid surface, and at rest the collapsed pill is at the middle too",
+ "name": "body: the open pill and its bubble stay at the bottom centre over the page's words (the owner's word at 01:56): with a line of the page where the bubble stands, the pill opens at the display's middle and covers it with its solid surface, and at rest the orb is at the middle too",
  "run": "body.pill",
  "in": {
   "lines": [
@@ -68,7 +68,7 @@
  "out": [
   {
    "look": "rest",
-   "pill": "78x19",
+   "pill": "the orb, 46x46",
    "middle": "the display's middle",
    "onText": false,
    "bubble": null
@@ -101,7 +101,7 @@
   },
   {
    "look": "rest",
-   "pill": "78x19",
+   "pill": "the orb, 46x46",
    "middle": "the display's middle",
    "onText": false,
    "bubble": null

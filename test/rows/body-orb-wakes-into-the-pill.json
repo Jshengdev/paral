@@ -1,0 +1,106 @@
+{
+ "name": "body: at rest the thing at the bottom centre is the orb, its square of light 56 across at the display's middle and its blob's foot 28 above the floor, with the pill shut into its blob; at a press of the key the pill grows out of the orb's blob: 30 ms in it is half grown and the orb still shows over it, fading, and 100 ms in the orb has gone; listening, thinking and answering the pill is open and there is no orb; after the answer and its linger the pill shuts back into the orb",
+ "run": "body.orbWakes",
+ "in": {
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "key.down",
+     "at": 1000
+    }
+   },
+   {
+    "at": 1001,
+    "line": {
+     "type": "state",
+     "name": "listening"
+    }
+   },
+   {
+    "at": 2000,
+    "line": {
+     "type": "key.up",
+     "at": 2000
+    }
+   },
+   {
+    "at": 2001,
+    "line": {
+     "type": "state",
+     "name": "thinking"
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "say",
+     "id": "a1",
+     "beat": 0,
+     "text": "It is under Deadlines."
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "mute",
+     "id": "a1",
+     "why": "no voice is set up"
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "state",
+     "name": "idle"
+    }
+   }
+  ],
+  "at": [
+   500,
+   1030,
+   1100,
+   1600,
+   2300,
+   2700,
+   5800
+  ]
+ },
+ "out": [
+  {
+   "look": "rest",
+   "orb": "56x56, at the display's middle, its blob's foot 28 above the floor",
+   "pill": "46x46"
+  },
+  {
+   "look": "listening",
+   "orb": "56x56, at the display's middle, its blob's foot 28 above the floor",
+   "pill": "117.5x47.5"
+  },
+  {
+   "look": "listening",
+   "orb": null,
+   "pill": "198.5x49"
+  },
+  {
+   "look": "listening",
+   "orb": null,
+   "pill": "234x50"
+  },
+  {
+   "look": "thinking",
+   "orb": null,
+   "pill": "234x50"
+  },
+  {
+   "look": "speaking",
+   "orb": null,
+   "pill": "234x50"
+  },
+  {
+   "look": "rest",
+   "orb": "56x56, at the display's middle, its blob's foot 28 above the floor",
+   "pill": "46x46"
+  }
+ ]
+}

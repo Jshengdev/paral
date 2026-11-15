@@ -11,7 +11,7 @@ public struct Word: Equatable {
 /// word still being heard, or an answer's word not yet said) and is written in stone.
 public struct CapsulePicture: Equatable {
     public var look: Look
-    /// 0 is the collapsed pill (or the resting cross), 1 the full pill.
+    /// 0 is the pill shut into the orb, 1 the full pill.
     public var open: Double
     public var words: [Word]
     /// What the bubble says when there are no words (the placeholder while listening, the tag while thinking), or
@@ -28,12 +28,14 @@ public struct CapsulePicture: Equatable {
     /// While paral works and no cursor is on the page to breathe, the logo mark breathes by the pill: how far it has
     /// swollen, 0 to 1. Nil for none.
     public var working: Double?
-    /// At rest with paral's ink still on the page, the circle carries a cross that clears it.
+    /// At rest with paral's ink still on the page, a cross that clears it sits beside the orb.
     public var closes = false
     /// The steps paral took before a line it said without being asked, each lit once it is reached. Empty otherwise.
     public var trail: [Word] = []
     /// The ask whose words the capsule holds, while it holds any and while it closes after them.
     public var ask: String?
+    /// The orb the pill shuts into, while the pill is not fully open (`SceneOrb.swift`). Nil while it is.
+    public var orb: OrbPicture? = nil
 }
 
 public struct MarkPicture: Equatable {

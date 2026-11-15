@@ -1,5 +1,5 @@
 {
- "name": "body: a line said without being asked is the nudge card's and not the bubble's, said aloud or shown only: the pill stays collapsed at rest and no bubble comes up for it",
+ "name": "body: a line said without being asked is the nudge card's and not the bubble's, said aloud or shown only: the pill stays shut into the orb at rest and no bubble comes up for it",
  "run": "body.pill",
  "in": {
   "rows": [
@@ -86,22 +86,22 @@
  "out": [
   {
    "look": "rest",
-   "pill": "78x19",
+   "pill": "the orb, 46x46",
    "bubble": null
   },
   {
    "look": "rest",
-   "pill": "78x19",
+   "pill": "the orb, 46x46",
    "bubble": null
   },
   {
    "look": "rest",
-   "pill": "78x19",
+   "pill": "the orb, 46x46",
    "bubble": null
   },
   {
    "look": "rest",
-   "pill": "78x19",
+   "pill": "the orb, 46x46",
    "bubble": null
   }
  ]

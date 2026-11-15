@@ -1,0 +1,47 @@
+{
+ "name": "body: the orb's light, worked out on the CPU from the designer's own formula (her noise, warp, gold ramp, ordered dither and blobby edge) 112 pixels square, its size on a Retina display: about half its square is lit inside the blob and its corners are clear, its solid pixels take seven colours (her six steps and one), and it moves: a second, five and thirty seconds on, part of its pixels differ from the first frame's",
+ "run": "body.orbLight",
+ "in": {
+  "side": 112,
+  "seconds": [
+   0,
+   1,
+   5,
+   30
+  ]
+ },
+ "out": [
+  {
+   "changed": 0,
+   "colours": 7,
+   "cornersClear": true,
+   "lit": 0.55,
+   "middle": "#FFF6CC",
+   "second": 0
+  },
+  {
+   "changed": 0.13,
+   "colours": 7,
+   "cornersClear": true,
+   "lit": 0.55,
+   "middle": "#FFFFFF",
+   "second": 1
+  },
+  {
+   "changed": 0.26,
+   "colours": 7,
+   "cornersClear": true,
+   "lit": 0.55,
+   "middle": "#FFFFFF",
+   "second": 5
+  },
+  {
+   "changed": 0.26,
+   "colours": 7,
+   "cornersClear": true,
+   "lit": 0.56,
+   "middle": "#FFD633",
+   "second": 30
+  }
+ ]
+}

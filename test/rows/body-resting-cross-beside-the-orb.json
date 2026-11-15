@@ -1,5 +1,5 @@
 {
- "name": "body: at rest with nothing of paral's on the page the capsule is the orb alone, with no cross; while it holds a line of an answer it carries none; at rest with paral's ink on the page it carries the cross, exactly where a click on it is taken, and wears its name to the cross's left so that it is not taken for a stray button; when the ink is cleared the cross and the name go",
+ "name": "body: at rest with nothing of paral's on the page the capsule is the orb alone, with no cross; while it holds a line of an answer the orb has gone into the open pill and there is no cross; at rest with paral's ink on the page the orb is back at the display's middle with the cross beside it, right of its light and level with its middle, and the window takes a click on the cross exactly where it is drawn; when the ink is cleared the cross goes and the orb stays",
  "run": "body.resting",
  "in": {
   "lines": [
@@ -78,23 +78,26 @@
  "out": [
   {
    "look": "rest",
-   "cross": null
+   "cross": null,
+   "orb": "at the display's middle"
   },
   {
    "look": "speaking",
-   "cross": null
+   "cross": null,
+   "orb": null
   },
   {
    "look": "rest",
    "cross": {
-    "whereAClickIsTaken": true,
-    "capsuleWiderThanTheCross": true,
-    "nameToItsLeft": true
-   }
+    "aClickIsTakenWhereItIsDrawn": true,
+    "rightOfTheOrb": true
+   },
+   "orb": "at the display's middle"
   },
   {
    "look": "rest",
-   "cross": null
+   "cross": null,
+   "orb": "at the display's middle"
   }
  ]
 }

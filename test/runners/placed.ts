@@ -184,19 +184,24 @@ export function inkInside(input: { lines: string[]; rows: Written[]; at: number[
 }
 
 /**
- * The capsule at rest at each moment of a hand-written run: whether it carries the cross that clears paral's ink,
- * whether the cross's middle is where a click on it is taken (the middle of the capsule's own resting place, which
- * the window's click test uses), and whether the capsule is wider than the cross, as it is when it wears its name.
+ * The capsule at rest at each moment of a hand-written run: whether it carries the cross that clears paral's ink;
+ * whether the window takes a click on the cross, and exactly where it is drawn (`paral-headless hits`, the boxes
+ * `Overlay` takes clicks in); whether the cross sits right of the orb, clear of its square of light and level with
+ * its middle; and whether the orb is still at the display's middle.
  */
 export function resting(input: { lines: string[]; rows: Written[]; at: number[] }) {
-  const tokens = JSON.parse(readFileSync(join(root, "body", "tokens.json"), "utf8"));
-  const taken = { x: DISPLAY.w / 2, y: DISPLAY.h - tokens.capsule.bottom - tokens.capsule.height / 2 };
-  return at(handWritten("resting", input.rows, input.lines), input.at).map(({ placed, capsule }) => {
-    const pill = placed.find((item) => item.what === "capsule")!.box;
+  const dir = handWritten("resting", input.rows, input.lines);
+  const hits: { does: string; box: Box }[][] = JSON.parse(execFileSync(join(root, "body", ".build", "debug", "paral-headless"), ["hits", dir, join(root, "body", "tokens.json"), ...input.at.map(String)], { encoding: "utf8" }));
+  return at(dir, input.at).map(({ placed, capsule }, index) => {
     const cross = placed.find((item) => item.what === "cross")?.box;
-    if (!cross) return { look: capsule.look, cross: null };
-    const middle = { x: cross.x + cross.w / 2, y: cross.y + cross.h / 2 };
-    return { look: capsule.look, cross: { whereAClickIsTaken: Math.hypot(middle.x - taken.x, middle.y - taken.y) < 0.5, capsuleWiderThanTheCross: pill.w > cross.w + 1, nameToItsLeft: pill.x < cross.x - 1 && Math.abs(pill.x + pill.w - (cross.x + cross.w)) < 0.5 } };
+    const orb = placed.find((item) => item.what === "orb")?.box;
+    const middle = (box: Box) => ({ x: box.x + box.w / 2, y: box.y + box.h / 2 });
+    const where = !orb ? null : Math.abs(middle(orb).x - DISPLAY.w / 2) < 0.5 ? "at the display's middle" : "off the middle";
+    if (!cross) return { look: capsule.look, cross: null, orb: where };
+    const taken = hits[index].find((hit) => hit.does === "cross")?.box;
+    const same = taken !== undefined && (["x", "y", "w", "h"] as const).every((side) => Math.abs(taken[side] - cross[side]) < 0.5);
+    const right = orb !== undefined && cross.x >= orb.x + orb.w - 0.5 && Math.abs(middle(cross).y - middle(orb).y) < 0.5;
+    return { look: capsule.look, cross: { aClickIsTakenWhereItIsDrawn: same, rightOfTheOrb: right }, orb: where };
   });
 }
 

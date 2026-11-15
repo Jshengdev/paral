@@ -1,23 +1,35 @@
 import AppKit
 
 extension Painter {
-    /// The voice pill, after the design kit's: one light capsule whose size changes between the collapsed pill (a
-    /// row of dots) and the full pill (a stop control, the wave, a send control), with the bubble that carries its
-    /// words above it (`PainterBubble.swift`). At rest with paral's ink on the page it is the cross that clears it,
-    /// wearing the logo mark and the name. The two controls are drawn as the kit draws them and take no click: paral
-    /// is held and let go. It stays at the bottom centre and covers what is under it; `texts` no longer moves it.
-    /// Gives back the capsule's box, the cross's own when it carries one, and the bubble's.
-    func capsule(_ c: CapsulePicture, avoiding texts: [Box], _ ctx: CGContext) -> (box: Box, cross: Box?, bubble: Box?) {
+    /// The voice pill, after the design kit's: one light capsule whose size changes between the orb it shuts into at
+    /// rest (`PainterOrb.swift`, the designer's orb handoff) and the full pill (a stop control, the wave, a send
+    /// control), with the bubble that carries its words above it (`PainterBubble.swift`). The pill grows out of the
+    /// orb: its surface comes in over the first half of the opening as the orb goes, and its controls over the
+    /// second. At rest with paral's ink on the page the cross that clears it sits beside the orb. The two controls
+    /// are drawn as the kit draws them and take no click: paral is held and let go. It stays at the bottom centre and
+    /// covers what is under it; `texts` no longer moves it. Gives back the capsule's box, the cross's own when it
+    /// carries one, the bubble's, and the orb's square of light while it is drawn.
+    func capsule(_ c: CapsulePicture, avoiding texts: [Box], _ ctx: CGContext) -> (box: Box, cross: Box?, bubble: Box?, orb: Box?) {
         let k = tokens.capsule
         let (core, box, full) = places(c, avoiding: texts)
-        let name = inked(tokens.strings.name, size: k.tagType, color: ink, weight: .medium)
-        let room = (k.restClose - k.rest) / 2
-        let rect = CGRect(x: box.x, y: box.y, width: box.w, height: box.h)
-        let radius = min(box.h / 2, k.radius)
+        let rect = CGRect(x: core.x, y: core.y, width: core.w, height: core.h)
+        let radius = min(core.h / 2, k.radius)
         let bubble = c.bubble > 0 ? self.bubble(c, over: full, ctx) : nil
-        surface(CGPath(roundedRect: rect, cornerWidth: radius, cornerHeight: radius, transform: nil), ctx)
+        ctx.saveGState()
+        defer { ctx.restoreGState() }
+        if c.open > 0 {
+            ctx.setAlpha(min(1, 2 * c.open))
+            ctx.beginTransparencyLayer(auxiliaryInfo: nil)
+            surface(CGPath(roundedRect: rect, cornerWidth: radius, cornerHeight: radius, transform: nil), ctx)
+            ctx.endTransparencyLayer()
+        }
+        let glow = c.orb.flatMap { orb($0, alpha: 1 - 2 * c.open, ctx) }
         if c.closes, c.open < 0.05 {
-            let middle = CGPoint(x: core.x + core.w / 2, y: core.y + core.h / 2), arm = core.w * 0.19
+            let cross = Layout.cross(width: width, height: floor, tokens: tokens)
+            let circle = CGRect(x: cross.x, y: cross.y, width: cross.w, height: cross.h)
+            let middle = CGPoint(x: circle.midX, y: circle.midY), arm = cross.w * 0.19
+            ctx.setAlpha(1)
+            surface(CGPath(ellipseIn: circle, transform: nil), ctx)
             ctx.setStrokeColor(ink)
             ctx.setLineWidth(1.8)
             ctx.setLineCap(.round)
@@ -26,18 +38,7 @@ extension Painter {
                 ctx.addLine(to: CGPoint(x: middle.x + arm, y: middle.y + arm * turn))
             }
             ctx.strokePath()
-            // The name and the logo are written from the cross leftward, so they stand still while the capsule shuts.
-            let words = name.size(), left = middle.x - k.restClose / 2 - room - words.width
-            name.draw(at: CGPoint(x: left, y: middle.y - words.height / 2))
-            logo(middle: CGPoint(x: left - room - k.rest / 2, y: middle.y), across: k.rest, ctx)
-            return (box, core, bubble)
-        }
-        // The collapsed pill's dots go as it opens, and the controls come in their place.
-        ctx.saveGState()
-        defer { ctx.restoreGState() }
-        if !c.closes, c.open < 0.5 {
-            ctx.setAlpha(1 - 2 * c.open)
-            dots(Int(k.dots), across: rect.midX, at: rect.midY, ink: k.dotInk, ctx)
+            return (box, cross, bubble, glow)
         }
         if c.open > 0.5 {
             ctx.setAlpha(2 * c.open - 1)
@@ -48,24 +49,21 @@ extension Painter {
             ctx.setAlpha(1)
             logo(middle: CGPoint(x: full.x - k.gap - k.face / 2, y: full.y + full.h / 2), across: k.face * (1 + tokens.cursor.workGrows * working), ctx)
         }
-        return (box, nil, bubble)
+        return (box, nil, bubble, glow)
     }
 
-    /// Where the capsule is at this moment: its own shape (the pill, or the cross alone), all it takes with the logo
-    /// and name the cross wears, and the full pill where it sits open. At rest with paral's ink on the page the
-    /// capsule is a cross that clears it. A cross alone over a line of the page reads as a stray button, so it wears
-    /// the logo and the name to its left: whose cross this is. The room for the name opens as the capsule shuts. The
-    /// logo is the resting one, and the room round it is what is left of the cross's circle.
+    /// Where the capsule is at this moment: its own shape (the pill, or the orb's blob when it is shut), all it takes
+    /// with the cross beside the orb at rest, and the full pill where it sits open.
     func places(_ c: CapsulePicture, avoiding texts: [Box]) -> (core: Box, box: Box, full: Box) {
-        let k = tokens.capsule
-        let name = inked(tokens.strings.name, size: k.tagType, color: ink, weight: .medium).size().width
-        let wear = 3 * (k.restClose - k.rest) / 2 + k.rest + name
-        let core = Layout.pill(open: c.open, closes: c.closes, width: width, height: floor, tokens: tokens)
-        let worn = c.closes ? wear * (1 - c.open) : 0
-        return (core, Box(x: core.x - worn, y: core.y, w: core.w + worn, h: core.h), Layout.pill(open: 1, width: width, height: floor, tokens: tokens))
+        let core = Layout.pill(open: c.open, width: width, height: floor, tokens: tokens)
+        let full = Layout.pill(open: 1, width: width, height: floor, tokens: tokens)
+        guard c.closes, c.open < 0.05 else { return (core, core, full) }
+        let cross = Layout.cross(width: width, height: floor, tokens: tokens)
+        let top = min(core.y, cross.y)
+        return (core, Box(x: core.x, y: top, w: cross.x + cross.w - core.x, h: max(core.y + core.h, cross.y + cross.h) - top), full)
     }
 
-    /// What the capsule takes at this moment, for an arrow to keep off: the pill, or the cross with its name, and the
+    /// What the capsule takes at this moment, for an arrow to keep off: the pill, or the orb with its cross, and the
     /// bubble while it is up.
     func takes(_ c: CapsulePicture, avoiding texts: [Box]) -> Box {
         let (_, pill, full) = places(c, avoiding: texts)

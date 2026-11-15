@@ -128,7 +128,7 @@
     "says": "Listening",
     "stone": [],
     "caret": true,
-    "aboveThePill": 21.5,
+    "aboveThePill": 10,
     "onText": false
    },
    "wave": "ink: dot dot dot dot dot dot dot dot dot"

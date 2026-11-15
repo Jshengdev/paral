@@ -4,13 +4,12 @@ import Foundation
 public struct Tokens: Codable {
     /// The voice pill, after the design kit's: open it is `width` by `height`, with a stop control, the wave and a
     /// send control of `control` across, `pad` in from its edge and `gap` apart, its foot `bottom` above the Dock.
-    /// At rest it is collapsed to `collapsedWidth` by `collapsedHeight` with a row of `dots` in ink at `dotInk`; at
-    /// rest with paral's ink on the page it is the cross of `restClose` with the logo mark of `rest` and the name in
-    /// `tagType`. The stop square, its corner and the send arrow's line; `face`, the logo mark that breathes by the
-    /// pill while paral works and no cursor is on the page. `type` is the bubble's words.
+    /// At rest it is shut into the orb (`orb`); with paral's ink on the page the cross of `restClose` sits beside
+    /// the orb. The stop square, its corner and the send arrow's line; `face`, the logo mark that breathes by the
+    /// pill while paral works and no cursor is on the page. `type` is the bubble's words, `tagType` the trail's.
     public struct Capsule: Codable {
-        public var rest, restClose, width, height, radius, bottom, pad, gap, control, type, tagType: Double
-        public var collapsedWidth, collapsedHeight, dots, dotInk, stopSquare, stopCorner, arrowLine, face: Double
+        public var restClose, width, height, radius, bottom, pad, gap, control, type, tagType: Double
+        public var stopSquare, stopCorner, arrowLine, face: Double
     }
     /// The pill's wave, after the kit's: `width` by `height`, one sample every `sampleMs` at a `pitch` apart, each a
     /// dot of `dot` (a level under `quiet`, drawn at `quietInk`), a bar `bar` by `short` (under `loud`) or `bar` by
@@ -173,6 +172,7 @@ public struct Tokens: Codable {
     public var band: Double
     public var dim: Double
     public var capsule: Capsule
+    public var orb: Orb
     public var wave: Wave
     public var bubble: Bubble
     public var mark: Mark
@@ -204,7 +204,7 @@ public struct Tokens: Codable {
             \.toast.type, \.toast.pad, \.toast.gap,
             \.mark.width, \.mark.boxWidth, \.mark.boxPadX, \.mark.boxPadY, \.mark.boxRadius, \.lead.width,
             \.capsule.width, \.capsule.height, \.capsule.radius, \.capsule.pad, \.capsule.gap, \.capsule.control, \.capsule.type,
-            \.capsule.collapsedWidth, \.capsule.collapsedHeight, \.capsule.stopSquare, \.capsule.stopCorner, \.capsule.arrowLine, \.capsule.face,
+            \.orb.size, \.capsule.stopSquare, \.capsule.stopCorner, \.capsule.arrowLine, \.capsule.face,
             \.wave.width, \.wave.height, \.wave.pitch, \.wave.dot, \.wave.bar, \.wave.short, \.wave.tall,
             \.bubble.padX, \.bubble.padY, \.bubble.radius, \.bubble.gap, \.bubble.maxWidth, \.bubble.caretWidth, \.bubble.caretHeight, \.bubble.caretGap, \.bubble.rise,
             \.nudge.width, \.nudge.pad, \.nudge.radius, \.nudge.gap, \.nudge.avatar, \.nudge.nameGap, \.nudge.nameType, \.nudge.trailType,

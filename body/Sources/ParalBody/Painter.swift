@@ -155,7 +155,7 @@ public struct Painter {
             let up = drawn.filter { ["board", "clip", "way", "toast", "guide", "chip"].contains($0.what) }.map(\.box)
             let card = self.nudge(nudge, avoiding: picture.avoid, taken: up, marks: picture.marks + (picture.echo.map { [$0] } ?? []), tags: picture.tags, cursor: picture.pointer != nil, ctx)
             // Where no place is clear of the page's words its line is shown in the capsule, as it was before the card.
-            if card.isEmpty { spoken = CapsulePicture(look: .speaking, open: min(nudge.coming.card, 1 - nudge.coming.gone), words: nudge.words, note: nil, bubble: min(nudge.coming.card, 1 - nudge.coming.gone), trail: nudge.trail, ask: nudge.id) }
+            if card.isEmpty { spoken = CapsulePicture(look: .speaking, open: min(nudge.coming.card, 1 - nudge.coming.gone), words: nudge.words, note: nil, bubble: min(nudge.coming.card, 1 - nudge.coming.gone), trail: nudge.trail, ask: nudge.id, orb: picture.capsule.orb) }
             drawn += card
         }
         // The cursor stays on the display: where its mark or its arrow runs to an edge, it stops short of the edge.
@@ -178,6 +178,8 @@ public struct Painter {
         // and the bubble, which carries the pill's words.
         if let cross = pill.cross { drawn.append(Drawn(what: "cross", id: nil, box: cross)) }
         if let bubble = pill.bubble { drawn.append(Drawn(what: "bubble", id: nil, box: bubble)) }
+        // The orb's square of light, while it is drawn: the overlay draws only that square again while nothing else moves.
+        if let orb = pill.orb { drawn.append(Drawn(what: "orb", id: nil, box: orb)) }
         return drawn
     }
 }

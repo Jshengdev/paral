@@ -48,8 +48,8 @@ export function moves(input: { lines: string[]; rows: Written[]; at: number[]; w
   // record joins the two strokes, so the step from the shaft's end to the head's first barb is taken off.
   const whole = arrow(last) ?? [];
   const head = long(whole.slice(-3)), shaft = long(whole.slice(0, -3)), step = long(whole) - head - shaft;
-  // The pill at rest is collapsed to a row of dots; open it is the full pill.
-  const rest = Math.min(tokens.capsule.width, DISPLAY.w - 48) - tokens.capsule.collapsedWidth;
+  // The pill at rest is shut into the orb, its blob as wide as the orb's light times its share; open it is the full pill.
+  const blob = tokens.orb.size * tokens.orb.blob, rest = Math.min(tokens.capsule.width, DISPLAY.w - 48) - blob;
   const firstShown = moments.find((moment) => moment.pointer)?.pointer;
   const lands = input.cursorLandsAt === undefined ? last.pointer : at(dir, [input.cursorLandsAt])[0].pointer;
   const far = (pointer: { x: number; y: number } | null) => (pointer && lands ? Math.hypot(pointer.x - lands.x, pointer.y - lands.y) : 0);
@@ -57,7 +57,7 @@ export function moves(input: { lines: string[]; rows: Written[]; at: number[]; w
   return moments.map((moment) => {
     const inked = long(arrow(moment));
     const all: Record<string, unknown> = {
-      capsule: places((moment.placed.find((item) => item.what === "capsule")!.box.w - tokens.capsule.collapsedWidth) / rest),
+      capsule: places((moment.placed.find((item) => item.what === "capsule")!.box.w - blob) / rest),
       ink: places(long(mark(moment)) / Math.max(long(mark(last)), 1)),
       arrow: { shaft: places(Math.min(inked, shaft) / Math.max(shaft, 1)), head: places(Math.max(inked - shaft - step, 0) / Math.max(head, 1)) },
       cursorToGo: moment.pointer ? places(far(moment.pointer) / Math.max(far(firstShown ?? null), 1)) : null,

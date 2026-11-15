@@ -21,7 +21,7 @@ func why(_ error: Error) -> String {
 // the cure; it costs nothing.
 _ = Bundle.main.infoDictionary
 
-let usage = "usage: read PICTURE | smaller PICTURE OUT.jpg LONG_EDGE | same PICTURE PICTURE | rounds ROUNDS.json | page OUT.png LINE... | lines | keys SECONDS rightOption|fn|controlOption | flow FLOW.json SOCKET TOKENS.json | film RUN_DIR TOKENS.json | frame RUN_DIR TOKENS.json MS OUT.png | capsule RUN_DIR TOKENS.json MS... | placed RUN_DIR TOKENS.json MS... | apart RUN_DIR TOKENS.json MS MARGIN | hits RUN_DIR TOKENS.json MS... | usc ADDRESS... | notes PATH... | centre < BANK.json | curves TOKENS.json SHARE..."
+let usage = "usage: read PICTURE | smaller PICTURE OUT.jpg LONG_EDGE | same PICTURE PICTURE | rounds ROUNDS.json | page OUT.png LINE... | lines | keys SECONDS rightOption|fn|controlOption | flow FLOW.json SOCKET TOKENS.json | film RUN_DIR TOKENS.json | frame RUN_DIR TOKENS.json MS OUT.png | capsule RUN_DIR TOKENS.json MS... | placed RUN_DIR TOKENS.json MS... | apart RUN_DIR TOKENS.json MS MARGIN | hits RUN_DIR TOKENS.json MS... | usc ADDRESS... | notes PATH... | centre < BANK.json | curves TOKENS.json SHARE... | orb TOKENS.json SIDE FRAMES OUT.png SECONDS..."
 let arguments = Array(CommandLine.arguments.dropFirst())
 
 switch arguments.first {
@@ -161,6 +161,12 @@ case "curves":
     guard arguments.count >= 3, let curves = try? Tokens.load(arguments[1]).curves else { fail(usage) }
     let shares = arguments.dropFirst(2).compactMap(Double.init)
     out(["arrive": shares.map { curves.arrive($0) }, "travel": shares.map { curves.travel($0) }, "leave": shares.map { curves.leave($0) }, "pop": shares.map { curves.pop($0) }])
+
+case "orb":
+    // The orb's light (`OrbLight.swift`) at its tokens: one frame SIDE pixels square at each of the given seconds, drawn
+    // FRAMES times over to time it; what one frame cost and a few of its pixels, and the last one saved as OUT.png.
+    guard arguments.count >= 6, let tokens = try? Tokens.load(arguments[1]), let side = Int(arguments[2]), let times = Int(arguments[3]) else { fail(usage) }
+    out(Film.orb(tokens, side: side, times: times, at: arguments.dropFirst(5).compactMap(Double.init), to: arguments[4]))
 
 case "keys":
     guard arguments.count == 3, let seconds = Double(arguments[1]), let which = Key.Which(rawValue: arguments[2]) else { fail(usage) }

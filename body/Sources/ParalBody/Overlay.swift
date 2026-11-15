@@ -37,6 +37,8 @@ public final class Overlay {
     public func repaint() { stale = true }
     /// Where each thing that takes a click was drawn last, and the button the mouse went down on, while it is down.
     private var hits: [(hit: Hit, box: Box)] = []
+    /// Where the orb's square of light was drawn last, if it was.
+    private var orb: Box?
     private var held: Hit?
 
     public init(screen: NSScreen, painter: Painter, picture: @escaping () -> Picture) {
@@ -59,6 +61,7 @@ public final class Overlay {
             let placed = apart.paint(shown, into: ctx)
             self.guide.show(shown, placed: placed, painter: self.painter)
             self.hits = Overlay.hits(placed, shown)
+            self.orb = placed.first { $0.what == "orb" }?.box
         }
         // The cross clears at the press, as it always has; a button is pressed at the press and asks at the release.
         canvas.onDown = { [weak self] point in
@@ -80,9 +83,13 @@ public final class Overlay {
             let over = self.held != nil || self.hit(at: self.pointer) != nil
             if self.window.ignoresMouseEvents == over { self.window.ignoresMouseEvents = !over }
             guard now != self.shown || self.stale else { return }
+            // While only the orb has moved (thirty times a second at rest), only its square is drawn again.
+            var before = self.shown
+            before?.capsule.orb = now.capsule.orb
+            let onlyOrb = !self.stale && before == now
             self.stale = false
             self.shown = now
-            self.canvas.needsDisplay = true
+            if onlyOrb, let box = self.orb { self.canvas.setNeedsDisplay(CGRect(x: box.x, y: box.y, width: box.w, height: box.h)) } else { self.canvas.needsDisplay = true }
         }
         RunLoop.main.add(timer, forMode: .common)
         self.timer = timer

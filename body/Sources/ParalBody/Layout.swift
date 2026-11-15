@@ -5,9 +5,9 @@ import Foundation
 public enum Layout {
     /// What the voice pill takes at the bottom, for what keeps off it: open, the pill at the display's middle and the
     /// room above it its bubble may take (`LayoutPill.swift`), `taller` higher when the bubble carries a trail above
-    /// its words; at rest, the collapsed pill or, with `closes`, the cross alone, which is where a click on it is taken.
-    public static func capsule(open: Double, closes: Bool = false, taller: Double = 0, width: Double, height: Double, tokens: Tokens) -> Box {
-        let shut = pill(open: open, closes: closes, width: width, height: height, tokens: tokens)
+    /// its words; at rest, the orb's blob.
+    public static func capsule(open: Double, taller: Double = 0, width: Double, height: Double, tokens: Tokens) -> Box {
+        let shut = pill(open: open, width: width, height: height, tokens: tokens)
         guard open > 0 else { return shut }
         let room = bubbleRoom(over: pill(open: 1, width: width, height: height, tokens: tokens), trail: taller, tokens: tokens)
         let x = min(shut.x, room.x), y = min(shut.y, room.y)

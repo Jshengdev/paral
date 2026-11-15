@@ -23,6 +23,7 @@ import { settings } from "../mind/settings.ts";
 import { keptLook, keptVoice, standIn } from "./runners/adapters.ts";
 import { capsule, cardOnFilm, filmed, landing, pressedAgain, sameToTheWatcher } from "./runners/body.ts";
 import { pill } from "./runners/pill.ts";
+import { orbLight, orbWakes } from "./runners/orb.ts";
 import { linesToTheMind, pillOnInk } from "./runners/ink.ts";
 import { stopped } from "./runners/stop.ts";
 import { notesRuns } from "./runners/notes.ts";
@@ -90,7 +91,7 @@ const runs: Record<string, (input: any) => unknown> = {
   "body.resting": resting,
   "body.cursorInside": cursorInside,
   "body.inkInside": inkInside,
-  "body.pill": pill,
+  "body.pill": pill, "body.orbLight": orbLight, "body.orbWakes": orbWakes,
   "body.pillOnInk": pillOnInk,
   "body.linesToTheMind": linesToTheMind,
   "body.boardType": boardType,
