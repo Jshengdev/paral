@@ -325,8 +325,12 @@
    "id": "g1",
    "rows": [
     [
-     "Officers finish their training",
-     "Submit the application: November 22 at 11:59pm",
+     "Officers finish their training"
+    ],
+    [
+     "Submit the application: November 22 at 11:59pm"
+    ],
+    [
      "Advisor requirements: December 1"
     ]
    ]
@@ -371,8 +375,12 @@
    "id": "g2",
    "rows": [
     [
-     "Officers finish their training",
-     "Submit the application: November 22 at 11:59pm",
+     "Officers finish their training"
+    ],
+    [
+     "Submit the application: November 22 at 11:59pm"
+    ],
+    [
      "Advisor requirements: December 1"
     ]
    ]

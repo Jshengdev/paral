@@ -4,12 +4,13 @@ import { hear, silence, type Words } from "./cores/catch.ts";
 import { fitted } from "./cores/beats.ts";
 import { circled, drew, echo, type Point } from "./cores/circle.ts";
 import { showable } from "./cores/fit.ts";
-import { empty, type Lesson } from "./cores/hold.ts";
-import { whichPage } from "./cores/page.ts";
+import { empty, fold, type Lesson } from "./cores/hold.ts";
+import { whichPage, type KeptPage } from "./cores/page.ts";
 import { glances, type Ahead, type Asked } from "./glance.ts";
 import { keeps } from "./keep.ts";
 import { drafts } from "./drafts.ts";
 import type { Listening, Ports } from "./ports.ts";
+import { ready } from "./ready.ts";
 import type { Settings } from "./settings.ts";
 import { speech } from "./speech.ts";
 import { SEAM_VERSION, type FromBody, type FromMind } from "../seam/schema.ts";
@@ -25,8 +26,12 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
   let words: Words = silence;
   let lesson: Lesson = empty;
   let markUp = false;
+  /** The kept page on his screen as last seen (null: none of them), and the one that was there when what is drawn was drawn. */
+  let onPage: KeptPage | null = null;
+  let drawnOn: KeptPage | null = null;
+  const which = (seen: Screen) => whichPage(seen.lines.map((line) => line.text), ports.pages, settings.pageLeastLines.value);
   const send: Send = (line) => {
-    if (line.type === "mark" || line.type === "board" || line.type === "clip") markUp = true;
+    if (line.type === "mark" || line.type === "board" || line.type === "clip") [markUp, drawnOn] = [true, onPage];
     if (line.type === "clear") markUp = false;
     toBody(line);
   };
@@ -155,9 +160,8 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
       // What he asked and was told is kept for a while: if he now goes to another kept page, the next look is for
       // what he was sent there for.
       const told = lesson.shown.filter((line) => !shownBefore.includes(line));
-      const here = whichPage(screen.lines.map((line) => line.text), ports.pages, settings.pageLeastLines.value);
-      if (!mine.signal.aborted && told.length > 0) asked = { words: words.text, told, page: here?.name ?? null, at: Date.now() };
-      keeping.answered(told, here ? [here, ...ports.pages] : ports.pages);
+      if (!mine.signal.aborted && told.length > 0) asked = { words: words.text, told, page: onPage?.name ?? null, at: Date.now() };
+      keeping.answered(told, onPage ? [onPage, ...ports.pages] : ports.pages);
       if (!mine.signal.aborted) send({ v, type: "state", name: "idle" });
     } catch (error) {
       if (mine.signal.aborted) return;
@@ -171,31 +175,28 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
     take(line: FromBody): void | Promise<void> {
       switch (line.type) {
         case "hello":
-          return send({
-            v,
-            type: "ready",
-            mind: "paral",
-            holdKey: settings.holdKey.value,
-            drawKey: settings.drawKey.value,
-            earGraceMs: settings.earGraceMs.value,
-            markPad: settings.markPad.value,
-            pictureLongEdge: settings.pictureLongEdge.value,
-            cropAround: settings.cropAround.value,
-            // The body looks without a key only when there is something to look for: kept pages, and a model to ask.
-            ...(ports.glancer !== null && ports.pages.length > 0 && settings.lookEveryMs.value > 0 ? { lookEveryMs: settings.lookEveryMs.value } : {}),
-          });
+          return send(ready(ports, settings));
         case "key.down":
           return down(line.at);
         case "mic":
           return listening?.sound(Buffer.from(line.pcm, "base64"));
         case "screen":
           screen = line;
+          onPage = which(line);
           return screenCame?.();
         case "key.up":
           return up(line.at);
         case "look":
           // A look he did not ask for never cuts into a hold or an answer.
           if (listening !== null || answering > 0) return;
+          onPage = which(line);
+          // Another page has come up: what was drawn for the kept page before it points at nothing now, and goes.
+          if (markUp && drawnOn !== null && onPage !== drawnOn) {
+            glancing.stop();
+            lesson = fold(lesson, { type: "wiped" });
+            send({ v, type: "clear" });
+            log(`the page on his screen is no longer "${drawnOn.title}"; what was drawn for it is cleared`);
+          }
           return glancing.take(line, asked !== null && Date.now() - asked.at < settings.followForMs.value ? asked : null);
         case "trail":
           return void trail.push({ x: line.x, y: line.y });

@@ -89,8 +89,9 @@ export function glances({ ports, settings, send, log }: Hands, remember: (ahead:
       const trail = following ? ["saw this page", "found what you asked for"] : first ? ["saw this page", read, `found 1 ${glanced.kind}`] : ["saw this page", reached];
       send({ v, type: "say", id, beat: 0, text, trail });
       send({ v, type: "mute", id, why: "a look he did not ask for is shown, not spoken" });
-      // What is ahead stays drawn while he is on this page: it is sent again each time the mark moves.
-      if (glanced.ahead.length > 0) send({ v, type: "board", id, rows: [glanced.ahead.map((step) => (step.by ? `${step.step}: ${step.by}` : step.step))] });
+      // What is ahead stays drawn while he is on this page: it is sent again each time the mark moves. One step to a
+      // row: three steps with their dates side by side were shrunk to fit, down to words no one could read.
+      if (glanced.ahead.length > 0) send({ v, type: "board", id, rows: glanced.ahead.map((step) => [step.by ? `${step.step}: ${step.by}` : step.step]) });
       if (glanced.kind === "date") showed({ title: named(glanced.line, page.title), written: glanced.line, url: page.url });
       log(`${id}: shown without being asked: "${text}"; the mark is on ${target ? `"${target.line}"` : "nothing, since neither the line nor its heading is in view"}`);
     },

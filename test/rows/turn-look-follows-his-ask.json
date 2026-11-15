@@ -302,8 +302,12 @@
    "id": "g1",
    "rows": [
     [
-     "Officers finish their training",
-     "Submit the application: November 22 at 11:59pm",
+     "Officers finish their training"
+    ],
+    [
+     "Submit the application: November 22 at 11:59pm"
+    ],
+    [
      "Advisor requirements: December 1"
     ]
    ]
@@ -347,6 +351,10 @@
    "v": 1,
    "type": "state",
    "name": "idle"
+  },
+  {
+   "v": 1,
+   "type": "clear"
   },
   {
    "v": 1,

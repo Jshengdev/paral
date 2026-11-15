@@ -134,7 +134,8 @@ extension Scene {
         let ask = asks.first { $0.id == board.id }
         let begun = ask.map { times($0).filter { $0.beat >= 0 && $0.start <= t }.count } ?? board.rows.count
         let over = ask.map { ask in times(ask).last.map { $0.end <= t && $0.beat == ask.beats.keys.max() } ?? false } ?? true
-        let shown = over ? board.rows.count : min(board.rows.count, max(1, begun))
+        // A board shown without being asked comes whole: nothing is spoken for its rows to keep step with.
+        let shown = over || ask?.trail != nil ? board.rows.count : min(board.rows.count, max(1, begun))
         let appear = still ? 1 : Motion.ease((t - board.at) / ms(tokens.motion.boardMs))
         // Until its rows have arrived the card is empty, whatever a later moment made of it.
         let rows = board.filledAt.map { t >= $0 } ?? true ? board.rows : []
