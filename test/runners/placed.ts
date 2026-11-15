@@ -12,6 +12,7 @@ type Moment = {
   pointer: { x: number; y: number; ripple: number | null; flight: number | null; tag: boolean; thinking: boolean } | null;
   board: { id: string; now: number | null; appear: number } | null;
   toast: string | null;
+  guide: { text: string; n: number | null; of: number | null; appear: number } | null;
 };
 
 const root = join(import.meta.dirname, "..", "..");
@@ -19,7 +20,9 @@ const headless = join(root, "body", ".build", "debug", "paral-headless");
 const DISPLAY = { w: 1600, h: 1000 };
 const touches = (a: Box, b: Box) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
 const textOf = (dir: string): Box[] => session(dir)[0].lines.map((line: { box: Box }) => line.box);
-const at = (dir: string, moments: number[]): Moment[] => JSON.parse(execFileSync(headless, ["placed", dir, join(root, "body", "tokens.json"), ...moments.map(String)], { encoding: "utf8" }));
+// `guideOff` is the menu's "Show the guide" unticked: no seam line carries it, so the probe is told by the environment.
+const at = (dir: string, moments: number[], guideOff = false): Moment[] =>
+  JSON.parse(execFileSync(headless, ["placed", dir, join(root, "body", "tokens.json"), ...moments.map(String)], { encoding: "utf8", env: { ...process.env, PARAL_GUIDE: guideOff ? "off" : "on" } }));
 
 /**
  * At each moment: whether the arrow is up and, if it is, what it leads to, how far the pen has inked it, which edge
@@ -129,4 +132,35 @@ export function toast(input: { lines: string[]; rows: Written[]; at: number[] })
       },
     };
   });
+}
+
+/**
+ * The guide's card, which says what to do next, at each moment of a hand-written run: whether it is up, what it
+ * says and which step it names, whether it is still fading in, and whether it lies inside the display and off the
+ * page's text, the capsule, the board, the way arrow and the toast. Then the same moments with the guide switched
+ * off in the menu: how many of them show a card.
+ */
+export function guide(input: { lines: string[]; rows: Written[]; at: number[] }) {
+  const dir = handWritten("guide", input.rows, input.lines);
+  const text = textOf(dir);
+  const shown = at(dir, input.at).map(({ placed, guide }) => {
+    const box = placed.find((item) => item.what === "guide")?.box;
+    if (!guide || !box) return { card: null };
+    const on = (what: string) => placed.some((item) => item.what === what && touches(item.box, box));
+    return {
+      card: {
+        says: guide.text,
+        step: guide.n === null || guide.of === null ? null : `${guide.n} of ${guide.of}`,
+        fadingIn: guide.appear < 1,
+        insideTheDisplay: box.x >= 0 && box.y >= 0 && box.x + box.w <= DISPLAY.w && box.y + box.h <= DISPLAY.h,
+        onText: text.some((line) => touches(line, box)),
+        onTheCapsule: on("capsule"),
+        onTheBoard: on("board"),
+        onTheArrow: on("way"),
+        onTheToast: on("toast"),
+      },
+    };
+  });
+  const cardsWithTheGuideOff = at(dir, input.at, true).filter(({ placed }) => placed.some((item) => item.what === "guide")).length;
+  return { shown, cardsWithTheGuideOff };
 }

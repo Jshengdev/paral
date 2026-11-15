@@ -40,10 +40,14 @@ public struct Tokens: Codable {
         /// How long it stays once it is up.
         public var stayMs: Double
     }
+    /// The guide's card, after the design kit's nudge: how wide it is, the room inside it, its corner, the size of
+    /// its words and of the small line above them, the orb's width, the gap between the two lines, and how far from
+    /// the top and the side of the display it sits (the top clears the Mac's menu bar, 37 points on a notched display).
+    public struct Guide: Codable { public var width, pad, radius, type, small, orb, gap, top, side: Double }
     /// `opened` is what the toast says when a date has been opened in his calendar. It does not say "added": whether
     /// Calendar asks first or adds at once is not known.
     /// `name` is what the cursor's tag says: whose cursor it is.
-    public struct Strings: Codable { public var thinking, listening, failed, opened, name: String }
+    public struct Strings: Codable { public var thinking, listening, failed, opened, name, step: String }
 
     public var ink, paper, accent: String
     /// The typeface everything is written in (empty for the system's), and its optical size where it has one. The
@@ -68,6 +72,7 @@ public struct Tokens: Codable {
     public var way: Way
     public var cursor: Cursor
     public var toast: Toast
+    public var guide: Guide
     public var motion: Motion
     public var strings: Strings
 

@@ -23,8 +23,16 @@ when; the body only draws. Nothing here takes a click except the cross, and noth
 | The way arrow (build's name; after the kit's drawn arrow) | the thing is on this page and not in view: which way to scroll, and its name on a tag | `way` (`to`, `toward`) | `clear`, a close, a newer `way`, or a `mark` with the same id | `way.*`, `ember`, `light`, `glass`, `shadow`, `mark.width` |
 | The board (build's name; in the kit's language of card and buttons) | what is still ahead, or the parts of an answer, as boxes on a light card. On a board of steps the step he is on is the ink button | `board` (`rows`; `now` for the step) | `clear`, a close, a `clip`; the same rows again keep the card in place | `board.*`, `light`, `mist`, `ink`, `glass`, `shadow`, `motion.boardMs` |
 | Toast | confirms something paral did: "Open in your calendar · November 22" beside the capsule | `open` (`label` for the date) | four seconds; a `clear` does not take it | `toast.*`, `strings.opened`, `cardinal`, `light`, `glass`, `shadow` |
+| Nudge, without its buttons (the guide's card) | says what to do next for the page he is on, and which step it is, so a first run needs no one beside him. The closing line comes when every step is done | `next` (`text`, `n`, `of`; `done` for the closing line) | a `next` with no words; the closing line goes by itself after the toast's stay; a `clear` does not take it. Not drawn at all when "Show the guide" is unticked in the menu | `guide.*`, `strings.step`, `strings.name`, `toast.stayMs`, `light`, `mist`, `glass`, `shadow`, `gold` |
 | The lesson clip (build's name; no frame in the kit) | a rendered clip on an example that is not his, in the board's place, on a dark card | `clip` | `clear`, a close, a `board` | `board.pad`, `board.radius`, `board.maxWidth`, `ink` |
 | His own trail and his loop (build's names; they are his, not paral's) | the path of his pointer while he draws with the draw key held, and that loop drawn back by hand once his words are final | `trail` (from the body), `echo` | the trail fades as he lets go; the echo goes at his next press or when paral marks inside it | `accent` (the trail), `ember` (the echo), `mark.width`, `motion.trailFadeMs` |
+
+Every light surface (the capsule, the board, the tags, the toast, the guide's card) is drawn by one function,
+`Painter.surface`: the light fill, a soft shadow, and a hairline edge in `mist` so that on a white page it does not
+run into the page's own lines. The guide's card sits in a corner (`Layout.corner`): the top right first, below the
+Mac's menu bar, then down that side, then the top left, on none of the page's read text, the marks, the board, the
+arrow, the toast or the capsule. "Show the guide" is one item at the top of the menu bar's menu (`GuideSwitch.swift`),
+ticked when the app starts; nothing crosses the seam for it.
 
 Not built from the kit: the nudge card's two buttons (the builder's cue cards in the menu are that), the pill's stop
 and send buttons (paral is held and let go), the cursor's click (paral clicks nothing), and the wordmark.
@@ -180,5 +188,5 @@ tokens' size times whatever the card was shrunk by.
 shows at those moments), `placed RUN TOKENS MS...` (where the painter puts each thing at those moments, and the way
 arrow's, the cursor's and the board's own values).
 
-Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way`, `body.cursor`, `body.steps`, `body.pages`, `body.toast` and `body.boardType` rows, with no window. The hosts are compiled and have never been run:
+Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way`, `body.cursor`, `body.steps`, `body.pages`, `body.toast`, `body.boardType` and `body.guide` rows, with no window. The hosts are compiled and have never been run:
 the key, the microphone, the screen picture and the overlay wait for a person and their grants (`./run`).

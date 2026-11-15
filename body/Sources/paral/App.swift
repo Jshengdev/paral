@@ -63,7 +63,7 @@ final class App: NSObject, NSApplicationDelegate {
         let menu = NSMenu()
         menu.addItem(withTitle: "Close this conversation", action: #selector(close), keyEquivalent: "").target = self
         menu.addItem(withTitle: "Quit Lost and Found", action: #selector(quit), keyEquivalent: "q").target = self
-        status.menu = menu
+        status.menu = GuideSwitch.shared.added(to: menu) { [weak self] on in self?.scene.guideOn = on }
         self.status = status
 
         mic.onSound = { [weak self] sound in

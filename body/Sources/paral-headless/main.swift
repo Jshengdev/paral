@@ -99,7 +99,8 @@ case "capsule":
 
 case "placed":
     guard arguments.count >= 4 else { fail(usage) }
-    do { out(try Film.placed(run: arguments[1], tokens: try Tokens.load(arguments[2]), at: arguments.dropFirst(3).compactMap(Double.init))) } catch { fail(why(error)) }
+    // PARAL_GUIDE=off stands for the menu's "Show the guide" unticked, which no line of a record carries.
+    do { out(try Film.placed(run: arguments[1], tokens: try Tokens.load(arguments[2]), at: arguments.dropFirst(3).compactMap(Double.init), guide: ProcessInfo.processInfo.environment["PARAL_GUIDE"] != "off")) } catch { fail(why(error)) }
 
 case "keys":
     guard arguments.count == 3, let seconds = Double(arguments[1]), let which = Key.Which(rawValue: arguments[2]) else { fail(usage) }

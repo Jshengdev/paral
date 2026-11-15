@@ -27,12 +27,7 @@ extension Painter {
         ctx.saveGState()
         defer { ctx.restoreGState() }
         ctx.setAlpha(toast.appear)
-        ctx.saveGState()
-        ctx.setShadow(offset: .zero, blur: tokens.shadow, color: CGColor(gray: 0, alpha: 0.28))
-        ctx.addPath(shape)
-        ctx.setFillColor(light.copy(alpha: tokens.glass) ?? light)
-        ctx.fillPath()
-        ctx.restoreGState()
+        surface(shape, ctx)
 
         let spot = CGRect(x: pill.minX + t.pad, y: pill.midY - round / 2, width: round, height: round)
         ctx.setFillColor(cardinal)

@@ -36,6 +36,8 @@ public enum Seen {
     case mark(id: String, beat: Int, kind: MarkKind, box: Box, label: String?)
     /// The thing is on this page and not in view: which way to scroll ("up" or "down") and what it leads to.
     case way(id: String, to: String, toward: String)
+    /// What to do next, for the guide's card, and which step it is of how many. No words: there is no next step.
+    case next(text: String, n: Int, of: Int, done: Bool)
     case echo(id: String, box: Box, shape: String)
     /// `now` is set on a board of steps: the number of the row that is the step he is on, from 0.
     case board(id: String, rows: [[String]], now: Int?)
@@ -122,6 +124,8 @@ public enum Seen {
                 return .failure(Refused("mark: id, beat, a known kind and a box with positive w and h are needed"))
             }
             return .success(.mark(id: id, beat: beat, kind: kind, box: b, label: s("label")))
+        case "next":
+            return .success(.next(text: s("text") ?? "", n: (f["n"] as? NSNumber)?.intValue ?? 0, of: (f["of"] as? NSNumber)?.intValue ?? 0, done: f["done"] as? Bool ?? false))
         case "way":
             guard let id, let to = s("to"), ["up", "down"].contains(to), let toward = s("toward"), !toward.isEmpty else { return .failure(Refused("way: id, to (up or down) and toward are needed")) }
             return .success(.way(id: id, to: to, toward: toward))

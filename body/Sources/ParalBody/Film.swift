@@ -75,11 +75,12 @@ public enum Film {
 
     /// Where the painter puts each thing at each of the given moments of a recorded run, and the way arrow's, the
     /// cursor's and the board's own values then. For rows: a film's record says when a thing's box changes, and not when the thing goes.
-    public static func placed(run: String, tokens: Tokens, at moments: [Double]) throws -> [[String: Any]] {
+    public static func placed(run: String, tokens: Tokens, at moments: [Double], guide: Bool = true) throws -> [[String: Any]] {
         let run = try load(URL(fileURLWithPath: run))
         let painter = Painter(tokens: tokens, width: run.w, height: run.h)
         return moments.map { moment in
             var scene = Scene(width: run.w, height: run.h, tokens: tokens)
+            scene.guideOn = guide
             for event in run.events where event.at <= moment { scene.take(event.seen, at: event.at) }
             let picture = scene.picture(at: moment)
             var placed: [Drawn] = []
@@ -87,7 +88,8 @@ public enum Film {
             let way: Any = picture.way.map { ["id": $0.id, "to": $0.down ? "down" : "up", "toward": $0.toward, "drawn": $0.drawn, "nod": $0.nod] as [String: Any] } ?? NSNull()
             let pointer: Any = picture.pointer.map { ["x": $0.x, "y": $0.y, "ripple": $0.ripple ?? NSNull(), "flight": $0.withWay?.flight ?? NSNull(), "tag": $0.tag, "thinking": $0.thinking] as [String: Any] } ?? NSNull()
             let board: Any = picture.board.map { ["id": $0.id, "now": $0.now ?? NSNull(), "appear": $0.appear] as [String: Any] } ?? NSNull()
-            return ["placed": placed.map { item in ["what": item.what, "id": item.id ?? "", "box": item.box.json] as [String: Any] }, "way": way, "pointer": pointer, "board": board, "toast": picture.toast?.text ?? NSNull()]
+            return ["placed": placed.map { item in ["what": item.what, "id": item.id ?? "", "box": item.box.json] as [String: Any] }, "way": way, "pointer": pointer, "board": board, "toast": picture.toast?.text ?? NSNull(),
+                    "guide": picture.guide.map { ["text": $0.text, "n": $0.n ?? NSNull(), "of": $0.of ?? NSNull(), "appear": $0.appear] as [String: Any] } ?? NSNull()]
         }
     }
 

@@ -38,12 +38,7 @@ extension Painter {
     func way(_ way: WayPicture, at place: WayPlace, _ ctx: CGContext) {
         let w = tokens.way
         let shape = CGPath(roundedRect: place.pill, cornerWidth: place.pill.height / 2, cornerHeight: place.pill.height / 2, transform: nil)
-        ctx.saveGState()
-        ctx.setShadow(offset: .zero, blur: tokens.shadow, color: CGColor(gray: 0, alpha: 0.28))
-        ctx.addPath(shape)
-        ctx.setFillColor(light.copy(alpha: tokens.glass) ?? light)
-        ctx.fillPath()
-        ctx.restoreGState()
+        surface(shape, ctx)
         place.name.draw(at: CGPoint(x: place.pill.minX + w.padX, y: place.pill.minY + w.padY))
 
         let inked = Pen.reach(strokes: strokes(way, place), way.drawn)

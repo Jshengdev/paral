@@ -38,6 +38,21 @@ public struct Painter {
         faces = Faces(family: tokens.font, optical: tokens.fontOptical)
     }
 
+    /// The light surface every card and pill is made of, after the design kit's: a nearly solid light fill with a
+    /// soft shadow, and a hairline edge in mist, so that on a white page it does not run into the page's own lines.
+    func surface(_ shape: CGPath, _ ctx: CGContext) {
+        ctx.saveGState()
+        ctx.setShadow(offset: .zero, blur: tokens.shadow, color: CGColor(gray: 0, alpha: 0.28))
+        ctx.addPath(shape)
+        ctx.setFillColor(light.copy(alpha: tokens.glass) ?? light)
+        ctx.fillPath()
+        ctx.restoreGState()
+        ctx.addPath(shape)
+        ctx.setStrokeColor(mist)
+        ctx.setLineWidth(1)
+        ctx.strokePath()
+    }
+
     /// Words in the look's typeface, ready to be measured and drawn.
     func inked(_ text: String, size: Double, color: CGColor, weight: NSFont.Weight = .regular) -> NSAttributedString {
         NSAttributedString(string: text, attributes: [.font: faces.face(size, weight), .foregroundColor: NSColor(cgColor: color) ?? .black])
@@ -79,6 +94,11 @@ public struct Painter {
         if let toast = picture.toast {
             let up = drawn.filter { ["board", "clip", "way"].contains($0.what) }.map(\.box)
             drawn.append(Drawn(what: "toast", id: nil, box: self.toast(toast, avoiding: picture.avoid + up, ctx)))
+        }
+        // The guide's card keeps off everything else, so it is placed last of the things that are placed.
+        if let guide = picture.guide {
+            let up = drawn.filter { ["board", "clip", "way", "toast", "mark", "echo"].contains($0.what) }.map(\.box)
+            drawn.append(Drawn(what: "guide", id: nil, box: self.guide(guide, avoiding: picture.avoid + up, ctx)))
         }
         if let pointer { drawn.append(Drawn(what: "pointer", id: nil, box: self.pointer(pointer, clock: picture.clock, ctx))) }
         drawn.append(Drawn(what: "capsule", id: nil, box: capsule(picture.capsule, clock: picture.clock, ctx)))

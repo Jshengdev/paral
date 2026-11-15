@@ -26,6 +26,11 @@ public struct Scene {
     var boards: [Board] = []
     var echoes: [Echo] = []
     var ways: [Way] = []
+    /// The guide's card: what to do next and which step it is, or the closing line when every step is done; when
+    /// these words came, and since when the card has been up.
+    var guide: (text: String, n: Int, of: Int, done: Bool, at: Double, upSince: Double)?
+    /// The menu's "Show the guide". Off, the card is not drawn; the steps are still taken.
+    public var guideOn = true
     /// The date last opened in his calendar, and when: the toast says so for a while.
     var opened: (at: Double, label: String?)?
     var clips: [Clip] = []
@@ -95,6 +100,9 @@ public struct Scene {
             // The thing an arrow led to is in view once the same look or answer marks it, so that arrow goes.
             for i in ways.indices where ways[i].clearedAt == nil && ways[i].id == id { ways[i].clearedAt = at }
             marks.append(Mark(id: id, beat: beat, kind: kind, box: box.moved(dx: -origin.x, dy: -origin.y), label: label, at: at, withSay: withSay))
+        case .next(let text, let n, let of, let done):
+            // New words take the place of the old in the same card; no words take the card away.
+            guide = text.isEmpty ? nil : (text, n, of, done, at, guide?.upSince ?? at)
         case .way(let id, let to, let toward):
             // One arrow at a time: a newer one takes the place of the one before. A clear wipes it, as it does a mark.
             for i in ways.indices where ways[i].clearedAt == nil { ways[i].clearedAt = at }

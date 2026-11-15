@@ -50,6 +50,27 @@ public enum Layout {
         return best?.box ?? Box(x: home.x, y: home.y, w: size.w, h: size.h)
     }
 
+    /// Where the guide's card goes: a corner of the display, the top right first, on none of `taken` nor on the
+    /// capsule. From each top corner it looks down the side, a step at a time, as far as half the display; the first
+    /// place that covers nothing wins, and failing that the one that covers least.
+    public static func corner(size: (w: Double, h: Double), taken: [Box], width: Double, height: Double, tokens: Tokens) -> Box {
+        let g = tokens.guide, cell = 24.0
+        let avoid = taken + [capsule(open: 1, taller: band(tokens), width: width, height: height, tokens: tokens)]
+        func covered(_ b: Box) -> Double {
+            avoid.reduce(0) { $0 + max(0, min(b.x + b.w, $1.x + $1.w) - max(b.x, $1.x)) * max(0, min(b.y + b.h, $1.y + $1.h) - max(b.y, $1.y)) }
+        }
+        var best: (cost: Double, box: Box)?
+        for x in [width - g.side - size.w, g.side] {
+            for row in 0...Int(height / 2 / cell) {
+                let box = Box(x: x, y: g.top + Double(row) * cell, w: size.w, h: size.h)
+                let cost = covered(box.grown(g.side / 2))
+                if cost == 0 { return box }
+                if cost < (best?.cost ?? .infinity) { best = (cost, box) }
+            }
+        }
+        return best?.box ?? Box(x: width - g.side - size.w, y: g.top, w: size.w, h: size.h)
+    }
+
     /// How wide the cursor is for a height of one: the design kit's arrow is 72 wide and 92.6 tall, and its shape
     /// before the corners are rounded, which is what is laid out here, 75 by 97.9.
     static let cursorWide = 0.766

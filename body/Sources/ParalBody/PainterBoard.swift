@@ -50,12 +50,7 @@ extension Painter {
         ctx.translateBy(x: origin.x, y: origin.y)
         ctx.scaleBy(x: scale, y: scale)
         let card = CGPath(roundedRect: CGRect(x: 0, y: 0, width: cardW, height: cardH), cornerWidth: b.radius, cornerHeight: b.radius, transform: nil)
-        ctx.saveGState()
-        ctx.setShadow(offset: .zero, blur: tokens.shadow, color: CGColor(gray: 0, alpha: 0.28))
-        ctx.addPath(card)
-        ctx.setFillColor(light.copy(alpha: tokens.glass) ?? light)
-        ctx.fillPath()
-        ctx.restoreGState()
+        surface(card, ctx)
         if sized.isEmpty { waiting(at: CGPoint(x: cardW / 2, y: cardH / 2), clock: clock, in: ink, ctx) }
         // The rows are laid out for the full card and shown through the card as it grows.
         ctx.addPath(card)

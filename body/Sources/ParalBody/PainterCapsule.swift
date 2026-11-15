@@ -21,12 +21,7 @@ extension Painter {
             orb(middle: CGPoint(x: rect.midX, y: rect.midY), across: box.w, clock: 0, ctx)
             return box
         }
-        ctx.saveGState()
-        ctx.setShadow(offset: .zero, blur: tokens.shadow, color: CGColor(gray: 0, alpha: 0.28))
-        ctx.addPath(shape)
-        ctx.setFillColor(light.copy(alpha: tokens.glass) ?? light)
-        ctx.fillPath()
-        ctx.restoreGState()
+        surface(shape, ctx)
         if c.closes, c.open < 0.05 {
             let arm = box.w * 0.19
             ctx.setStrokeColor(ink)

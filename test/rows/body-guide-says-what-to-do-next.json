@@ -1,0 +1,197 @@
+{
+ "name": "body: a next line shows the guide's card, which says what to do next and which step it is: nothing before the line; then the card, fading in once, inside the display and on none of the page's text, the capsule, the board, the way arrow or the toast; a clear does not take it; a second next line changes its words in place with no second fade; a next line with no words takes it away; the closing line, when every step is done, is shown with no step number and goes by itself after a while; and with the guide switched off in the menu no card is drawn at any of those moments",
+ "run": "body.guide",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "The Spring 2027 recognition process is now open on EngageSC for new clubs.",
+   "All student organizations must complete recognition through the online portal.",
+   "Recognition status runs for one academic year.",
+   "If you hope to re-establish your club, submit this form.",
+   "For questions, contact Campus Activities.",
+   "Important Dates"
+  ],
+  "rows": [
+   {
+    "at": 500,
+    "line": {
+     "type": "next",
+     "text": "Scroll until Deadlines is on screen",
+     "n": 2,
+     "of": 8
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "way",
+     "id": "g1",
+     "to": "down",
+     "toward": "Deadlines"
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "board",
+     "id": "g1",
+     "rows": [
+      [
+       "Officers finish their training"
+      ],
+      [
+       "Submit the application: November 22 at 11:59pm"
+      ],
+      [
+       "Advisor requirements: December 1"
+      ]
+     ]
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 4000,
+    "line": {
+     "type": "next",
+     "text": "Hold the key and say show me",
+     "n": 3,
+     "of": 8
+    }
+   },
+   {
+    "at": 6000,
+    "line": {
+     "type": "open",
+     "id": "t1",
+     "path": "/tmp/paral-row.ics",
+     "label": "November 22"
+    }
+   },
+   {
+    "at": 8000,
+    "line": {
+     "type": "next",
+     "text": ""
+    }
+   },
+   {
+    "at": 9000,
+    "line": {
+     "type": "next",
+     "text": "That is every step for this page.",
+     "n": 8,
+     "of": 8,
+     "done": true
+    }
+   }
+  ],
+  "at": [
+   400,
+   600,
+   2000,
+   3500,
+   4050,
+   7000,
+   8100,
+   9500,
+   14000
+  ]
+ },
+ "out": {
+  "shown": [
+   {
+    "card": null
+   },
+   {
+    "card": {
+     "says": "Scroll until Deadlines is on screen",
+     "step": "2 of 8",
+     "fadingIn": true,
+     "insideTheDisplay": true,
+     "onText": false,
+     "onTheCapsule": false,
+     "onTheBoard": false,
+     "onTheArrow": false,
+     "onTheToast": false
+    }
+   },
+   {
+    "card": {
+     "says": "Scroll until Deadlines is on screen",
+     "step": "2 of 8",
+     "fadingIn": false,
+     "insideTheDisplay": true,
+     "onText": false,
+     "onTheCapsule": false,
+     "onTheBoard": false,
+     "onTheArrow": false,
+     "onTheToast": false
+    }
+   },
+   {
+    "card": {
+     "says": "Scroll until Deadlines is on screen",
+     "step": "2 of 8",
+     "fadingIn": false,
+     "insideTheDisplay": true,
+     "onText": false,
+     "onTheCapsule": false,
+     "onTheBoard": false,
+     "onTheArrow": false,
+     "onTheToast": false
+    }
+   },
+   {
+    "card": {
+     "says": "Hold the key and say show me",
+     "step": "3 of 8",
+     "fadingIn": false,
+     "insideTheDisplay": true,
+     "onText": false,
+     "onTheCapsule": false,
+     "onTheBoard": false,
+     "onTheArrow": false,
+     "onTheToast": false
+    }
+   },
+   {
+    "card": {
+     "says": "Hold the key and say show me",
+     "step": "3 of 8",
+     "fadingIn": false,
+     "insideTheDisplay": true,
+     "onText": false,
+     "onTheCapsule": false,
+     "onTheBoard": false,
+     "onTheArrow": false,
+     "onTheToast": false
+    }
+   },
+   {
+    "card": null
+   },
+   {
+    "card": {
+     "says": "That is every step for this page.",
+     "step": null,
+     "fadingIn": false,
+     "insideTheDisplay": true,
+     "onText": false,
+     "onTheCapsule": false,
+     "onTheBoard": false,
+     "onTheArrow": false,
+     "onTheToast": false
+    }
+   },
+   {
+    "card": null
+   }
+  ],
+  "cardsWithTheGuideOff": 0
+ }
+}
