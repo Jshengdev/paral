@@ -102,7 +102,7 @@ three are drawn by the app's own drawing code in its tests.*
 | any question, with the right Option key held | a short answer aloud, with the line it means marked on your page |
 | "show me" | the steps, one at a time, each marked where it is |
 | "add it to my calendar" | the date opens in your calendar, ready to add |
-| "scroll for me" | the page turns to what it is pointing at (in tests; not yet in Chrome on a real screen) |
+| "scroll for me" | the page turns to what it is pointing at |
 | "open it for me" | the closed section it has marked is opened with one click |
 | "take me there" | the USC page it just named opens, with the right part ringed |
 | "draw everything I have to do, in order" | a map of the whole process beside the page |
@@ -152,6 +152,7 @@ those readings hold nothing about any student.
 | | one picture of the display, its text and the question | Anthropic, for the answer |
 | It answers | each sentence | Cartesia, to be spoken |
 | It speaks first on a page it knows | its own kept copy of that page, and the date | Anthropic |
+| It sees a page it knows | its kept copies of that site's pages, to be held ready for a question; nothing of your screen | Anthropic |
 | | the one sentence it says aloud | Cartesia, to be spoken |
 | It looks at any other page | nothing | |
 
@@ -202,11 +203,21 @@ there. `node pages/gather.ts` with no name reads every page on the list again.
 - **On a real screen** it has been recorded speaking first on six USC pages, answering spoken questions,
   walking three steps by clicks, and ringing the atoms on a chemistry worksheet. "Open it for me" has been recorded
   there too: the app clicked the closed heading once, and two seconds later the section was open with its line
-  marked. "Scroll for me" did not move the page in Chrome when it was pressed there, and the app said so.
+  marked. "Scroll for me" did not move the page in Chrome when it was first pressed there, and the app said so;
+  changed after the submission (below), it has since turned a real page twice and landed its mark on the heading.
 
 The judge found real faults over the weekend, and each became a row before it was fixed: a date written in
 words that the date rule could not read, a question in a page's first second that silenced the page, sentences
 that took too long to say.
+
+**After the 11:00 submission.** This branch stood as submitted until the judging was over. What was added that
+Sunday afternoon and merged afterwards: the scroll wheel is turned the way a real one is, so "Scroll for me" moves
+a page in Chrome; a page's first look brings one line and one mark, and the board of steps comes when asked for;
+the pages a question is given are held ready by the model's service as soon as the page is seen, so a first
+question is answered as fast as a second; dates written with slashes are read; a long sentence that ends by
+saying where a thing is written is said as two; the app finishes the look it is taking before it exits; and an
+exercise can be worked through step by step behind a switch that is off (`PARAL_WORK_THROUGH=1 ./run`). On the
+build with all but the two-sentence change, the judge's pass was 1,900 of 1,903 checks.
 
 ## What it does not do yet
 
@@ -216,8 +227,8 @@ that took too long to say.
   you about one you never visit.
 - It remembers one sitting. Close it and it starts over.
 - The kept pages are as fresh as their last reading. Reading them again every night is the next step.
-- "Scroll for me" works in tests and does not yet move a page in Chrome on a real screen. The app sends the
-  wheel's turns to the browser in a way Chrome ignores; when the page does not move it says so.
+- "Scroll for me" has turned a real page only when pressed on a page's first look. Pressed beside an answer's
+  card it stopped one reach short on a real screen; that is changed and has not been seen there since.
 - "Take me there" pressed and the notes page run in tests and have not yet run on a real screen. "Add to
   calendar" has written its date there.
 - It does not work with a screen reader. Every spoken sentence is also shown as text, the demo's questions can be
