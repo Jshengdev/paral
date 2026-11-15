@@ -1,0 +1,77 @@
+{
+ "name": "body: a mark that comes with no key pressed, as a look sends it, brings the cursor: nothing before the mark; it flies in, rides the pen along the mark, then rests just beside the mark on none of the page's text while a ripple spreads from it once; after that it stays where it is, still, until a clear takes it with the mark",
+ "run": "body.cursor",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Important Dates",
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes.",
+   "You must submit the form on EngageSC before 11:59pm.",
+   "December 1: Deadline for advisors.",
+   "Info Sessions, Workshops, and Office Hours"
+  ],
+  "markOn": 4,
+  "kind": "box",
+  "markAt": 1000,
+  "clearAt": 9000,
+  "at": [
+   900,
+   1200,
+   1700,
+   2500,
+   5000,
+   8900,
+   9100
+  ]
+ },
+ "out": [
+  {
+   "cursor": null
+  },
+  {
+   "cursor": {
+    "moved": true,
+    "tip": "away from it",
+    "onText": false,
+    "ripple": "none"
+   }
+  },
+  {
+   "cursor": {
+    "moved": true,
+    "tip": "on the mark",
+    "onText": false,
+    "ripple": "none"
+   }
+  },
+  {
+   "cursor": {
+    "moved": true,
+    "tip": "beside the mark",
+    "onText": false,
+    "ripple": "spreading"
+   }
+  },
+  {
+   "cursor": {
+    "moved": false,
+    "tip": "beside the mark",
+    "onText": false,
+    "ripple": "none"
+   }
+  },
+  {
+   "cursor": {
+    "moved": false,
+    "tip": "beside the mark",
+    "onText": false,
+    "ripple": "none"
+   }
+  },
+  {
+   "cursor": null
+  }
+ ]
+}

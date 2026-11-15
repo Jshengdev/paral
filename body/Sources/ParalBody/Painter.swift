@@ -20,7 +20,7 @@ func inked(_ text: String, size: Double, color: CGColor, weight: NSFont.Weight =
 public struct Painter {
     public let tokens: Tokens
     public let width, height: Double
-    let ink, paper, ember: CGColor
+    let ink, paper, ember, cardinal, cardinalDeep: CGColor
     public let accent: CGColor
     let frames = ClipFrames()
 
@@ -32,6 +32,8 @@ public struct Painter {
         paper = color(tokens.paper)
         accent = color(tokens.accent)
         ember = color(tokens.ember)
+        cardinal = color(tokens.cardinal)
+        cardinalDeep = color(tokens.cardinalDeep)
     }
 
     /// The context's origin must be the display's top-left corner, y growing downward, one unit a point.

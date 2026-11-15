@@ -3,7 +3,18 @@ import Foundation
 /// The look, in one file a designer can swap: colour, type, line widths, corners and motion times.
 public struct Tokens: Codable {
     public struct Capsule: Codable { public var rest, restClose, width, height, radius, bottom, pad, type, tagType: Double }
-    public struct Mark: Codable { public var width, pad, ringMs, lineMs, bracketMs, overshoot, wobble, ringWide, ringTall, labelType, pointer: Double }
+    public struct Mark: Codable {
+        public var width, pad, ringMs, lineMs, bracketMs, overshoot, wobble, ringWide, ringTall, labelType: Double
+        /// The box that hugs a line is the kit's highlight: a thinner edge than the hand-drawn ring, and a faint wash of its colour inside.
+        public var boxWidth, wash: Double
+    }
+    /// Paral's own cursor, after the design kit's.
+    public struct Cursor: Codable {
+        /// How tall it is, how wide its paper edge is, and how far from a mark it rests.
+        public var size, edge, gap: Double
+        /// How long it takes to step aside once its mark is drawn; then how far the ripple that says "here" spreads, and for how long.
+        public var settleMs, ripple, rippleMs: Double
+    }
     public struct Board: Codable { public var pad, boxPadX, boxPadY, gap, rowGap, type, radius, maxWidth, margin, emptyWidth, emptyHeight: Double }
     public struct Motion: Codable {
         public var tempo, openMs, lingerMs, wordMs, trailFadeMs, boardMs, readMsAWord, readMsLeast, flightMs, arc, bounce: Double
@@ -25,13 +36,15 @@ public struct Tokens: Codable {
     public struct Strings: Codable { public var thinking, listening, failed: String }
 
     public var ink, paper, accent: String
-    /// The design kit's red for what is drawn by hand on the page (its ring and its arrow).
-    public var ember: String
+    /// The design kit's reds. Ember is for what is drawn by hand on the page (its ring and its arrow); cardinal for
+    /// the neat box and for names; the cursor runs from deep cardinal through cardinal to ember.
+    public var ember, cardinal, cardinalDeep: String
     public var dim: Double
     public var capsule: Capsule
     public var mark: Mark
     public var board: Board
     public var way: Way
+    public var cursor: Cursor
     public var motion: Motion
     public var strings: Strings
 

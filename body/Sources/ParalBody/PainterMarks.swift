@@ -6,14 +6,23 @@ extension Painter {
     func mark(_ mark: MarkPicture, avoiding texts: [Box], _ ctx: CGContext) -> Box? {
         guard mark.drawn > 0 else { return nil }
         let points = Pen.path(of: mark, tokens: tokens, avoiding: texts)
-        ctx.setStrokeColor(accent)
-        ctx.setLineWidth(tokens.mark.width)
+        // The design kit's two ways to show a place. A ring or a line is drawn by hand, in ember. A box is the kit's
+        // neat highlight: a thinner cardinal edge, and a faint wash of cardinal that comes up as the edge is drawn.
+        let boxed = mark.kind == .box
+        if boxed, tokens.mark.wash > 0 {
+            let hug = Pen.hug(mark.box, tokens: tokens, avoiding: texts)
+            ctx.addPath(CGPath(roundedRect: CGRect(x: hug.x, y: hug.y, width: hug.w, height: hug.h), cornerWidth: min(Pen.corner, hug.h / 2), cornerHeight: min(Pen.corner, hug.h / 2), transform: nil))
+            ctx.setFillColor(cardinal.copy(alpha: tokens.mark.wash * mark.drawn) ?? cardinal)
+            ctx.fillPath()
+        }
+        ctx.setStrokeColor(boxed ? cardinal : ember)
+        ctx.setLineWidth(boxed ? tokens.mark.boxWidth : tokens.mark.width)
         ctx.setLineCap(.round)
         ctx.setLineJoin(.round)
         ctx.addLines(between: Pen.reach(points, mark.drawn).inked)
         ctx.strokePath()
         if let label = mark.label, mark.drawn >= 1 {
-            let text = inked(label, size: tokens.mark.labelType, color: accent, weight: .semibold, hand: true)
+            let text = inked(label, size: tokens.mark.labelType, color: cardinal, weight: .semibold, hand: true)
             let size = text.size()
             let w = Double(size.width), h = Double(size.height)
             let leftEdge = Double(points.map(\.x).min() ?? CGFloat(mark.box.x))
@@ -33,17 +42,6 @@ extension Painter {
         let xs = points.map(\.x), ys = points.map(\.y)
         let bounds = Box(x: xs.min() ?? 0, y: ys.min() ?? 0, w: max((xs.max() ?? 0) - (xs.min() ?? 0), 1), h: max((ys.max() ?? 0) - (ys.min() ?? 0), 1))
         return bounds
-    }
-
-    func pointer(_ pointer: PointerPicture, _ ctx: CGContext) -> Box {
-        let r = tokens.mark.pointer
-        let rect = CGRect(x: pointer.x - r, y: pointer.y - r, width: 2 * r, height: 2 * r)
-        ctx.setFillColor(accent.copy(alpha: pointer.alpha) ?? accent)
-        ctx.fillEllipse(in: rect)
-        ctx.setStrokeColor(paper.copy(alpha: pointer.alpha) ?? paper)
-        ctx.setLineWidth(2)
-        ctx.strokeEllipse(in: rect)
-        return Box(x: rect.minX, y: rect.minY, w: rect.width, h: rect.height)
     }
 
     func trail(_ points: [TrailPoint], _ ctx: CGContext) -> Box? {

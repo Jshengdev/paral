@@ -1,0 +1,58 @@
+import CoreGraphics
+import Foundation
+
+extension Scene {
+    /// One stroke the cursor makes: when it begins, its kind, and the pen's whole path for it.
+    private typealias Stroke = (began: Double, kind: MarkKind, path: [CGPoint])
+
+    /// The strokes on the page at `t`, the newest last. One that has been wiped is not among them, so a clear or a
+    /// close takes the cursor with the ink.
+    private func strokes(at t: Double) -> [Stroke] {
+        func up(_ clearedAt: Double?) -> Bool { clearedAt.map { t < $0 } ?? true }
+        var strokes: [Stroke] = []
+        for echo in echoes where echo.at <= t && up(echo.clearedAt) {
+            strokes.append((echo.at, kind(of: echo), Pen.path(of: ring(for: echo, drawn: 1), tokens: tokens, avoiding: texts)))
+        }
+        for mark in marks where up(mark.clearedAt) {
+            guard let began = start(mark), began <= t else { continue }
+            let whole = MarkPicture(key: "\(mark.id)/\(mark.beat)", kind: mark.kind, box: mark.box, label: nil, drawn: 1)
+            strokes.append((began, mark.kind, Pen.path(of: whole, tokens: tokens, avoiding: texts)))
+        }
+        return strokes.sorted { $0.began < $1.began }
+    }
+
+    /// Where the cursor's tip rests once a stroke is drawn: beside it, on none of the page's text.
+    private func rest(beside path: [CGPoint]) -> CGPoint {
+        let xs = path.map(\.x), ys = path.map(\.y)
+        let drawn = Box(x: xs.min() ?? 0, y: ys.min() ?? 0, w: max((xs.max() ?? 0) - (xs.min() ?? 0), 1), h: max((ys.max() ?? 0) - (ys.min() ?? 0), 1))
+        let c = tokens.cursor
+        return Layout.beside(drawn, cursor: (c.size * Layout.cursorWide, c.size), gap: c.gap, texts: texts, width: width, height: height)
+    }
+
+    /// Paral's own cursor. It flies in one arc to where the newest stroke starts, rides the pen's tip while the stroke
+    /// is drawn, then steps aside to rest just beside the mark, where a ripple spreads from it once to say "here".
+    /// It points and never clicks. It stays with its mark for as long as the mark is on the page, with a key pressed
+    /// or without one, and it is not shown at all when motion is reduced.
+    func pointer(at t: Double) -> PointerPicture? {
+        guard !still, let now = strokes(at: t).last, let first = now.path.first, let last = now.path.last else { return nil }
+        let inkAt = now.began + flight, inkedAt = inkAt + duration(now.kind)
+        if t < inkAt {
+            // It sets off from wherever it was a moment before this stroke, and from the capsule the first time.
+            let home = Layout.capsule(open: 1, width: width, height: height, tokens: tokens)
+            let before = pointer(at: now.began - 1)
+            let from = before.map { CGPoint(x: $0.x, y: $0.y) } ?? CGPoint(x: home.x + home.w / 2, y: home.y)
+            let at = Motion.arc(from: from, to: first, Motion.spring((t - now.began) / flight, bounce: tokens.motion.bounce), lift: tokens.motion.arc)
+            return PointerPicture(x: at.x, y: at.y, alpha: 1, ripple: nil)
+        }
+        if t < inkedAt {
+            let tip = Pen.reach(now.path, Motion.land((t - inkAt) / duration(now.kind))).tip
+            return PointerPicture(x: tip.x, y: tip.y, alpha: 1, ripple: nil)
+        }
+        let settle = ms(tokens.cursor.settleMs), place = rest(beside: now.path)
+        let aside = Motion.ease((t - inkedAt) / max(settle, 1))
+        let spread = (t - inkedAt - settle) / max(ms(tokens.cursor.rippleMs), 1)
+        // The ripple is given in fiftieths, so the picture changes only when it would be seen to.
+        let ripple = spread >= 0 && spread < 1 ? (spread * 50).rounded(.down) / 50 : nil
+        return PointerPicture(x: last.x + (place.x - last.x) * aside, y: last.y + (place.y - last.y) * aside, alpha: 1, ripple: ripple)
+    }
+}
