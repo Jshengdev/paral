@@ -12,7 +12,8 @@ const ROOM = 8;           // points round the mark's box, so the pen's width is 
 const FEW = 30;           // drawn pixels below this are noise from scaling
 const POPPED_MS = 100;    // Nielsen: a change under 0.1 s reads as instant, so ink that arrives faster was not drawn
 const SLOW_MS = 1000;     // Nielsen: past 1 s the eye waits on the pen and stops following the voice
-const STILL = 0.03;       // ink that grows by less than this share over two steps has stopped: the pen is done
+const STILL = 0.03;       // ink that moves by less than this share over two steps has stopped: the pen is done
+const WHOLE = 0.5;        // and only once it holds at least this share of what the window ends with
 
 // A mark is drawn by a pen, so its ink grows. The pen's time is from a tenth of the mark's ink to nine tenths of it.
 // The ink is counted from the least there was as the mark began: nothing, for a mark on a clean line; and for a
@@ -31,9 +32,9 @@ async function penTime(seen: Seen, mark: Placed, pointers: Placed[]): Promise<nu
   const samples: { ms: number; ink: number }[] = [];
   for (let ms = mark.at - BEFORE_MS; ms <= mark.at + AFTER_MS; ms += STEP_MS) {
     const ink = await seen.ink(ms);
-    const cursor = pointers.filter((p) => p.at <= ms).at(-1);
-    const shared = cursor ? within(cursor.box) : null;
-    samples.push({ ms, ink: count(ink, seen.size, box) - (shared ? count(ink, seen.size, shared) : 0) });
+    // Where the cursor and where its tag were last said to be at this moment: both are left out of the count.
+    const riding = ["pointer", "tag"].flatMap((what) => pointers.filter((p) => p.what === what && p.at <= ms).slice(-1)).map((p) => within(p.box)).filter((b): b is Box => b !== null);
+    samples.push({ ms, ink: count(ink, seen.size, box) - riding.reduce((sum, b) => sum + count(ink, seen.size, b), 0) });
   }
   const began = samples.filter((s) => s.ms <= mark.at + 2 * STEP_MS);
   const least = began.reduce((low, s) => (s.ink <= low.ink ? s : low));
@@ -42,7 +43,11 @@ async function penTime(seen: Seen, mark: Placed, pointers: Placed[]): Promise<nu
   // The mark's own ink is whole when it stops growing. What is drawn round it afterwards is not the pen: the ring of
   // a step that waits for his click pulses about a second later, and counted as ink that made a 450 ms pen read as
   // a second long. So the pen's time is taken up to the first moment the ink holds still, or the window's end.
-  const still = grown.findIndex((s, i) => s.ink >= FEW && i + 2 < grown.length && grown[i + 1].ink - s.ink <= s.ink * STILL && grown[i + 2].ink - s.ink <= s.ink * STILL);
+  // Held still means neither growing nor shrinking, at a level that is most of the mark: the cursor's name tag
+  // passes through a mark's room as the pen starts, and that ink coming and going once read as a pen that had stopped.
+  const last = grown[grown.length - 1].ink;
+  const holds = (a: number, b: number) => Math.abs(b - a) <= a * STILL;
+  const still = grown.findIndex((s, i) => s.ink >= FEW && s.ink >= last * WHOLE && i + 2 < grown.length && holds(s.ink, grown[i + 1].ink) && holds(s.ink, grown[i + 2].ink));
   const pen = still >= 0 ? grown.slice(0, still + 1) : grown;
   const full = pen[pen.length - 1].ink;
   const reached = (share: number) => (pen.find((s) => s.ink >= full * share) ?? pen[pen.length - 1]).ms;
@@ -51,7 +56,8 @@ async function penTime(seen: Seen, mark: Placed, pointers: Placed[]): Promise<nu
 
 export async function drawnIn(seen: Seen, ask: Ask, placed: Placed[], until: number): Promise<Verdict[]> {
   const mine = placed.filter((p) => (p.what === "mark" || p.what === "echo") && p.at >= ask.down && p.at < until);
-  const pointers = placed.filter((p) => p.what === "pointer");
+  // The cursor and the name tag it wears ride the pen; neither is the mark's ink.
+  const pointers = placed.filter((p) => p.what === "pointer" || p.what === "tag");
   const times = (await Promise.all(mine.map((mark) => penTime(seen, mark, pointers)))).filter((ms): ms is number => ms !== null);
   if (times.length === 0) return [];
   const what = "Each mark is drawn by a pen over time, never popped in";
