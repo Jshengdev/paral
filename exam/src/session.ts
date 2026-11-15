@@ -7,7 +7,8 @@ import type { Moment } from "./timeline.ts";
 
 // The one place in the exam that knows the seam's own names. A run's record becomes moments in the exam's words.
 const Recorded = z.object({ at: z.number(), from: z.enum(["body", "mind"]), line: z.object({ type: z.string() }).loose() });
-const Placed = z.object({ at: z.number(), what: z.string(), id: z.string().optional(), look: z.string().optional(), box: Box });
+// `type` is on a board's record when the film says it: the size, in points, its words were drawn at.
+const Placed = z.object({ at: z.number(), what: z.string(), id: z.string().optional(), look: z.string().optional(), box: Box, type: z.number().positive().optional() });
 export type Placed = z.infer<typeof Placed>;
 
 const VOICE_RATE = 24_000;

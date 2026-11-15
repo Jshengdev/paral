@@ -89,12 +89,14 @@ const LINE = 1.2;   // a line of the system font is this many times its size (a 
 
 export type BoardLook = { pad: number; boxPadY: number; rowGap: number; type: number };
 
-export function readable(criterion: string, s: number, rows: number, card: Box | null, look: BoardLook): Verdict[] {
+// When the film says what size it drew the words at (`drawnAt`), that is the size: the painter knows, and a change of
+// typeface changes how tall a line stands. The judge's own sum is for films that do not say.
+export function readable(criterion: string, s: number, rows: number, card: Box | null, look: BoardLook, drawnAt?: number): Verdict[] {
   const what = "The board's words are big enough to read";
   if (card === null || rows === 0) return [];
   const whole = 2 * look.pad + rows * (LINE * look.type + 2 * look.boxPadY) + (rows - 1) * look.rowGap;
-  const size = look.type * Math.min(1, card.h / whole);
+  const size = drawnAt ?? look.type * Math.min(1, card.h / whole);
   const limit = `${SMALLEST_TYPE} points (the smallest text style the Mac itself uses)`;
-  const measured = `about ${size.toFixed(1)} points: a card of ${rows} row${rows === 1 ? "" : "s"} drawn ${card.h} points tall`;
+  const measured = drawnAt !== undefined ? `${size.toFixed(1)} points, as the painter says it drew them` : `about ${size.toFixed(1)} points: a card of ${rows} row${rows === 1 ? "" : "s"} drawn ${card.h} points tall`;
   return [size >= SMALLEST_TYPE ? yes(criterion, s, what, measured, limit) : no(criterion, s, what, measured, limit)];
 }

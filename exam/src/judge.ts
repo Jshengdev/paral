@@ -91,7 +91,8 @@ export async function judge(scenario: Scenario): Promise<Judged> {
   /** The last board shown under one name ("t1", "g1"): how many rows it has, and the card the painter drew for it. */
   const lastBoard = (shown: Moment[], name: string) => {
     const text = of(shown, "board").at(-1)?.text ?? null;
-    return { rows: text === null ? 0 : text.split(" | ").length, card: where.filter((p) => p.what === "board" && p.id === name).at(-1)?.box ?? null };
+    const drawn = where.filter((p) => p.what === "board" && p.id === name).at(-1);
+    return { rows: text === null ? 0 : text.split(" | ").length, card: drawn?.box ?? null, type: drawn?.type };
   };
   const ran = (await stat(join(dir, "session.jsonl"))).mtime;
   const filmed = existsSync(join(dir, "frames"));
@@ -111,7 +112,7 @@ export async function judge(scenario: Scenario): Promise<Judged> {
     verdicts.push(...marks(ask, step.expect, truth, standingBefore(everything, ask)), ...spoken(ask, step.expect, truth, { pages: readBy(turnOf(ask), ask.down), ranOn: ran }), ...voiced(ask, step.expect, all[index + 1]?.down ?? null),
       ...board(ask, step.expect, truth, where), ...lesson(ask, step.expect), ...cutIn(ask, all[index - 1] ?? null, step.expect, voice), ...pressedAgain(ask, all[index - 1] ?? null, step.expect), ...kept(ask, step.expect), ...walked(ask, step.expect), ...wayShown("C20", ask.index, ask.moments, step.expect), ...(filmed ? wayDrawn("C20", ask.index, ask.moments, step.expect, where, truth, flow.display) : []));
     const drawnBoard = lastBoard(ask.moments, turnOf(ask));
-    verdicts.push(...readable("C8", ask.index, drawnBoard.rows, drawnBoard.card, boardLook));
+    verdicts.push(...readable("C8", ask.index, drawnBoard.rows, drawnBoard.card, boardLook, drawnBoard.type));
     if (seen) {
       const circled = step.circle === null ? null : boxOf(truth, step.circle, scenario.id);
       // With no voice there is no last word to wait for, so the ask is looked at just before the next one, or at the end.
@@ -135,7 +136,7 @@ export async function judge(scenario: Scenario): Promise<Judged> {
     verdicts.push(...glanced(seenLook, step.expect, truth, { pages: readBy(name, seenLook.at), ranOn: ran, forThis: asked }));
     if (filmed) verdicts.push(...wayDrawn("C18", seenLook.index, seenLook.moments, step.expect, where, truth, flow.display));
     const drawnBoard = lastBoard(seenLook.moments, name);
-    verdicts.push(...readable("C18", seenLook.index, drawnBoard.rows, drawnBoard.card, boardLook));
+    verdicts.push(...readable("C18", seenLook.index, drawnBoard.rows, drawnBoard.card, boardLook, drawnBoard.type));
     if (step.page) verdicts.push(pageChanged(seenLook.index, standingBefore(everything, { down: seenLook.at, moments: seenLook.moments }).length));
   }
   if (all.length === 0) throw new Error(`${scenario.id}: the run holds no ask; a scenario needs one so its ending can be judged`);
