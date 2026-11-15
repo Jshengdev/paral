@@ -1,15 +1,21 @@
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import { pixels, sizeOf, type Size } from "../pixels.ts";
 import type { Display } from "../shape.ts";
 import { of, type Ask } from "../timeline.ts";
+import { BUILD } from "../tools.ts";
 import { no, unseen, yes, type Verdict } from "../verdict.ts";
 
 const LOOK_WIDE = 640;   // the picture is looked at this wide: a pen stroke is still two pixels across
 const FEW = 60;          // pixels of the pen's colour below this are noise
 const SAME_SHAPE = 0.03; // a part of the screen has another shape than the whole; this much apart counts as another
 
-// The pen is a strong orange-red. A page's own reds and golds are darker or yellower, so they are not counted.
-const isPen = (r: number, g: number, b: number) => r > 200 && g > 50 && g < 130 && b < 90;
+// The pen's colour is the build's own token (body/tokens.json, `accent`), read as data: when the look changes, the
+// judge follows it. A pixel counts when each of its three parts is within NEAR of the token's, which is what a saved
+// picture's own smudging moves it by. USC's cardinal is far darker and its gold far yellower, so neither is counted.
+const NEAR = 55;
+const PEN = ((hex: string) => [1, 3, 5].map((at) => parseInt(hex.slice(at, at + 2), 16)))((JSON.parse(readFileSync(join(BUILD, "body", "tokens.json"), "utf8")) as { accent: string }).accent);
+const isPen = (r: number, g: number, b: number) => Math.abs(r - PEN[0]) < NEAR && Math.abs(g - PEN[1]) < NEAR && Math.abs(b - PEN[2]) < NEAR;
 
 // What the answer is made from when he circles: one picture with his path on it, and only the part of the screen
 // round it. This is the last picture of the ask. An earlier one, taken as he pressed, holds the whole page: the
