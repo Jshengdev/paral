@@ -94,7 +94,7 @@ extension Scene {
     /// The ink on the page at `t`. Tags are drawn as chips (`tagsUp`).
     func marksUp(at t: Double) -> [MarkPicture] {
         marks.compactMap { mark in
-            guard mark.kind != .tag, mark.at <= t, mark.clearedAt.map({ t < $0 }) ?? true, let began = start(mark), t >= began else { return nil }
+            guard mark.kind != .tag, !stale(at: t), mark.at <= t, mark.clearedAt.map({ t < $0 }) ?? true, let began = start(mark), t >= began else { return nil }
             return MarkPicture(key: "\(mark.id)/\(mark.beat)", kind: mark.kind, box: mark.box, label: mark.label, drawn: inked(mark.kind, since: began, at: t), pulse: pulse(of: mark, since: began, at: t))
         }
     }

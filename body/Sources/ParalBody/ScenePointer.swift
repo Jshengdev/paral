@@ -15,7 +15,7 @@ extension Scene {
         for echo in echoes where echo.at <= t && up(echo.clearedAt) {
             strokes.append((echo.at, kind(of: echo), Pen.path(of: ring(for: echo, drawn: 1), tokens: tokens, avoiding: texts, inside: (width, height)), nil))
         }
-        for mark in marks where up(mark.clearedAt) && ![.tag, .tick].contains(mark.kind) && !mark.spot {
+        for mark in marks where up(mark.clearedAt) && ![.tag, .tick].contains(mark.kind) && !mark.spot && !stale(at: t) {
             guard let began = start(mark), began <= t else { continue }
             let whole = MarkPicture(key: "\(mark.id)/\(mark.beat)", kind: mark.kind, box: mark.box, label: nil, drawn: 1)
             strokes.append((began, mark.kind, Pen.path(of: whole, tokens: tokens, avoiding: texts, inside: (width, height)), mark.box))

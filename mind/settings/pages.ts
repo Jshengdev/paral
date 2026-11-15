@@ -16,8 +16,8 @@ export const pages = {
 
   lookFastMost: {
     value: 30,
-    why: "While anything of paral's is placed on the page (a mark, or the arrow that says the thing is off screen), the body sends a look as soon as the page has changed, without waiting for it to stand still, so what is drawn keeps up with a page he is scrolling and a mark lands as its thing comes into view. This is how many looks in a row it may send that way before the page must stand still once. The owner's words: \"can it fire like once every second during that particular phase with a cap of like 30 fires in a row without it\", and, of the live run, \"ensure its aware of hte screen and constantly updating and live as intened\". First it held only while an arrow was up; on his screen a step's mark then needed the page still for about 2.5 s, and a walk scrolled in bursts lost its step.",
-    measured: "his number. On his screen with an arrow up: looks a second apart and the box about a second after the scroll. With a mark up: not seen",
+    why: "While the arrow that says the thing is off his screen is up, the body sends a look as soon as the page has changed, without waiting for it to stand still, so the mark lands as the thing comes into view. This is how many looks in a row it may send that way before the page must stand still once. The owner's words: \"can it fire like once every second during that particular phase with a cap of like 30 fires in a row without it\". With a mark up it does not: tried for one commit, a look mid-scroll put the mark where its line had been a moment before, and on his screen the underline sat under the wrong sentence in six frames of seven. A mark is instead taken off the moment the page moves and drawn again once it is still.",
+    measured: "his number. On his screen with the arrow up: looks a second apart and the box about a second after the scroll",
   } satisfies Setting<number>,
 
   keepAsks: {

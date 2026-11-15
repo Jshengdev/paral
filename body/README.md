@@ -222,6 +222,7 @@ card is in the movie, this macOS records the window anyway and the setting does 
 | `Centre.swift`, `Sitting.swift` | the demo's centre in the menu bar's menu: a submenu for each scenario of the bank, "Start over", and the last failure; `Sitting` is the menu as plain values, which rows read |
 | `Watch.swift` | looks at the display with no key pressed, every round: a picture, a small grey print of it with the menu bar left out, and a look reported when `Rounds` says so. It reads the text only for a look it reports, and does not look while the key is down or an answer is being said |
 | `Rounds.swift` | the print (`Screen.print`), whether two prints are the same page (`Screen.alike`: a clock that ticks is, a scroll is not), and what the watcher reports round by round: a changed page once it stands still, or at once while an arrow says the thing is off screen |
+| `SceneStale.swift` | while the page has moved away from under paral's marks (the watcher says so, twice a second) the marks and their tags are not drawn, the cursor does not rest by them and no arrow leaves them; the scroll arrow and the cards stay |
 | `Release.swift` | the end of a hold: the microphone's grace after the key is let go, and a new press that ends the hold before it first. Used by the app and by the scripted flow |
 
 ## With no window

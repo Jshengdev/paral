@@ -1,0 +1,128 @@
+{
+ "name": "body: the page moves away from under a box and its tag: from that moment neither is drawn and the cursor does not rest by them; when the page stands again as it did, both are back as they were, with nothing drawn anew; and marks the mind places while the page is taken as moved are drawn at once, since they are for the page as it stands",
+ "run": "body.marks",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes.",
+   "Late applications are not accepted.",
+   "Info Sessions, Workshops, and Office Hours",
+   "Application deadline: November 2, 2026",
+   "Apply for the Catalina Maymester"
+  ],
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "g1",
+     "beat": 0,
+     "kind": "box",
+     "on": 4
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "g1",
+     "beat": 0,
+     "kind": "tag",
+     "on": 4,
+     "label": "7 days left",
+     "tone": "date"
+    }
+   },
+   {
+    "at": 4000,
+    "line": {
+     "type": "stale",
+     "moved": true
+    }
+   },
+   {
+    "at": 6000,
+    "line": {
+     "type": "stale",
+     "moved": false
+    }
+   },
+   {
+    "at": 8000,
+    "line": {
+     "type": "stale",
+     "moved": true
+    }
+   },
+   {
+    "at": 9000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 9000,
+    "line": {
+     "type": "mark",
+     "id": "g2",
+     "beat": 0,
+     "kind": "box",
+     "on": 2
+    }
+   }
+  ],
+  "at": [
+   3500,
+   4100,
+   5500,
+   6100,
+   8500,
+   11000
+  ]
+ },
+ "out": [
+  {
+   "g1/0 box": "drawn",
+   "g1/0 tag": {
+    "where": "after its line",
+    "clearOfItsLineAndInk": 10,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "cursor": "nearest g1/0 tag",
+   "arrowLeaves": null
+  },
+  {
+   "cursor": "none",
+   "arrowLeaves": null
+  },
+  {
+   "cursor": "none",
+   "arrowLeaves": null
+  },
+  {
+   "g1/0 box": "drawn",
+   "g1/0 tag": {
+    "where": "after its line",
+    "clearOfItsLineAndInk": 10,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "cursor": "nearest g1/0 tag",
+   "arrowLeaves": null
+  },
+  {
+   "cursor": "none",
+   "arrowLeaves": null
+  },
+  {
+   "g2/0 box": "drawn",
+   "cursor": "nearest g2/0 box",
+   "arrowLeaves": null
+  }
+ ]
+}

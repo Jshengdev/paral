@@ -52,7 +52,7 @@ final class App: NSObject, NSApplicationDelegate {
 
     private func clock() -> Double { Date().timeIntervalSince(began) * 1000 }
     private func stamp() -> Double { (Date().timeIntervalSince1970 * 1000).rounded() }
-    func tell(_ seen: Seen) { centre.saw(seen); scene.take(seen, at: clock()) }
+    func tell(_ seen: Seen) { centre.saw(seen); watch.saw(seen); scene.take(seen, at: clock()) }
     private func failed(_ why: String) { tell(.state(name: "failed", detail: why)) }
 
     func applicationDidFinishLaunching(_ note: Notification) {
@@ -98,8 +98,8 @@ final class App: NSObject, NSApplicationDelegate {
             key.onHeld = { [weak self] in self?.draw() }; key.onMove = { [weak self] at in if let self { self.scene.moved(x: at.x, y: at.y, at: self.clock()) } }
             key.start()
             self.key = key
-            watch.busy = { [weak self] in self.map { $0.held || $0.scene.watching(at: $0.clock()).busy } ?? true }
-            watch.waiting = { [weak self] in self.map { $0.scene.watching(at: $0.clock()).down != nil } ?? false }
+            watch.sees = { [weak self] in self.map { (held: $0.held, scene: $0.scene.watching(at: $0.clock())) } }
+            watch.onStale = { [weak self] in self?.tell(.stale($0)) }
             watch.onLook = { [weak self] path, w, h, place, lines in
                 guard let self else { return }
                 self.tell(.screen(display: place, lines: Screen.taken(path, w, lines, below: self.scene.footShare)))

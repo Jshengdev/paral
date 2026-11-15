@@ -16,7 +16,7 @@ extension Scene {
     /// has not boxed.
     public func boxed(x: Double, y: Double, at t: Double) -> Bool {
         let here = CGPoint(x: x - origin.x, y: y - origin.y)
-        return marks.contains { $0.kind == .box && $0.at <= t && ($0.clearedAt.map { t < $0 } ?? true) && here.x >= $0.box.x && here.x <= $0.box.x + $0.box.w && here.y >= $0.box.y && here.y <= $0.box.y + $0.box.h }
+        return !stale(at: t) && marks.contains { $0.kind == .box && $0.at <= t && ($0.clearedAt.map { t < $0 } ?? true) && here.x >= $0.box.x && here.x <= $0.box.x + $0.box.w && here.y >= $0.box.y && here.y <= $0.box.y + $0.box.h }
     }
 
     /// Whether a mark waits for his click at `t`: it is the mark of the step a board names. A tick, a strike and a tag

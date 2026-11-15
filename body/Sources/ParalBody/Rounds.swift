@@ -34,12 +34,23 @@ extension Screen {
 /// page that is moving and a mark lands as its thing comes into view. At most `most` looks are sent that way in a
 /// row; then the page must stand still once before more are.
 public struct Rounds {
-    /// The print of the round before, and of the last look reported.
-    private var before = Data(), reported = Data()
+    /// The print of the round before, of the last look reported, and of the page paral's marks were placed on.
+    private var before = Data(), reported = Data(), basis = Data()
     /// How many looks in a row have been reported at once, with no round between in which the page stood still.
     private var hurried = 0
 
     public init() {}
+
+    /// Marks have just been placed: the page as the latest round saw it is the page they are on.
+    public mutating func placed() { basis = before }
+
+    /// A look was sent while the page had moved under the marks, and the mind placed nothing new for it: by its own
+    /// measure they still stand, so the page as that look saw it is the page they are on.
+    public mutating func stands() { basis = reported }
+
+    /// Whether the page has moved under the marks: a print that is not the page they were placed on. False while
+    /// nothing has been placed.
+    public func stale(_ print: Data, within: Double) -> Bool { !basis.isEmpty && !Screen.alike(print, basis, within: within) }
 
     /// Whether a print shows the page as the last look reported saw it, and, round a place of it (`near`, as shares
     /// of the print across and down), exactly so: in the 49 by 25 points round that place not one in a hundred may

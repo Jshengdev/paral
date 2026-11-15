@@ -57,7 +57,7 @@ public struct Scene {
     /// Each chunk of the microphone's sound: when it came, how long it lasts and how loud it was. The wave reads it.
     var sounds: [(at: Double, ms: Double, level: Double)] = []
     var failed: (detail: String, at: Double)?
-    var idleAt: Double?
+    var idleAt: Double?, staleAt: Double?  // when the page moved away from under the marks (`SceneStale.swift`)
     var closedAt: Double?
     var lastAt = 0.0
 
@@ -129,7 +129,7 @@ public struct Scene {
         case .mark(let id, let beat, let kind, let box, let label, let tone, let spot):
             // The first mark of an ask lands the moment it arrives; later ones wait for their sentence.
             let withSay = asks.first { $0.id == id }?.beats[beat] != nil && marks.contains { $0.id == id }
-            let here = box.moved(dx: -origin.x, dy: -origin.y)
+            let here = box.moved(dx: -origin.x, dy: -origin.y); staleAt = nil
             // A new mark takes the place of the one on its line; a tag stands beside a line's ink, so it takes only a tag's.
             for i in marks.indices where marks[i].clearedAt == nil && Scene.sameLine(marks[i].box, here) && (marks[i].kind == .tag) == (kind == .tag) { marks[i].clearedAt = at }
             // His own loop gives way once paral marks something inside it.
@@ -189,8 +189,8 @@ public struct Scene {
             kept(at)
         case .go(_, let url, let label): went(to: url, label, at)
         case .click(let x, let y): click(x: x, y: y, at: at)
-        case .other, .scroll, .press:
-            break
+        case .stale(let moved): staleAt = moved ? (staleAt ?? at) : nil
+        case .other, .scroll, .press: break
         }
     }
 

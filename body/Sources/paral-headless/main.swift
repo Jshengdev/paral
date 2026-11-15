@@ -54,8 +54,17 @@ case "rounds":
     // What the watcher decides for a row of rounds, each a print given as letters (one letter is one point's grey).
     guard arguments.count == 2, let data = FileManager.default.contents(atPath: arguments[1]), let asked = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
           let most = asked["most"] as? Int, let within = asked["within"] as? Double, let given = asked["rounds"] as? [[String: Any]] else { fail(usage) }
-    var rounds = Rounds()
-    out(["reported": given.map { rounds.report(Data(($0["print"] as? String ?? "").utf8), waiting: $0["waiting"] as? Bool ?? false, most: most, within: within) }])
+    var rounds = Rounds(), stale: [Bool] = []
+    // A round may say that marks were placed just before it (`placed`), or that the look before it was left to stand
+    // (`stands`); `stale` is whether the page had then moved away from under the marks at that round.
+    let reported = given.map { round -> Bool in
+        if round["placed"] as? Bool == true { rounds.placed() }
+        if round["stands"] as? Bool == true { rounds.stands() }
+        let print = Data((round["print"] as? String ?? "").utf8)
+        stale.append(rounds.stale(print, within: within))
+        return rounds.report(print, waiting: round["waiting"] as? Bool ?? false, most: most, within: within)
+    }
+    out(["reported": reported, "stale": stale])
 
 case "page":
     guard arguments.count >= 3 else { fail(usage) }

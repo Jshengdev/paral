@@ -54,7 +54,7 @@ extension Scene {
     /// `chip.ms`, as the cursor's name tag does; whole at once with motion reduced.
     func tagsUp(at t: Double) -> [TagPicture] {
         placedTags(at: t).compactMap { tag, box in
-            guard let came = arrives(tag), t >= came else { return nil }
+            guard !stale(at: t), let came = arrives(tag), t >= came else { return nil }
             let grown = still ? 1 : tokens.curves.pop((t - came) / max(duration(.tag), 1))
             return TagPicture(key: "\(tag.id)/\(tag.beat)", words: tag.label ?? "", tone: tag.tone ?? .quiet, line: tag.box, box: box, grown: grown)
         }

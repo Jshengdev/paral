@@ -16,7 +16,7 @@ extension Scene {
     /// (once one has gone it waits for that), and only when its words name the very line that is marked ("Open
     /// Deadlines" with the mark on "Deadlines"). In every other case there is no arrow.
     func lead(at t: Double, capsule: CapsulePicture, nudge: NudgePicture?) -> LeadPicture? {
-        guard wayUp(at: t) == nil else { return nil }
+        guard wayUp(at: t) == nil, !stale(at: t) else { return nil }
         // A tag is a chip beside a line's ink, not a mark of the line: the arrow leaves the ink. A spot marks a place of
         // a drawing, and an arrow from it would run across the drawing. A tick is on a line he has finished, which the
         // card no longer speaks about. The arrow leaves the newest mark that is none of these.
