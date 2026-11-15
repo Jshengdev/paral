@@ -34,6 +34,8 @@ const box = { x: 100, y: 80, w: 200, h: 20 };
 const PAGE = [{ id: "work", text: "My work", box }, { id: "limiter", text: "The rate limiter keeps its buckets in memory", box }];
 // A page whose subject is an address, which is one long word: "trycloudflare".
 const LINKS = [{ id: "head", text: "Short link", box }, { id: "link-1", text: "https://quiet-harbor-demo.trycloudflare.com/4CQMZu", box }];
+// A page that writes each date with a colon after it, one of them with a time.
+const COLONS = [{ id: "closes", text: "November 22 at 11:59pm: Application closes.", box }, { id: "advisors", text: "December 1: Deadline for advisors to submit their requirements.", box }];
 // The day of a run: Saturday, November 14, 2026, at 7 pm in Los Angeles.
 const RAN = new Date("2026-11-14T19:00:00-08:00");
 // A page the build read ahead of time, as its record names it.
@@ -126,6 +128,8 @@ const CASES: Case[] = [
   { name: "a date from a kept page the build gave with the ask", check: "Every date it says is on a page it read", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "It closes November 22 at 11:59 pm, inside the Deadlines section.")]), {}, DATED, { pages: [KEPT], ranOn: RAN }) },
   { name: "a date from a kept page that was not given with the ask", check: "Every date it says is on a page it read", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "It closes November 22 at 11:59 pm, inside the Deadlines section.")]), {}, DATED, { pages: [], ranOn: RAN }) },
   { name: "a date he said himself, said back to him", check: "Every date it says is on a page it read", mustPass: true, verdicts: () => spoken(ask([{ at: 4000, kind: "heard", text: "Is it due November 20?" }, say("t1:0", 6000, "It is not November 20; the page says March 1, 2027.")]), {}, DATED, { pages: [], ranOn: RAN }) },
+  { name: "a date the page writes with a colon after it", check: "Every date it says is on a page it read", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "Advisors have until December 1, and it closes November 22 at 11:59 pm.")]), {}, COLONS, { pages: [], ranOn: RAN }) },
+  { name: "a time after a date is not a day of the month", check: "Every date it says is on a page it read", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "It closes November 11.")]), {}, COLONS, { pages: [], ranOn: RAN }) },
   { name: "it says today's date", check: "Every date it says is on a page it read", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "Today is November 14, and the page says March 1, 2027.")]), {}, DATED, { pages: [], ranOn: RAN }) },
   { name: "the right count of days to a date", check: "It counts the days to November 22 rightly", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "It closes November 22 at 11:59 pm, which is eight days from today.")]), { countsDaysTo: "November 22" }, DATED, { pages: [KEPT], ranOn: RAN }) },
   { name: "a count of days that is one too many", check: "It counts the days to November 22 rightly", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "It closes November 22 at 11:59 pm, which is nine days from today.")]), { countsDaysTo: "November 22" }, DATED, { pages: [KEPT], ranOn: RAN }) },
