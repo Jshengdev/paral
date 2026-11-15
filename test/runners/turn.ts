@@ -12,8 +12,8 @@ type Step = { until?: string; release?: boolean | string; say?: string } & Recor
 /** A line as a row holds it: sound and word timings by their size, a calendar file by what is in it. */
 function shorter(line: any) {
   const { v, type, id, beat } = line;
-  // The cue cards are a setting, the same in every row, so the ready line is held without them; they have a row of their own.
-  if (type === "ready") return (({ cues: _cues, ...rest }) => rest)(line);
+  // The cue cards and the opening line are settings, the same in every row, so the ready line is held without them; they have a row of their own.
+  if (type === "ready") return (({ cues: _cues, opening: _opening, ...rest }) => rest)(line);
   if (type === "voice") return { v, type, id, beat, bytes: Buffer.from(line.pcm, "base64").length, ...(line.last ? { last: true } : {}) };
   if (type === "words") return { v, type, id, beat, count: line.words.length, ends: Number(line.end.at(-1).toFixed(2)) };
   // The file sits in this machine's temporary folder, so a row holds its name and what is in it.

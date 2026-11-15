@@ -93,11 +93,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
 
   async function up(at: number) {
     answering++;
-    try {
-      await released(at);
-    } finally {
-      answering--;
-    }
+    await released(at).finally(() => void answering--);
   }
 
   async function released(at: number) {

@@ -18,10 +18,9 @@ final class App: NSObject, NSApplicationDelegate {
     /// a fallback that cannot fire, and each repeats the setting's own value.
     private var settings: BodySettings?
     private var status: NSStatusItem?
-    private var voiced: Set<String> = []
     private var shot: (image: CGImage, place: DisplayPlace, lines: [ReadLine])?
     private var trail: [CGPoint] = []
-    private var cut: Set<String> = []
+    private var voiced: Set<String> = [], cut: Set<String> = []
     private var holds = 0
     /// True from the key going down until that hold has ended. The watch does not look meanwhile.
     private var held = false
@@ -109,6 +108,7 @@ final class App: NSObject, NSApplicationDelegate {
             }
             watch.start(everyMs: settings.lookEveryMs, longEdge: settings.pictureLongEdge)
             cues.show(settings.cues, in: status?.menu)
+            if !settings.opening.isEmpty { [Seen.say(id: "hello", beat: 0, text: settings.opening, aside: false, trail: ["Lost and Found"]), .mute(id: "hello")].forEach(tell) }
         }
         if case .voice(let id, _, let sound, _) = seen {
             guard !cut.contains(id) else { return }

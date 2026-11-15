@@ -64,6 +64,8 @@ export const FromMind = z.discriminatedUnion("type", [
     lookEveryMs: z.number().nonnegative().optional(),
     /** Lines he can tap instead of saying them, in groups: the body shows them in its menu and sends a tapped one as `typed`. */
     cues: z.array(z.object({ name: z.string().min(1), lines: z.array(z.string().min(1)) })).optional(),
+    /** One line that says what this is, for the app to show once when it starts. */
+    opening: z.string().min(1).optional(),
   }),
   z.object({ v, type: z.literal("state"), name: z.enum(["idle", "listening", "thinking", "failed"]), detail: z.string().optional() }),
   z.object({ v, type: z.literal("heard"), text: z.string(), final: z.boolean() }),

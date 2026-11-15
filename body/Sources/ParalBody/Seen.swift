@@ -13,6 +13,9 @@ public struct BodySettings: Equatable {
     public var lookEveryMs = 0.0
     /// Lines he can tap in the menu instead of saying them, in groups.
     public var cues: [Cue] = []
+    /// One line that says what this is; empty for none. The app shows it once when it starts, in the capsule and not
+    /// spoken. A scripted run does not show it.
+    public var opening = ""
 }
 
 /// Everything the scene can be told, from either side of the seam. The windows and the film feed it the same way.
@@ -74,6 +77,7 @@ public enum Seen {
                 settings.cropPoints = points
             }
             settings.lookEveryMs = n("lookEveryMs") ?? 0
+            settings.opening = s("opening") ?? ""
             settings.cues = (f["cues"] as? [[String: Any]] ?? []).compactMap { cue in
                 guard let name = cue["name"] as? String, let lines = cue["lines"] as? [String] else { return nil }
                 return Cue(name: name, lines: lines)

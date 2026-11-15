@@ -178,6 +178,7 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
   Maymester page; the chemistry worksheet has none, since the mind cannot yet tell that page is on screen. It knows
   a step happened only from what the mind itself did: a click in Calendar, or a section opened with the date's line
   still out of view, is not seen.
+- The opening line (`openingLine`, shown once by the app when it starts) has never been seen: no scripted run shows it.
 - The cue cards in the menu and the tapped ask have never been used on a Mac: `Cues.swift` and the app's `typed` are
   compiled and unrun. The scripted stand-in has run tapped asks live. The menu bar says "Lost and Found"; the app's
   file, its grants in System Settings and this repo still say paral.

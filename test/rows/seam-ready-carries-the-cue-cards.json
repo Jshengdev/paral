@@ -1,5 +1,5 @@
 {
- "name": "seam: the ready line may carry the cue cards, groups of lines he can tap instead of saying",
+ "name": "seam: the ready line may carry the cue cards, groups of lines he can tap instead of saying, and the opening line the app shows once",
  "run": "seam.write",
  "in": {
   "from": "mind",
@@ -24,8 +24,9 @@
       "show me"
      ]
     }
-   ]
+   ],
+   "opening": "I sit on top of the page you have open."
   }
  },
- "out": "{\"v\":1,\"type\":\"ready\",\"mind\":\"paral\",\"holdKey\":\"rightOption\",\"drawKey\":\"shift\",\"earGraceMs\":300,\"markPad\":4,\"pictureLongEdge\":1280,\"cropAround\":{\"share\":1,\"points\":200},\"cues\":[{\"name\":\"Club recognition page\",\"lines\":[\"add it to my calendar\",\"show me\"]}]}\n"
+ "out": "{\"v\":1,\"type\":\"ready\",\"mind\":\"paral\",\"holdKey\":\"rightOption\",\"drawKey\":\"shift\",\"earGraceMs\":300,\"markPad\":4,\"pictureLongEdge\":1280,\"cropAround\":{\"share\":1,\"points\":200},\"cues\":[{\"name\":\"Club recognition page\",\"lines\":[\"add it to my calendar\",\"show me\"]}],\"opening\":\"I sit on top of the page you have open.\"}\n"
 }

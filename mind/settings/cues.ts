@@ -25,6 +25,12 @@ export const cues = {
     measured: "not seen on a Mac; the club page's steps are the take's own",
   } satisfies Setting<Record<string, Step[]>>,
 
+  openingLine: {
+    value: "I sit on top of the page you have open. When a USC page hides something that will cost you later, I box it, and I can keep the date for you.",
+    why: "Shown once in the capsule when the app starts, so a student who has just opened it knows what it is. It goes to the body in the ready line; the app shows it, not spoken, and a scripted run does not show it. An empty line shows nothing.",
+    measured: "not seen on a Mac",
+  } satisfies Setting<string>,
+
   demoDoneLine: {
     value: "That is every step for this page.",
     why: "Shown once in the guide's card when every step of the page on screen has been seen to happen.",

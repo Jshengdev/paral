@@ -21,7 +21,7 @@ Promises: one schema for every line between body and mind (`schema.ts`), newline
 
 | line | means |
 |---|---|
-| `ready` | the body's settings: the hold key, the draw key, the microphone's tail, the picture's size, the room left around a mark (`markPad`), and how much of the picture goes when he draws around something (`cropAround`). It may also carry `lookEveryMs` (how often to look with no key pressed) and `cues` (groups of lines he can tap in the menu instead of saying them) |
+| `ready` | the body's settings: the hold key, the draw key, the microphone's tail, the picture's size, the room left around a mark (`markPad`), and how much of the picture goes when he draws around something (`cropAround`). It may also carry `lookEveryMs` (how often to look with no key pressed) `cues` (groups of lines he can tap in the menu instead of saying them) and `opening` (one line the app shows once when it starts) |
 | `state` | idle, listening, thinking or failed (with the reason) |
 | `heard` | his words as the ear hears them, and once more when final |
 | `echo` | his own loop, drawn back as soon as his words are final (the ear takes about 0.4 s after the release): a box and a shape (`loop`, `ring` or `box`). It is his, so `clear` leaves it; his next key press takes it |
