@@ -6,8 +6,8 @@ import { no, yes, type Verdict } from "../verdict.ts";
 // A date is a month and a day, as "March 1", "Mar 1st" or "December 9-16". A wrong date costs a student a deadline,
 // so three things are held: a date the scenario names is said as the page writes it, no date is said that it has
 // no page for, and where the scenario asks it, the answer says what the date means for him (that it has passed).
-// His words of 2026-11-14: it may say a date that is not on the page in front of him when it read it on another
-// page, and it that it not say things it has no information on. So a date may come from the page on his
+// What he asked for on 2026-11-14: it may say a date that is not on the page in front of him when it read it on another
+// page, and it must not say things it has no information on. So a date may come from the page on his
 // screen, from a page the build's record says it gave the model with this ask, from his own words, or be today.
 const MONTHS = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
 const MONTH = new RegExp(`\\b(${MONTHS.join("|")}|${MONTHS.map((m) => m.slice(0, 3)).join("|")}|sept)\\b\\.?`, "gi");

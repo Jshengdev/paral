@@ -5,7 +5,7 @@ import { no, yes, type Verdict } from "../verdict.ts";
 import { dates, datesSaid, daysTo, type Known } from "./dates.ts";
 import { linesUnder, marks } from "./marks.ts";
 
-// A look with no key pressed (his choice of 2026-11-14, 19:02: "lets try the B"): on a page it has read, paral
+// A look with no key pressed (his choice of 2026-11-14, 19:02): on a page it has read, paral
 // shows one sentence with a short trail of what it did above it, marks where the thing is, and draws what is still
 // ahead. He did not ask, so everything it shows must be true to what it read, and it must stay quiet otherwise.
 const C = "C18";

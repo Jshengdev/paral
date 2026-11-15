@@ -118,7 +118,7 @@ walk are kept outside this repo, beside the films, because the record quotes the
   held to it. Whether a quick line is true of his page is a reader's to judge, run by run.
 - **Dates.** A wrong date costs a student a deadline. A date the scenario names (`says`) must be in the answer as the
   page writes it, with "1st" read as "1". And every date in any answer, a month with its day, must be on a page it
-  read (his words: it may say what it found on another page, never what it has no page for). A page it read is the
+  read (what he asked for: it may say what it found on another page, never what it has no page for). A page it read is the
   page in front of him, or one of the build's kept pages that the mind's log says it gave the model with that ask
   or with any ask or look before it in the same sitting (`src/judge/pages.ts`): one sitting, one memory. A date he said himself, and the day of the run, also count. The kept pages' text is the
   builder's reading of each site; the judge does not check it against the site.
@@ -150,7 +150,7 @@ walk are kept outside this repo, beside the films, because the record quotes the
 - **Keeping a date** (`src/judge/keep.ts`). Asked to keep a date, the build writes a calendar file and hands it to
   the Mac; he adds it with his own click in Calendar. The judge holds that one such file was handed over and that it
   starts on the day the scenario names. It may say the date is open in his calendar, never that it was added.
-- **"Show me"** (`src/judge/showme.ts`; his words of 2026-11-14, 20:00). Each time he says it the build is held to
+- **"Show me"** (`src/judge/showme.ts`; what he asked for on 2026-11-14, 20:00). Each time he says it the build is held to
   the next step of what the looks found: the board names his row, and one sentence begins "Step 2 of 3". Where the
   step is on the page is held by the mark check, or by the way check when it is not in view (the right direction
   on the wire, and on film an arrow at that edge of the screen, on none of the page's words); a look after it is

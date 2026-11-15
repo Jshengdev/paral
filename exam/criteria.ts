@@ -1,6 +1,6 @@
 // What paral must do. C1 to C15 are what the person in the video does with DuckyHelper (youtu.be/PHswiY3YUO0, times in
-// the scenarios). C16 is the team's own and C17 is ours. C18 is the look he chose on 2026-11-14 at 19:02 ("lets try
-// the B"). U2 to U7 are checks of use, with their sources in src/judge/.
+// the scenarios). C16 is the team's own and C17 is ours. C18 is the look he chose on 2026-11-14 at
+// 19:02. U2 to U7 are checks of use, with their sources in src/judge/.
 export const CRITERIA: Record<string, string> = {
   C1: "At rest, one small circle sits at the bottom centre, above other apps.",
   C2: "He holds the key and talks. The circle widens and his words show as he says them.",
