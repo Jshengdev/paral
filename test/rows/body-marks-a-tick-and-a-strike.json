@@ -1,5 +1,5 @@
 {
- "name": "body: a tick is drawn by the pen left of its line, in a square as tall as the line up to 26 (its ink 20 tall on a line 47 tall) whose edge is 8 clear of the words (its stroke's middle 9), touching no read line; a strike is drawn through its line at even speed, from 4 before it to 4 past it, rising a little and inside the line's height; the cursor rides the pen for both and then rests by each, and a clear takes both and the cursor",
+ "name": "body: a tick is drawn by the pen left of its line, in a square as tall as the line up to 26 (its ink 20 tall on a line 47 tall) whose edge is 8 clear of the words (its stroke's middle 9), touching no read line; a strike is drawn through its line at even speed, from 4 before it to 4 past it, rising a little and inside the line's height; the cursor rides the pen for the strike and rests by it, and neither rides the tick's pen nor rests by it, since a tick is on a line he has finished; a clear takes both and the cursor",
  "run": "body.marks",
  "in": {
   "lines": [
@@ -51,7 +51,7 @@
  },
  "out": [
   {
-   "cursor": "nearest nothing",
+   "cursor": "none",
    "arrowLeaves": null
   },
   {
@@ -61,7 +61,7 @@
     "tall": 9,
     "onAnyReadLine": false
    },
-   "cursor": "on the pen's tip",
+   "cursor": "none",
    "arrowLeaves": null
   },
   {

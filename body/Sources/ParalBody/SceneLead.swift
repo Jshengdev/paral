@@ -18,8 +18,9 @@ extension Scene {
     func lead(at t: Double, capsule: CapsulePicture, nudge: NudgePicture?) -> LeadPicture? {
         guard wayUp(at: t) == nil else { return nil }
         // A tag is a chip beside a line's ink, not a mark of the line: the arrow leaves the ink. A spot marks a place of
-        // a drawing, and an arrow from it would run across the drawing: the arrow leaves the newest mark that is neither.
-        let up = marks.last { mark in mark.kind != .tag && !mark.spot && mark.at <= t && (mark.clearedAt.map { t < $0 } ?? true) && (start(mark).map { $0 <= t } ?? false) }
+        // a drawing, and an arrow from it would run across the drawing. A tick is on a line he has finished, which the
+        // card no longer speaks about. The arrow leaves the newest mark that is none of these.
+        let up = marks.last { mark in ![.tag, .tick].contains(mark.kind) && !mark.spot && mark.at <= t && (mark.clearedAt.map { t < $0 } ?? true) && (start(mark).map { $0 <= t } ?? false) }
         guard let mark = up, let began = start(mark) else { return nil }
         let ready = still ? began : began + flight + duration(mark.kind) + ms(tokens.cursor.settleMs)
         let key = "\(mark.id)/\(mark.beat)"

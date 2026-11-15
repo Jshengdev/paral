@@ -1,0 +1,189 @@
+{
+ "name": "body: a step of the walk is done: the next step's box comes with its \"Next\" tag, and then a tick and a \"Done\" tag on the line he finished (given ids of their own here, so each can be told apart; the mind sends all four under one): the cursor goes to the box, rides its pen and rests by it, never to the tick or its tag, and the arrow leaves the box",
+ "run": "body.marks",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes.",
+   "Late applications are not accepted.",
+   "Info Sessions, Workshops, and Office Hours",
+   "Application deadline: November 2, 2026",
+   "Apply for the Catalina Maymester"
+  ],
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "next",
+     "beat": 0,
+     "kind": "box",
+     "on": 4
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "next",
+     "beat": 0,
+     "kind": "tag",
+     "on": 4,
+     "label": "Next",
+     "tone": "strong"
+    }
+   },
+   {
+    "at": 1001,
+    "line": {
+     "type": "mark",
+     "id": "done",
+     "beat": 0,
+     "kind": "tick",
+     "on": 3
+    }
+   },
+   {
+    "at": 1001,
+    "line": {
+     "type": "mark",
+     "id": "done",
+     "beat": 0,
+     "kind": "tag",
+     "on": 3,
+     "label": "Done",
+     "tone": "quiet"
+    }
+   },
+   {
+    "at": 1001,
+    "line": {
+     "type": "say",
+     "id": "next",
+     "beat": 0,
+     "text": "Step 3 of 3: Advisor submits their requirements.",
+     "trail": [
+      "show me",
+      "step 3 of 3"
+     ]
+    }
+   },
+   {
+    "at": 1002,
+    "line": {
+     "type": "mute",
+     "id": "next",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   }
+  ],
+  "at": [
+   1200,
+   1700,
+   2400,
+   3500,
+   6000
+  ]
+ },
+ "out": [
+  {
+   "cursor": "nearest nothing",
+   "arrowLeaves": null
+  },
+  {
+   "next/0 box": "drawn",
+   "done/0 tick": {
+    "leftOfItsWords": true,
+    "clearOfTheWords": 8,
+    "tall": 20,
+    "onAnyReadLine": false
+   },
+   "done/0 tag": {
+    "where": "after its line",
+    "clearOfItsLineAndInk": 10,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "cursor": "nearest next/0 box",
+   "arrowLeaves": null
+  },
+  {
+   "next/0 box": "drawn",
+   "done/0 tick": {
+    "leftOfItsWords": true,
+    "clearOfTheWords": 8,
+    "tall": 20,
+    "onAnyReadLine": false
+   },
+   "next/0 tag": {
+    "where": "after its line",
+    "clearOfItsLineAndInk": 10,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "done/0 tag": {
+    "where": "after its line",
+    "clearOfItsLineAndInk": 10,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "cursor": "nearest next/0 tag",
+   "arrowLeaves": "next/0"
+  },
+  {
+   "next/0 box": "drawn",
+   "done/0 tick": {
+    "leftOfItsWords": true,
+    "clearOfTheWords": 8,
+    "tall": 20,
+    "onAnyReadLine": false
+   },
+   "next/0 tag": {
+    "where": "after its line",
+    "clearOfItsLineAndInk": 10,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "done/0 tag": {
+    "where": "after its line",
+    "clearOfItsLineAndInk": 10,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "cursor": "nearest next/0 tag",
+   "arrowLeaves": "next/0"
+  },
+  {
+   "next/0 box": "drawn",
+   "done/0 tick": {
+    "leftOfItsWords": true,
+    "clearOfTheWords": 8,
+    "tall": 20,
+    "onAnyReadLine": false
+   },
+   "next/0 tag": {
+    "where": "after its line",
+    "clearOfItsLineAndInk": 10,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "done/0 tag": {
+    "where": "after its line",
+    "clearOfItsLineAndInk": 10,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "cursor": "nearest next/0 tag",
+   "arrowLeaves": "next/0"
+  }
+ ]
+}

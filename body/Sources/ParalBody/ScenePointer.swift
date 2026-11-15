@@ -6,15 +6,16 @@ extension Scene {
     private typealias Stroke = (began: Double, kind: MarkKind, path: [CGPoint], line: Box?)
 
     /// The strokes on the page at `t`, the newest last. One that has been wiped is not among them, so a clear or a
-    /// close takes the cursor with the ink. A tag is a chip and not ink, and a spot is on a drawing he is looking at:
-    /// the cursor goes to neither, and stays where the newest other mark put it.
+    /// close takes the cursor with the ink. A tag is a chip and not ink, a spot is on a drawing he is looking at, and
+    /// a tick is on a line he has finished: the cursor goes to none of them, and stays where the newest other mark
+    /// put it. So after a step is done it leads to the next step's box, not back to the line that is ticked.
     private func strokes(at t: Double) -> [Stroke] {
         func up(_ clearedAt: Double?) -> Bool { clearedAt.map { t < $0 } ?? true }
         var strokes: [Stroke] = []
         for echo in echoes where echo.at <= t && up(echo.clearedAt) {
             strokes.append((echo.at, kind(of: echo), Pen.path(of: ring(for: echo, drawn: 1), tokens: tokens, avoiding: texts, inside: (width, height)), nil))
         }
-        for mark in marks where up(mark.clearedAt) && mark.kind != .tag && !mark.spot {
+        for mark in marks where up(mark.clearedAt) && ![.tag, .tick].contains(mark.kind) && !mark.spot {
             guard let began = start(mark), began <= t else { continue }
             let whole = MarkPicture(key: "\(mark.id)/\(mark.beat)", kind: mark.kind, box: mark.box, label: nil, drawn: 1)
             strokes.append((began, mark.kind, Pen.path(of: whole, tokens: tokens, avoiding: texts, inside: (width, height)), mark.box))
