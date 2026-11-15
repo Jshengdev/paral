@@ -21,11 +21,12 @@ extension Scene {
     /// The toast that says a date has been opened in his calendar: up for its stay from the moment of the `open` line,
     /// coming and going as the board does. It is not ink on the page, so a clear does not take it and it brings no cross.
     func toast(at t: Double) -> ToastPicture? {
-        guard let opened = openedAt, t >= opened else { return nil }
-        let fade = ms(tokens.motion.boardMs), gone = opened + fade + tokens.toast.stayMs
+        guard let opened, t >= opened.at else { return nil }
+        let fade = ms(tokens.motion.boardMs), gone = opened.at + fade + tokens.toast.stayMs
         guard t < gone + fade else { return nil }
-        let appear = still ? 1 : min(Motion.ease((t - opened) / max(fade, 1)), 1 - Motion.ease((t - gone) / max(fade, 1)))
-        return ToastPicture(text: tokens.strings.opened, appear: appear)
+        let appear = still ? 1 : min(Motion.ease((t - opened.at) / max(fade, 1)), 1 - Motion.ease((t - gone) / max(fade, 1)))
+        // The date follows the words after a dot, as the kit's toast writes it.
+        return ToastPicture(text: tokens.strings.opened + (opened.label.map { " · " + $0 } ?? ""), appear: appear)
     }
 
     /// A nod is a quick dip and a springy way back. The first comes one rest after the ink is whole, and one follows

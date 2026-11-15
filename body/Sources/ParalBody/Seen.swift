@@ -31,7 +31,8 @@ public enum Seen {
     case words(id: String, beat: Int, start: [Double], end: [Double])
     case mute(id: String)
     /// A calendar file the mind has written. The scene shows nothing for it; the app opens it (see `Keep`).
-    case open(path: String)
+    /// `label` is the date in a few words ("November 22"), which the toast shows.
+    case open(path: String, label: String?)
     case mark(id: String, beat: Int, kind: MarkKind, box: Box, label: String?)
     /// The thing is on this page and not in view: which way to scroll ("up" or "down") and what it leads to.
     case way(id: String, to: String, toward: String)
@@ -115,7 +116,7 @@ public enum Seen {
             return .success(.mute(id: id))
         case "open":
             guard let path = s("path"), !path.isEmpty else { return .failure(Refused("open.path: missing")) }
-            return .success(.open(path: path))
+            return .success(.open(path: path, label: s("label")))
         case "mark":
             guard let id, let beat, let kind = MarkKind(rawValue: s("kind") ?? ""), let b = box(f["box"]) else {
                 return .failure(Refused("mark: id, beat, a known kind and a box with positive w and h are needed"))

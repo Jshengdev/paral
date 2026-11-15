@@ -87,7 +87,7 @@ public enum Film {
             let way: Any = picture.way.map { ["id": $0.id, "to": $0.down ? "down" : "up", "toward": $0.toward, "drawn": $0.drawn, "nod": $0.nod] as [String: Any] } ?? NSNull()
             let pointer: Any = picture.pointer.map { ["x": $0.x, "y": $0.y, "ripple": $0.ripple ?? NSNull(), "flight": $0.withWay?.flight ?? NSNull(), "tag": $0.tag, "thinking": $0.thinking] as [String: Any] } ?? NSNull()
             let board: Any = picture.board.map { ["id": $0.id, "now": $0.now ?? NSNull(), "appear": $0.appear] as [String: Any] } ?? NSNull()
-            return ["placed": placed.map { item in ["what": item.what, "id": item.id ?? "", "box": item.box.json] as [String: Any] }, "way": way, "pointer": pointer, "board": board]
+            return ["placed": placed.map { item in ["what": item.what, "id": item.id ?? "", "box": item.box.json] as [String: Any] }, "way": way, "pointer": pointer, "board": board, "toast": picture.toast?.text ?? NSNull()]
         }
     }
 

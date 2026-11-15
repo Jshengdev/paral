@@ -1,5 +1,5 @@
 {
- "name": "body: an open line, which is a date opened in his calendar, shows a toast that says so: nothing before the line; then the toast at the bottom, inside the display, on none of the page's text and clear of the capsule, the board and the way arrow; and after its few seconds it is gone, with no clear",
+ "name": "body: an open line, which is a date opened in his calendar, shows a toast that says so and names the date the line carries: nothing before the line; then the toast at the bottom, inside the display, on none of the page's text and clear of the capsule, the board and the way arrow; and after its few seconds it is gone, with no clear",
  "run": "body.toast",
  "in": {
   "lines": [
@@ -59,7 +59,8 @@
     "line": {
      "type": "open",
      "id": "t1",
-     "path": "/tmp/paral-row.ics"
+     "path": "/tmp/paral-row.ics",
+     "label": "November 22"
     }
    },
    {
@@ -100,6 +101,7 @@
   },
   {
    "toast": {
+    "says": "Open in your calendar · November 22",
     "insideTheDisplay": true,
     "atTheBottom": true,
     "onText": false,
@@ -110,6 +112,7 @@
   },
   {
    "toast": {
+    "says": "Open in your calendar · November 22",
     "insideTheDisplay": true,
     "atTheBottom": true,
     "onText": false,

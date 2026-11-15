@@ -11,6 +11,7 @@ type Moment = {
   way: { id: string; to: string; toward: string; drawn: number } | null;
   pointer: { x: number; y: number; ripple: number | null; flight: number | null; tag: boolean; thinking: boolean } | null;
   board: { id: string; now: number | null; appear: number } | null;
+  toast: string | null;
 };
 
 const root = join(import.meta.dirname, "..", "..");
@@ -112,12 +113,13 @@ export function steps(input: { lines: string[]; rows: Written[]; at: number[] })
 export function toast(input: { lines: string[]; rows: Written[]; at: number[] }) {
   const dir = handWritten("toast", input.rows, input.lines);
   const text = textOf(dir);
-  return at(dir, input.at).map(({ placed }) => {
+  return at(dir, input.at).map(({ placed, toast }) => {
     const box = placed.find((item) => item.what === "toast")?.box;
     if (!box) return { toast: null };
     const on = (what: string) => placed.some((item) => item.what === what && touches(item.box, box));
     return {
       toast: {
+        says: toast,
         insideTheDisplay: box.x >= 0 && box.y >= 0 && box.x + box.w <= DISPLAY.w && box.y + box.h <= DISPLAY.h,
         atTheBottom: box.y + box.h / 2 > (DISPLAY.h * 2) / 3,
         onText: text.some((line) => touches(line, box)),
