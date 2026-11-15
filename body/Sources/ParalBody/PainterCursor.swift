@@ -80,9 +80,9 @@ extension Painter {
         let tall = orbWide + 2 * Painter.tagPad.y * size
         let pill = CGRect(x: corner.x, y: corner.y, width: Painter.tagPad.left * size + orbWide + Painter.tagGap * size + words.width + Painter.tagPad.right * size, height: tall)
         ctx.saveGState()
-        ctx.setShadow(offset: .zero, blur: tokens.toast.shadow, color: CGColor(gray: 0, alpha: 0.28))
+        ctx.setShadow(offset: .zero, blur: tokens.shadow, color: CGColor(gray: 0, alpha: 0.28))
         ctx.addPath(CGPath(roundedRect: pill, cornerWidth: tall / 2, cornerHeight: tall / 2, transform: nil))
-        ctx.setFillColor(light.copy(alpha: tokens.toast.glass) ?? light)
+        ctx.setFillColor(light.copy(alpha: tokens.glass) ?? light)
         ctx.fillPath()
         ctx.restoreGState()
         orb(middle: CGPoint(x: pill.minX + Painter.tagPad.left * size + orbWide / 2, y: pill.midY), across: orbWide, clock: 0, ctx)

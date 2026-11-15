@@ -17,7 +17,7 @@ func color(_ hex: String, alpha: Double = 1) -> CGColor {
 public struct Painter {
     public let tokens: Tokens
     public let width, height: Double
-    let ink, paper, ember, cardinal, cardinalDeep, light, gold: CGColor
+    let ink, paper, ember, cardinal, cardinalDeep, light, gold, mist: CGColor
     public let accent: CGColor
     let frames = ClipFrames()
     let faces: Faces
@@ -34,6 +34,7 @@ public struct Painter {
         cardinalDeep = color(tokens.cardinalDeep)
         light = color(tokens.light)
         gold = color(tokens.gold)
+        mist = color(tokens.mist)
         faces = Faces(family: tokens.font, optical: tokens.fontOptical)
     }
 

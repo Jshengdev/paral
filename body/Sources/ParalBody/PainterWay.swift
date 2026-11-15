@@ -32,19 +32,18 @@ extension Painter {
         return Pen.arrow(in: room, inset: place.pill.height / 2, down: way.down, tokens: tokens)
     }
 
-    /// The arrow that says which way to scroll, and a tag beside it that names what it leads to. The tag is in the
-    /// capsule's own ink, so it reads as paral's on any page. The arrow is inked by the pen as far as it has got, with
+    /// The arrow that says which way to scroll, and a tag beside it that names what it leads to. The tag is the
+    /// capsule's own light surface, so it reads as paral's on any page. The arrow is inked by the pen as far as it has got, with
     /// a paper edge under it so it shows on a dark page too, and it dips toward its edge while it nods.
     func way(_ way: WayPicture, at place: WayPlace, _ ctx: CGContext) {
         let w = tokens.way
         let shape = CGPath(roundedRect: place.pill, cornerWidth: place.pill.height / 2, cornerHeight: place.pill.height / 2, transform: nil)
+        ctx.saveGState()
+        ctx.setShadow(offset: .zero, blur: tokens.shadow, color: CGColor(gray: 0, alpha: 0.28))
         ctx.addPath(shape)
-        ctx.setFillColor(ink)
+        ctx.setFillColor(light.copy(alpha: tokens.glass) ?? light)
         ctx.fillPath()
-        ctx.addPath(shape)
-        ctx.setStrokeColor(paper.copy(alpha: 0.85) ?? paper)
-        ctx.setLineWidth(1)
-        ctx.strokePath()
+        ctx.restoreGState()
         place.name.draw(at: CGPoint(x: place.pill.minX + w.padX, y: place.pill.minY + w.padY))
 
         let inked = Pen.reach(strokes: strokes(way, place), way.drawn)
@@ -76,12 +75,12 @@ extension Painter {
 
     /// The name as the tag writes it: whole when it fits, and otherwise cut short with a mark that says so.
     private func named(_ text: String, within room: Double) -> NSAttributedString {
-        let whole = inked(text, size: tokens.way.type, color: paper, weight: .medium)
+        let whole = inked(text, size: tokens.way.type, color: ink, weight: .medium)
         guard whole.size().width > room else { return whole }
         var kept = Substring(text)
         while kept.count > 1 {
             kept = kept.dropLast()
-            let cut = inked(kept.trimmingCharacters(in: .whitespaces) + "…", size: tokens.way.type, color: paper, weight: .medium)
+            let cut = inked(kept.trimmingCharacters(in: .whitespaces) + "…", size: tokens.way.type, color: ink, weight: .medium)
             if cut.size().width <= room { return cut }
         }
         return whole

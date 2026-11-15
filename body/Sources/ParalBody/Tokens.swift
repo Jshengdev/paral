@@ -37,9 +37,6 @@ public struct Tokens: Codable {
     public struct Toast: Codable {
         /// Its type size, the room round what is in it, and the gap between its badge and its words.
         public var type, pad, gap: Double
-        /// How solid its light fill is, and how far its shadow spreads. The kit's fill is 0.85 over a blur of the page;
-        /// the overlay cannot blur what is under it, so the fill is more solid to keep the page's words from showing through.
-        public var glass, shadow: Double
         /// How long it stays once it is up.
         public var stayMs: Double
     }
@@ -58,6 +55,12 @@ public struct Tokens: Codable {
     public var ember, cardinal, cardinalDeep: String
     /// The design kit's light surface, for a toast and the cursor's tag; and its gold, which is a spark only (one ring of the orb).
     public var light, gold: String
+    /// The design kit's quiet grey, for a box on the board that is not the step he is on.
+    public var mist: String
+    /// The light surface of the capsule, the toast and the tags: how solid its fill is, and how far its soft shadow
+    /// spreads. The kit fills at 0.85 over a blur of the page; the overlay cannot blur what is under it, so the fill
+    /// is nearly solid, to keep the page's words from showing through the words written on it.
+    public var glass, shadow: Double
     public var dim: Double
     public var capsule: Capsule
     public var mark: Mark

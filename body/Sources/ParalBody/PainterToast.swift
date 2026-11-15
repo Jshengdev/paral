@@ -28,9 +28,9 @@ extension Painter {
         defer { ctx.restoreGState() }
         ctx.setAlpha(toast.appear)
         ctx.saveGState()
-        ctx.setShadow(offset: .zero, blur: t.shadow, color: CGColor(gray: 0, alpha: 0.28))
+        ctx.setShadow(offset: .zero, blur: tokens.shadow, color: CGColor(gray: 0, alpha: 0.28))
         ctx.addPath(shape)
-        ctx.setFillColor(light.copy(alpha: t.glass) ?? light)
+        ctx.setFillColor(light.copy(alpha: tokens.glass) ?? light)
         ctx.fillPath()
         ctx.restoreGState()
 

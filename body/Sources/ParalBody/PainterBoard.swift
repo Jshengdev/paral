@@ -5,7 +5,8 @@ extension Painter {
 
     /// Three chalk dots that brighten in turn: something is on its way. The capsule shows them while it thinks, and
     /// an empty card while its board is being made.
-    func waiting(at centre: CGPoint, clock: Double, _ ctx: CGContext) {
+    func waiting(at centre: CGPoint, clock: Double, in colour: CGColor? = nil, _ ctx: CGContext) {
+        let paper = colour ?? self.paper
         for dot in 0..<3 {
             let alpha = 0.35 + 0.65 * (0.5 + 0.5 * sin(clock / 180 - Double(dot) * 0.9))
             ctx.setFillColor(paper.copy(alpha: alpha) ?? paper)
@@ -13,21 +14,22 @@ extension Painter {
         }
     }
 
-    /// A dark card of chalk boxes joined by arrows, one row at a time. Words that are too long for the card's widest
+    /// A light card of boxes joined by arrows, one row at a time, in the design kit's language: the card is the kit's
+    /// light surface, a box is its quiet button (mist, written in ink), and on a board of steps the row he is on is
+    /// its main button (ink, written in white). Words that are too long for the card's widest
     /// wrap onto more lines inside their box at full size; only a card that is still too large for its room is
     /// shrunk, words and all. With no rows yet it is an empty card with the waiting dots in it; when the rows come the
-    /// card grows from that size to theirs and they fade in. On a board of steps the row he is on is lit: its boxes
-    /// are filled with chalk and written in the card's ink, and the others stay as they are. Gives back the card's
-    /// box, the lit row's, and the size the words were drawn at.
+    /// card grows from that size to theirs and they fade in. The others stay as they are. Gives back the card's box, the lit
+    /// row's, and the size the words were drawn at.
     func board(_ board: BoardPicture, clock: Double, _ ctx: CGContext) -> (card: Box, lit: Box?, type: Double) {
         let b = tokens.board
-        let chalk = paper
+        let chalk = ink
         let wrapped: NSString.DrawingOptions = [.usesLineFragmentOrigin, .usesFontLeading]
         // The widest the words of one row may run: the card at its widest, or the room when that is narrower, less
         // the card's own edge. The boxes of a row share it.
         let widest = min(board.room.w, b.maxWidth) - 2 * b.pad
         let sized = board.rows.enumerated().map { index, row in row.map { text -> (NSAttributedString, CGSize) in
-            let label = inked(text, size: b.type, color: index == board.now ? ink : chalk, weight: .medium)
+            let label = inked(text, size: b.type, color: index == board.now ? paper : ink, weight: .medium)
             let share = max((widest - b.gap * Double(row.count - 1)) / Double(row.count) - 2 * b.boxPadX, 4 * b.type)
             let size = label.boundingRect(with: CGSize(width: share, height: .greatestFiniteMagnitude), options: wrapped).size
             return (label, CGSize(width: size.width.rounded(.up), height: size.height.rounded(.up)))
@@ -48,10 +50,13 @@ extension Painter {
         ctx.translateBy(x: origin.x, y: origin.y)
         ctx.scaleBy(x: scale, y: scale)
         let card = CGPath(roundedRect: CGRect(x: 0, y: 0, width: cardW, height: cardH), cornerWidth: b.radius, cornerHeight: b.radius, transform: nil)
+        ctx.saveGState()
+        ctx.setShadow(offset: .zero, blur: tokens.shadow, color: CGColor(gray: 0, alpha: 0.28))
         ctx.addPath(card)
-        ctx.setFillColor(ink.copy(alpha: 0.96) ?? ink)
+        ctx.setFillColor(light.copy(alpha: tokens.glass) ?? light)
         ctx.fillPath()
-        if sized.isEmpty { waiting(at: CGPoint(x: cardW / 2, y: cardH / 2), clock: clock, ctx) }
+        ctx.restoreGState()
+        if sized.isEmpty { waiting(at: CGPoint(x: cardW / 2, y: cardH / 2), clock: clock, in: ink, ctx) }
         // The rows are laid out for the full card and shown through the card as it grows.
         ctx.addPath(card)
         ctx.clip()
@@ -71,18 +76,13 @@ extension Painter {
             for (cell, (label, size)) in row.enumerated() {
                 let boxW = size.width + 2 * b.boxPadX
                 // Writing a label leaves its own colour as the pen's, so the pen is set again for every box and arrow.
-                ctx.setStrokeColor(chalk.copy(alpha: 0.9) ?? chalk)
-                ctx.addPath(CGPath(roundedRect: CGRect(x: x, y: y, width: boxW, height: boxHeight), cornerWidth: 8, cornerHeight: 8, transform: nil))
-                if index == board.now {
-                    ctx.setFillColor(chalk)
-                    ctx.drawPath(using: .fillStroke)
-                } else {
-                    ctx.strokePath()
-                }
+                ctx.addPath(CGPath(roundedRect: CGRect(x: x, y: y, width: boxW, height: boxHeight), cornerWidth: min(12, boxHeight / 2), cornerHeight: min(12, boxHeight / 2), transform: nil))
+                ctx.setFillColor(index == board.now ? ink : mist)
+                ctx.fillPath()
                 label.draw(with: CGRect(x: x + b.boxPadX, y: y + (boxHeight - size.height) / 2, width: size.width, height: size.height), options: wrapped)
                 x += boxW
                 if cell < row.count - 1 {
-                    ctx.setStrokeColor(chalk.copy(alpha: 0.9) ?? chalk)
+                    ctx.setStrokeColor(chalk.copy(alpha: 0.6) ?? chalk)
                     let mid = y + boxHeight / 2, from = x + 7, to = x + b.gap - 7
                     ctx.move(to: CGPoint(x: from, y: mid))
                     ctx.addLine(to: CGPoint(x: to, y: mid))

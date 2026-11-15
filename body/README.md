@@ -76,6 +76,22 @@ takes the place of the one before, and `clear` or a close wipes it. While it is 
 cross. Its looks are the `way` group and `ember` in `tokens.json`. Its shape is after the drawn arrow of the design
 kit ("Lost and Found: brand kit", page 08), drawn here in code; no picture is loaded.
 
+## The capsule, the board and the tags on the kit's light surface
+
+The capsule has the look of the design kit's voice pill within the states it already had: a light pill with a soft
+shadow and words in ink. At rest it is collapsed to the kit's orb (or to a cross while paral's ink is on the page).
+Listening, a small wave stands before his words, which are grey while still being heard and black once settled.
+Answering, the words to come are grey and settle to black as they are said; the steps of a look's trail are cardinal
+once reached. The kit's pill also has a stop and a send button and keeps its transcript in a bar of its own above the
+pill; paral is held and let go, so there are no buttons, and the transcript is in the pill. The board is a card of
+the same light surface: a box is the kit's quiet button (`mist`, written in ink) and the step he is on its main
+button (ink, written in white). The way arrow's tag, the cursor's tag and the toast are the same surface. `glass` is
+how solid it is and `shadow` how far its shadow spreads. The kit fills at 0.85 over a blur of the page; the overlay
+cannot blur what is under it, so `glass` is 0.97. Only the lesson clip keeps its dark card. Page 06 of the kit, the
+voice pill's own page, could not be read on the night this was made (the design tool stopped answering); the look
+is from the one pill on page 08 and a one-line account of its states, and where it guesses it says so here: the
+orb at rest, the wave's shape, and the transcript inside the pill.
+
 ## Type and ink, after the design kit
 
 Everything is written in the typeface the `font` token names (the kit's DM Sans), at the optical size in
