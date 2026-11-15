@@ -9,6 +9,9 @@ public struct Tokens: Codable {
         public var shaftMs, headMs: Double
         /// The box that hugs a line is the kit's highlight: a thinner edge than the hand-drawn ring, and a faint wash of its colour inside.
         public var boxWidth, wash: Double
+        /// The room the box leaves round the line it hugs, across and up and down, where the page has that much
+        /// room; and how round its corners are.
+        public var boxPadX, boxPadY, boxRadius: Double
         /// The mark of a walk's step breathes while it waits for his click: how far the glow round its ink reaches at
         /// the top of a breath, how strong the glow is then (a box's wash deepens to the same), and how long one
         /// breath lasts. The rest between two is the way arrow's (`way.nodEveryMs`): both say "this waits for you".
@@ -58,9 +61,9 @@ public struct Tokens: Codable {
         public var stayMs: Double
     }
     /// The guide's card, after the design kit's nudge: how wide it is, the room inside it, its corner, the size of
-    /// its words and of the small line above them, the logo's width, the gap between the two lines, and how far from
+    /// its words and of the small line above them, the logo's width and the gap from it to the name, the gap between the two lines, and how far from
     /// the top and the side of the display it sits (the top clears the Mac's menu bar, 37 points on a notched display).
-    public struct Guide: Codable { public var width, pad, radius, type, small, avatar, gap, top, side: Double }
+    public struct Guide: Codable { public var width, pad, radius, type, small, avatar, nameGap, gap, top, side: Double }
     /// The arrow that leads from a mark to what speaks about it, after the design kit's drawn arrow: how wide its
     /// ink is, how far it stays from the mark and from what it leads to, how far its ink and paper edge keep from
     /// every read line of the page, and the longest it may be. Where no such way is found, none is drawn. The pen's
@@ -72,6 +75,12 @@ public struct Tokens: Codable {
     public struct Strings: Codable { public var thinking, listening, failed, opened, name, step: String }
 
     public var ink, paper, accent: String
+    /// The design kit's grey for a quiet line: the name above a card's words, and the step's number.
+    public var stone: String
+    /// One dial over the sizes the design kit gives (the cursor and its tag, the guide's card, the toast, the
+    /// highlight's box and the width of drawn ink): 1 is the kit's own size. The kit asks for one such scale and not
+    /// for changed sizes. `load` gives the look with it already applied.
+    public var scale: Double
     /// The typeface everything is written in (empty for the system's), and its optical size where it has one. The
     /// design kit writes everything in DM Sans at an optical size of 14.
     public var font: String
@@ -104,6 +113,20 @@ public struct Tokens: Codable {
     public var strings: Strings
 
     public static func load(_ path: String) throws -> Tokens {
-        try JSONDecoder().decode(Tokens.self, from: Data(contentsOf: URL(fileURLWithPath: path)))
+        try JSONDecoder().decode(Tokens.self, from: Data(contentsOf: URL(fileURLWithPath: path))).scaled()
+    }
+
+    /// The look as it is drawn: every size the design kit gives, times `scale`.
+    func scaled() -> Tokens {
+        var t = self
+        let sizes: [WritableKeyPath<Tokens, Double>] = [
+            \.cursor.size, \.cursor.gap, \.cursor.ripple,
+            \.guide.width, \.guide.pad, \.guide.radius, \.guide.type, \.guide.small, \.guide.avatar, \.guide.nameGap, \.guide.gap,
+            \.toast.type, \.toast.pad, \.toast.gap,
+            \.mark.width, \.mark.boxWidth, \.mark.boxPadX, \.mark.boxPadY, \.mark.boxRadius, \.lead.width,
+        ]
+        for size in sizes { t[keyPath: size] *= scale }
+        t.scale = 1
+        return t
     }
 }

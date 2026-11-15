@@ -126,4 +126,6 @@ public struct Picture: Equatable {
     public var trail: [TrailPoint]
     /// Where the page's own text is, so nothing written beside a mark lands on it.
     public var avoid: [Box]
+    /// How much of the display's foot the Dock takes, in points. What sits at the bottom is placed above it.
+    public var bottomInset = 0.0
 }

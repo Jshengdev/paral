@@ -1,7 +1,7 @@
 // Runners for rows about how things move: the four curves by themselves, and moments of a hand-written run on a
 // drawn page, through the real scene and painter. No mind, no service, no window.
 import { execFileSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { handWritten, type Written } from "./body.ts";
 import { onTheirLines } from "./leads.ts";
@@ -67,4 +67,37 @@ export function moves(input: { lines: string[]; rows: Written[]; at: number[]; w
     };
     return Object.fromEntries(input.watch.map((name) => [name, all[name]]));
   });
+}
+
+/**
+ * What sits at the foot of the display, at each moment of a hand-written run, with no Dock and then with a Dock that
+ * takes `inset` points of the foot: how far the open capsule's foot is above the display's, and how much higher the
+ * capsule, the way arrow and the toast each sit with the Dock; and whether the board, with the Dock, is wholly
+ * above it.
+ */
+export function lifted(input: { lines: string[]; rows: Written[]; at: number[]; inset: number }) {
+  const dir = handWritten("lifted", onTheirLines(input.rows, input.lines), input.lines);
+  const bare = at(dir, input.at), docked = at(dir, input.at, false, input.inset);
+  return bare.map((moment, index) => {
+    const box = (from: (typeof bare)[number], what: string) => from.placed.find((item) => item.what === what)?.box;
+    const higher = (what: string) => (box(moment, what) && box(docked[index], what) ? places(box(moment, what)!.y - box(docked[index], what)!.y) : null);
+    const capsule = box(moment, "capsule")!, board = box(docked[index], "board");
+    return { capsuleFootAboveTheDisplays: places(DISPLAY.h - capsule.y - capsule.h), higherWithTheDock: { capsule: higher("capsule"), way: higher("way"), toast: higher("toast") }, boardAboveTheDock: board ? board.y + board.h <= DISPLAY.h - input.inset : null };
+  });
+}
+
+/**
+ * One moment of a hand-written run drawn at the tokens' sizes and again with the one `scale` set to something else:
+ * how large the guide's card, the cursor, the toast and the board then are against their size at a scale of 1 (the
+ * card and the board by their width, the cursor by its frame, the toast by its height, which its words do not set).
+ */
+export function scaled(input: { lines: string[]; rows: Written[]; at: number; scale: number }) {
+  const dir = handWritten("scaled", onTheirLines(input.rows, input.lines), input.lines);
+  const tokens = JSON.parse(readFileSync(tokensPath, "utf8"));
+  writeFileSync(join(dir, "tokens.json"), JSON.stringify({ ...tokens, scale: input.scale }));
+  const full = at(dir, [input.at])[0].placed;
+  const small: typeof full = JSON.parse(execFileSync(join(root, "body", ".build", "debug", "paral-headless"), ["placed", dir, join(dir, "tokens.json"), String(input.at)], { encoding: "utf8" }))[0].placed;
+  const size = (from: typeof full, what: string, side: "w" | "h") => from.find((item) => item.what === what)?.box[side] ?? 0;
+  const against = (what: string, side: "w" | "h" = "w") => places(size(small, what, side) / Math.max(size(full, what, side), 1));
+  return { card: against("guide"), cursor: against("pointer"), toast: against("toast", "h"), board: against("board") };
 }

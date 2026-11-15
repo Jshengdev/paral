@@ -20,7 +20,7 @@ extension Painter {
         let wide = t.pad + round + t.gap + size.width + 2 * t.pad
         // Raised from the edge so that its middle is level with the capsule's.
         let rise = c.bottom + c.height / 2 - tokens.way.edge - tall / 2
-        let place = Layout.way(down: true, size: (wide, tall), rise: rise, taken: taken, width: width, height: height, tokens: tokens)
+        let place = Layout.way(down: true, size: (wide, tall), rise: rise, taken: taken, width: width, height: floor, tokens: tokens)
         let pill = CGRect(x: place.x, y: place.y, width: place.w, height: place.h)
         let shape = CGPath(roundedRect: pill, cornerWidth: tall / 2, cornerHeight: tall / 2, transform: nil)
 

@@ -14,7 +14,7 @@ extension Painter {
     func capsule(_ c: CapsulePicture, clock: Double, _ ctx: CGContext) -> (box: Box, cross: Box?) {
         // A trail of steps sits in its own band above the words, so the capsule is that much taller while it shows one.
         let band = c.trail.isEmpty ? 0 : Layout.band(tokens)
-        let core = Layout.capsule(open: c.open, closes: c.closes, taller: band, width: width, height: height, tokens: tokens)
+        let core = Layout.capsule(open: c.open, closes: c.closes, taller: band, width: width, height: floor, tokens: tokens)
         // At rest with paral's ink on the page the capsule is a cross that clears it. A cross alone over a line of the
         // page reads as a stray button, so it wears the logo and the name to its left: whose cross this is. The cross
         // keeps its place, which is where a click is taken; the room for the name opens as the capsule shuts. The

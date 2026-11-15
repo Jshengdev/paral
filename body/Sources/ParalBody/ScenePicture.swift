@@ -10,7 +10,7 @@ extension Scene {
         if capsule.look == .thinking { pointer?.working = working(at: t) }
         let clip = clip(at: t)
         capsule.closes = capsule.look == .rest && (!marks.isEmpty || way != nil || board != nil || clip != nil)
-        return Picture(clock: t, capsule: capsule, marks: marks, echo: echo(at: t), way: way, pointer: pointer, board: board, clip: clip, toast: toast(at: t), guide: guide(at: t), lead: lead(at: t, capsule: capsule), trail: trailUp(at: t), avoid: texts)
+        return Picture(clock: t, capsule: capsule, marks: marks, echo: echo(at: t), way: way, pointer: pointer, board: board, clip: clip, toast: toast(at: t), guide: guide(at: t), lead: lead(at: t, capsule: capsule), trail: trailUp(at: t), avoid: texts, bottomInset: bottomInset)
     }
 
     func capsule(at t: Double) -> CapsulePicture {
