@@ -50,6 +50,17 @@ export const pages = {
     measured: "not measured; a first list",
   } satisfies Setting<string[]>,
 
+  answerCard: {
+    value: {
+      trail: ["took your question", "looked at your screen", "read this page"],
+      most: 320,
+      scroll: { label: "Scroll for me", send: "scroll for me" },
+      steps: { label: "Show me the steps", send: "show me" },
+    },
+    why: "After an answer on one of USC's kept pages, the answer stays on a card of its own with the one thing paral can do next. The owner, after his first real run, where each answer was a caption above the pill and then gone: \"we need the card that opens when we ask it for important ifnromation about what the rso is going on\". The trail is what was done for the answer; `most` is how many letters of it the card holds, cut at a sentence's end, so the card finds room beside the page; the two offers are the button's words and the words it sends back: to scroll to what the answer's arrow points at, and, when nothing else is offered and steps are known, to walk them. A date the answer named that is still ahead is offered to be kept instead, and a page it sent him to is offered by `goOffer`.",
+    measured: "not seen on a real screen; 320 letters is about three sentences of an answer",
+  } satisfies Setting<{ trail: string[]; most: number; scroll: { label: string; send: string }; steps: { label: string; send: string } }>,
+
   scrollAsks: {
     value: ["scroll for me", "scroll there", "scroll to it", "scroll down for me", "scroll up for me", "scroll there for me", "take me to it on this page"],
     why: "Words of his that ask the app to scroll to what an arrow is pointing at, off his screen: also what the arrow's button sends. The owner, after his first real run: \"hwne it draws and asks to scroll, there shoudl be a button that just pops up that says, scroll for me and then draws live when it actually finds it\".",

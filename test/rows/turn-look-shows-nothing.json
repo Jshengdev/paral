@@ -257,6 +257,24 @@
   },
   {
    "v": 1,
+   "type": "say",
+   "id": "t1o",
+   "beat": 0,
+   "text": "Three things are left, and the first is the officers' training.",
+   "trail": [
+    "took your question",
+    "looked at your screen",
+    "read this page"
+   ]
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "t1o",
+   "why": "an answer's card is shown, not spoken"
+  },
+  {
+   "v": 1,
    "type": "state",
    "name": "idle"
   }

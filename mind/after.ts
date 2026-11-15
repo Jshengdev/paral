@@ -22,10 +22,10 @@ export function answered({ settings, send, log }: Hands) {
   let looks = 0;
 
   return {
-    /** An answer was given on `page`, with his screen as it was read for it. Gives back the page the answer sent him to. */
-    pointed(page: string, seen: Seen, after: After): KeptPage | null {
+    /** An answer was given on `page`, with his screen as it was read for it. Gives back where it sent him, as given. */
+    pointed(page: string, seen: Seen, after: After): After {
       held = { page, seen, target: after.target, way: null };
-      return after.sent;
+      return after;
     },
     /** A walk has begun, which leads the looks from here: the answer before it no longer holds them. */
     stop() {

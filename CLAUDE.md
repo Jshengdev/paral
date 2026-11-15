@@ -135,6 +135,13 @@ as a spoken one, with the same picture of the screen and no ear. In a flow file 
 **The way.** When the thing is on this page and neither its line nor its heading is in view, a `way` line goes out
 in the mark's place: up or down, and what it leads to (`mind/place.ts`, `cores/page.ts` `whichWay`).
 
+**An answer stays on a card.** After an answer on one of USC's kept pages the mind sends one more line, shown and
+not spoken (`mind/takes.ts` `sent`, `answerCard`): the answer's words on a card of its own, which the body brings up
+in its turn and keeps until he presses a button on it. It carries one offer: "Scroll for me" when the answer's arrow
+is up; else "Add to calendar" when it named a date still ahead that he has not kept; else "Show me the steps" when
+steps are known; and when the answer sent him to another kept page, the card is the offer to take him there. With
+nothing to offer it is a card that goes by itself. An answer on any other page is spoken and captioned as before.
+
 **"Scroll for me."** When an arrow says the thing is off his screen and he says or presses "scroll for me"
 (`scrollAsks`), the mind asks no model: it sends a `scroll` line with the way the arrow points (`mind/takes.ts`,
 `glance.ts` `wayNow`: the walk's step, else where his last answer sent him, else the page's own thing). The app

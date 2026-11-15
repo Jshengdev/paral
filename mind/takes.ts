@@ -1,6 +1,9 @@
 import type { Hands } from "./ask.ts";
 import { asksFor } from "./cores/catch.ts";
+import { away } from "./cores/dates.ts";
+import { dateLine } from "./cores/keep.ts";
 import type { KeptPage } from "./cores/page.ts";
+import type { After } from "./place.ts";
 import { sayLine } from "./speech.ts";
 import { SEAM_VERSION } from "../seam/schema.ts";
 
@@ -13,6 +16,8 @@ export type WayNow = () => { to: "up" | "down"; toward: string } | null;
 /**
  * What paral does in his browser for him, on his word only, for one connection. No model is asked for either.
  *
+ * After an answer on a kept page, the answer stays on a card with one offer (`sent`).
+ *
  * "Take me there": when an answer sends him to another of USC's kept pages, a card offers to take him: pressed, or
  * said, the app is asked to open that page's own address in his browser, as a link would open it. The look on the
  * new page is then for what he was sent for, as after any answer.
@@ -21,20 +26,36 @@ export type WayNow = () => { to: "up" | "down"; toward: string } | null;
  * until it comes into view. Nothing is said: the page moving is the answer, and the looks that come every second
  * while it moves put the mark on the thing as it arrives. With no arrow up he is told so, and nothing is scrolled.
  */
-export function takes(hands: Hands, wayNow: WayNow = () => null) {
+export function takes(hands: Hands, wayNow: WayNow = () => null, kept: (line: string) => boolean = () => false) {
   const { settings, send, log } = hands;
   /** The page the last answer sent him to; null until one has. */
   let to: KeptPage | null = null;
 
   return {
-    /** An answer sent him to this page (null: to none). The offer is shown on a card of its own, not spoken. */
-    sent(id: string, page: KeptPage | null) {
-      if (page === null) return;
-      to = page;
-      const offer = settings.goOffer.value;
-      send({ v, type: "say", id: `${id}o`, beat: 0, text: offer.line.replace("{page}", short(page)), offer: { label: offer.label, send: offer.send } });
-      send({ v, type: "mute", id: `${id}o`, why: "an offer is shown on its card, not spoken" });
-      log(`${id}: the answer sent him to "${page.title}"; a card offers to take him there`);
+    /**
+     * An answer was given on a kept page (`on`), at `at`: it stays on a card of its own, shown and not spoken, with
+     * the one thing paral can do next. A page it sent him to: the offer to take him there, on its own line. Else the
+     * answer's words, with the offer to scroll when its arrow is up; else to keep a date it named that is still
+     * ahead and not yet kept; else to walk the steps, when some are known (`steps`).
+     */
+    sent(id: string, told: string[], on: KeptPage, at: number, after: After, steps: boolean) {
+      if (told.length === 0) return;
+      const card = settings.answerCard.value, said = told.join(" ");
+      if (after.sent !== null) {
+        to = after.sent;
+        const offer = settings.goOffer.value;
+        send({ v, type: "say", id: `${id}o`, beat: 0, text: offer.line.replace("{page}", short(after.sent)), offer: { label: offer.label, send: offer.send } });
+        send({ v, type: "mute", id: `${id}o`, why: "an offer is shown on its card, not spoken" });
+        return log(`${id}: the answer sent him to "${after.sent.title}"; a card offers to take him there`);
+      }
+      // As much of the answer as the card holds, cut at the end of a sentence; its first sentence whole, whatever its length.
+      const text = told.reduce((kept, sentence) => (kept === "" || `${kept} ${sentence}`.length <= card.most ? `${kept} ${sentence}`.trim() : kept), "");
+      const date = dateLine(said, [on]);
+      const keep = !after.way && date !== null && !kept(date.written) && (away(date.written, new Date(at))?.days ?? -1) >= 0;
+      const offer = after.way ? card.scroll : !keep && steps ? card.steps : null;
+      send({ v, type: "say", id: `${id}o`, beat: 0, text, trail: card.trail, ...(keep ? { keep: true } : {}), ...(offer ? { offer } : {}) });
+      send({ v, type: "mute", id: `${id}o`, why: "an answer's card is shown, not spoken" });
+      log(`${id}: the answer stays on a card${after.way ? ", which offers to scroll to where it points" : keep ? ", which offers to keep the date it named" : offer ? ", which offers to walk the steps" : ""}`);
     },
     /** Whether his words asked to be taken there, with a page to go to. If so the app is asked to open it and he is told. */
     async asked(id: string, words: string, signal: AbortSignal): Promise<boolean> {

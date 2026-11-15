@@ -81,8 +81,11 @@ function linkTo(settings: Settings, seen: Seen, name: string): { box: Box; on: s
   return { box: { x: x + (w * at) / holds.text.length, y, w: (w * name.length) / holds.text.length, h }, on: name };
 }
 
-/** Where an answer sent him: another kept page (`sent`), and the line of this page it pointed at with the heading over it (`target`). */
-export type After = { sent: KeptPage | null; target: { line: string; under: string } | null };
+/**
+ * Where an answer sent him: another kept page (`sent`), the line of this page it pointed at with the heading over
+ * it (`target`), and whether that place was off his screen, so an arrow went out for it (`way`).
+ */
+export type After = { sent: KeptPage | null; target: { line: string; under: string } | null; way: boolean };
 
 /**
  * After an answer on a kept page: where it sent him. Another kept page it named, when that page's name is on his
@@ -99,7 +102,7 @@ export function wayAfter({ ports, settings, send, log }: Hands, id: string, seen
   const short = (other: KeptPage) => other.title.split(" - ")[0].trim();
   const [elsewhere] = ports.pages.filter((other) => other.name !== page.name && short(other).length >= 8 && plain(said).includes(`${plain(short(other))} page`)).sort((a, b) => short(b).length - short(a).length);
   const sent = elsewhere ?? null;
-  const gone: After = { sent, target: null };
+  const gone: After = { sent, target: null, way: false };
   const link = elsewhere === undefined ? null : linkTo(settings, seen, short(elsewhere));
   if (elsewhere !== undefined && link !== null) {
     // The answer may have marked that name itself; one mark on two words is enough.
@@ -113,8 +116,9 @@ export function wayAfter({ ports, settings, send, log }: Hands, id: string, seen
   const kept = dateLine(said, [page]);
   if (kept !== null) {
     const where = whereIs(settings, seen, page, { line: kept.written, under: headingOf(page, kept.written, "") });
-    if (where.box === null && where.to !== null) log(`${id}: the answer named a date this page writes out of view; ${point(send, id, where)}`);
-    return { sent, target: { line: kept.written, under: headingOf(page, kept.written, "") } };
+    const off = where.box === null && where.to !== null;
+    if (off) log(`${id}: the answer named a date this page writes out of view; ${point(send, id, where)}`);
+    return { sent, target: { line: kept.written, under: headingOf(page, kept.written, "") }, way: off };
   }
   // A section is named in speech by the start of its heading, up to its colon ("the Officer Trainings section"), so
   // that is what is looked for in what was said, and what the way is named by. The longest such name wins.
@@ -122,8 +126,9 @@ export function wayAfter({ ports, settings, send, log }: Hands, id: string, seen
   const [section] = page.lines.filter((line) => /\+\s*$/.test(line) && name(line).length >= 8 && plain(said).includes(plain(name(line)))).sort((a, b) => name(b).length - name(a).length);
   if (section === undefined) return gone;
   const where = whereIs(settings, seen, page, { line: section, under: "" });
-  if (where.box === null && where.to !== null) log(`${id}: the answer named a section of this page that is out of view; ${point(send, id, { ...where, toward: name(section) })}`);
-  return { sent, target: { line: section, under: "" } };
+  const off = where.box === null && where.to !== null;
+  if (off) log(`${id}: the answer named a section of this page that is out of view; ${point(send, id, { ...where, toward: name(section) })}`);
+  return { sent, target: { line: section, under: "" }, way: off };
 }
 
 /** The steps of a walk that are behind him: each whose own line is in view gets a tick and a quiet tag. */
