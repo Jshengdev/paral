@@ -44,6 +44,8 @@ public struct Scene {
     /// The date last opened in his calendar, and when: the toast says so for a while.
     var opened: (at: Double, label: String?)?
     var clips: [Clip] = []
+    /// His last click on a mark that waited for it: when, where paral's cursor's tip was then, and which mark.
+    var clicked: (at: Double, x: Double, y: Double, mark: String)?
     var trail: [(x: Double, y: Double, at: Double)] = []
     var failed: (detail: String, at: Double)?
     var idleAt: Double?
@@ -162,8 +164,9 @@ public struct Scene {
             if holds.isEmpty { failed = nil }
         case .open(_, let label):
             opened = (at, label)
-        // Nothing is drawn for his own click yet.
-        case .other, .click:
+        case .click(let x, let y):
+            click(x: x, y: y, at: at)
+        case .other:
             break
         }
     }

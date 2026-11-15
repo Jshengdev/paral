@@ -140,6 +140,8 @@ public struct Painter {
         var with = picture
         with.pointer = pointer
         if let lead = lead(with, placed: drawn, ctx) { drawn.append(lead) }
+        // The rings of his click lie under the cursor.
+        if let click = picture.click { drawn.append(Drawn(what: "click", id: nil, box: self.click(click, ctx))) }
         if let pointer {
             let cursor = self.pointer(pointer, clock: picture.clock, ctx)
             drawn.append(Drawn(what: "pointer", id: nil, box: cursor.box))

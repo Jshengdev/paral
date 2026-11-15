@@ -117,6 +117,8 @@ public struct PointerPicture: Equatable {
     /// out as the cursor comes: `tagGrown` is how far, 0 to 1 and a little past on the way.
     public var tag = false
     public var tagGrown = 1.0
+    /// How large it is drawn against its own size: 1, but for a moment at his click, when it presses.
+    public var press = 1.0
     /// It says paral is working, while the capsule says so, by breathing: `working` is how far it has swollen, 0 to 1.
     public var thinking = false
     public var working = 0.0
@@ -131,6 +133,8 @@ public struct Picture: Equatable {
     public var echo: MarkPicture?
     public var way: WayPicture?
     public var pointer: PointerPicture?
+    /// The rings of his click on a mark that waited for it, for a moment after it.
+    public var click: ClickPicture?
     public var board: BoardPicture?
     public var clip: ClipPicture?
     public var toast: ToastPicture?

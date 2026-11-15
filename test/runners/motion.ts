@@ -5,7 +5,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { handWritten, type Written } from "./body.ts";
 import { onTheirLines } from "./leads.ts";
-import { at, DISPLAY } from "./placed.ts";
+import { at, DISPLAY, textOf } from "./placed.ts";
 
 type Point = [number, number];
 const root = join(import.meta.dirname, "..", "..");
@@ -132,5 +132,25 @@ export function toastTick(input: { lines: string[]; rows: Written[]; at: number[
     // The tick is drawn in the badge, so it is measured at the badge's size just then.
     const size = now.box.w / whole.box.w;
     return { badge: places(size), tick: places(long(now.path) / size / long(whole.path)) };
+  });
+}
+
+/**
+ * His click and what paral draws for it, at each moment of a hand-written run. A click line may name the line of the
+ * page it lands on (`on`), and then lands in that line's middle. Given back: how large the cursor is drawn against
+ * its size in the tokens; how far across the outer ring of the click's picture is, in points, or null for no rings;
+ * and whether the newest mark has an echo just then.
+ */
+export function clickPicture(input: { lines: string[]; rows: Written[]; at: number[] }) {
+  const text = textOf(handWritten("click-page", [], input.lines));
+  const rows = input.rows.map((row) => {
+    if (row.line.type !== "click" || typeof row.line.on !== "number") return row;
+    const { on, ...line } = row.line, box = text[on];
+    return { at: row.at, line: { ...line, x: box.x + box.w / 2, y: box.y + box.h / 2 } };
+  });
+  const tokens = JSON.parse(readFileSync(tokensPath, "utf8"));
+  return at(handWritten("click", onTheirLines(rows, input.lines), input.lines), input.at).map(({ placed }) => {
+    const cursor = placed.find((item) => item.what === "pointer")?.box, rings = placed.find((item) => item.what === "click")?.box;
+    return { cursor: cursor ? places(cursor.w / tokens.cursor.size) : null, ringsAcross: rings ? places(rings.w, 1) : null, echo: placed.some((item) => item.what === "pulse") };
   });
 }

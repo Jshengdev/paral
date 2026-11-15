@@ -27,6 +27,9 @@ public struct Tokens: Codable {
         public var tagFrom: Double
         /// While paral works the cursor breathes: how much larger it gets, as a share of its size, and how long each way takes.
         public var workGrows, workMs: Double
+        /// At his click on a mark that waits for it: how small the cursor presses, as a share of its size; how long
+        /// the two rings take to spread to rest; and how long they rest before they go.
+        public var pressTo, clickMs, clickStayMs: Double
     }
     public struct Board: Codable { public var pad, boxPadX, boxPadY, gap, rowGap, type, radius, maxWidth, margin, emptyWidth, emptyHeight: Double }
     public struct Motion: Codable {
@@ -34,6 +37,8 @@ public struct Tokens: Codable {
         /// How long a thing takes to arrive, how long to leave (less: what goes is gone sooner than it came), and how
         /// long the usual small change takes (a card growing to hold its rows, the cursor's tag popping out).
         public var arriveMs, leaveMs, usualMs: Double
+        /// How long a press down takes.
+        public var pressMs: Double
         /// For a line said without being asked: how long it stays after its reading time, and how long each step of its trail takes to light.
         public var unaskedStayMs, trailStepMs: Double
         /// How long a line stands, for each of its words, before another line may take its place in the capsule or on

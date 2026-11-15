@@ -22,6 +22,7 @@ when; the body only draws. Nothing here takes a click except the cross, and noth
 | Cursor | paral's own pointer, which is its logo mark: it shows where, never clicks. It flies to the newest mark or arrow, rides the pen, rests beside it; one ripple says "here" | the newest `mark`, `way` or `echo` on the page | goes with its mark or arrow; none with motion reduced | `cursor.*`, `cardinal`, `paper`, `motion.flightMs`, `motion.arc`, `curves.travel` |
 | Cursor: tag | says whose cursor is moving: a light pill with the logo mark and the name, worn only while it comes in from nowhere; it pops out as the cursor comes | the first `mark` or `way` after the page was clean | its arrival | `strings.name`, `cursor.tagFrom`, `motion.usualMs`, `curves.pop`, `light`, `glass`, `shadow` |
 | Cursor: thinking | says paral is working: a cursor that is already on the page breathes, swelling a little and coming back | `key.up`, until the answer begins | the answer's first sentence | `cursor.workGrows`, `cursor.workMs`, `curves.travel` |
+| Cursor: click | answers his own click on the mark of the step he is on: paral's cursor presses and two rings spread from under its tip, come to rest and fade. Paral clicks nothing | his `click` (from the body) on a mark whose board names the step | a moment later, by itself; none with motion reduced | `cursor.pressTo`, `cursor.clickMs`, `cursor.clickStayMs`, `cursor.ripple`, `motion.pressMs`, `motion.usualMs`, `motion.leaveMs`, `cardinal` |
 | The way arrow (build's name; after the kit's drawn arrow) | the thing is on this page and not in view: which way to scroll, and its name on a tag | `way` (`to`, `toward`) | `clear`, a close, a newer `way`, or a `mark` with the same id | `way.*`, `ember`, `light`, `glass`, `shadow`, `mark.width`, `mark.shaftMs`, `mark.headMs` |
 | The board (build's name; in the kit's language of card and buttons) | what is still ahead, or the parts of an answer, as boxes on a light card. On a board of steps the step he is on is the ink button | `board` (`rows`; `now` for the step) | `clear`, a close, a `clip`; the same rows again keep the card in place | `board.*`, `light`, `mist`, `ink`, `glass`, `shadow`, `motion.arriveMs`, `motion.usualMs` |
 | Toast | confirms something paral did: "Open in your calendar · November 22" beside the capsule | `open` (`label` for the date) | four seconds; a `clear` does not take it | `toast.*`, `card.*`, `strings.opened`, `cardinal`, `light`, `glass`, `shadow`, `motion.arriveMs`, `motion.leaveMs`, `motion.usualMs`, `curves.pop` |
@@ -40,7 +41,8 @@ arrow, the toast or the capsule. "Show the guide" is one item at the top of the 
 ticked when the app starts; nothing crosses the seam for it.
 
 Not built from the kit: the nudge card's two buttons (the builder's cue cards in the menu are that), the pill's stop
-and send buttons (paral is held and let go), the cursor's click (paral clicks nothing), and the wordmark.
+and send buttons (paral is held and let go), and the wordmark. The kit's cursor clicks through the site; paral clicks
+nothing, and the kit's picture of a click is used to answer a click of his own (below).
 
 ## Deciding what is on screen
 
@@ -59,6 +61,7 @@ and send buttons (paral is held and let go), the cursor's click (paral clicks no
 | `SceneEcho.swift` | the mark of a walk's step, which sends out echoes of its edge while it waits for his click |
 | `SceneLead.swift` | the arrow from a mark to what speaks about it: which mark has one, what it leads to, how far it is inked |
 | `SceneCard.swift` | how a card stands at one moment: the card coming up, then each of its lines in turn |
+| `SceneClick.swift` | his click on the mark that waits for it: the cursor's press and the rings that answer it |
 
 ## Drawing it
 
@@ -360,6 +363,26 @@ changes about 45 times a second, where the breath changed it for 1.4 s in every 
 not measured. The echo's first half second is also the cursor's ripple's last: `mark.echoAfterMs` is the dial for
 that. The film's record names each echo (`pulse`, with the mark's id; `echo` there is his own loop coming back).
 
+## His click is answered
+
+The design kit's cursor has a picture for a click: the cursor pressed, and two rings round its tip. Paral clicks
+nothing, so here that picture answers a click of his own (`SceneClick.swift`). Only a click on the mark that waits
+for it counts, the mark of the step a board names (within the box's own room of the marked line); a click anywhere
+else is his own business and draws nothing. At such a click paral's cursor, wherever it is beside that mark,
+presses toward its tip to `cursor.pressTo` of its size (0.84, the kit's) in `motion.pressMs` (90, his time for a
+press) and comes back a little past its size and to rest on `pop` in `motion.usualMs`. Two rings set off from
+under where its tip was, at 0.3 and 0.35 of their size and stronger than they end (0.7 and 0.3), and come softly to
+rest on `arrive` at the kit's still: 42 and 70 across (`cursor.ripple` is the outer's reach) at 0.45 and 0.18, the
+outer in `cursor.clickMs` (550) and the inner in 400 of it, all the kit's. They rest `cursor.clickStayMs` (280: the
+cursor has by then set off to draw the next step's mark, so they do not stay long behind it; the kit's own example
+holds them 0.8 s with the cursor still there; chosen on stills) and go as anything goes. The mark's echo stops at
+the click, without waiting for the mind. The rings lie where the cursor rested, so for that second they cross the
+end of the marked line, as the ripple that says "here" does. With motion reduced there is no cursor and no rings.
+
+In a film the click is read from the record's own `click` line. In the app the scene must be told of the click as
+the mind is: where `App.swift` sends the click line it must also give the scene `.click(x:y:)`; until it does, the
+app draws nothing for a click. The film's record names the rings (`click`).
+
 ## A film follows the page
 
 A step of a flow may put another page on the screen. The film draws each frame over the page that was up at that
@@ -388,5 +411,5 @@ tokens' size times whatever the card was shrunk by.
 shows at those moments), `curves TOKENS SHARE...` (each of the four curves at those shares of its time), `placed RUN TOKENS MS...` (where the painter puts each thing at those moments, the points
 the pen has inked of a mark and of a drawn arrow, the capsule's look and words, and the way arrow's, the cursor's and the board's own values).
 
-Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way`, `body.cursor`, `body.steps`, `body.pages`, `body.toast`, `body.boardType`, `body.guide`, `body.lead`, `body.echo`, `body.stands`, `body.resting`, `body.cursorInside`, `body.inkInside`, `body.curves`, `body.moves`, `body.lifted`, `body.scaled`, `body.cardLines` and `body.toastTick` rows, with no window. The look of the mark, the white surfaces, the trail's colour and the kit's sizes are checked on stills. The hosts are compiled and have never been run:
+Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way`, `body.cursor`, `body.steps`, `body.pages`, `body.toast`, `body.boardType`, `body.guide`, `body.lead`, `body.echo`, `body.stands`, `body.resting`, `body.cursorInside`, `body.inkInside`, `body.curves`, `body.moves`, `body.lifted`, `body.scaled`, `body.cardLines`, `body.toastTick` and `body.click` rows, with no window. The look of the mark, the white surfaces, the trail's colour and the kit's sizes are checked on stills. The hosts are compiled and have never been run:
 the key, the microphone, the screen picture and the overlay wait for a person and their grants (`./run`).
