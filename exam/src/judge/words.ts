@@ -61,6 +61,11 @@ function aboutThePage(ask: Ask, expect: Expect, truth: Truth[]): Verdict[] {
   const shared = [...new Set(words(answer))].filter((w) => pageWords.has(w) || insideOne(w));
   const need = sentences.length >= 2 ? 2 : 1;
   const what = "The answer is about the page in front of him";
+  // When the scenario names what the answer must say from the page, and it says it, it is about the page: a short
+  // follow-up ("It was at noon.") shares few words with a page and is still its answer (failed once, 2026-11-14).
+  const named = expect.says ?? [];
+  const lower = answer.toLowerCase();
+  if (named.length > 0 && named.every((phrase) => lower.includes(phrase.toLowerCase()))) return [...out, yes("C13", s, what, `it says what the page writes: ${named.join(", ")}`)];
   return [...out, shared.length >= need ? yes("C13", s, what, `it names: ${shared.slice(0, 6).join(", ")}`) : no("C13", s, what, `it shares ${shared.length} words with the page`)];
 }
 
