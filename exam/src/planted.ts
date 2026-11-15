@@ -6,8 +6,8 @@ import { kept } from "./judge/keep.ts";
 import { walked } from "./judge/showme.ts";
 import { glanced, pageChanged, wayDrawn } from "./judge/look.ts";
 import { marks, standingBefore } from "./judge/marks.ts";
-import { drawnIn } from "./judge/motion.ts";
 import { onlyThePart } from "./judge/picture.ts";
+import { PEN_CASES } from "./planted-pen.ts";
 import { cutIn, pressedAgain } from "./judge/ending.ts";
 import { timing } from "./judge/timing.ts";
 import { heardWhole, voiced } from "./judge/voice.ts";
@@ -78,18 +78,6 @@ function ask(extra: Moment[], opts: { listening?: boolean; heardAt?: number; tra
   if (opts.listening !== false) moments.push({ at: 10, kind: "look", name: "listening" });
   if (opts.trail) moments.push({ at: 500, kind: "trail", x: 1, y: 1 });
   return { index: 0, moments: moments.sort((a, b) => a.at - b.at), down: 0, up: UP };
-}
-
-// A film made of numbers: the mark's box fills from left to right as `grow` says, from nothing to all of it.
-const size = { w: 400, h: 200 };
-function film(grow: (ms: number) => number) {
-  const filled = (share: number) => {
-    const ink = new Uint8Array(size.w * size.h);
-    const columns = Math.round(box.w * Math.max(0, Math.min(1, share)));
-    for (let y = box.y; y < box.y + box.h; y++) for (let x = box.x; x < box.x + columns; x++) ink[y * size.w + x] = 1;
-    return ink;
-  };
-  return { size, ink: async (ms: number) => filled(grow(ms)), cover: async (ms: number) => filled(grow(ms)), changed: async () => filled(0), last: async () => filled(1), restZone: box };
 }
 
 const CASES: Case[] = [
@@ -202,11 +190,7 @@ const CASES: Case[] = [
   { name: "a failure told as an error's own text", check: "A failure is told in plain words", mustPass: false, verdicts: () => spoken(ask([{ at: 5000, kind: "look", name: "failed", detail: '[{"code":"too_small"}]' }]), {}, []) },
   { name: "he circles and the whole display is sent", check: "When he circles, the answer is made from", mustPass: false, verdicts: () => [onlyThePart(0, { w: 1280, h: 827 }, { lines: 20, unread: 0 }, DISPLAY)] },
   { name: "he circles and a part is sent", check: "When he circles, the answer is made from", mustPass: true, verdicts: () => [onlyThePart(0, { w: 1136, h: 948 }, { lines: 20, unread: 6 }, DISPLAY)] },
-  { name: "a mark that pops in", check: "Each mark is drawn by a pen", mustPass: false, verdicts: () => drawnIn(film((ms) => (ms >= 1000 ? 1 : 0)), ask([]), [{ at: 1000, what: "mark", id: "t1/0", box }], Infinity) },
-  { name: "a box wiped and drawn again on the same line, in 400 ms", check: "Each mark is drawn by a pen", mustPass: true, verdicts: () => drawnIn(film((ms) => (ms < 1000 ? 1 : (ms - 1000) / 400)), ask([]), [{ at: 1000, what: "mark", id: "t2/0", box }], Infinity) },
-  { name: "a box wiped and popped back on the same line", check: "Each mark is drawn by a pen", mustPass: false, verdicts: () => drawnIn(film((ms) => (ms < 1000 ? 1 : ms < 1067 ? 0 : 1)), ask([]), [{ at: 1000, what: "mark", id: "t2/0", box }], Infinity) },
-  { name: "a ring drawn in 400 ms that pulses a second later while it waits", check: "Each mark is drawn by a pen", mustPass: true, verdicts: () => drawnIn(film((ms) => (ms < 2100 ? 0.7 * Math.min(1, (ms - 1000) / 400) : 1)), ask([]), [{ at: 1000, what: "mark", id: "t1/0", box }], Infinity) },
-  { name: "a mark drawn in 400 ms", check: "Each mark is drawn by a pen", mustPass: true, verdicts: () => drawnIn(film((ms) => (ms - 1000) / 400), ask([]), [{ at: 1000, what: "mark", id: "t1/0", box }], Infinity) },
+  ...PEN_CASES,
 ];
 
 export async function planted(): Promise<{ name: string; ok: boolean; why: string }[]> {

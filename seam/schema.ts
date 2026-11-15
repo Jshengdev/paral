@@ -87,6 +87,11 @@ export const FromMind = z.discriminatedUnion("type", [
     trail: z.array(z.string().min(1)).optional(),
     /** Only on a line said without being asked: true when it shows a date he can ask to keep, so the body may offer "Add to calendar". */
     keep: z.boolean().optional(),
+    /**
+     * One thing the line offers to do for him, as a button on its card: the button's words, and the words the body
+     * sends as a `typed` line when it is pressed. `keep: true` is the offer "Add to calendar" / "add it to my calendar".
+     */
+    offer: z.object({ label: z.string().min(1), send: z.string().min(1) }).optional(),
     rung: z.number().int().nonnegative().optional(),
     of: z.number().int().positive().optional(),
   }),
@@ -95,8 +100,14 @@ export const FromMind = z.discriminatedUnion("type", [
   z.object({ v, type: z.literal("mute"), id, why: z.string() }),
   /** A calendar file the mind has written for a date he asked to keep; the body opens it in his calendar app. `label` is the date in a few words ("November 22"), for the body to show. */
   z.object({ v, type: z.literal("open"), id, path: z.string().min(1), label: z.string().optional() }),
-  /** `tone` is only on a tag: strong for what is next, quiet for what is done or passed, date for a count of days. */
-  z.object({ v, type: z.literal("mark"), id, beat, kind: MarkKind, box: Box, label: z.string().optional(), tone: z.enum(["strong", "quiet", "date"]).optional() }),
+  /**
+   * `tone` is only on a tag: strong for what is next, quiet for what is done or passed, date for a count of days.
+   * `spot` is true for a mark on a place of a drawing (an atom, a bond) and not on a line: no arrow leads from it to
+   * the bubble or a card, and the cursor does not ride to it or rest on it.
+   */
+  /** A page of USC's that he asked to be taken to: the body opens the address in his browser. Only an https address of a usc.edu site. */
+  z.object({ v, type: z.literal("go"), id, url: z.string().min(1), label: z.string().optional() }),
+  z.object({ v, type: z.literal("mark"), id, beat, kind: MarkKind, box: Box, label: z.string().optional(), tone: z.enum(["strong", "quiet", "date"]).optional(), spot: z.boolean().optional() }),
   /** In place of a mark, when the thing is on this page and not in view: which way to scroll, and the name of what it leads to. `clear` wipes it. */
   z.object({ v, type: z.literal("way"), id, to: z.enum(["up", "down"]), toward: z.string().min(1) }),
   z.object({ v, type: z.literal("echo"), id, box: Box, shape: z.enum(["loop", "ring", "box"]) }),
