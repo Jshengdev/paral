@@ -112,7 +112,7 @@
    "type": "mark",
    "id": "g1",
    "beat": 0,
-   "kind": "box",
+   "kind": "ring",
    "box": {
     "x": 100,
     "y": 250,

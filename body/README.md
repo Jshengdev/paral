@@ -98,7 +98,7 @@ cross. `startAfter` says when the key goes down for an ask after the first:
 | `{ "firstAnswerPlusMs": N }` | N ms after the first sentence of its answer, not a line said while he waits |
 | `{ "releasePlusMs": N }` | N ms after the key was let go; under 300 it is inside the microphone's grace |
 
-A step with `"look": true` in place of a `wav` is a look with no key pressed: what the app's watcher sends by itself. `"page": PATH` on any step puts another page on the screen from that step on (he clicked, scrolled or opened a section), and `"waitMs": N` is how long a look step waits before the next one (6000 if left out).
+A step with `"look": true` in place of a `wav` is a look with no key pressed: what the app's watcher sends by itself. `"page": PATH` on any step puts another page on the screen from that step on (he clicked, scrolled or opened a section), and `"waitMs": N` is how long a look step waits before the next one (6000 if left out). A flow with `"live": true` is walked a step at a time by whoever writes the file: when the steps so far are played it waits for another to be added, and `"end": true` closes it. Any other flow ends with its last step.
 
 ## The way arrow
 
