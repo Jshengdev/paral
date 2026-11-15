@@ -134,10 +134,10 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
       last = page === null ? null : { look, page };
       if (page === null || ports.glancer === null) return;
       if (led !== null && led.page === page.name) return follow(look, page, led);
-      if (answer.take(look, page)) return;
-      // He is being followed when he asked something a moment ago and has since come to another kept page. That ends
-      // on the page that holds what he was sent for: a page he opens after it, or one found not to hold it, gets a
-      // look of its own.
+      // An answer holds a page's looks only once the page has had its own first look: an ask as the page came up lets go, and that look is taken.
+      if (found.has(page.name) ? answer.take(look, page) : (answer.stop(), false)) return;
+      // He is being followed when he asked a moment ago and has since come to another kept page. That ends on the
+      // page that holds what he was sent for: one he opens after it, or one found not to hold it, gets its own look.
       const sent = asked !== null && asked.page !== page.name && [undefined, page.name].includes(endedOn.get(asked.words)) ? asked : null;
       const following = sent !== null && found.get(`${page.name} after "${sent.words}"`) !== null ? sent : null;
       const key = following ? `${page.name} after "${following.words}"` : page.name;

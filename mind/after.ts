@@ -14,7 +14,8 @@ type Seen = Pick<Screen, "lines" | "display">;
  * not moved under the answer's marks, nothing: what he was shown stays, board and all. When it has (he scrolled, or
  * opened a section), the answer's marks would sit on the wrong lines, so everything drawn is wiped, and the place
  * the answer sent him to on this page, if it named one, is marked where it now stands, or the way to it. A look at
- * another kept page ends the hold: he has gone on.
+ * another kept page ends the hold: he has gone on. A page that has not yet had its own first look is not held: a question asked
+ * as the page came up does not keep that look from being taken (`glance.ts`).
  */
 export function answered({ settings, send, log }: Hands) {
   /** The page the last answer was given on, his screen as the answer's marks were placed on it, and where it sent him. */

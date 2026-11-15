@@ -1,0 +1,276 @@
+{
+ "name": "turn: he asks something the moment a kept page comes up, before its first look: the answer does not hold that page's looks, so the look that follows is the page's first look and is shown, with its box, its line and its board, and what is ahead is remembered; only a page that has had its own look is held by an answer",
+ "run": "turn",
+ "in": {
+  "tape": "club.json",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "hello",
+     "body": "row"
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "typed",
+     "text": "what is left",
+     "at": 1794700010000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1794700010005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Recognition Process",
+       "box": {
+        "x": 200,
+        "y": 200,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "The Spring 2027 RSO Recognition process is now open on EngageSC",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "for new RSOs and RSOs re-establishing after a lapse in recognition.",
+       "box": {
+        "x": 200,
+        "y": 360,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Important Dates",
+       "box": {
+        "x": 200,
+        "y": 500,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Deadlines +",
+       "box": {
+        "x": 200,
+        "y": 600,
+        "w": 900,
+        "h": 40
+       }
+      }
+     ]
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "look",
+     "at": 1794700040000,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Recognition Process",
+       "box": {
+        "x": 200,
+        "y": 200,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "The Spring 2027 RSO Recognition process is now open on EngageSC",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "for new RSOs and RSOs re-establishing after a lapse in recognition.",
+       "box": {
+        "x": 200,
+        "y": 360,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Important Dates",
+       "box": {
+        "x": 200,
+        "y": 500,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Deadlines +",
+       "box": {
+        "x": 200,
+        "y": 600,
+        "w": 900,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "until": "board"
+    }
+   ]
+  ]
+ },
+ "out": [
+  {
+   "v": 1,
+   "type": "ready",
+   "mind": "paral",
+   "holdKey": "rightOption",
+   "drawKey": "shift",
+   "earGraceMs": 300,
+   "markPad": 4,
+   "pictureLongEdge": 1280,
+   "cropAround": {
+    "share": 1,
+    "points": 200
+   },
+   "lookEveryMs": 1000,
+   "lookFastMost": 30
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "thinking"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "what is left",
+   "final": true
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t1",
+   "beat": 0,
+   "text": "Three things are left, and the first is the officers' training."
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "t1",
+   "why": "no voice is set up"
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t1o",
+   "beat": 0,
+   "text": "Three things are left, and the first is the officers' training.",
+   "trail": [
+    "took your question",
+    "looked at your screen",
+    "read this page"
+   ]
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "t1o",
+   "why": "an answer's card is shown, not spoken"
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "idle"
+  },
+  {
+   "v": 1,
+   "type": "clear"
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "g1",
+   "beat": 0,
+   "kind": "box",
+   "box": {
+    "x": 100,
+    "y": 300,
+    "w": 450,
+    "h": 20
+   }
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "g1",
+   "beat": 0,
+   "text": "The application closes November 22 at 11:59pm; that is under Deadlines.",
+   "trail": [
+    "saw this page",
+    "read the whole page",
+    "found 1 date"
+   ],
+   "keep": true,
+   "offer": {
+    "label": "Open it for me",
+    "send": "open it for me"
+   }
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "g1",
+   "why": "no voice is set up"
+  },
+  {
+   "v": 1,
+   "type": "board",
+   "id": "g1",
+   "rows": [
+    [
+     "Officers finish their training"
+    ],
+    [
+     "Submit the application: November 22 at 11:59pm"
+    ],
+    [
+     "Advisor requirements: December 1"
+    ]
+   ]
+  }
+ ]
+}
