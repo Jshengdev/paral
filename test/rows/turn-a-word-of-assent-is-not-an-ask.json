@@ -1,0 +1,107 @@
+{
+ "name": "turn: a short hold that caught only a word of him talking to someone else (\"Yeah.\", \"Okay so\") is not a question: nothing is asked and nothing is said, as with a hold that heard no words",
+ "run": "turn",
+ "in": {
+  "tape": "club.json",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "hello",
+     "body": "row"
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1794700010000
+    },
+    {
+     "say": "Yeah."
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 1794700012000
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1794700020000
+    },
+    {
+     "say": "Okay so"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 1794700022000
+    }
+   ]
+  ]
+ },
+ "out": [
+  {
+   "v": 1,
+   "type": "ready",
+   "mind": "paral",
+   "holdKey": "rightOption",
+   "drawKey": "shift",
+   "earGraceMs": 300,
+   "markPad": 4,
+   "pictureLongEdge": 1280,
+   "cropAround": {
+    "share": 1,
+    "points": 200
+   },
+   "lookEveryMs": 2500
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "listening"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "Yeah.",
+   "final": false
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "thinking"
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "idle",
+   "detail": "no words heard"
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "listening"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "Okay so",
+   "final": false
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "thinking"
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "idle",
+   "detail": "no words heard"
+  }
+ ]
+}

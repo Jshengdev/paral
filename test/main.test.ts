@@ -7,7 +7,7 @@ import { join } from "node:path";
 import { tape } from "../mind/adapters/tape.ts";
 import { serve } from "../mind/server.ts";
 import { boxes, fitted, split, wipes } from "../mind/cores/beats.ts";
-import { asksFor, fits, hear, saysOnly, silence } from "../mind/cores/catch.ts";
+import { asksFor, fits, hear, saysOnly, silence, unasked } from "../mind/cores/catch.ts";
 import { datesIn, daysFrom, unknownDate, type Named } from "../mind/cores/dates.ts";
 import { calendarFile, dateLine, named, when } from "../mind/cores/keep.ts";
 import { nextStep, note, nothingYet, type Noted, type Step } from "../mind/cores/guide.ts";
@@ -84,6 +84,7 @@ const runs: Record<string, (input: any) => unknown> = {
   "body.boardType": boardType,
   "body.pages": filmedPages,
   catch: (input) => input.events.reduce(hear, silence),
+  "catch.unasked": (input) => Object.fromEntries(input.holds.map((words: string) => [words, unasked(words, input.filler)])),
   "catch.only": (input) => Object.fromEntries(input.asks.map((words: string) => [words, saysOnly(words, input.phrases)])),
   "catch.drawing": (input) => Object.fromEntries(input.asks.map((words: string) => [words, asksFor(words, input.phrases)])),
   "page.which": (input) => whichPage(input.seen, input.kept, input.least)?.name ?? null,

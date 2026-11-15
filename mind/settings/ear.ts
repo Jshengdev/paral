@@ -2,6 +2,12 @@ import type { Setting } from "./types.ts";
 
 /** Settings for hearing him: the speech-to-text service. */
 export const ear = {
+  fillerWords: {
+    value: ["yeah", "yes", "yep", "yup", "ok", "okay", "um", "uh", "er", "hmm", "mm", "so", "right", "well", "oh", "and", "like", "sure", "cool", "nice"],
+    why: "A hold that heard only one or two of these words is not a question: it is him talking to someone else with the key brushed. Nothing is asked, as with a hold that heard no words. A one-word question (\"why\", \"next\", \"help\") is not on the list and is asked.",
+    measured: "one hold on the owner's own Mac, 2026-11-14: 0.3 s of sound heard as \"Yeah.\" was answered with three spoken sentences",
+  } satisfies Setting<string[]>,
+
   earModel: {
     value: "ink-2",
     why: "The speech-to-text model, the same service an earlier project of ours uses.",

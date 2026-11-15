@@ -1,6 +1,6 @@
 import { setTimeout as wait } from "node:timers/promises";
 import { ask, type Hands, type Screen } from "./ask.ts";
-import { hear, silence, type Words } from "./cores/catch.ts";
+import { hear, silence, unasked, type Words } from "./cores/catch.ts";
 import { fitted } from "./cores/beats.ts";
 import { circled, drew, echo, type Point } from "./cores/circle.ts";
 import { showable } from "./cores/fit.ts";
@@ -107,9 +107,9 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
       if (mine.signal.aborted) return;
       words = hear(hear(words, { type: "ear", text }), { type: "key.up", at });
       const drawn = drew(trail, settings.circleLeast.value);
-      if (words.text === "") {
+      if (unasked(words.text, settings.fillerWords.value)) {
         if (!drawn) {
-          log(`no words were heard in this hold, ${Date.now() - at} ms after the release; nothing is asked`);
+          log(`nothing to ask was heard in this hold${words.text === "" ? "" : ` (only "${words.text}")`}, ${Date.now() - at} ms after the release; nothing is asked`);
           return send({ v, type: "state", name: "idle", detail: "no words heard" });
         }
         carried = trail;
