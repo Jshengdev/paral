@@ -13,8 +13,9 @@ when; the body only draws. Nothing here takes a click except the cross, and noth
 
 | piece (kit's name) | what it is for | the line that brings it | what ends it | tokens |
 |---|---|---|---|---|
-| Voice pill (the capsule) | paral's one voice on screen: his words as they are heard, that it is working, each sentence as it is said, a failure in words. At rest it is the logo mark at the bottom centre; at rest with paral's ink on the page, a cross that clears it, with the logo mark and the name to its left | `key.down` (listening), `key.up` (working), `say` with `voice` or `mute` (answering), `state` failed; a `say` with a `trail` opens it with no key | the answer's end and a short linger, then it rests; the next press takes it over | `capsule.*`, `light`, `glass`, `shadow`, `ink`, `dim`, `font`, `motion.arriveMs`, `motion.leaveMs`, `motion.lingerMs`, `motion.unaskedStayMs`, `motion.standMsAWord`, `motion.readMsLeast`, `strings.*` (`strings.name` beside the cross) |
-| The trail (build's name; the kit has no frame) | the steps paral took before a line it said without being asked, in small capitals above the line, each cardinal once reached | `say` with `trail` | with its line | `capsule.tagType`, `cardinal`, `motion.trailStepMs` |
+| Voice pill (the capsule) | paral's one voice on screen, bottom centre, its foot 28 above the Dock: one capsule whose size changes between the collapsed pill (a row of dots) at rest and the full pill, a stop control, the wave and a send control. The wave scrolls in ink with the microphone's sound while he holds the key, and in stone with the voice's while paral works and answers; still dots on a failure. At rest with paral's ink on the page, a cross that clears it, with the logo mark and the name to its left. Open, it moves along the foot off the page's read text. While paral works with no cursor on the page, the logo mark by it breathes. The two controls take no click | `key.down` (listening), `key.up` (working), `say` with `voice` or `mute` (answering), `state` failed; a `say` with a `trail` opens it with no key; the wave reads the microphone's sound in the body (and a film reads the record's `mic` lines), and the voice's | the answer's end and a short linger, then it rests; the next press takes it over | `capsule.*`, `wave.*`, `light`, `mist`, `ink`, `stone`, `paper`, `glass`, `shadow`, `cursor.workGrows`, `cursor.workMs`, `motion.arriveMs`, `motion.leaveMs`, `motion.lingerMs`, `curves.arrive`, `curves.leave`, `strings.name` (beside the cross) |
+| Transcript bubble (the kit's) | every word the pill has to say, in a light card 10 above it: his words as they are heard (a word still being registered in stone, settling to ink; a caret that blinks; the oldest words dropped so the newest stay in view), his words in ink while paral works, each sentence as it is said (its words stone until said), a line said without being asked with its trail above it, and a failure, FAILED in cardinal and the reason | the pill's own lines; `heard` for his words | rises out of the pill as it opens and goes in 0.16 s as it shuts; a line stands its least time before the next takes its place | `bubble.*`, `capsule.type`, `ink`, `stone`, `cardinal`, `motion.wordMs`, `motion.standMsAWord`, `motion.readMsLeast`, `motion.unaskedStayMs`, `strings.listening`, `strings.thinking`, `strings.failed` |
+| The trail (build's name; the kit has no frame) | the steps paral took before a line it said without being asked, in small capitals in the bubble above the line, each cardinal once reached | `say` with `trail` | with its line | `capsule.tagType`, `cardinal`, `motion.trailStepMs` |
 | Highlight ring, and drawn notes | "this line": a ring, underline, wavy line or bracket drawn by hand in ember, with a note beside it when the mind sends one | `mark` (kind `ring`, `underline`, `wavy`, `bracket`; `label` for the note) | `clear`, a close, or a new mark on the same line | `mark.*`, `ember`, `cardinal` (the note) |
 | Highlight (the box) | "this line", where lines sit too close for a ring: a thin cardinal edge and a faint wash laid along the line by the pen | `mark` (kind `box`) | `clear`, a close, or a new mark on the same line | `mark.boxWidth`, `mark.wash`, `mark.ringMs`, `cardinal` |
 | Drawn arrow (the kit's, from its ring to its card) | "this line is what that is about": one curve in ember from the newest mark to whatever is speaking about it, and only where a way exists that keeps clear of every word on the page | no line of its own: the newest `mark` once the pen has finished it, while the capsule carries that mark's own `say`; or, with the capsule at rest, while the guide's card (`next`) names the marked line | goes with its mark (`clear`, a close, a newer mark); drawn back as the capsule closes; gone when the card's words move on, and while a `way` arrow is up | `lead.*`, `way.head`, `way.halo`, `ember`, `cursor.settleMs`, `mark.shaftMs`, `mark.headMs` |
@@ -39,8 +40,9 @@ Mac's menu bar, then down that side, then the top left, on none of the page's re
 arrow, the toast or the capsule. "Show the guide" is one item at the top of the menu bar's menu (`GuideSwitch.swift`),
 ticked when the app starts; nothing crosses the seam for it.
 
-Not built from the kit: the nudge card's two buttons (the builder's cue cards in the menu are that), the pill's stop
-and send buttons (paral is held and let go), the cursor's click (paral clicks nothing), and the wordmark.
+Not built from the kit: the nudge card's two buttons (the builder's cue cards in the menu are that), a click on the
+pill's stop and send controls (they are drawn and take none: paral is held and let go), the cursor's click (paral
+clicks nothing), and the wordmark.
 
 ## Deciding what is on screen
 
@@ -48,10 +50,12 @@ and send buttons (paral is held and let go), the cursor's click (paral clicks no
 |---|---|
 | `Seen.swift`, `Lines.swift` | the seam on this side: every line read and written, checked at the edge |
 | `Scene.swift`, `SceneTimes.swift`, `ScenePicture.swift` | events in, a `Picture` for any moment out. No clock, no drawing |
+| `ScenePill.swift` | the pill's wave (how loud it is at each sample, from the microphone's sound or the voice's) and the logo mark that breathes by it |
+| `Meter.swift` | how loud a chunk of sound is, 0 to 1, for the wave |
 | `SceneWay.swift` | the arrow that says which way to scroll: how far the pen has inked it, and its nod |
 | `ScenePointer.swift` | paral's own cursor: its flight to a mark, its ride on the pen, its rest beside the mark and the ripple there |
 | `Picture.swift` | what is on screen at one moment, as plain values |
-| `Layout.swift` | where the capsule sits, the largest empty place for a board, the place at an edge for the way arrow, and where the cursor rests beside a mark |
+| `Layout.swift`, `LayoutPill.swift` | where the pill and its bubble sit, off the page's read text, the largest empty place for a board, the place at an edge for the way arrow, and where the cursor rests beside a mark |
 | `Motion.swift` | how things move: the four curves, even speed for ink, and the cursor's arc |
 | `Pen.swift` | the path the pen takes for each kind of mark |
 | `PenWay.swift` | the strokes the pen makes for the two drawn arrows: a shaft, then a head |
@@ -63,6 +67,7 @@ and send buttons (paral is held and let go), the cursor's click (paral clicks no
 | file | job |
 |---|---|
 | `Painter.swift` and `Painter*.swift` | draw a picture into any drawing context, with the tokens |
+| `PainterCapsule.swift`, `PainterBubble.swift` | the voice pill (its dots, its controls and its wave, or the cross) and the bubble above it |
 | `PainterLead.swift` | finds the way the arrow from a mark takes to what speaks about it, and inks it |
 | `PainterLogo.swift` | the logo mark, drawn from the kit's outline: the cursor, and paral's face in the tag, on the guide's card and at rest |
 | `Tokens.swift`, `tokens.json` | the look in one file: colour, type, sizes, motion times |
@@ -177,31 +182,64 @@ curve; the `body.curves` row holds each one's values.
 - **Nothing springs.** The old curves went past their place by `motion.bounce` (0.06 of the way), which is further
   than his motion work goes anywhere but a small pop; that token and the spring are gone.
 - **Why the capsule's opening is an arrival** and not a change of size on `travel`: a press must be answered at
-  once. On `arrive` the capsule is half open 42 ms after the press and nine tenths open, which is when its words
-  are written, at about 138 ms; on `travel` it would have moved a hundredth of the way in those 42 ms and its words
-  would wait until about 300. (With the old spring over 260 ms the words came at about 88.) These are read off the
+  once. On `arrive` the capsule is half open 42 ms after the press, which is when its controls begin to show, and
+  nine tenths open at about 138 ms; the bubble rises on the same curve from the same moment, so its words are half
+  there at 42 ms. On `travel` it would have moved a hundredth of the way in those 42 ms and its words would wait until
+  about 300. (With the old spring over 260 ms the words came at about 88.) These are read off the
   curves, not measured on a screen.
 
-## The capsule, the board and the tags on the kit's light surface
+## The voice pill and its bubble, after the kit's
 
-The capsule has the look of the design kit's voice pill within the states it already had: a light pill with a soft
-shadow and words in ink. At rest it is collapsed to the logo mark. While paral's ink is on the page it rests as a
-cross that clears the ink, and since a cross alone over a line of the page reads as a stray button, it wears the
-resting logo mark and `strings.name` to its left, small (`capsule.tagType`), so it is plain whose cross it is. The cross
-keeps its place: a click is taken on the cross's own circle and nowhere else, so the name takes no click. The room
-for the name opens as the capsule shuts, and the name is written from the cross leftward, so it does not slide.
-Listening, a small wave stands before his words, which are grey while still being heard and black once settled.
-Answering, the words to come are grey and settle to black as they are said; the steps of a look's trail are cardinal
-once reached. The kit's pill also has a stop and a send button and keeps its transcript in a bar of its own above the
-pill; paral is held and let go, so there are no buttons, and the transcript is in the pill. The board is a card of
-the same light surface: a box is the kit's quiet button (`mist`, written in ink) and the step he is on its main
-button (ink, written in white). The way arrow's tag, the cursor's tag and the toast are the same surface. `glass` is
-how solid it is and `shadow` how far its shadow spreads. `light` is the kit's white (#FFFFFF since its update; it
-was #FBFBFB). The kit fills at 0.85 over a blur of the page; the overlay cannot blur what is under it, and at 0.85
-with no blur the page's words would show through the card's, so `glass` is 1. Only the lesson clip keeps its dark card. Page 06 of the kit, the
-voice pill's own page, could not be read on the night this was made (the design tool stopped answering); the look
-is from the one pill on page 08 and a one-line account of its states, and where it guesses it says so here: the
-logo mark at rest (the kit's collapsed pill is a row of dots), the wave's shape, and the transcript inside the pill.
+The capsule is the design kit's voice pill (its page 06 and the designer's handoff, 6.5), drawn here in code. It is
+one light capsule whose size changes between two: at rest the collapsed pill, 78 by 19 with eight dots in ink at 35
+percent, and open the full pill, 234 by 50: a stop control (a mist circle with an ink square), the wave (124 by 32) and
+a send control (mist with a stone arrow; ink with a white arrow while he is heard saying something), 36 across, 6 in
+from the edge and 12 apart. The two share their foot, `capsule.bottom` (28) above the floor, which is the display's
+foot less the Dock (`Scene.bottomInset`, 0 in a film). It grows on `arrive` in `motion.arriveMs` at a press and shuts
+on `leave` in `motion.leaveMs`; the kit's spring is the build's `arrive`, which goes past nothing. The controls take
+no click: paral is held and let go. While paral's ink is on the page it rests as a cross that clears the ink, and since
+a cross alone over a line of the page reads as a stray button, it wears the resting logo mark and `strings.name` to its
+left, small (`capsule.tagType`), so it is plain whose cross it is. The cross keeps its place, centred where the full
+pill's middle is: a click is taken on the cross's own circle and nowhere else, so the name takes no click. The room for
+the name opens as the capsule shuts, and the name is written from the cross leftward, so it does not slide.
+
+- **The wave.** One sample every `wave.sampleMs` (110), `wave.pitch` (7) apart, scrolling from right to left, each a
+  dot when it is quiet (a level under 0.22, drawn at 55 percent), a 3 by 10 bar under 0.55 and a 3 by 18 bar above,
+  fading over a tenth of its width at each end: the kit's three marks. In ink while he holds the key, in stone while
+  paral works and answers; on a failure it is the kit's fourteen still dots. Where every sample in view is quiet it
+  stands still, since a row of even dots looks the same moved. The level is worked out in the body (`Meter.swift`):
+  the sound's root mean square in decibels, held between -50 and 0 and laid onto 0 to 1, as the handoff feeds its
+  meter. While he holds the key it is the microphone's: the app tells the scene each chunk it sends to the mind, and a
+  film reads the same chunks from the record's `mic` lines, so the film shows the wave the window showed. Nothing new
+  crosses the seam. While paral speaks it is the voice's, at the moment of the voice being played. With motion reduced
+  the samples step and do not glide.
+- **The bubble** (`PainterBubble.swift`), the kit's transcript bubble, carries every word the capsule used to: centred
+  10 above the pill, 16 in across and 10 up and down, corner 14, at most 520 wide, in DM Sans Regular 16. Listening,
+  his words on one line, a word still being registered (heard less than `motion.wordMs` ago) in stone and in ink once
+  it has settled, a caret 1.5 by 18 after them that blinks every half second, and the oldest words dropped behind an
+  ellipsis so the newest stay in view; before any word, `strings.listening` in stone. Thinking, his words in ink and no
+  caret (`strings.thinking` in stone when he said nothing). Answering, the sentence being said, up to two lines round
+  its newest said word, stone until said and ink from then on, exactly as the capsule filled its words; an aside the
+  same. A line said without being asked has its trail above its words, each step cardinal once reached; said aloud (a
+  page's first look) its words go from stone to ink with the voice, shown only it comes whole. A failure is FAILED in
+  cardinal and bold and the reason after it, as before. It rises out of the pill as the pill opens (`bubble.rise`, on
+  `arrive`) and goes in `bubble.leaveMs` (160, the handoff's exit) as the pill shuts, holding its last words while it goes.
+- **Off the page's words.** Open, the pill moves along the foot, a step of 24 points at a time, to the nearest place
+  where neither it nor the room its bubble may take (520 wide, two lines tall) lies on any of the page's read lines
+  (`Layout.pillMiddle`); where no place is clear, the one that covers least. At rest the collapsed pill and the cross
+  stay at the display's middle. What else keeps off the capsule (the way arrow, the toast, the board, the guide's
+  card) keeps off the pill and its bubble's room at the display's middle.
+- **That it works.** While paral thinks, a cursor on the page breathes; with none on the page, the logo mark by the
+  pill's left end breathes the same way (`capsule.face`, `cursor.workGrows`, `cursor.workMs`).
+- **What leads to it.** The arrow from a mark leads to the full pill and the bubble as they are, so its way changes
+  only when the bubble's words do.
+
+The board is a card of the same light surface: a box is the kit's quiet button (`mist`, written in ink) and the step
+he is on its main button (ink, written in white). The way arrow's tag, the cursor's tag and the toast are the same
+surface. `glass` is how solid it is and `shadow` how far its shadow spreads. `light` is the kit's white (#FFFFFF since
+its update; it was #FBFBFB). The kit fills at 0.85 over a blur of the page; the overlay cannot blur what is under it,
+and at 0.85 with no blur the page's words would show through the card's, so `glass` is 1. Only the lesson clip keeps
+its dark card.
 
 ## A line stands a least time
 
@@ -319,7 +357,7 @@ tokens' size times whatever the card was shrunk by.
 `paral-headless` commands: `read`, `smaller`, `page`, `lines`, `keys SECONDS NAME` (watch a key), `flow`, `film`,
 `frame RUN TOKENS MS OUT.png` (one moment of a run, for the dials page), `capsule RUN TOKENS MS...` (what the capsule
 shows at those moments), `curves TOKENS SHARE...` (each of the four curves at those shares of its time), `placed RUN TOKENS MS...` (where the painter puts each thing at those moments, the points
-the pen has inked of a mark and of a drawn arrow, the capsule's look and words, and the way arrow's, the cursor's and the board's own values).
+the pen has inked of a mark and of a drawn arrow, the capsule's look, words, stone words, note, trail, caret, wave and breathing mark (`PARAL_INSET` for a Dock's height), and the way arrow's, the cursor's and the board's own values).
 
-Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way`, `body.cursor`, `body.steps`, `body.pages`, `body.toast`, `body.boardType`, `body.guide`, `body.lead`, `body.breath`, `body.stands`, `body.resting`, `body.cursorInside`, `body.inkInside`, `body.curves` and `body.moves` rows, with no window. The look of the mark, the white surfaces and the trail's colour are checked on stills. The hosts are compiled and have never been run:
+Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way`, `body.cursor`, `body.steps`, `body.pages`, `body.toast`, `body.boardType`, `body.guide`, `body.lead`, `body.breath`, `body.stands`, `body.resting`, `body.cursorInside`, `body.inkInside`, `body.curves`, `body.moves` and `body.pill` rows, with no window. The look of the mark, the white surfaces and the trail's colour are checked on stills. The hosts are compiled and have never been run:
 the key, the microphone, the screen picture and the overlay wait for a person and their grants (`./run`).
