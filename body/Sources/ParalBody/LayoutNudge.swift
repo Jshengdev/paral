@@ -23,7 +23,7 @@ extension Layout {
         let capsule = capsule(open: 1, taller: band(tokens), width: width, height: height, tokens: tokens)
         let shut = (texts + taken + [capsule]).map { $0.grown(n.clear) }
         func covered(_ b: Box) -> Double {
-            let rising = Box(x: b.x, y: b.y, w: b.w, h: b.h + n.rise)
+            let rising = Box(x: b.x, y: b.y, w: b.w, h: b.h + tokens.card.drop)
             let outside = b.x < n.edge || b.y < n.top || b.x + b.w > width - n.edge || rising.y + rising.h > height - n.edge
             return shut.reduce(0) { $0 + overlap(rising, $1) } + (outside ? b.w * b.h : 0)
         }
@@ -37,12 +37,12 @@ extension Layout {
                 let column = texts.filter { $0.y < top + h && top < $0.y + $0.h }.map { $0.x + $0.w }.max() ?? 0
                 home = CGPoint(x: max(column, line.x + line.w) + n.beside, y: top)
             } else {
-                home = CGPoint(x: width - n.edge - w, y: capsule.y - n.clear - n.rise - h)
+                home = CGPoint(x: width - n.edge - w, y: capsule.y - n.clear - tokens.card.drop - h)
             }
             // The home itself, held inside the display, then every place on a grid of `nudge.cell`.
-            let held = Box(x: min(max(home.x, n.edge), width - n.edge - w), y: min(max(home.y, n.top), height - n.edge - n.rise - h), w: w, h: h)
+            let held = Box(x: min(max(home.x, n.edge), width - n.edge - w), y: min(max(home.y, n.top), height - n.edge - tokens.card.drop - h), w: w, h: h)
             var places = [held]
-            for y in stride(from: n.top, through: height - n.edge - n.rise - h, by: max(n.cell, 1)) {
+            for y in stride(from: n.top, through: height - n.edge - tokens.card.drop - h, by: max(n.cell, 1)) {
                 for x in stride(from: n.edge, through: width - n.edge - w, by: max(n.cell, 1)) { places.append(Box(x: x, y: y, w: w, h: h)) }
             }
             var nearest: (far: Double, box: Box)?

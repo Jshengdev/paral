@@ -141,7 +141,7 @@ public struct Painter {
             let up = drawn.filter { ["board", "clip", "way", "toast", "guide"].contains($0.what) }.map(\.box)
             let card = self.nudge(nudge, avoiding: picture.avoid, taken: up, marks: picture.marks + (picture.echo.map { [$0] } ?? []), cursor: picture.pointer != nil, ctx)
             // Where no place is clear of the page's words its line is shown in the capsule, as it was before the card.
-            if card.isEmpty { spoken = CapsulePicture(look: .speaking, open: min(nudge.appear, 1 - nudge.leave), words: nudge.words, note: nil, trail: nudge.trail, ask: nudge.id) }
+            if card.isEmpty { spoken = CapsulePicture(look: .speaking, open: min(nudge.coming.card, 1 - nudge.coming.gone), words: nudge.words, note: nil, trail: nudge.trail, ask: nudge.id) }
             drawn += card
         }
         // The cursor stays on the display: where its mark or its arrow runs to an edge, it stops short of the edge.

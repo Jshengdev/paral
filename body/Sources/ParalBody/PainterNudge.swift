@@ -73,60 +73,52 @@ extension Painter {
         let was = nudges.asked == asked ? nudges.found : nil, kept = taken + held(marks, of: card.id, cursor: cursor, avoiding: texts)
         // A card that is going stays where it was, whatever has come up since.
         let place: (box: Box, scale: Double)?
-        if card.leave > 0, let was { place = was } else if nudges.asked == asked, was == nil, nudges.taken == kept { place = nil } else {
+        if card.coming.gone > 0, let was { place = was } else if nudges.asked == asked, was == nil, nudges.taken == kept { place = nil } else {
             place = Layout.nudge(size: (full.width, full.height), beside: card.beside, texts: texts, taken: kept, was: was, width: width, height: floor, tokens: tokens)
         }
         (nudges.asked, nudges.found, nudges.taken) = (asked, place, kept)
         guard let place else { return [] }
 
+        // At its place and at the size it was fitted to; there it comes up and goes as any card does, its three
+        // lines after it (`PainterCard.swift`).
         ctx.saveGState()
         defer { ctx.restoreGState() }
-        let going = card.leave > 0
-        let alpha = going ? 1 - card.leave : card.appear
-        let grow = going ? 1 - (1 - n.leaveTo) * card.leave : n.from + (1 - n.from) * card.appear
-        ctx.translateBy(x: place.box.x + place.box.w / 2, y: place.box.y + (going ? 0 : n.rise * (1 - card.appear)))
-        ctx.scaleBy(x: place.scale * grow, y: place.scale * grow)
-        ctx.translateBy(x: -full.width / 2, y: 0)
-        ctx.setAlpha(alpha)
-        surface(CGPath(roundedRect: CGRect(origin: .zero, size: full), cornerWidth: n.radius, cornerHeight: n.radius, transform: nil), ctx)
-        // Each row fades in and rises on its own, after the card.
-        func row(_ index: Int, _ draw: (Double) -> Void) {
-            let come = card.rows[index]
-            ctx.setAlpha(alpha * come)
-            draw(going ? 0 : n.rowRise * (1 - come))
+        ctx.translateBy(x: place.box.x, y: place.box.y)
+        ctx.scaleBy(x: place.scale, y: place.scale)
+        let whole = CGRect(origin: .zero, size: full)
+        let named = CGRect(x: n.pad, y: n.pad, width: inner, height: head + trailTall)
+        let worded = CGRect(x: n.pad, y: named.maxY + n.gap, width: inner, height: said.height.rounded(.up))
+        let row = CGRect(x: n.pad, y: worded.maxY + n.gap, width: inner, height: pillTall)
+        let at = pills.indices.map { index in n.pad + pills[..<index].reduce(0) { $0 + $1.1.size.width + n.buttonGap } }
+        self.card(whole, radius: n.radius, card.coming, ctx) {
+            _ = line(0, of: card.coming, on: whole, at: named, ctx) {
+                logo(middle: CGPoint(x: named.minX + n.avatar / 2, y: named.minY + head / 2), across: n.avatar, ctx)
+                name.draw(at: CGPoint(x: named.minX + beyond, y: named.minY + (head - name.size().height) / 2))
+                if !card.trail.isEmpty { trail.draw(with: CGRect(x: named.minX + beyond, y: named.minY + head + n.trailGap, width: inner - beyond, height: trailSize.height.rounded(.up)), options: wrapped) }
+            }
+            _ = line(1, of: card.coming, on: whole, at: worded, ctx) { message.draw(with: worded, options: wrapped) }
+            _ = line(2, of: card.coming, on: whole, at: row, ctx) {
+                for ((button, pill), x) in zip(pills, at) {
+                    ctx.saveGState()
+                    // A held button, or the one he pressed while the card waits for what it asked, is drawn smaller.
+                    let shrink = card.held == button || card.answered == button ? n.pressed : 1
+                    ctx.translateBy(x: x + pill.size.width / 2, y: row.minY + pill.size.height / 2)
+                    ctx.scaleBy(x: shrink, y: shrink)
+                    let shape = CGRect(x: -pill.size.width / 2, y: -pill.size.height / 2, width: pill.size.width, height: pill.size.height)
+                    ctx.addPath(CGPath(roundedRect: shape, cornerWidth: shape.height / 2, cornerHeight: shape.height / 2, transform: nil))
+                    ctx.setFillColor(button == .add ? ink : mist)
+                    ctx.fillPath()
+                    pill.label.draw(at: CGPoint(x: shape.minX + n.buttonPadX, y: -pill.label.size().height / 2))
+                    ctx.restoreGState()
+                }
+            }
         }
-        var y = n.pad
-        row(0) { rise in
-            logo(middle: CGPoint(x: n.pad + n.avatar / 2, y: y + rise + head / 2), across: n.avatar, ctx)
-            name.draw(at: CGPoint(x: n.pad + beyond, y: y + rise + (head - name.size().height) / 2))
-            if !card.trail.isEmpty { trail.draw(with: CGRect(x: n.pad + beyond, y: y + rise + head + n.trailGap, width: inner - beyond, height: trailSize.height.rounded(.up)), options: wrapped) }
-        }
-        y += head + trailTall + n.gap
-        row(1) { rise in message.draw(with: CGRect(x: n.pad, y: y + rise, width: inner, height: said.height.rounded(.up)), options: wrapped) }
-        y += said.height.rounded(.up) + n.gap
         var drawn = [Drawn(what: "nudge", id: card.id, box: place.box)]
-        var x = n.pad
-        for (button, pill) in pills {
-            let rect = CGRect(x: x, y: y, width: pill.size.width, height: pill.size.height)
-            row(2) { rise in
-                ctx.saveGState()
-                // A held button, or the one he pressed while the card waits for what it asked, is drawn smaller.
-                let shrink = card.held == button || card.answered == button ? n.pressed : 1
-                ctx.translateBy(x: rect.midX, y: rect.midY + rise)
-                ctx.scaleBy(x: shrink, y: shrink)
-                let shape = CGRect(x: -rect.width / 2, y: -rect.height / 2, width: rect.width, height: rect.height)
-                ctx.addPath(CGPath(roundedRect: shape, cornerWidth: rect.height / 2, cornerHeight: rect.height / 2, transform: nil))
-                ctx.setFillColor(button == .add ? ink : mist)
-                ctx.fillPath()
-                pill.label.draw(at: CGPoint(x: shape.minX + n.buttonPadX, y: -pill.label.size().height / 2))
-                ctx.restoreGState()
-            }
-            // Where a click on it is taken: its place on the card at rest, offered only while the card can be pressed.
-            if !going, card.answered == nil {
-                let s = place.scale
-                drawn.append(Drawn(what: "button", id: button.rawValue, box: Box(x: place.box.x + s * rect.minX, y: place.box.y + s * rect.minY, w: s * rect.width, h: s * rect.height)))
-            }
-            x += pill.size.width + n.buttonGap
+        // Where a click on each button is taken: its place on the card at rest, offered only while the card can be pressed.
+        guard card.coming.gone == 0, card.answered == nil else { return drawn }
+        let s = place.scale
+        for ((button, pill), x) in zip(pills, at) {
+            drawn.append(Drawn(what: "button", id: button.rawValue, box: Box(x: place.box.x + s * x, y: place.box.y + s * row.minY, w: s * pill.size.width, h: s * pill.size.height)))
         }
         return drawn
     }

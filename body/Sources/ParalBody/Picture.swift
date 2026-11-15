@@ -108,11 +108,9 @@ public struct NudgePicture: Equatable {
     public var buttons: Bool
     /// The box of the line it is about, or nil when the look sent the way to it and no mark.
     public var beside: Box?
-    /// How far the card has come up, 0 to 1, and each of its rows: the name and the trail, the message, the buttons.
-    public var appear: Double
-    public var rows: [Double]
-    /// How far it has gone, 0 while it stays. A card that is going offers no buttons.
-    public var leave: Double
+    /// How it stands, as any card does: how far it has come up and gone, and each of its lines (the name and the
+    /// trail, the message, the buttons). A card that is going offers no buttons.
+    public var coming: CardArrival
     /// The button he pressed, while the card waits for what it asked (the date to be opened). It is drawn held and
     /// the card offers no buttons meanwhile, so one press asks once.
     public var answered: NudgeButton?

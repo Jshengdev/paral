@@ -25,7 +25,7 @@ extension Scene {
     }
 
     /// Whether an ask's card is up at `t` and not going.
-    private func shows(_ ask: Ask, at t: Double) -> Bool { nudge(at: t).map { $0.id == ask.id && $0.leave == 0 } ?? false }
+    private func shows(_ ask: Ask, at t: Double) -> Bool { nudge(at: t).map { $0.id == ask.id && $0.coming.gone == 0 } ?? false }
 
     /// The card of a line that gets its turn at `comes`: a new one, or the one already up when it holds the same
     /// words. That is the same card: it does not come up a second time and keeps what he did with it.
@@ -71,27 +71,26 @@ extension Scene {
     }
 
     /// The nudge card at `t`: the newest line said without being asked, once its turn has come, beside the mark the
-    /// same look made. The card comes up on `arrive`, its rows one after another, and goes on `leave` in less time;
-    /// with motion reduced it is there or not, with no rise. Words he has answered before it came up get no card.
+    /// same look made. It comes up as any card does (`Scene.coming`), its rows one after another, and goes on `leave`
+    /// in `nudge.leaveMs`, less time; with motion reduced it is there or not, with no rise. Words he has answered before it came up get no card.
     func nudge(at t: Double) -> NudgePicture? {
         guard let ask = unasked(at: t), let card = cards[ask.id], let now = times(ask).first, now.start <= t, let said = ask.beats[now.beat] else { return nil }
         let text = words(ask), n = tokens.nudge
         guard !unseen(ask) else { return nil }
         let end = ends(ask)
         if let end, t >= end + (still ? 0 : ms(n.leaveMs)) { return nil }
-        let leave = end.map { t < $0 ? 0 : tokens.curves.leave((t - $0) / max(ms(n.leaveMs), 1)) } ?? 0
+        let gone = end.map { t < $0 ? 0 : tokens.curves.leave((t - $0) / max(ms(n.leaveMs), 1)) } ?? 0
         // A line with a voice comes up when its sound begins, which may be after its turn; the same words sent again
-        // are the card that was already up.
+        // are the card that was already up. It comes up as any card does, its three lines after it.
         let since = card.upSince < ask.beganAt ? card.upSince : max(card.upSince, now.start)
-        func came(after wait: Double) -> Double { still ? 1 : tokens.curves.arrive((t - since - ms(wait)) / max(ms(n.arriveMs), 1)) }
+        let arrival = coming(since: since, lines: 3, gone: gone, at: t)
         // Its words fill in as they are said, as an answer's do in the capsule; shown and not spoken, they are whole.
         let whole = said.text.split(separator: " ").map { Word(text: String($0), bright: 1) }
         let spoken = said.soundAt != nil && t < now.end ? words(of: said, from: now, at: t) : whole
-        let rows = (0..<3).map { came(after: n.rowMs + Double($0) * n.rowStepMs) }
         // The steps light one after another, as they did in the capsule.
         let trail = (ask.trail ?? []).enumerated().map { index, step in Word(text: step, bright: still || t - ask.beganAt >= Double(index) * ms(tokens.motion.trailStepMs) ? 1 : tokens.dim) }
         let beside = marks.last { $0.id == ask.id && $0.at <= t }?.box
-        return NudgePicture(id: ask.id, text: text, words: spoken, trail: trail, buttons: card.keep, beside: beside, appear: came(after: 0), rows: rows, leave: leave, answered: card.answered?.button)
+        return NudgePicture(id: ask.id, text: text, words: spoken, trail: trail, buttons: card.keep, beside: beside, coming: arrival, answered: card.answered?.button)
     }
 
     /// When the newest card to have gone was gone, at or before `t`, if one has. A card whose place a newer line had
