@@ -28,6 +28,7 @@ export function glanced(look: Look, expect: Expect, truth: Truth[], known: Known
   out.push(trailIsTrue(s, line, known));
   const asAsk = { index: s, moments: look.moments };
   out.push(...marks(asAsk, expect, truth), ...datesSaid(asAsk, expect, truth, known), ...ahead(s, boards.at(-1)?.text ?? null, expect, known));
+  out.push(...wayShown(s, look, expect));
   // A date that has passed leaves nothing to do, so nothing is added to what is ahead.
   if (expect.board === false) out.push(boards.length === 0 ? yes(C, s, "It adds nothing to what is ahead", "no board was drawn") : no(C, s, "It adds nothing to what is ahead", `it drew: ${boards.at(-1)?.text.slice(0, 90)}`));
   return out;
@@ -75,4 +76,20 @@ function ahead(s: number, board: string | null, expect: Expect, known: Known): V
 export function pageChanged(s: number, standing: number): Verdict {
   const what = "When another page comes up, the marks drawn for the page before are cleared";
   return standing === 0 ? yes(C, s, what, "nothing of the page before is left over it") : no(C, s, what, `${standing} marks drawn for the page before are still on the screen`);
+}
+
+
+// His words of 2026-11-14, 20:00: "arrows to continue scrolling until it finds it". When the thing is on this page
+// and not in view, the build says which way in a mark's place. It must be the right way, lead to the right thing,
+// and come instead of a mark, never beside one. The arrow's drawing is judged on film, not here.
+function wayShown(s: number, look: Look, expect: Expect): Verdict[] {
+  if (expect.way === undefined) return [];
+  const what = `It shows the way to scroll: ${expect.way.to}, toward ${expect.way.toward}`;
+  const ways = of(look.moments, "way");
+  const marked = of(look.moments, "mark").length;
+  if (ways.length === 0) return [no(C, s, what, marked > 0 ? "a mark was drawn and no way was shown" : "no way was shown")];
+  const way = ways.at(-1)!;
+  const right = way.to === expect.way.to && way.toward.toLowerCase().includes(expect.way.toward.toLowerCase());
+  const measured = `${way.to}, toward "${way.toward}"${marked > 0 ? `, with ${marked} marks beside it` : ""}`;
+  return [right && marked === 0 ? yes(C, s, what, measured) : no(C, s, what, measured)];
 }

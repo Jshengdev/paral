@@ -35,6 +35,7 @@ function moment(at: number, line: Record<string, unknown> & { type: string }): M
     }
     case "look": return { at, kind: "glance", lines: (line.lines as unknown[]).length };
     case "open": return { at, kind: "opened", path: String(line.path) };
+    case "way": return { at, kind: "way", to: line.to === "up" ? "up" : "down", toward: String(line.toward) };
     case "board.close": return { at, kind: "board-closed" };
     case "clear": return { at, kind: "clear" };
     case "close": return { at, kind: "close" };

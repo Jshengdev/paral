@@ -1,0 +1,21 @@
+{
+  "v": 1,
+  "id": "the-way-to-it",
+  "title": "The deadline is not in view: it shows which way to scroll, down from the top and up from far below, until the line is found",
+  "criteria": ["C18", "C6"],
+  "page": "real:rso-recognition",
+  "source": { "url": "https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/" },
+  "others": {
+    "rso-far-below": { "url": "https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/", "at": "#accordion-item-12", "hide": ".wp-block-accordion-panel" }
+  },
+  "steps": [
+    { "look": true, "waitMs": 12000,
+      "expect": { "shows": true, "says": ["November 22"], "way": { "to": "down", "toward": "Deadlines" } } },
+    { "look": true, "page": "real:rso-far-below", "waitMs": 8000,
+      "expect": { "shows": true, "way": { "to": "up", "toward": "Deadlines" } } },
+    { "look": true, "page": "real:rso-deadlines", "waitMs": 8000,
+      "expect": { "shows": true, "mark": { "on": "November 22 at 11:59pm:" }, "countsDaysTo": "November 22" } },
+    { "say": "How long do I have?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "countsDaysTo": "November 22" } }
+  ]
+}
