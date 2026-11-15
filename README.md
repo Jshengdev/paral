@@ -210,13 +210,14 @@ The judge found real faults over the weekend, and each became a row before it wa
 words that the date rule could not read, a question in a page's first second that silenced the page, sentences
 that took too long to say.
 
-**After the 11:00 submission.** This branch stood as submitted until the judging was over. What was added after
-the submission was sent (from 10:43 that Sunday morning on) and merged afterwards: the scroll wheel is turned the way a real one is, so "Scroll for me" moves
-a page in Chrome; a page's first look brings one line and one mark, and the board of steps comes when asked for;
-the pages a question is given are held ready by the model's service as soon as the page is seen, so a first
-question on a page no longer waits for them; dates written with slashes are read; a long sentence that ends by
-saying where a thing is written is said as two; the app finishes the look it is taking before it exits; and an
-exercise can be worked through step by step behind a switch that is off (`PARAL_WORK_THROUGH=1 ./run`). On the
+**Not in the submission.** This branch stood as submitted at 11:00 until the judging was over. What was made
+from 10:43 that Sunday morning on, kept on a branch of its own and merged afterwards: the scroll wheel is turned
+the way a real one is, so "Scroll for me" moves a page in Chrome; a page's first look brings one line and one
+mark, and the board of steps comes when asked for; the pages a question is given are held ready by the model's
+service as soon as the page is seen, so a first question on a page no longer waits for them; dates written with
+slashes are read; a long sentence that ends by saying where a thing is written is said as two; the app finishes
+the look it is taking before it exits; and an exercise can be worked through step by step behind a switch that
+is off (`PARAL_WORK_THROUGH=1 ./run`). On the
 build with all but the two-sentence change, the judge's pass was 1,900 of 1,903 checks.
 
 ## What it does not do yet
