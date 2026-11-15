@@ -107,7 +107,10 @@ public final class Watch {
             let wanted = await MainActor.run { () -> Bool in
                 guard let self, !print.isEmpty, !self.busy() else { return false }
                 // The moment the page is not the one the marks were placed on, the scene is told, and again when it is.
-                let moved = scene?.placed == true && self.rounds.stale(print, within: Watch.within)
+                // Where the newest mark is, as a share of the print's height: the print leaves the menu bar out.
+                let high = Double(self.screen.frame.height) - bar
+                let band = scene?.markY.map { ($0 - bar) / max(high, 1) }
+                let moved = scene?.placed == true && self.rounds.stale(print, within: Watch.within, band: band)
                 if moved != self.stale { self.stale = moved; self.onStale?(moved) }
                 // A look asked for by the scroller is sent whatever the rounds say, if its picture was taken after the asking.
                 let forced = self.forcedAt.map { taken >= $0 } ?? false

@@ -80,7 +80,10 @@ public final class Overlay {
             // The clock only matters while something pulses: the thinking dots, or the dots in an empty card.
             if now.capsule.look != .thinking && !(now.board?.rows.isEmpty ?? false) { now.clock = 0 }
             if let held = self.held, held != .cross, held != .offer(send: ScrollButton.asks) { now.nudge?.held = held == .notNow ? .notNow : .add }
-            let over = self.held != nil || self.hit(at: self.pointer) != nil
+            // The window starts taking clicks while the pointer is still on its way to a button: switching it on only
+            // once the pointer was on the button left a moment in which a quick press fell through to the page, and on
+            // his screen one followed a link there.
+            let over = self.held != nil || self.near(self.pointer)
             if self.window.ignoresMouseEvents == over { self.window.ignoresMouseEvents = !over }
             guard now != self.shown || self.stale else { return }
             // While only the orb has moved (thirty times a second at rest), only its square is drawn again.
@@ -113,6 +116,18 @@ public final class Overlay {
             return CGRect(x: box.x, y: box.y, width: box.w, height: box.h).contains(point)
         }?.hit
     }
+
+    /// Whether the pointer is on a thing that takes a click or within `Overlay.approach` of one.
+    private func near(_ point: CGPoint) -> Bool {
+        hits.contains { item in
+            let box = item.box.grown(Overlay.approach)
+            return CGRect(x: box.x, y: box.y, width: box.w, height: box.h).contains(point)
+        }
+    }
+
+    /// How far from a button the window already takes clicks, in points: about what a pointer covers in the tenth of
+    /// a second before it lands. A click in that margin that misses the button is taken and does nothing.
+    static let approach = 36.0
 
     /// The pointer in the canvas's own space: origin top-left, y growing downward.
     private var pointer: CGPoint {
