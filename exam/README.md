@@ -65,7 +65,9 @@ only when the builder says the tree is frozen, and the builder edits again only 
 - **A plain question gets an answer.** The video answers a question about a plan or a page outright (09:14). The hint
   ladder is for his own worked problem. A scenario from the video sets `plain` in what it expects, and then no line of
   the answer may be a hint.
-- **The picture sent when he circles** must hold his path and be only the part of the screen round it. The judge
+- **The picture the answer is made from when he circles** must hold his path and be only the part of the screen
+  round it. It is the last picture of the ask. The one taken as he pressed holds the whole page, and the quick line
+  is written from its read lines; that is said plainly rather than hidden (his choice of 2026-11-14). The judge
   opens the picture file itself: it counts pixels of the pen's colour, and compares the picture's shape with the
   display's. Lines that came with a place and no words are a second sign of a part. The exam's circles are small, so
   the whole display sent with a circle is a fault here.

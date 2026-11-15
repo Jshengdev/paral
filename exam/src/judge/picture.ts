@@ -11,7 +11,9 @@ const SAME_SHAPE = 0.03; // a part of the screen has another shape than the whol
 // The pen is a strong orange-red. A page's own reds and golds are darker or yellower, so they are not counted.
 const isPen = (r: number, g: number, b: number) => r > 200 && g > 50 && g < 130 && b < 90;
 
-// What the tutor is sent when he circles: one picture with his path on it, and only the part of the screen round it.
+// What the answer is made from when he circles: one picture with his path on it, and only the part of the screen
+// round it. This is the last picture of the ask. An earlier one, taken as he pressed, holds the whole page: the
+// quick line is written from its read lines, so those do leave the Mac (his choice of 2026-11-14, 17:30: say so).
 // A run keeps one picture file, written again on each ask he circles in, so every ask is judged on the last of them.
 export async function pictureSent(ask: Ask, circled: boolean, display: Display): Promise<Verdict[]> {
   if (!circled) return [];
@@ -37,5 +39,5 @@ export function onlyThePart(s: number, picture: Size, sent: { lines: number; unr
   const shapeApart = Math.abs(picture.w / picture.h - whole) / whole;
   const measured = `the picture is ${picture.w} by ${picture.h}; the display's shape is ${display.w} by ${display.h}; ${sent.unread} of ${sent.lines} lines came with no words`;
   const part = shapeApart > SAME_SHAPE || sent.unread > 0;
-  return part ? yes("C3", s, "When he circles, only that part of the screen is sent", measured) : no("C3", s, "When he circles, only that part of the screen is sent", measured);
+  return part ? yes("C3", s, "When he circles, the answer is made from only that part", measured) : no("C3", s, "When he circles, the answer is made from only that part", measured);
 }
