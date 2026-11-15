@@ -3,11 +3,13 @@ import Foundation
 extension Scene {
     /// What the watcher and the scroller ask of the scene: whether an ask is being heard or answered (the capsule is
     /// not at rest), when a look would cut into it; which way the arrow points when one says the thing he was pointed
-    /// to is off screen (true is down), nil when none is up; and whether anything of paral's is placed on the page now
-    /// (a mark or that arrow), which a page that moves would leave behind.
-    public func watching(at t: Double) -> (busy: Bool, down: Bool?, placed: Bool) {
+    /// to is off screen (true is down), nil when none is up; whether anything of paral's is placed on the page now
+    /// (a mark or that arrow), which a page that moves would leave behind; and how far down the display the middle of
+    /// the newest mark is, in points from its top, nil with none.
+    public func watching(at t: Double) -> (busy: Bool, down: Bool?, placed: Bool, markY: Double?) {
         let way = wayUp(at: t)
-        return (capsule(at: t).look != .rest, way?.down, way != nil || marks.contains { $0.at <= t && ($0.clearedAt.map { t < $0 } ?? true) })
+        let up = marks.filter { $0.kind != .tag && $0.at <= t && ($0.clearedAt.map { t < $0 } ?? true) }
+        return (capsule(at: t).look != .rest, way?.down, way != nil || !up.isEmpty, up.last.map { $0.box.y + $0.box.h / 2 })
     }
 
     /// The arrow on the page at `t`, if one is up.

@@ -168,9 +168,10 @@ nothing to offer it is a card that goes by itself. An answer on any other page i
 **"Scroll for me."** When an arrow says the thing is off his screen and he says or presses "scroll for me"
 (`scrollAsks`), the mind asks no model: it sends a `scroll` line with the way the arrow points (`mind/takes.ts`,
 `glance.ts` `wayNow`: the walk's step, else where his last answer sent him, else the page's own thing). The app
-(`Does.swift`, `Hand.swift`) turns the wheel for the app in front, half a display at a time, and after each reach
-waits for a look of the still page to be answered, so the mark lands on the line where the line is. It stops when the
-arrow goes, when he presses the key, when the page no longer moves, or after 30 s. It needs his Accessibility grant,
+(`Does.swift`, `Hand.swift`) puts the pointer over the page and turns the wheel as a real one does, a reach of less
+than half a display at a time; after each reach it lets the page rest, asks the watcher for a look taken then, and
+lets it be answered, so the mark lands on the line where the line is. It stops when the arrow goes, when he presses
+the key, when the page no longer moves, when it has gone past twice, or after 30 s; `tmp/body.log` says what it did. It needs his Accessibility grant,
 asks for it once, and says so when it has none. With no arrow up he is told so and nothing is scrolled.
 
 **"Open it for me."** The one click paral makes. When its box is on a heading that is closed over the thing, the

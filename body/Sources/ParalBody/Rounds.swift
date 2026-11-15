@@ -41,6 +41,9 @@ public struct Rounds {
 
     public init() {}
 
+    /// Whether a print shows the page as the last look reported saw it: the page has not moved since.
+    public func unmoved(_ print: Data, within: Double) -> Bool { Screen.alike(print, reported, within: within) }
+
     /// Marks have just been placed: the page as the latest round saw it is the page they are on.
     public mutating func placed() { basis = before }
 
