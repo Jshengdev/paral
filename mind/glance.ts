@@ -41,8 +41,20 @@ export type Asked = Following & { page: string | null };
 export function glances({ ports, settings, send, log, noted }: Hands, remember: (ahead: Ahead[]) => void, showed: (date: ToKeep) => void) {
   /** What each look was found to hold, so the model is asked once: by page, or by page and the question that led there. Null: nothing. */
   const found = new Map<string, Glanced | null>();
-  /** What the last look showed and where, so the same thing is not shown twice. */
+  /** What the last look showed, on which line, and where that line's box was, so the same thing is not shown twice. */
   let shown: string | null = null;
+  let shownAt: Box | null = null;
+  /**
+   * Whether this is what is already shown, where it is shown: the same thing on the same line, with the line's box
+   * within a few points of where it was. A scroll that keeps the line in view moves the box, and the mark with it.
+   */
+  function stays(what: string, box: Box | null): boolean {
+    const least = settings.movedLeast.value;
+    const near = box === null || shownAt === null ? box === shownAt : Math.abs(box.x - shownAt.x) < least && Math.abs(box.y - shownAt.y) < least;
+    const same = what === shown && near;
+    [shown, shownAt] = [what, box];
+    return same;
+  }
   let looks = 0;
   let running: AbortController | null = null;
   /** The step that leads the looks on its page, when he has said "show me": they place it, not the page's own thing. */
@@ -64,9 +76,7 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
     const id = `g${++looks}`;
     const where = step.line === null ? null : whereIs(settings, look, page, { line: step.line, under: step.under });
     ringed = where?.inView ? where.box : null;
-    const at = `step ${step.now} on ${where?.on ?? where?.to ?? ""}`;
-    if (at === shown) return log(`${id}: nothing has moved since the last look; what is shown stays`);
-    shown = at;
+    if (stays(`step ${step.now} on ${where?.on ?? where?.to ?? ""}`, where?.box ?? null)) return log(`${id}: nothing has moved since the last look; what is shown stays`);
     send({ v, type: "clear" });
     const marked = where ? point(send, id, where) : "no line of this page is known for the step, so nothing is marked";
     send({ v, type: "say", id, beat: 0, text: step.text, trail: step.trail });
@@ -80,7 +90,7 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
     /** A step takes the lead of the looks on its page, or gives it back (null). `box` is where its own line is now, if it was just placed in view. */
     lead(step: Led | null, box: Box | null = null) {
       led = step;
-      shown = null;
+      [shown, shownAt] = [null, null];
       ringed = box;
     },
     /** The box on the leading step's own line, or null when no step leads or its line is not in view. */
@@ -95,7 +105,7 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
     stop() {
       running?.abort();
       running = null;
-      shown = null;
+      [shown, shownAt] = [null, null];
     },
     async take(look: Look | Screen, asked: Asked | null): Promise<void> {
       const page = whichPage(look.lines.map((line) => line.text), ports.pages, settings.pageLeastLines.value);
@@ -148,9 +158,7 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
       // Where the thing is on his screen now: the line itself, the heading it sits under, or the way to it.
       const where = whereIs(settings, look, page, glanced);
       const text = where.inView ? glanced.sayInView : glanced.say;
-      const at = `${key} on ${where.on ?? where.to ?? ""}`;
-      if (at === shown) return log(`${id}: nothing has moved since the last look; what is shown stays`);
-      shown = at;
+      if (stays(`${key} on ${where.on ?? where.to ?? ""}`, where.box)) return log(`${id}: nothing has moved since the last look; what is shown stays`);
       // Push: a date this page does not hold would be made up, so a sentence that names one is not shown.
       const today = new Date(look.at).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
       const made = unknownDate(text, [today, ...page.lines]);
