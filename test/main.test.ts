@@ -8,7 +8,7 @@ import { asksFor, fits, hear, saysOnly, silence, unasked } from "../mind/cores/c
 import { away, datesIn, daysFrom, unknownDate, type Named } from "../mind/cores/dates.ts";
 import { calendarFile, dateLine, named, when } from "../mind/cores/keep.ts";
 import { guideGoal, guideNext } from "./runners/guide.ts";
-import { headingOf, movedUnder, whichPage, whichWay } from "../mind/cores/page.ts";
+import { foldedUnder, headingOf, movedUnder, whichPage, whichWay } from "../mind/cores/page.ts";
 import { showable, unfit } from "../mind/cores/fit.ts";
 import { circled, echo } from "../mind/cores/circle.ts";
 import { happened } from "../mind/cores/happened.ts";
@@ -117,6 +117,7 @@ const runs: Record<string, (input: any) => unknown> = {
   "guide.next": guideNext,
   "guide.goal": guideGoal,
   "sheet.place": sheetPlace,
+  "page.folded": (input) => input.cases.map(([seen, line]: [string[], string]) => foldedUnder(seen, input.page, line)),
   "page.way": (input) => input.cases.map(([seen, line]: [string[], string]) => whichWay(seen, input.page, line)),
   "dates.away": (input) => input.cases.map(([line, today]: [string, string]) => away(line, new Date(today))?.words ?? null),
   "dates.in": (input) => input.texts.map((text: string) => datesIn(text)),

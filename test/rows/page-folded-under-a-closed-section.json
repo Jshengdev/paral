@@ -1,0 +1,68 @@
+{
+ "name": "page: a section that sits inside a closed section is never on his screen. With the closed headings round its place in view and the line itself not read there, it is folded under the headings above it, nearest first; with only the part of the page before it in view, it is not folded but further down, and nothing is given; a line of the open text is under no fold at its own place in view",
+ "run": "page.folded",
+ "in": {
+  "page": {
+   "name": "p",
+   "url": "https://x.usc.edu/p",
+   "readOn": "2026-11-15",
+   "title": "P",
+   "lines": [
+    "Recognition Process",
+    "Before You Begin starts here with what your organization needs to know.",
+    "Application Requirements",
+    "Membership Requirements +",
+    "Each organization needs five officers and five more members.",
+    "Officer Requirements +",
+    "The student who submits should send the guide to the other four officers.",
+    "Commitment to Community Form +",
+    "The five officers must each complete the Commitment to Community Form.",
+    "Advisor Requirements +",
+    "Advisors complete their own training before December 1.",
+    "Frequently asked questions about the recognition process are below."
+   ]
+  },
+  "cases": [
+   [
+    [
+     "Application Requirements",
+     "Membership Requirements +",
+     "Officer Requirements +",
+     "Advisor Requirements +",
+     "Frequently asked questions about the recognition process are below."
+    ],
+    "Commitment to Community Form +"
+   ],
+   [
+    [
+     "Recognition Process",
+     "Before You Begin starts here with what your organization needs to know.",
+     "Application Requirements"
+    ],
+    "Commitment to Community Form +"
+   ],
+   [
+    [
+     "Application Requirements",
+     "Membership Requirements +",
+     "Officer Requirements +",
+     "Advisor Requirements +",
+     "Frequently asked questions about the recognition process are below."
+    ],
+    "The five officers must each complete the Commitment to Community Form."
+   ]
+  ]
+ },
+ "out": [
+  [
+   "Officer Requirements +",
+   "Membership Requirements +"
+  ],
+  [],
+  [
+   "Commitment to Community Form +",
+   "Officer Requirements +",
+   "Membership Requirements +"
+  ]
+ ]
+}

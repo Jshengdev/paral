@@ -2,7 +2,7 @@ import type { Hands, Screen } from "./ask.ts";
 import { fitted } from "./cores/beats.ts";
 import { locate, type Box } from "./cores/ground.ts";
 import { dateLine } from "./cores/keep.ts";
-import { headingOf, whichWay, type KeptPage } from "./cores/page.ts";
+import { foldedUnder, headingOf, whichWay, type KeptPage } from "./cores/page.ts";
 import type { Settings } from "./settings.ts";
 import { SEAM_VERSION, type MarkKind } from "../seam/schema.ts";
 
@@ -39,15 +39,19 @@ export function whereIs(settings: Settings, seen: Seen, page: KeptPage, thing: {
   const begins = seen.lines.find((read, at) => beginsIt(plain(thing.line), plain(read.text), plain(seen.lines[at + 1]?.text ?? "")));
   const line = locate(begins?.text ?? thing.line, seen.lines, seen.display, settings.groundMinScore.value);
   const heading = thing.under === "" ? null : locate(thing.under, seen.lines, seen.display, settings.groundMinScore.value);
-  const target = line.found ? line : heading?.found ? heading : null;
+  // A line whose place is within what is on his screen and that is not read there is folded away, perhaps inside a
+  // section that is itself inside a closed one: the nearest heading above it that is on his screen stands for it.
+  const read = seen.lines.map((each) => each.text);
+  const over = line.found || heading?.found ? undefined : foldedUnder(read, page, thing.line).slice(0, 3).map((fold) => locate(fold, seen.lines, seen.display, settings.groundMinScore.value)).find((fold) => fold.found);
+  const target = line.found ? line : heading?.found ? heading : (over ?? null);
   // What the way leads to: the heading without the sign that opens it, or the start of the line up to its colon (and
   // without that sign, when the line is itself a heading), cut at a whole word when it is long.
   const start = thing.line.replace(/\s*\+\s*$/, "").split(/:\s+/)[0].trim();
   const toward = thing.under.replace(/\s*[+\-–−]\s*$/, "").trim() || (start.length <= 40 ? start : start.slice(0, 40).replace(/\s+\S*$/, "") + "…");
-  const to = target ? null : whichWay(seen.lines.map((read) => read.text), page, thing.line);
+  const to = target ? null : whichWay(read, page, thing.line);
   // The thing's own line gets the ring; a line that opens a section (the page writes it with its + sign) is a thing to open, and gets the box.
   const kind = line.found && !/\+\s*$/.test(line.line) ? fitted("ring", line.line, seen.lines, settings.ringReach.value, seen.display.scale) : "box";
-  return { box: target?.box ?? null, on: target?.line ?? null, inView: line.found, kind, to, toward, opens: !line.found && heading?.found === true && /\+\s*$/.test(thing.under) };
+  return { box: target?.box ?? null, on: target?.line ?? null, inView: line.found, kind, to, toward, opens: !line.found && ((heading?.found === true && /\+\s*$/.test(thing.under)) || over !== undefined) };
 }
 
 /** What goes with a mark on the thing's own line: a strike in the mark's place for what has passed, and a tag beside the line. */
@@ -133,6 +137,7 @@ export function wayAfter({ ports, settings, send, log }: Hands, id: string, seen
   const where = whereIs(settings, seen, page, { line: section, under: "" });
   const off = where.box === null && where.to !== null;
   if (off) log(`${id}: the answer named a section of this page that is out of view; ${point(send, id, { ...where, toward: name(section) })}`);
+  else if (where.opens) log(`${id}: the answer named a section that is folded away inside a closed one; ${point(send, id, where)}`);
   return { sent, target: { line: section, under: "" }, way: off };
 }
 

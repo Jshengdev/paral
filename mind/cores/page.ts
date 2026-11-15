@@ -41,6 +41,23 @@ function placesOf(kept: string[], line: string): number[] {
 /** Whether a kept page holds a line: a guard for a line a model says the page writes. */
 export const holds = (page: KeptPage, line: string): boolean => placesOf(page.lines.map(plain), line).length > 0;
 
+/** The places, in the page's kept lines, of the lines on his screen that the page holds exactly once: the stretch of the page in view. */
+const inView = (seen: string[], kept: string[]): number[] =>
+  seen.map(plain).filter((read) => read.length >= 15).map((read) => kept.flatMap((held, at) => (held.includes(read) ? [at] : []))).filter((places) => places.length === 1).flat();
+
+/**
+ * The headings a kept line may be folded away under, nearest first: when the line's place lies within the stretch of
+ * the page on his screen and the line itself is not read there, a closed section hides it, and a section inside a
+ * closed section is never on screen at all. These are the headings above it in the page's own order that fold (their
+ * "+" sign). Empty when the line's place is not within the stretch in view: then it is up or down, as `whichWay` says.
+ */
+export function foldedUnder(seen: string[], page: KeptPage, line: string): string[] {
+  const kept = page.lines.map(plain);
+  const once = inView(seen, kept);
+  const within = once.length === 0 ? undefined : placesOf(kept, line).find((at) => at >= Math.min(...once) && at <= Math.max(...once));
+  return within === undefined ? [] : page.lines.slice(0, within).filter((held) => /\+\s*$/.test(held)).reverse();
+}
+
 /**
  * Which way a kept line lies from what is on his screen: up, down, or null when it cannot be told or the line is
  * within what is in view. The lines on screen that the page holds exactly once give the stretch of the page in view;
@@ -48,7 +65,7 @@ export const holds = (page: KeptPage, line: string): boolean => placesOf(page.li
  */
 export function whichWay(seen: string[], page: KeptPage, line: string): "up" | "down" | null {
   const kept = page.lines.map(plain);
-  const once = seen.map(plain).filter((read) => read.length >= 15).map((read) => kept.flatMap((held, at) => (held.includes(read) ? [at] : []))).filter((places) => places.length === 1).flat();
+  const once = inView(seen, kept);
   const places = placesOf(kept, line);
   if (once.length === 0 || places.length === 0) return null;
   const top = Math.min(...once), bottom = Math.max(...once);

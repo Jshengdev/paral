@@ -61,10 +61,10 @@ export const pages = {
   } satisfies Setting<{ trail: string[]; most: number; steps: { label: string; send: string } }>,
 
   openOffer: {
-    value: { label: "Open it for me", send: "open it for me", found: "Here it is: {name}. It is closed." },
-    why: "When paral's box is on a heading that is closed over the thing, the card offers to open it: the button's words, the words it sends back, which are also what he can say, and the line of the card that says so after an answer sent him there ({name} is the heading's name). The owner, after his first real run: \"It should have access to scroll and click to find and open pages to then draw on them\".",
+    value: { label: "Open it for me", send: "open it for me", found: "Here it is: {name}. It is closed.", inside: "{name} is inside {section}, which is closed." },
+    why: "When paral's box is on a heading that is closed over the thing, the card offers to open it: the button's words, the words it sends back, which are also what he can say, and the line of the card that says so after an answer sent him there ({name} is the heading's name); `inside` is that line when the thing is a section within the closed one ({section}), whose own heading is never on screen. The owner, after his first real run: \"It should have access to scroll and click to find and open pages to then draw on them\".",
     measured: "not seen on a real screen",
-  } satisfies Setting<{ label: string; send: string; found: string }>,
+  } satisfies Setting<{ label: string; send: string; found: string; inside: string }>,
 
   openAsks: {
     value: ["open it for me", "open it", "open that for me", "open that section", "open the section", "click it for me", "click that for me"],

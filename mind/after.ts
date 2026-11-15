@@ -60,8 +60,11 @@ export function answered({ settings, send, log }: Hands) {
       log(`${id}: the page has moved under his answer, so what was drawn for it is wiped; ${where === null ? "the answer pointed at no place on this page, and the page's own thing does not come back" : `the looks keep to where it sent him: ${point(send, id, where)}`}`);
       if (where?.opens) {
         // The place is there and closed: a card says so and offers to open it.
-        const { label, send: words, found } = settings.openOffer.value;
-        send({ v, type: "say", id, beat: 0, text: found.replace("{name}", where.toward), trail: ["saw this page", "found where it is"], offer: { label, send: words } });
+        const { label, send: words, found, inside } = settings.openOffer.value;
+        // The box may be on the closed section that holds the thing, not on the thing's own heading: the card says which.
+        const section = (where.on ?? "").replace(/\s*\+\s*$/, "").trim();
+        const text = section === "" || section.toLowerCase().startsWith(where.toward.replace(/…$/, "").toLowerCase()) ? found.replace("{name}", where.toward) : inside.replace("{name}", where.toward).replace("{section}", section);
+        send({ v, type: "say", id, beat: 0, text, trail: ["saw this page", "found where it is"], offer: { label, send: words } });
         send({ v, type: "mute", id, why: "a look he did not ask for is shown, not spoken" });
       }
       return true;
