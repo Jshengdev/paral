@@ -19,7 +19,7 @@ public final class Watch {
     public private(set) var sent = 0
     private var next = Date.distantPast
     public var busy: () -> Bool = { false }
-    /// Whether something he was pointed to is off screen: the rounds then report at once, `most` in a row at most.
+    /// Whether anything of paral's is placed on the page: the rounds then report at once, `most` in a row at most.
     public var waiting: () -> Bool = { false }
     /// A look to send: where its smaller copy was saved, the picture's size, where its display is, and the lines read from it.
     public var onLook: ((String, Int, Int, DisplayPlace, [ReadLine]) -> Void)?

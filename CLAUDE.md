@@ -95,8 +95,9 @@ sheets/  pages measured once: a box for each place of a drawing (an atom, a bond
 When the mind has kept pages and a model, its ready line asks the body to look by itself (`lookEveryMs`). The app's
 `Watch` takes a picture every second, makes a small grey print of it with the menu bar left out, and sends a `look`
 line when the print has changed and then stood still for a round; it reads the text only for a look it sends. While
-an arrow says the thing is off screen it sends a look as soon as the page changes, thirty rounds in a row at most
-(`lookFastMost`), so the mark lands as the thing comes into view. It does not look while an answer is being said. The mind (`mind/glance.ts`) acts only when the screen is one of USC's kept pages. The first time it
+anything of paral's is placed on the page (a mark, or the arrow that says the thing is off screen) it sends a look as
+soon as the page changes, thirty in a row at most (`lookFastMost`), so what is drawn keeps up with a page he is
+scrolling and a mark lands as its thing comes into view. It does not look while an answer is being said. The mind (`mind/glance.ts`) acts only when the screen is one of USC's kept pages. The first time it
 sees a page it asks the deep model about the kept page's own text, whether it holds one thing that will cost him
 later; nothing read from his screen is sent for that. If so: a box on the line where it now is on his screen (the
 line itself, or the heading it sits under), one sentence on the nudge card with the trail of what was done under its name,

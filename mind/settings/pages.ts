@@ -16,8 +16,8 @@ export const pages = {
 
   lookFastMost: {
     value: 30,
-    why: "While an arrow says the thing he was pointed to is off screen, the body sends a look as soon as the page has changed, without waiting for it to stand still, so the mark lands as the thing comes into view. This is how many rounds in a row it may do that before the page must stand still again. The owner's words: \"can it fire like once every second during that particular phase with a cap of like 30 fires in a row without it\".",
-    measured: "his number; not seen on a real screen",
+    why: "While anything of paral's is placed on the page (a mark, or the arrow that says the thing is off screen), the body sends a look as soon as the page has changed, without waiting for it to stand still, so what is drawn keeps up with a page he is scrolling and a mark lands as its thing comes into view. This is how many looks in a row it may send that way before the page must stand still once. The owner's words: \"can it fire like once every second during that particular phase with a cap of like 30 fires in a row without it\", and, of the live run, \"ensure its aware of hte screen and constantly updating and live as intened\". First it held only while an arrow was up; on his screen a step's mark then needed the page still for about 2.5 s, and a walk scrolled in bursts lost its step.",
+    measured: "his number. On his screen with an arrow up: looks a second apart and the box about a second after the scroll. With a mark up: not seen",
   } satisfies Setting<number>,
 
   keepAsks: {

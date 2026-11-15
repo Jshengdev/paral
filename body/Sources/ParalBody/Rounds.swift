@@ -29,13 +29,14 @@ extension Screen {
 
 /// What the watcher decides round by round, from prints of the display alone. Ordinarily a round is reported as a
 /// look when the page has changed since the last look reported and is the same as the round before, so he has
-/// stopped scrolling. While something he was pointed to is off screen (`waiting`: an arrow says which way), a round
-/// is reported at once when the page has changed, so the mark lands as the thing comes into view; that lasts `most`
-/// rounds in a row at most, and after them the page must stand still again, as ordinarily.
+/// stopped scrolling. While something of paral's is placed on the page (`waiting`: a mark, or the arrow that says the
+/// thing is off screen), a round is reported at once when the page has changed, so what is drawn keeps up with a
+/// page that is moving and a mark lands as its thing comes into view. At most `most` looks are sent that way in a
+/// row; then the page must stand still once before more are.
 public struct Rounds {
     /// The print of the round before, and of the last look reported.
     private var before = Data(), reported = Data()
-    /// How many rounds in a row have been taken while waiting.
+    /// How many looks in a row have been reported at once, with no round between in which the page stood still.
     private var hurried = 0
 
     public init() {}
@@ -58,10 +59,12 @@ public struct Rounds {
 
     /// Takes one round's print; true when it is to be read and reported as a look.
     public mutating func report(_ print: Data, waiting: Bool, most: Int, within: Double) -> Bool {
-        let hurry = waiting && hurried < most
-        hurried = waiting ? hurried + 1 : 0
+        let changed = !Screen.alike(print, reported, within: within), still = Screen.alike(print, before, within: within)
         defer { before = print }
-        guard !Screen.alike(print, reported, within: within), hurry || Screen.alike(print, before, within: within) else { return false }
+        // A page that stands still, or nothing to keep up with, ends a run of looks sent at once.
+        if still || !waiting { hurried = 0 }
+        guard changed, still || (waiting && hurried < most) else { return false }
+        if !still { hurried += 1 }
         reported = print
         return true
     }
