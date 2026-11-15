@@ -17,7 +17,7 @@ func color(_ hex: String, alpha: Double = 1) -> CGColor {
 public struct Painter {
     public let tokens: Tokens
     public let width, height: Double
-    let ink, paper, ember, cardinal, cardinalDeep, light: CGColor
+    let ink, paper, ember, cardinal, cardinalDeep, light, gold: CGColor
     public let accent: CGColor
     let frames = ClipFrames()
     let faces: Faces
@@ -33,6 +33,7 @@ public struct Painter {
         cardinal = color(tokens.cardinal)
         cardinalDeep = color(tokens.cardinalDeep)
         light = color(tokens.light)
+        gold = color(tokens.gold)
         faces = Faces(family: tokens.font, optical: tokens.fontOptical)
     }
 
@@ -48,7 +49,7 @@ public struct Painter {
         defer { NSGraphicsContext.current = before }
         var drawn: [Drawn] = []
         if let box = trail(picture.trail, ctx) { drawn.append(Drawn(what: "trail", id: nil, box: box)) }
-        if let echo = picture.echo, let box = mark(echo, avoiding: picture.avoid, ctx) { drawn.append(Drawn(what: "echo", id: echo.key, box: box)) }
+        if let echo = picture.echo, let box = mark(echo, his: true, avoiding: picture.avoid, ctx) { drawn.append(Drawn(what: "echo", id: echo.key, box: box)) }
         for mark in picture.marks {
             if let box = self.mark(mark, avoiding: picture.avoid, ctx) { drawn.append(Drawn(what: "mark", id: mark.key, box: box)) }
         }
@@ -78,7 +79,7 @@ public struct Painter {
             let up = drawn.filter { ["board", "clip", "way"].contains($0.what) }.map(\.box)
             drawn.append(Drawn(what: "toast", id: nil, box: self.toast(toast, avoiding: picture.avoid + up, ctx)))
         }
-        if let pointer { drawn.append(Drawn(what: "pointer", id: nil, box: self.pointer(pointer, ctx))) }
+        if let pointer { drawn.append(Drawn(what: "pointer", id: nil, box: self.pointer(pointer, clock: picture.clock, ctx))) }
         drawn.append(Drawn(what: "capsule", id: nil, box: capsule(picture.capsule, clock: picture.clock, ctx)))
         return drawn
     }

@@ -3,14 +3,16 @@ import AppKit
 extension Painter {
     /// Inks a mark as far as it has been drawn, and writes its label once the ink is whole. Gives back the mark's
     /// box, or nothing while no ink is down yet.
-    func mark(_ mark: MarkPicture, avoiding texts: [Box], _ ctx: CGContext) -> Box? {
+    /// `his` is for his own loop coming back: whatever its shape it is drawn by hand in ember with no wash, since
+    /// the wash is the kit's highlight for one line and he may have circled a whole table.
+    func mark(_ mark: MarkPicture, his: Bool = false, avoiding texts: [Box], _ ctx: CGContext) -> Box? {
         guard mark.drawn > 0 else { return nil }
         let points = Pen.path(of: mark, tokens: tokens, avoiding: texts)
         // The design kit's two ways to show a place. A ring or a line is drawn by hand, in ember. A box is the kit's
         // neat highlight: a thinner cardinal edge, and a faint wash of cardinal laid across the line from its start
         // as the edge is drawn, the way a highlighter is pulled along. (A wash that came up all at once as it grew
         // stronger read as popped in: every pixel of it crosses any line a reader draws at the same moment.)
-        let boxed = mark.kind == .box
+        let boxed = mark.kind == .box && !his
         if boxed, tokens.mark.wash > 0 {
             let hug = Pen.hug(mark.box, tokens: tokens, avoiding: texts)
             ctx.saveGState()

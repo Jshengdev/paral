@@ -9,7 +9,7 @@ type Placed = { what: string; id?: string; box: Box };
 type Moment = {
   placed: Placed[];
   way: { id: string; to: string; toward: string; drawn: number } | null;
-  pointer: { x: number; y: number; ripple: number | null; flight: number | null } | null;
+  pointer: { x: number; y: number; ripple: number | null; flight: number | null; tag: boolean; thinking: boolean } | null;
   board: { id: string; now: number | null; appear: number } | null;
 };
 
@@ -52,13 +52,14 @@ export function way(input: { lines: string[]; rows: Written[]; at: number[] }) {
  * whether it is up, whether it has moved since the moment before, whether its tip is on the mark or just beside it,
  * whether it lies on the page's text, and whether the ripple that says "here" is spreading.
  */
-export function cursor(input: { lines: string[]; markOn: number; kind: string; markAt: number; clearAt: number; at: number[] }) {
+export function cursor(input: { lines: string[]; markOn: number; kind: string; markAt: number; clearAt: number; then?: Written[]; at: number[] }) {
   // The page is drawn once to learn where the line is; the run is then written with a mark on it.
   const line: Box = textOf(handWritten("cursor-page", [], input.lines))[input.markOn];
   const rows: Written[] = [
     { at: input.markAt, line: { type: "mark", id: "g1", beat: 0, kind: input.kind, box: line } },
     { at: input.markAt, line: { type: "say", id: "g1", beat: 0, text: "This is the date to keep.", trail: ["saw this page", "found the line"] } },
     { at: input.markAt, line: { type: "mute", id: "g1", why: "a look he did not ask for is shown, not spoken" } },
+    ...(input.then ?? []),
     { at: input.clearAt, line: { type: "clear" } },
   ];
   const dir = handWritten("cursor", rows, input.lines);
@@ -71,7 +72,8 @@ export function cursor(input: { lines: string[]; markOn: number; kind: string; m
     const moved = before === null || Math.hypot(pointer.x - before.x, pointer.y - before.y) > 0.5;
     before = pointer;
     const far = !mark ? Infinity : Math.max(mark.x - pointer.x, pointer.x - (mark.x + mark.w), mark.y - pointer.y, pointer.y - (mark.y + mark.h), 0);
-    return { cursor: { moved, tip: far === 0 ? "on the mark" : far <= 12 ? "beside the mark" : "away from it", onText: text.some((box) => touches(box, drawn)), ripple: pointer.ripple === null ? "none" : "spreading" } };
+    const wears = pointer.thinking ? "the orb that says it is working" : pointer.tag ? "its name tag" : "nothing";
+    return { cursor: { moved, tip: far === 0 ? "on the mark" : far <= 12 ? "beside the mark" : "away from it", onText: text.some((box) => touches(box, drawn)), ripple: pointer.ripple === null ? "none" : "spreading", wears } };
   });
 }
 

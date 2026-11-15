@@ -1,5 +1,5 @@
 {
- "name": "body: a mark that comes with no key pressed, as a look sends it, brings the cursor: nothing before the mark; it flies in, rides the pen along the mark, then rests just beside the mark on none of the page's text while a ripple spreads from it once; after that it stays where it is, still, until a clear takes it with the mark",
+ "name": "body: a mark that comes with no key pressed, as a look sends it, brings the cursor: nothing before the mark; it flies in and rides the pen along the mark wearing its name tag, since it has come from nowhere; then it rests just beside the mark on none of the page's text, the tag gone, while a ripple spreads from it once; after that it stays where it is, still; when he holds the key and lets go, it wears the orb that says paral is working for as long as the capsule says so, and not after the answer has begun; a clear takes it with the mark",
  "run": "body.cursor",
  "in": {
   "lines": [
@@ -21,9 +21,51 @@
    1200,
    1700,
    2500,
-   5000,
+   4000,
+   6500,
+   7500,
    8900,
    9100
+  ],
+  "then": [
+   {
+    "at": 5000,
+    "line": {
+     "type": "key.down",
+     "at": 1005000
+    }
+   },
+   {
+    "at": 5900,
+    "line": {
+     "type": "key.up",
+     "at": 1005900
+    }
+   },
+   {
+    "at": 7000,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 0,
+     "text": "It closes on the twenty-second."
+    }
+   },
+   {
+    "at": 7000,
+    "line": {
+     "type": "mute",
+     "id": "t1",
+     "why": "no voice is set up"
+    }
+   },
+   {
+    "at": 7100,
+    "line": {
+     "type": "state",
+     "name": "idle"
+    }
+   }
   ]
  },
  "out": [
@@ -35,7 +77,8 @@
     "moved": true,
     "tip": "away from it",
     "onText": false,
-    "ripple": "none"
+    "ripple": "none",
+    "wears": "its name tag"
    }
   },
   {
@@ -43,7 +86,8 @@
     "moved": true,
     "tip": "on the mark",
     "onText": false,
-    "ripple": "none"
+    "ripple": "none",
+    "wears": "its name tag"
    }
   },
   {
@@ -51,7 +95,8 @@
     "moved": true,
     "tip": "beside the mark",
     "onText": false,
-    "ripple": "spreading"
+    "ripple": "spreading",
+    "wears": "nothing"
    }
   },
   {
@@ -59,7 +104,8 @@
     "moved": false,
     "tip": "beside the mark",
     "onText": false,
-    "ripple": "none"
+    "ripple": "none",
+    "wears": "nothing"
    }
   },
   {
@@ -67,7 +113,26 @@
     "moved": false,
     "tip": "beside the mark",
     "onText": false,
-    "ripple": "none"
+    "ripple": "none",
+    "wears": "the orb that says it is working"
+   }
+  },
+  {
+   "cursor": {
+    "moved": false,
+    "tip": "beside the mark",
+    "onText": false,
+    "ripple": "none",
+    "wears": "nothing"
+   }
+  },
+  {
+   "cursor": {
+    "moved": false,
+    "tip": "beside the mark",
+    "onText": false,
+    "ripple": "none",
+    "wears": "nothing"
    }
   },
   {

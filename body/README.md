@@ -97,7 +97,12 @@ starts (from the capsule the first time, from wherever it was after that), rides
 then steps aside to rest just beside the mark on none of the page's read text (`Layout.beside`: to the right of the
 mark first), and a ripple spreads from it once. It points and never clicks: it is ink in the overlay, which lets
 every click through. It comes for a mark with no key pressed too (a look's mark), stays for as long as its mark is
-on the page, and goes with it on a clear or a close. With motion reduced there is no cursor.
+on the page, and goes with it on a clear or a close. With motion reduced there is no cursor. While it comes in from
+nowhere (its flight and its ride on the pen) it wears the kit's name tag, a light pill with the orb and
+`strings.name`, so he can tell whose cursor is moving; at rest it wears nothing. While the capsule says paral is
+working, a cursor that is on the page wears the kit's orb. The orb is drawn in code as rings of the cursor's reds
+and one of `gold`; the kit's own orb is a picture and is not loaded. His own loop comes back drawn by hand in ember
+whatever its shape, with no wash: the wash is the kit's highlight for one line, and he may have circled a table.
 
 ## A walk through steps ("show me")
 
