@@ -1,4 +1,3 @@
-import { execFileSync } from "node:child_process";
 import { cp, readFile, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
@@ -6,7 +5,7 @@ import type { Scenario } from "./shape.ts";
 import { EXAM, RUNS } from "./tools.ts";
 import type { Verdict } from "./verdict.ts";
 
-export type Judged = { scenario: Scenario; verdicts: Verdict[]; stills: { file: string; caption: string }[]; says: string[]; spentUsd: number | null; ranAt: string };
+export type Judged = { scenario: Scenario; verdicts: Verdict[]; stills: { file: string; caption: string }[]; says: string[]; spentUsd: number | null; ranAt: string; /** The commit of the app this run was made on, where the judge recorded it. */ app?: string | null };
 
 const safe = (text: string) => text.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
 const badge = (pass: boolean | null) => (pass === true ? '<b class="ok">works</b>' : pass === false ? '<b class="bad">fails</b>' : '<b class="dim">not shown</b>');
@@ -40,7 +39,7 @@ function card(j: Judged): string {
   const where = j.scenario.video ? `In the video at ${safe(j.scenario.video)}. ` : "Not in the video: the team's own. ";
   const spent = j.spentUsd === null ? "" : ` Spent $${j.spentUsd.toFixed(3)}.`;
   return `<section class="run"><h2>${safe(j.scenario.title)} ${badge(worst(j.verdicts))}</h2>
-    <p class="dim">${where}Run ${safe(j.ranAt)}.${spent}</p>
+    <p class="dim">${where}Run ${safe(j.ranAt)}${j.app ? `, on the app at ${safe(j.app)}` : ", on a commit of the app that was not recorded"}.${spent}</p>
     ${film}<div class="strip">${stills}</div>
     <details><summary>What was said, line by line</summary><ol>${said}</ol></details>
     ${short}
@@ -51,9 +50,9 @@ export async function explain(all: Judged[], names: Record<string, string>, notL
   const template = await readFile(join(EXAM, "explainer.html"), "utf8");
   const total = all.flatMap((j) => j.verdicts);
   const counted = (pass: boolean | null) => total.filter((v) => v.pass === pass).length;
-  // The app that was judged is the code of the folder the runs were made in; the page says which commit that is.
-  let app = "";
-  try { app = ` The app judged is commit ${execFileSync("git", ["log", "-1", "--format=%h (%s)"], { cwd: join(EXAM, ".."), encoding: "utf8" }).trim()}.`; } catch { app = " The app's commit could not be read."; }
+  // Each run carries the commit of the app it was made on; the page names it once when every run shares it.
+  const commits = [...new Set(all.map((j) => j.app ?? null))];
+  const app = commits.length === 1 && commits[0] ? ` The app judged is commit ${commits[0]}.` : " The runs are not all of one recorded commit of the app; each says which.";
   const lede = `${counted(true)} checks pass, ${counted(false)} fail and ${counted(null)} could not be shown, over ${all.length} filmed runs.${app}`;
   const page = template.replace("<!--LEDE-->", safe(lede)).replace("<!--SUMMARY-->", summary(all, names))
     .replace("<!--RUNS-->", all.map(card).join("\n")).replace("<!--NOTLIVE-->", notLive.map((line) => `<li>${safe(line)}</li>`).join(""))

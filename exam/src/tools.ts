@@ -13,3 +13,8 @@ export function run(command: string, args: string[], limitMs = 60_000): Promise<
     });
   });
 }
+
+/** The app's code as it stands in this folder: the newest commit that touched it, as "hash (subject)". The judge's own commits do not count. */
+export async function appCommit(): Promise<string | null> {
+  try { return (await run("git", ["-C", BUILD, "log", "-1", "--format=%h (%s)", "--", "mind", "body", "seam", "flow", "film", "run", "pages"])).trim() || null; } catch { return null; }
+}
