@@ -404,7 +404,10 @@ An empty `font` asks for the system's font. `ink` is the kit's #141414. `paper` 
 The kit's look comes through tokens. A tick, a strike and a tag (above) are the build's, after the designer's
 reference pictures; a tick, a strike and a tag never wait for his click, since they say something of a line and do
 not ask for one. New ink on a line takes the place of the ink there and a new tag the place of its tag, so a ring and
-a tag (or a strike and a tag, a tick and a tag) share one line. A ring, an underline, a wavy line and a
+a tag (or a strike and a tag, a tick and a tag) share one line. A mark with `spot` is on a place of a drawing (an
+atom), not a line: it is inked by the pen as usual, but the cursor neither rides its pen nor rests by it, and the
+arrow to what speaks leaves the newest mark that is not a spot (nor a tag), as if the spots were not there, since an
+arrow from an atom would run across the drawing it is about. A ring, an underline, a wavy line and a
 bracket are drawn by hand in `ember`. A box is the kit's neat highlight: a thinner edge (`mark.boxWidth`) in
 `cardinal` and a faint wash of cardinal inside it (`mark.wash`, the kit's 8 percent), laid across the line from its
 start as the edge is drawn, the way a highlighter is pulled along. The wash tints the words and does not hide them.

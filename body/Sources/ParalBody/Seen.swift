@@ -48,8 +48,9 @@ public enum Seen {
     /// A calendar file the mind has written. The scene shows nothing for it; the app opens it (see `Keep`).
     /// `label` is the date in a few words ("November 22"), which the toast shows.
     case open(path: String, label: String?)
-    /// `tone` is only for a tag, whose words are its `label`; a tag with no tone is quiet.
-    case mark(id: String, beat: Int, kind: MarkKind, box: Box, label: String?, tone: Tone?)
+    /// `tone` is only for a tag, whose words are its `label`; a tag with no tone is quiet. `spot` is true for a mark on a
+    /// place of a drawing (an atom), not a line: no arrow leads from it and the cursor does not go to it.
+    case mark(id: String, beat: Int, kind: MarkKind, box: Box, label: String?, tone: Tone?, spot: Bool)
     /// The thing is on this page and not in view: which way to scroll ("up" or "down") and what it leads to.
     case way(id: String, to: String, toward: String)
     case echo(id: String, box: Box, shape: String)
@@ -152,7 +153,7 @@ public enum Seen {
             let tone = s("tone").map { Tone(rawValue: $0) }
             if tone == .some(nil) { return .failure(Refused("mark.tone: strong, quiet or date")) }
             if kind == .tag, (s("label") ?? "").isEmpty { return .failure(Refused("mark: a tag needs its words in label")) }
-            return .success(.mark(id: id, beat: beat, kind: kind, box: b, label: s("label"), tone: tone ?? nil))
+            return .success(.mark(id: id, beat: beat, kind: kind, box: b, label: s("label"), tone: tone ?? nil, spot: f["spot"] as? Bool ?? false))
         case "way":
             guard let id, let to = s("to"), ["up", "down"].contains(to), let toward = s("toward"), !toward.isEmpty else { return .failure(Refused("way: id, to (up or down) and toward are needed")) }
             return .success(.way(id: id, to: to, toward: toward))

@@ -1,5 +1,5 @@
 {
- "name": "seam: the body's own reader takes a tick, a strike and a tag in each tone, a tag with no tone as it comes (it is drawn quiet), and refuses a tag with no words and a tone it does not know",
+ "name": "seam: the body's own reader takes a tick, a strike and a tag in each tone, a tag with no tone as it comes (it is drawn quiet), and a mark on a place of a drawing (spot, false when absent), and refuses a tag with no words and a tone it does not know",
  "run": "body.seen",
  "in": {
   "lines": [
@@ -115,17 +115,32 @@
     },
     "label": "Done",
     "tone": "loud"
+   },
+   {
+    "v": 1,
+    "type": "mark",
+    "id": "m1",
+    "beat": 1,
+    "kind": "ring",
+    "box": {
+     "x": 1150,
+     "y": 250,
+     "w": 30,
+     "h": 30
+    },
+    "spot": true
    }
   ]
  },
  "out": [
-  "took mark(id: \"t2\", beat: 0, kind: ParalBody.MarkKind.tick, box: ParalBody.Box(x: 120.0, y: 398.0, w: 768.0, h: 47.0), label: nil, tone: nil)",
-  "took mark(id: \"g1\", beat: 0, kind: ParalBody.MarkKind.strike, box: ParalBody.Box(x: 120.0, y: 398.0, w: 768.0, h: 47.0), label: nil, tone: nil)",
-  "took mark(id: \"g1\", beat: 0, kind: ParalBody.MarkKind.tag, box: ParalBody.Box(x: 120.0, y: 398.0, w: 768.0, h: 47.0), label: Optional(\"closed 13 days ago\"), tone: Optional(ParalBody.Tone.quiet))",
-  "took mark(id: \"t2\", beat: 0, kind: ParalBody.MarkKind.tag, box: ParalBody.Box(x: 120.0, y: 398.0, w: 768.0, h: 47.0), label: Optional(\"Next\"), tone: Optional(ParalBody.Tone.strong))",
-  "took mark(id: \"g2\", beat: 0, kind: ParalBody.MarkKind.tag, box: ParalBody.Box(x: 120.0, y: 398.0, w: 768.0, h: 47.0), label: Optional(\"7 days left\"), tone: Optional(ParalBody.Tone.date))",
-  "took mark(id: \"g3\", beat: 0, kind: ParalBody.MarkKind.tag, box: ParalBody.Box(x: 120.0, y: 398.0, w: 768.0, h: 47.0), label: Optional(\"Done\"), tone: nil)",
+  "took mark(id: \"t2\", beat: 0, kind: ParalBody.MarkKind.tick, box: ParalBody.Box(x: 120.0, y: 398.0, w: 768.0, h: 47.0), label: nil, tone: nil, spot: false)",
+  "took mark(id: \"g1\", beat: 0, kind: ParalBody.MarkKind.strike, box: ParalBody.Box(x: 120.0, y: 398.0, w: 768.0, h: 47.0), label: nil, tone: nil, spot: false)",
+  "took mark(id: \"g1\", beat: 0, kind: ParalBody.MarkKind.tag, box: ParalBody.Box(x: 120.0, y: 398.0, w: 768.0, h: 47.0), label: Optional(\"closed 13 days ago\"), tone: Optional(ParalBody.Tone.quiet), spot: false)",
+  "took mark(id: \"t2\", beat: 0, kind: ParalBody.MarkKind.tag, box: ParalBody.Box(x: 120.0, y: 398.0, w: 768.0, h: 47.0), label: Optional(\"Next\"), tone: Optional(ParalBody.Tone.strong), spot: false)",
+  "took mark(id: \"g2\", beat: 0, kind: ParalBody.MarkKind.tag, box: ParalBody.Box(x: 120.0, y: 398.0, w: 768.0, h: 47.0), label: Optional(\"7 days left\"), tone: Optional(ParalBody.Tone.date), spot: false)",
+  "took mark(id: \"g3\", beat: 0, kind: ParalBody.MarkKind.tag, box: ParalBody.Box(x: 120.0, y: 398.0, w: 768.0, h: 47.0), label: Optional(\"Done\"), tone: nil, spot: false)",
   "refused mark: a tag needs its words in label",
-  "refused mark.tone: strong, quiet or date"
+  "refused mark.tone: strong, quiet or date",
+  "took mark(id: \"m1\", beat: 1, kind: ParalBody.MarkKind.ring, box: ParalBody.Box(x: 1150.0, y: 250.0, w: 30.0, h: 30.0), label: nil, tone: nil, spot: true)"
  ]
 }

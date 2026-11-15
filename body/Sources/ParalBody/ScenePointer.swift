@@ -6,14 +6,15 @@ extension Scene {
     private typealias Stroke = (began: Double, kind: MarkKind, path: [CGPoint], line: Box?)
 
     /// The strokes on the page at `t`, the newest last. One that has been wiped is not among them, so a clear or a
-    /// close takes the cursor with the ink. A tag is a chip and not ink: the cursor does not go to it.
+    /// close takes the cursor with the ink. A tag is a chip and not ink, and a spot is on a drawing he is looking at:
+    /// the cursor goes to neither, and stays where the newest other mark put it.
     private func strokes(at t: Double) -> [Stroke] {
         func up(_ clearedAt: Double?) -> Bool { clearedAt.map { t < $0 } ?? true }
         var strokes: [Stroke] = []
         for echo in echoes where echo.at <= t && up(echo.clearedAt) {
             strokes.append((echo.at, kind(of: echo), Pen.path(of: ring(for: echo, drawn: 1), tokens: tokens, avoiding: texts, inside: (width, height)), nil))
         }
-        for mark in marks where up(mark.clearedAt) && mark.kind != .tag {
+        for mark in marks where up(mark.clearedAt) && mark.kind != .tag && !mark.spot {
             guard let began = start(mark), began <= t else { continue }
             let whole = MarkPicture(key: "\(mark.id)/\(mark.beat)", kind: mark.kind, box: mark.box, label: nil, drawn: 1)
             strokes.append((began, mark.kind, Pen.path(of: whole, tokens: tokens, avoiding: texts, inside: (width, height)), mark.box))
