@@ -138,6 +138,14 @@ public final class Flow {
                 send(.close(at: stamp()), as: .close)
                 continue
             }
+            // A press of the left button at a place on the display, as the app sends one.
+            if let at = ask["click"] as? [NSNumber], at.count == 2 {
+                seenTo = got.count
+                send(.click(x: at[0].doubleValue, y: at[1].doubleValue, at: stamp()))
+                await pause((ask["waitMs"] as? NSNumber)?.doubleValue ?? 1500)
+                afterLook = true
+                continue
+            }
             // An ask that is tapped or typed: the words go as they are, with the picture of the screen and no sound.
             if let text = ask["typed"] as? String {
                 seenTo = got.count

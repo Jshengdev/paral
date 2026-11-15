@@ -99,7 +99,10 @@ the place is boxed with one line ("found what you asked for"). paral clicks noth
 each time he says it (`mind/showme.ts`). For the step he is on: the board of all the steps with `now` naming his
 row, one spoken sentence from a fixed pattern, and a box on the kept line that writes the step's date, or the way
 to it, or the name of the kept page it is on. No model is asked. Until his next ordinary ask the looks follow that
-step, so the box moves as he scrolls. paral cannot know a step is done: "show me" again moves on.
+step, so the box moves as he scrolls. Two things move him on: "show me" again, and a click on the step's box. The
+app tells the mind where each press of the left button lands (a `click` line); the mind uses it only to see a click
+inside the box of the step he is on, when that box is on the step's own line, and then shows the next step without
+speaking.
 
 **The demo's guide.** For a kept page that has steps (`demoSteps`, by the page's name), the mind tells the body what
 to do next, one step at a time, with a `next` line: "Scroll until Deadlines is on screen", 2 of 8. It moves on when
@@ -178,6 +181,10 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
   Maymester page; the chemistry worksheet has none, since the mind cannot yet tell that page is on screen. It knows
   a step happened only from what the mind itself did: a click in Calendar, or a section opened with the date's line
   still out of view, is not seen.
+- A click on a step's box has run only on a tape and in the scripted stand-in. The app reads the left button by asking
+  the system for its state sixty times a second, with no event tap; that reading is compiled and has never run, and
+  whether it needs a grant on his Mac is not known. A step with no date has no box to click. A click on the page
+  near the boxed line for any other reason also moves the walk on.
 - The opening line (`openingLine`, shown once by the app when it starts) has never been seen: no scripted run shows it.
 - The cue cards in the menu and the tapped ask have never been used on a Mac: `Cues.swift` and the app's `typed` are
   compiled and unrun. The scripted stand-in has run tapped asks live. The menu bar says "Lost and Found"; the app's
