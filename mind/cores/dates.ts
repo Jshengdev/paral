@@ -8,15 +8,40 @@ const month = (name: string) => MONTHS.findIndex((full) => full.startsWith(name.
 /** A day of the year a text names: its month (1 to 12), its day, and its year when the text writes one. */
 export type Named = { month: number; day: number; year: number | null };
 
+/** A day of the month as a word, the way it is said: "first" to "thirty-first", and "thirteen" to "thirty-one". */
+const ONES = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth"];
+const TEENS = ["tenth", "eleventh", "twelfth", "thirteenth", "fourteenth", "fifteenth", "sixteenth", "seventeenth", "eighteenth", "nineteenth"];
+const COUNTED = ["thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+const UNITS = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
+/** Each such word with its day. A count below thirteen ("one", "two") is left out: "in December one of the officers" names no day. */
+const SAID: [string, number][] = [
+  ...ONES.map((word, at): [string, number] => [word, at + 1]),
+  ...TEENS.map((word, at): [string, number] => [word, at + 10]),
+  ...COUNTED.map((word, at): [string, number] => [word, at + 13]),
+  ["twentieth", 20], ["twenty", 20], ["thirtieth", 30], ["thirty", 30],
+  ...ONES.flatMap((word, at): [string, number][] => [[`twenty[- ]${word}`, at + 21], ...(at === 0 ? ([[`thirty[- ]${word}`, 31]] as [string, number][]) : [])]),
+  ...UNITS.flatMap((word, at): [string, number][] => [[`twenty[- ]${word}`, at + 21], ...(at === 0 ? ([[`thirty[- ]${word}`, 31]] as [string, number][]) : [])]),
+];
+// The longest words first, so "twenty-second" is not read as "twenty".
+const SAID_DAY = `(${SAID.map(([word]) => word).sort((a, b) => b.length - a.length).join("|")})`;
+/** A month and a day in words, either way round: "November twenty-second", "January the eighth, 2027", "the thirtieth of November". */
+const WORDED = new RegExp(`\\b${MONTH}\\.?,? (?:the )?${SAID_DAY}\\b(?:,? (\\d{4}))?|\\b${SAID_DAY} of ${MONTH}\\b(?:,? (\\d{4}))?`, "gi");
+const said = (word: string) => SAID.find(([each]) => new RegExp(`^${each}$`, "i").test(word))?.[1] ?? 0;
+
 /**
  * Every month and day a text names: "November 22", "Nov. 22nd", "July 1, 2026". A span gives both its ends, and a
  * year after it is the year of both: "December 9-16", "December 5 through 8, 2026". "May" with a number after it
- * counts; "may" alone does not.
+ * counts; "may" alone does not. A day written in words is read too, since a model sometimes writes a date the way it
+ * is said: "November twenty-second", "the thirtieth of November". There "may" is never a month ("you may first
+ * need"), which leaves a worded date in May unread.
  */
 export function datesIn(text: string): Named[] {
-  return [...text.matchAll(NAMED)]
-    .flatMap(([, name, day, last, year]) => [day, ...(last === undefined ? [] : [last])].map((d) => ({ month: month(name), day: Number(d), year: year ? Number(year) : null })))
-    .filter((date) => date.day >= 1 && date.day <= 31);
+  const digits = [...text.matchAll(NAMED)].flatMap(([, name, day, last, year]) => [day, ...(last === undefined ? [] : [last])].map((d) => ({ month: month(name), day: Number(d), year: year ? Number(year) : null })));
+  const words = [...text.matchAll(WORDED)]
+    .map(([, name, day, year, dayFirst, nameAfter, yearAfter]) => ({ name: name ?? nameAfter, day: said(day ?? dayFirst), year: year ?? yearAfter }))
+    .filter(({ name }) => name.toLowerCase() !== "may")
+    .map(({ name, day, year }) => ({ month: month(name), day, year: year ? Number(year) : null }));
+  return [...digits, ...words].filter((date) => date.day >= 1 && date.day <= 31);
 }
 
 const A_MONTH = new RegExp(`\\b${MONTH}\\b`, "gi");

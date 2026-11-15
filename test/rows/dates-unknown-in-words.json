@@ -1,0 +1,46 @@
+{
+ "name": "dates: a made-up date written in words is caught like one in digits, and a true one written in words is let through: the guard reads \"November twenty-ninth\" and \"December first\" as the days they are",
+ "run": "dates.unknown",
+ "in": {
+  "cases": [
+   [
+    "The application closes November twenty-second.",
+    [
+     "November 22 at 11:59pm: Application closes."
+    ]
+   ],
+   [
+    "The application closes November twenty-ninth.",
+    [
+     "November 22 at 11:59pm: Application closes."
+    ]
+   ],
+   [
+    "Your advisor has until December first, which is sixteen days from today.",
+    [
+     "December 1: Deadline for advisors"
+    ]
+   ],
+   [
+    "Late forms are taken until the thirtieth of November.",
+    [
+     "November 22 at 11:59pm: Application closes."
+    ]
+   ]
+  ]
+ },
+ "out": [
+  null,
+  {
+   "month": 11,
+   "day": 29,
+   "year": null
+  },
+  null,
+  {
+   "month": 11,
+   "day": 30,
+   "year": null
+  }
+ ]
+}

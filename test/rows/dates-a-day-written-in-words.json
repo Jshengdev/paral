@@ -1,0 +1,67 @@
+{
+ "name": "dates: a day written in words after its month is read too, as the model sometimes writes it and as it is said: \"November twenty-second\", \"December first\", \"the twenty-second of November\", \"November twenty two\"; words that only look like one are not a date: \"you may first need\", \"in December one of the officers\"",
+ "run": "dates.in",
+ "in": {
+  "texts": [
+   "the application closes November twenty-second",
+   "December first, which is sixteen days from today",
+   "It is due on the twenty-second of November.",
+   "by November twenty two at the latest",
+   "January the eighth, 2027 is the payment deadline",
+   "You may first need to add an officer.",
+   "In December one of the officers signs.",
+   "Come on November 3rd or on November thirtieth."
+  ]
+ },
+ "out": [
+  [
+   {
+    "month": 11,
+    "day": 22,
+    "year": null
+   }
+  ],
+  [
+   {
+    "month": 12,
+    "day": 1,
+    "year": null
+   }
+  ],
+  [
+   {
+    "month": 11,
+    "day": 22,
+    "year": null
+   }
+  ],
+  [
+   {
+    "month": 11,
+    "day": 22,
+    "year": null
+   }
+  ],
+  [
+   {
+    "month": 1,
+    "day": 8,
+    "year": 2027
+   }
+  ],
+  [],
+  [],
+  [
+   {
+    "month": 11,
+    "day": 3,
+    "year": null
+   },
+   {
+    "month": 11,
+    "day": 30,
+    "year": null
+   }
+  ]
+ ]
+}
