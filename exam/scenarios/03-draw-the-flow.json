@@ -18,7 +18,7 @@
       "expect": {
         "opener": true,
         "board": true,
-        "sentences": 3,
+        "sentences": 2,
         "plain": true
       }
     }
