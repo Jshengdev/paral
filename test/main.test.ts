@@ -32,9 +32,9 @@ import { boardType } from "./runners/boards.ts";
 import { filmedPages } from "./runners/pages.ts";
 import { cursor, cursorInside, guide, inkInside, resting, steps, toast, way } from "./runners/placed.ts";
 import { lead } from "./runners/leads.ts";
-import { breath } from "./runners/breath.ts";
+import { waiting } from "./runners/echo.ts";
 import { stands } from "./runners/stands.ts";
-import { curves, moves } from "./runners/motion.ts";
+import { curves, lifted, moves, scaled } from "./runners/motion.ts";
 
 // A row is JSON on disk: its "in" is whatever its runner takes, so it is typed where the runner reads it.
 type Row = { name: string; run: string; in: any; out: unknown };
@@ -73,10 +73,12 @@ const runs: Record<string, (input: any) => unknown> = {
   "body.toast": toast,
   "body.guide": guide,
   "body.lead": lead,
-  "body.breath": breath,
+  "body.echo": waiting,
   "body.stands": stands,
   "body.curves": curves,
   "body.moves": moves,
+  "body.lifted": lifted,
+  "body.scaled": scaled,
   "body.resting": resting,
   "body.cursorInside": cursorInside,
   "body.inkInside": inkInside,

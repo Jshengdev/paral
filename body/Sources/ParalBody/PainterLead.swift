@@ -47,7 +47,7 @@ extension Painter {
         let shut = asked.texts.map { $0.grown(edge + tokens.lead.clear) } + [asked.mark.grown(1)] + (asked.cursor.map { [$0.grown(1)] } ?? [])
             + asked.taken.map { $0.grown(tokens.band + edge) } + [asked.target.grown(gap - 1)]
         func on(_ p: CGPoint, _ boxes: [Box]) -> Bool { boxes.contains { p.x > $0.x && p.x < $0.x + $0.w && p.y > $0.y && p.y < $0.y + $0.h } }
-        func blocked(_ p: CGPoint) -> Bool { p.x < edge || p.y < edge || p.x > width - edge || p.y > height - edge || on(p, shut) }
+        func blocked(_ p: CGPoint) -> Bool { p.x < edge || p.y < edge || p.x > width - edge || p.y > floor - edge || on(p, shut) }
         var best: (cost: Double, strokes: [[CGPoint]])?
         for start in edges(of: asked.mark) {
             // It begins straight out from the mark's edge, on the far side of the cursor where the cursor rests there.

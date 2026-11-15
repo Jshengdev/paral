@@ -10,7 +10,7 @@
   },
   "steps": [
     { "look": true, "waitMs": 12000,
-      "expect": { "shows": true, "says": ["November 22"], "way": { "to": "down", "toward": "Deadlines" } } },
+      "expect": { "shows": true, "spoken": true, "says": ["November 22"], "way": { "to": "down", "toward": "Deadlines" } } },
     { "look": true, "page": "real:rso-far-below", "waitMs": 8000,
       "expect": { "shows": true, "way": { "to": "up", "toward": "Deadlines" } } },
     { "look": true, "page": "real:rso-deadlines", "waitMs": 8000,

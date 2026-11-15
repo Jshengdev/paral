@@ -19,7 +19,7 @@ extension Painter {
         let words = name.size()
         let tag = CGSize(width: words.width + 2 * w.padX, height: words.height + 2 * w.padY)
         let cursorRoom = c.gap + (1 - Layout.cursorTip) * c.size
-        let whole = Layout.way(down: way.down, size: (tag.width + w.gap + w.wide + cursorRoom, max(tag.height, w.tall, c.size)), taken: taken, width: width, height: height, tokens: tokens)
+        let whole = Layout.way(down: way.down, size: (tag.width + w.gap + w.wide + cursorRoom, max(tag.height, w.tall, c.size)), taken: taken, width: width, height: floor, tokens: tokens)
         // The tag sits at the arrow's tail, the end away from the edge it points to.
         let pill = CGRect(x: whole.x, y: way.down ? whole.y : whole.y + whole.h - tag.height, width: tag.width, height: tag.height)
         let arrow = Box(x: whole.x + tag.width + w.gap, y: whole.y, w: w.wide, h: whole.h)

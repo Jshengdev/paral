@@ -39,12 +39,13 @@ export function whereIs(settings: Settings, seen: Seen, page: KeptPage, thing: {
   const line = locate(begins?.text ?? thing.line, seen.lines, seen.display, settings.groundMinScore.value);
   const heading = thing.under === "" ? null : locate(thing.under, seen.lines, seen.display, settings.groundMinScore.value);
   const target = line.found ? line : heading?.found ? heading : null;
-  // What the way leads to: the heading without the sign that opens it, or the start of the line up to its colon, cut
-  // at a whole word when it is long.
-  const start = thing.line.split(/:\s+/)[0].trim();
+  // What the way leads to: the heading without the sign that opens it, or the start of the line up to its colon (and
+  // without that sign, when the line is itself a heading), cut at a whole word when it is long.
+  const start = thing.line.replace(/\s*\+\s*$/, "").split(/:\s+/)[0].trim();
   const toward = thing.under.replace(/\s*[+\-–−]\s*$/, "").trim() || (start.length <= 40 ? start : start.slice(0, 40).replace(/\s+\S*$/, "") + "…");
   const to = target ? null : whichWay(seen.lines.map((read) => read.text), page, thing.line);
-  const kind = line.found ? fitted("ring", line.line, seen.lines, settings.ringReach.value, seen.display.scale) : "box";
+  // The thing's own line gets the ring; a line that opens a section (the page writes it with its + sign) is a thing to open, and gets the box.
+  const kind = line.found && !/\+\s*$/.test(line.line) ? fitted("ring", line.line, seen.lines, settings.ringReach.value, seen.display.scale) : "box";
   return { box: target?.box ?? null, on: target?.line ?? null, inView: line.found, kind, to, toward };
 }
 

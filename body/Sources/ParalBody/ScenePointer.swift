@@ -33,7 +33,7 @@ extension Scene {
     /// know where an arrow is, only that it sits at an edge by the capsule, so from an arrow it also sets off from
     /// the capsule.
     private func origin(before began: Double) -> (from: CGPoint, atAnArrow: Bool) {
-        let capsule = Layout.capsule(open: 1, width: width, height: height, tokens: tokens)
+        let capsule = Layout.capsule(open: 1, width: width, height: floor, tokens: tokens)
         let home = CGPoint(x: capsule.x + capsule.w / 2, y: capsule.y)
         guard let before = pointer(at: began - 1) else { return (home, false) }
         return before.withWay == nil ? (CGPoint(x: before.x, y: before.y), false) : (home, true)

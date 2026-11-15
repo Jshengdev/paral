@@ -43,8 +43,9 @@ public struct MarkPicture: Equatable {
     public var label: String?
     /// How far the ink has gone along the pen's path, 0 to 1.
     public var drawn: Double
-    /// How far into a breath it is, 0 to 1 and back. Only the mark of a walk's step breathes, while it waits for his click.
-    public var breath = 0.0
+    /// How far through one echo of its edge it is, 0 to 1, or nil for none. Only the mark of a walk's step sends
+    /// out echoes, while it waits for his click.
+    public var pulse: Double?
 }
 
 public struct BoardPicture: Equatable {

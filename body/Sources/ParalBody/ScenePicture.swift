@@ -100,7 +100,7 @@ extension Scene {
     func marksUp(at t: Double) -> [MarkPicture] {
         marks.compactMap { mark in
             guard mark.at <= t, mark.clearedAt.map({ t < $0 }) ?? true, let began = start(mark), t >= began else { return nil }
-            return MarkPicture(key: "\(mark.id)/\(mark.beat)", kind: mark.kind, box: mark.box, label: mark.label, drawn: inked(mark.kind, since: began, at: t), breath: breath(of: mark, since: began, at: t))
+            return MarkPicture(key: "\(mark.id)/\(mark.beat)", kind: mark.kind, box: mark.box, label: mark.label, drawn: inked(mark.kind, since: began, at: t), pulse: pulse(of: mark, since: began, at: t))
         }
     }
 

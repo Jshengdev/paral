@@ -204,6 +204,13 @@
   },
   {
    "v": 1,
+   "type": "way",
+   "id": "t1",
+   "to": "down",
+   "toward": "Officer Trainings"
+  },
+  {
+   "v": 1,
    "type": "board",
    "id": "t1",
    "rows": [

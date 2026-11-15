@@ -7,7 +7,7 @@
   "source": { "url": "https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/" },
   "steps": [
     { "look": true, "waitMs": 12000,
-      "expect": { "shows": true, "says": ["November 22"], "way": { "to": "down", "toward": "Deadlines" }, "ahead": ["November 22", "December 1"] } },
+      "expect": { "shows": true, "spoken": true, "says": ["November 22"], "way": { "to": "down", "toward": "Deadlines" }, "ahead": ["November 22", "December 1"] } },
     { "say": "Show me.", "circle": null,
       "expect": { "step": 1, "way": { "to": "down" } } },
     { "look": true, "page": "real:rso-deadlines", "waitMs": 8000,
