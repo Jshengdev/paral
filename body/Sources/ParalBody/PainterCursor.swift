@@ -13,10 +13,12 @@ extension Painter {
     /// Paral's own cursor, after the kit's: the arrow filled from deep cardinal through cardinal to ember, with a
     /// paper edge so it reads on any page. While the ripple that says "here" spreads, two rings grow out from under
     /// it and fade. It is a picture of a cursor: it moves nothing and clicks nothing.
-    func pointer(_ pointer: PointerPicture, clock: Double, _ ctx: CGContext) -> Box {
+    /// Gives back the cursor's box, and its name tag's when it wears one.
+    func pointer(_ pointer: PointerPicture, clock: Double, _ ctx: CGContext) -> (box: Box, tag: Box?) {
         let c = tokens.cursor
         func at(_ share: (x: Double, y: Double)) -> CGPoint { CGPoint(x: pointer.x + share.x * c.size, y: pointer.y + share.y * c.size) }
-        if pointer.thinking { orb(middle: at(Painter.orbAt), across: Painter.orbWide * c.size, clock: clock, ctx) } else if pointer.tag { tag(at: at(Painter.tagAt), ctx) }
+        var worn: Box?
+        if pointer.thinking { orb(middle: at(Painter.orbAt), across: Painter.orbWide * c.size, clock: clock, ctx) } else if pointer.tag { worn = tag(at: at(Painter.tagAt), ctx) }
         ctx.saveGState()
         defer { ctx.restoreGState() }
         ctx.setAlpha(pointer.alpha)
@@ -47,7 +49,17 @@ extension Painter {
         if let shade = CGGradient(colorsSpace: CGColorSpace(name: CGColorSpace.sRGB), colors: [cardinalDeep, cardinal, ember] as CFArray, locations: [0, 0.55, 1]) {
             ctx.drawLinearGradient(shade, start: at(Painter.shadeFrom), end: at(Painter.shadeTo), options: [.drawsBeforeStartLocation, .drawsAfterEndLocation])
         }
-        return Box(x: pointer.x - c.edge, y: pointer.y - c.edge, w: Layout.cursorWide * c.size + 2 * c.edge, h: c.size + 2 * c.edge)
+        return (Box(x: pointer.x - c.edge, y: pointer.y - c.edge, w: Layout.cursorWide * c.size + 2 * c.edge, h: c.size + 2 * c.edge), worn)
+    }
+
+    /// The cursor moved the least that keeps all of it, its paper edge too, on the display. Its tip then leaves the
+    /// pen for the last few points of a stroke that ends at an edge, which is better than a cursor cut in half.
+    func inside(_ pointer: PointerPicture) -> PointerPicture {
+        let c = tokens.cursor
+        var kept = pointer
+        kept.x = min(max(pointer.x, c.edge), width - Layout.cursorWide * c.size - c.edge)
+        kept.y = min(max(pointer.y, c.edge), height - c.size - c.edge)
+        return kept
     }
 
     /// From the kit's cursor page, as shares of the cursor's height: where the tag's corner and the working orb's
@@ -73,14 +85,19 @@ extension Painter {
     }
 
     /// The cursor's name tag, after the kit's: a light pill with the orb and the name, which says whose cursor this is.
-    func tag(at corner: CGPoint, _ ctx: CGContext) {
+    func tag(at corner: CGPoint, _ ctx: CGContext) -> Box {
         let size = tokens.cursor.size
         let name = inked(tokens.strings.name, size: Painter.tagType * size, color: ink, weight: .medium)
         let words = name.size(), orbWide = Painter.tagOrb * size
         let tall = orbWide + 2 * Painter.tagPad.y * size
-        let pill = CGRect(x: corner.x, y: corner.y, width: Painter.tagPad.left * size + orbWide + Painter.tagGap * size + words.width + Painter.tagPad.right * size, height: tall)
+        let wide = Painter.tagPad.left * size + orbWide + Painter.tagGap * size + words.width + Painter.tagPad.right * size
+        // Under the cursor's tail where there is room, as the kit has it; at an edge of the display it is moved the
+        // least that keeps all of it, the band round it too, on the display.
+        let edge = tokens.band + 1
+        let pill = CGRect(x: max(edge, min(corner.x, width - wide - edge)), y: max(edge, min(corner.y, height - tall - edge)), width: wide, height: tall)
         surface(CGPath(roundedRect: pill, cornerWidth: tall / 2, cornerHeight: tall / 2, transform: nil), ctx)
         orb(middle: CGPoint(x: pill.minX + Painter.tagPad.left * size + orbWide / 2, y: pill.midY), across: orbWide, clock: 0, ctx)
         name.draw(at: CGPoint(x: pill.minX + Painter.tagPad.left * size + orbWide + Painter.tagGap * size, y: pill.midY - words.height / 2))
+        return Box(x: pill.minX, y: pill.minY, w: pill.width, h: pill.height)
     }
 }

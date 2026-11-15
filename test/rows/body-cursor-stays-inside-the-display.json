@@ -1,0 +1,121 @@
+{
+ "name": "body: the cursor is never drawn off the display, nor is the name tag it wears while it comes in: flying to an arrow at the bottom edge, riding its pen down to the head, resting beside it and while the arrow nods; riding the pen round a line at the display's foot and its right edge, and resting beside it; and with an arrow at the top edge",
+ "run": "body.cursorInside",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Important Dates",
+   "Deadlines"
+  ],
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "way",
+     "id": "g1",
+     "to": "down",
+     "toward": "Deadlines"
+    }
+   },
+   {
+    "at": 7000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 8000,
+    "line": {
+     "type": "mark",
+     "id": "g2",
+     "beat": 0,
+     "kind": "ring",
+     "box": {
+      "x": 1250,
+      "y": 962,
+      "w": 330,
+      "h": 28
+     }
+    }
+   },
+   {
+    "at": 12000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 13000,
+    "line": {
+     "type": "way",
+     "id": "g3",
+     "to": "up",
+     "toward": "Recognition Process"
+    }
+   }
+  ],
+  "at": [
+   900,
+   1300,
+   1700,
+   1930,
+   2500,
+   5785,
+   8700,
+   9000,
+   10500,
+   13600,
+   13900,
+   15000
+  ]
+ },
+ "out": [
+  {
+   "cursor": "none"
+  },
+  {
+   "cursor": "up, with its name tag",
+   "insideTheDisplay": true
+  },
+  {
+   "cursor": "up, with its name tag",
+   "insideTheDisplay": true
+  },
+  {
+   "cursor": "up, with its name tag",
+   "insideTheDisplay": true
+  },
+  {
+   "cursor": "up",
+   "insideTheDisplay": true
+  },
+  {
+   "cursor": "up",
+   "insideTheDisplay": true
+  },
+  {
+   "cursor": "up, with its name tag",
+   "insideTheDisplay": true
+  },
+  {
+   "cursor": "up, with its name tag",
+   "insideTheDisplay": true
+  },
+  {
+   "cursor": "up",
+   "insideTheDisplay": true
+  },
+  {
+   "cursor": "up, with its name tag",
+   "insideTheDisplay": true
+  },
+  {
+   "cursor": "up, with its name tag",
+   "insideTheDisplay": true
+  },
+  {
+   "cursor": "up",
+   "insideTheDisplay": true
+  }
+ ]
+}

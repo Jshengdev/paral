@@ -213,7 +213,10 @@ starts (from the capsule the first time, from wherever it was after that), rides
 then steps aside to rest just beside the mark on none of the page's read text (`Layout.beside`: to the right of the
 mark first), and a ripple spreads from it once. It points and never clicks: it is ink in the overlay, which lets
 every click through. It comes for a mark with no key pressed too (a look's mark), stays for as long as its mark is
-on the page, and goes with it on a clear or a close. With motion reduced there is no cursor. While it comes in from
+on the page, and goes with it on a clear or a close. With motion reduced there is no cursor. It is never drawn off
+the display: where a mark or an arrow runs to an edge, the cursor is moved the least that keeps all of it on the
+display, so its tip leaves the pen for the last few points of such a stroke; its name tag is kept on the same way,
+and then sits level with the cursor and not under its tail. While it comes in from
 nowhere (its flight and its ride on the pen) it wears the kit's name tag, a light pill with the orb and
 `strings.name`, so he can tell whose cursor is moving; at rest it wears nothing. While the capsule says paral is
 working, a cursor that is on the page wears the kit's orb. The orb is drawn in code as rings of the cursor's reds
@@ -270,5 +273,5 @@ tokens' size times whatever the card was shrunk by.
 shows at those moments), `placed RUN TOKENS MS...` (where the painter puts each thing at those moments, the points
 the pen has inked of a mark and of a drawn arrow, the capsule's look and words, and the way arrow's, the cursor's and the board's own values).
 
-Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way`, `body.cursor`, `body.steps`, `body.pages`, `body.toast`, `body.boardType`, `body.guide`, `body.lead`, `body.breath`, `body.stands`, `body.resting` and `body.inkInside` rows, with no window. The hosts are compiled and have never been run:
+Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way`, `body.cursor`, `body.steps`, `body.pages`, `body.toast`, `body.boardType`, `body.guide`, `body.lead`, `body.breath`, `body.stands`, `body.resting`, `body.cursorInside` and `body.inkInside` rows, with no window. The hosts are compiled and have never been run:
 the key, the microphone, the screen picture and the overlay wait for a person and their grants (`./run`).

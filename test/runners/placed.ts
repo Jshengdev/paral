@@ -196,3 +196,16 @@ export function resting(input: { lines: string[]; rows: Written[]; at: number[] 
     return { look: capsule.look, cross: { whereAClickIsTaken: Math.hypot(middle.x - taken.x, middle.y - taken.y) < 0.5, capsuleWiderThanTheCross: pill.w > cross.w + 1, nameToItsLeft: pill.x < cross.x - 1 && Math.abs(pill.x + pill.w - (cross.x + cross.w)) < 0.5 } };
   });
 }
+
+/**
+ * The cursor at each moment of a hand-written run: whether it is up, whether it wears its name tag, and whether all
+ * of it, the tag too, lies inside the display.
+ */
+export function cursorInside(input: { lines: string[]; rows: Written[]; at: number[] }) {
+  const inside = (box: Box) => box.x >= 0 && box.y >= 0 && box.x + box.w <= DISPLAY.w && box.y + box.h <= DISPLAY.h;
+  return at(handWritten("cursor-inside", input.rows, input.lines), input.at).map(({ placed }) => {
+    const box = placed.find((item) => item.what === "pointer")?.box;
+    const tag = placed.find((item) => item.what === "tag")?.box;
+    return box ? { cursor: tag ? "up, with its name tag" : "up", insideTheDisplay: inside(box) && (!tag || inside(tag)) } : { cursor: "none" };
+  });
+}

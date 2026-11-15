@@ -29,7 +29,7 @@ import { fresh } from "./runners/temp.ts";
 import { playTurn } from "./runners/turn.ts";
 import { boardType } from "./runners/boards.ts";
 import { filmedPages } from "./runners/pages.ts";
-import { cursor, guide, inkInside, resting, steps, toast, way } from "./runners/placed.ts";
+import { cursor, cursorInside, guide, inkInside, resting, steps, toast, way } from "./runners/placed.ts";
 import { lead } from "./runners/leads.ts";
 import { breath } from "./runners/breath.ts";
 import { stands } from "./runners/stands.ts";
@@ -74,6 +74,7 @@ const runs: Record<string, (input: any) => unknown> = {
   "body.breath": breath,
   "body.stands": stands,
   "body.resting": resting,
+  "body.cursorInside": cursorInside,
   "body.inkInside": inkInside,
   "body.boardType": boardType,
   "body.pages": filmedPages,

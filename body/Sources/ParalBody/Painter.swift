@@ -113,11 +113,17 @@ public struct Painter {
             let up = drawn.filter { ["board", "clip", "way", "toast", "mark", "echo"].contains($0.what) }.map(\.box)
             drawn.append(Drawn(what: "guide", id: nil, box: self.guide(guide, avoiding: picture.avoid + up, ctx)))
         }
+        // The cursor stays on the display: where its mark or its arrow runs to an edge, it stops short of the edge.
+        pointer = pointer.map(inside)
         // The arrow from a mark to what speaks about it keeps off every other piece, so it is found a way last.
         var with = picture
         with.pointer = pointer
         if let lead = lead(with, placed: drawn, ctx) { drawn.append(lead) }
-        if let pointer { drawn.append(Drawn(what: "pointer", id: nil, box: self.pointer(pointer, clock: picture.clock, ctx))) }
+        if let pointer {
+            let cursor = self.pointer(pointer, clock: picture.clock, ctx)
+            drawn.append(Drawn(what: "pointer", id: nil, box: cursor.box))
+            if let tag = cursor.tag { drawn.append(Drawn(what: "tag", id: nil, box: tag)) }
+        }
         let pill = capsule(picture.capsule, clock: picture.clock, ctx)
         drawn.append(Drawn(what: "capsule", id: nil, box: pill.box))
         // The cross is named too, since it is the one thing on the overlay that takes a click.
