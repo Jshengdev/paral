@@ -1,0 +1,27 @@
+{
+  "v": 1,
+  "id": "asked-as-students-ask",
+  "title": "The club page as it opens, asked the loose way students ask",
+  "criteria": ["C6", "C13"],
+  "page": "real:rso-recognition",
+  "source": { "url": "https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/" },
+  "steps": [
+    { "say": "Like where is it? The deadline.", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["November 22"],
+        "saysThat": { "what": "where on the page the date is", "anyOf": ["deadlines", "important dates", "below", "further down", "scroll", "section"] } } },
+    { "say": "Can you help me find where to book this event?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["Space Requests"] } },
+    { "say": "What happens if I turn it in a day late?", "circle": null,
+      "expect": { "plain": true, "sentences": 1,
+        "saysThat": { "what": "late applications are not accepted", "anyOf": ["not accepted", "aren't accepted", "won't be accepted", "will not be accepted", "no late", "not be accepted", "rejected", "won't take", "don't take"] } } },
+    { "say": "Do my officers have to do anything before then?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["training"] } },
+    { "say": "And when does my advisor's part have to be in?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["December 1"] } },
+    { "say": "Where's my STARS transcript?", "circle": null,
+      "expect": { "plain": true, "sentences": 1,
+        "saysThat": { "what": "it has that on no page it read", "anyOf": ["don't have", "do not have", "isn't on", "is not on", "not on", "can't see", "cannot see", "no page", "doesn't cover", "does not cover", "not here", "nothing about", "doesn't mention", "does not mention"] } } },
+    { "say": "Okay, so where do I go next?", "circle": null,
+      "expect": { "plain": true, "sentences": 1 } }
+  ]
+}
