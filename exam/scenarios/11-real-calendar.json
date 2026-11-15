@@ -7,7 +7,7 @@
   "source": { "url": "https://www.usc.edu/academic-calendar/", "at": "#academic-calendar-2026-2027" },
   "steps": [
     { "say": "When do final exams start this semester, and how many study days do I get before them?", "circle": null,
-      "expect": { "opener": true, "plain": true, "sentences": 2, "mark": { "on": "December 9-16" } } },
+      "expect": { "opener": true, "plain": true, "sentences": 2, "says": ["December 9"], "mark": { "on": "December 9-16" } } },
     { "say": "Where on this page do I find the paid university holidays?", "circle": null,
       "expect": { "plain": true, "sentences": 1, "mark": { "on": "Paid University Holidays" } } }
   ]
