@@ -276,7 +276,7 @@
    "cardFadingIn": false,
    "arrow": "none",
    "cursor": "with a mark",
-   "cursorOnText": true
+   "cursorOnText": false
   },
   {
    "litRows": [

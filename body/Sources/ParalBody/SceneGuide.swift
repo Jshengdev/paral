@@ -13,10 +13,10 @@ extension Scene {
     /// guide switched off (the menu's "Show the guide") there is no card.
     func guide(at t: Double) -> GuidePicture? {
         guard let guide = next(at: t) else { return nil }
-        let fade = max(ms(tokens.motion.boardMs), 1), leaves = guide.shownAt + tokens.toast.stayMs
-        if guide.done, t >= leaves + fade { return nil }
-        let going = guide.done ? 1 - Motion.ease((t - leaves) / fade) : 1
-        let appear = still ? 1 : min(Motion.ease((t - guide.upSince) / fade), going)
+        let leaves = guide.shownAt + tokens.toast.stayMs
+        if guide.done, t >= leaves + ms(tokens.motion.leaveMs) { return nil }
+        let going = guide.done ? 1 - leaving(since: leaves, at: t) : 1
+        let appear = still ? 1 : min(arriving(since: guide.upSince, at: t), going)
         // The closing line is no step, so it carries no number.
         let numbered = !guide.done && guide.of > 0
         return GuidePicture(text: guide.text, n: numbered ? guide.n : nil, of: numbered ? guide.of : nil, appear: appear)

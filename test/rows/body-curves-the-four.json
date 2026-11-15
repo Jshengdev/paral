@@ -1,0 +1,73 @@
+{
+ "name": "body: everything moves on four curves: arriving leaves at once and lands softly, going from one place to another is slow at both ends, leaving starts slow and ends fast, and only the pop goes past its place and comes back to it; the first three only ever go forward",
+ "run": "body.curves",
+ "in": {
+  "at": [
+   0,
+   0.1,
+   0.25,
+   0.5,
+   0.75,
+   0.9,
+   1
+  ]
+ },
+ "out": {
+  "arrive": {
+   "at": [
+    0,
+    0.494,
+    0.826,
+    0.972,
+    0.998,
+    1,
+    1
+   ],
+   "onlyGoesForward": true,
+   "furthest": 1,
+   "endsAt": 1
+  },
+  "leave": {
+   "at": [
+    0,
+    0.005,
+    0.032,
+    0.135,
+    0.34,
+    0.565,
+    1
+   ],
+   "onlyGoesForward": true,
+   "furthest": 1,
+   "endsAt": 1
+  },
+  "pop": {
+   "at": [
+    0,
+    0.404,
+    0.816,
+    1.087,
+    1.06,
+    1.013,
+    1
+   ],
+   "onlyGoesForward": false,
+   "furthest": 1.098,
+   "endsAt": 1
+  },
+  "travel": {
+   "at": [
+    0,
+    0.009,
+    0.071,
+    0.5,
+    0.929,
+    0.991,
+    1
+   ],
+   "onlyGoesForward": true,
+   "furthest": 1,
+   "endsAt": 1
+  }
+ }
+}

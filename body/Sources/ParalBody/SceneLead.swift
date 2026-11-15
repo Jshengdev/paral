@@ -16,8 +16,8 @@ extension Scene {
         let up = marks.last { mark in mark.at <= t && (mark.clearedAt.map { t < $0 } ?? true) && (start(mark).map { $0 <= t } ?? false) }
         guard let mark = up, let began = start(mark) else { return nil }
         let ready = still ? began : began + flight + duration(mark.kind) + ms(tokens.cursor.settleMs)
-        let draw = max(ms(tokens.lead.drawMs), 1), key = "\(mark.id)/\(mark.beat)"
-        func inked(since from: Double) -> Double { still ? 1 : Motion.land((t - from) / draw) }
+        let key = "\(mark.id)/\(mark.beat)"
+        func inked(since from: Double) -> Double { still ? 1 : Motion.even((t - from) / max(arrowMs, 1)) }
 
         if capsule.ask == mark.id {
             guard let ask = asks.first(where: { $0.id == mark.id }), let said = times(ask).first(where: { $0.beat == mark.beat }), t >= max(ready, said.start) else { return nil }
@@ -44,11 +44,11 @@ extension Scene {
     /// leaving, a close), and one counts only if the capsule was open half a closing before it and shut after it.
     /// Nil when none does, as when the capsule has shown nothing yet.
     private func rested(before t: Double) -> Double? {
-        let m = tokens.motion, shut = still ? 0 : ms(m.openMs)
+        let m = tokens.motion, shut = still ? 0 : ms(m.leaveMs)
         var moments = [closedAt, idleAt, idleAt.map { $0 + m.lingerMs }].compactMap { $0 }
         for ask in asks.suffix(4) { if let last = times(ask).last { moments += [last.end + m.unaskedStayMs, last.end + m.lingerMs] } }
         func resting(_ at: Double) -> Bool { let c = self.capsule(at: at); return c.look == .rest && c.open < 0.01 }
-        // An answer's capsule takes `openMs` to shut; a line said without being asked is gone at once.
+        // An answer's capsule takes `leaveMs` to shut; a line said without being asked is gone at once.
         return (moments + moments.map { $0 + shut }).filter { $0 <= t && resting($0 + 1) && !resting($0 - max(shut / 2, 1)) }.max()
     }
 }

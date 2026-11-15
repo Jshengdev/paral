@@ -40,6 +40,8 @@ those are helpers, not test files.
 | `body.resting` | a hand-written run looked at while the capsule rests: whether it carries the cross, whether the cross is where a click on it is taken, and whether the capsule wears its name to the cross's left |
 | `body.cursorInside` | a hand-written run looked at at given moments: whether the cursor is up and whether all of it lies inside the display |
 | `body.inkInside` | a hand-written run with marks, looked at at given moments: how many marks are up and whether all of their ink lies inside the display |
+| `body.curves` | the four curves in the tokens: each one's value at given shares of its time, whether it only ever goes forward, and the furthest it gets |
+| `body.moves` | a hand-written run on a drawn page, looked at at given moments: how far the capsule is open, how much of a mark's stroke and of a drawn arrow's shaft and head is inked, how far the cursor has still to fly, how large its name tag is, and how far the guide's card has come up, each as a share of its whole |
 | `body.pressedAgain` | a run on a tape where the key is pressed again soon after a release: the order of the key lines the mind got |
 
 Tapes in `tapes/` are recorded answers, so no row needs a key, a microphone or a screen. A tape answer keyed

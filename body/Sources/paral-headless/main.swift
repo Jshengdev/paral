@@ -21,7 +21,7 @@ func why(_ error: Error) -> String {
 // the cure; it costs nothing.
 _ = Bundle.main.infoDictionary
 
-let usage = "usage: read PICTURE | smaller PICTURE OUT.jpg LONG_EDGE | same PICTURE PICTURE | page OUT.png LINE... | lines | keys SECONDS rightOption|fn|controlOption | flow FLOW.json SOCKET TOKENS.json | film RUN_DIR TOKENS.json | frame RUN_DIR TOKENS.json MS OUT.png | capsule RUN_DIR TOKENS.json MS... | placed RUN_DIR TOKENS.json MS..."
+let usage = "usage: read PICTURE | smaller PICTURE OUT.jpg LONG_EDGE | same PICTURE PICTURE | page OUT.png LINE... | lines | keys SECONDS rightOption|fn|controlOption | flow FLOW.json SOCKET TOKENS.json | film RUN_DIR TOKENS.json | frame RUN_DIR TOKENS.json MS OUT.png | capsule RUN_DIR TOKENS.json MS... | placed RUN_DIR TOKENS.json MS... | curves TOKENS.json SHARE..."
 let arguments = Array(CommandLine.arguments.dropFirst())
 
 switch arguments.first {
@@ -101,6 +101,12 @@ case "placed":
     guard arguments.count >= 4 else { fail(usage) }
     // PARAL_GUIDE=off stands for the menu's "Show the guide" unticked, which no line of a record carries.
     do { out(try Film.placed(run: arguments[1], tokens: try Tokens.load(arguments[2]), at: arguments.dropFirst(3).compactMap(Double.init), guide: ProcessInfo.processInfo.environment["PARAL_GUIDE"] != "off")) } catch { fail(why(error)) }
+
+case "curves":
+    // Each of the four curves at the given shares of its time, for rows.
+    guard arguments.count >= 3, let curves = try? Tokens.load(arguments[1]).curves else { fail(usage) }
+    let shares = arguments.dropFirst(2).compactMap(Double.init)
+    out(["arrive": shares.map { curves.arrive($0) }, "travel": shares.map { curves.travel($0) }, "leave": shares.map { curves.leave($0) }, "pop": shares.map { curves.pop($0) }])
 
 case "keys":
     guard arguments.count == 3, let seconds = Double(arguments[1]), let which = Key.Which(rawValue: arguments[2]) else { fail(usage) }

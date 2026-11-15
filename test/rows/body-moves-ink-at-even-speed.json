@@ -1,0 +1,155 @@
+{
+ "name": "body: ink is drawn at even speed and the cursor flies slow at both ends: the cursor takes 420 ms to the start of a ring, a fiftieth of the way after a tenth of the time and half way at half, with its name tag popping out a little past its size and back in the first 280; then the ring's ink grows by the same share every 90 ms and is whole 450 after it began",
+ "run": "body.moves",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes.",
+   "Late applications are not accepted.",
+   "Info Sessions, Workshops, and Office Hours",
+   "Application deadline: November 2, 2026",
+   "Apply for the Catalina Maymester"
+  ],
+  "watch": [
+   "cursorToGo",
+   "tag",
+   "ink"
+  ],
+  "cursorLandsAt": 1420,
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "g1",
+     "beat": 0,
+     "kind": "ring",
+     "on": 1
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "say",
+     "id": "g1",
+     "beat": 0,
+     "text": "The application closes November 22 at 11:59pm, under Deadlines.",
+     "trail": [
+      "saw this page",
+      "found where it is"
+     ]
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mute",
+     "id": "g1",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   }
+  ],
+  "at": [
+   1000,
+   1042,
+   1070,
+   1105,
+   1140,
+   1210,
+   1280,
+   1315,
+   1378,
+   1420,
+   1510,
+   1600,
+   1690,
+   1780,
+   1870,
+   2400
+  ]
+ },
+ "out": [
+  {
+   "cursorToGo": 1,
+   "tag": 0.6,
+   "ink": 0
+  },
+  {
+   "cursorToGo": 0.99,
+   "tag": 0.83,
+   "ink": 0
+  },
+  {
+   "cursorToGo": 0.97,
+   "tag": 0.93,
+   "ink": 0
+  },
+  {
+   "cursorToGo": 0.93,
+   "tag": 1,
+   "ink": 0
+  },
+  {
+   "cursorToGo": 0.85,
+   "tag": 1.03,
+   "ink": 0
+  },
+  {
+   "cursorToGo": 0.51,
+   "tag": 1.02,
+   "ink": 0
+  },
+  {
+   "cursorToGo": 0.16,
+   "tag": 1,
+   "ink": 0
+  },
+  {
+   "cursorToGo": 0.07,
+   "tag": 1,
+   "ink": 0
+  },
+  {
+   "cursorToGo": 0.01,
+   "tag": 1,
+   "ink": 0
+  },
+  {
+   "cursorToGo": 0,
+   "tag": 1,
+   "ink": 0
+  },
+  {
+   "cursorToGo": 0.12,
+   "tag": 1,
+   "ink": 0.2
+  },
+  {
+   "cursorToGo": 0.2,
+   "tag": 1,
+   "ink": 0.4
+  },
+  {
+   "cursorToGo": 0.11,
+   "tag": 1,
+   "ink": 0.6
+  },
+  {
+   "cursorToGo": 0.05,
+   "tag": 1,
+   "ink": 0.8
+  },
+  {
+   "cursorToGo": 0.06,
+   "tag": 0,
+   "ink": 1
+  },
+  {
+   "cursorToGo": 0.2,
+   "tag": 0,
+   "ink": 1
+  }
+ ]
+}

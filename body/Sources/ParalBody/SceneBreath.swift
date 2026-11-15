@@ -18,6 +18,6 @@ extension Scene {
         let u = (t - first).truncatingRemainder(dividingBy: every) / length
         guard u < 1 else { return 0 }
         // In and out alike, slow at both ends: a breath, where the arrow's nod is a quick dip and a spring back.
-        return (Motion.ease(1 - abs(2 * u - 1)) * 20).rounded() / 20
+        return (tokens.curves.travel(1 - abs(2 * u - 1)) * 20).rounded() / 20
     }
 }

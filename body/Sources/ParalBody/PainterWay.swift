@@ -41,7 +41,7 @@ extension Painter {
         surface(shape, ctx)
         place.name.draw(at: CGPoint(x: place.pill.minX + w.padX, y: place.pill.minY + w.padY))
 
-        ink(Pen.reach(strokes: strokes(way, place), way.drawn), wide: tokens.mark.width, ctx)
+        ink(Pen.reach(arrow: strokes(way, place), way.drawn, tokens: tokens), wide: tokens.mark.width, ctx)
     }
 
     /// The ink of a drawn arrow, in ember and `wide` points across, with a paper edge under it so that it shows on
@@ -66,9 +66,9 @@ extension Painter {
         let all = strokes(way, place)
         let tail = all.first?.first ?? place.rest
         if with.flight < 1 {
-            return Motion.arc(from: CGPoint(x: pointer.x, y: pointer.y), to: tail, Motion.spring(with.flight, bounce: tokens.motion.bounce), lift: tokens.motion.arc)
+            return Motion.arc(from: CGPoint(x: pointer.x, y: pointer.y), to: tail, tokens.curves.travel(with.flight), lift: tokens.motion.arc)
         }
-        let pen = Pen.reach(strokes: all, way.drawn).last?.last ?? tail
+        let pen = Pen.reach(arrow: all, way.drawn, tokens: tokens).last?.last ?? tail
         guard way.drawn >= 1 else { return pen }
         return CGPoint(x: pen.x + (place.rest.x - pen.x) * with.aside, y: pen.y + (place.rest.y - pen.y) * with.aside)
     }

@@ -79,6 +79,14 @@ extension Scene {
     /// How long the pointer takes to fly to where a stroke starts.
     var flight: Double { still ? 0 : ms(tokens.motion.flightMs) }
 
+    /// How far a thing that began to arrive at `since` has come by `t`, and how far one that began to leave has
+    /// gone: each on its own curve, and leaving in less time than arriving.
+    func arriving(since: Double, at t: Double) -> Double { tokens.curves.arrive((t - since) / max(ms(tokens.motion.arriveMs), 1)) }
+    func leaving(since: Double, at t: Double) -> Double { tokens.curves.leave((t - since) / max(ms(tokens.motion.leaveMs), 1)) }
+
+    /// How long the pen takes over a drawn arrow: its shaft, then its head.
+    var arrowMs: Double { ms(tokens.mark.shaftMs + tokens.mark.headMs) }
+
     func duration(_ kind: MarkKind) -> Double {
         switch kind {
         case .ring, .box: return ms(tokens.mark.ringMs)
@@ -96,14 +104,14 @@ extension Scene {
     /// The moment after which nothing on screen changes any more.
     public var end: Double {
         var end = lastAt
-        for ask in asks { if let last = times(ask).last { end = max(end, last.end + tokens.motion.lingerMs + ms(tokens.motion.openMs)) } }
+        for ask in asks { if let last = times(ask).last { end = max(end, last.end + tokens.motion.lingerMs + ms(tokens.motion.leaveMs)) } }
         for mark in marks { if let began = start(mark) { end = max(end, began + flight + duration(mark.kind)) } }
         for echo in echoes { end = max(end, echo.at + flight + duration(.ring)) }
         for way in ways { end = max(end, min(way.clearedAt ?? .infinity, inking(way).to + ms(tokens.cursor.settleMs))) }
-        for clip in clips { end = max(end, min(clip.clearedAt ?? .infinity, clip.at + ms(tokens.motion.boardMs) + clip.seconds * 1000)) }
-        if let opened { end = max(end, opened.at + 2 * ms(tokens.motion.boardMs) + tokens.toast.stayMs) }
-        if let guide = nexts.last { end = max(end, guide.shownAt + (guide.done ? tokens.toast.stayMs + ms(tokens.motion.boardMs) : 0)) }
-        if let closed = closedAt { end = max(end, closed + ms(tokens.motion.openMs)) }
+        for clip in clips { end = max(end, min(clip.clearedAt ?? .infinity, clip.at + ms(tokens.motion.arriveMs) + clip.seconds * 1000)) }
+        if let opened { end = max(end, opened.at + ms(tokens.motion.arriveMs) + tokens.toast.stayMs + ms(tokens.motion.leaveMs)) }
+        if let guide = nexts.last { end = max(end, guide.shownAt + (guide.done ? tokens.toast.stayMs + ms(tokens.motion.leaveMs) : 0)) }
+        if let closed = closedAt { end = max(end, closed + ms(tokens.motion.leaveMs)) }
         return end + 200
     }
 }

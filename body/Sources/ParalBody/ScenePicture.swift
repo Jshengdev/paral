@@ -14,7 +14,7 @@ extension Scene {
 
     func capsule(at t: Double) -> CapsulePicture {
         let m = tokens.motion
-        let grown = { (since: Double) in self.still ? 1 : Motion.spring((t - since) / self.ms(m.openMs), bounce: m.bounce) }
+        let grown = { (since: Double) in self.still ? 1 : self.arriving(since: since, at: t) }
         // A line said without being asked opens the capsule by itself, for its reading time and a little longer, with
         // the steps paral took lighting up one after another above it. A press of the key takes the capsule over.
         if let ask = asks.last(where: { $0.trail != nil && $0.beganAt <= t }), !holds.contains(where: { $0.down >= ask.beganAt && $0.down <= t }),
@@ -33,7 +33,7 @@ extension Scene {
         }
         // While it closes after an answer it is still that answer's, so what leads to it can go back with it.
         func rest(since: Double, of ask: String? = nil) -> CapsulePicture {
-            let open = still ? 0 : 1 - Motion.ease((t - since) / ms(m.openMs))
+            let open = still ? 0 : 1 - leaving(since: since, at: t)
             return CapsulePicture(look: .rest, open: open, words: [], note: nil, ask: open > 0 ? ask : nil)
         }
         if let closed = closedAt, closed >= hold.down, t >= closed { return rest(since: closed) }
@@ -70,9 +70,10 @@ extension Scene {
         }
     }
 
-    /// How much of a stroke is inked at `t`. The pointer flies to the stroke's start first, so the ink waits for it.
+    /// How much of a stroke is inked at `t`, at even speed. The pointer flies to the stroke's start first, so the
+    /// ink waits for it.
     private func inked(_ kind: MarkKind, since began: Double, at t: Double) -> Double {
-        still ? 1 : Motion.land((t - began - flight) / duration(kind))
+        still ? 1 : Motion.even((t - began - flight) / duration(kind))
     }
 
     func marksUp(at t: Double) -> [MarkPicture] {
@@ -110,25 +111,25 @@ extension Scene {
         // A board shown without being asked comes whole: nothing is spoken for its rows to keep step with.
         // A board of steps comes whole too: the step he is on may be its last row.
         let shown = over || ask?.trail != nil || board.now != nil ? board.rows.count : min(board.rows.count, max(1, begun))
-        let appear = still ? 1 : Motion.ease((t - board.upSince) / ms(tokens.motion.boardMs))
+        let appear = still ? 1 : arriving(since: board.upSince, at: t)
         // Until its rows have arrived the card is empty, whatever a later moment made of it.
         let rows = board.filledAt.map { t >= $0 } ?? true ? board.rows : []
-        let filled = rows.isEmpty ? 0 : board.filledAt.map { still ? 1 : Motion.ease((t - $0) / ms(tokens.motion.boardMs)) } ?? 1
+        let filled = rows.isEmpty ? 0 : board.filledAt.map { still ? 1 : tokens.curves.travel((t - $0) / max(ms(tokens.motion.usualMs), 1)) } ?? 1
         return BoardPicture(id: board.id, rows: rows, shown: min(shown, rows.count), appear: appear, filled: filled, room: board.room, now: board.now)
     }
 
     /// The clip plays once from the moment its card is up, then holds its last frame.
     func clip(at t: Double) -> ClipPicture? {
         guard let clip = clips.last(where: { $0.at <= t && ($0.clearedAt.map { t < $0 } ?? true) }) else { return nil }
-        let opening = still ? 0 : ms(tokens.motion.boardMs)
+        let opening = still ? 0 : ms(tokens.motion.arriveMs)
         let played = min(max((t - clip.at - opening) / 1000, 0), max(clip.seconds - 1.0 / 30, 0))
-        return ClipPicture(id: clip.id, path: clip.path, still: clip.still, second: (played * 30).rounded(.down) / 30, appear: still ? 1 : Motion.ease((t - clip.at) / max(opening, 1)), room: clip.room)
+        return ClipPicture(id: clip.id, path: clip.path, still: clip.still, second: (played * 30).rounded(.down) / 30, appear: still ? 1 : arriving(since: clip.at, at: t), room: clip.room)
     }
 
     func trailUp(at t: Double) -> [TrailPoint] {
         guard let hold = holds.last(where: { $0.down <= t }), hold.up.map({ t < $0 }) ?? true else { return [] }
         return trail.filter { $0.at >= hold.down && $0.at <= t }.compactMap { point in
-            let alpha = 1 - (t - point.at) / ms(tokens.motion.trailFadeMs)
+            let alpha = 1 - tokens.curves.leave((t - point.at) / max(ms(tokens.motion.trailFadeMs), 1))
             return alpha > 0 ? TrailPoint(x: point.x, y: point.y, alpha: alpha) : nil
         }
     }

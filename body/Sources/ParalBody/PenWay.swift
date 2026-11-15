@@ -56,18 +56,12 @@ extension Pen {
         return ([curve(from, pull, turn, to, steps: steps), head(at: to, back: atan2(-arrives.y, -arrives.x), tokens: tokens)], arrives)
     }
 
-    /// Several strokes cut at a share of their whole length, in the order they are drawn: each as far as the pen has got.
-    static func reach(strokes: [[CGPoint]], _ share: Double) -> [[CGPoint]] {
-        func length(_ points: [CGPoint]) -> Double {
-            zip(points, points.dropFirst()).reduce(0) { $0 + hypot($1.1.x - $1.0.x, $1.1.y - $1.0.y) }
-        }
-        var left = strokes.reduce(0) { $0 + length($1) } * min(max(share, 0), 1)
-        var inked: [[CGPoint]] = []
-        for stroke in strokes where left > 0 {
-            let whole = length(stroke)
-            inked.append(reach(stroke, whole > 0 ? left / whole : 1).inked)
-            left -= whole
-        }
-        return inked
+    /// A drawn arrow as far as the pen has got, `share` of its time in. A hand makes it in two strokes, each at even
+    /// speed: the shaft for `shaft` of the time (`mark.shaftMs` of the whole), then the head for the rest.
+    static func reach(arrow strokes: [[CGPoint]], _ share: Double, tokens: Tokens) -> [[CGPoint]] {
+        let time = min(max(share, 0), 1), shaft = tokens.mark.shaftMs / max(tokens.mark.shaftMs + tokens.mark.headMs, 1)
+        guard time > 0, let body = strokes.first else { return [] }
+        let head = shaft < 1 ? (time - shaft) / (1 - shaft) : 0
+        return [reach(body, shaft > 0 ? time / shaft : 1).inked] + (head > 0 ? strokes.dropFirst().map { reach($0, head).inked } : [])
     }
 }

@@ -18,7 +18,7 @@ extension Painter {
         let c = tokens.cursor
         func at(_ share: (x: Double, y: Double)) -> CGPoint { CGPoint(x: pointer.x + share.x * c.size, y: pointer.y + share.y * c.size) }
         var worn: Box?
-        if pointer.thinking { orb(middle: at(Painter.orbAt), across: Painter.orbWide * c.size, clock: clock, ctx) } else if pointer.tag { worn = tag(at: at(Painter.tagAt), ctx) }
+        if pointer.thinking { orb(middle: at(Painter.orbAt), across: Painter.orbWide * c.size, clock: clock, ctx) } else if pointer.tag { worn = tag(at: at(Painter.tagAt), grown: pointer.tagGrown, ctx) }
         ctx.saveGState()
         defer { ctx.restoreGState() }
         ctx.setAlpha(pointer.alpha)
@@ -27,8 +27,8 @@ extension Painter {
             let middle = at(Painter.rippleAt)
             ctx.setLineWidth(Painter.rippleLine * c.size)
             for (reach, strength) in [(Painter.innerRing, 0.45), (1.0, 0.18)] {
-                let r = c.ripple * reach * Motion.land(spread)
-                ctx.setStrokeColor(cardinal.copy(alpha: strength * 2 * (1 - Motion.ease(spread))) ?? cardinal)
+                let r = c.ripple * reach * tokens.curves.arrive(spread)
+                ctx.setStrokeColor(cardinal.copy(alpha: strength * 2 * (1 - tokens.curves.leave(spread))) ?? cardinal)
                 ctx.strokeEllipse(in: CGRect(x: middle.x - r, y: middle.y - r, width: 2 * r, height: 2 * r))
             }
         }
@@ -85,19 +85,26 @@ extension Painter {
     }
 
     /// The cursor's name tag, after the kit's: a light pill with the orb and the name, which says whose cursor this is.
-    func tag(at corner: CGPoint, _ ctx: CGContext) -> Box {
-        let size = tokens.cursor.size
+    /// It pops out from its corner by the cursor's tail: `grown` is how far, 0 to 1 and a little past on the way.
+    func tag(at corner: CGPoint, grown: Double, _ ctx: CGContext) -> Box {
+        let size = tokens.cursor.size, from = tokens.cursor.tagFrom
         let name = inked(tokens.strings.name, size: Painter.tagType * size, color: ink, weight: .medium)
         let words = name.size(), orbWide = Painter.tagOrb * size
         let tall = orbWide + 2 * Painter.tagPad.y * size
         let wide = Painter.tagPad.left * size + orbWide + Painter.tagGap * size + words.width + Painter.tagPad.right * size
         // Under the cursor's tail where there is room, as the kit has it; at an edge of the display it is moved the
-        // least that keeps all of it, the band round it too, on the display.
-        let edge = tokens.band + 1
-        let pill = CGRect(x: max(edge, min(corner.x, width - wide - edge)), y: max(edge, min(corner.y, height - tall - edge)), width: wide, height: tall)
+        // least that keeps all of it, the band round it too, on the display, at the size it has just then.
+        let edge = tokens.band + 1, scale = from + (1 - from) * grown
+        let at = CGPoint(x: max(edge, min(corner.x, width - wide * scale - edge)), y: max(edge, min(corner.y, height - tall * scale - edge)))
+        let pill = CGRect(x: 0, y: 0, width: wide, height: tall)
+        ctx.saveGState()
+        defer { ctx.restoreGState() }
+        ctx.translateBy(x: at.x, y: at.y)
+        ctx.scaleBy(x: scale, y: scale)
+        ctx.setAlpha(min(max(grown, 0), 1))
         surface(CGPath(roundedRect: pill, cornerWidth: tall / 2, cornerHeight: tall / 2, transform: nil), ctx)
-        orb(middle: CGPoint(x: pill.minX + Painter.tagPad.left * size + orbWide / 2, y: pill.midY), across: orbWide, clock: 0, ctx)
-        name.draw(at: CGPoint(x: pill.minX + Painter.tagPad.left * size + orbWide + Painter.tagGap * size, y: pill.midY - words.height / 2))
-        return Box(x: pill.minX, y: pill.minY, w: pill.width, h: pill.height)
+        orb(middle: CGPoint(x: Painter.tagPad.left * size + orbWide / 2, y: pill.midY), across: orbWide, clock: 0, ctx)
+        name.draw(at: CGPoint(x: Painter.tagPad.left * size + orbWide + Painter.tagGap * size, y: pill.midY - words.height / 2))
+        return Box(x: at.x, y: at.y, w: wide * scale, h: tall * scale)
     }
 }

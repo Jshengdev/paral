@@ -5,6 +5,8 @@ public struct Tokens: Codable {
     public struct Capsule: Codable { public var rest, restClose, width, height, radius, bottom, pad, type, tagType: Double }
     public struct Mark: Codable {
         public var width, pad, ringMs, lineMs, bracketMs, overshoot, wobble, ringWide, ringTall, labelType: Double
+        /// A drawn arrow is two strokes, each at even speed: how long the pen takes over its shaft, then over its head.
+        public var shaftMs, headMs: Double
         /// The box that hugs a line is the kit's highlight: a thinner edge than the hand-drawn ring, and a faint wash of its colour inside.
         public var boxWidth, wash: Double
         /// The mark of a walk's step breathes while it waits for his click: how far the glow round its ink reaches at
@@ -18,10 +20,15 @@ public struct Tokens: Codable {
         public var size, edge, gap: Double
         /// How long it takes to step aside once its mark is drawn; then how far the ripple that says "here" spreads, and for how long.
         public var settleMs, ripple, rippleMs: Double
+        /// How small its name tag is when it pops out, as a share of its full size.
+        public var tagFrom: Double
     }
     public struct Board: Codable { public var pad, boxPadX, boxPadY, gap, rowGap, type, radius, maxWidth, margin, emptyWidth, emptyHeight: Double }
     public struct Motion: Codable {
-        public var tempo, openMs, lingerMs, wordMs, trailFadeMs, boardMs, readMsAWord, readMsLeast, flightMs, arc, bounce: Double
+        public var tempo, lingerMs, wordMs, trailFadeMs, readMsAWord, readMsLeast, flightMs, arc: Double
+        /// How long a thing takes to arrive, how long to leave (less: what goes is gone sooner than it came), and how
+        /// long the usual small change takes (a card growing to hold its rows, the cursor's tag popping out).
+        public var arriveMs, leaveMs, usualMs: Double
         /// For a line said without being asked: how long it stays after its reading time, and how long each step of its trail takes to light.
         public var unaskedStayMs, trailStepMs: Double
         /// How long a line stands, for each of its words, before another line may take its place in the capsule or on
@@ -37,8 +44,9 @@ public struct Tokens: Codable {
         public var type, padX, padY, maxWidth, gap: Double
         /// How far from the display's edge it stays, and how wide the paper edge round the arrow's ink is (0 for none).
         public var edge, halo: Double
-        /// How long the pen takes over the arrow; then how far a nod dips, how long one lasts, and the rest between two (0 for no nods).
-        public var drawMs, nod, nodMs, nodEveryMs: Double
+        /// How far a nod dips, how long one lasts, and the rest between two (0 for no nods). The pen's time over the
+        /// arrow is `mark.shaftMs` and `mark.headMs`.
+        public var nod, nodMs, nodEveryMs: Double
     }
     /// The toast that confirms something paral did, after the design kit's.
     public struct Toast: Codable {
@@ -52,10 +60,10 @@ public struct Tokens: Codable {
     /// the top and the side of the display it sits (the top clears the Mac's menu bar, 37 points on a notched display).
     public struct Guide: Codable { public var width, pad, radius, type, small, orb, gap, top, side: Double }
     /// The arrow that leads from a mark to what speaks about it, after the design kit's drawn arrow: how wide its
-    /// ink is, how far it stays from the mark and from what it leads to, how long the pen takes over it, how far its
-    /// ink and paper edge keep from every read line of the page, and the longest it may be. Where no such way is
-    /// found, none is drawn.
-    public struct Lead: Codable { public var width, gap, drawMs, clear, longest: Double }
+    /// ink is, how far it stays from the mark and from what it leads to, how far its ink and paper edge keep from
+    /// every read line of the page, and the longest it may be. Where no such way is found, none is drawn. The pen's
+    /// time over it is `mark.shaftMs` and `mark.headMs`.
+    public struct Lead: Codable { public var width, gap, clear, longest: Double }
     /// `opened` is what the toast says when a date has been opened in his calendar. It does not say "added": whether
     /// Calendar asks first or adds at once is not known.
     /// `name` is what the cursor's tag says: whose cursor it is.
@@ -89,6 +97,8 @@ public struct Tokens: Codable {
     public var guide: Guide
     public var lead: Lead
     public var motion: Motion
+    /// The four curves everything moves on (`Motion.swift`).
+    public var curves: Curves
     public var strings: Strings
 
     public static func load(_ path: String) throws -> Tokens {

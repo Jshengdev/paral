@@ -40,6 +40,9 @@ extension Scene {
         return before.withWay == nil ? (CGPoint(x: before.x, y: before.y), false) : (home, true)
     }
 
+    /// How far the cursor's name tag has popped out since the cursor came: 0 to 1, and a little past on the way.
+    private func popped(since came: Double, at t: Double) -> Double { tokens.curves.pop((t - came) / max(ms(tokens.motion.usualMs), 1)) }
+
     /// Paral's own cursor. It flies in one arc to where the newest stroke starts, rides the pen's tip while the stroke
     /// is drawn, then steps aside to rest just beside the mark, where a ripple spreads from it once to say "here".
     /// When the newest thing on the page is the arrow that says which way to scroll, it goes to the arrow instead,
@@ -53,9 +56,9 @@ extension Scene {
             let origin = origin(before: way.at)
             // From one arrow to the next it does not fly: the next sits where the one before did.
             let flown = origin.atAnArrow ? 1 : min(max((t - way.at) / max(flight, 1), 0), 1)
-            let aside = Motion.ease((t - inking(way).to) / max(ms(tokens.cursor.settleMs), 1))
+            let aside = tokens.curves.travel((t - inking(way).to) / max(ms(tokens.cursor.settleMs), 1))
             let tagged = t < inking(way).to && pointer(at: way.at - 1) == nil
-            return PointerPicture(x: origin.from.x, y: origin.from.y, alpha: 1, ripple: nil, withWay: .init(flight: flown, aside: aside), tag: tagged)
+            return PointerPicture(x: origin.from.x, y: origin.from.y, alpha: 1, ripple: nil, withWay: .init(flight: flown, aside: aside), tag: tagged, tagGrown: popped(since: way.at, at: t))
         }
         guard let now = newest, let first = now.path.first, let last = now.path.last else { return nil }
         let inkAt = now.began + flight, inkedAt = inkAt + duration(now.kind)
@@ -63,15 +66,15 @@ extension Scene {
         let tagged = t < inkedAt && pointer(at: now.began - 1) == nil
         if t < inkAt {
             let from = origin(before: now.began).from
-            let at = Motion.arc(from: from, to: first, Motion.spring((t - now.began) / flight, bounce: tokens.motion.bounce), lift: tokens.motion.arc)
-            return PointerPicture(x: at.x, y: at.y, alpha: 1, ripple: nil, tag: tagged)
+            let at = Motion.arc(from: from, to: first, tokens.curves.travel((t - now.began) / flight), lift: tokens.motion.arc)
+            return PointerPicture(x: at.x, y: at.y, alpha: 1, ripple: nil, tag: tagged, tagGrown: popped(since: now.began, at: t))
         }
         if t < inkedAt {
-            let tip = Pen.reach(now.path, Motion.land((t - inkAt) / duration(now.kind))).tip
-            return PointerPicture(x: tip.x, y: tip.y, alpha: 1, ripple: nil, tag: tagged)
+            let tip = Pen.reach(now.path, Motion.even((t - inkAt) / duration(now.kind))).tip
+            return PointerPicture(x: tip.x, y: tip.y, alpha: 1, ripple: nil, tag: tagged, tagGrown: popped(since: now.began, at: t))
         }
         let settle = ms(tokens.cursor.settleMs), place = rest(beside: now.path)
-        let aside = Motion.ease((t - inkedAt) / max(settle, 1))
+        let aside = tokens.curves.travel((t - inkedAt) / max(settle, 1))
         let spread = (t - inkedAt - settle) / max(ms(tokens.cursor.rippleMs), 1)
         // The ripple is given in fiftieths, so the picture changes only when it would be seen to.
         let ripple = spread >= 0 && spread < 1 ? (spread * 50).rounded(.down) / 50 : nil

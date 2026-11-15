@@ -111,7 +111,7 @@ extension Painter {
         let cursor = picture.pointer.flatMap { $0.withWay == nil ? Box(x: $0.x - c.edge, y: $0.y - c.edge, w: Layout.cursorWide * c.size + 2 * c.edge, h: c.size + 2 * c.edge) : nil }
         let asked = LeadWays.Asked(mark: Box(x: left, y: top, w: right - left, h: bottom - top), target: target, taken: taken, cursor: cursor, texts: picture.avoid)
         guard let strokes = way(asked) else { return nil }
-        let inked = Pen.reach(strokes: strokes, lead.drawn)
+        let inked = Pen.reach(arrow: strokes, lead.drawn, tokens: tokens)
         self.ink(inked, wide: tokens.lead.width, ctx)
         let points = Array(inked.joined())
         let xs = points.map(\.x), ys = points.map(\.y)

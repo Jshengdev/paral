@@ -1,0 +1,158 @@
+{
+ "name": "body: what arrives leaves at once and lands softly, and what leaves is slow to start and gone in less than half the time it took to come: the capsule opens in 420 ms at a press and is half open a tenth of the way in, and shuts in 180 at a close; the guide's card comes up the same way, and its closing line goes the same way",
+ "run": "body.moves",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes.",
+   "Late applications are not accepted.",
+   "Info Sessions, Workshops, and Office Hours",
+   "Application deadline: November 2, 2026",
+   "Apply for the Catalina Maymester"
+  ],
+  "watch": [
+   "capsule",
+   "card"
+  ],
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "key.down",
+     "at": 1000
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "next",
+     "text": "Open Deadlines",
+     "n": 1,
+     "of": 2
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "close"
+    }
+   },
+   {
+    "at": 5000,
+    "line": {
+     "type": "next",
+     "text": "That is every step for this page.",
+     "n": 2,
+     "of": 2,
+     "done": true
+    }
+   }
+  ],
+  "at": [
+   990,
+   1000,
+   1042,
+   1105,
+   1210,
+   1315,
+   1420,
+   2000,
+   3000,
+   3045,
+   3090,
+   3135,
+   3180,
+   3400,
+   9000,
+   9045,
+   9090,
+   9135,
+   9179,
+   9200
+  ]
+ },
+ "out": [
+  {
+   "capsule": 0,
+   "card": null
+  },
+  {
+   "capsule": 0,
+   "card": 0
+  },
+  {
+   "capsule": 0.49,
+   "card": 0.49
+  },
+  {
+   "capsule": 0.83,
+   "card": 0.83
+  },
+  {
+   "capsule": 0.97,
+   "card": 0.97
+  },
+  {
+   "capsule": 1,
+   "card": 1
+  },
+  {
+   "capsule": 1,
+   "card": 1
+  },
+  {
+   "capsule": 1,
+   "card": 1
+  },
+  {
+   "capsule": 1,
+   "card": 1
+  },
+  {
+   "capsule": 0.97,
+   "card": 1
+  },
+  {
+   "capsule": 0.87,
+   "card": 1
+  },
+  {
+   "capsule": 0.66,
+   "card": 1
+  },
+  {
+   "capsule": 0,
+   "card": 1
+  },
+  {
+   "capsule": 0,
+   "card": 1
+  },
+  {
+   "capsule": 0,
+   "card": 1
+  },
+  {
+   "capsule": 0,
+   "card": 0.97
+  },
+  {
+   "capsule": 0,
+   "card": 0.87
+  },
+  {
+   "capsule": 0,
+   "card": 0.66
+  },
+  {
+   "capsule": 0,
+   "card": 0.11
+  },
+  {
+   "capsule": 0,
+   "card": null
+  }
+ ]
+}

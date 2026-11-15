@@ -76,7 +76,7 @@
    "cursor": {
     "moved": true,
     "tip": "away from it",
-    "onText": false,
+    "onText": true,
     "ripple": "none",
     "wears": "its name tag"
    }
