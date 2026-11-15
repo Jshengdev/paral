@@ -16,8 +16,8 @@ extension Scene {
         capsule.scrolled = still || quiet ? 0 : t / step - newest
     }
 
-    /// Below what share of the display's height (0 is its top) the page's own ink is taken as well as its read
-    /// lines, so the pill, its bubble and the cross keep off a drawing too (`Screen.taken`): the band at the foot.
+    /// Below what share of the display's height (0 is its top) the scene is told of the page's own ink as well as its
+    /// read lines (`Screen.taken`): the band at the foot. The pill does not move for it.
     public var footShare: Double { max(0, Layout.inkFrom(width: width, height: floor, tokens: tokens) / max(height, 1)) }
 
     /// How loud it is at `t`, 0 to 1: the microphone's sound where a chunk of it covers that moment (each stands for
