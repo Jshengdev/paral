@@ -1,0 +1,71 @@
+{
+ "name": "dates: a sentence that names the last day of a span the page writes, or a day from a list of days after one month, is not held back; a day the page does not hold still is, and a count of days or a time is not a day",
+ "run": "dates.unknown",
+ "in": {
+  "cases": [
+   [
+    "Final exams start Wednesday, December 9, and run through Wednesday, December 16.",
+    [
+     "Final Examinations December 9-16"
+    ]
+   ],
+   [
+    "Before that you get four study days, Saturday December 5 through Tuesday December 8.",
+    [
+     "Study Days December 5-8"
+    ]
+   ],
+   [
+    "It runs from May 17 to June 11.",
+    [
+     "Monday, May 17–Friday, June 11, 2027"
+    ]
+   ],
+   [
+    "The last session is on December 7.",
+    [
+     "Info sessions: December 5, 6 and 7 in the Student Union"
+    ]
+   ],
+   [
+    "Exams end on December 18.",
+    [
+     "Final Examinations December 9-16"
+    ]
+   ],
+   [
+    "It closes on November 8.",
+    [
+     "November 22 at 11:59pm: Application closes, in 8 days."
+    ]
+   ],
+   [
+    "It closes on November 11.",
+    [
+     "November 22 at 11:59pm: Application closes."
+    ]
+   ]
+  ]
+ },
+ "out": [
+  null,
+  null,
+  null,
+  null,
+  {
+   "month": 12,
+   "day": 18,
+   "year": null
+  },
+  {
+   "month": 11,
+   "day": 8,
+   "year": null
+  },
+  {
+   "month": 11,
+   "day": 11,
+   "year": null
+  }
+ ]
+}

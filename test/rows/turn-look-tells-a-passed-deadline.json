@@ -1,0 +1,182 @@
+{
+ "name": "turn: a look at a kept page whose one deadline has passed: the line is boxed and one sentence says it closed and how long ago, with no board; it is not a date he can keep, so \"add it to my calendar\" is told there is none",
+ "run": "turn",
+ "in": {
+  "tape": "maymester-passed.json",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "hello",
+     "body": "row"
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "look",
+     "at": 1794700000000,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Wrigley Institute for Environment and Sustainability",
+       "box": {
+        "x": 200,
+        "y": 200,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Catalina Residential College Maymester",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Connect to the Planet and Your Peers",
+       "box": {
+        "x": 200,
+        "y": 400,
+        "w": 900,
+        "h": 40
+       }
+      },
+      {
+       "text": "Application deadline: November 2, 2026",
+       "box": {
+        "x": 200,
+        "y": 500,
+        "w": 900,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "until": "mute"
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1794700010000
+    },
+    {
+     "say": "add it to my calendar"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 1794700012000
+    }
+   ]
+  ]
+ },
+ "out": [
+  {
+   "v": 1,
+   "type": "ready",
+   "mind": "paral",
+   "holdKey": "rightOption",
+   "drawKey": "shift",
+   "earGraceMs": 300,
+   "markPad": 4,
+   "pictureLongEdge": 1280,
+   "cropAround": {
+    "share": 1,
+    "points": 200
+   },
+   "lookEveryMs": 2500
+  },
+  {
+   "v": 1,
+   "type": "clear"
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "g1",
+   "beat": 0,
+   "kind": "box",
+   "box": {
+    "x": 100,
+    "y": 250,
+    "w": 450,
+    "h": 20
+   }
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "g1",
+   "beat": 0,
+   "text": "This closed on November 2, 2026, 12 days ago.",
+   "trail": [
+    "saw this page",
+    "read the whole page",
+    "found 1 date that has passed"
+   ]
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "g1",
+   "why": "a look he did not ask for is shown, not spoken"
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "listening"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "add it to my calendar",
+   "final": false
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "thinking"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "add it to my calendar",
+   "final": true
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t1",
+   "beat": 0,
+   "text": "I have not found a date to keep on this page."
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "t1",
+   "why": "no voice is set up"
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "idle"
+  }
+ ]
+}

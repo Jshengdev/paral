@@ -1,0 +1,99 @@
+{
+ "name": "dates: a span of days gives both its ends, with a hyphen, a long dash, \"through\" or \"to\", and a year after it is the year of both; a time after a day is not a second day",
+ "run": "dates.in",
+ "in": {
+  "texts": [
+   "Final Examinations December 9-16",
+   "Study Days: December 5–8, 2026",
+   "December 5 through 8",
+   "October 1-November 5, 2026",
+   "Monday, May 17–Friday, June 11, 2027",
+   "Tuesday, November 17, 4:00-05:00 pm on Zoom",
+   "November 22 at 11:59pm",
+   "Open December 1 - 3 pm"
+  ]
+ },
+ "out": [
+  [
+   {
+    "month": 12,
+    "day": 9,
+    "year": null
+   },
+   {
+    "month": 12,
+    "day": 16,
+    "year": null
+   }
+  ],
+  [
+   {
+    "month": 12,
+    "day": 5,
+    "year": 2026
+   },
+   {
+    "month": 12,
+    "day": 8,
+    "year": 2026
+   }
+  ],
+  [
+   {
+    "month": 12,
+    "day": 5,
+    "year": null
+   },
+   {
+    "month": 12,
+    "day": 8,
+    "year": null
+   }
+  ],
+  [
+   {
+    "month": 10,
+    "day": 1,
+    "year": null
+   },
+   {
+    "month": 11,
+    "day": 5,
+    "year": 2026
+   }
+  ],
+  [
+   {
+    "month": 5,
+    "day": 17,
+    "year": null
+   },
+   {
+    "month": 6,
+    "day": 11,
+    "year": 2027
+   }
+  ],
+  [
+   {
+    "month": 11,
+    "day": 17,
+    "year": null
+   }
+  ],
+  [
+   {
+    "month": 11,
+    "day": 22,
+    "year": null
+   }
+  ],
+  [
+   {
+    "month": 12,
+    "day": 1,
+    "year": null
+   }
+  ]
+ ]
+}

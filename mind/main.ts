@@ -47,6 +47,7 @@ function cartesia(key: string): Partial<Ports> {
     settings.heldBackLine.value,
     settings.circleNoWordsLine.value,
     settings.noPageLine.value,
+    settings.leftOutLine.value,
   ];
   const voiceName = () => `cartesia ${settings.voiceModel.value} ${settings.voiceId.value} pcm_s16le 24000`;
   // Kept under tmp/, which is not committed: the sound is made once on each Mac, for the voice in use.

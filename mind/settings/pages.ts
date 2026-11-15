@@ -50,6 +50,12 @@ export const pages = {
     measured: "not seen live",
   } satisfies Setting<string>,
 
+  leftOutLine: {
+    value: "I left out part of that: it named a date I could not find on a page I have read.",
+    why: "Said after an answer when some of its sentences, not all, were held back for naming a date that is on no page paral has read. Without it the sentences left can sound like the whole answer.",
+    measured: "not seen live",
+  } satisfies Setting<string>,
+
   pageLinesGiven: {
     value: 170,
     why: "At most this many lines of each kept page are given to the deep model: the page on his screen with its closed sections, then the other kept pages of the same site. It is what lets paral say a date or a step that is not on the screen. More lines cost time on every ask.",

@@ -25,6 +25,23 @@
      }
     ]
    }
+  ],
+  "when does it close": [
+   {
+    "problem": "When the club application closes",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "The application closes November 22 at 11:59pm.",
+      "mark": null
+     },
+     {
+      "say": "A late form is taken until November 30.",
+      "mark": null
+     }
+    ]
+   }
   ]
  },
  "leaks": [],

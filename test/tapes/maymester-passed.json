@@ -1,0 +1,48 @@
+{
+ "answers": {
+  "what is left": [
+   {
+    "problem": "What is left before the club application closes",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "Three things are left, and the first is the officers' training.",
+      "mark": null
+     }
+    ]
+   }
+  ]
+ },
+ "leaks": [],
+ "pages": [
+  {
+   "name": "catalina-island-maymester",
+   "url": "https://dornsife.usc.edu/wrigley/education/catalina-residential-college/catalina-island-maymester/",
+   "readOn": "2026-11-15",
+   "title": "Catalina Residential College Maymester - Wrigley Institute for Environment and Sustainability",
+   "lines": [
+    "Wrigley Institute for Environment and Sustainability",
+    "MENU",
+    "Catalina Residential College Maymester",
+    "Connect to the Planet and Your Peers",
+    "Join us for a month filled with once-in-a-lifetime, immersive learning experiences centered on urban oceans!",
+    "Our Catalina Residential College is a USC Dornsife Maymester program focused on understanding and solving issues in the San Pedro Channel, a unique ocean environment off the coast of one of the world’s busiest port cities. Everything takes place at the Wrigley Marine Science Center, our unique living laboratory on Santa Catalina Island.",
+    "Application deadline: November 2, 2026",
+    "<a",
+    "class=\"link\"",
+    "href= https://usc.qualtrics.com/jfe/form/SV_20hMl7KSwueSKXQ",
+    "target=\"_blank\" aria-label=\"Read more about Apply for the Catalina Maymester\"",
+    "Apply for the Catalina Maymester"
+   ]
+  }
+ ],
+ "glance": {
+  "kind": "passed",
+  "line": "Application deadline: November 2, 2026",
+  "under": "",
+  "say": "This closed on November 2, 2026, 12 days ago.",
+  "sayInView": "This closed on November 2, 2026, 12 days ago.",
+  "ahead": []
+ }
+}

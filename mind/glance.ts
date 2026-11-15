@@ -18,7 +18,8 @@ export type Asked = Following & { page: string | null };
 /**
  * The looks paral takes without being asked, for one connection. A look does something only when his screen is one
  * of USC's kept pages. The first time a page is seen, the deep model is asked about the kept page's own text:
- * whether it holds one thing that will cost him later. Nothing read from his screen is sent for that. If it does,
+ * whether it holds one thing that will cost him later, or a deadline that has passed on a page that still reads as
+ * open. Nothing read from his screen is sent for that. If it does,
  * the line is marked where it is on his screen now (the line itself, or the heading it sits under), one sentence is
  * shown in the capsule with the trail of what was done, and what is still ahead is drawn as a board. It is shown,
  * not spoken. When he scrolls or opens a section the mark moves to where the thing now is. A date it shows is
@@ -86,12 +87,14 @@ export function glances({ ports, settings, send, log }: Hands, remember: (ahead:
       const reached = line.found ? "found the line" : "found where it is";
       // Each step of the trail is something that was done for this look. The model was given this one kept page, up to a number of lines.
       const read = page.lines.length <= settings.pageLinesGiven.value ? "read the whole page" : `read its first ${settings.pageLinesGiven.value} lines`;
-      const trail = following ? ["saw this page", "found what you asked for"] : first ? ["saw this page", read, `found 1 ${glanced.kind}`] : ["saw this page", reached];
+      const what = glanced.kind === "passed" ? "found 1 date that has passed" : `found 1 ${glanced.kind}`;
+      const trail = following ? ["saw this page", "found what you asked for"] : first ? ["saw this page", read, what] : ["saw this page", reached];
       send({ v, type: "say", id, beat: 0, text, trail });
       send({ v, type: "mute", id, why: "a look he did not ask for is shown, not spoken" });
       // What is ahead stays drawn while he is on this page: it is sent again each time the mark moves. One step to a
       // row: three steps with their dates side by side were shrunk to fit, down to words no one could read.
       if (glanced.ahead.length > 0) send({ v, type: "board", id, rows: glanced.ahead.map((step) => [step.by ? `${step.step}: ${step.by}` : step.step]) });
+      // Only a date still ahead is one he can ask to keep: a passed one is told, never offered.
       if (glanced.kind === "date") showed({ title: named(glanced.line, page.title), written: glanced.line, url: page.url });
       log(`${id}: shown without being asked: "${text}"; the mark is on ${target ? `"${target.line}"` : "nothing, since neither the line nor its heading is in view"}`);
     },

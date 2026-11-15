@@ -1,14 +1,39 @@
 const MONTHS = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
-const NAMED = new RegExp(`\\b(${MONTHS.map((month) => `${month}|${month.slice(0, 3)}`).join("|")})\\.?,? (\\d{1,2})(?:st|nd|rd|th)?\\b(?:,? (\\d{4}))?`, "gi");
+const MONTH = `(${MONTHS.map((month) => `${month}|${month.slice(0, 3)}`).join("|")})`;
+/** The last day of a span, straight after its first: "-16", " – 8", " through 8", " to 16". A time ("- 3 pm", "-05:00") is not one. */
+const SPAN = "(?:\\s*(?:-|–|—|through|thru|to)\\s*(\\d{1,2})(?:st|nd|rd|th)?\\b(?!:\\d|\\s?[ap]\\.?m\\b|\\d))?";
+const NAMED = new RegExp(`\\b${MONTH}\\.?,? (\\d{1,2})(?:st|nd|rd|th)?\\b${SPAN}(?:,? (\\d{4}))?`, "gi");
+const month = (name: string) => MONTHS.findIndex((full) => full.startsWith(name.toLowerCase().slice(0, 3))) + 1;
 
 /** A day of the year a text names: its month (1 to 12), its day, and its year when the text writes one. */
 export type Named = { month: number; day: number; year: number | null };
 
-/** Every month and day a text names: "November 22", "Nov. 22nd", "July 1, 2026". "May" with a number after it counts; "may" alone does not. */
+/**
+ * Every month and day a text names: "November 22", "Nov. 22nd", "July 1, 2026". A span gives both its ends, and a
+ * year after it is the year of both: "December 9-16", "December 5 through 8, 2026". "May" with a number after it
+ * counts; "may" alone does not.
+ */
 export function datesIn(text: string): Named[] {
   return [...text.matchAll(NAMED)]
-    .map(([, month, day, year]) => ({ month: MONTHS.findIndex((name) => name.startsWith(month.toLowerCase().slice(0, 3))) + 1, day: Number(day), year: year ? Number(year) : null }))
+    .flatMap(([, name, day, last, year]) => [day, ...(last === undefined ? [] : [last])].map((d) => ({ month: month(name), day: Number(d), year: year ? Number(year) : null })))
     .filter((date) => date.day >= 1 && date.day <= 31);
+}
+
+const A_MONTH = new RegExp(`\\b${MONTH}\\b`, "gi");
+/** A number that can be a day: no part of a time or a longer number, and not a count of something. */
+const A_DAY = /(?<![:\d])\b(\d{1,2})(?:st|nd|rd|th)?\b(?!:\d|\d|\s?[ap]\.?m\b|\s(?:days?|weeks?|months?|years?|hours?|minutes?|units?|credits?)\b)/gi;
+
+/**
+ * Every day a page may be giving for a month it names: each number that can be a day and stands within forty letters
+ * after a month's name, with no other month between. It is wider than `datesIn` on purpose, and only for what a page
+ * holds: a page writes "December 5, 6 and 8" and means three days, where only the first has its month in front of it.
+ */
+function daysHeld(text: string): string[] {
+  const months = [...text.matchAll(A_MONTH)].filter((found) => found[0] !== "may");
+  return [...text.matchAll(A_DAY)].flatMap((day) => {
+    const before = months.findLast((found) => found.index < day.index);
+    return before !== undefined && day.index - (before.index + before[0].length) < 40 ? [`${month(before[1])}-${Number(day[1])}`] : [];
+  });
 }
 
 /**
@@ -16,7 +41,7 @@ export function datesIn(text: string): Named[] {
  * them. A date he could not have read on a page paral has read is not said: it would be made up.
  */
 export function unknownDate(said: string, sources: string[]): Named | null {
-  const known = new Set(sources.flatMap(datesIn).map((date) => `${date.month}-${date.day}`));
+  const known = new Set([...sources.flatMap(datesIn).map((date) => `${date.month}-${date.day}`), ...sources.flatMap(daysHeld)]);
   return datesIn(said).find((date) => !known.has(`${date.month}-${date.day}`)) ?? null;
 }
 

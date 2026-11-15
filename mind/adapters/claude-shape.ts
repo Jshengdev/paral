@@ -22,7 +22,7 @@ export const Mark = z
 /** What the model writes for a look he did not ask for. `found` false means the page holds nothing that will cost him later. */
 export const Glance = z.object({
   found: z.boolean(),
-  kind: z.enum(["date", "step"]),
+  kind: z.enum(["date", "step", "passed"]),
   line: z.string(),
   under: z.string(),
   say: z.string(),

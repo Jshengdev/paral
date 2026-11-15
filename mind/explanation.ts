@@ -101,8 +101,10 @@ export function explanation({ settings, send, log }: Hands, asking: Asking, { ta
       board.fill(leak || clip.on() ? null : answered.board);
       board.close("no board came");
       drew({ type: "break.fixed" });
-      // If every sentence was held back for a date, he is told plainly that it is not on a page paral has read.
-      if (sentences.length > 0 && sentences.every(({ say }) => held.has(say))) tell([...sentences, { say: settings.noPageLine.value, mark: null }]);
+      // A sentence held back for a date is never left out in silence: what is left can sound like the whole answer.
+      // He is told that part was left out, or, when every sentence went, that it is on no page paral has read.
+      const kept = sentences.filter(({ say }) => !held.has(say)).length;
+      if (kept < sentences.length) tell([...sentences, { say: kept === 0 ? settings.noPageLine.value : settings.leftOutLine.value, mark: null }]);
       for (const { say } of sentences) if (!held.has(say)) drew({ type: "line.shown", text: say });
       log(`${id}: ${sentences.length} sentence${sentences.length === 1 ? "" : "s"}, all sent at ${since()} ms from the release`);
     },
