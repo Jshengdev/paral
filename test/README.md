@@ -35,6 +35,7 @@ those are helpers, not test files.
 | `body.boardType` | a hand-written run with boards, filmed: what the film's record says of the size each board's words were drawn at |
 | `body.guide` | a hand-written run with `next` lines, looked at at given moments: whether the guide's card is up, what it says, what it lies on, and how many moments show a card with the guide switched off |
 | `body.lead` | a hand-written run on a drawn page, looked at at given moments: whether the arrow from a mark to what speaks about it is up, which line it leaves, what it leads to, whether its ink is growing, still or going back, and whether it keeps clear of every read line's words, off the board and inside the display |
+| `body.breath` | a hand-written walk through steps on a drawn page, looked at at given moments: which line the newest mark is on, whether the pen is still drawing it, and how far its breath reaches; then how many of those moments show a breath with motion reduced |
 | `body.inkInside` | a hand-written run with marks, looked at at given moments: how many marks are up and whether all of their ink lies inside the display |
 | `body.pressedAgain` | a run on a tape where the key is pressed again soon after a release: the order of the key lines the mind got |
 

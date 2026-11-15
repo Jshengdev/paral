@@ -6,7 +6,7 @@ public struct Drawn: Equatable {
     public var box: Box
     /// For a board: the size its words were drawn at, in points, which is the tokens' size times the card's shrink.
     public var type: Double?
-    /// For a drawn arrow: the points the pen has inked so far, in the order it draws them.
+    /// For a mark and for a drawn arrow: the points the pen has inked so far, in the order it draws them.
     public var path: [CGPoint]?
 }
 
@@ -75,9 +75,12 @@ public struct Painter {
         defer { NSGraphicsContext.current = before }
         var drawn: [Drawn] = []
         if let box = trail(picture.trail, ctx) { drawn.append(Drawn(what: "trail", id: nil, box: box)) }
-        if let echo = picture.echo, let box = mark(echo, his: true, avoiding: picture.avoid, ctx) { drawn.append(Drawn(what: "echo", id: echo.key, box: box)) }
+        if let echo = picture.echo, let ink = mark(echo, his: true, avoiding: picture.avoid, ctx) { drawn.append(Drawn(what: "echo", id: echo.key, box: ink.box)) }
         for mark in picture.marks {
-            if let box = self.mark(mark, avoiding: picture.avoid, ctx) { drawn.append(Drawn(what: "mark", id: mark.key, box: box)) }
+            guard let ink = self.mark(mark, avoiding: picture.avoid, ctx) else { continue }
+            drawn.append(Drawn(what: "mark", id: mark.key, box: ink.box, path: ink.inked))
+            // A breath is named too, with how far its glow reaches just then, so a film's record says when a mark breathes.
+            if mark.breath > 0 { drawn.append(Drawn(what: "breath", id: mark.key, box: ink.box.grown(tokens.mark.breath * mark.breath))) }
         }
         if let board = picture.board {
             let placed = self.board(board, clock: picture.clock, ctx)

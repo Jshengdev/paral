@@ -18,6 +18,7 @@ when; the body only draws. Nothing here takes a click except the cross, and noth
 | Highlight ring, and drawn notes | "this line": a ring, underline, wavy line or bracket drawn by hand in ember, with a note beside it when the mind sends one | `mark` (kind `ring`, `underline`, `wavy`, `bracket`; `label` for the note) | `clear`, a close, or a new mark on the same line | `mark.*`, `ember`, `cardinal` (the note) |
 | Highlight (the box) | "this line", where lines sit too close for a ring: a thin cardinal edge and a faint wash laid along the line by the pen | `mark` (kind `box`) | `clear`, a close, or a new mark on the same line | `mark.boxWidth`, `mark.wash`, `mark.ringMs`, `cardinal` |
 | Drawn arrow (the kit's, from its ring to its card) | "this line is what that is about": one curve in ember from the newest mark to whatever is speaking about it, and only where a way exists that keeps clear of every word on the page | no line of its own: the newest `mark` once the pen has finished it, while the capsule carries that mark's own `say`; or, with the capsule at rest, while the guide's card (`next`) names the marked line | goes with its mark (`clear`, a close, a newer mark); drawn back as the capsule closes; gone when the card's words move on, and while a `way` arrow is up | `lead.*`, `way.head`, `way.halo`, `mark.width`, `ember`, `cursor.settleMs` |
+| A step's mark, waiting (build's name) | "this is the step you are on; click it when it is done": the mark of a walk's step breathes, a glow of its own colour round its ink that swells and goes back, and a box's wash deepens with it | a `mark` whose `board`, with the same id, names the step (`now`) | the step moving on (the mind's `clear` and next mark, also when the next step is on the same line) or the walk ending; nothing breathes with motion reduced | `mark.breath`, `mark.breathDeep`, `mark.breathMs`, `way.nodEveryMs`, `cursor.settleMs`, `cursor.rippleMs` |
 | Cursor | paral's own pointer: it shows where, never clicks. It flies to the newest mark or arrow, rides the pen, rests beside it; one ripple says "here" | the newest `mark`, `way` or `echo` on the page | goes with its mark or arrow; none with motion reduced | `cursor.*`, `cardinalDeep`, `cardinal`, `ember`, `motion.flightMs`, `motion.arc`, `motion.bounce` |
 | Cursor: tag | says whose cursor is moving: a light pill with the orb and the name, worn only while it comes in from nowhere | the first `mark` or `way` after the page was clean | its arrival | `strings.name`, `light`, `glass`, `shadow`, `gold` |
 | Cursor: thinking | says paral is working: the orb beside a cursor that is already on the page | `key.up`, until the answer begins | the answer's first sentence | `gold`, the cursor's reds |
@@ -54,6 +55,7 @@ and send buttons (paral is held and let go), the cursor's click (paral clicks no
 | `Motion.swift` | the curves: ease, land, spring, arc |
 | `Pen.swift` | the path the pen takes for each kind of mark |
 | `PenWay.swift` | the strokes the pen makes for the two drawn arrows: a shaft, then a head |
+| `SceneBreath.swift` | the mark of a walk's step, which breathes while it waits for his click |
 | `SceneLead.swift` | the arrow from a mark to what speaks about it: which mark has one, what it leads to, how far it is inked |
 
 ## Drawing it
@@ -203,6 +205,20 @@ mind sends a `way`, and the cursor goes to the arrow: it flies to the tag, the p
 and it rests beside the arrow. That is how it leads from one place to the next. From an arrow it sets off again from
 the capsule, since the scene does not know where the painter put the arrow.
 
+A click on the step's box moves the walk on, so the mark of the step he is on waits for him and says so by breathing
+(`SceneBreath.swift`). The mind sends nothing for it: a walk's mark is a mark whose board names the step. It is
+still while the pen draws it; its first breath comes when the cursor has stepped aside and its ripple has spread
+(`cursor.settleMs`, `cursor.rippleMs`: about a second after the ink is whole, so he sees it before he clicks; on the
+recorded walk his clicks came three seconds apart), and one more follows each rest, which is the way arrow's
+(`way.nodEveryMs`), so the two signs that something waits for him keep one rhythm. A breath lasts
+`mark.breathMs` (1400, twice the arrow's nod: in and out alike and slow at both ends, where the nod is a quick dip).
+It is a glow of the mark's own colour round its ink, `mark.breath` points wide at its top (5: it reaches into the gap
+to the lines above and below and moves no ink, so nothing has to make room for it) and `mark.breathDeep` strong (0.25:
+the words under it still read); a box's wash deepens to the same and comes back. All three are chosen on stills, not
+measured on a screen. On every step the mind clears and sends the mark again, also when the next step is on the same
+line (on the club page steps 1 and 2 are), and the body draws it again with the pen and starts its breath from that
+ink: the redraw is what tells him the click took. The film's record names each breath (`breath`, with the mark's id).
+
 ## A film follows the page
 
 A step of a flow may put another page on the screen. The film draws each frame over the page that was up at that
@@ -226,7 +242,7 @@ tokens' size times whatever the card was shrunk by.
 `paral-headless` commands: `read`, `smaller`, `page`, `lines`, `keys SECONDS NAME` (watch a key), `flow`, `film`,
 `frame RUN TOKENS MS OUT.png` (one moment of a run, for the dials page), `capsule RUN TOKENS MS...` (what the capsule
 shows at those moments), `placed RUN TOKENS MS...` (where the painter puts each thing at those moments, the points
-a drawn arrow's pen has inked, and the way arrow's, the cursor's and the board's own values).
+the pen has inked of a mark and of a drawn arrow, and the way arrow's, the cursor's and the board's own values).
 
-Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way`, `body.cursor`, `body.steps`, `body.pages`, `body.toast`, `body.boardType`, `body.guide`, `body.lead` and `body.inkInside` rows, with no window. The hosts are compiled and have never been run:
+Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way`, `body.cursor`, `body.steps`, `body.pages`, `body.toast`, `body.boardType`, `body.guide`, `body.lead`, `body.breath` and `body.inkInside` rows, with no window. The hosts are compiled and have never been run:
 the key, the microphone, the screen picture and the overlay wait for a person and their grants (`./run`).

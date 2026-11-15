@@ -7,6 +7,10 @@ public struct Tokens: Codable {
         public var width, pad, ringMs, lineMs, bracketMs, overshoot, wobble, ringWide, ringTall, labelType: Double
         /// The box that hugs a line is the kit's highlight: a thinner edge than the hand-drawn ring, and a faint wash of its colour inside.
         public var boxWidth, wash: Double
+        /// The mark of a walk's step breathes while it waits for his click: how far the glow round its ink reaches at
+        /// the top of a breath, how strong the glow is then (a box's wash deepens to the same), and how long one
+        /// breath lasts. The rest between two is the way arrow's (`way.nodEveryMs`): both say "this waits for you".
+        public var breath, breathDeep, breathMs: Double
     }
     /// Paral's own cursor, after the design kit's.
     public struct Cursor: Codable {
