@@ -1,5 +1,5 @@
 {
- "name": "body: the pill and its bubble keep off the page's own ink at the foot, not only its read lines: on a page whose foot holds ink the reader read no words from (a drawing), the pill opens beside it rather than over it, its bubble too, and at rest the collapsed pill stays at the middle below it",
+ "name": "body: the pill and its bubble stay at the bottom centre over the page's own ink at the foot (a drawing with no read line) as over words, at rest and open",
  "run": "body.pillOnInk",
  "in": {
   "ink": [
@@ -69,15 +69,15 @@
   },
   {
    "look": "listening",
-   "atTheMiddle": false,
-   "pillOnTheInk": false,
-   "bubbleOnTheInk": false
+   "atTheMiddle": true,
+   "pillOnTheInk": true,
+   "bubbleOnTheInk": true
   },
   {
    "look": "speaking",
-   "atTheMiddle": false,
-   "pillOnTheInk": false,
-   "bubbleOnTheInk": false
+   "atTheMiddle": true,
+   "pillOnTheInk": true,
+   "bubbleOnTheInk": true
   }
  ]
 }

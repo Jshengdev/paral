@@ -1,5 +1,5 @@
 {
- "name": "body: the open pill and its bubble keep off the page's read text: with a line of the page where the bubble would stand at the display's middle, the pill opens to the nearest place along the foot where neither lies on any line, and at rest it is the collapsed pill at the middle again, off the text too",
+ "name": "body: the open pill and its bubble stay at the bottom centre over the page's words (the owner's word at 01:56): with a line of the page where the bubble stands, the pill opens at the display's middle and covers it with its solid surface, and at rest the collapsed pill is at the middle too",
  "run": "body.pill",
  "in": {
   "lines": [
@@ -76,27 +76,27 @@
   {
    "look": "listening",
    "pill": "234x50",
-   "middle": 968,
-   "onText": false,
+   "middle": "the display's middle",
+   "onText": true,
    "bubble": {
     "says": "when is the deadline for my club",
     "stone": [],
     "caret": false,
     "aboveThePill": 8,
-    "onText": false
+    "onText": true
    }
   },
   {
    "look": "thinking",
    "pill": "234x50",
-   "middle": 968,
-   "onText": false,
+   "middle": "the display's middle",
+   "onText": true,
    "bubble": {
     "says": "when is the deadline for my club",
     "stone": [],
     "caret": null,
     "aboveThePill": 8,
-    "onText": false
+    "onText": true
    }
   },
   {

@@ -2,8 +2,8 @@ import CoreGraphics
 import Foundation
 
 /// The page's own ink at the foot of the display: whatever the page draws there (words the reader did not read, a
-/// drawing, a rule), so the pill and its bubble can keep off it as they keep off the read lines. It is for the scene
-/// only and never crosses the seam.
+/// drawing, a rule). The scene is told of it beside the read lines; the pill stays at the bottom centre whatever is
+/// under it, and the ink is kept for an arrow to keep off a drawing. It never crosses the seam.
 extension Screen {
     /// How many cells across the picture is looked at in, each as wide as it is tall; and how far a cell's grey may be
     /// from the page's own before it counts as ink, of 255. A cell is about 12 pixels of a Retina picture of a laptop's
