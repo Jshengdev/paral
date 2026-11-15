@@ -1,4 +1,4 @@
-import { of, type Ask } from "../timeline.ts";
+import { of, shownOnly, type Ask } from "../timeline.ts";
 import { no, yes, type Verdict } from "../verdict.ts";
 import { plain } from "./text.ts";
 
@@ -13,8 +13,11 @@ export function sentenceForm(ask: Ask): Verdict[] {
 }
 
 // DuckyHelper's own notes for the tutor in the video (version 0.10.32): "a sentence is said once, never twice".
+// A card that shows an answer's first sentence again, without speaking it, has not said it twice (the run of 05:21
+// on 11-15 was failed for it three times: "the answer stays on a card").
 function saidOnce(ask: Ask): Verdict[] {
-  const says = of(ask.moments, "say");
+  const onCard = shownOnly(ask);
+  const says = of(ask.moments, "say").filter((m) => !onCard(m.id));
   if (says.length === 0) return [];
   const twice = says.map((m) => plain(m.text).trim()).filter((text, at, all) => all.indexOf(text) !== at);
   const what = "A sentence is said once, never twice";

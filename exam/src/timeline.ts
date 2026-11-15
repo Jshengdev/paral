@@ -80,4 +80,16 @@ export function shown(ask: Ask): Spoken[] {
   return out;
 }
 
+/**
+ * Which lines the mind marks as shown and not spoken: a line of its own on a card (an offer, or an answer kept on its
+ * card). A line is let off only when nothing of its turn's id was voiced, so an answer's own sentence cannot be
+ * excused this way.
+ */
+export function shownOnly(ask: Ask): (id: string) => boolean {
+  const turn = (id: string) => id.split(":")[0];
+  const marked = new Set(of(ask.moments, "look").filter((m) => m.name === "voice down" && m.of !== undefined).map((m) => m.of));
+  const voicedTurns = new Set(of(ask.moments, "voice").map((m) => turn(m.of)));
+  return (id) => marked.has(turn(id)) && !voicedTurns.has(turn(id));
+}
+
 export const sinceUp = (ask: Ask, moment: Moment | null) => (moment === null || ask.up === null ? null : moment.at - ask.up);
