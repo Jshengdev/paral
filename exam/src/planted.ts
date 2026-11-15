@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { kept } from "./judge/keep.ts";
 import { walked } from "./judge/showme.ts";
-import { glanced, pageChanged } from "./judge/look.ts";
+import { glanced, pageChanged, wayDrawn } from "./judge/look.ts";
 import { marks, standingBefore } from "./judge/marks.ts";
 import { drawnIn } from "./judge/motion.ts";
 import { onlyThePart } from "./judge/picture.ts";
@@ -52,6 +52,9 @@ const KEPT = { title: "Recognition Process", url: "https://example.edu/recogniti
 // A calendar file as the build writes one, for the club's closing date.
 const ICS = join(mkdtempSync(join(tmpdir(), "paral-exam-keep-")), "keep.ics");
 writeFileSync(ICS, "BEGIN:VCALENDAR\nBEGIN:VEVENT\nDTSTART:20261122T235900\nSUMMARY:Application closes\nEND:VEVENT\nEND:VCALENDAR\n");
+// The exam's display, and a way line sent at two seconds.
+const SCREEN = { id: 1, scale: 2, x: 0, y: 0, w: 1728, h: 1117 };
+const WAY_DOWN: Moment = { at: 2000, kind: "way", to: "down", toward: "Deadlines" };
 // How the build draws a board, as its look file had it on 2026-11-14.
 const BOARD_LOOK = { pad: 20, boxPadY: 9, rowGap: 16, type: 15 };
 // A look with no key at 1000 ms, and the one line it shows a second later with a trail above it.
@@ -86,7 +89,7 @@ function film(grow: (ms: number) => number) {
     for (let y = box.y; y < box.y + box.h; y++) for (let x = box.x; x < box.x + columns; x++) ink[y * size.w + x] = 1;
     return ink;
   };
-  return { size, ink: async (ms: number) => filled(grow(ms)), changed: async () => filled(0), last: async () => filled(1), restZone: box };
+  return { size, ink: async (ms: number) => filled(grow(ms)), cover: async (ms: number) => filled(grow(ms)), changed: async () => filled(0), last: async () => filled(1), restZone: box };
 }
 
 const CASES: Case[] = [
@@ -158,8 +161,13 @@ const CASES: Case[] = [
   { name: "show me, on the second step of three", check: "The board names row 2", mustPass: true, verdicts: () => walked(ask([{ at: 5000, kind: "board", text: "Officers finish trainings | Submit application | Advisor requirements", now: 1 }, say("t2:0", 5100, "Step 2 of 3: Submit application on EngageSC, by November 22 at 11:59pm.")]), { step: 2 }) },
   { name: "show me, and the board still names the first row", check: "The board names row 2", mustPass: false, verdicts: () => walked(ask([{ at: 5000, kind: "board", text: "Officers finish trainings | Submit application | Advisor requirements", now: 0 }, say("t2:0", 5100, "Step 2 of 3: Submit application on EngageSC, by November 22 at 11:59pm.")]), { step: 2 }) },
   { name: "show me, answered as an ordinary question", check: "It says one sentence for step 2", mustPass: false, verdicts: () => walked(ask([{ at: 5000, kind: "board", text: "Officers finish trainings | Submit application | Advisor requirements", now: 1 }, say("t2:0", 5100, "Sure, here is what the page says about applying."), say("t2:1", 5600, "You submit on EngageSC.")]), { step: 2 }) },
+  { name: "the way is down and an arrow stands at the bottom edge, clear of the words", check: "An arrow is drawn at the bottom edge", mustPass: true, verdicts: () => wayDrawn("C18", 0, [WAY_DOWN], { way: { to: "down" } }, [{ at: 2000, what: "way", id: "g1", box: { x: 1188, y: 1039, w: 145, h: 64 } }], DATED, SCREEN) },
+  { name: "the way is down and the body draws nothing for it", check: "An arrow is drawn at the bottom edge", mustPass: false, verdicts: () => wayDrawn("C18", 0, [WAY_DOWN], { way: { to: "down" } }, [], DATED, SCREEN) },
+  { name: "the way is down and the arrow is drawn at the top", check: "An arrow is drawn at the bottom edge", mustPass: false, verdicts: () => wayDrawn("C18", 0, [WAY_DOWN], { way: { to: "down" } }, [{ at: 2000, what: "way", id: "g1", box: { x: 790, y: 14, w: 145, h: 64 } }], DATED, SCREEN) },
+  { name: "the arrow is drawn over a line of the page", check: "The arrow covers no words on the page", mustPass: false, verdicts: () => wayDrawn("C18", 0, [WAY_DOWN], { way: { to: "down" } }, [{ at: 2000, what: "way", id: "g1", box: { x: 120, y: 1000, w: 145, h: 64 } }], [{ id: "foot", text: "If you need accommodations, contact Campus Activities.", box: { x: 100, y: 1010, w: 400, h: 20 } }], SCREEN) },
   { name: "a look that shows one true line, unspoken", check: "Each step of the trail above the line is true", mustPass: true, verdicts: () => glanced(looked([shownLine(["saw this page", "read 1 USC pages", "found 1 date"])]), { shows: true }, DATED, { pages: [KEPT], ranOn: RAN }) },
   { name: "a trail that says a date was found, shown as a box on the date's own line", check: "Each step of the trail above the line is true", mustPass: true, verdicts: () => glanced(looked([{ ...shownLine(["saw this page", "found 1 date"]), text: "Submit your application on EngageSC before 11:59pm; 8 days left." }, { at: 2000, kind: "mark", id: "g1:0", mark: "box", box }]), { shows: true }, [{ id: "closes", text: "November 22 at 11:59pm: Application closes.", box }], { pages: [KEPT], ranOn: RAN }) },
+  { name: "the box takes a whole row, and the date is the shorter piece of it", check: "Each step of the trail above the line is true", mustPass: true, verdicts: () => glanced(looked([{ ...shownLine(["saw this page", "found 1 date"]), text: "Submit your application on EngageSC before 11:59pm; 8 days left." }, { at: 2000, kind: "mark", id: "g1:0", mark: "box", box: { x: 240, y: 126, w: 673, h: 25 } }]), { shows: true }, [{ id: "date", text: "November 22 at 11:59pm:", box: { x: 247, y: 136, w: 195, h: 20 } }, { id: "rest", text: "Application closes. You must submit the form on EngageSC", box: { x: 446, y: 136, w: 460, h: 20 } }], { pages: [KEPT], ranOn: RAN }) },
   { name: "a trail that says six pages were read when the record names one", check: "Each step of the trail above the line is true", mustPass: false, verdicts: () => glanced(looked([shownLine(["saw this page", "read 6 USC pages", "found 1 date"])]), { shows: true }, DATED, { pages: [KEPT], ranOn: RAN }) },
   { name: "a trail that says a date was found when the line names none", check: "Each step of the trail above the line is true", mustPass: false, verdicts: () => glanced(looked([{ ...shownLine(["saw this page", "found 1 date"]), text: "Fundraising needs approval first; see the rule further down." }]), { shows: true }, DATED, { pages: [KEPT], ranOn: RAN }) },
   { name: "a look that is spoken aloud", check: "What a look shows is not spoken", mustPass: false, verdicts: () => glanced(looked([shownLine(["saw this page"]), voice("g1:0", 2100, 3000)]), { shows: true }, DATED, { pages: [KEPT], ranOn: RAN }) },

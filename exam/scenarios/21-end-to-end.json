@@ -32,7 +32,7 @@
         "neverSays": ["you can still apply", "not too late", "still time to apply"] } },
     { "say": "When does it open again?", "circle": null,
       "expect": { "plain": true, "sentences": 1,
-        "saysThat": { "what": "no page it read says when", "anyOf": ["no page", "doesn't say", "does not say", "don't have", "do not have", "isn't on", "is not on", "not on", "don't know", "can't tell", "cannot tell", "no date", "nothing"] } } },
+        "saysThat": { "what": "no page it read says when", "anyOf": ["no page", "doesn't say", "does not say", "don't say", "do not say", "doesn't give", "does not give", "don't give", "do not give", "gives no", "give no", "don't have", "do not have", "isn't on", "is not on", "not on", "don't know", "can't tell", "cannot tell", "no date", "nothing"] } } },
     { "say": "What is still ahead for me?", "circle": null,
       "expect": { "plain": true, "sentences": 1, "says": ["November 22", "December 1"] } }
   ]

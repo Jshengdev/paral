@@ -44,20 +44,29 @@ export function shows(hands: Hands, lead: (step: Led | null) => void, showed: (d
         return true;
       }
       const step = ahead[on];
+      const of = ahead.length;
       const from = ports.pages.find((kept) => kept.url === step.from) ?? null;
       // A date the step's page does not write would be made up, so it is left out of the sentence.
       const by = step.by !== "" && from !== null && unknownDate(step.by, from.lines) === null ? step.by : "";
+      /** The line of the step's page that writes its date: the place to box. */
       const kept = by === "" || from === null ? null : dateLine(by, [from]);
       const here = from !== null && page !== null && from.name === page.name;
-      const elsewhere = from !== null && !here ? settings.showMeElsewhere.value.replace("{page}", from.title.split(" - ")[0]) : "";
-      const text = settings.showMeLine.value.replace("{n}", String(on + 1)).replace("{of}", String(ahead.length)).replace("{step}", step.step.replace(/\.$/, "")).replace("{by}", by === "" ? "" : `, by ${by}`) + elsewhere;
+
+      const sentence = settings.showMeLine.value
+        .replace("{n}", String(on + 1))
+        .replace("{of}", String(of))
+        .replace("{step}", step.step.replace(/\.$/, ""))
+        .replace("{by}", by === "" ? "" : `, by ${by}`);
+      const text = from !== null && !here ? sentence + settings.showMeElsewhere.value.replace("{page}", from.title.split(" - ")[0]) : sentence;
       const rows = ahead.map((each) => [each.by ? `${each.step}: ${each.by}` : each.step]);
+
       send({ v, type: "clear" });
-      const marked = here && kept !== null ? point(send, id, whereIs(settings, seen, page, { line: kept.written, under: "" })) : here ? "no line of this page is known for the step, so nothing is marked" : `it is on ${from ? `the page "${from.title}"` : "a page that is no longer kept"}`;
+      let marked = `it is on ${from ? `the page "${from.title}"` : "a page that is no longer kept"}`;
+      if (here) marked = kept === null ? "no line of this page is known for the step, so nothing is marked" : point(send, id, whereIs(settings, seen, page, { line: kept.written, under: "" }));
       send({ v, type: "board", id, rows, now: on });
       if (kept !== null) showed(kept);
-      if (from !== null) lead({ page: from.name, line: kept?.written ?? null, text, rows, now: on, trail: ["show me", `step ${on + 1} of ${ahead.length}`] });
-      log(`${id}: show me, step ${on + 1} of ${ahead.length}: ${step.step}${by === "" ? "" : ` (by ${by})`}; ${marked}`);
+      if (from !== null) lead({ page: from.name, line: kept?.written ?? null, text, rows, now: on, trail: ["show me", `step ${on + 1} of ${of}`] });
+      log(`${id}: show me, step ${on + 1} of ${of}: ${step.step}${by === "" ? "" : ` (by ${by})`}; ${marked}`);
       await sayLine(hands, id, text, signal);
       return true;
     },
