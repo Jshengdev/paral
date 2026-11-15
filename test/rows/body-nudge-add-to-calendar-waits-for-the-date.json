@@ -1,0 +1,220 @@
+{
+ "name": "body: \"Add to calendar\" is offered as a box the window takes a click on; the press asks what a tapped cue card asks (the typed line \"add it to my calendar\"), and the card stays up, offering nothing more, until the mind's open line, when it goes in a fifth of a second and the toast comes; the look's same line sent again afterwards, as when the page scrolls, gets no card",
+ "run": "body.nudge",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Important Dates",
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes.",
+   "December 1: Deadline for advisors.",
+   "Info Sessions, Workshops, and Office Hours"
+  ],
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "g1",
+     "beat": 0,
+     "kind": "ring",
+     "on": 4
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "say",
+     "id": "g1",
+     "beat": 0,
+     "text": "This is the date to keep: the application closes in 8 days.",
+     "trail": [
+      "saw this page",
+      "found the line"
+     ],
+     "keep": true
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mute",
+     "id": "g1",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "typed",
+     "text": "add it to my calendar",
+     "at": 1003000
+    }
+   },
+   {
+    "at": 3001,
+    "line": {
+     "type": "state",
+     "name": "thinking"
+    }
+   },
+   {
+    "at": 3050,
+    "line": {
+     "type": "open",
+     "id": "t1",
+     "path": "/tmp/paral-row.ics",
+     "label": "November 22"
+    }
+   },
+   {
+    "at": 3050,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 0,
+     "text": "November 22 is open in your calendar."
+    }
+   },
+   {
+    "at": 3050,
+    "line": {
+     "type": "mute",
+     "id": "t1",
+     "why": "no voice is set up"
+    }
+   },
+   {
+    "at": 3050,
+    "line": {
+     "type": "state",
+     "name": "idle"
+    }
+   },
+   {
+    "at": 8000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 8000,
+    "line": {
+     "type": "mark",
+     "id": "g2",
+     "beat": 0,
+     "kind": "ring",
+     "on": 4
+    }
+   },
+   {
+    "at": 8000,
+    "line": {
+     "type": "say",
+     "id": "g2",
+     "beat": 0,
+     "text": "This is the date to keep: the application closes in 8 days.",
+     "trail": [
+      "saw this page",
+      "found the line"
+     ],
+     "keep": true
+    }
+   },
+   {
+    "at": 8000,
+    "line": {
+     "type": "mute",
+     "id": "g2",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   }
+  ],
+  "at": [
+   2500,
+   3020,
+   3120,
+   3300,
+   8600
+  ]
+ },
+ "out": [
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "found the line"
+    ],
+    "look": "up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": true
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "found the line"
+    ],
+    "look": "up",
+    "offers": [],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": true
+   },
+   "capsule": "thinking",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "found the line"
+    ],
+    "look": "going",
+    "offers": [],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": true
+   },
+   "capsule": "speaking",
+   "toast": true
+  },
+  {
+   "card": null,
+   "capsule": "speaking",
+   "toast": true
+  },
+  {
+   "card": null,
+   "capsule": "rest",
+   "toast": false
+  }
+ ]
+}

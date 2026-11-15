@@ -11,7 +11,11 @@ extension Scene {
     /// capsule closes. The guide's card says what he does next, which is seldom about the marked line; it is led to
     /// only once the capsule is at rest, and only when its words name the very line that is marked ("Open Deadlines"
     /// with the mark on "Deadlines"). In every other case there is no arrow.
-    func lead(at t: Double, capsule: CapsulePicture) -> LeadPicture? {
+    ///
+    /// A line said without being asked is on the nudge card, so the card is what speaks about its mark, from when the
+    /// line comes up on it, and the arrow is drawn back as the card goes. While any card is up the guide's card gets
+    /// no arrow, and once one has gone it waits for that.
+    func lead(at t: Double, capsule: CapsulePicture, nudge: NudgePicture?) -> LeadPicture? {
         guard wayUp(at: t) == nil else { return nil }
         let up = marks.last { mark in mark.at <= t && (mark.clearedAt.map { t < $0 } ?? true) && (start(mark).map { $0 <= t } ?? false) }
         guard let mark = up, let began = start(mark) else { return nil }
@@ -24,8 +28,12 @@ extension Scene {
             let drawn = inked(since: max(ready, said.start))
             return LeadPicture(from: key, to: .capsule(trail: ask.trail != nil), drawn: capsule.look == .rest ? min(drawn, capsule.open) : drawn)
         }
-        guard capsule.look == .rest, capsule.open <= 0, let card = next(at: t), !card.done, names(card.text, mark) else { return nil }
-        let from = max(ready, card.shownAt, rested(before: t) ?? 0)
+        if let nudge, nudge.id == mark.id {
+            guard let ask = asks.first(where: { $0.id == mark.id }), let said = times(ask).first(where: { $0.beat == mark.beat }), t >= max(ready, said.start) else { return nil }
+            return LeadPicture(from: key, to: .nudge, drawn: min(inked(since: max(ready, said.start)), 1 - nudge.leave))
+        }
+        guard nudge == nil, capsule.look == .rest, capsule.open <= 0, let card = next(at: t), !card.done, names(card.text, mark) else { return nil }
+        let from = max(ready, card.shownAt, rested(before: t) ?? 0, cardGone(before: t) ?? 0)
         return t >= from ? LeadPicture(from: key, to: .guide, drawn: inked(since: from)) : nil
     }
 

@@ -1,0 +1,671 @@
+{
+ "name": "body: the nudge card comes up on the arrive curve in 420 ms, and its rows after it, one after another, 60, 110 and 160 ms after the card began, each on the same curve; a line shown and not spoken is in ink at once; \"Not now\" sends it away on the leave curve in 160 ms, less than half the time it took to come; a line with a voice comes up when its sound begins, and its words go from stone to ink as each is said, all of them in ink once it has been said",
+ "run": "body.nudge",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Important Dates",
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes.",
+   "December 1: Deadline for advisors.",
+   "Info Sessions, Workshops, and Office Hours"
+  ],
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "g1",
+     "beat": 0,
+     "kind": "ring",
+     "on": 4
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "say",
+     "id": "g1",
+     "beat": 0,
+     "text": "This is the date to keep: the application closes in 8 days.",
+     "trail": [
+      "saw this page",
+      "read the whole page",
+      "found 1 date"
+     ],
+     "keep": true
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mute",
+     "id": "g1",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   },
+   {
+    "at": 5000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 5000,
+    "line": {
+     "type": "mark",
+     "id": "g2",
+     "beat": 0,
+     "kind": "ring",
+     "on": 4
+    }
+   },
+   {
+    "at": 5000,
+    "line": {
+     "type": "say",
+     "id": "g2",
+     "beat": 0,
+     "text": "Submit it before November 22.",
+     "trail": [
+      "saw this page",
+      "read the whole page",
+      "found 1 date"
+     ],
+     "keep": true
+    }
+   },
+   {
+    "at": 5200,
+    "line": {
+     "type": "voice",
+     "id": "g2",
+     "beat": 0,
+     "ms": 2000,
+     "last": true
+    }
+   },
+   {
+    "at": 5200,
+    "line": {
+     "type": "words",
+     "id": "g2",
+     "beat": 0,
+     "words": [
+      "Submit",
+      "it",
+      "before",
+      "November",
+      "22."
+     ],
+     "start": [
+      0,
+      0.4,
+      0.8,
+      1.2,
+      1.6
+     ],
+     "end": [
+      0.4,
+      0.8,
+      1.2,
+      1.6,
+      2
+     ]
+    }
+   }
+  ],
+  "notNow": [
+   3000
+  ],
+  "motion": true,
+  "at": [
+   1000,
+   1042,
+   1060,
+   1110,
+   1160,
+   1210,
+   1420,
+   1580,
+   3000,
+   3040,
+   3080,
+   3120,
+   3159,
+   5100,
+   5250,
+   5900,
+   6700,
+   7300
+  ]
+ },
+ "out": [
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "read the whole page",
+     "found 1 date"
+    ],
+    "look": "coming up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": false,
+    "appear": 0,
+    "rows": [
+     0,
+     0,
+     0
+    ],
+    "leave": 0,
+    "wordsInInk": 12
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "read the whole page",
+     "found 1 date"
+    ],
+    "look": "coming up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": false,
+    "appear": 0.49,
+    "rows": [
+     0,
+     0,
+     0
+    ],
+    "leave": 0,
+    "wordsInInk": 12
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "read the whole page",
+     "found 1 date"
+    ],
+    "look": "coming up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": false,
+    "appear": 0.63,
+    "rows": [
+     0,
+     0,
+     0
+    ],
+    "leave": 0,
+    "wordsInInk": 12
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "read the whole page",
+     "found 1 date"
+    ],
+    "look": "coming up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": false,
+    "appear": 0.84,
+    "rows": [
+     0.56,
+     0,
+     0
+    ],
+    "leave": 0,
+    "wordsInInk": 12
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "read the whole page",
+     "found 1 date"
+    ],
+    "look": "coming up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": false,
+    "appear": 0.93,
+    "rows": [
+     0.81,
+     0.56,
+     0
+    ],
+    "leave": 0,
+    "wordsInInk": 12
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "read the whole page",
+     "found 1 date"
+    ],
+    "look": "coming up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": false,
+    "appear": 0.97,
+    "rows": [
+     0.92,
+     0.81,
+     0.56
+    ],
+    "leave": 0,
+    "wordsInInk": 12
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "read the whole page",
+     "found 1 date"
+    ],
+    "look": "up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": false,
+    "appear": 1,
+    "rows": [
+     1,
+     1,
+     0.99
+    ],
+    "leave": 0,
+    "wordsInInk": 12
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "read the whole page",
+     "found 1 date"
+    ],
+    "look": "up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [
+     "tag"
+    ],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": false,
+    "appear": 1,
+    "rows": [
+     1,
+     1,
+     1
+    ],
+    "leave": 0,
+    "wordsInInk": 12
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "read the whole page",
+     "found 1 date"
+    ],
+    "look": "up",
+    "offers": [],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": true,
+    "appear": 1,
+    "rows": [
+     1,
+     1,
+     1
+    ],
+    "leave": 0,
+    "wordsInInk": 12
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "read the whole page",
+     "found 1 date"
+    ],
+    "look": "going",
+    "offers": [],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": true,
+    "appear": 1,
+    "rows": [
+     1,
+     1,
+     1
+    ],
+    "leave": 0.03,
+    "wordsInInk": 12
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "read the whole page",
+     "found 1 date"
+    ],
+    "look": "going",
+    "offers": [],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": true,
+    "appear": 1,
+    "rows": [
+     1,
+     1,
+     1
+    ],
+    "leave": 0.13,
+    "wordsInInk": 12
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "read the whole page",
+     "found 1 date"
+    ],
+    "look": "going",
+    "offers": [],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": true,
+    "appear": 1,
+    "rows": [
+     1,
+     1,
+     1
+    ],
+    "leave": 0.34,
+    "wordsInInk": 12
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "steps": [
+     "saw this page",
+     "read the whole page",
+     "found 1 date"
+    ],
+    "look": "going",
+    "offers": [],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": true,
+    "appear": 1,
+    "rows": [
+     1,
+     1,
+     1
+    ],
+    "leave": 0.89,
+    "wordsInInk": 12
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": null,
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "Submit it before November 22.",
+    "steps": [
+     "saw this page",
+     "read the whole page",
+     "found 1 date"
+    ],
+    "look": "coming up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": false,
+    "appear": 0.56,
+    "rows": [
+     0,
+     0,
+     0
+    ],
+    "leave": 0,
+    "wordsInInk": 1
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "Submit it before November 22.",
+    "steps": [
+     "saw this page",
+     "read the whole page",
+     "found 1 date"
+    ],
+    "look": "up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": false,
+    "appear": 1,
+    "rows": [
+     1,
+     1,
+     1
+    ],
+    "leave": 0,
+    "wordsInInk": 2
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "Submit it before November 22.",
+    "steps": [
+     "saw this page",
+     "read the whole page",
+     "found 1 date"
+    ],
+    "look": "up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": true,
+    "appear": 1,
+    "rows": [
+     1,
+     1,
+     1
+    ],
+    "leave": 0,
+    "wordsInInk": 4
+   },
+   "capsule": "rest",
+   "toast": false
+  },
+  {
+   "card": {
+    "says": "Submit it before November 22.",
+    "steps": [
+     "saw this page",
+     "read the whole page",
+     "found 1 date"
+    ],
+    "look": "up",
+    "offers": [
+     "add",
+     "notNow"
+    ],
+    "buttonsInsideTheCard": true,
+    "insideTheDisplay": true,
+    "onText": false,
+    "onPieces": [],
+    "where": "level with its line, right of the text",
+    "arrowLeadsToIt": true,
+    "appear": 1,
+    "rows": [
+     1,
+     1,
+     1
+    ],
+    "leave": 0,
+    "wordsInInk": 5
+   },
+   "capsule": "rest",
+   "toast": false
+  }
+ ]
+}

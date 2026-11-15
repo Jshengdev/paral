@@ -1,0 +1,163 @@
+{
+ "name": "body: his click on the mark of the step he is on is answered by paral's cursor, which clicks nothing itself: a click on another line of the page draws nothing; at his click on the mark the cursor presses down to 0.84 of its size in 90 ms and comes back a little past its size and to rest, two rings set off from under its tip and come softly to rest with the outer 70 across, stay 0.28 s and go in 180 ms, and the mark's echo stops at once",
+ "run": "body.click",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes.",
+   "Late applications are not accepted.",
+   "Info Sessions, Workshops, and Office Hours",
+   "Application deadline: November 2, 2026",
+   "Apply for the Catalina Maymester"
+  ],
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "t1",
+     "beat": 0,
+     "kind": "box",
+     "on": 6
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "board",
+     "id": "t1",
+     "rows": [
+      [
+       "Officers finish their training"
+      ],
+      [
+       "Submit the application: November 22 at 11:59pm"
+      ],
+      [
+       "Advisor requirements: December 1"
+      ]
+     ],
+     "now": 0
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "click",
+     "on": 2,
+     "at": 1003000
+    }
+   },
+   {
+    "at": 5000,
+    "line": {
+     "type": "click",
+     "on": 6,
+     "at": 1005000
+    }
+   }
+  ],
+  "at": [
+   2900,
+   3090,
+   3300,
+   4990,
+   5000,
+   5045,
+   5090,
+   5160,
+   5230,
+   5275,
+   5370,
+   5550,
+   5700,
+   5829,
+   5920,
+   6011
+  ]
+ },
+ "out": [
+  {
+   "cursor": 1,
+   "ringsAcross": null,
+   "echo": true
+  },
+  {
+   "cursor": 1,
+   "ringsAcross": null,
+   "echo": true
+  },
+  {
+   "cursor": 1,
+   "ringsAcross": null,
+   "echo": true
+  },
+  {
+   "cursor": 1,
+   "ringsAcross": null,
+   "echo": true
+  },
+  {
+   "cursor": 1,
+   "ringsAcross": 24.5,
+   "echo": false
+  },
+  {
+   "cursor": 0.92,
+   "ringsAcross": 43.8,
+   "echo": false
+  },
+  {
+   "cursor": 0.84,
+   "ringsAcross": 55.4,
+   "echo": false
+  },
+  {
+   "cursor": 0.97,
+   "ringsAcross": 64,
+   "echo": false
+  },
+  {
+   "cursor": 1.01,
+   "ringsAcross": 67.6,
+   "echo": false
+  },
+  {
+   "cursor": 1.01,
+   "ringsAcross": 68.7,
+   "echo": false
+  },
+  {
+   "cursor": 1,
+   "ringsAcross": 69.7,
+   "echo": false
+  },
+  {
+   "cursor": 1,
+   "ringsAcross": 70,
+   "echo": false
+  },
+  {
+   "cursor": 1,
+   "ringsAcross": 70,
+   "echo": false
+  },
+  {
+   "cursor": 1,
+   "ringsAcross": 70,
+   "echo": false
+  },
+  {
+   "cursor": 1,
+   "ringsAcross": 70,
+   "echo": false
+  },
+  {
+   "cursor": 1,
+   "ringsAcross": null,
+   "echo": false
+  }
+ ]
+}

@@ -9,7 +9,7 @@ extension Painter {
     /// (`Layout.pillMiddle`). Gives back the capsule's box, the cross's own when it carries one, and the bubble's.
     func capsule(_ c: CapsulePicture, avoiding texts: [Box], _ ctx: CGContext) -> (box: Box, cross: Box?, bubble: Box?) {
         let k = tokens.capsule
-        let middle = Layout.pillMiddle(texts: texts, trail: c.trail.isEmpty ? 0 : Layout.band(tokens), width: width, height: floor, tokens: tokens)
+        let middle = Layout.pillMiddle(texts: texts, width: width, height: floor, tokens: tokens)
         let core = Layout.pill(open: c.open, closes: c.closes, middle: middle, width: width, height: floor, tokens: tokens)
         // At rest with paral's ink on the page the capsule is a cross that clears it. A cross alone over a line of the
         // page reads as a stray button, so it wears the logo and the name to its left: whose cross this is. The cross
@@ -59,10 +59,24 @@ extension Painter {
         return (box, nil, bubble)
     }
 
+    /// What the capsule takes at this moment, for an arrow to keep off: the pill, or the cross with its name, and the
+    /// bubble while it is up.
+    func takes(_ c: CapsulePicture, avoiding texts: [Box]) -> Box {
+        let k = tokens.capsule
+        let middle = Layout.pillMiddle(texts: texts, width: width, height: floor, tokens: tokens)
+        let core = Layout.pill(open: c.open, closes: c.closes, middle: middle, width: width, height: floor, tokens: tokens)
+        let name = inked(tokens.strings.name, size: k.tagType, color: ink, weight: .medium).size().width
+        let worn = c.closes ? (3 * (k.restClose - k.rest) / 2 + k.rest + name) * (1 - c.open) : 0
+        let pill = Box(x: core.x - worn, y: core.y, w: core.w + worn, h: core.h)
+        guard c.bubble > 0, let words = bubble(c, over: Layout.pill(open: 1, middle: middle, width: width, height: floor, tokens: tokens), nil) else { return pill }
+        let x = min(pill.x, words.x)
+        return Box(x: x, y: words.y, w: max(pill.x + pill.w, words.x + words.w) - x, h: pill.y + pill.h - words.y)
+    }
+
     /// What speaks at the bottom, for the arrow that leads to it: the full pill where it sits open, and above it the
     /// bubble as it is with the words it holds, so the arrow's way moves only when the words do.
     func speaker(_ c: CapsulePicture, avoiding texts: [Box]) -> Box {
-        let middle = Layout.pillMiddle(texts: texts, trail: c.trail.isEmpty ? 0 : Layout.band(tokens), width: width, height: floor, tokens: tokens)
+        let middle = Layout.pillMiddle(texts: texts, width: width, height: floor, tokens: tokens)
         let pill = Layout.pill(open: 1, middle: middle, width: width, height: floor, tokens: tokens)
         guard let words = bubble(c, over: pill, nil) else { return pill }
         let x = min(pill.x, words.x)

@@ -33,13 +33,13 @@ extension Layout {
     /// lies on the page's read text: the display's middle when that is clear, or else the nearest place along the
     /// floor that is, a step of 24 points at a time; where every place lies on some text, the one that lies on
     /// least. The cross at rest is not moved, since the window takes a click on it where it always is.
-    public static func pillMiddle(texts: [Box], trail: Double = 0, width: Double, height: Double, tokens: Tokens) -> Double {
+    public static func pillMiddle(texts: [Box], width: Double, height: Double, tokens: Tokens) -> Double {
         let home = width / 2, cell = 24.0
         let half = max(tokens.capsule.width, tokens.bubble.maxWidth) / 2 + tokens.band
         guard !texts.isEmpty, width / 2 - half > 0 else { return home }
         func covered(_ middle: Double) -> Double {
             let pill = pill(open: 1, middle: middle, width: width, height: height, tokens: tokens)
-            return [pill, bubbleRoom(over: pill, trail: trail, tokens: tokens)].reduce(0) { sum, box in
+            return [pill, bubbleRoom(over: pill, tokens: tokens)].reduce(0) { sum, box in
                 let b = box.grown(tokens.band)
                 return sum + texts.reduce(0) { $0 + max(0, min(b.x + b.w, $1.x + $1.w) - max(b.x, $1.x)) * max(0, min(b.y + b.h, $1.y + $1.h) - max(b.y, $1.y)) }
             }

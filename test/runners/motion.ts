@@ -5,7 +5,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { handWritten, type Written } from "./body.ts";
 import { onTheirLines } from "./leads.ts";
-import { at, DISPLAY } from "./placed.ts";
+import { at, DISPLAY, textOf } from "./placed.ts";
 
 type Point = [number, number];
 const root = join(import.meta.dirname, "..", "..");
@@ -101,4 +101,57 @@ export function scaled(input: { lines: string[]; rows: Written[]; at: number; sc
   const size = (from: typeof full, what: string, side: "w" | "h") => from.find((item) => item.what === what)?.box[side] ?? 0;
   const against = (what: string, side: "w" | "h" = "w") => places(size(small, what, side) / Math.max(size(full, what, side), 1));
   return { card: against("guide"), cursor: against("pointer"), toast: against("toast", "h"), board: against("board") };
+}
+
+/**
+ * The guide's card at each moment of a hand-written run: how strong the card is, 0 to 1, and how many points below
+ * its place each of its two lines is just then, the name and then the words (null for a line that has not begun to
+ * come). A line's place is where it is at `wholeAt`, a moment that shows the card whole.
+ */
+export function cardLines(input: { lines: string[]; rows: Written[]; at: number[]; wholeAt: number }) {
+  const dir = handWritten("card-lines", onTheirLines(input.rows, input.lines), input.lines);
+  type Shown = ReturnType<typeof at>[number];
+  const line = (moment: Shown, index: number) => moment.placed.find((item) => item.what === "line" && item.id === `guide/${index}`)?.box;
+  const whole = at(dir, [input.wholeAt])[0];
+  const low = (moment: Shown, index: number) => (line(moment, index) ? places(line(moment, index)!.y - line(whole, index)!.y, 1) : null);
+  return at(dir, input.at).map((moment) => (moment.guide ? { card: places(moment.guide.appear), nameLow: low(moment, 0), wordsLow: low(moment, 1) } : { card: null }));
+}
+
+/**
+ * The toast's badge at each moment of a hand-written run: how large it is against its size at `wholeAt`, a moment
+ * that shows it whole, and how much of its tick the pen has drawn, as a share of the whole tick at the badge's size
+ * just then; null with no toast.
+ */
+export function toastTick(input: { lines: string[]; rows: Written[]; at: number[]; wholeAt: number }) {
+  const dir = handWritten("toast-tick", onTheirLines(input.rows, input.lines), input.lines);
+  type Shown = ReturnType<typeof at>[number];
+  const badge = (moment: Shown) => moment.placed.find((item) => item.what === "badge");
+  const whole = badge(at(dir, [input.wholeAt])[0])!;
+  return at(dir, input.at).map((moment) => {
+    const now = badge(moment);
+    if (!now) return { badge: null };
+    // The tick is drawn in the badge, so it is measured at the badge's size just then.
+    const size = now.box.w / whole.box.w;
+    return { badge: places(size), tick: places(long(now.path) / size / long(whole.path)) };
+  });
+}
+
+/**
+ * His click and what paral draws for it, at each moment of a hand-written run. A click line may name the line of the
+ * page it lands on (`on`), and then lands in that line's middle. Given back: how large the cursor is drawn against
+ * its size in the tokens; how far across the outer ring of the click's picture is, in points, or null for no rings;
+ * and whether the newest mark has an echo just then.
+ */
+export function clickPicture(input: { lines: string[]; rows: Written[]; at: number[] }) {
+  const text = textOf(handWritten("click-page", [], input.lines));
+  const rows = input.rows.map((row) => {
+    if (row.line.type !== "click" || typeof row.line.on !== "number") return row;
+    const { on, ...line } = row.line, box = text[on];
+    return { at: row.at, line: { ...line, x: box.x + box.w / 2, y: box.y + box.h / 2 } };
+  });
+  const tokens = JSON.parse(readFileSync(tokensPath, "utf8"));
+  return at(handWritten("click", onTheirLines(rows, input.lines), input.lines), input.at).map(({ placed }) => {
+    const cursor = placed.find((item) => item.what === "pointer")?.box, rings = placed.find((item) => item.what === "click")?.box;
+    return { cursor: cursor ? places(cursor.w / tokens.cursor.size) : null, ringsAcross: rings ? places(rings.w, 1) : null, echo: placed.some((item) => item.what === "pulse") };
+  });
 }

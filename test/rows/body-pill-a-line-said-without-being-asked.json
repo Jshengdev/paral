@@ -1,5 +1,5 @@
 {
- "name": "body: a line said without being asked is in the bubble with its trail small above it; said aloud (a page's first look), its words go from stone to ink as they are said; shown only, with a mute line, it comes whole at once",
+ "name": "body: a line said without being asked is the nudge card's and not the bubble's, said aloud or shown only: the pill stays collapsed at rest and no bubble comes up for it",
  "run": "body.pill",
  "in": {
   "rows": [
@@ -79,73 +79,30 @@
   ],
   "watch": [
    "look",
+   "pill",
    "bubble"
   ]
  },
  "out": [
   {
-   "look": "speaking",
-   "bubble": {
-    "says": "The application closes November 22.",
-    "stone": [
-     "application",
-     "closes",
-     "November",
-     "22."
-    ],
-    "caret": null,
-    "aboveThePill": 11,
-    "onText": false,
-    "trail": [
-     "saw this page",
-     "found 1 date"
-    ]
-   }
+   "look": "rest",
+   "pill": "78x19",
+   "bubble": null
   },
   {
-   "look": "speaking",
-   "bubble": {
-    "says": "The application closes November 22.",
-    "stone": [
-     "November",
-     "22."
-    ],
-    "caret": null,
-    "aboveThePill": 10,
-    "onText": false,
-    "trail": [
-     "saw this page",
-     "found 1 date"
-    ]
-   }
+   "look": "rest",
+   "pill": "78x19",
+   "bubble": null
   },
   {
-   "look": "speaking",
-   "bubble": {
-    "says": "The application closes November 22.",
-    "stone": [],
-    "caret": null,
-    "aboveThePill": 10,
-    "onText": false,
-    "trail": [
-     "saw this page",
-     "found 1 date"
-    ]
-   }
+   "look": "rest",
+   "pill": "78x19",
+   "bubble": null
   },
   {
-   "look": "speaking",
-   "bubble": {
-    "says": "This is the date to keep.",
-    "stone": [],
-    "caret": null,
-    "aboveThePill": 16,
-    "onText": false,
-    "trail": [
-     "saw this page",
-     "found the line"
-    ]
-   }
+   "look": "rest",
+   "pill": "78x19",
+   "bubble": null
   }
  ]
 }

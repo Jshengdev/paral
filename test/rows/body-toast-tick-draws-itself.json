@@ -1,0 +1,79 @@
+{
+ "name": "body: the toast's badge pops out and its tick draws itself: for 80 ms after the toast comes the badge waits at 0.6 of its size with no tick; then it grows a little past its size and comes back to it in 280 ms while a pen draws the tick at even speed; it is whole from then until the toast goes",
+ "run": "body.toastTick",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes.",
+   "Late applications are not accepted.",
+   "Info Sessions, Workshops, and Office Hours",
+   "Application deadline: November 2, 2026",
+   "Apply for the Catalina Maymester"
+  ],
+  "wholeAt": 3000,
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "open",
+     "path": "/tmp/kept.ics",
+     "label": "November 22"
+    }
+   }
+  ],
+  "at": [
+   990,
+   1000,
+   1079,
+   1108,
+   1150,
+   1220,
+   1290,
+   1360,
+   2000,
+   5700
+  ]
+ },
+ "out": [
+  {
+   "badge": null
+  },
+  {
+   "badge": 0.6,
+   "tick": 0
+  },
+  {
+   "badge": 0.6,
+   "tick": 0
+  },
+  {
+   "badge": 0.76,
+   "tick": 0.1
+  },
+  {
+   "badge": 0.93,
+   "tick": 0.25
+  },
+  {
+   "badge": 1.03,
+   "tick": 0.5
+  },
+  {
+   "badge": 1.02,
+   "tick": 0.75
+  },
+  {
+   "badge": 1,
+   "tick": 1
+  },
+  {
+   "badge": 1,
+   "tick": 1
+  },
+  {
+   "badge": null
+  }
+ ]
+}

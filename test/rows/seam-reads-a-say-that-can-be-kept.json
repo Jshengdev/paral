@@ -1,0 +1,23 @@
+{
+ "name": "seam: a line said without being asked that shows a date he can keep is read with its keep",
+ "run": "seam.read",
+ "in": {
+  "from": "mind",
+  "text": "{\"v\": 1, \"type\": \"say\", \"id\": \"g1\", \"beat\": 0, \"text\": \"This is the date to keep: the application closes in 8 days.\", \"trail\": [\"saw this page\", \"found 1 date\"], \"keep\": true}"
+ },
+ "out": {
+  "ok": true,
+  "line": {
+   "v": 1,
+   "type": "say",
+   "id": "g1",
+   "beat": 0,
+   "text": "This is the date to keep: the application closes in 8 days.",
+   "trail": [
+    "saw this page",
+    "found 1 date"
+   ],
+   "keep": true
+  }
+ }
+}

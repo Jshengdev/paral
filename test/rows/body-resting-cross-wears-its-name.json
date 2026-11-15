@@ -1,5 +1,5 @@
 {
- "name": "body: at rest with nothing of paral's on the page the capsule is the orb alone, with no cross; while it holds a line it carries none; at rest with paral's ink on the page it carries the cross, exactly where a click on it is taken, and wears its name to the cross's left so that it is not taken for a stray button; when the ink is cleared the cross and the name go",
+ "name": "body: at rest with nothing of paral's on the page the capsule is the orb alone, with no cross; while it holds a line of an answer it carries none; at rest with paral's ink on the page it carries the cross, exactly where a click on it is taken, and wears its name to the cross's left so that it is not taken for a stray button; when the ink is cleared the cross and the name go",
  "run": "body.resting",
  "in": {
   "lines": [
@@ -9,10 +9,24 @@
   ],
   "rows": [
    {
+    "at": 900,
+    "line": {
+     "type": "key.down",
+     "at": 1000900
+    }
+   },
+   {
+    "at": 950,
+    "line": {
+     "type": "key.up",
+     "at": 1000950
+    }
+   },
+   {
     "at": 1000,
     "line": {
      "type": "mark",
-     "id": "g1",
+     "id": "t1",
      "beat": 0,
      "kind": "box",
      "box": {
@@ -27,21 +41,24 @@
     "at": 1000,
     "line": {
      "type": "say",
-     "id": "g1",
+     "id": "t1",
      "beat": 0,
-     "text": "The dates are under this heading.",
-     "trail": [
-      "saw this page",
-      "found the heading"
-     ]
+     "text": "The dates are under this heading."
     }
    },
    {
     "at": 1000,
     "line": {
      "type": "mute",
-     "id": "g1",
-     "why": "a look he did not ask for is shown, not spoken"
+     "id": "t1",
+     "why": "no voice is set up"
+    }
+   },
+   {
+    "at": 1100,
+    "line": {
+     "type": "state",
+     "name": "idle"
     }
    },
    {

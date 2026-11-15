@@ -99,10 +99,11 @@ case "capsule":
 
 case "placed":
     guard arguments.count >= 4 else { fail(usage) }
-    // PARAL_GUIDE=off stands for the menu's "Show the guide" unticked, which no line of a record carries, and
-    // PARAL_INSET for the points of the display's foot a Dock takes, which a record has none of.
-    let told = ProcessInfo.processInfo.environment
-    do { out(try Film.placed(run: arguments[1], tokens: try Tokens.load(arguments[2]), at: arguments.dropFirst(3).compactMap(Double.init), guide: told["PARAL_GUIDE"] != "off", inset: Double(told["PARAL_INSET"] ?? "") ?? 0)) } catch { fail(why(error)) }
+    // PARAL_GUIDE=off stands for the menu's "Show the guide" unticked, which no line of a record carries;
+    // PARAL_INSET for the points of the display's foot a Dock takes, which a record has none of; and PARAL_NOT_NOW
+    // for the moments he pressed "Not now" on the nudge card (ms, by commas), which no line carries either.
+    let told = ProcessInfo.processInfo.environment, notNow = (told["PARAL_NOT_NOW"] ?? "").split(separator: ",").compactMap { Double($0) }
+    do { out(try Film.placed(run: arguments[1], tokens: try Tokens.load(arguments[2]), at: arguments.dropFirst(3).compactMap(Double.init), guide: told["PARAL_GUIDE"] != "off", inset: Double(told["PARAL_INSET"] ?? "") ?? 0, notNow: notNow)) } catch { fail(why(error)) }
 
 case "curves":
     // Each of the four curves at the given shares of its time, for rows.

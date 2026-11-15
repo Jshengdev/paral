@@ -5,9 +5,9 @@ extension Painter {
     /// above it, that carries every word the pill has to say. While he holds the key, his words on one line, those
     /// still being heard in stone, with a caret that blinks after them, the oldest dropped when the line is too long
     /// so the newest stay in view; while paral thinks, his words in ink. Answering, the sentence being said, up to two
-    /// lines round its newest said word, its words going from stone to ink; above the words of a line said without
-    /// being asked, its trail in small capitals. A failure: FAILED in cardinal and the reason. It rises out of the
-    /// pill as it comes. Gives back its box, or nil when it has nothing to say; with no context it is only measured.
+    /// lines round its newest said word, its words going from stone to ink. A failure: FAILED in cardinal and the
+    /// reason. A line said without being asked is the nudge card's, not the bubble's. It rises out of the pill as it
+    /// comes. Gives back its box, or nil when it has nothing to say; with no context it is only measured.
     @discardableResult
     func bubble(_ c: CapsulePicture, over pill: Box, _ ctx: CGContext?) -> Box? {
         let b = tokens.bubble, size = tokens.capsule.type, stone = color(tokens.stone)
@@ -34,11 +34,8 @@ extension Painter {
         guard lines.contains(where: { !$0.isEmpty && !$0.allSatisfy { $0.length == 0 } }) else { return nil }
         let space = inked(" ", size: size, color: ink).size().width, line = size * b.leading
         func wide(_ row: [NSAttributedString]) -> Double { row.reduce(0) { $0 + $1.size().width } + space * Double(max(0, row.count - 1)) }
-        let steps = c.trail.map { inked($0.text.uppercased(), size: tokens.capsule.tagType, color: ($0.bright >= 1 ? cardinal : ink).copy(alpha: $0.bright >= 1 ? 1 : $0.bright) ?? ink, weight: .semibold) }
-        let band = steps.isEmpty ? 0 : Layout.band(tokens), gap = 18.0
-        let trail = steps.reduce(0) { $0 + $1.size().width } + gap * Double(max(0, steps.count - 1))
-        let w = min(b.maxWidth, max(lines.map(wide).max() ?? 0, trail) + caret + 2 * b.padX)
-        let h = Double(lines.count) * line + 2 * b.padY + band
+        let w = min(b.maxWidth, (lines.map(wide).max() ?? 0) + caret + 2 * b.padX)
+        let h = Double(lines.count) * line + 2 * b.padY
         let x = min(max(pill.x + pill.w / 2 - w / 2, tokens.band), width - tokens.band - w)
         let box = Box(x: x, y: pill.y - b.gap - h, w: w, h: h)
         guard let ctx else { return box }
@@ -51,23 +48,13 @@ extension Painter {
         surface(CGPath(roundedRect: card, cornerWidth: b.radius, cornerHeight: b.radius, transform: nil), ctx)
         // A word longer than the bubble is widest (a long address) is cut at its edge rather than drawn past it.
         ctx.clip(to: card.insetBy(dx: b.padX / 2, dy: 0))
-        // The steps paral took, small and in a row, each lit once it is reached; the words go below them.
-        var across = card.midX - trail / 2
-        for (index, step) in steps.enumerated() {
-            step.draw(at: CGPoint(x: across, y: card.minY + b.padY))
-            across += step.size().width
-            if index < steps.count - 1 {
-                inked("›", size: tokens.capsule.tagType, color: ink.copy(alpha: 0.5) ?? ink, weight: .semibold).draw(at: CGPoint(x: across + gap / 2 - 3, y: card.minY + b.padY))
-                across += gap
-            }
-        }
         // Each word sits on the line's baseline, a smaller word too: its top is lowered by what its face rises less.
         let face = faces.face(size, .regular)
         func top(_ word: NSAttributedString) -> Double {
             let own = (word.length > 0 ? word.attribute(.font, at: 0, effectiveRange: nil) as? NSFont : nil) ?? face
             return (line - (face.ascender - face.descender)) / 2 + face.ascender - own.ascender
         }
-        var y = card.minY + b.padY + band
+        var y = card.minY + b.padY
         for row in lines {
             var x = card.minX + b.padX
             for word in row {

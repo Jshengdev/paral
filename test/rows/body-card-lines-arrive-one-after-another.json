@@ -1,0 +1,168 @@
+{
+ "name": "body: the guide's card comes up as the design kit's cards do and goes in less time than it came: the card first, from a little smaller and 10 points low; its name line sets off 60 ms after it and its words 50 ms after that, each rising 6 points into place; a line with no words takes the card away in 180 ms and not at once; a new line after that brings it up again, lines and all; and the closing line's card goes the same way once it has stayed",
+ "run": "body.cardLines",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes.",
+   "Late applications are not accepted.",
+   "Info Sessions, Workshops, and Office Hours",
+   "Application deadline: November 2, 2026",
+   "Apply for the Catalina Maymester"
+  ],
+  "wholeAt": 2000,
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "next",
+     "text": "Open Deadlines",
+     "n": 1,
+     "of": 2
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "next",
+     "text": "",
+     "n": 0,
+     "of": 0
+    }
+   },
+   {
+    "at": 5000,
+    "line": {
+     "type": "next",
+     "text": "Say: add it to my calendar",
+     "n": 2,
+     "of": 2
+    }
+   },
+   {
+    "at": 7000,
+    "line": {
+     "type": "next",
+     "text": "That is every step for this page.",
+     "n": 2,
+     "of": 2,
+     "done": true
+    }
+   }
+  ],
+  "at": [
+   990,
+   1000,
+   1042,
+   1061,
+   1102,
+   1111,
+   1152,
+   1320,
+   1700,
+   2990,
+   3045,
+   3090,
+   3179,
+   3181,
+   5042,
+   5152,
+   6000,
+   11090,
+   11181
+  ]
+ },
+ "out": [
+  {
+   "card": null
+  },
+  {
+   "card": 0,
+   "nameLow": null,
+   "wordsLow": null
+  },
+  {
+   "card": 0.49,
+   "nameLow": null,
+   "wordsLow": null
+  },
+  {
+   "card": 0.63,
+   "nameLow": 9.1,
+   "wordsLow": null
+  },
+  {
+   "card": 0.82,
+   "nameLow": 4.7,
+   "wordsLow": null
+  },
+  {
+   "card": 0.84,
+   "nameLow": 4,
+   "wordsLow": 7
+  },
+  {
+   "card": 0.92,
+   "nameLow": 2,
+   "wordsLow": 3.6
+  },
+  {
+   "card": 1,
+   "nameLow": 0.1,
+   "wordsLow": 0.2
+  },
+  {
+   "card": 1,
+   "nameLow": 0,
+   "wordsLow": 0
+  },
+  {
+   "card": 1,
+   "nameLow": 0,
+   "wordsLow": 0
+  },
+  {
+   "card": 0.97,
+   "nameLow": 0,
+   "wordsLow": 0
+  },
+  {
+   "card": 0.87,
+   "nameLow": -0.1,
+   "wordsLow": -0.2
+  },
+  {
+   "card": 0.11,
+   "nameLow": -0.4,
+   "wordsLow": -1.1
+  },
+  {
+   "card": null
+  },
+  {
+   "card": 0.49,
+   "nameLow": null,
+   "wordsLow": null
+  },
+  {
+   "card": 0.92,
+   "nameLow": 2,
+   "wordsLow": 3.6
+  },
+  {
+   "card": 1,
+   "nameLow": 0,
+   "wordsLow": 0
+  },
+  {
+   "card": 0.87,
+   "nameLow": -0.1,
+   "wordsLow": -0.2
+  },
+  {
+   "card": null
+  }
+ ]
+}

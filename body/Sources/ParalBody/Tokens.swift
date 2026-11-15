@@ -44,6 +44,9 @@ public struct Tokens: Codable {
         public var tagFrom: Double
         /// While paral works the cursor breathes: how much larger it gets, as a share of its size, and how long each way takes.
         public var workGrows, workMs: Double
+        /// At his click on a mark that waits for it: how small the cursor presses, as a share of its size; how long
+        /// the two rings take to spread to rest; and how long they rest before they go.
+        public var pressTo, clickMs, clickStayMs: Double
     }
     public struct Board: Codable { public var pad, boxPadX, boxPadY, gap, rowGap, type, radius, maxWidth, margin, emptyWidth, emptyHeight: Double }
     public struct Motion: Codable {
@@ -51,6 +54,8 @@ public struct Tokens: Codable {
         /// How long a thing takes to arrive, how long to leave (less: what goes is gone sooner than it came), and how
         /// long the usual small change takes (a card growing to hold its rows, the cursor's tag popping out).
         public var arriveMs, leaveMs, usualMs: Double
+        /// How long a press down takes.
+        public var pressMs: Double
         /// For a line said without being asked: how long it stays after its reading time, and how long each step of its trail takes to light.
         public var unaskedStayMs, trailStepMs: Double
         /// How long a line stands, for each of its words, before another line may take its place in the capsule or on
@@ -76,16 +81,41 @@ public struct Tokens: Codable {
         public var type, pad, gap: Double
         /// How long it stays once it is up.
         public var stayMs: Double
+        /// Its badge pops out a moment after the toast comes: how long after, and how small it is before, as a
+        /// share of its size.
+        public var badgeAfterMs, badgeFrom: Double
     }
     /// The guide's card, after the design kit's nudge: how wide it is, the room inside it, its corner, the size of
     /// its words and of the small line above them, the logo's width and the gap from it to the name, the gap between the two lines, and how far from
     /// the top and the side of the display it sits (the top clears the Mac's menu bar, 37 points on a notched display).
     public struct Guide: Codable { public var width, pad, radius, type, small, avatar, nameGap, gap, top, side: Double }
+    /// How a card comes up and goes, after the design kit's cards: how small it is when it sets off, as a share of
+    /// its size, and how far below its place; how far each of its lines rises into place; how long after the card
+    /// its first line sets off, and each next line after the one before; and how small it gets as it goes.
+    public struct Card: Codable { public var from, drop, rise, firstMs, nextMs, goneTo: Double }
     /// The arrow that leads from a mark to what speaks about it, after the design kit's drawn arrow: how wide its
     /// ink is, how far it stays from the mark and from what it leads to, how far its ink and paper edge keep from
     /// every read line of the page, and the longest it may be. Where no such way is found, none is drawn. The pen's
     /// time over it is `mark.shaftMs` and `mark.headMs`.
     public struct Lead: Codable { public var width, gap, clear, longest: Double }
+    /// The nudge card, after the design kit's: a line said without being asked, with "Add to calendar" and "Not now"
+    /// when its date can be kept. Its look, where it may go, and how it moves are all here (`PainterNudge.swift`).
+    public struct Nudge: Codable {
+        /// The card: how wide, the room inside, its corner, the space between its rows, the avatar's size and the gap
+        /// after it, the size of the name, of the trail of steps under it and the gap above that, and of the message.
+        public var width, pad, radius, gap, avatar, nameGap, nameType, trailType, trailGap, type: Double
+        /// The pill buttons: the size of their words and the tracking, the room round the words, and the gap between two.
+        public var buttonType, tracking, buttonPadX, buttonPadY, buttonGap: Double
+        /// The buttons' words. The name and the trail are in the kit's `stone`.
+        public var add, notNow: String
+        /// Where it may go: how far it keeps from the page's words and from every other piece, how far beyond the
+        /// text column it sits, how far from the display's side and from its top (below the menu bar), the step of
+        /// the search for a free place, and the least it may be shrunk to and by how much at a time when no place is free.
+        public var clear, beside, edge, top, cell, least, shrink: Double
+        /// How it moves: its arrival and leaving; the first row's wait and the wait between rows; how far the card
+        /// and each row rise as they come; the size the card comes from and goes to; and the size of a held button.
+        public var arriveMs, leaveMs, rowMs, rowStepMs, rise, rowRise, from, leaveTo, pressed: Double
+    }
     /// `opened` is what the toast says when a date has been opened in his calendar. It does not say "added": whether
     /// Calendar asks first or adds at once is not known.
     /// `name` is what the cursor's tag says: whose cursor it is.
@@ -96,8 +126,8 @@ public struct Tokens: Codable {
     /// the pill's bubble still to come (his words still being heard, an answer's words not yet said); the wave while
     /// paral answers.
     public var stone: String
-    /// One dial over the sizes the design kit gives (the cursor and its tag, the guide's card, the toast, the
-    /// highlight's box, the width of drawn ink, and the voice pill, its wave and its bubble): 1 is the kit's own size. The kit asks for one such scale and not
+    /// One dial over the sizes the design kit gives (the cursor and its tag, the guide's card, the nudge card, the
+    /// toast, the highlight's box, the width of drawn ink, and the voice pill, its wave and its bubble): 1 is the kit's own size. The kit asks for one such scale and not
     /// for changed sizes. `load` gives the look with it already applied.
     public var scale: Double
     /// The typeface everything is written in (empty for the system's), and its optical size where it has one. The
@@ -127,7 +157,9 @@ public struct Tokens: Codable {
     public var cursor: Cursor
     public var toast: Toast
     public var guide: Guide
+    public var card: Card
     public var lead: Lead
+    public var nudge: Nudge
     public var motion: Motion
     /// The four curves everything moves on (`Motion.swift`).
     public var curves: Curves
@@ -142,6 +174,7 @@ public struct Tokens: Codable {
         var t = self
         let sizes: [WritableKeyPath<Tokens, Double>] = [
             \.cursor.size, \.cursor.gap, \.cursor.ripple,
+            \.card.drop, \.card.rise,
             \.guide.width, \.guide.pad, \.guide.radius, \.guide.type, \.guide.small, \.guide.avatar, \.guide.nameGap, \.guide.gap,
             \.toast.type, \.toast.pad, \.toast.gap,
             \.mark.width, \.mark.boxWidth, \.mark.boxPadX, \.mark.boxPadY, \.mark.boxRadius, \.lead.width,
@@ -149,6 +182,8 @@ public struct Tokens: Codable {
             \.capsule.collapsedWidth, \.capsule.collapsedHeight, \.capsule.stopSquare, \.capsule.stopCorner, \.capsule.arrowLine, \.capsule.face,
             \.wave.width, \.wave.height, \.wave.pitch, \.wave.dot, \.wave.bar, \.wave.short, \.wave.tall,
             \.bubble.padX, \.bubble.padY, \.bubble.radius, \.bubble.gap, \.bubble.maxWidth, \.bubble.caretWidth, \.bubble.caretHeight, \.bubble.caretGap, \.bubble.rise,
+            \.nudge.width, \.nudge.pad, \.nudge.radius, \.nudge.gap, \.nudge.avatar, \.nudge.nameGap, \.nudge.nameType, \.nudge.trailType,
+            \.nudge.trailGap, \.nudge.type, \.nudge.buttonType, \.nudge.tracking, \.nudge.buttonPadX, \.nudge.buttonPadY, \.nudge.buttonGap,
         ]
         for size in sizes { t[keyPath: size] *= scale }
         t.scale = 1

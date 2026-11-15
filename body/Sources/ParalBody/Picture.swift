@@ -80,23 +80,64 @@ public struct WayPicture: Equatable {
     public var nod: Double
 }
 
-/// The toast that confirms something paral did: its words, and how far it has come up or gone, 0 to 1.
+/// The toast that confirms something paral did: its words, how strong it is, 0 to 1, how it has come up as a card,
+/// how far its badge has popped out (0 to 1, and a little past on the way) and how much of its tick is drawn, 0 to 1.
 public struct ToastPicture: Equatable {
     public var text: String
     public var appear: Double
+    public var coming: CardArrival
+    public var badge, tick: Double
 }
 
-/// The guide's card: what to do next, which step it is of how many, and how far the card has come up, 0 to 1.
+/// How a card stands at one moment: how far the card itself has come up, 0 to 1; how far it has gone again, 0 to
+/// 1; and how far each of its lines has come up, in order, 0 to 1.
+public struct CardArrival: Equatable {
+    public var card, gone: Double
+    public var lines: [Double]
+}
+
+/// The guide's card: what to do next, which step it is of how many, how strong the card is, 0 to 1, and how it and
+/// its two lines (the name, then the words) have come up.
 public struct GuidePicture: Equatable {
     public var text: String
     public var n, of: Int?
     public var appear: Double
+    public var coming: CardArrival
+}
+
+/// The two buttons of the nudge card.
+public enum NudgeButton: String { case add, notNow }
+
+/// The nudge card: a line said without being asked, the steps paral took to it, and its two buttons when its date
+/// can be kept. Its place is the painter's (`Layout.nudge`); the scene says only which line it sits beside.
+public struct NudgePicture: Equatable {
+    /// The ask the line belongs to: a mark with the same id is the line it is about.
+    public var id: String
+    public var text: String
+    /// The message's words: each is in stone until it is said and in ink once it has been, when the line has a
+    /// voice; a line shown and not spoken is in ink at once.
+    public var words: [Word]
+    /// The steps paral took, each lit once it is reached.
+    public var trail: [Word]
+    public var buttons: Bool
+    /// The box of the line it is about, or nil when the look sent the way to it and no mark.
+    public var beside: Box?
+    /// How far the card has come up, 0 to 1, and each of its rows: the name and the trail, the message, the buttons.
+    public var appear: Double
+    public var rows: [Double]
+    /// How far it has gone, 0 while it stays. A card that is going offers no buttons.
+    public var leave: Double
+    /// The button he pressed, while the card waits for what it asked (the date to be opened). It is drawn held and
+    /// the card offers no buttons meanwhile, so one press asks once.
+    public var answered: NudgeButton?
+    /// The button held down just then. Only the window sets it, while the mouse is down on that button.
+    public var held: NudgeButton? = nil
 }
 
 /// The drawn arrow that leads from the mark that matters to what is speaking about it.
 public struct LeadPicture: Equatable {
-    /// The capsule, which is taller while it carries a trail of steps, or the guide's card.
-    public enum Speaker: Equatable { case capsule(trail: Bool), guide }
+    /// The capsule, which is taller while it carries a trail of steps, the guide's card, or the nudge card.
+    public enum Speaker: Equatable { case capsule(trail: Bool), guide, nudge }
     /// The key of the mark it leaves.
     public var from: String
     public var to: Speaker
@@ -119,6 +160,8 @@ public struct PointerPicture: Equatable {
     /// out as the cursor comes: `tagGrown` is how far, 0 to 1 and a little past on the way.
     public var tag = false
     public var tagGrown = 1.0
+    /// How large it is drawn against its own size: 1, but for a moment at his click, when it presses.
+    public var press = 1.0
     /// It says paral is working, while the capsule says so, by breathing: `working` is how far it has swollen, 0 to 1.
     public var thinking = false
     public var working = 0.0
@@ -133,6 +176,8 @@ public struct Picture: Equatable {
     public var echo: MarkPicture?
     public var way: WayPicture?
     public var pointer: PointerPicture?
+    /// The rings of his click on a mark that waited for it, for a moment after it.
+    public var click: ClickPicture?
     public var board: BoardPicture?
     public var clip: ClipPicture?
     public var toast: ToastPicture?
@@ -143,4 +188,6 @@ public struct Picture: Equatable {
     public var avoid: [Box]
     /// How much of the display's foot the Dock takes, in points. What sits at the bottom is placed above it.
     public var bottomInset = 0.0
+    /// The nudge card, while a line said without being asked is up.
+    public var nudge: NudgePicture? = nil
 }

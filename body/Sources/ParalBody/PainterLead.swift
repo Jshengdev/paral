@@ -90,16 +90,22 @@ extension Painter {
         guard let lead = picture.lead, lead.drawn > 0, let mark = picture.marks.first(where: { $0.key == lead.from }) else { return nil }
         let card = placed.first { $0.what == "guide" }?.box
         var taken = placed.filter { ["board", "clip", "way", "toast"].contains($0.what) }.map(\.box)
+        // What the pill and its bubble take at this moment, which an arrow to a card keeps off.
+        let pillRoom = takes(picture.capsule, avoiding: picture.avoid)
         let target: Box, name: String
         switch lead.to {
         case .guide:
             guard let card else { return nil }
             (target, name) = (card, "guide")
-            taken.append(Layout.capsule(open: 1, taller: Layout.band(tokens), width: width, height: floor, tokens: tokens))
+            taken.append(pillRoom)
         case .capsule:
             // The pill at its full size and the bubble with the words it holds: what speaks, wherever it sits.
             (target, name) = (speaker(picture.capsule, avoiding: picture.avoid), "capsule")
             if let card { taken.append(card) }
+        case .nudge:
+            guard let nudge = placed.first(where: { $0.what == "nudge" })?.box else { return nil }
+            (target, name) = (nudge, "nudge")
+            taken += [pillRoom] + (card.map { [$0] } ?? [])
         }
         // The mark is its line and the ink round it.
         let ink = Pen.path(of: mark, tokens: tokens, avoiding: picture.avoid, inside: (width, height))
