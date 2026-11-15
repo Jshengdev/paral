@@ -15,6 +15,7 @@ import { wayAfter } from "./place.ts";
 import { ready } from "./ready.ts";
 import type { Settings } from "./settings.ts";
 import { shows } from "./showme.ts";
+import { takes } from "./takes.ts";
 import { sayLine } from "./speech.ts";
 import { SEAM_VERSION, type FromBody, type FromMind } from "../seam/schema.ts";
 
@@ -52,11 +53,11 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
   let answering = 0;
   /** His last ask and what he was told, for a look at the page he goes to next. */
   let asked: (Asked & { at: number }) | null = null;
-  /** The date paral last showed him, for "add it to my calendar". */
   /** The demo's guide: what to do next on the page on his screen, told what the rest of the mind sees happen. */
   const guide = guides({ settings, send, log });
   const hands: Hands = { ports, settings, send, log, noted: guide.noted };
   const keeping = keeps(hands);
+  const taking = takes(hands);
   const glancing = glances(hands, (found) => (ahead = [...ahead.filter((old) => !found.some((step) => step.step === old.step)), ...found]), keeping.found);
   /** "Show me": the walk through what is ahead, one step each time he says it. */
   const showing = shows(hands, glancing, keeping.found);
@@ -119,7 +120,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
       }
       send({ v, type: "heard", text: words.text, final: true });
       const id = `t${++asks}`;
-      if (await keeping.asked(id, words.text, at, mine.signal, onPage?.url ?? null)) return;
+      if ((await keeping.asked(id, words.text, at, mine.signal, onPage?.url ?? null)) || (await taking.asked(id, words.text, mine.signal))) return;
       const path = drawn ? trail : carried;
       carried = [];
       // His own loop comes back as a neat ring at once. It claims nothing about his work, so no model is asked.
@@ -158,7 +159,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
       if (!mine.signal.aborted && told.length > 0) guide.noted({ kind: "asked", words: words.text });
       if (!mine.signal.aborted && told.length > 0) asked = { words: words.text, told, page: onPage?.name ?? null, at: Date.now() };
       keeping.answered(told, onPage ? [onPage, ...ports.pages] : ports.pages);
-      if (onPage && !mine.signal.aborted) wayAfter(hands, id, screen, onPage, told, lesson.drawn);
+      if (onPage && !mine.signal.aborted) taking.sent(id, wayAfter(hands, id, screen, onPage, told, lesson.drawn));
       if (!mine.signal.aborted) send({ v, type: "state", name: "idle" });
     } catch (error) {
       if (mine.signal.aborted) return;

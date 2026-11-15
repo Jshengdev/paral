@@ -32,6 +32,24 @@ export const pages = {
     measured: "not seen live",
   } satisfies Setting<string>,
 
+  goOffer: {
+    value: { line: "That is on the {page} page. Want me to take you there?", label: "Take me there", send: "take me there" },
+    why: "After an answer that sends him to another of USC's kept pages: the one line on the card ({page} is the page's name), its button's words, and the words the button sends back, which are also what he can say. One sentence and one offer, never a paragraph.",
+    measured: "not seen on a real screen",
+  } satisfies Setting<{ line: string; label: string; send: string }>,
+
+  goAsks: {
+    value: ["take me there", "take me to it", "take me to that page", "yes take me", "go there", "open that page", "open it for me"],
+    why: "Words of his that ask to be taken to the page the last answer sent him to. They count only when an answer has named such a page; otherwise they are an ordinary ask.",
+    measured: "not measured; a first list",
+  } satisfies Setting<string[]>,
+
+  goingLine: {
+    value: "Opening the {page} page.",
+    why: "What he hears and sees when the app is asked to open a page for him.",
+    measured: "not heard live",
+  } satisfies Setting<string>,
+
   showMeAsks: {
     value: ["show me", "show me the way", "show me what to do", "show me what's next", "show me what is next", "show me the next step", "show me the next one", "show me next", "what's next", "what is next", "next step"],
     why: "His whole words, and nothing more, that start or move on the walk through what is ahead. A question that only begins this way (\"show me where to book a room\") is an ordinary ask.",

@@ -60,6 +60,7 @@ function cartesia(key: string): Partial<Ports> {
     settings.leftOutLine.value,
     settings.showMeDoneLine.value,
   ];
+  // "Opening the ... page." changes with the page, so it is spoken live.
   const voiceName = () => `cartesia ${settings.voiceModel.value} ${settings.voiceId.value} pcm_s16le 24000`;
   // Kept under tmp/, which is not committed: the sound is made once on each Mac, for the voice in use.
   const voice = kept(sonic(key, settings, spent.credits, log), fixed, voiceName, join(here, "..", "tmp", "voice"), log);

@@ -418,6 +418,23 @@
   },
   {
    "v": 1,
+   "type": "say",
+   "id": "t1o",
+   "beat": 0,
+   "text": "That is on the RSO Resources page. Want me to take you there?",
+   "offer": {
+    "label": "Take me there",
+    "send": "take me there"
+   }
+  },
+  {
+   "v": 1,
+   "type": "mute",
+   "id": "t1o",
+   "why": "an offer is shown on its card, not spoken"
+  },
+  {
+   "v": 1,
    "type": "state",
    "name": "idle"
   },

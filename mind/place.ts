@@ -86,33 +86,42 @@ function linkTo(settings: Settings, seen: Seen, name: string): { box: Box; on: s
  * screen, is boxed where it stands (see `linkTo`), unless the answer marked that name itself (`drawn`: what is drawn now). Otherwise the way to what is out of view: a date it named that the
  * page writes on a line out of view comes first, named by the heading the page puts it under; with that heading in
  * view there is nothing to scroll to. Failing a date, a folded section of the page that the answer names by its
- * heading ("in the section called Officer Trainings") and that is out of view. One way at most.
+ * heading ("in the section called Officer Trainings") and that is out of view. One way at most. Gives back the
+ * other kept page the answer sent him to, or null.
  */
-export function wayAfter({ ports, settings, send, log }: Hands, id: string, seen: Seen, page: KeptPage, told: string[], drawn: string[] = []): void {
+export function wayAfter({ ports, settings, send, log }: Hands, id: string, seen: Seen, page: KeptPage, told: string[], drawn: string[] = []): KeptPage | null {
   const said = told.join(" ");
   // The page it sent him to comes first. When the answer names another kept page as a page ("on the RSO Resources
   // page") and that name is on his screen, in the site's menu or as a link, it is boxed: that is where to click.
   const short = (other: KeptPage) => other.title.split(" - ")[0].trim();
   const [elsewhere] = ports.pages.filter((other) => other.name !== page.name && short(other).length >= 8 && plain(said).includes(`${plain(short(other))} page`)).sort((a, b) => short(b).length - short(a).length);
+  const sent = elsewhere ?? null;
   const link = elsewhere === undefined ? null : linkTo(settings, seen, short(elsewhere));
   if (elsewhere !== undefined && link !== null) {
     // The answer may have marked that name itself; one mark on two words is enough.
-    if (drawn.some((thing) => plain(thing).includes(plain(link.on)))) return log(`${id}: the answer sent him to the page "${elsewhere.title}" and marked its name on his screen itself; no second mark`);
-    send({ v, type: "mark", id, beat: 0, kind: "box", box: link.box });
-    return log(`${id}: the answer sent him to the page "${elsewhere.title}", whose name is on his screen; the mark is on "${link.on}"`);
+    if (drawn.some((thing) => plain(thing).includes(plain(link.on)))) log(`${id}: the answer sent him to the page "${elsewhere.title}" and marked its name on his screen itself; no second mark`);
+    else {
+      send({ v, type: "mark", id, beat: 0, kind: "box", box: link.box });
+      log(`${id}: the answer sent him to the page "${elsewhere.title}", whose name is on his screen; the mark is on "${link.on}"`);
+    }
+    return sent;
   }
   const kept = dateLine(said, [page]);
   if (kept !== null) {
     const where = whereIs(settings, seen, page, { line: kept.written, under: headingOf(page, kept.written, "") });
-    if (where.box === null && where.to !== null) return log(`${id}: the answer named a date this page writes out of view; ${point(send, id, where)}`);
+    if (where.box === null && where.to !== null) {
+      log(`${id}: the answer named a date this page writes out of view; ${point(send, id, where)}`);
+      return sent;
+    }
   }
   // A section is named in speech by the start of its heading, up to its colon ("the Officer Trainings section"), so
   // that is what is looked for in what was said, and what the way is named by. The longest such name wins.
   const name = (heading: string) => heading.replace(/\s*\+\s*$/, "").split(/:\s+/)[0].trim();
   const [section] = page.lines.filter((line) => /\+\s*$/.test(line) && name(line).length >= 8 && plain(said).includes(plain(name(line)))).sort((a, b) => name(b).length - name(a).length);
-  if (section === undefined) return;
+  if (section === undefined) return sent;
   const where = whereIs(settings, seen, page, { line: section, under: "" });
   if (where.box === null && where.to !== null) log(`${id}: the answer named a section of this page that is out of view; ${point(send, id, { ...where, toward: name(section) })}`);
+  return sent;
 }
 
 /** The steps of a walk that are behind him: each whose own line is in view gets a tick and a quiet tag. */
