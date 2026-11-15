@@ -1,0 +1,40 @@
+{
+ "name": "dates: a few words for how far a line's date is from today, counted by the calendar: days left, due tomorrow, due today, closed yesterday, closed some days ago; nothing for a line with no date",
+ "run": "dates.away",
+ "in": {
+  "cases": [
+   [
+    "November 22 at 11:59pm: Application closes.",
+    "2026-11-15T01:00:00-08:00"
+   ],
+   [
+    "November 16: Info session",
+    "2026-11-15T12:00:00-08:00"
+   ],
+   [
+    "November 15: Early Action deadline",
+    "2026-11-15T12:00:00-08:00"
+   ],
+   [
+    "November 14: Last day",
+    "2026-11-15T12:00:00-08:00"
+   ],
+   [
+    "Application deadline: November 2, 2026",
+    "2026-11-15T12:00:00-08:00"
+   ],
+   [
+    "Mid-February",
+    "2026-11-15T12:00:00-08:00"
+   ]
+  ]
+ },
+ "out": [
+  "7 days left",
+  "due tomorrow",
+  "due today",
+  "closed yesterday",
+  "closed 13 days ago",
+  null
+ ]
+}

@@ -49,10 +49,18 @@ export function whereIs(settings: Settings, seen: Seen, page: KeptPage, thing: {
   return { box: target?.box ?? null, on: target?.line ?? null, inView: line.found, kind, to, toward };
 }
 
-/** Draws where it is: a box on the place, or the way to it. Gives back the words for the log. */
-export function point(send: Hands["send"], id: string, where: Where): string {
-  if (where.box) send({ v, type: "mark", id, beat: 0, kind: where.kind, box: where.box });
+/** What goes with a mark on the thing's own line: a strike in the mark's place for what has passed, and a tag beside the line. */
+export type More = { strike?: boolean; tag?: { label: string; tone: "strong" | "quiet" | "date" } };
+
+/**
+ * Draws where it is: a mark on the place, or the way to it. On the thing's own line (not its heading) `more` adds to
+ * it. Gives back the words for the log.
+ */
+export function point(send: Hands["send"], id: string, where: Where, more: More = {}): string {
+  const own = where.box !== null && where.inView;
+  if (where.box) send({ v, type: "mark", id, beat: 0, kind: own && more.strike ? "strike" : where.kind, box: where.box });
   else if (where.to && where.toward !== "") send({ v, type: "way", id, to: where.to, toward: where.toward });
+  if (where.box && own && more.tag) send({ v, type: "mark", id, beat: 0, kind: "tag", box: where.box, label: more.tag.label, tone: more.tag.tone });
   if (where.box) return `the mark is on "${where.on}"`;
   return where.to ? `the way is ${where.to}, toward "${where.toward}"` : "nothing is marked, since neither the line nor its heading is in view and the way cannot be told";
 }
@@ -105,4 +113,17 @@ export function wayAfter({ ports, settings, send, log }: Hands, id: string, seen
   if (section === undefined) return;
   const where = whereIs(settings, seen, page, { line: section, under: "" });
   if (where.box === null && where.to !== null) log(`${id}: the answer named a section of this page that is out of view; ${point(send, id, { ...where, toward: name(section) })}`);
+}
+
+/** The steps of a walk that are behind him: each whose own line is in view gets a tick and a quiet tag. */
+export function finished(send: Hands["send"], id: string, settings: Settings, seen: Seen, page: KeptPage, done: { line: string; under: string }[], word: string): number {
+  let ticked = 0;
+  for (const step of done) {
+    const where = whereIs(settings, seen, page, step);
+    if (where.box === null || !where.inView) continue;
+    send({ v, type: "mark", id, beat: 0, kind: "tick", box: where.box });
+    send({ v, type: "mark", id, beat: 0, kind: "tag", box: where.box, label: word, tone: "quiet" });
+    ticked += 1;
+  }
+  return ticked;
 }

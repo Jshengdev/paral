@@ -1,9 +1,9 @@
 import type { Hands, Screen } from "./ask.ts";
-import { unknownDate, worded } from "./cores/dates.ts";
+import { away, unknownDate, worded } from "./cores/dates.ts";
 import type { Box } from "./cores/ground.ts";
 import { named, type ToKeep } from "./cores/keep.ts";
 import { headingOf, whichPage, type KeptPage } from "./cores/page.ts";
-import { point, whereIs } from "./place.ts";
+import { finished, point, whereIs, type More } from "./place.ts";
 import type { Following, Glanced } from "./ports.ts";
 import { speech } from "./speech.ts";
 import { SEAM_VERSION, type FromBody } from "../seam/schema.ts";
@@ -18,9 +18,9 @@ export type Ahead = { step: string; by: string; from: string; at?: string };
 /**
  * A step he asked to be shown ("show me"): the kept page it is on, the line of that page that writes its date (null
  * when none is known) and the heading the page puts that line under, its sentence, and the board of all the steps
- * with the row he is on.
+ * with the row he is on. `done` holds the lines of the steps behind him that are on the same page.
  */
-export type Led = { page: string; line: string | null; under: string; text: string; rows: string[][]; now: number; trail: string[] };
+export type Led = { page: string; line: string | null; under: string; text: string; rows: string[][]; now: number; trail: string[]; done?: { line: string; under: string }[] };
 /** What he asked a moment ago, what he was told, and the kept page he was on then (null if none). */
 export type Asked = Following & { page: string | null };
 
@@ -78,7 +78,9 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
     ringed = where?.inView ? where.box : null;
     if (stays(`step ${step.now} on ${where?.on ?? where?.to ?? ""}`, where?.box ?? null)) return log(`${id}: nothing has moved since the last look; what is shown stays`);
     send({ v, type: "clear" });
-    const marked = where ? point(send, id, where) : "no line of this page is known for the step, so nothing is marked";
+    const tags = settings.markTags.value;
+    const marked = where ? point(send, id, where, tags ? { tag: { label: settings.walkTags.value.next, tone: "strong" } } : {}) : "no line of this page is known for the step, so nothing is marked";
+    if (tags) finished(send, id, settings, look, page, step.done ?? [], settings.walkTags.value.done);
     send({ v, type: "say", id, beat: 0, text: step.text, trail: step.trail });
     send({ v, type: "mute", id, why: "a look he did not ask for is shown, not spoken" });
     send({ v, type: "board", id, rows: step.rows, now: step.now });
@@ -164,7 +166,10 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
       const made = unknownDate(text, [today, ...page.lines]);
       if (made) return log(`${id}: push held back a look's sentence that names a date the page does not hold (${worded(made)}); it was: "${text}"`);
       send({ v, type: "clear" });
-      const marked = point(send, id, where);
+      // On the thing's own line: a date ahead gets its count beside it, a passed one is struck through with how long ago.
+      const count = settings.markTags.value && !following && glanced.kind !== "step" ? away(glanced.line, new Date(look.at)) : null;
+      const more: More = count === null ? {} : { strike: glanced.kind === "passed" && count.days < 0, tag: { label: count.words, tone: count.days < 0 ? "quiet" : "date" } };
+      const marked = point(send, id, where, more);
       const reached = where.inView ? "found the line" : "found where it is";
       // Each step of the trail is something that was done for this look. The model was given this one kept page, up to a number of lines.
       const read = page.lines.length <= settings.pageLinesGiven.value ? "read the whole page" : `read its first ${settings.pageLinesGiven.value} lines`;

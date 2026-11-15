@@ -717,6 +717,21 @@
   },
   {
    "v": 1,
+   "type": "mark",
+   "id": "g2",
+   "beat": 0,
+   "kind": "tag",
+   "box": {
+    "x": 100,
+    "y": 300,
+    "w": 450,
+    "h": 20
+   },
+   "label": "Next",
+   "tone": "strong"
+  },
+  {
+   "v": 1,
    "type": "say",
    "id": "g2",
    "beat": 0,
@@ -787,6 +802,49 @@
     "w": 450,
     "h": 20
    }
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "t3",
+   "beat": 0,
+   "kind": "tag",
+   "box": {
+    "x": 100,
+    "y": 350,
+    "w": 450,
+    "h": 20
+   },
+   "label": "Next",
+   "tone": "strong"
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "t3",
+   "beat": 0,
+   "kind": "tick",
+   "box": {
+    "x": 100,
+    "y": 300,
+    "w": 450,
+    "h": 20
+   }
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "t3",
+   "beat": 0,
+   "kind": "tag",
+   "box": {
+    "x": 100,
+    "y": 300,
+    "w": 450,
+    "h": 20
+   },
+   "label": "Done",
+   "tone": "quiet"
   },
   {
    "v": 1,

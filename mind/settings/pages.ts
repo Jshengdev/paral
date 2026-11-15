@@ -38,6 +38,18 @@ export const pages = {
     measured: "not measured; a first list. One live run heard \"Show me.\" as said",
   } satisfies Setting<string[]>,
 
+  markTags: {
+    value: true,
+    why: "Whether a mark on the thing's own line gets more than its ring: a date still ahead gets a tag with the count (\"7 days left\"), a deadline that has passed is struck through with a quiet tag (\"closed 13 days ago\"), the step of a walk he is on gets \"Next\" and the steps behind him a tick and \"Done\". The counts are worked out by the calendar here, never by a model.",
+    measured: "not seen on a real screen",
+  } satisfies Setting<boolean>,
+
+  walkTags: {
+    value: { next: "Next", done: "Done" },
+    why: "The words on the tags of a walk: on the step he is on, and on the steps behind him.",
+    measured: "not measured",
+  } satisfies Setting<{ next: string; done: string }>,
+
   movedLeast: {
     value: 6,
     why: "A marked line whose box is this many points or more from where it was, across or down, has moved: the mark is drawn again where the line now is. Less than that is taken as the text reader's own wobble between two pictures, and what is shown stays.",

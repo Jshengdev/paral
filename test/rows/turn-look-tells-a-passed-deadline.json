@@ -112,13 +112,28 @@
    "type": "mark",
    "id": "g1",
    "beat": 0,
-   "kind": "ring",
+   "kind": "strike",
    "box": {
     "x": 100,
     "y": 250,
     "w": 450,
     "h": 20
    }
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "g1",
+   "beat": 0,
+   "kind": "tag",
+   "box": {
+    "x": 100,
+    "y": 250,
+    "w": 450,
+    "h": 20
+   },
+   "label": "closed 12 days ago",
+   "tone": "quiet"
   },
   {
    "v": 1,

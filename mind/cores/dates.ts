@@ -63,3 +63,15 @@ export function worded(date: Named): string {
   const month = MONTHS[date.month - 1];
   return `${month[0].toUpperCase()}${month.slice(1)} ${date.day}${date.year === null ? "" : `, ${date.year}`}`;
 }
+
+/**
+ * A few words for how far a line's first date is from today, for a tag beside the line: "7 days left", "due
+ * tomorrow", "due today", "closed yesterday", "closed 13 days ago". Null when the line names no date.
+ */
+export function away(line: string, today: Date): { words: string; days: number } | null {
+  const [date] = datesIn(line);
+  if (date === undefined) return null;
+  const days = daysFrom(today, date);
+  const words = days > 1 ? `${days} days left` : days === 1 ? "due tomorrow" : days === 0 ? "due today" : days === -1 ? "closed yesterday" : `closed ${-days} days ago`;
+  return { words, days };
+}

@@ -355,6 +355,21 @@
   },
   {
    "v": 1,
+   "type": "mark",
+   "id": "g2",
+   "beat": 0,
+   "kind": "tag",
+   "box": {
+    "x": 100,
+    "y": 380,
+    "w": 450,
+    "h": 20
+   },
+   "label": "8 days left",
+   "tone": "date"
+  },
+  {
+   "v": 1,
    "type": "say",
    "id": "g2",
    "beat": 0,
