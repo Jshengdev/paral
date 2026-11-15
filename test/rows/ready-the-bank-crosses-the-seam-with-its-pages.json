@@ -1,0 +1,35 @@
+{
+ "name": "ready: the real bank (cueCards) crosses the seam in the ready line with its two pages, and the app's menu draws it: a submenu for each scenario, \"Open the page\" first where there is one, then its lines in order, nothing ticked, then \"Start over\"",
+ "run": "ready.bank",
+ "in": {},
+ "out": {
+  "crossesTheSeam": true,
+  "pages": [
+   "Club recognition page: https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/",
+   "Chemistry worksheet: no page",
+   "Maymester page: https://dornsife.usc.edu/wrigley/education/catalina-residential-college/catalina-island-maymester/"
+  ],
+  "menu": [
+   "Club recognition page >",
+   "    Open the page -> opens https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/",
+   "    add it to my calendar -> asks \"add it to my calendar\"",
+   "    do we need five officers and an advisor? there's only three of us -> asks \"do we need five officers and an advisor? there's only three of us\"",
+   "    show me -> asks \"show me\"",
+   "    what else do we have to finish by November 22? -> asks \"what else do we have to finish by November 22?\"",
+   "    what is still ahead? -> asks \"what is still ahead?\"",
+   "    can you help me find where to book this event? -> asks \"can you help me find where to book this event?\"",
+   "    scroll for me -> asks \"scroll for me\"",
+   "Chemistry worksheet >",
+   "    what does this formula tell me? -> asks \"what does this formula tell me?\"",
+   "    can you draw how these steps connect? -> asks \"can you draw how these steps connect?\"",
+   "    what happens first? -> asks \"what happens first?\"",
+   "    so, what is the final product? -> asks \"so, what is the final product?\"",
+   "    just tell me the answer -> asks \"just tell me the answer\"",
+   "Maymester page >",
+   "    Open the page -> opens https://dornsife.usc.edu/wrigley/education/catalina-residential-college/catalina-island-maymester/",
+   "    is it too late to apply? -> asks \"is it too late to apply?\"",
+   "    when does it open again? -> asks \"when does it open again?\"",
+   "Start over -> starts over"
+  ]
+ }
+}

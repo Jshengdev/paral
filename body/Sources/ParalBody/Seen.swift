@@ -16,7 +16,7 @@ public struct BodySettings: Equatable {
     /// How often to look at the display with no key pressed; 0 is never.
     public var lookEveryMs = 0.0
     public var lookFastMost = 0
-    /// Lines he can tap in the menu instead of saying them, in groups.
+    /// The demo's bank: lines he can tap in the menu instead of saying them, in groups, each with the page it is run on.
     public var cues: [Cue] = []
     /// One line that says what this is; empty for none. The app shows it once when it starts, in the capsule and not
     /// spoken. A scripted run does not show it.
@@ -108,10 +108,7 @@ public enum Seen {
             settings.lookEveryMs = n("lookEveryMs") ?? 0
             settings.lookFastMost = Int(n("lookFastMost") ?? 0)
             settings.opening = s("opening") ?? ""
-            settings.cues = (f["cues"] as? [[String: Any]] ?? []).compactMap { cue in
-                guard let name = cue["name"] as? String, let lines = cue["lines"] as? [String] else { return nil }
-                return Cue(name: name, lines: lines)
-            }
+            settings.cues = Cue.read(f["cues"])
             return .success(.ready(settings))
         case "key.down": return .success(.keyDown)
         case "key.up": return .success(.keyUp)

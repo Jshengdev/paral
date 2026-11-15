@@ -1,0 +1,139 @@
+{
+ "name": "body: the centre shows the last failure, greyed, at the foot with its time, cut past 90 letters with the whole as its tip; a later one takes its place; \"Start over\" clears the tick and the failure",
+ "run": "body.centre",
+ "in": {
+  "cues": [
+   {
+    "name": "Club recognition page",
+    "page": "https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/",
+    "lines": [
+     "add it to my calendar",
+     "show me"
+    ]
+   },
+   {
+    "name": "Chemistry worksheet",
+    "lines": [
+     "what does this formula tell me?",
+     "what happens first?"
+    ]
+   },
+   {
+    "name": "Somewhere else",
+    "page": "http://campusactivities.usc.edu/",
+    "lines": [
+     "is it too late to apply?"
+    ]
+   },
+   {
+    "name": "Nothing in it",
+    "lines": []
+   }
+  ],
+  "events": [
+   {
+    "press": [
+     "Club recognition page",
+     "show me"
+    ]
+   },
+   {
+    "fail": "the mind is not running; start it with ./run",
+    "when": "3:41:07 AM"
+   },
+   {
+    "fail": "the screen could not be read (the display was asleep, and a second picture taken a moment later came back empty as well)",
+    "when": "3:42:15 AM"
+   },
+   {
+    "press": [
+     "Start over"
+    ]
+   }
+  ]
+ },
+ "out": [
+  {
+   "did": "nothing yet",
+   "menu": [
+    "Club recognition page >",
+    "    Open the page -> opens https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/",
+    "    add it to my calendar -> asks \"add it to my calendar\"",
+    "    show me -> asks \"show me\"",
+    "Chemistry worksheet >",
+    "    what does this formula tell me? -> asks \"what does this formula tell me?\"",
+    "    what happens first? -> asks \"what happens first?\"",
+    "Somewhere else >",
+    "    (greyed) Open the page (not an https usc.edu address) -> nothing",
+    "    is it too late to apply? -> asks \"is it too late to apply?\"",
+    "Start over -> starts over"
+   ]
+  },
+  {
+   "did": "asks \"show me\"",
+   "menu": [
+    "[x] Club recognition page >",
+    "    Open the page -> opens https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/",
+    "    add it to my calendar -> asks \"add it to my calendar\"",
+    "    [x] show me -> asks \"show me\"",
+    "Chemistry worksheet >",
+    "    what does this formula tell me? -> asks \"what does this formula tell me?\"",
+    "    what happens first? -> asks \"what happens first?\"",
+    "Somewhere else >",
+    "    (greyed) Open the page (not an https usc.edu address) -> nothing",
+    "    is it too late to apply? -> asks \"is it too late to apply?\"",
+    "Start over -> starts over"
+   ]
+  },
+  {
+   "did": "failed",
+   "menu": [
+    "[x] Club recognition page >",
+    "    Open the page -> opens https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/",
+    "    add it to my calendar -> asks \"add it to my calendar\"",
+    "    [x] show me -> asks \"show me\"",
+    "Chemistry worksheet >",
+    "    what does this formula tell me? -> asks \"what does this formula tell me?\"",
+    "    what happens first? -> asks \"what happens first?\"",
+    "Somewhere else >",
+    "    (greyed) Open the page (not an https usc.edu address) -> nothing",
+    "    is it too late to apply? -> asks \"is it too late to apply?\"",
+    "Start over -> starts over",
+    "(greyed) Last failure, 3:41:07 AM: the mind is not running; start it with ./run -> nothing"
+   ]
+  },
+  {
+   "did": "failed",
+   "menu": [
+    "[x] Club recognition page >",
+    "    Open the page -> opens https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/",
+    "    add it to my calendar -> asks \"add it to my calendar\"",
+    "    [x] show me -> asks \"show me\"",
+    "Chemistry worksheet >",
+    "    what does this formula tell me? -> asks \"what does this formula tell me?\"",
+    "    what happens first? -> asks \"what happens first?\"",
+    "Somewhere else >",
+    "    (greyed) Open the page (not an https usc.edu address) -> nothing",
+    "    is it too late to apply? -> asks \"is it too late to apply?\"",
+    "Start over -> starts over",
+    "(greyed) Last failure, 3:42:15 AM: the screen could not be read (the display was asleep, and a second picture taken a moment… -> nothing (tip: the screen could not be read (the display was asleep, and a second picture taken a moment later came back empty as well))"
+   ]
+  },
+  {
+   "did": "starts over",
+   "menu": [
+    "Club recognition page >",
+    "    Open the page -> opens https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/",
+    "    add it to my calendar -> asks \"add it to my calendar\"",
+    "    show me -> asks \"show me\"",
+    "Chemistry worksheet >",
+    "    what does this formula tell me? -> asks \"what does this formula tell me?\"",
+    "    what happens first? -> asks \"what happens first?\"",
+    "Somewhere else >",
+    "    (greyed) Open the page (not an https usc.edu address) -> nothing",
+    "    is it too late to apply? -> asks \"is it too late to apply?\"",
+    "Start over -> starts over"
+   ]
+  }
+ ]
+}

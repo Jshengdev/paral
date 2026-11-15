@@ -10,6 +10,12 @@ import ParalBody
 final class Does {
     private var timer: Timer?
 
+    /// Stops a scroll under way: "Start over".
+    func stop() {
+        timer?.invalidate()
+        timer = nil
+    }
+
     /// Takes a line from the mind. `way` says which way the arrow points now (true is down), nil when none is up or
     /// he holds the key; `watch` says how many looks it has sent and whether the page stands as its last look saw it.
     /// `boxed` says whether a point lies inside a box paral is drawing now.

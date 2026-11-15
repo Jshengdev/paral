@@ -110,6 +110,40 @@ row): http, another host, usc.edu.evil.com, a file path, nothing else. A refused
 failure. The scene shows the toast for it, "Opening" and the page's name (`strings.going`), and a card whose offer asked
 for it goes. A film and the scripted stand-in open nothing. Never run on a Mac.
 
+## The demo's centre in the menu, and "Start over"
+
+The menu bar's menu is where he runs the demo from (`Centre.swift`, drawn from plain values in `Sitting.swift`). The
+bank of scenarios is one setting in the mind, `cueCards` in `mind/settings/cues.ts`, his to edit; it comes in the
+ready line, and the body keeps no list of its own. Each scenario is its own submenu: "Open the page" first when it
+names a page, then its lines in the order he would say them. "Open the page" opens the address in his default browser
+through the same guarded opener as a `go` line (`Keep.go`); an address that opener would refuse is shown greyed out,
+"Open the page (not an https usc.edu address)", and does nothing. A line is asked exactly as a spoken one, as a
+`typed` line with a fresh picture of the screen. The item he pressed last is ticked, and the scenario it is in, so he
+can see where he is and click through the asks in turn. A scenario with neither page nor lines is left out. Opening a
+page forgets nothing: to begin a scenario again from nothing, he presses "Start over" first.
+
+At the foot of the menu, after a failure, one greyed-out line: "Last failure, 3:41:07 AM:" and its words, cut past 90
+letters, with the whole as the item's tip. Every `state` line named "failed" that the scene is told, from the mind
+or from the app itself, takes its place.
+
+**"Start over"** forgets the sitting without a restart. The app ends its connection to the mind and opens a new one
+at once (`Wire.again`; the end is not taken for the mind going down, and nothing the old connection still sends is
+read). The mind keeps everything about a sitting per connection, so on the new one it has forgotten what was said,
+what is ahead, the last answer and its marks, the dates kept, the guide's steps done and "show me"'s place, and the
+lesson. The app wipes what it drew (a fresh scene: no mark, card, board, arrow, guide's card, toast or failure in the
+capsule), cuts the voice, ends a hold and a scroll under way, clears the menu's tick and its failure line, and forgets
+the watcher's last look, so the page on screen is looked at again as a first look: a kept page's first thing is boxed
+and its date said aloud again.
+
+It does not forget: the mind's kept first looks on disk (`tmp/looks/`, today's answers about the kept pages, which
+are the same all day, so the first look after "Start over" comes at once and asks no model), the calendar files
+already written and anything already added to his calendar, the page open in his browser, "Show the guide" ticked or
+not, the look (`tokens.json`), the grants, and the opening line, which is not shown again. An answer the old
+connection was still making runs to its end in the mind, and nothing of it reaches the screen.
+
+Rows read the menu's values and what each press does (`body.centre`, `ready.bank`). The menu itself, a press on it,
+the page opening and the reconnect have never run on a Mac: only the app can do them.
+
 ## The guide's card on his screen and out of a recording
 
 The guide's card is for him, not for whoever watches a recording of his screen. So the app paints it in a window
@@ -183,7 +217,8 @@ card is in the movie, this macOS records the window anyway and the setting does 
 | `GuideWindow.swift` | the guide's card, and the arrow that leads to it, in a panel of their own over the display that lets every click through and is marked not to be shared, so a recording of the screen leaves them out |
 | `Press.swift` (in the app) | what a click the overlay took does: the cross closes, "Add to calendar" asks as a tapped cue card does, "Not now" puts the card away |
 | `Does.swift` (in the app), `Hand.swift` | what the app does in his apps for him, on his word only: it opens a usc.edu page, it clicks once on a closed heading paral has boxed (after one picture shows the page has not moved since the look that found it), and it scrolls the page in front to what an arrow points at, a reach of half a display at a time, stopping after each until a look of the still page has been answered; it needs his Accessibility grant and says so when it has none |
-| `Wire.swift` | the socket to the mind; reconnects when the mind restarts |
+| `Wire.swift` | the socket to the mind; reconnects when the mind restarts, and at once on "Start over" (`again`) |
+| `Centre.swift`, `Sitting.swift` | the demo's centre in the menu bar's menu: a submenu for each scenario of the bank, "Start over", and the last failure; `Sitting` is the menu as plain values, which rows read |
 | `Watch.swift` | looks at the display with no key pressed, every round: a picture, a small grey print of it with the menu bar left out, and a look reported when `Rounds` says so. It reads the text only for a look it reports, and does not look while the key is down or an answer is being said |
 | `Rounds.swift` | the print (`Screen.print`), whether two prints are the same page (`Screen.alike`: a clock that ticks is, a scroll is not), and what the watcher reports round by round: a changed page once it stands still, or at once while an arrow says the thing is off screen |
 | `Release.swift` | the end of a hold: the microphone's grace after the key is let go, and a new press that ends the hold before it first. Used by the app and by the scripted flow |

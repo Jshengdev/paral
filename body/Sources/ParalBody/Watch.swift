@@ -38,6 +38,12 @@ public final class Watch {
         self.timer = timer
     }
 
+    /// Forgets the last look sent, so the next round of a page that stands still is a look again: "Start over".
+    public func again() {
+        rounds = Rounds()
+        next = .distantPast
+    }
+
     /// The menu bar's height, in points: what the display has above the room it leaves to windows.
     private var bar: Double { max(0, screen.frame.maxY - screen.visibleFrame.maxY) }
 

@@ -136,9 +136,14 @@ a box with no model pointing at the picture. The model is told the places' names
 sentences speak of (`spots`); `mind/spots.ts` rings them with the sentence. Never the signs between the reactants,
 and never the space the result goes in. With no sheet on screen nothing changes.
 
-**A tapped ask.** The menu bar's menu lists cue cards (`cueCards`, sent in the ready line): lines he can tap instead
-of saying them, for a hall too loud for the microphone. A tapped line crosses the seam as `typed` and is asked exactly
-as a spoken one, with the same picture of the screen and no ear. In a flow file the step is `{"typed": "the words"}`.
+**A tapped ask, and the demo's centre.** The menu bar's menu is where the demo is run from. The bank of scenarios is
+one setting, `cueCards` (sent in the ready line), his to edit: each scenario has a name, optionally the https usc.edu
+page it is run on, and its lines in the order he would say them. Each is its own submenu: "Open the page" first (the
+app opens it in his browser through `Keep.go`), then its lines; the one pressed last is ticked. A tapped line crosses
+the seam as `typed` and is asked exactly as a spoken one, with the same picture of the screen and no ear. In a flow
+file the step is `{"typed": "the words"}`. "Start over" forgets the sitting without a restart: a new connection to the
+mind, a fresh scene, the next look a first look; the kept looks in `tmp/looks/` stay. The last failure and its time is
+a greyed line at the menu's foot. What it forgets and keeps is written out in `body/README.md`.
 
 **The way.** When the thing is on this page and neither its line nor its heading is in view, a `way` line goes out
 in the mark's place: up or down, and what it leads to (`mind/place.ts`, `cores/page.ts` `whichWay`).
@@ -250,8 +255,9 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
 - The nudge card's buttons have never been clicked on a Mac: the overlay as a panel that never makes the app active,
   its first click and the button held down are compiled and unrun. They are checked only as the boxes the picture
   offers and the lines a press stands for.
-- The cue cards in the menu and the tapped ask have never been used on a Mac: `Cues.swift` and the app's `typed` are
-  compiled and unrun. The scripted stand-in has run tapped asks live. The menu bar says "Lost and Found"; the app's
+- The demo's centre in the menu and the tapped ask have never been used on a Mac: `Centre.swift`, "Open the page",
+  "Start over" (`Wire.again` and the fresh scene) and the app's `typed` are compiled and unrun; rows read only the
+  menu's values. The scripted stand-in has run tapped asks live. The menu bar says "Lost and Found"; the app's
   file, its grants in System Settings and this repo still say paral.
 - The page-to-page guide, the way line, "show me" and a click on a step's box have been walked live in the scripted
   stand-in by the second session, and are drawn on main. None has been seen on a real screen. "Show me" walks the
@@ -274,7 +280,7 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
   part of the picture and the words of the lines in it. So a circle narrows what the answer is made from, and does
   not keep the rest of the page's text on the Mac: the fast model has read it. Each sentence said goes to the
   voice's API. With a tape nothing leaves. paral keeps one temporary picture file, overwritten on each ask.
-- The lesson lives for one connection. Restarting the body or the mind starts it over.
+- The lesson lives for one connection. "Start over" in the menu, or restarting the body or the mind, starts it over.
 - A line he edits is treated as the same wrong line, still wrong, even when the model has moved to a later line.
 - A follow-up that the model words as a new problem wipes the marks of the one before.
 - The board comes before the sentences, three to five seconds after he lets go in the runs so far; nothing of the

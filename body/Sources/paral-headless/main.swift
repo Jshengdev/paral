@@ -21,7 +21,7 @@ func why(_ error: Error) -> String {
 // the cure; it costs nothing.
 _ = Bundle.main.infoDictionary
 
-let usage = "usage: read PICTURE | smaller PICTURE OUT.jpg LONG_EDGE | same PICTURE PICTURE | rounds ROUNDS.json | page OUT.png LINE... | lines | keys SECONDS rightOption|fn|controlOption | flow FLOW.json SOCKET TOKENS.json | film RUN_DIR TOKENS.json | frame RUN_DIR TOKENS.json MS OUT.png | capsule RUN_DIR TOKENS.json MS... | placed RUN_DIR TOKENS.json MS... | apart RUN_DIR TOKENS.json MS MARGIN | hits RUN_DIR TOKENS.json MS... | usc ADDRESS... | curves TOKENS.json SHARE..."
+let usage = "usage: read PICTURE | smaller PICTURE OUT.jpg LONG_EDGE | same PICTURE PICTURE | rounds ROUNDS.json | page OUT.png LINE... | lines | keys SECONDS rightOption|fn|controlOption | flow FLOW.json SOCKET TOKENS.json | film RUN_DIR TOKENS.json | frame RUN_DIR TOKENS.json MS OUT.png | capsule RUN_DIR TOKENS.json MS... | placed RUN_DIR TOKENS.json MS... | apart RUN_DIR TOKENS.json MS MARGIN | hits RUN_DIR TOKENS.json MS... | usc ADDRESS... | centre < BANK.json | curves TOKENS.json SHARE..."
 let arguments = Array(CommandLine.arguments.dropFirst())
 
 switch arguments.first {
@@ -124,6 +124,33 @@ case "hits":
 case "usc":
     // Whether the app would open each address in his browser (`Keep.usc`), for rows.
     out(arguments.dropFirst().map { Keep.usc($0) != nil })
+
+case "centre":
+    // The demo's centre in the menu as plain values (`Sitting`), from a bank (or a ready line's), after each event:
+    // a press on the item its titles name, a failure with its words and time. For rows.
+    guard let given = try? JSONSerialization.jsonObject(with: FileHandle.standardInput.readDataToEndOfFile()) as? [String: Any] else { fail(usage) }
+    var bank = Cue.read(given["cues"]), sitting = Sitting()
+    if let line = given["ready"], case .success(.ready(let told)) = Seen.from(line as? [String: Any] ?? [:]) { bank = told.cues }
+    func said(_ does: CentreItem.Does) -> String {
+        switch does { case .nothing: "nothing"; case .open(let page): "opens \(page)"; case .ask(let line): "asks \"\(line)\""; case .startOver: "starts over" }
+    }
+    func plain(_ item: CentreItem) -> [String: Any] {
+        ["title": item.title, "ticked": item.ticked, "enabled": item.enabled, "does": said(item.does), "tip": item.tip ?? "", "under": item.under.map(plain)]
+    }
+    func drawn() -> [String: Any] { let menu = sitting.menu(bank); return ["scenarios": menu.scenarios.map(plain), "startOver": plain(menu.startOver), "failure": menu.failure.map(plain) ?? NSNull()] }
+    var after: [[String: Any]] = [["did": "nothing yet", "menu": drawn()]]
+    for event in given["events"] as? [[String: Any]] ?? [] {
+        var did = "nothing"
+        if let titles = event["press"] as? [String] {
+            let menu = sitting.menu(bank)
+            var found = (menu.scenarios + [menu.startOver]).first { $0.title == titles.first }
+            for title in titles.dropFirst() { found = found?.under.first { $0.title == title } }
+            did = found.map { said(sitting.press($0)) } ?? "no such item"
+        }
+        if let words = event["fail"] as? String { sitting.failed(words, when: event["when"] as? String ?? ""); did = "failed" }
+        after.append(["did": did, "menu": drawn()])
+    }
+    out(after)
 
 case "curves":
     // Each of the four curves at the given shares of its time, for rows.

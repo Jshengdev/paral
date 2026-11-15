@@ -1,0 +1,38 @@
+{
+ "name": "seam: a scenario of the ready line's bank may name the page it is run on; one with no page crosses as before",
+ "run": "seam.write",
+ "in": {
+  "from": "mind",
+  "line": {
+   "v": 1,
+   "type": "ready",
+   "mind": "paral",
+   "holdKey": "rightOption",
+   "drawKey": "shift",
+   "earGraceMs": 300,
+   "markPad": 4,
+   "pictureLongEdge": 1280,
+   "cropAround": {
+    "share": 1,
+    "points": 200
+   },
+   "cues": [
+    {
+     "name": "Club recognition page",
+     "page": "https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/",
+     "lines": [
+      "add it to my calendar",
+      "show me"
+     ]
+    },
+    {
+     "name": "Chemistry worksheet",
+     "lines": [
+      "what happens first?"
+     ]
+    }
+   ]
+  }
+ },
+ "out": "{\"v\":1,\"type\":\"ready\",\"mind\":\"paral\",\"holdKey\":\"rightOption\",\"drawKey\":\"shift\",\"earGraceMs\":300,\"markPad\":4,\"pictureLongEdge\":1280,\"cropAround\":{\"share\":1,\"points\":200},\"cues\":[{\"name\":\"Club recognition page\",\"page\":\"https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/\",\"lines\":[\"add it to my calendar\",\"show me\"]},{\"name\":\"Chemistry worksheet\",\"lines\":[\"what happens first?\"]}]}\n"
+}

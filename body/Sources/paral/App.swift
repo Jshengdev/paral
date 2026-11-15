@@ -6,13 +6,11 @@ import ParalBody
 final class App: NSObject, NSApplicationDelegate {
     private let wire: Wire
     private var painter: Painter
-    private let tokensPath: String
-    private var tokensChanged: Date?
+    private let tokensFile: TokensFile
     private let screen: NSScreen
     private var scene: Scene
     private var overlay: Overlay?
-    private let mic = Mic()
-    private let speaker = Speaker()
+    private let mic = Mic(), speaker = Speaker()
     private var key: Key?
     /// What the mind sets, from its ready line. The key is armed only after that line, so every "?? value" below is
     /// a fallback that cannot fire, and each repeats the setting's own value.
@@ -32,13 +30,18 @@ final class App: NSObject, NSApplicationDelegate {
     }
     /// Looks at the display with no key pressed, when the mind asks for it in its ready line.
     private lazy var watch = Watch(screen: screen)
-    private let does = Does()
-    private let began = Date()
-    /// The cue cards in the menu: lines he can tap instead of saying them.
-    private lazy var cues = CueMenu { [weak self] line in self?.typed(line) }
+    private let does = Does(), began = Date()
+    /// The demo's centre in the menu (`Centre`): its scenarios' pages and lines, and "Start over", which ends the sitting
+    /// with no restart: a new connection to the mind, which keeps a sitting per connection, a fresh scene, and a watch
+    /// whose next look is a first look. The voice, a scroll under way and a hold end.
+    private lazy var centre = Centre(ask: { [weak self] in self?.typed($0) }, failed: { [weak self] in self?.failed($0) }) { [weak self] in
+        guard let self else { return }
+        self.release.now(); self.hush(); self.does.stop(); (self.shot, self.trail, self.holds) = (nil, [], self.holds + 1)
+        self.scene = self.scene.fresh(); self.watch.again(); self.wire.again()
+    }
 
     init(socket: String, tokens: Tokens, tokensPath: String, screen: NSScreen) {
-        self.tokensPath = tokensPath
+        tokensFile = TokensFile(path: tokensPath)
         wire = Wire(path: socket)
         self.screen = screen
         let size = screen.frame.size
@@ -49,7 +52,7 @@ final class App: NSObject, NSApplicationDelegate {
 
     private func clock() -> Double { Date().timeIntervalSince(began) * 1000 }
     private func stamp() -> Double { (Date().timeIntervalSince1970 * 1000).rounded() }
-    func tell(_ seen: Seen) { scene.take(seen, at: clock()) }
+    func tell(_ seen: Seen) { centre.saw(seen); scene.take(seen, at: clock()) }
     private func failed(_ why: String) { tell(.state(name: "failed", detail: why)) }
 
     func applicationDidFinishLaunching(_ note: Notification) {
@@ -78,10 +81,7 @@ final class App: NSObject, NSApplicationDelegate {
 
     /// The look is one file. When it changes on disk (the dials page saves it), the scene and the painter take the new one.
     private func reloadTokens() {
-        let changed = (try? FileManager.default.attributesOfItem(atPath: tokensPath))?[.modificationDate] as? Date
-        guard let changed, changed != tokensChanged else { return }
-        defer { tokensChanged = changed }
-        guard tokensChanged != nil, let tokens = try? Tokens.load(tokensPath) else { return }
+        guard let tokens = tokensFile.changed() else { return }
         scene.tokens = tokens
         painter = Painter(tokens: tokens, width: painter.width, height: painter.height)
         overlay?.painter = painter
@@ -106,7 +106,7 @@ final class App: NSObject, NSApplicationDelegate {
                 self.wire.send(.look(at: self.stamp(), display: place, path: path, w: w, h: h, lines: lines))
             }
             watch.start(everyMs: settings.lookEveryMs, most: settings.lookFastMost, longEdge: settings.pictureLongEdge)
-            cues.show(settings.cues, in: status?.menu)
+            centre.show(settings.cues, in: status?.menu)
             if !settings.opening.isEmpty { [Seen.say(id: "hello", beat: 0, text: settings.opening, aside: false, trail: ["Lost and Found"], keep: false, offer: nil), .mute(id: "hello")].forEach(tell) }
         }
         if case .voice(let id, _, let sound, _) = seen {

@@ -1,0 +1,164 @@
+{
+ "name": "body: the centre ticks the item he pressed last and the scenario it is in, and the tick moves with each press: a line, a line of another scenario, the first scenario's \"Open the page\"; a greyed item does nothing and moves no tick",
+ "run": "body.centre",
+ "in": {
+  "cues": [
+   {
+    "name": "Club recognition page",
+    "page": "https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/",
+    "lines": [
+     "add it to my calendar",
+     "show me"
+    ]
+   },
+   {
+    "name": "Chemistry worksheet",
+    "lines": [
+     "what does this formula tell me?",
+     "what happens first?"
+    ]
+   },
+   {
+    "name": "Somewhere else",
+    "page": "http://campusactivities.usc.edu/",
+    "lines": [
+     "is it too late to apply?"
+    ]
+   },
+   {
+    "name": "Nothing in it",
+    "lines": []
+   }
+  ],
+  "events": [
+   {
+    "press": [
+     "Club recognition page",
+     "add it to my calendar"
+    ]
+   },
+   {
+    "press": [
+     "Club recognition page",
+     "show me"
+    ]
+   },
+   {
+    "press": [
+     "Chemistry worksheet",
+     "what happens first?"
+    ]
+   },
+   {
+    "press": [
+     "Club recognition page",
+     "Open the page"
+    ]
+   },
+   {
+    "press": [
+     "Somewhere else",
+     "Open the page (not an https usc.edu address)"
+    ]
+   }
+  ]
+ },
+ "out": [
+  {
+   "did": "nothing yet",
+   "menu": [
+    "Club recognition page >",
+    "    Open the page -> opens https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/",
+    "    add it to my calendar -> asks \"add it to my calendar\"",
+    "    show me -> asks \"show me\"",
+    "Chemistry worksheet >",
+    "    what does this formula tell me? -> asks \"what does this formula tell me?\"",
+    "    what happens first? -> asks \"what happens first?\"",
+    "Somewhere else >",
+    "    (greyed) Open the page (not an https usc.edu address) -> nothing",
+    "    is it too late to apply? -> asks \"is it too late to apply?\"",
+    "Start over -> starts over"
+   ]
+  },
+  {
+   "did": "asks \"add it to my calendar\"",
+   "menu": [
+    "[x] Club recognition page >",
+    "    Open the page -> opens https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/",
+    "    [x] add it to my calendar -> asks \"add it to my calendar\"",
+    "    show me -> asks \"show me\"",
+    "Chemistry worksheet >",
+    "    what does this formula tell me? -> asks \"what does this formula tell me?\"",
+    "    what happens first? -> asks \"what happens first?\"",
+    "Somewhere else >",
+    "    (greyed) Open the page (not an https usc.edu address) -> nothing",
+    "    is it too late to apply? -> asks \"is it too late to apply?\"",
+    "Start over -> starts over"
+   ]
+  },
+  {
+   "did": "asks \"show me\"",
+   "menu": [
+    "[x] Club recognition page >",
+    "    Open the page -> opens https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/",
+    "    add it to my calendar -> asks \"add it to my calendar\"",
+    "    [x] show me -> asks \"show me\"",
+    "Chemistry worksheet >",
+    "    what does this formula tell me? -> asks \"what does this formula tell me?\"",
+    "    what happens first? -> asks \"what happens first?\"",
+    "Somewhere else >",
+    "    (greyed) Open the page (not an https usc.edu address) -> nothing",
+    "    is it too late to apply? -> asks \"is it too late to apply?\"",
+    "Start over -> starts over"
+   ]
+  },
+  {
+   "did": "asks \"what happens first?\"",
+   "menu": [
+    "Club recognition page >",
+    "    Open the page -> opens https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/",
+    "    add it to my calendar -> asks \"add it to my calendar\"",
+    "    show me -> asks \"show me\"",
+    "[x] Chemistry worksheet >",
+    "    what does this formula tell me? -> asks \"what does this formula tell me?\"",
+    "    [x] what happens first? -> asks \"what happens first?\"",
+    "Somewhere else >",
+    "    (greyed) Open the page (not an https usc.edu address) -> nothing",
+    "    is it too late to apply? -> asks \"is it too late to apply?\"",
+    "Start over -> starts over"
+   ]
+  },
+  {
+   "did": "opens https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/",
+   "menu": [
+    "[x] Club recognition page >",
+    "    [x] Open the page -> opens https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/",
+    "    add it to my calendar -> asks \"add it to my calendar\"",
+    "    show me -> asks \"show me\"",
+    "Chemistry worksheet >",
+    "    what does this formula tell me? -> asks \"what does this formula tell me?\"",
+    "    what happens first? -> asks \"what happens first?\"",
+    "Somewhere else >",
+    "    (greyed) Open the page (not an https usc.edu address) -> nothing",
+    "    is it too late to apply? -> asks \"is it too late to apply?\"",
+    "Start over -> starts over"
+   ]
+  },
+  {
+   "did": "nothing",
+   "menu": [
+    "[x] Club recognition page >",
+    "    [x] Open the page -> opens https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/",
+    "    add it to my calendar -> asks \"add it to my calendar\"",
+    "    show me -> asks \"show me\"",
+    "Chemistry worksheet >",
+    "    what does this formula tell me? -> asks \"what does this formula tell me?\"",
+    "    what happens first? -> asks \"what happens first?\"",
+    "Somewhere else >",
+    "    (greyed) Open the page (not an https usc.edu address) -> nothing",
+    "    is it too late to apply? -> asks \"is it too late to apply?\"",
+    "Start over -> starts over"
+   ]
+  }
+ ]
+}

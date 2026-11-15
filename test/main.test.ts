@@ -12,7 +12,6 @@ import { away, datesIn, daysFrom, unknownDate, type Named } from "../mind/cores/
 import { calendarFile, dateLine, named, when } from "../mind/cores/keep.ts";
 import { nextStep, note, nothingYet, type Noted, type Step } from "../mind/cores/guide.ts";
 import { headingOf, movedUnder, whichPage, whichWay } from "../mind/cores/page.ts";
-import { place } from "../mind/cores/sheet.ts";
 import { showable, unfit } from "../mind/cores/fit.ts";
 import { circled, echo } from "../mind/cores/circle.ts";
 import { happened } from "../mind/cores/happened.ts";
@@ -41,6 +40,8 @@ import { apart, nudge, order, seen, usc } from "./runners/nudge.ts";
 import { follow } from "./runners/follow.ts";
 import { scrollButton, wayTag } from "./runners/ways.ts";
 import { marks } from "./runners/marks.ts";
+import { bank, centre } from "./runners/centre.ts";
+import { sheetPlace } from "./runners/sheet.ts";
 
 // A row is JSON on disk: its "in" is whatever its runner takes, so it is typed where the runner reads it.
 type Row = { name: string; run: string; in: any; out: unknown };
@@ -106,6 +107,7 @@ const runs: Record<string, (input: any) => unknown> = {
   "body.marks": marks,
   "body.apart": apart,
   "body.usc": usc,
+  "body.centre": centre, "ready.bank": bank,
   catch: (input) => input.events.reduce(hear, silence),
   "catch.unasked": (input) => Object.fromEntries(input.holds.map((words: string) => [words, unasked(words, input.filler)])),
   "catch.only": (input) => Object.fromEntries(input.asks.map((words: string) => [words, saysOnly(words, input.phrases)])),
@@ -117,16 +119,7 @@ const runs: Record<string, (input: any) => unknown> = {
     let seen = nothingYet;
     return input.happens.map((what: Noted) => (input.steps as Step[])[nextStep(input.steps, (seen = note(seen, what)))]?.text ?? null);
   },
-  "sheet.place": (input) => {
-    const sheet = JSON.parse(readFileSync(join(root, "sheets", input.sheet), "utf8"));
-    const round = (n: number) => Math.round(n * 10) / 10;
-    return input.cases.map((found: any) => {
-      const placed = place(sheet, found);
-      if (placed === null) return null;
-      const spot = placed.spots[input.spot].box;
-      return { matched: placed.matched.length, scale: round(placed.scale), error: round(placed.error), spot: { x: round(spot.x), y: round(spot.y), w: round(spot.w), h: round(spot.h) } };
-    });
-  },
+  "sheet.place": sheetPlace,
   "page.way": (input) => input.cases.map(([seen, line]: [string[], string]) => whichWay(seen, input.page, line)),
   "dates.away": (input) => input.cases.map(([line, today]: [string, string]) => away(line, new Date(today))?.words ?? null),
   "dates.in": (input) => input.texts.map((text: string) => datesIn(text)),
