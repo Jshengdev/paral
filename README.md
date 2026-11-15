@@ -37,11 +37,77 @@ you have open.
 - **It gives you your notes.** Say "show me my notes" and it writes one page: what you asked for, the steps in
   order, which are done, and where each one is.
 
-![Asked to draw everything in order, it lays the whole process out as a map beside the page](docs/img/map-of-the-process.jpg)
+## Where it fits
 
-![Show me: the step behind is ticked Done and the step you are on is marked Next](docs/img/next-and-done.jpg)
+It slots into whatever page is on the screen. On a page it has read ahead of time it speaks first. Anywhere
+else it waits to be asked, and answers about what is in front of you.
 
-*The three pictures are frames of the app running on a Mac, driven by a script.*
+### One sitting on one page
+
+<table>
+<tr>
+<td width="50%"><img src="docs/img/first-card.jpg" alt="The club recognition page as it opens, with a card about the deadline"><br><b>1. It speaks first.</b> The page has just loaded. A card says the application closes November 22, lists what is still ahead, and points down to where the date is.</td>
+<td width="50%"><img src="docs/img/seven-days-left.jpg" alt="The deadline line boxed with 7 days left"><br><b>2. It finds the line.</b> The date sits inside a closed section. Once it is open, the line is boxed with "7 days left" and a button to put it in your calendar.</td>
+</tr>
+<tr>
+<td><img src="docs/img/next-and-done.jpg" alt="A walk through the steps with Next and Done"><br><b>3. "Show me."</b> It walks the steps one at a time. The one behind you is ticked "Done", the one you are on is marked "Next".</td>
+<td><img src="docs/img/map-of-the-process.jpg" alt="A six-box map of the whole process beside the page"><br><b>4. "Draw everything I have to do, in order."</b> It lays the whole process out as a map, and brackets the sections of the page that belong to the first step.</td>
+</tr>
+</table>
+
+### Across USC's own pages
+
+Each of these is a different office's page, and on each it marked the one thing to act on.
+
+<table>
+<tr>
+<td width="50%"><img src="docs/img/space-requests.jpg" alt="RSO Resources with Space Requests ringed"><br><b>Booking a room for a club.</b> Asked where to book, it sent the student to the RSO Resources page and ringed "Space Requests" when the page arrived.</td>
+<td width="50%"><img src="docs/img/passed-deadline.jpg" alt="The Catalina Maymester page with its deadline struck through"><br><b>A program you meant to apply for.</b> The Maymester deadline is struck through: closed 13 days ago, above an "Apply" button that still shows.</td>
+</tr>
+<tr>
+<td><img src="docs/img/financial-aid.jpg" alt="Financial aid dates with the spring payment deadline"><br><b>Paying for spring.</b> On the financial aid dates page: your billing account must be paid in full by January 8.</td>
+<td><img src="docs/img/registration-calendar.jpg" alt="The registration calendar with one row ringed"><br><b>Registering on time.</b> On the registration calendar it rings one row out of dozens: the last day to register without a late fee, 54 days left.</td>
+</tr>
+<tr>
+<td><img src="docs/img/accommodated-testing.jpg" alt="Accommodated testing with the final exam request deadline"><br><b>Exam accommodations.</b> Final exam requests are due December 2 at 11:59 pm, and it lists the two things to do before then.</td>
+<td><img src="docs/img/overseas-studies.jpg" alt="Overseas studies How to Apply with a step marked"><br><b>Studying abroad.</b> The step people miss: besides the USC application, you apply to the host institution by its own deadline.</td>
+</tr>
+</table>
+
+Any office's page can join these by adding its address to one list (see "Add a page").
+
+### On your own work
+
+It does not need to know a page ahead of time to help with it. Hold the key and ask.
+
+<table>
+<tr>
+<td width="50%"><img src="docs/img/worksheet-rings.jpg" alt="A chemistry worksheet with two atoms ringed"><br><b>A chemistry worksheet.</b> Asked for the final product, it gives a hint instead and rings the two atoms the hint is about, on the drawing itself.</td>
+<td width="50%"><img src="docs/img/algebra-hint.jpg" alt="An algebra problem with one line ringed"><br><b>A step that went wrong.</b> It rings the line to look at again and says where to look, not what the mistake is. Ask again and the hint goes one level deeper.</td>
+</tr>
+<tr>
+<td><img src="docs/img/lesson-clip.jpg" alt="A short lesson clip of an equation as a balance"><br><b>"Show me why that works."</b> A short clip plays beside the work: the idea, on numbers that are not yours.</td>
+<td><img src="docs/img/flow-board.jpg" alt="A project page with a bracket and a board of six boxes"><br><b>Your own project notes.</b> Asked how the pieces connect, it brackets the lines it means and draws the flow as a board.</td>
+</tr>
+</table>
+
+*The pictures of USC pages and the worksheet are frames of the app running on a Mac, driven by a script. The last
+three are drawn by the app's own drawing code in its tests.*
+
+### Things to say
+
+| Say or tap | What happens |
+|---|---|
+| nothing | on a page it knows, it tells you the one date or step that matters |
+| any question, with the right Option key held | a short answer aloud, with the line it means marked on your page |
+| "show me" | the steps, one at a time, each marked where it is |
+| "add it to my calendar" | the date opens in your calendar, ready to add |
+| "scroll for me" | the page turns to what it is pointing at |
+| "open it for me" | the closed section it has marked is opened with one click |
+| "take me there" | the USC page it just named opens, with the right part ringed |
+| "draw everything I have to do, in order" | a map of the whole process beside the page |
+| "just tell me the answer", on your own work | the next hint |
+| "show me my notes" | one page of what you asked for, the steps, and which are done |
 
 ## How it works
 
