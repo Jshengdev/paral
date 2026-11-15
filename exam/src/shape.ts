@@ -29,6 +29,8 @@ const Expect = z.object({
   says: z.array(z.string().min(1)).optional(),
   /** Words the answer may not hold, such as "you can still apply" on a page whose date has passed. */
   neverSays: z.array(z.string().min(1)).optional(),
+  /** Something the answer must say in words of its own choosing: `what` it is, and the words any one of which shows it. */
+  saysThat: z.object({ what: z.string().min(1), anyOf: z.array(z.string().min(1)).min(1) }).optional(),
   /** He pressed again at once: nothing of the ask before this one may be said or drawn after this press. */
   takesBackTheAskBefore: z.boolean().optional(),
 });

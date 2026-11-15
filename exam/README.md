@@ -97,6 +97,8 @@ only when the builder says the tree is frozen, and the builder edits again only 
   page writes it, with "1st" read as "1". And every date in any answer, a month with its day, must be on a page it read. Today that is only the page in front
   of him; when the build reads other pages, their lines count too (his words: it may say what it found on another page,
   never what it has no page for).
+  A scenario can also ask that the answer say something in its own words (`saysThat`), such as that the date has
+  passed: any one of the listed words shows it, whole words only. The list is a sign, so a reader reads every pass.
 - **A piece cut off from its sentence.** A long sentence cut at a comma once left "Which is 13." said on its own.
   The judge holds three signs of that, each heard on film. A reader judges the rest.
 - A verdict is `works`, `fails` or `not shown`. `not shown` means this run could not prove it either way.

@@ -34,6 +34,8 @@ const box = { x: 100, y: 80, w: 200, h: 20 };
 const PAGE = [{ id: "work", text: "My work", box }, { id: "limiter", text: "The rate limiter keeps its buckets in memory", box }];
 // A page whose subject is an address, which is one long word: "trycloudflare".
 const LINKS = [{ id: "head", text: "Short link", box }, { id: "link-1", text: "https://quiet-harbor-demo.trycloudflare.com/4CQMZu", box }];
+// Some signs that an answer says a date has passed. A scenario lists its own.
+const PASSED = { what: "the date has passed", anyOf: ["passed", "closed", "missed", "ago", "no longer"] };
 // A page with a due date and a range of dates, as two lines.
 const DATED = [{ id: "due", text: "Application deadline: March 1, 2027", box }, { id: "exams", text: "Exams December 9-16", box }];
 const say = (id: string, at: number, text: string, extra: Partial<{ opener: boolean; hint: boolean; top: boolean }> = {}): Moment => ({ at, kind: "say", id, text, opener: extra.opener ?? false, hint: extra.hint ?? false, top: extra.top ?? false });
@@ -112,6 +114,10 @@ const CASES: Case[] = [
   { name: "the date it was asked for, with a spoken ending", check: "It says", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "It is due March 1st.")]), { says: ["March 1"] }, DATED) },
   { name: "it says he can still apply after the date", check: "It never says", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "The deadline was March 1, but you can still apply today.")]), { neverSays: ["you can still apply"] }, DATED) },
   { name: "it says the date has passed", check: "It never says", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "That deadline, March 1, has passed.")]), { neverSays: ["you can still apply"] }, DATED) },
+  { name: "it says in its own words that the date has passed", check: "It says that the date has passed", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "It was due March 1, and that was two weeks ago.")]), { saysThat: PASSED }, DATED) },
+  { name: "it gives a passed date as if it were ahead", check: "It says that the date has passed", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "Applications close on March 1, so you'd want everything submitted by then.")]), { saysThat: PASSED }, DATED) },
+  { name: "it says it depends on today's date", check: "It says that the date has passed", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "Whether it's too late depends on today's date compared with the March 1 deadline.")]), { saysThat: PASSED }, DATED) },
+  { name: "a word that only holds the sign inside it", check: "It says that the date has passed", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "The Chicago office disclosed that it is due March 1.")]), { saysThat: PASSED }, DATED) },
   { name: "a hint on a plain question", check: "A plain question gets an answer", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "Read the highlighted line again, slowly.", { hint: true })]), { plain: true }, []) },
   { name: "his number in a worked example", check: "It never gives the result", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "So a equals 2 plus 9, which is 11.")]), { never: ["11", "eleven"] }, []) },
   { name: "an ask that ends in the failed look", check: "The ask is answered", mustPass: false, verdicts: () => spoken(ask([{ at: 5000, kind: "look", name: "failed", detail: "I lost that answer on my side. Ask me again." }]), {}, []) },

@@ -3,10 +3,11 @@ import { of, type Ask } from "../timeline.ts";
 import { no, yes, type Verdict } from "../verdict.ts";
 
 // A date is a month and a day, as "March 1", "Mar 1st" or "December 9-16". A wrong date costs a student a deadline,
-// so two things are held: a date the scenario names is said as the page writes it, and no date is said that it has
-// no page for. His words of 2026-11-14: it may say a date that is not on the page in front of him when it read it on
-// another page, and it "shouldn't say things that doesn't have information on". Today the page on screen is the
-// only one it reads, so that page is the whole of `truth`; when it reads others, their lines join it.
+// so three things are held: a date the scenario names is said as the page writes it, no date is said that it has
+// no page for, and where the scenario asks it, the answer says what the date means for him (that it has passed).
+// His words of 2026-11-14: it may say a date that is not on the page in front of him when it read it on another
+// page, and it "shouldn't say things that doesn't have information on". Today the page on screen is the only one
+// it reads, so that page is the whole of `truth`; when it reads others, their lines join it.
 const MONTHS = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
 const MONTH = new RegExp(`\\b(${MONTHS.join("|")}|${MONTHS.map((m) => m.slice(0, 3)).join("|")}|sept)\\b\\.?`, "gi");
 const key = (month: string) => month.toLowerCase().slice(0, 3);
@@ -39,6 +40,12 @@ export function datesSaid(ask: Ask, expect: Expect, truth: Truth[]): Verdict[] {
   for (const phrase of expect.neverSays ?? []) {
     const what = `It never says "${phrase}"`;
     out.push(plain(answer).includes(plain(phrase)) ? no("C13", s, what, `it said: "${answer.slice(0, 110)}"`) : yes("C13", s, what, "it does not"));
+  }
+  if (expect.saysThat) {
+    // Whole words only: "ago" is not in "Chicago". The list is a sign, not the meaning; a reader reads every pass.
+    const sign = expect.saysThat.anyOf.find((word) => new RegExp(`\\b${plain(word).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`).test(plain(answer)));
+    const what = `It says that ${expect.saysThat.what}`;
+    out.push(sign ? yes("C13", s, what, `it says "${sign}"`) : no("C13", s, what, `none of "${expect.saysThat.anyOf.join('", "')}" in: "${answer.slice(0, 110)}"`));
   }
   const said = dates(answer);
   if (said.length === 0 || truth.length === 0) return out;

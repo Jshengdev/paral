@@ -1,0 +1,24 @@
+{
+  "v": 1,
+  "id": "no-exact-day",
+  "title": "A real page that gives no day for the term ahead, asked five ways",
+  "criteria": ["C6", "C13"],
+  "page": "real:overseas-apply",
+  "source": { "url": "https://dornsife.usc.edu/overseas-studies/apply/" },
+  "steps": [
+    { "say": "When is the fall application due?", "circle": null,
+      "expect": { "plain": true, "sentences": 1,
+        "saysThat": { "what": "this page gives no fall date", "anyOf": ["doesn't", "does not", "isn't", "is not", "not listed", "not shown", "only", "can't", "cannot", "don't see", "do not see", "no fall", "no date", "nothing"] } } },
+    { "say": "What day in February do I have to apply by?", "circle": null,
+      "expect": { "plain": true, "sentences": 1,
+        "saysThat": { "what": "this page gives no day in February", "anyOf": ["doesn't", "does not", "isn't", "is not", "not listed", "not shown", "only", "can't", "cannot", "don't see", "do not see", "no february", "no date", "nothing"] } } },
+    { "say": "Can I still apply for spring?", "circle": null,
+      "expect": { "plain": true, "sentences": 1,
+        "saysThat": { "what": "spring applications are closed", "anyOf": ["closed", "passed", "missed", "no longer", "too late"] },
+        "neverSays": ["you can still apply", "not too late", "still time to apply"] } },
+    { "say": "Where do I find the deadlines?", "circle": null,
+      "expect": { "plain": true, "sentences": 1 } },
+    { "say": "So what's my next step if I want to go abroad next fall?", "circle": null,
+      "expect": { "plain": true, "sentences": 1 } }
+  ]
+}
