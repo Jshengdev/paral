@@ -156,7 +156,8 @@ final class App: NSObject, NSApplicationDelegate {
     private func sendShot() {
         guard let shot else { return }
         let path = NSTemporaryDirectory() + "paral-screen.jpg"
-        // When he drew around something, the mind gets only that part of the picture and the words of the lines in it.
+        // When he drew around something, the answer's picture is only that part, with the words of the lines in it.
+        // The whole page went to the mind earlier, when the key went down and no path was drawn yet.
         let part = trail.count > 1
             ? Screen.around(shot.image, lines: shot.lines, path: trail, on: shot.place, share: settings?.cropShare ?? 1, points: settings?.cropPoints ?? 200, color: painter.accent, width: painter.tokens.mark.width + 1)
             : (image: shot.image, lines: shot.lines)

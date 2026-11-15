@@ -130,11 +130,13 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
 - Every press of the hold key starts an ask, also when the key is used for typing.
 - With a Bluetooth headset the start of the voice may be cut: the headset changes mode when the microphone opens and
   closes. Not tried; the Mac's own microphone and speakers avoid it.
-- What leaves the Mac with the live services: on each ask, the sound of the question goes to the ear's API; one scaled
-  picture of the main display, the lines read from it, his words and the lesson so far go to the model's API (when he
-  draws around something, only that part of the picture and the words of the lines in it); each
-  sentence of the answer goes to the voice's API. With a tape nothing leaves. paral keeps one temporary picture file,
-  overwritten on each ask.
+- What leaves the Mac with the live services, on each ask: the sound of the question goes to the ear's API. While he
+  holds the key, the text read off the whole screen (up to `openerPageLines` lines, no picture) and his words so far
+  go to the fast model, which drafts the quick line. One scaled picture of the main display, the lines read from it,
+  his words and the lesson so far go to the deep model; when he draws around something the deep model gets only that
+  part of the picture and the words of the lines in it. So a circle narrows what the answer is made from, and does
+  not keep the rest of the page's text on the Mac: the fast model has read it. Each sentence said goes to the
+  voice's API. With a tape nothing leaves. paral keeps one temporary picture file, overwritten on each ask.
 - The lesson lives for one connection. Restarting the body or the mind starts it over.
 - A line he edits is treated as the same wrong line, still wrong, even when the model has moved to a later line.
 - A follow-up that the model words as a new problem wipes the marks of the one before.

@@ -46,7 +46,7 @@ export const wire = {
 
   cropAround: {
     value: { share: 1, points: 200 },
-    why: "When he draws around something, the body sends only that part of the picture, and the words of the lines in it: the loop, and room on every side of this share of the loop's own size or this many points, whichever is more. The rest of his screen never leaves the Mac. The room is there so the lines around what he circled, such as the problem above his working, still reach the model.",
+    why: "When he draws around something, the answer is made from only that part of the picture, and the words of the lines in it: the loop, and room on every side of this share of the loop's own size or this many points, whichever is more. The deep model gets nothing else. This does not keep the rest of the page on the Mac: the picture taken as the key goes down is of the whole display, and the fast model drafts the quick line from its read lines while he is still drawing. The room is there so the lines around what he circled, such as the problem above his working, still reach the deep model.",
     measured: "not measured on real pages; on the exam's pages the lines of one problem sit within 200 points of each other",
   } satisfies Setting<{ share: number; points: number }>,
 

@@ -28,10 +28,12 @@ paral needs two grants from macOS, and asks for both the first time it starts:
 It asks for no Accessibility and no Input Monitoring grant: the key is read by asking the system which keys are down.
 To check that the key is seen on this Mac before starting:  body/.build/debug/paral-headless keys 10 $1
 
-On each ask, with the live services, this leaves the Mac: the sound of the question (to the ear), one scaled
-picture of the main display with the lines read from it and the question (to the model), and each sentence of
-the answer (to the voice). When you draw around something, only that part of the picture and the lines in it go.
-Close private windows first.
+On each ask, with the live services, this leaves the Mac: the sound of the question (to the ear); the text read
+off the whole screen and your words so far, while you hold the key (to the fast model, which writes the quick
+line); one scaled picture of the main display with the lines read from it and the question (to the deep model,
+which writes the answer); and each sentence said (to the voice). When you draw around something, the answer is
+made from only that part of the picture and the lines in it; the quick line has still read the text of the
+whole screen. Close private windows first.
 
 To use it: hold $1, ask out loud, let go. Hold $2 as well and move the pointer to draw around something.
 The "paral" item in the menu bar closes a conversation or quits; so does the cross on the resting circle.
