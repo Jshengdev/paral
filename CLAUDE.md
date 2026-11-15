@@ -1,8 +1,16 @@
 # paral
 
-A study helper that sits on the student's own screen. Hold a key and ask out loud. It marks the place on the page,
-answers aloud in short sentences, and when the student's own work has a wrong line it gives one hint at a time and
-never the answer.
+A helper that sits on a student's own screen, called Lost and Found. On USC pages it has read ahead of time it
+speaks first: it marks the one thing on the page that will cost the student later (a deadline folded away in a
+closed section), says it once, and offers to put the date in their calendar, scroll to it, or open the section.
+Hold a key and ask out loud, and it marks the place on the page and answers in short sentences that stay on a card.
+On the student's own work, when a line is wrong, it gives one hint at a time and never the answer.
+
+What it sees, sends and keeps: it takes a picture of one display, reads the text off it on the Mac, and sends the
+sound of a question, one scaled picture and the lines read to the two services named below, only when the key is
+held or a line is tapped. A look it takes by itself sends nothing from the screen. It keeps one temporary picture
+and no history. It acts in another app only when asked: it opens a usc.edu page, scrolls, or clicks one closed
+heading it has itself marked.
 
 Written at AI@USC, November 14-15 2026. Every line in this folder is written here; nothing is copied from another
 project. Libraries: zod (MIT), the Anthropic SDK (MIT), DialKit (MIT, in `dials/vendor/` and `exam/vendor/`). Tools:
@@ -137,9 +145,10 @@ in the mark's place: up or down, and what it leads to (`mind/place.ts`, `cores/p
 
 **An answer stays on a card.** After an answer on one of USC's kept pages the mind sends one more line, shown and
 not spoken (`mind/takes.ts` `sent`, `answerCard`): the answer's words on a card of its own, which the body brings up
-in its turn and keeps until he presses a button on it. It carries one offer: "Scroll for me" when the answer's arrow
-is up; else "Add to calendar" when it named a date still ahead that he has not kept; else "Show me the steps" when
-steps are known; and when the answer sent him to another kept page, the card is the offer to take him there. With
+in its turn and keeps until he presses a button on it. It carries one offer: "Add to calendar" when the answer named
+a date still ahead that he has not kept; else "Show me the steps" when steps are known; and when the answer sent him
+to another kept page, the card is the offer to take him there. An arrow the answer sent has its own button to
+scroll, on its tag. The card holds the answer's first sentence, and more only while it stays short (`answerCard`). With
 nothing to offer it is a card that goes by itself. An answer on any other page is spoken and captioned as before.
 
 **"Scroll for me."** When an arrow says the thing is off his screen and he says or presses "scroll for me"

@@ -39,8 +39,8 @@ export function takes(hands: Hands, whereNow: WhereNow = () => null, kept: (line
     /**
      * An answer was given on a kept page (`on`), at `at`: it stays on a card of its own, shown and not spoken, with
      * the one thing paral can do next. A page it sent him to: the offer to take him there, on its own line. Else the
-     * answer's words, with the offer to scroll when its arrow is up; else to keep a date it named that is still
-     * ahead and not yet kept; else to walk the steps, when some are known (`steps`).
+     * answer's words, with the offer to keep a date it named that is still ahead and not yet kept; else to walk the
+     * steps, when some are known (`steps`). An arrow the answer sent has its own button to scroll, on its tag.
      */
     sent(id: string, told: string[], on: KeptPage, at: number, after: After, steps: boolean) {
       if (told.length === 0) return;
@@ -55,11 +55,11 @@ export function takes(hands: Hands, whereNow: WhereNow = () => null, kept: (line
       // As much of the answer as the card holds, cut at the end of a sentence; its first sentence whole, whatever its length.
       const text = told.reduce((kept, sentence) => (kept === "" || `${kept} ${sentence}`.length <= card.most ? `${kept} ${sentence}`.trim() : kept), "");
       const date = dateLine(said, [on]);
-      const keep = !after.way && date !== null && !kept(date.written) && (away(date.written, new Date(at))?.days ?? -1) >= 0;
-      const offer = after.way ? card.scroll : !keep && steps ? card.steps : null;
+      const keep = date !== null && !kept(date.written) && (away(date.written, new Date(at))?.days ?? -1) >= 0;
+      const offer = !keep && steps ? card.steps : null;
       send({ v, type: "say", id: `${id}o`, beat: 0, text, trail: card.trail, ...(keep ? { keep: true } : {}), ...(offer ? { offer } : {}) });
       send({ v, type: "mute", id: `${id}o`, why: "an answer's card is shown, not spoken" });
-      log(`${id}: the answer stays on a card${after.way ? ", which offers to scroll to where it points" : keep ? ", which offers to keep the date it named" : offer ? ", which offers to walk the steps" : ""}`);
+      log(`${id}: the answer stays on a card${keep ? ", which offers to keep the date it named" : offer ? ", which offers to walk the steps" : ""}`);
     },
     /** Whether his words asked to be taken there, with a page to go to. If so the app is asked to open it and he is told. */
     async asked(id: string, words: string, signal: AbortSignal): Promise<boolean> {

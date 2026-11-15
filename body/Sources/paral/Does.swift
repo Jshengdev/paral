@@ -12,15 +12,19 @@ final class Does {
 
     /// Takes a line from the mind. `way` says which way the arrow points now (true is down), nil when none is up or
     /// he holds the key; `watch` says how many looks it has sent and whether the page stands as its last look saw it.
-    func take(_ seen: Seen, on screen: NSScreen, watch: Watch, way: @escaping () -> Bool?, failed: @escaping (String) -> Void) {
+    /// `boxed` says whether a point lies inside a box paral is drawing now.
+    func take(_ seen: Seen, on screen: NSScreen, watch: Watch, boxed: (Double, Double) -> Bool, way: @escaping () -> Bool?, failed: @escaping (String) -> Void) {
         let looks = { watch.sent }
         if case .go(_, let url, _) = seen, !Keep.go(url) { failed("the page could not be opened (\(url))") }
         if case .press(_, let x, let y) = seen {
             // The one click the app ever makes. The mind names the point only for a heading paral has itself boxed on
-            // a kept USC page, on his word (`mind/takes.ts`). Here: he has given the grant, and the page still stands
-            // as the look that found that heading saw it. A page that has moved since is not clicked.
+            // a kept USC page, on his word (`mind/takes.ts`). The app does not take the mind's word for it. Here, all
+            // of these must hold: the point lies inside a box the scene is drawing now; he has given the grant; and
+            // one picture taken now shows the page as the look that found that heading saw it, exactly so round the
+            // point. A page that has moved, or has something new over the heading, is not clicked.
+            guard boxed(x, y) else { return failed(Hand.unmarked) }
             guard Hand.trusted(ask: true) else { return failed(Hand.off) }
-            watch.still { same in
+            watch.still(x: x, y: y) { same in
                 if !same { failed(Hand.moved) } else if !Hand.press(x: x, y: y, on: screen) { failed(Hand.missed) }
             }
         }

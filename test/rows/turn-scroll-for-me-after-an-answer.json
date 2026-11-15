@@ -1,5 +1,5 @@
 {
- "name": "turn: an answer sends him further down the page with an arrow, and stays on a card that offers \"Scroll for me\"; he presses it (the words arrive as a tapped line): the app is asked to scroll down toward that section and nothing is said; the answer still holds the looks, so when the section comes into view the look marks it. Asked again with no arrow up, he is told nothing he was pointed to is off screen, and nothing is scrolled",
+ "name": "turn: an answer sends him further down the page with an arrow, and the answer stays on a card; he presses \"Scroll for me\" on the arrow's tag (the words arrive as a tapped line): the app is asked to scroll down toward that section and nothing is said; the answer still holds the looks, so when the section comes into view the look marks it. Asked again with no arrow up, he is told nothing he was pointed to is off screen, and nothing is scrolled",
  "run": "turn",
  "in": {
   "tape": "club.json",
@@ -469,8 +469,8 @@
     "read this page"
    ],
    "offer": {
-    "label": "Scroll for me",
-    "send": "scroll for me"
+    "label": "Show me the steps",
+    "send": "show me"
    }
   },
   {

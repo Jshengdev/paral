@@ -42,13 +42,17 @@ public final class Watch {
     private var bar: Double { max(0, screen.frame.maxY - screen.visibleFrame.maxY) }
 
     /// Whether the display still shows what the last look sent to the mind saw: one picture taken now, against that
-    /// look's print. Asked before a click at a place that look found, so nothing is clicked on a page that has moved.
-    public func still(_ then: @escaping (Bool) -> Void) {
+    /// look's print, and strictly so round the point `x`, `y` (in the desktop's points, as a mark's box is). Asked
+    /// before a click at a place that look found, so nothing is clicked on a page that has moved or has something new
+    /// over it. False when the display cannot be found.
+    public func still(x: Double, y: Double, _ then: @escaping (Bool) -> Void) {
+        guard let (_, place, size) = Screen.place(of: screen) else { return then(false) }
         let screen = self.screen, bar = self.bar
+        let near = (x: (x - place.x) / max(size.width, 1), y: (y - place.y - bar) / max(size.height - bar, 1))
         Task { [weak self] in
             let shot = try? await Screen.picture(of: screen)
             let print = shot.map { Screen.print($0.image, skip: Int(bar * $0.place.scale)) } ?? Data()
-            await MainActor.run { then(self?.rounds.isLast(print, within: Watch.within) ?? false) }
+            await MainActor.run { then(print.count == 320 * 200 && (self?.rounds.isLast(print, within: Watch.within, near: near) ?? false)) }
         }
     }
 

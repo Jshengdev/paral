@@ -40,8 +40,21 @@ public struct Rounds {
 
     public init() {}
 
-    /// Whether a print shows the page as the last look reported saw it.
-    public func isLast(_ print: Data, within: Double) -> Bool { Screen.alike(print, reported, within: within) }
+    /// Whether a print shows the page as the last look reported saw it, and, round a place of it (`near`, as shares
+    /// of the print across and down), exactly so: in the 49 by 25 points round that place not one in a hundred may
+    /// differ. A small thing that has come up over the place since the look is then not taken for the same page.
+    public func isLast(_ print: Data, within: Double, near: (x: Double, y: Double)) -> Bool {
+        guard Screen.alike(print, reported, within: within) else { return false }
+        let w = 320, h = 200, cx = Int(near.x * Double(w)), cy = Int(near.y * Double(h))
+        var apart = 0, counted = 0
+        for y in max(0, cy - 12)...min(h - 1, max(0, cy + 12)) {
+            for x in max(0, cx - 24)...min(w - 1, max(0, cx + 24)) {
+                counted += 1
+                if abs(Int(print[y * w + x]) - Int(reported[y * w + x])) > 12 { apart += 1 }
+            }
+        }
+        return apart * 100 < counted
+    }
 
     /// Takes one round's print; true when it is to be read and reported as a look.
     public mutating func report(_ print: Data, waiting: Bool, most: Int, within: Double) -> Bool {

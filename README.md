@@ -1,8 +1,16 @@
 # paral
 
-A study helper that sits on a student's own screen. Hold a key and ask out loud. It marks the place on the page and
-answers aloud in short sentences. When the student's own work has a wrong line, it gives one hint at a time and never
-the answer.
+A helper that sits on a student's own screen, called Lost and Found. On USC pages it has read ahead of time it
+speaks first: it marks the one thing on the page that will cost the student later (a deadline folded away in a
+closed section), says it once, and offers to put the date in their calendar, scroll to it, or open the section.
+Hold a key and ask out loud, and it marks the place on the page and answers in short sentences that stay on a card.
+On the student's own work, when a line is wrong, it gives one hint at a time and never the answer.
+
+What it sees, sends and keeps: it takes a picture of one display, reads the text off it on the Mac, and sends the
+sound of a question, one scaled picture and the lines read to the two services named below, only when the key is
+held or a line is tapped. A look it takes by itself sends nothing from the screen. It keeps one temporary picture
+and no history. It acts in another app only when asked: it opens a usc.edu page, scrolls, or clicks one closed
+heading it has itself marked.
 
 Built at the AI@USC hackathon, November 14-15 2026.
 
@@ -18,7 +26,7 @@ Needs macOS 14 or later, the Xcode command line tools and Node 26. Keys for Clau
 ```
 npm install
 ./check     # builds the Mac side and runs every row; needs no key, microphone or screen
-./run       # lists the two grants macOS will ask for, then starts paral
+./run       # lists the grants macOS will ask for (microphone, screen; Accessibility only if you ask it to scroll or open), then starts paral
 ./tune      # a page of dials for every colour, size and motion time
 ```
 

@@ -53,13 +53,12 @@ export const pages = {
   answerCard: {
     value: {
       trail: ["took your question", "looked at your screen", "read this page"],
-      most: 320,
-      scroll: { label: "Scroll for me", send: "scroll for me" },
+      most: 170,
       steps: { label: "Show me the steps", send: "show me" },
     },
-    why: "After an answer on one of USC's kept pages, the answer stays on a card of its own with the one thing paral can do next. The owner, after his first real run, where each answer was a caption above the pill and then gone: \"we need the card that opens when we ask it for important ifnromation about what the rso is going on\". The trail is what was done for the answer; `most` is how many letters of it the card holds, cut at a sentence's end, so the card finds room beside the page; the two offers are the button's words and the words it sends back: to scroll to what the answer's arrow points at, and, when nothing else is offered and steps are known, to walk them. A date the answer named that is still ahead is offered to be kept instead, and a page it sent him to is offered by `goOffer`.",
-    measured: "not seen on a real screen; 320 letters is about three sentences of an answer",
-  } satisfies Setting<{ trail: string[]; most: number; scroll: { label: string; send: string }; steps: { label: string; send: string } }>,
+    why: "After an answer on one of USC's kept pages, the answer stays on a card of its own with the one thing paral can do next. The owner, after his first real run, where each answer was a caption above the pill and then gone: \"we need the card that opens when we ask it for important ifnromation about what the rso is going on\". The trail is what was done for the answer. `most` is how many letters of the answer the card holds, cut at a sentence's end and never less than its first sentence: his designer's card is one sentence and one button, and at 320 a card of two sentences ran to seven lines. The card offers to keep a date the answer named that is still ahead; else, when steps are known, to walk them (the button's words and the words it sends back). It does not offer to scroll: the arrow's own tag carries that button. A page the answer sent him to is offered by `goOffer`.",
+    measured: "not seen on a real screen; one run on the stand-in at 320, read by the judging window as too long",
+  } satisfies Setting<{ trail: string[]; most: number; steps: { label: string; send: string } }>,
 
   openOffer: {
     value: { label: "Open it for me", send: "open it for me", found: "Here it is: {name}. It is closed." },

@@ -142,11 +142,7 @@
     "took your question",
     "looked at your screen",
     "read this page"
-   ],
-   "offer": {
-    "label": "Scroll for me",
-    "send": "scroll for me"
-   }
+   ]
   },
   {
    "v": 1,
