@@ -75,12 +75,12 @@ function linkTo(settings: Settings, seen: Seen, name: string): { box: Box; on: s
 
 /**
  * After an answer on a kept page: where it sent him. Another kept page it named, when that page's name is on his
- * screen, is boxed where it stands (see `linkTo`). Otherwise the way to what is out of view: a date it named that the
+ * screen, is boxed where it stands (see `linkTo`), unless the answer marked that name itself (`drawn`: what is drawn now). Otherwise the way to what is out of view: a date it named that the
  * page writes on a line out of view comes first, named by the heading the page puts it under; with that heading in
  * view there is nothing to scroll to. Failing a date, a folded section of the page that the answer names by its
  * heading ("in the section called Officer Trainings") and that is out of view. One way at most.
  */
-export function wayAfter({ ports, settings, send, log }: Hands, id: string, seen: Seen, page: KeptPage, told: string[]): void {
+export function wayAfter({ ports, settings, send, log }: Hands, id: string, seen: Seen, page: KeptPage, told: string[], drawn: string[] = []): void {
   const said = told.join(" ");
   // The page it sent him to comes first. When the answer names another kept page as a page ("on the RSO Resources
   // page") and that name is on his screen, in the site's menu or as a link, it is boxed: that is where to click.
@@ -88,6 +88,8 @@ export function wayAfter({ ports, settings, send, log }: Hands, id: string, seen
   const [elsewhere] = ports.pages.filter((other) => other.name !== page.name && short(other).length >= 8 && plain(said).includes(`${plain(short(other))} page`)).sort((a, b) => short(b).length - short(a).length);
   const link = elsewhere === undefined ? null : linkTo(settings, seen, short(elsewhere));
   if (elsewhere !== undefined && link !== null) {
+    // The answer may have marked that name itself; one mark on two words is enough.
+    if (drawn.some((thing) => plain(thing).includes(plain(link.on)))) return log(`${id}: the answer sent him to the page "${elsewhere.title}" and marked its name on his screen itself; no second mark`);
     send({ v, type: "mark", id, beat: 0, kind: "box", box: link.box });
     return log(`${id}: the answer sent him to the page "${elsewhere.title}", whose name is on his screen; the mark is on "${link.on}"`);
   }

@@ -38,6 +38,12 @@ extension Layout {
         return Box(x: 0, y: top, w: width, h: height - top)
     }
 
+    /// Where the page's ink starts to count for the pill, in points from the top: the top of its band at the foot,
+    /// less twice the surface's band, which is how far the pill and its bubble keep from what is under them.
+    public static func inkFrom(width: Double, height: Double, tokens: Tokens) -> Double {
+        foot(width: width, height: height, tokens: tokens).y - 2 * tokens.band
+    }
+
     /// Where the open pill's middle goes across the display, so that neither it nor the room above it for its bubble
     /// lies on the page's read text: the display's middle when that is clear, or else the nearest place along the
     /// floor that is; where every place lies on some text, the one that lies on least.

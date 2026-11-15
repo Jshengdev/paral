@@ -16,8 +16,10 @@ public enum Film {
 
     struct Loaded { var pages: FilmPages; var w, h: Double; var events: [(at: Double, seen: Seen)]; var sound: [String: Data]; var skipped: Int }
 
-    /// A recorded run as the film needs it: the page's picture, the display's size, and every line in order.
-    static func load(_ dir: URL) throws -> Loaded {
+    /// A recorded run as the film needs it: the page's picture, the display's size, and every line in order. The
+    /// scene is told of the page's ink at the foot as the app tells it (`Screen.taken`), for `tokens` and a Dock of
+    /// `inset`; the record's lines are the mind's and are not changed.
+    static func load(_ dir: URL, tokens: Tokens, inset: Double = 0) throws -> Loaded {
         guard let flow = try JSONSerialization.jsonObject(with: Data(contentsOf: dir.appendingPathComponent("flow.json"))) as? [String: Any],
               let display = flow["display"] as? [String: Any], let pagePath = flow["page"] as? String,
               let w = (display["w"] as? NSNumber)?.doubleValue, let h = (display["h"] as? NSNumber)?.doubleValue
@@ -31,7 +33,7 @@ public enum Film {
         for row in try String(contentsOf: dir.appendingPathComponent("session.jsonl"), encoding: .utf8).split(separator: "\n") {
             guard let record = try? JSONSerialization.jsonObject(with: Data(row.utf8)) as? [String: Any],
                   var at = (record["at"] as? NSNumber)?.doubleValue, let fields = record["line"] as? [String: Any],
-                  case .success(let seen) = Seen.from(fields)
+                  case .success(var seen) = Seen.from(fields)
             else { skipped += 1; continue }
             // The record holds when each line reached the mind. The key-up line is sent after the microphone's tail,
             // but it carries the moment his finger lifted. The live scene takes the release at that moment, so the
@@ -39,8 +41,12 @@ public enum Film {
             let stamp = (fields["at"] as? NSNumber)?.doubleValue
             if case .keyDown = seen, let stamp { down = (at, stamp) }
             if case .keyUp = seen, let stamp, let down { at = min(at, down.record + (stamp - down.stamp)) }
-            events.append((at, seen))
             pages.take(fields, at: at)
+            if case .screen(let display, let lines) = seen, let read = ((fields["picture"] as? [String: Any])?["w"] as? NSNumber)?.doubleValue {
+                let share = Layout.inkFrom(width: w, height: h - inset, tokens: tokens) / max(h, 1)
+                seen = .screen(display: display, lines: Screen.taken(pages.pictures[pages.page(at: at)], lines, below: share, width: read))
+            }
+            events.append((at, seen))
             if case .voice(let id, let beat, let pcm, _) = seen { sound["\(id)/\(beat)", default: Data()].append(pcm) }
         }
         // Moving the release earlier can put it ahead of lines that arrived before it; the order is by time again.
@@ -51,7 +57,7 @@ public enum Film {
     /// One frame of a recorded run at one moment, drawn the way the film draws it. For looking at a change of tokens
     /// without filming the whole run. Gives back when the run ends, in ms.
     public static func frame(run: String, tokens: Tokens, at moment: Double, to out: String) throws -> Double {
-        let run = try load(URL(fileURLWithPath: run))
+        let run = try load(URL(fileURLWithPath: run), tokens: tokens)
         var whole = Scene(width: run.w, height: run.h, tokens: tokens)
         for event in run.events { whole.take(event.seen, at: event.at) }
         var scene = Scene(width: run.w, height: run.h, tokens: tokens)
@@ -64,7 +70,7 @@ public enum Film {
 
     /// What the capsule shows at each of the given moments of a recorded run: its look and its note.
     public static func capsule(run: String, tokens: Tokens, at moments: [Double]) throws -> [(look: String, note: String?)] {
-        let run = try load(URL(fileURLWithPath: run))
+        let run = try load(URL(fileURLWithPath: run), tokens: tokens)
         return moments.map { moment in
             var scene = Scene(width: run.w, height: run.h, tokens: tokens)
             for event in run.events where event.at <= moment { scene.take(event.seen, at: event.at) }
@@ -77,7 +83,7 @@ public enum Film {
     /// cursor's and the board's own values then. For rows: a film's record says when a thing's box changes, and not when the thing goes.
     /// `notNow` are the moments he pressed "Not now" on the nudge card, which no line of a record carries.
     public static func placed(run: String, tokens: Tokens, at moments: [Double], guide: Bool = true, inset: Double = 0, notNow: [Double] = []) throws -> [[String: Any]] {
-        let run = try load(URL(fileURLWithPath: run))
+        let run = try load(URL(fileURLWithPath: run), tokens: tokens, inset: inset)
         let painter = Painter(tokens: tokens, width: run.w, height: run.h)
         let events = (run.events + notNow.map { ($0, Seen.notNow) }).enumerated().sorted { ($0.element.at, $0.offset) < ($1.element.at, $1.offset) }.map(\.element)
         return moments.map { moment in
@@ -109,7 +115,7 @@ public enum Film {
 
     public static func make(run: String, tokens: Tokens, fps: Double = 30) throws -> Made {
         let dir = URL(fileURLWithPath: run)
-        let loaded = try load(dir)
+        let loaded = try load(dir, tokens: tokens)
         let pages = loaded.pages, w = loaded.w, h = loaded.h, events = loaded.events, sound = loaded.sound, skipped = loaded.skipped
         var whole = Scene(width: w, height: h, tokens: tokens)
         for event in events { whole.take(event.seen, at: event.at) }

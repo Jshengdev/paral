@@ -101,6 +101,7 @@ where and draws it (`PainterNudge.swift`, `Layout.nudge`), as for the guide's ca
 | `Scene.swift`, `SceneTimes.swift`, `ScenePicture.swift` | events in, a `Picture` for any moment out. No clock, no drawing |
 | `ScenePill.swift` | the pill's wave (how loud it is at each sample, from the microphone's sound or the voice's) and the logo mark that breathes by it |
 | `Meter.swift` | how loud a chunk of sound is, 0 to 1, for the wave |
+| `ScreenInk.swift` | the page's own ink in the band at the foot, for the scene only, so the pill keeps off a drawing as it keeps off words |
 | `SceneWay.swift` | the arrow that says which way to scroll: how far the pen has inked it, and its nod |
 | `ScenePointer.swift` | paral's own cursor: its flight to a mark, its ride on the pen, its rest beside the mark and the ripple there |
 | `Picture.swift` | what is on screen at one moment, as plain values |
@@ -340,6 +341,10 @@ the name opens as the capsule shuts, and the name is written from the cross left
   (`Layout.pillMiddle`); where no place is clear, the one that covers least. At rest the collapsed pill, and the
   cross with its logo and name, slide the same way to the nearest place that lies on no read line, and stay at the
   middle where none is clear (`Layout.restMiddle`); the window takes a click on the cross where it was drawn.
+  The page's own ink in the band at the foot counts as well as its read lines, so a drawing is kept off too:
+  `Screen.inked` (`ScreenInk.swift`) finds it on every picture of the screen, cells of about 6 points that differ from
+  the page's own grey, and the app, the stand-in and the film give it to the scene only, as lines with no words. The
+  mind is sent the read lines as before.
 - **The foot is the pill's alone.** The band across the whole foot, from the top of the room the bubble may take
   above the full pill down to the Dock (`Layout.foot`), holds the pill and its bubble and nothing else of paral's,
   after the designer's pictures: the way arrow pointing down and the toast sit just above it, and the board, the

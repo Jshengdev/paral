@@ -100,7 +100,7 @@ final class App: NSObject, NSApplicationDelegate {
             watch.busy = { [weak self] in self?.held ?? true }
             watch.onLook = { [weak self] path, w, h, place, lines in
                 guard let self else { return }
-                self.tell(.screen(display: place, lines: lines))
+                self.tell(.screen(display: place, lines: Screen.taken(path, w, lines, below: self.scene.footShare)))
                 self.wire.send(.look(at: self.stamp(), display: place, path: path, w: w, h: h, lines: lines))
             }
             watch.start(everyMs: settings.lookEveryMs, longEdge: settings.pictureLongEdge)
@@ -150,7 +150,7 @@ final class App: NSObject, NSApplicationDelegate {
                     // A picture that comes back after he has pressed again belongs to the press before, and is dropped.
                     guard mine == self.holds else { return }
                     self.shot = (image, place, lines)
-                    self.tell(.screen(display: place, lines: lines))
+                    self.tell(.screen(display: place, lines: Screen.taken(image, lines, below: self.scene.footShare)))
                     self.sendShot()
                 }
             } catch {
