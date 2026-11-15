@@ -4,6 +4,8 @@ public struct Drawn: Equatable {
     public var what: String
     public var id: String?
     public var box: Box
+    /// For a board: the size its words were drawn at, in points, which is the tokens' size times the card's shrink.
+    public var type: Double?
 }
 
 func color(_ hex: String, alpha: Double = 1) -> CGColor {
@@ -20,7 +22,7 @@ func inked(_ text: String, size: Double, color: CGColor, weight: NSFont.Weight =
 public struct Painter {
     public let tokens: Tokens
     public let width, height: Double
-    let ink, paper, ember, cardinal, cardinalDeep: CGColor
+    let ink, paper, ember, cardinal, cardinalDeep, light: CGColor
     public let accent: CGColor
     let frames = ClipFrames()
 
@@ -34,6 +36,7 @@ public struct Painter {
         ember = color(tokens.ember)
         cardinal = color(tokens.cardinal)
         cardinalDeep = color(tokens.cardinalDeep)
+        light = color(tokens.light)
     }
 
     /// The context's origin must be the display's top-left corner, y growing downward, one unit a point.
@@ -49,7 +52,7 @@ public struct Painter {
         }
         if let board = picture.board {
             let placed = self.board(board, clock: picture.clock, ctx)
-            drawn.append(Drawn(what: "board", id: board.id, box: placed.card))
+            drawn.append(Drawn(what: "board", id: board.id, box: placed.card, type: placed.type))
             // The lit row of a board of steps is named too, with its number, so a film's record says which step is lit.
             if let now = board.now, let lit = placed.lit { drawn.append(Drawn(what: "step", id: "\(board.id)/\(now)", box: lit)) }
         }
@@ -67,6 +70,11 @@ public struct Painter {
                 pointer?.x = tip.x
                 pointer?.y = tip.y
             }
+        }
+        // The toast keeps off the text, the cards and the arrow, so it comes after them.
+        if let toast = picture.toast {
+            let up = drawn.filter { ["board", "clip", "way"].contains($0.what) }.map(\.box)
+            drawn.append(Drawn(what: "toast", id: nil, box: self.toast(toast, avoiding: picture.avoid + up, ctx)))
         }
         if let pointer { drawn.append(Drawn(what: "pointer", id: nil, box: self.pointer(pointer, ctx))) }
         drawn.append(Drawn(what: "capsule", id: nil, box: capsule(picture.capsule, clock: picture.clock, ctx)))

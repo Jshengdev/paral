@@ -18,14 +18,15 @@ public enum Layout {
     /// Where the arrow that says which way to scroll goes: at the edge he must scroll toward, as near as it can be
     /// to its home there (beside the open capsule at the bottom, the middle at the top), and on none of `taken` nor
     /// on the capsule. Where every place at that edge is taken, it goes where it covers least.
-    public static func way(down: Bool, size: (w: Double, h: Double), taken: [Box], width: Double, height: Double, tokens: Tokens) -> Box {
+    /// A toast is placed the same way, at the bottom; `rise` lifts its home from the edge, to sit level with the capsule.
+    public static func way(down: Bool, size: (w: Double, h: Double), rise: Double = 0, taken: [Box], width: Double, height: Double, tokens: Tokens) -> Box {
         let w = tokens.way
         let cell = 24.0
         // Room for the nod and the pen's width, so that nothing it avoids is touched while it moves.
         let around = w.nod + tokens.mark.width
         let capsule = capsule(open: 1, taller: band(tokens), width: width, height: height, tokens: tokens)
         let avoid = taken + [capsule]
-        let home = down ? (x: capsule.x + capsule.w + w.edge, y: height - w.edge - size.h) : (x: (width - size.w) / 2, y: w.edge)
+        let home = down ? (x: capsule.x + capsule.w + w.edge, y: height - w.edge - size.h - rise) : (x: (width - size.w) / 2, y: w.edge + rise)
         func covered(_ box: Box) -> Double {
             let b = box.grown(around)
             return avoid.reduce(0) { $0 + max(0, min(b.x + b.w, $1.x + $1.w) - max(b.x, $1.x)) * max(0, min(b.y + b.h, $1.y + $1.h) - max(b.y, $1.y)) }

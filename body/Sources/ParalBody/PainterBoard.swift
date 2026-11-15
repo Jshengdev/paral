@@ -16,8 +16,8 @@ extension Painter {
     /// A dark card of chalk boxes joined by arrows, one row at a time, shrunk to fit the room it was given. With no
     /// rows yet it is an empty card with the waiting dots in it; when the rows come the card grows from that size
     /// to theirs and they fade in. On a board of steps the row he is on is lit: its boxes are filled with chalk and
-    /// written in the card's ink, and the others stay as they are. Gives back the card's box and the lit row's.
-    func board(_ board: BoardPicture, clock: Double, _ ctx: CGContext) -> (card: Box, lit: Box?) {
+    /// written in the card's ink, and the others stay as they are. Gives back the card's box, the lit row's, and the size the words were drawn at.
+    func board(_ board: BoardPicture, clock: Double, _ ctx: CGContext) -> (card: Box, lit: Box?, type: Double) {
         let b = tokens.board
         let chalk = paper
         let sized = board.rows.enumerated().map { index, row in row.map { text -> (NSAttributedString, CGSize) in
@@ -87,6 +87,6 @@ extension Painter {
             y += boxHeight + b.rowGap
         }
         ctx.restoreGState()
-        return (Box(x: origin.x, y: origin.y, w: w, h: h), lit)
+        return (Box(x: origin.x, y: origin.y, w: w, h: h), lit, b.type * scale)
     }
 }

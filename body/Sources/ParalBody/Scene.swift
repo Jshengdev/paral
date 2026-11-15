@@ -26,6 +26,8 @@ public struct Scene {
     var boards: [Board] = []
     var echoes: [Echo] = []
     var ways: [Way] = []
+    /// When a date was last opened in his calendar: the toast says so for a while.
+    var openedAt: Double?
     var clips: [Clip] = []
     var trail: [(x: Double, y: Double, at: Double)] = []
     var failed: (detail: String, at: Double)?
@@ -128,7 +130,9 @@ public struct Scene {
         case .ready:
             // The mind is linked. A failure from before the first press (the mind was not running) no longer stands.
             if holds.isEmpty { failed = nil }
-        case .other, .open:
+        case .open:
+            openedAt = at
+        case .other:
             break
         }
     }

@@ -1,0 +1,52 @@
+{
+ "name": "body: a film's record says of each board how large its words were drawn: the tokens' size for a card that fits, and a smaller size for a card that was shrunk to fit",
+ "run": "body.boardType",
+ "in": {
+  "rows": [
+   {
+    "at": 500,
+    "line": {
+     "type": "board",
+     "id": "fits",
+     "rows": [
+      [
+       "Officers finish their training"
+      ],
+      [
+       "Advisor requirements: December 1"
+      ]
+     ]
+    }
+   },
+   {
+    "at": 2000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "board",
+     "id": "wide",
+     "rows": [
+      [
+       "Five officers finish their trainings and the Commitment form: November 22 at 11:59pm",
+       "Submit the application on EngageSC: November 22 at 11:59pm"
+      ]
+     ]
+    }
+   },
+   {
+    "at": 4000,
+    "line": {
+     "type": "clear"
+    }
+   }
+  ]
+ },
+ "out": {
+  "fits": "at the tokens' size",
+  "wide": "smaller than the tokens' size"
+ }
+}

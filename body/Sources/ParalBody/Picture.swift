@@ -61,6 +61,12 @@ public struct WayPicture: Equatable {
     public var nod: Double
 }
 
+/// The toast that confirms something paral did: its words, and how far it has come up or gone, 0 to 1.
+public struct ToastPicture: Equatable {
+    public var text: String
+    public var appear: Double
+}
+
 public struct TrailPoint: Equatable { public var x, y, alpha: Double }
 
 /// Paral's own cursor: where its tip is, and how far the ripple that says "here" has spread, 0 to 1, or nil for none.
@@ -85,6 +91,7 @@ public struct Picture: Equatable {
     public var pointer: PointerPicture?
     public var board: BoardPicture?
     public var clip: ClipPicture?
+    public var toast: ToastPicture?
     public var trail: [TrailPoint]
     /// Where the page's own text is, so nothing written beside a mark lands on it.
     public var avoid: [Box]

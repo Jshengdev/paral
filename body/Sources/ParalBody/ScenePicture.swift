@@ -7,7 +7,7 @@ extension Scene {
         var capsule = capsule(at: t)
         let clip = clip(at: t)
         capsule.closes = capsule.look == .rest && (!marks.isEmpty || way != nil || board != nil || clip != nil)
-        return Picture(clock: t, capsule: capsule, marks: marks, echo: echo(at: t), way: way, pointer: pointer(at: t), board: board, clip: clip, trail: trailUp(at: t), avoid: texts)
+        return Picture(clock: t, capsule: capsule, marks: marks, echo: echo(at: t), way: way, pointer: pointer(at: t), board: board, clip: clip, toast: toast(at: t), trail: trailUp(at: t), avoid: texts)
     }
 
     func capsule(at t: Double) -> CapsulePicture {

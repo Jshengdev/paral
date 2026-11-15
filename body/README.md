@@ -111,10 +111,21 @@ page as `frames/bare-1.png`, `frames/bare-2.png`, in the order they come up, and
 page: `{"page": N, "fromFrame": F}`, where F is the first frame drawn over that page (frame 0 for the first). A run
 of one page writes what it always wrote. `frame` draws over the page of its moment too.
 
+## The toast
+
+An `open` line (a date opened in his calendar) shows a toast for four seconds, after the design kit's: a light pill
+with a soft shadow, a cardinal badge with a tick, and `strings.opened` ("Open in your calendar"; it does not say
+"added", since whether Calendar asks first is not known). It sits at the bottom edge beside the capsule and level
+with it, on none of the page's read text, the board or the way arrow. It is not ink on the page: a clear does not
+take it and it brings no cross. It is not blurred behind as the kit's is, since the overlay cannot see the page.
+
+A film's record (`drawn.jsonl`) says of each board, in `type`, the size its words were drawn at in points: the
+tokens' size times whatever the card was shrunk by.
+
 `paral-headless` commands: `read`, `smaller`, `page`, `lines`, `keys SECONDS NAME` (watch a key), `flow`, `film`,
 `frame RUN TOKENS MS OUT.png` (one moment of a run, for the dials page), `capsule RUN TOKENS MS...` (what the capsule
 shows at those moments), `placed RUN TOKENS MS...` (where the painter puts each thing at those moments, and the way
 arrow's, the cursor's and the board's own values).
 
-Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way`, `body.cursor`, `body.steps` and `body.pages` rows, with no window. The hosts are compiled and have never been run:
+Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way`, `body.cursor`, `body.steps`, `body.pages`, `body.toast` and `body.boardType` rows, with no window. The hosts are compiled and have never been run:
 the key, the microphone, the screen picture and the overlay wait for a person and their grants (`./run`).

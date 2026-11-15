@@ -137,6 +137,8 @@ public enum Film {
                 lastBox[key] = box
                 var line: [String: Any] = ["at": t.rounded(), "what": item.what, "box": box.json]
                 if let id = item.id { line["id"] = id }
+                // A board's row also says how large its words were drawn, so a reader need not work it out from the card.
+                if let type = item.type { line["type"] = (type * 10).rounded() / 10 }
                 if let look {
                     line["look"] = look
                     lastLook = look
