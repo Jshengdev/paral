@@ -111,6 +111,14 @@ under it they change nothing, and when it has they wipe what was drawn and mark 
 if it named one. The page's own first thing does not come back over an answer. A date he has kept is not offered to be kept again. What
 is ahead is remembered for the sitting and given to every ask. A press of the key takes over at once.
 
+**A page's pages are kept ahead of his first question (`warmPages`).** Every look of a kept page calls
+`Brain.warm` (`mind/adapters/anthropic.ts`): unless those pages were warmed or asked about in the last fifty minutes
+(`warmAgainAfterMs`), the service is sent what an ask there begins with (the answer's instructions and the pages the
+ask is given, marked to be kept for an hour), a picture of one dot, one dot of words, and room for one token of reply.
+An ask there then finds its pages kept and does not wait for them. Nothing of his screen or his words is in it. It is
+not sent once half the spend cap is spent (`warmUnderShare`). The pages' text holds the page on his screen first, so
+each kept page he lands on is one keeping, about $0.18 by the adapter's count.
+
 **A page's first look is kept.** Its question is about the kept page's own text and today's date, so the answer is
 the same all day: it is asked once, kept in `tmp/looks/`, and asked ahead for every kept page when the mind starts
 (`mind/adapters/looked.ts`). A look after an ask is always asked live.

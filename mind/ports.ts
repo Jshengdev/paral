@@ -80,6 +80,11 @@ export type Part = {
 
 export interface Brain {
   answer(asked: Asked, signal: AbortSignal, onPart?: (part: Part) => void): Promise<Answered>;
+  /**
+   * Has the service keep, ahead of any ask, what an ask on this kept page begins with (the pages it is given), so his
+   * first question there does not wait for that to be kept. Nothing of his screen or his words is sent. A stand-in has none.
+   */
+  warm?(known: KeptPage[], today: number): void;
 }
 
 export interface SecondLook {

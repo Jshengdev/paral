@@ -21,6 +21,7 @@ import { empty, fold, NO_RUNG } from "../mind/cores/hold.ts";
 import { FromBody, FromMind, read, write } from "../seam/schema.ts";
 import { settings } from "../mind/settings.ts";
 import { keptLook, keptVoice, standIn } from "./runners/adapters.ts";
+import { warmed } from "./runners/warm.ts";
 import { capsule, cardOnFilm, filmed, landing, pressedAgain, sameToTheWatcher } from "./runners/body.ts";
 import { pill } from "./runners/pill.ts";
 import { orbLight, orbWakes } from "./runners/orb.ts";
@@ -51,6 +52,7 @@ const runs: Record<string, (input: any) => unknown> = {
   kept: keptVoice,
   "kept.look": keptLook,
   "live.standin": standIn,
+  "live.warm": warmed,
   "beats.fitted": (input) => Object.fromEntries(Object.entries(input.marks).map(([name, [kind, text]]: [string, any]) => [name, fitted(kind, text, input.lines, input.reach, input.scale)])),
   "beats.split": (input) => Object.fromEntries(Object.entries(input.sentences).map(([name, text]) => [name, split(text as string, input.limits)])),
   fit: (input) => Object.fromEntries(input.lines.map((line: string) => [line, unfit(line)])),

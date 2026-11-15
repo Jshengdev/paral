@@ -11,6 +11,8 @@ import type { Settings } from "../settings.ts";
 
 
 const Look = z.object({ leaks: z.boolean() });
+/** A picture of one dot, for a request that keeps pages ahead of an ask. */
+const DOT = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==";
 
 type Usage = { input_tokens: number; output_tokens: number; cache_creation_input_tokens?: number | null; cache_read_input_tokens?: number | null };
 type Log = (line: string) => void;
@@ -44,9 +46,35 @@ export function anthropic(settings: Settings, prompts: Prompts, log: Log, client
     log(`${model}: ${usage.input_tokens} tokens in${cached}, ${usage.output_tokens} out; $${spentUsd.toFixed(3)} spent of $${settings.spendCapUsd.value}`);
   }
 
+  /** When each set of kept pages was last asked to be kept, by its own text: an ask counts, since it keeps them too. */
+  const warmedAt = new Map<string, number>();
+  /** The kept pages as an ask sends them: a block of its own, marked to be kept by the service for an hour. */
+  const kept = (read: string) => [{ type: "text" as const, text: read, cache_control: { type: "ephemeral" as const, ttl: "1h" as const } }];
+
   return {
     spentUsd: () => spentUsd,
     brain: {
+      warm(known, today) {
+        const read = settings.warmPages.value ? pagesRead(known, today, settings.pageLinesGiven.value) : null;
+        if (read === null || Date.now() - (warmedAt.get(read) ?? -Infinity) < settings.warmAgainAfterMs.value) return;
+        if (spentUsd >= settings.spendCapUsd.value * settings.warmUnderShare.value) return;
+        warmedAt.set(read, Date.now());
+        const model = settings.brainModel.value;
+        // Everything an ask sends ahead of what changes, exactly as an ask sends it, with a picture of one dot in the
+        // place of his screen (a request with a picture and one without are not kept as one) and one token of reply.
+        client.beta.messages
+          .create({
+            model,
+            max_tokens: 1,
+            system: prompts.answer,
+            betas: ["server-side-fallback-2026-07-01"],
+            fallbacks: "default",
+            output_config: { effort: settings.brainEffort.value, format: betaZodOutputFormat(Reply) },
+            messages: [{ role: "user", content: [...kept(read), { type: "image", source: { type: "base64", media_type: "image/png", data: DOT } }, { type: "text", text: "." }] }],
+          })
+          .then((reply) => (count(reply.model, model, reply.usage), log(`the pages for "${known[0].title}" are kept ahead of an ask`)))
+          .catch((error) => log(`the pages for "${known[0].title}" could not be kept ahead (${error instanceof Error ? error.message : error}); an ask there keeps them itself`));
+      },
       async answer(asked, signal, onPart) {
         allowed();
         const model = settings.brainModel.value;
@@ -63,7 +91,8 @@ export function anthropic(settings: Settings, prompts: Prompts, log: Log, client
         // USC's kept pages go first and are marked to be kept by the service for an hour: they are the same for every
         // ask on that site, so after the first ask they cost a twentieth and no longer slow the answer.
         const read = pagesRead(asked.known, asked.today, settings.pageLinesGiven.value);
-        const pages = read === null ? [] : [{ type: "text" as const, text: read, cache_control: { type: "ephemeral" as const, ttl: "1h" as const } }];
+        const pages = read === null ? [] : kept(read);
+        if (read !== null) warmedAt.set(read, Date.now());
         // A step of the working is asked with the answer's prompt and its own added, in its own shape; nothing else changes.
         const walk = asked.walk;
         if (walk && !prompts.workThrough) throw new Error("the work-through prompt was not loaded");

@@ -3,7 +3,7 @@ import type { Hands, Screen } from "./ask.ts";
 import { away, unknownDate, worded } from "./cores/dates.ts";
 import type { Box } from "./cores/ground.ts";
 import { named, type ToKeep } from "./cores/keep.ts";
-import { headingOf, whichPage, type KeptPage } from "./cores/page.ts";
+import { headingOf, together, whichPage, type KeptPage } from "./cores/page.ts";
 import { finished, point, whereIs, type More, type Where } from "./place.ts";
 import type { Following, Glanced } from "./ports.ts";
 import { speech } from "./speech.ts";
@@ -133,6 +133,7 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
       // On a page that is not kept nothing is pointed at: what the last kept page's look found is not kept for it.
       last = page === null ? null : { look, page };
       if (page === null || ports.glancer === null) return;
+      ports.brain.warm?.(together(page, ports.pages), look.at); // his first question here then finds its pages kept
       if (led !== null && led.page === page.name) return follow(look, page, led);
       // An answer holds a page's looks only once the page has had its own first look: an ask as the page came up lets go, and that look is taken.
       if (found.has(page.name) ? answer.take(look, page) : (answer.stop(), false)) return;

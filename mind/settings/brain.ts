@@ -62,6 +62,24 @@ export const brain = {
     measured: "not measured; no live ask has been declined",
   } satisfies Setting<string>,
 
+  warmPages: {
+    value: true,
+    why: "When a look finds a kept page on his screen, the deep model's service is asked at once to keep the pages an ask there is given (`Brain.warm`): the same instructions, the same pages, one token of reply. An ask on a page whose pages were not yet kept waited for them to be kept; kept ahead, his first question on a page is answered as fast as his second. It costs one keeping of those pages for each kept page he lands on, which the first ask there would otherwise have paid, so the cost is new only for pages he lands on and asks nothing about. Only the kept pages' own text is sent: nothing from his screen. False turns it off.",
+    measured: "on November 15 on his real screen, a first question on a newly opened kept page took 14.4 s to its first sentence with 23,100 tokens newly kept, against 4 to 5 s for the questions after it (0 newly kept). The warm-up's own measurement is in notes/2026-11-15.md",
+  } satisfies Setting<boolean>,
+
+  warmAgainAfterMs: {
+    value: 50 * 60 * 1000,
+    why: "The service keeps the pages for an hour from when they were last kept or read. A look of a kept page whose pages were last warmed or asked about longer ago than this warms them again, so a sitting left open for hours still answers a first question fast.",
+    measured: "not measured; ten minutes inside the hour the service keeps them",
+  } satisfies Setting<number>,
+
+  warmUnderShare: {
+    value: 0.5,
+    why: "Pages are warmed only while less than this share of the spend cap is spent, so warming can never be what uses the cap up: past it an ask pays for its own pages as before.",
+    measured: "not measured; by the adapter's own count one warm of the club site's pages is about $0.18, so the cap's half is about thirteen pages",
+  } satisfies Setting<number>,
+
   spendCapUsd: {
     value: 5,
     why: "The live brain stops loudly when this much has been spent since the mind started, so a loop or a long night cannot run up a bill.",
