@@ -99,7 +99,7 @@ final class App: NSObject, NSApplicationDelegate {
             key.start()
             self.key = key
             watch.busy = { [weak self] in self.map { $0.held || $0.scene.watching(at: $0.clock()).busy } ?? true }
-            watch.waiting = { [weak self] in self.map { $0.scene.watching(at: $0.clock()).placed } ?? false }
+            watch.waiting = { [weak self] in self.map { $0.scene.watching(at: $0.clock()).down != nil } ?? false }
             watch.onLook = { [weak self] path, w, h, place, lines in
                 guard let self else { return }
                 self.tell(.screen(display: place, lines: Screen.taken(path, w, lines, below: self.scene.footShare)))
