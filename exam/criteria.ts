@@ -21,6 +21,7 @@ export const CRITERIA: Record<string, string> = {
   C17: "Ours: for a hard idea, a short rendered lesson plays on the board, on numbers that are not his.",
   C18: "With no key pressed, on a page it has read, it shows one true line, marks where the thing is, and draws what is ahead. Elsewhere it stays quiet.",
   C19: "He asks it to keep a date. A calendar file for that date opens, and his own click adds it.",
+  C20: "He says \"show me\". It walks what is ahead one step at a time: the step named on the board, said in one sentence, and marked or pointed to.",
   U2: "Use: its first words come within a second of release.",
   U3: "Use: there is never a long silence with nothing new on screen.",
   U4: "Use: a mark never covers the words it marks.",

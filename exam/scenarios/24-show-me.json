@@ -1,0 +1,24 @@
+{
+  "v": 1,
+  "id": "show-me",
+  "title": "He says \"show me\" and is walked through what is ahead, one step at a time, down the club page",
+  "criteria": ["C20", "C18", "C6"],
+  "page": "real:rso-recognition",
+  "source": { "url": "https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/" },
+  "steps": [
+    { "look": true, "waitMs": 12000,
+      "expect": { "shows": true, "says": ["November 22"], "way": { "to": "down", "toward": "Deadlines" }, "ahead": ["November 22", "December 1"] } },
+    { "say": "Show me.", "circle": null,
+      "expect": { "step": 1, "way": { "to": "down" } } },
+    { "look": true, "page": "real:rso-deadlines", "waitMs": 8000,
+      "expect": { "mark": { "on": "November 22 at 11:59pm:" } } },
+    { "say": "Show me.", "circle": null,
+      "expect": { "step": 2, "mark": { "on": "November 22 at 11:59pm:" } } },
+    { "say": "Show me.", "circle": null,
+      "expect": { "step": 3, "mark": { "on": "December 1:" } } },
+    { "say": "Show me.", "circle": null,
+      "expect": { "says": ["last step"] } },
+    { "say": "Show me where to book a room.", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["Space Requests"] } }
+  ]
+}

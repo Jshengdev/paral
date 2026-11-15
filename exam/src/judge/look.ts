@@ -1,5 +1,5 @@
 import type { Expect, Truth } from "../shape.ts";
-import { of, type Look } from "../timeline.ts";
+import { of, type Look, type Moment } from "../timeline.ts";
 import { no, yes, type Verdict } from "../verdict.ts";
 import { dates, datesSaid, daysTo, type Known } from "./dates.ts";
 import { marks, nearestLine } from "./marks.ts";
@@ -19,6 +19,8 @@ export function glanced(look: Look, expect: Expect, truth: Truth[], known: Known
     const what = "A look shows nothing when it has nothing new to show";
     return [says.length === 0 && drawn === 0 ? yes(C, s, what, "nothing said, marked or drawn") : no(C, s, what, says[0] ? `it showed: "${says[0].text.slice(0, 90)}"` : `${drawn} things drawn`)];
   }
+  // A look that only follows him (after "show me" it re-places the step's box or arrow) is held to its mark or its way alone.
+  if (expect.shows === undefined) return [...marks({ index: s, moments: look.moments }, expect, truth), ...wayShown(C, s, look.moments, expect)];
   const one = "A look he did not ask for shows one sentence";
   if (says.length !== 1) return [no(C, s, one, says.length === 0 ? "nothing was shown" : `${says.length} lines: "${says.map((m) => m.text.slice(0, 40)).join('" / "')}"`)];
   const line = says[0];
@@ -30,7 +32,7 @@ export function glanced(look: Look, expect: Expect, truth: Truth[], known: Known
   out.push(trailIsTrue(s, line, known, markedLines));
   const asAsk = { index: s, moments: look.moments };
   out.push(...marks(asAsk, expect, truth), ...datesSaid(asAsk, expect, truth, known), ...ahead(s, boards.at(-1)?.text ?? null, expect, known));
-  out.push(...wayShown(s, look, expect));
+  out.push(...wayShown(C, s, look.moments, expect));
   // A date that has passed leaves nothing to do, so nothing is added to what is ahead.
   if (expect.board === false) out.push(boards.length === 0 ? yes(C, s, "It adds nothing to what is ahead", "no board was drawn") : no(C, s, "It adds nothing to what is ahead", `it drew: ${boards.at(-1)?.text.slice(0, 90)}`));
   return out;
@@ -85,14 +87,16 @@ export function pageChanged(s: number, standing: number): Verdict {
 // His words of 2026-11-14, 20:00: "arrows to continue scrolling until it finds it". When the thing is on this page
 // and not in view, the build says which way in a mark's place. It must be the right way, lead to the right thing,
 // and come instead of a mark, never beside one. The arrow's drawing is judged on film, not here.
-function wayShown(s: number, look: Look, expect: Expect): Verdict[] {
+export function wayShown(criterion: string, s: number, moments: Moment[], expect: Expect): Verdict[] {
   if (expect.way === undefined) return [];
-  const what = `It shows the way to scroll: ${expect.way.to}, toward ${expect.way.toward}`;
-  const ways = of(look.moments, "way");
-  const marked = of(look.moments, "mark").length;
+  const C = criterion;
+  const toward = expect.way.toward;
+  const what = `It shows the way to scroll: ${expect.way.to}${toward ? `, toward ${toward}` : ""}`;
+  const ways = of(moments, "way");
+  const marked = of(moments, "mark").length;
   if (ways.length === 0) return [no(C, s, what, marked > 0 ? "a mark was drawn and no way was shown" : "no way was shown")];
   const way = ways.at(-1)!;
-  const right = way.to === expect.way.to && way.toward.toLowerCase().includes(expect.way.toward.toLowerCase());
+  const right = way.to === expect.way.to && (toward === undefined || way.toward.toLowerCase().includes(toward.toLowerCase()));
   const measured = `${way.to}, toward "${way.toward}"${marked > 0 ? `, with ${marked} marks beside it` : ""}`;
   return [right && marked === 0 ? yes(C, s, what, measured) : no(C, s, what, measured)];
 }

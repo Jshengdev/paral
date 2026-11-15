@@ -13,7 +13,7 @@ export type Moment = { at: number } & (
   | { kind: "say"; id: string; text: string; opener: boolean; hint: boolean; top: boolean; trail?: string[] }   // top: a hint on the last rung of the ladder; trail: the steps shown above a line he did not ask for
   | { kind: "mark"; id: string; mark: string; box: Box; label?: string }
   | { kind: "echo"; box: Box }
-  | { kind: "board"; text: string }
+  | { kind: "board"; text: string; now?: number }   // now: on a board of steps, the row (from 0) that is the step he is on
   | { kind: "clip"; path: string; seconds: number }
   | { kind: "voice"; of: string; ms: number }
   | { kind: "voiced"; of: string; words: string[] }
