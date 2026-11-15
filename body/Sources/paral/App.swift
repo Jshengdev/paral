@@ -41,7 +41,7 @@ final class App: NSObject, NSApplicationDelegate {
         wire = Wire(path: socket)
         self.screen = screen
         let size = screen.frame.size
-        scene = Scene(width: size.width, height: size.height, tokens: tokens)
+        scene = Scene(width: size.width, height: size.height, tokens: tokens, bottomInset: screen.visibleFrame.minY - screen.frame.minY)
         scene.reduceMotion = NSWorkspace.shared.accessibilityDisplayShouldReduceMotion
         painter = Painter(tokens: tokens, width: size.width, height: size.height)
     }
