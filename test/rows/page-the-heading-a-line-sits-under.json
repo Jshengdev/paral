@@ -1,0 +1,61 @@
+{
+ "name": "page: the heading a kept line sits under is read from the page: the nearest folded heading above it, whatever heading the model named; a folded heading sits under none; with no folded heading above, the model's is taken only if the page holds it above the line",
+ "run": "page.heading",
+ "in": {
+  "page": {
+   "name": "resources",
+   "url": "https://example.edu/resources/",
+   "readOn": "2026-11-14",
+   "title": "RSO Resources",
+   "lines": [
+    "Recognized Student Organizations",
+    "RSO Resources",
+    "Published October 17, 2024",
+    "EngageSC +",
+    "Review helpful tips on how to use all the features EngageSC has to offer.",
+    "Space Requests +",
+    "Recognized Student Organizations in good standing can request to book space on campus.",
+    "Groups interested in requesting a classroom space should submit the Classroom Scheduling form."
+   ]
+  },
+  "cases": [
+   [
+    "Recognized Student Organizations in good standing can request to book space on campus.",
+    "Recognized Student Organizations"
+   ],
+   [
+    "Groups interested in requesting a classroom space should submit the Classroom Scheduling form.",
+    ""
+   ],
+   [
+    "Space Requests +",
+    "RSO Resources"
+   ],
+   [
+    "Published October 17, 2024",
+    "RSO Resources"
+   ],
+   [
+    "Published October 17, 2024",
+    "Campus Life"
+   ],
+   [
+    "A line the page does not hold",
+    "Space Requests +"
+   ],
+   [
+    "A line the page does not hold",
+    "A heading it does not hold"
+   ]
+  ]
+ },
+ "out": [
+  "Space Requests +",
+  "Space Requests +",
+  "",
+  "RSO Resources",
+  "",
+  "Space Requests +",
+  ""
+ ]
+}

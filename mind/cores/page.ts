@@ -28,18 +28,44 @@ export function together(page: KeptPage, kept: KeptPage[]): KeptPage[] {
 }
 
 /**
+ * Where a page holds a line, as places in its kept lines (already made plain): the kept lines that begin with it, or,
+ * when none does, the kept lines it begins with, since a screen can join two of the page's lines into one.
+ */
+function placesOf(kept: string[], line: string): number[] {
+  const want = plain(line);
+  if (want === "") return [];
+  const begins = kept.flatMap((held, at) => (held.startsWith(want) ? [at] : []));
+  return begins.length > 0 ? begins : kept.flatMap((held, at) => (held.length >= 15 && want.startsWith(held) ? [at] : []));
+}
+
+/**
  * Which way a kept line lies from what is on his screen: up, down, or null when it cannot be told or the line is
  * within what is in view. The lines on screen that the page holds exactly once give the stretch of the page in view;
  * the line is before that stretch or after it. A line the page holds more than once is taken at its nearest place.
  */
 export function whichWay(seen: string[], page: KeptPage, line: string): "up" | "down" | null {
   const kept = page.lines.map(plain);
-  const want = plain(line);
   const once = seen.map(plain).filter((read) => read.length >= 15).map((read) => kept.flatMap((held, at) => (held.includes(read) ? [at] : []))).filter((places) => places.length === 1).flat();
-  const places = kept.flatMap((held, at) => (want !== "" && (held.startsWith(want) || (held.length >= 15 && want.startsWith(held))) ? [at] : []));
+  const places = placesOf(kept, line);
   if (once.length === 0 || places.length === 0) return null;
   const top = Math.min(...once), bottom = Math.max(...once);
   if (places.some((at) => at >= top && at <= bottom)) return null;
   const away = (at: number) => (at < top ? top - at : at - bottom);
   return places.reduce((nearest, at) => (away(at) < away(nearest) ? at : nearest)) < top ? "up" : "down";
+}
+
+/**
+ * The heading a kept line sits under, as the page writes it. A page that folds its sections writes each of their
+ * headings with a "+" after it, and the nearest of those above the line is the one; a line that is itself such a
+ * heading sits under none. On a page with none above the line, the heading the model named is taken when the page
+ * holds it as a line above this one. Otherwise "": a heading the page does not hold is never boxed.
+ */
+export function headingOf(page: KeptPage, line: string, named: string): string {
+  const kept = page.lines.map(plain);
+  const at = placesOf(kept, line)[0] ?? -1;
+  const folds = (text: string) => /\+\s*$/.test(text);
+  if (at < 0) return kept.includes(plain(named)) ? named : "";
+  if (folds(page.lines[at])) return "";
+  const above = page.lines.slice(0, at);
+  return above.findLast(folds) ?? (above.map(plain).includes(plain(named)) ? named : "");
 }

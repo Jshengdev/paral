@@ -19,11 +19,20 @@ type Seen = Pick<Screen, "lines" | "display">;
 export type Where = { box: Box | null; on: string | null; inView: boolean; to: "up" | "down" | null; toward: string };
 
 /**
- * Finds a kept line on his screen. A kept line can be a whole paragraph where his screen breaks it into several, so
- * the screen's line that the kept one begins with counts as the line. It sends nothing.
+ * Whether a line on his screen is where a kept paragraph begins. His screen breaks a paragraph into several lines,
+ * so its first line is the paragraph's first words, and it is a long line or the line after it carries the paragraph
+ * on. A few words the paragraph happens to begin with are not it: a menu's "Recognized Student Organizations" is not
+ * the start of "Recognized Student Organizations in good standing can request to book space".
  */
+function beginsIt(kept: string, read: string, next: string): boolean {
+  if (read.length < 12 || !kept.startsWith(read)) return false;
+  const rest = kept.slice(read.length).trim();
+  return read.length >= 40 || rest === "" || (next !== "" && (rest.startsWith(next) || next.startsWith(rest)));
+}
+
+/** Finds a kept line on his screen: the line itself or the line its paragraph begins on, else its heading, else the way. It sends nothing. */
 export function whereIs(settings: Settings, seen: Seen, page: KeptPage, thing: { line: string; under: string }): Where {
-  const begins = seen.lines.find((read) => plain(read.text).length >= 12 && plain(thing.line).startsWith(plain(read.text)));
+  const begins = seen.lines.find((read, at) => beginsIt(plain(thing.line), plain(read.text), plain(seen.lines[at + 1]?.text ?? "")));
   const line = locate(begins?.text ?? thing.line, seen.lines, seen.display, settings.groundMinScore.value);
   const heading = thing.under === "" ? null : locate(thing.under, seen.lines, seen.display, settings.groundMinScore.value);
   const target = line.found ? line : heading?.found ? heading : null;

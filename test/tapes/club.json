@@ -88,7 +88,10 @@
    "readOn": "2026-11-14",
    "title": "RSO Resources - Campus Activities",
    "lines": [
+    "Recognized Student Organizations",
     "RSO Resources",
+    "Resources for recognized student organizations at USC are gathered on this page.",
+    "Open a section below to see what it holds and how to use it.",
     "EngageSC +",
     "Review helpful tips on how to use all the features EngageSC has to offer.",
     "Space Requests +",
@@ -133,8 +136,8 @@
   ]
  },
  "glanceAfterAsk": {
-  "line": "Space Requests +",
-  "under": "",
+  "line": "Recognized Student Organizations in good standing can request to book space on campus.",
+  "under": "RSO Resources",
   "say": "Here it is: open Space Requests to book a room.",
   "sayInView": "Here it is: open Space Requests to book a room.",
   "ahead": []
