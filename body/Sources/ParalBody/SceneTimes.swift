@@ -64,6 +64,7 @@ extension Scene {
         for ask in asks { if let last = times(ask).last { end = max(end, last.end + tokens.motion.lingerMs + ms(tokens.motion.openMs)) } }
         for mark in marks { if let began = start(mark) { end = max(end, began + flight + duration(mark.kind)) } }
         for echo in echoes { end = max(end, echo.at + flight + duration(.ring)) }
+        for way in ways { end = max(end, min(way.clearedAt ?? .infinity, way.at + ms(tokens.way.drawMs))) }
         for clip in clips { end = max(end, min(clip.clearedAt ?? .infinity, clip.at + ms(tokens.motion.boardMs) + clip.seconds * 1000)) }
         if let closed = closedAt { end = max(end, closed + ms(tokens.motion.openMs)) }
         return end + 200

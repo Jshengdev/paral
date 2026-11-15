@@ -47,6 +47,18 @@ public struct ClipPicture: Equatable {
     public var room: Box
 }
 
+/// The arrow that says which way to scroll to reach what is on this page and not in view.
+public struct WayPicture: Equatable {
+    public var id: String
+    public var down: Bool
+    /// The name of what it leads to, written beside the arrow.
+    public var toward: String
+    /// How far the ink has gone along the arrow, 0 to 1.
+    public var drawn: Double
+    /// How far the arrow has dipped toward its edge, in points: 0 at rest, and for a moment more while it nods.
+    public var nod: Double
+}
+
 public struct TrailPoint: Equatable { public var x, y, alpha: Double }
 
 public struct PointerPicture: Equatable { public var x, y, alpha: Double }
@@ -58,6 +70,7 @@ public struct Picture: Equatable {
     public var marks: [MarkPicture]
     /// A neat ring where he drew his own loop, until his next ask.
     public var echo: MarkPicture?
+    public var way: WayPicture?
     public var pointer: PointerPicture?
     public var board: BoardPicture?
     public var clip: ClipPicture?

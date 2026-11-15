@@ -3,7 +3,7 @@ import AppKit
 extension Painter {
     func capsule(_ c: CapsulePicture, clock: Double, _ ctx: CGContext) -> Box {
         // A trail of steps sits in its own band above the words, so the capsule is that much taller while it shows one.
-        let band = c.trail.isEmpty ? 0 : tokens.capsule.tagType + 12
+        let band = c.trail.isEmpty ? 0 : Layout.band(tokens)
         let box = Layout.capsule(open: c.open, closes: c.closes, taller: band, width: width, height: height, tokens: tokens)
         let rect = CGRect(x: box.x, y: box.y, width: box.w, height: box.h)
         let radius = min(box.h / 2, tokens.capsule.radius)

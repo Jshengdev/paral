@@ -8,6 +8,7 @@ public struct Scene {
     struct Ask { var id: String; var beganAt: Double; var beats: [Int: Beat] = [:]; var mutedAt: Double?; var cutAt: Double?; var trail: [String]? }
     struct Mark { var id: String; var beat: Int; var kind: MarkKind; var box: Box; var label: String?; var at: Double; var withSay: Bool; var clearedAt: Double? }
     struct Echo { var id: String; var box: Box; var shape: String; var at: Double; var clearedAt: Double? }
+    struct Way { var id: String; var down: Bool; var toward: String; var at: Double; var clearedAt: Double? }
     struct Board { var id: String; var rows: [[String]]; var at: Double; var room: Box; var filledAt: Double?; var clearedAt: Double? }
     struct Clip { var id: String; var path: String; var still: String; var seconds: Double; var at: Double; var room: Box; var clearedAt: Double? }
     struct Hold { var down: Double; var up: Double? }
@@ -23,6 +24,7 @@ public struct Scene {
     var marks: [Mark] = []
     var boards: [Board] = []
     var echoes: [Echo] = []
+    var ways: [Way] = []
     var clips: [Clip] = []
     var trail: [(x: Double, y: Double, at: Double)] = []
     var failed: (detail: String, at: Double)?
@@ -84,6 +86,10 @@ public struct Scene {
             // His own loop gives way once paral marks something inside it.
             for i in echoes.indices where echoes[i].clearedAt == nil && Scene.sameLine(echoes[i].box, here) { echoes[i].clearedAt = at }
             marks.append(Mark(id: id, beat: beat, kind: kind, box: box.moved(dx: -origin.x, dy: -origin.y), label: label, at: at, withSay: withSay))
+        case .way(let id, let to, let toward):
+            // One arrow at a time: a newer one takes the place of the one before. A clear wipes it, as it does a mark.
+            for i in ways.indices where ways[i].clearedAt == nil { ways[i].clearedAt = at }
+            ways.append(Way(id: id, down: to == "down", toward: toward, at: at))
         case .echo(let id, let box, let shape):
             echoes.append(Echo(id: id, box: box.moved(dx: -origin.x, dy: -origin.y), shape: shape, at: at))
         case .clip(let id, let path, let still, let seconds):
@@ -113,8 +119,7 @@ public struct Scene {
         case .ready:
             // The mind is linked. A failure from before the first press (the mind was not running) no longer stands.
             if holds.isEmpty { failed = nil }
-        // Nothing is drawn for a way line yet.
-        case .other, .open, .way:
+        case .other, .open:
             break
         }
     }
@@ -131,6 +136,7 @@ public struct Scene {
 
     private mutating func wipe(_ at: Double) {
         for i in marks.indices where marks[i].clearedAt == nil { marks[i].clearedAt = at }
+        for i in ways.indices where ways[i].clearedAt == nil { ways[i].clearedAt = at }
         for i in boards.indices where boards[i].clearedAt == nil { boards[i].clearedAt = at }
         for i in clips.indices where clips[i].clearedAt == nil { clips[i].clearedAt = at }
     }

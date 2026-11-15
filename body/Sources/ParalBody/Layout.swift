@@ -11,6 +11,43 @@ public enum Layout {
         return Box(x: (width - w) / 2, y: height - c.bottom - c.height / 2 - h / 2 - taller * open / 2, w: w, h: h)
     }
 
+    /// How much taller the capsule is while it carries a trail of steps above its words.
+    public static func band(_ tokens: Tokens) -> Double { tokens.capsule.tagType + 12 }
+
+    /// Where the arrow that says which way to scroll goes: at the edge he must scroll toward, as near as it can be
+    /// to its home there (beside the open capsule at the bottom, the middle at the top), and on none of `taken` nor
+    /// on the capsule. Where every place at that edge is taken, it goes where it covers least.
+    public static func way(down: Bool, size: (w: Double, h: Double), taken: [Box], width: Double, height: Double, tokens: Tokens) -> Box {
+        let w = tokens.way
+        let cell = 24.0
+        // Room for the nod and the pen's width, so that nothing it avoids is touched while it moves.
+        let around = w.nod + tokens.mark.width
+        let capsule = capsule(open: 1, taller: band(tokens), width: width, height: height, tokens: tokens)
+        let avoid = taken + [capsule]
+        let home = down ? (x: capsule.x + capsule.w + w.edge, y: height - w.edge - size.h) : (x: (width - size.w) / 2, y: w.edge)
+        func covered(_ box: Box) -> Double {
+            let b = box.grown(around)
+            return avoid.reduce(0) { $0 + max(0, min(b.x + b.w, $1.x + $1.w) - max(b.x, $1.x)) * max(0, min(b.y + b.h, $1.y + $1.h) - max(b.y, $1.y)) }
+        }
+        let leftmost = w.edge, rightmost = width - w.edge - size.w
+        guard rightmost >= leftmost else { return Box(x: max(0, (width - size.w) / 2), y: home.y, w: size.w, h: size.h) }
+        let first = Int(((leftmost - home.x) / cell).rounded(.up)), last = Int(((rightmost - home.x) / cell).rounded(.down))
+        // Further than a third of the display from its edge it would no longer say "this edge".
+        let rows = Int(height / 3 / cell)
+        var best: (cost: Double, box: Box)?
+        for row in 0...rows {
+            for col in min(first, last)...max(first, last) {
+                let x = min(max(home.x + Double(col) * cell, leftmost), rightmost), y = home.y + Double(row) * cell * (down ? -1 : 1)
+                let box = Box(x: x, y: y, w: size.w, h: size.h)
+                // A place that covers anything loses to any place that covers nothing; among those, the nearest to home
+                // wins, and a step away from the edge counts three times a step along it.
+                let cost = covered(box) * 1000 + hypot(x - home.x, 3 * (y - home.y))
+                if cost < (best?.cost ?? .infinity) { best = (cost, box) }
+            }
+        }
+        return best?.box ?? Box(x: home.x, y: home.y, w: size.w, h: size.h)
+    }
+
     /// The largest empty rectangle left by the page's text and the capsule, found on a coarse grid.
     public static func room(texts: [Box], width: Double, height: Double, tokens: Tokens) -> Box {
         let cell = 24.0, margin = tokens.board.margin

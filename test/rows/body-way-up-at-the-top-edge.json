@@ -1,0 +1,72 @@
+{
+ "name": "body: a way line that leads up draws its arrow at the top edge, on none of the page's text; a second way line takes its place, so there is one arrow at a time",
+ "run": "body.way",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "The Spring 2027 recognition process is now open.",
+   "All student organizations must complete recognition",
+   "through the online portal, on an annual basis.",
+   "Recognition status runs for one academic year.",
+   "If you hope to re-establish your club, submit this form.",
+   "For questions, contact Campus Activities.",
+   "Important Dates"
+  ],
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "way",
+     "id": "g1",
+     "to": "up",
+     "toward": "Deadlines"
+    }
+   },
+   {
+    "at": 4000,
+    "line": {
+     "type": "way",
+     "id": "g2",
+     "to": "down",
+     "toward": "Advisor Requirements"
+    }
+   }
+  ],
+  "at": [
+   3000,
+   6000
+  ]
+ },
+ "out": [
+  {
+   "arrow": {
+    "to": "up",
+    "toward": "Deadlines",
+    "inked": "whole",
+    "edge": "top",
+    "insideTheDisplay": true,
+    "onText": false,
+    "onTheCapsule": false,
+    "onTheBoard": false
+   }
+  },
+  {
+   "arrow": {
+    "to": "down",
+    "toward": "Advisor Requirements",
+    "inked": "whole",
+    "edge": "bottom",
+    "insideTheDisplay": true,
+    "onText": false,
+    "onTheCapsule": false,
+    "onTheBoard": false
+   }
+  }
+ ]
+}

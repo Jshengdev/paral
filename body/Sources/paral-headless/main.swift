@@ -21,7 +21,7 @@ func why(_ error: Error) -> String {
 // the cure; it costs nothing.
 _ = Bundle.main.infoDictionary
 
-let usage = "usage: read PICTURE | smaller PICTURE OUT.jpg LONG_EDGE | same PICTURE PICTURE | page OUT.png LINE... | lines | keys SECONDS rightOption|fn|controlOption | flow FLOW.json SOCKET TOKENS.json | film RUN_DIR TOKENS.json | frame RUN_DIR TOKENS.json MS OUT.png | capsule RUN_DIR TOKENS.json MS..."
+let usage = "usage: read PICTURE | smaller PICTURE OUT.jpg LONG_EDGE | same PICTURE PICTURE | page OUT.png LINE... | lines | keys SECONDS rightOption|fn|controlOption | flow FLOW.json SOCKET TOKENS.json | film RUN_DIR TOKENS.json | frame RUN_DIR TOKENS.json MS OUT.png | capsule RUN_DIR TOKENS.json MS... | placed RUN_DIR TOKENS.json MS..."
 let arguments = Array(CommandLine.arguments.dropFirst())
 
 switch arguments.first {
@@ -96,6 +96,10 @@ case "capsule":
         let shown = try Film.capsule(run: arguments[1], tokens: try Tokens.load(arguments[2]), at: arguments.dropFirst(3).compactMap(Double.init))
         out(shown.map { ["look": $0.look, "note": $0.note ?? ""] })
     } catch { fail(why(error)) }
+
+case "placed":
+    guard arguments.count >= 4 else { fail(usage) }
+    do { out(try Film.placed(run: arguments[1], tokens: try Tokens.load(arguments[2]), at: arguments.dropFirst(3).compactMap(Double.init))) } catch { fail(why(error)) }
 
 case "keys":
     guard arguments.count == 3, let seconds = Double(arguments[1]), let which = Key.Which(rawValue: arguments[2]) else { fail(usage) }
