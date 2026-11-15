@@ -1,0 +1,293 @@
+{
+ "name": "body: a walk through steps: a board that names the step he is on lights that row and no other, inside the card; when the next step's board comes after a clear the card neither moves nor fades in again and the light is on the next row; with the step out of view the cursor flies to the arrow, the arrow is inked once it is there, and it rests at the arrow on none of the page's text; when the step's line comes into view the cursor is with the mark and the same row stays lit",
+ "run": "body.steps",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "The Spring 2027 recognition process is now open.",
+   "All student organizations must complete recognition",
+   "through the online portal, on an annual basis.",
+   "Recognition status runs for one academic year.",
+   "If you hope to re-establish your club, submit this form.",
+   "For questions, contact Campus Activities.",
+   "Important Dates"
+  ],
+  "rows": [
+   {
+    "at": 100,
+    "line": {
+     "type": "key.down",
+     "at": 1000100
+    }
+   },
+   {
+    "at": 900,
+    "line": {
+     "type": "key.up",
+     "at": 1000900
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "board",
+     "id": "t1",
+     "rows": [
+      [
+       "Officers finish their training"
+      ],
+      [
+       "Submit the application: November 22 at 11:59pm"
+      ],
+      [
+       "Advisor requirements: December 1"
+      ]
+     ],
+     "now": 0
+    }
+   },
+   {
+    "at": 1001,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 0,
+     "text": "Step 1 of 3: Officers finish their training."
+    }
+   },
+   {
+    "at": 1001,
+    "line": {
+     "type": "mute",
+     "id": "t1",
+     "why": "no voice is set up"
+    }
+   },
+   {
+    "at": 1100,
+    "line": {
+     "type": "state",
+     "name": "idle"
+    }
+   },
+   {
+    "at": 5000,
+    "line": {
+     "type": "key.down",
+     "at": 1005000
+    }
+   },
+   {
+    "at": 5800,
+    "line": {
+     "type": "key.up",
+     "at": 1005800
+    }
+   },
+   {
+    "at": 6000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 6001,
+    "line": {
+     "type": "way",
+     "id": "t2",
+     "to": "down",
+     "toward": "November 22 at 11:59pm"
+    }
+   },
+   {
+    "at": 6002,
+    "line": {
+     "type": "board",
+     "id": "t2",
+     "rows": [
+      [
+       "Officers finish their training"
+      ],
+      [
+       "Submit the application: November 22 at 11:59pm"
+      ],
+      [
+       "Advisor requirements: December 1"
+      ]
+     ],
+     "now": 1
+    }
+   },
+   {
+    "at": 6003,
+    "line": {
+     "type": "say",
+     "id": "t2",
+     "beat": 0,
+     "text": "Step 2 of 3: Submit the application, by November 22 at 11:59pm."
+    }
+   },
+   {
+    "at": 6003,
+    "line": {
+     "type": "mute",
+     "id": "t2",
+     "why": "no voice is set up"
+    }
+   },
+   {
+    "at": 6100,
+    "line": {
+     "type": "state",
+     "name": "idle"
+    }
+   },
+   {
+    "at": 12000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 12001,
+    "line": {
+     "type": "mark",
+     "id": "g2",
+     "beat": 0,
+     "kind": "box",
+     "box": {
+      "x": 120,
+      "y": 398,
+      "w": 500,
+      "h": 47
+     }
+    }
+   },
+   {
+    "at": 12002,
+    "line": {
+     "type": "board",
+     "id": "g2",
+     "rows": [
+      [
+       "Officers finish their training"
+      ],
+      [
+       "Submit the application: November 22 at 11:59pm"
+      ],
+      [
+       "Advisor requirements: December 1"
+      ]
+     ],
+     "now": 1
+    }
+   }
+  ],
+  "at": [
+   1050,
+   3000,
+   6050,
+   6200,
+   6700,
+   9000,
+   12050,
+   14500
+  ]
+ },
+ "out": [
+  {
+   "litRows": [
+    0
+   ],
+   "litInsideTheCard": true,
+   "cardMoved": false,
+   "cardFadingIn": true,
+   "arrow": "none",
+   "cursor": "none",
+   "cursorOnText": false
+  },
+  {
+   "litRows": [
+    0
+   ],
+   "litInsideTheCard": true,
+   "cardMoved": false,
+   "cardFadingIn": false,
+   "arrow": "none",
+   "cursor": "none",
+   "cursorOnText": false
+  },
+  {
+   "litRows": [
+    1
+   ],
+   "litInsideTheCard": true,
+   "cardMoved": false,
+   "cardFadingIn": false,
+   "arrow": "not inked yet",
+   "cursor": "flying to the arrow",
+   "cursorOnText": false
+  },
+  {
+   "litRows": [
+    1
+   ],
+   "litInsideTheCard": true,
+   "cardMoved": false,
+   "cardFadingIn": false,
+   "arrow": "not inked yet",
+   "cursor": "flying to the arrow",
+   "cursorOnText": false
+  },
+  {
+   "litRows": [
+    1
+   ],
+   "litInsideTheCard": true,
+   "cardMoved": false,
+   "cardFadingIn": false,
+   "arrow": "part inked",
+   "cursor": "at the arrow",
+   "cursorOnText": false
+  },
+  {
+   "litRows": [
+    1
+   ],
+   "litInsideTheCard": true,
+   "cardMoved": false,
+   "cardFadingIn": false,
+   "arrow": "whole",
+   "cursor": "at the arrow",
+   "cursorOnText": false
+  },
+  {
+   "litRows": [
+    1
+   ],
+   "litInsideTheCard": true,
+   "cardMoved": false,
+   "cardFadingIn": false,
+   "arrow": "none",
+   "cursor": "with a mark",
+   "cursorOnText": true
+  },
+  {
+   "litRows": [
+    1
+   ],
+   "litInsideTheCard": true,
+   "cardMoved": false,
+   "cardFadingIn": false,
+   "arrow": "none",
+   "cursor": "with a mark",
+   "cursorOnText": false
+  }
+ ]
+}

@@ -33,18 +33,32 @@ public struct Tokens: Codable {
         /// How long the pen takes over the arrow; then how far a nod dips, how long one lasts, and the rest between two (0 for no nods).
         public var drawMs, nod, nodMs, nodEveryMs: Double
     }
-    public struct Strings: Codable { public var thinking, listening, failed: String }
+    /// The toast that confirms something paral did, after the design kit's.
+    public struct Toast: Codable {
+        /// Its type size, the room round what is in it, and the gap between its badge and its words.
+        public var type, pad, gap: Double
+        /// How see-through its light fill is (the kit's 0.85), and how far its shadow spreads.
+        public var glass, shadow: Double
+        /// How long it stays once it is up.
+        public var stayMs: Double
+    }
+    /// `opened` is what the toast says when a date has been opened in his calendar. It does not say "added": whether
+    /// Calendar asks first or adds at once is not known.
+    public struct Strings: Codable { public var thinking, listening, failed, opened: String }
 
     public var ink, paper, accent: String
     /// The design kit's reds. Ember is for what is drawn by hand on the page (its ring and its arrow); cardinal for
     /// the neat box and for names; the cursor runs from deep cardinal through cardinal to ember.
     public var ember, cardinal, cardinalDeep: String
+    /// The design kit's light surface, for a toast.
+    public var light: String
     public var dim: Double
     public var capsule: Capsule
     public var mark: Mark
     public var board: Board
     public var way: Way
     public var cursor: Cursor
+    public var toast: Toast
     public var motion: Motion
     public var strings: Strings
 

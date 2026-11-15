@@ -37,6 +37,8 @@ public struct BoardPicture: Equatable {
     /// 0 while the card is empty; 0 to 1 as the rows that filled it come in; 1 for a board that arrived whole.
     public var filled: Double
     public var room: Box
+    /// On a board of steps, the row that is the step he is on, from 0. That row is lit.
+    public var now: Int?
 }
 
 public struct ClipPicture: Equatable {
@@ -59,12 +61,23 @@ public struct WayPicture: Equatable {
     public var nod: Double
 }
 
+/// The toast that confirms something paral did: its words, and how far it has come up or gone, 0 to 1.
+public struct ToastPicture: Equatable {
+    public var text: String
+    public var appear: Double
+}
+
 public struct TrailPoint: Equatable { public var x, y, alpha: Double }
 
 /// Paral's own cursor: where its tip is, and how far the ripple that says "here" has spread, 0 to 1, or nil for none.
 public struct PointerPicture: Equatable {
     public var x, y, alpha: Double
     public var ripple: Double?
+    /// Set while the cursor is with the way arrow, whose place only the painter knows. `x` and `y` are then where it
+    /// set off from; `flight` is how far it has flown to the arrow's tail, 0 to 1; once there it rides the arrow's
+    /// pen; and `aside` is how far it has stepped aside to rest once the arrow is whole, 0 to 1.
+    public var withWay: WithWay?
+    public struct WithWay: Equatable { public var flight, aside: Double }
 }
 
 /// Everything on screen at one moment, as plain values. The painter draws it; nothing else decides what is shown.
@@ -78,6 +91,7 @@ public struct Picture: Equatable {
     public var pointer: PointerPicture?
     public var board: BoardPicture?
     public var clip: ClipPicture?
+    public var toast: ToastPicture?
     public var trail: [TrailPoint]
     /// Where the page's own text is, so nothing written beside a mark lands on it.
     public var avoid: [Box]

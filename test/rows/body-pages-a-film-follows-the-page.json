@@ -1,0 +1,37 @@
+{
+ "name": "body: a film of a run in which a step puts another page on the screen: frame 0 is the first page bare, the frames before the step are over the first page and the frames after it over the second, the second page's bare picture is written as bare-1.png, and pages.json says from which frame each page is the one under the ink",
+ "run": "body.pages",
+ "in": {
+  "first": [
+   "Recognition Process",
+   "The Spring 2027 recognition process is now open.",
+   "Important Dates"
+  ],
+  "second": [
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes."
+  ],
+  "secondAt": 2000,
+  "endAt": 4000
+ },
+ "out": {
+  "bareFirstFrameReads": "Recognition Process",
+  "anEarlyFrameReads": "Recognition Process",
+  "aLateFrameReads": "Deadlines",
+  "barePictures": [
+   "bare-1.png"
+  ],
+  "theSecondBarePictureReads": "Deadlines",
+  "pages": [
+   {
+    "fromFrame": 0,
+    "page": 0
+   },
+   {
+    "fromFrame": 61,
+    "page": 1
+   }
+  ]
+ }
+}

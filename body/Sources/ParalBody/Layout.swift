@@ -18,14 +18,15 @@ public enum Layout {
     /// Where the arrow that says which way to scroll goes: at the edge he must scroll toward, as near as it can be
     /// to its home there (beside the open capsule at the bottom, the middle at the top), and on none of `taken` nor
     /// on the capsule. Where every place at that edge is taken, it goes where it covers least.
-    public static func way(down: Bool, size: (w: Double, h: Double), taken: [Box], width: Double, height: Double, tokens: Tokens) -> Box {
+    /// A toast is placed the same way, at the bottom; `rise` lifts its home from the edge, to sit level with the capsule.
+    public static func way(down: Bool, size: (w: Double, h: Double), rise: Double = 0, taken: [Box], width: Double, height: Double, tokens: Tokens) -> Box {
         let w = tokens.way
         let cell = 24.0
         // Room for the nod and the pen's width, so that nothing it avoids is touched while it moves.
         let around = w.nod + tokens.mark.width
         let capsule = capsule(open: 1, taller: band(tokens), width: width, height: height, tokens: tokens)
         let avoid = taken + [capsule]
-        let home = down ? (x: capsule.x + capsule.w + w.edge, y: height - w.edge - size.h) : (x: (width - size.w) / 2, y: w.edge)
+        let home = down ? (x: capsule.x + capsule.w + w.edge, y: height - w.edge - size.h - rise) : (x: (width - size.w) / 2, y: w.edge + rise)
         func covered(_ box: Box) -> Double {
             let b = box.grown(around)
             return avoid.reduce(0) { $0 + max(0, min(b.x + b.w, $1.x + $1.w) - max(b.x, $1.x)) * max(0, min(b.y + b.h, $1.y + $1.h) - max(b.y, $1.y)) }
@@ -57,14 +58,15 @@ public enum Layout {
     /// the page's text. To the right first, where a line most often ends in empty page; then under the mark's end
     /// and under its start. The first place that covers no text and is inside the display wins; failing that, the
     /// one that covers least.
-    public static func beside(_ mark: Box, cursor: (w: Double, h: Double), gap: Double, texts: [Box], width: Double, height: Double) -> CGPoint {
+    public static func beside(_ mark: Box, cursor: (w: Double, h: Double), edge: Double, gap: Double, texts: [Box], width: Double, height: Double) -> CGPoint {
         let right = mark.x + mark.w + gap, middle = mark.y + mark.h / 2
         let tips = [
             CGPoint(x: right, y: middle - cursor.h / 4), CGPoint(x: right, y: mark.y + mark.h - cursor.h / 8), CGPoint(x: right, y: mark.y - cursor.h / 2),
             CGPoint(x: mark.x + mark.w - cursor.w, y: mark.y + mark.h + gap), CGPoint(x: mark.x, y: mark.y + mark.h + gap),
         ]
         func cost(_ tip: CGPoint) -> Double {
-            let body = Box(x: tip.x, y: tip.y, w: cursor.w, h: cursor.h)
+            // Its paper edge is part of it, and a point more keeps it from grazing a line.
+            let body = Box(x: tip.x, y: tip.y, w: cursor.w, h: cursor.h).grown(edge + 1)
             let outside = body.x < 0 || body.y < 0 || body.x + body.w > width || body.y + body.h > height
             let covered = texts.reduce(0) { $0 + max(0, min(body.x + body.w, $1.x + $1.w) - max(body.x, $1.x)) * max(0, min(body.y + body.h, $1.y + $1.h) - max(body.y, $1.y)) }
             return covered + (outside ? cursor.w * cursor.h : 0)
@@ -72,9 +74,15 @@ public enum Layout {
         return tips.enumerated().min { (cost($0.element), $0.offset) < (cost($1.element), $1.offset) }?.element ?? tips[0]
     }
 
-    /// The largest empty rectangle left by the page's text and the capsule, found on a coarse grid.
+    /// The empty place for a card, left by the page's text and the capsule and found on a coarse grid. A card is wider
+    /// than it is tall, so a place is judged first by how nearly a card of the widest allowed size and half that
+    /// height fits in it, and only then by its area. By area alone a tall strip can win, and a card is then shrunk
+    /// to squeeze into it (seen on the club page: a strip 336 points wide beat a place 640 wide, and three steps were
+    /// drawn at under 9 points).
     public static func room(texts: [Box], width: Double, height: Double, tokens: Tokens) -> Box {
         let cell = 24.0, margin = tokens.board.margin
+        let card = (w: tokens.board.maxWidth, h: tokens.board.maxWidth / 2)
+        func fit(_ w: Int, _ h: Int) -> Double { min(1, Double(w) * cell / card.w, Double(h) * cell / card.h) }
         let cols = Int(width / cell), rows = Int(height / cell)
         guard cols > 2, rows > 2 else { return Box(x: 0, y: 0, w: max(width, 1), h: max(height, 1)) }
         let taken = texts.map { $0.grown(margin) } + [capsule(open: 1, width: width, height: height, tokens: tokens).grown(margin)]
@@ -84,7 +92,7 @@ public enum Layout {
             return !taken.contains { $0.x < x + cell && x < $0.x + $0.w && $0.y < y + cell && y < $0.y + $0.h }
         }
         var heights = [Int](repeating: 0, count: cols)
-        var best = (area: 0, col: 1, row: 1, w: 1, h: 1)
+        var best = (fit: 0.0, area: 0, col: 1, row: 1, w: 1, h: 1)
         for row in 0..<rows {
             for col in 0..<cols { heights[col] = free(col, row) ? heights[col] + 1 : 0 }
             var stack: [Int] = []
@@ -94,7 +102,7 @@ public enum Layout {
                     stack.removeLast()
                     let left = (stack.last ?? -1) + 1
                     let w = col - left, h = heights[top]
-                    if w * h > best.area { best = (w * h, left, row - h + 1, w, h) }
+                    if (fit(w, h), w * h) > (best.fit, best.area) { best = (fit(w, h), w * h, left, row - h + 1, w, h) }
                 }
                 stack.append(col)
             }

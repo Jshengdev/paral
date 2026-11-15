@@ -26,7 +26,9 @@ import { keptVoice, standIn } from "./runners/adapters.ts";
 import { capsule, cardOnFilm, filmed, landing, pressedAgain, sameToTheWatcher } from "./runners/body.ts";
 import { fresh } from "./runners/temp.ts";
 import { playTurn } from "./runners/turn.ts";
-import { cursor, way } from "./runners/placed.ts";
+import { boardType } from "./runners/boards.ts";
+import { filmedPages } from "./runners/pages.ts";
+import { cursor, steps, toast, way } from "./runners/placed.ts";
 
 // A row is JSON on disk: its "in" is whatever its runner takes, so it is typed where the runner reads it.
 type Row = { name: string; run: string; in: any; out: unknown };
@@ -60,6 +62,10 @@ const runs: Record<string, (input: any) => unknown> = {
   "body.same": sameToTheWatcher,
   "body.way": way,
   "body.cursor": cursor,
+  "body.steps": steps,
+  "body.toast": toast,
+  "body.boardType": boardType,
+  "body.pages": filmedPages,
   catch: (input) => input.events.reduce(hear, silence),
   "catch.only": (input) => Object.fromEntries(input.asks.map((words: string) => [words, saysOnly(words, input.phrases)])),
   "catch.drawing": (input) => Object.fromEntries(input.asks.map((words: string) => [words, asksFor(words, input.phrases)])),
