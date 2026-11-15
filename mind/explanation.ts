@@ -14,7 +14,7 @@ type With = {
   talk: { speak(beat: number, text: string): void };
   board: ReturnType<typeof card>;
   clip: ReturnType<typeof lessonClip>;
-  lead: { count(): number; pageLine(): string | null };
+  lead: { count(): number };
   drew(event: HoldEvent): void;
 };
 
@@ -89,8 +89,6 @@ export function explanation({ settings, send, log }: Hands, asking: Asking, { ta
       board.fill(leak || clip.on() ? null : answered.board);
       board.close("no board came");
       drew({ type: "break.fixed" });
-      const pageLine = lead.pageLine();
-      if (pageLine !== null) drew({ type: "line.shown", text: pageLine });
       for (const { say } of sentences) drew({ type: "line.shown", text: say });
       log(`${id}: ${sentences.length} sentence${sentences.length === 1 ? "" : "s"}, all sent at ${since()} ms from the release`);
     },

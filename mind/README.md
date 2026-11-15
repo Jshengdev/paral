@@ -15,7 +15,7 @@ Every decision is a pure function in `cores/`; every outside service is behind `
 | `explanation.ts` | the road when it has none: sentences with their marks as they finish, and the board |
 | `card.ts` | the board of one ask: sent the moment it is whole. It can also open an empty card first when his words ask for a drawing (filled when the board arrives, taken away when none comes); that is switched off, `drawingAsks` is empty |
 | `clip.ts` | the lesson clip of one ask: the example picked on other numbers than his, the clip started early and sent after the words |
-| `fast.ts` | the fast lines of one ask: the opener, its deadline and fixed stand-in, and the fast model's line about the page |
+| `fast.ts` | the fast lines of one ask: the quick line, its deadline and fixed stand-in, the wait for it, and the stall lines |
 | `speech.ts` | the voice for one ask: sentences one after another; a failure turns the rest to words only |
 | `ports.ts` | the interfaces: Brain, SecondLook, Opener, Ear, Voice, Lessons |
 | `settings.ts`, `settings/` | every value, one file per thing it governs |
@@ -25,11 +25,10 @@ Every decision is a pure function in `cores/`; every outside service is behind `
 
 | line | who writes it | when it is said |
 |---|---|---|
-| the opener | the fast model; a fixed line while a wrong line is open, or when the model's line is long or fails | as soon as it is written. If it is not there 0.8 s after release, a fixed line is said first and the opener follows when it comes, unless the answer has begun |
+| the quick line | the fast model, from his words and the lines read off his page: what it is about to look at, naming the thing that matters; on his own working only that it will go through his steps. A fixed line while a wrong line is open, or when the model's line is long, unfit or fails | as he lets go, when a draft made while he talked is ready. If none is written 0.8 s after release, a fixed line is said first and the quick line follows if it comes within 1.5 s. The deep model is told the line |
 | his loop as a ring (`echo`) | nobody: code, from his path | right after his words are final |
 | the rung's fixed line | a setting (`ladder`) | with the ring, the moment the wrong line is known |
 | the hint | the deep model, one rung per ask, in the number of sentences its rung allows | after Push has passed it |
-| the fast line about the page | the fast model | switched off (`surfaceMaxWords` 0). When on: only once the deep answer says there is no wrong line |
 | the explanation | the deep model, up to three sentences | each sentence as it is finished. Its board goes out the moment it is whole and its first mark ahead of the first sentence, since the reply gives the board before the sentences and each mark before its words |
 
 Run: `npm run mind`, or let `./flow` and `./run` start it. Environment: `PARAL_TAPE` (recorded answers, no service),

@@ -1,8 +1,8 @@
 import { fits } from "./cores/catch.ts";
-import type { Opened, Opener } from "./ports.ts";
+import type { Opener } from "./ports.ts";
 import type { Settings } from "./settings.ts";
 
-type Draft = { words: string; line: Promise<Opened>; at: number };
+type Draft = { words: string; line: Promise<string>; at: number };
 
 /**
  * The opener, drafted while he is still talking. The fast model is asked again every so often with his words so
@@ -29,7 +29,8 @@ export function drafts(opener: Opener, settings: Settings, seen: () => string[])
     /** His words so far. Starts a new draft when the last is old enough and there are enough words to go on. */
     note(words: string, signal: AbortSignal) {
       const due = newest === null || Date.now() - newest.at >= settings.openerDraftEveryMs.value;
-      if (!due || words.split(" ").length < settings.openerDraftWords.value) return;
+      // The quick line may name what is on his page, so nothing is drafted before the page's lines are here.
+      if (!due || words.split(" ").length < settings.openerDraftWords.value || seen().length === 0) return;
       const draft: Draft = { words, line: ask(words, signal), at: Date.now() };
       newest = draft;
       // Once its line is written it becomes the newest written draft, unless a later one got there first. A draft
@@ -45,7 +46,7 @@ export function drafts(opener: Opener, settings: Settings, seen: () => string[])
      * since it can be said at once; a draft is used only if it still fits what he ended up saying. Failing both,
      * the fast model is asked afresh.
      */
-    choose(final: string, signal: AbortSignal): Promise<Opened> {
+    choose(final: string, signal: AbortSignal): Promise<string> {
       const usable = (draft: Draft | null) => (draft && fits(draft.words, final, settings.openerDraftShare.value) ? draft.line : null);
       return usable(written) ?? usable(newest) ?? ask(final, signal);
     },

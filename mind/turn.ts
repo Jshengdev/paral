@@ -6,7 +6,7 @@ import { circled, drew, echo, type Point } from "./cores/circle.ts";
 import { showable } from "./cores/fit.ts";
 import { empty, type Lesson } from "./cores/hold.ts";
 import { drafts } from "./drafts.ts";
-import type { Listening, Opened, Ports } from "./ports.ts";
+import type { Listening, Ports } from "./ports.ts";
 import type { Settings } from "./settings.ts";
 import { speech } from "./speech.ts";
 import { SEAM_VERSION, type FromBody, type FromMind } from "../seam/schema.ts";
@@ -38,11 +38,11 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
   /** The opener, drafted from his words while he is still talking. With no fast model there is no opener at all. */
   const drafting = ports.opener && drafts(ports.opener, settings, () => screen?.lines.map((read) => read.text).filter(Boolean) ?? []);
 
-  /** The opener of this ask: none with no fast model, a fixed line while a wrong line is open, otherwise the drafted one. */
-  function opening(signal: AbortSignal): Promise<Opened> | null {
+  /** The quick line of this ask: none with no fast model, a fixed line while a wrong line is open, otherwise the drafted one. */
+  function opening(signal: AbortSignal): Promise<string> | null {
     if (!drafting) return null;
     // With a wrong line open a model that sees his page could name the mistake a rung early, so the line is fixed.
-    if (lesson.breakLine !== null) return Promise.resolve({ line: settings.openerInLesson.value, seen: Promise.resolve(null) });
+    if (lesson.breakLine !== null) return Promise.resolve(settings.openerInLesson.value);
     return drafting.choose(words.text, signal);
   }
 

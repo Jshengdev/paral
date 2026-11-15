@@ -64,12 +64,16 @@ Scene → Picture → Painter                                    (parts)   of on
 2. Key up: "thinking" at once. When his words are final, about 0.4 s later: if he drew, his loop comes back as a ring
    (`echo`), with no model asked. (An empty card for an ask that wants a drawing exists and is switched off: the board
    opens on its first row. See `drawingAsks`.)
-3. The opener, one short line from the fast model, as soon as it is written. If none is out 0.8 s after release, a fixed line is said first and the opener follows. If the deep answer has not begun to arrive 1.3 s after that has been heard, a fixed stall line, and up to two more.
+3. The quick line: one short line from the fast model, drafted while he talks and said as he lets go. It may name the
+   thing on his page that matters, never the result; on his own working it names only his working. If none is written
+   0.8 s after release, a fixed line is said first, and the quick line follows if it comes within 1.5 s. The deep
+   model is told the line he heard, word for word, so its call waits for that line. If the deep answer has not begun
+   1.3 s after the last line has been heard, a fixed stall line, and up to two more.
 4. When the deep answer's first fields arrive, it is one of two things. **A wrong line in his work:** a ring on that
    line, the rung's fixed line said with it, then the model's hint once Push has passed it. One rung per ask, one sentence
    for the first three rungs. Where lines sit close the ring is a box that hugs the line.
    **No wrong line:** the board as soon as it is whole, the first mark, then up to three sentences, each with its
-   mark. (The fast model can also give one line about the page, said before these; it is switched off, see the limits.)
+   mark.
 5. If the model named a lesson, one sentence and then a rendered clip on an example that is not his.
 6. It rests. Marks stay. A follow-up is told what was said and what is still drawn. The cross on the resting circle
    clears it.
@@ -136,9 +140,10 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
 - A follow-up that the model words as a new problem wipes the marks of the one before.
 - The board comes before the sentences, three to five seconds after he lets go in the runs so far; nothing of the
   answer comes sooner than the reply's first fields.
-- The fast model's line about the page is switched off (`surfaceMaxWords` is 0). In live runs it was said once in
-  about 200 asks, and that once it said something false about the page; nothing checks what it says. The opener is
-  what is heard first. A limit of 12 turns it back on.
+- Nothing checks the quick line. The fast model writes it from the lines read off his page, without the picture,
+  and it can name the wrong thing; the deep model is told the line and is asked to put it right. When no drafted line
+  is ready as he lets go, the answer waits for one up to 1.5 s after the release, which can cost the answer about a
+  second.
 - On the top rung the second look is steady for one line and erratic between lines: the same hint was passed with
   the example in k and swapped with it in x. A repeat visit to the top rung still gets only the rung's fixed line now
   and then: 1 of 8 asks in the four live runs since the last change, about one in three before it.

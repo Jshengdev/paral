@@ -1,5 +1,5 @@
 {
- "name": "live brain, against a stand-in client (no key, no network): the request carries the picture, the numbered lines, the rung, a stop signal and the settings' models; the reply is checked and the spend counted",
+ "name": "live brain, against a stand-in client (no key, no network): the request carries the picture, the numbered lines, the rung, a stop signal and the settings' models; the reply is checked and the spend counted; and it is told the quick line he has just heard",
  "run": "live.standin",
  "in": {
   "picture": true,
@@ -17,7 +17,8 @@
     "tried": [],
     "rung": -1,
     "shown": []
-   }
+   },
+   "saidFirst": "Let's go through your steps for this one."
   },
   "brainReply": {
    "model": "claude-opus-5-5",
@@ -55,8 +56,8 @@
  "out": {
   "answered": {
    "problem": "Solve for x: 2(x + 3) = 14",
-   "breakIndex": 1,
    "breakLine": "2x + 6 = 14, so x = 10",
+   "breakIndex": 1,
    "result": "x = 4",
    "lesson": null,
    "beats": [
@@ -78,7 +79,8 @@
     "picture": true,
     "signal": true,
     "numbered": true,
-    "namesRung": true
+    "namesRung": true,
+    "namesWhatWasSaid": true
    },
    {
     "kind": "look",
@@ -89,7 +91,8 @@
     "picture": false,
     "signal": true,
     "numbered": false,
-    "namesRung": false
+    "namesRung": false,
+    "namesWhatWasSaid": false
    }
   ],
   "spentUsd": 0.018055,

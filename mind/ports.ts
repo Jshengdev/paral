@@ -11,6 +11,8 @@ export type Asked = {
   circled: number[];
   /** The fixed line he hears with the ring, just before the hint, when his work has a wrong line. */
   leadIn: string;
+  /** The quick line he has just heard, word for word; null when nothing was said before the answer. */
+  saidFirst: string | null;
   /** The lessons that can be shown as a clip, each with the idea it shows; empty when none can. */
   lessons: { name: string; idea: string }[];
   lesson: Lesson;
@@ -68,14 +70,9 @@ export interface SecondLook {
   leaks(line: string, problem: string, signal: AbortSignal): Promise<boolean>;
 }
 
-/**
- * The fast model's two lines: what it is about to do, and one thing anyone can read straight off the page (or none).
- * The first is given the moment it is written; the second follows.
- */
-export type Opened = { line: string; seen: Promise<string | null> };
-
+/** The fast model's one quick line: what it is about to do, which may name the thing on his page that matters. */
 export interface Opener {
-  open(words: string, lines: string[], signal: AbortSignal): Promise<Opened>;
+  open(words: string, lines: string[], signal: AbortSignal): Promise<string>;
 }
 
 

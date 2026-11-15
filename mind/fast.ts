@@ -4,43 +4,75 @@ import { SEAM_VERSION } from "../seam/schema.ts";
 
 const v = SEAM_VERSION;
 const count = (text: string) => text.split(/\s+/).filter(Boolean).length;
+const why = (error: unknown) => (error instanceof Error ? error.message : String(error));
 
 type Speaks = { speak(beat: number, text: string): void; quietAt(): number | null };
-/** What the fast lines must ask the answer: has any of it been said, is it an explanation with no wrong line, and have its first fields come. */
-type Answer = { nothingSaid(): boolean; explains(): boolean; arriving(): boolean; shown(): boolean };
+/** What the fast lines must ask the answer: has any of it been said, have its first fields come, is any of it on his screen. */
+type Answer = { nothingSaid(): boolean; arriving(): boolean; shown(): boolean };
 
 /**
- * The fast lines of one ask, said while the deep answer is worked out. The opener goes out as soon as it is written.
- * If it fails or runs long a fixed line stands in; if it is not there by the deadline the fixed line is said first and
- * the opener follows when it comes, unless the answer has begun. If the wait goes on after that, fixed stall lines. The fast model's line about the page is held until the deep
- * answer says there is no wrong line, and is never said on a page of his own working: only the ladder speaks there.
+ * The lines said while the deep answer is worked out. First the quick line: one short line from the fast model, said
+ * as he lets go, which may name the thing on his page that matters. The deep model is told that line word for word,
+ * so the answer is asked once it is settled. If the quick line is not written by the deadline, a fixed line is said
+ * first, so that he hears something inside a second, and the quick line follows it if it comes before the wait runs
+ * out; one that comes later still is never said, since the deep model was not told it. A line that fails, runs long
+ * or is not fit to say is replaced by the fixed line. After that, if the wait goes on, fixed stall lines.
  */
 export function fast({ settings, send, log }: Hands, asking: Asking, talk: Speaks, answer: Answer) {
   const { id, signal } = asking;
   const since = () => Date.now() - asking.releasedAt;
-  let seen: string | null = null;
-  /** What has been said between the opener and the answer: the line about the page, the stall lines, the short one. */
-  let page = false;
+  /** What has been said after the quick line and before the answer: the stall lines, and the short one. */
   let stalls = 0;
   let short = false;
-  const before = () => (page ? 1 : 0) + stalls + (short ? 1 : 0);
-  /** Nothing yet; "stopgap" once the fixed line has been said at the deadline; "said" once an opener proper is out. */
-  let opener: "none" | "stopgap" | "said" = "none";
-  const quiet = () => answer.nothingSaid() && before() === 0 && !signal.aborted;
-  /** Every fast line but the one about the page is an aside: said while he waits, and no part of the answer. */
-  const say = (beat: number, line: string, aside = true) => {
-    send({ v, type: "say", id, beat, text: line, ...(aside ? { aside: true } : {}) });
+  const before = () => stalls + (short ? 1 : 0);
+  let openerOut = false;
+  /** Every fast line is an aside: said while he waits, and no part of the answer. */
+  const say = (beat: number, line: string) => {
+    send({ v, type: "say", id, beat, text: line, aside: true });
     talk.speak(beat, line);
+    openerOut = true;
   };
 
-  /** Says the line about the page as beat 0, if there is one and the answer has turned out to be an explanation. */
-  const aboutThePage = () => {
-    // With a board or a mark of the answer already on his screen, the line about the page comes too late to be said.
-    if (seen === null || !quiet() || !answer.explains() || answer.shown()) return;
-    say(0, seen, false);
-    page = true;
-    log(`${id}: the fast line about the page at ${since()} ms from the release`);
-  };
+  /** Says the quick line, or the fixed line in its place, and gives back what was said. Null with no fast model, or once he has pressed again. */
+  async function open(): Promise<string | null> {
+    if (!asking.opener) return null;
+    const fixed = settings.openerFallback.value;
+    const written = asking.opener.then(
+      (line) => ({ line }),
+      (error) => ({ failed: why(error) }),
+    );
+    /** The quick line if it is written by `ms` after the release, or "late". */
+    const by = async (ms: number) => {
+      let timer: NodeJS.Timeout | undefined;
+      const late = new Promise<"late">((resolve) => (timer = setTimeout(() => resolve("late"), Math.max(0, asking.releasedAt + ms - Date.now()))));
+      const first = await Promise.race([written, late]);
+      clearTimeout(timer);
+      return first;
+    };
+    let first = await by(settings.openerDeadlineMs.value);
+    if (signal.aborted) return null;
+    const stoodIn = first === "late";
+    if (first === "late") {
+      say(-2, fixed);
+      log(`${id}: no opener ${settings.openerDeadlineMs.value} ms after the release; the fixed line is said at ${since()} ms`);
+      first = await by(settings.openerWaitMs.value);
+      if (signal.aborted) return null;
+      if (first === "late") {
+        log(`${id}: no opener ${settings.openerWaitMs.value} ms after the release either; the answer is asked without it, and it is not said if it comes`);
+        return fixed;
+      }
+    }
+    const wrong = "failed" in first ? null : first.line === "" ? "came back empty" : count(first.line) > settings.openerMaxWords.value ? `ran past ${settings.openerMaxWords.value} words` : unfit(first.line);
+    if ("failed" in first) log(`${id}: the opener failed (${first.failed})`);
+    else if (wrong !== null) log(`${id}: the opener is not said: ${wrong}`);
+    const fit = !("failed" in first) && wrong === null;
+    // A line that cannot be said is replaced by the fixed line, unless the fixed line has already stood in.
+    if (!fit && stoodIn) return fixed;
+    const line = fit && !("failed" in first) ? first.line : fixed;
+    say(-1, line);
+    log(`${id}: opener at ${since()} ms from the release`);
+    return line;
+  }
 
   // The stall. While nothing of the answer has been said: each time the last line has been heard and nothing new
   // has come for a set time, the next fixed line is said, until they run out. Once the answer's first fields are here
@@ -51,7 +83,7 @@ export function fast({ settings, send, log }: Hands, asking: Asking, talk: Speak
     const watch = setInterval(() => {
       if (!answer.nothingSaid() || signal.aborted || short) return clearInterval(watch);
       const heard = talk.quietAt();
-      if (opener === "none" || heard === null || Date.now() - heard < settings.stallAfterMs.value) return;
+      if (!openerOut || heard === null || Date.now() - heard < settings.stallAfterMs.value) return;
       if (answer.arriving()) {
         // A board or a mark already on his screen is something new to look at: no words are needed.
         if (answer.shown()) return clearInterval(watch);
@@ -67,53 +99,10 @@ export function fast({ settings, send, log }: Hands, asking: Asking, talk: Speak
     signal.addEventListener("abort", () => clearInterval(watch), { once: true });
   }
 
-  // The fast model's time has a long tail. If no opener is out by the deadline, the fixed line is said as beat -2.
-  // The model's own opener is still said when it comes, as long as nothing of the answer is out yet.
-  if (asking.opener) {
-    const late = setTimeout(() => {
-      if (opener !== "none" || !quiet()) return;
-      opener = "stopgap";
-      say(-2, settings.openerFallback.value);
-      log(`${id}: no opener ${settings.openerDeadlineMs.value} ms after the release; the fixed line is said at ${since()} ms`);
-    }, Math.max(0, asking.releasedAt + settings.openerDeadlineMs.value - Date.now()));
-    signal.addEventListener("abort", () => clearTimeout(late), { once: true });
-  }
-
-  asking.opener
-    ?.then((first) => {
-      const wrong = first.line === "" ? "came back empty" : count(first.line) > settings.openerMaxWords.value ? `ran past ${settings.openerMaxWords.value} words` : unfit(first.line);
-      const fits = wrong === null;
-      if (!fits) log(`${id}: the opener is not said: ${wrong}`);
-      if (quiet() && (fits || opener === "none")) {
-        opener = "said";
-        say(-1, fits ? first.line : settings.openerFallback.value);
-        log(`${id}: opener at ${since()} ms from the release`);
-      } else if (fits) {
-        log(`${id}: the opener came at ${since()} ms, after the answer had begun, and is dropped`);
-      }
-      return first.seen.then((text) => {
-        if (text === null) return log(`${id}: the fast model gave no line about the page`);
-        if (settings.surfaceMaxWords.value === 0) return log(`${id}: the fast line about the page is switched off and was not said`);
-        if (count(text) > settings.surfaceMaxWords.value) return log(`${id}: the fast line about the page ran to ${count(text)} words and was not said`);
-        const wrong = unfit(text);
-        if (wrong !== null) return log(`${id}: the fast line about the page is not said: ${wrong}`);
-        seen = text;
-        aboutThePage();
-      });
-    })
-    .catch((error) => {
-      if (signal.aborted) return;
-      log(`${id}: the opener failed (${error instanceof Error ? error.message : error})`);
-      if (opener !== "none" || !quiet()) return;
-      opener = "said";
-      say(-1, settings.openerFallback.value);
-    });
-
   return {
-    aboutThePage,
-    /** How many lines have been said between the opener and the answer; the answer's sentences are numbered after them. */
+    /** The quick line that was said, once it is settled: the deep model is told it. */
+    opened: open(),
+    /** How many lines have been said between the quick line and the answer; the answer's sentences are numbered after them. */
     count: before,
-    /** The line about the page, once it has been said. */
-    pageLine: () => (page ? seen : null),
   };
 }

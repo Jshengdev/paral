@@ -32,6 +32,9 @@ export function asking(asked: Asked): string {
   const { lesson, rung } = asked;
   return [
     `What the student just said: "${asked.words}"`,
+    ...(asked.saidFirst
+      ? [`You have already answered aloud with this one line, while you looked: "${asked.saidFirst}" Go on from it. Do not say it again and do not take it back; if it got something about the page wrong, put that right plainly in your first sentence.`]
+      : []),
     // A line with no words is one outside the part he drew around: its words never left his Mac. The numbers stay the same.
     `Lines read from the screen:\n${asked.lines.flatMap((line, index) => (line ? [`${index}: ${line}`] : [])).join("\n") || "(none were read)"}`,
     ...(asked.circled.length > 0

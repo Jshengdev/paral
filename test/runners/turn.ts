@@ -15,7 +15,7 @@ const shorter = (line: any) =>
       ? { v: line.v, type: line.type, id: line.id, beat: line.beat, count: line.words.length, ends: Number(line.end.at(-1).toFixed(2)) }
       : line;
 
-export async function playTurn(input: { tape: string; asks: Step[][]; set?: Record<string, unknown>; show?: "drawn" }): Promise<unknown> {
+export async function playTurn(input: { tape: string; asks: Step[][]; set?: Record<string, unknown>; show?: "drawn" | "saidFirst" }): Promise<unknown> {
   const path = fresh("row") + ".sock";
   const played = tape(join(import.meta.dirname, "..", "tapes", input.tape));
   const changed: any = { ...settings };
@@ -61,6 +61,7 @@ export async function playTurn(input: { tape: string; asks: Step[][]; set?: Reco
       await until(settled, "a settled state");
     }
     if (input.show === "drawn") return played.asked.map((asked) => ({ words: asked.words, drawn: asked.lesson.drawn }));
+    if (input.show === "saidFirst") return { toldTheDeepModel: played.asked.map((asked) => ({ words: asked.words, saidFirst: asked.saidFirst })), said: got.filter((line) => line.type === "say").map((line) => ({ beat: line.beat, text: line.text })) };
     return got.map(shorter);
   } finally {
     socket.destroy();

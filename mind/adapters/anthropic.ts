@@ -105,24 +105,13 @@ export function anthropic(settings: Settings, prompts: Prompts, log: Log, client
           },
           { signal },
         );
-        const written = (text: string) => text.split("\n").map((part) => part.trim()).filter(Boolean);
-        const whole = stream.finalMessage().then((reply) => {
-          count(reply.model, model, reply.usage);
-          return written(reply.content.flatMap((block) => (block.type === "text" ? [block.text] : [])).join("\n"));
-        });
-        const seen = whole.then(([, second = ""]) => (second === "" || /^none\b/i.test(second) ? null : second));
-        // If the call fails, the caller hears it through `line` below; this only keeps the second line's promise from
-        // being reported as unhandled when nobody is waiting on it yet.
-        seen.catch(() => {});
-        // The first line is handed over the moment it is complete, so it is not held back by the second.
-        const line = await new Promise<string>((resolve, reject) => {
-          stream.on("text", (_delta: string, soFar: string) => {
-            const lines = written(soFar);
-            if (lines.length > 1 || (lines.length === 1 && soFar.trimStart().includes("\n"))) resolve(lines[0]);
-          });
-          whole.then(([first = ""]) => resolve(first), reject);
-        });
-        return { line, seen };
+        const reply = await stream.finalMessage();
+        count(reply.model, model, reply.usage);
+        const text = reply.content.flatMap((block) => (block.type === "text" ? [block.text] : [])).join("\n");
+        // One line is asked for. If the model wrote more, only the first is the quick line; quote marks it put
+        // around the line are not part of it.
+        const first = text.split("\n").map((part) => part.trim()).find(Boolean) ?? "";
+        return first.replace(/^["“”']+|["“”']+$/g, "").trim();
       },
     },
     secondLook: {

@@ -8,14 +8,14 @@ import { next, type Move } from "./cores/teach.ts";
 import { explanation } from "./explanation.ts";
 import { fast } from "./fast.ts";
 import { ladderHint } from "./hint.ts";
-import type { Answered, Opened, Part, Ports } from "./ports.ts";
+import type { Answered, Part, Ports } from "./ports.ts";
 import type { Settings } from "./settings.ts";
 import { speech } from "./speech.ts";
 import { SEAM_VERSION, type FromBody, type FromMind } from "../seam/schema.ts";
 
 export type Screen = Extract<FromBody, { type: "screen" }>;
 export type Hands = { ports: Ports; settings: Settings; send: (line: FromMind) => void; log: (line: string) => void };
-export type Asking = { id: string; words: string; seen: Screen; circled: number[]; lesson: Lesson; markUp: boolean; releasedAt: number; opener: Promise<Opened> | null; signal: AbortSignal };
+export type Asking = { id: string; words: string; seen: Screen; circled: number[]; lesson: Lesson; markUp: boolean; releasedAt: number; opener: Promise<string> | null; signal: AbortSignal };
 
 const v = SEAM_VERSION;
 
@@ -42,7 +42,6 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
   const clip = lessonClip(hands, asking, drew);
   const lead = fast(hands, asking, talk, {
     nothingSaid: () => explained.told() + hinted.told() === 0,
-    explains: () => !clip.on() && headed?.explains === true,
     arriving: () => headed !== null,
     shown: () => board.filled() || explained.markOut() || headed?.place?.found === true,
   });
@@ -78,7 +77,6 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
     if (place?.found) hinted.ring(place, move.rung);
     headed = { place, explains: place === null && (part.result ?? null) === null };
     if (place !== null) board.close("his work has a wrong line, so this is a hint");
-    lead.aboutThePage();
     log(`${id}: the line ${place === null ? "has no break" : place.found ? "is ringed" : "was not found"} at ${since()} ms from the release`);
     if (place !== null) log(`${id}: the hint road, because the model read "${part.problem}" as his own work with a wrong line: "${part.breakLine}"`);
   };
@@ -89,10 +87,11 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
     head(part);
     if (headed?.explains) explained.arriving(part);
   };
-  /** Asks the deep model, telling it the lesson so far and the rung to write for. */
+  /** Asks the deep model, telling it the quick line he has just heard, the lesson so far and the rung to write for. */
   const think = (from: Lesson, rung: Move, onPart?: (part: Part) => void): Promise<Answered> => {
     const asked = {
       words,
+      saidFirst,
       picturePath: seen.picture.path,
       lines: seen.lines.map((line) => line.text),
       circled: asking.circled,
@@ -105,6 +104,10 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
     return ports.brain.answer(asked, signal, onPart);
   };
 
+  // The deep model is told the quick line word for word, so the answer is asked once that line is settled: at once
+  // when it was drafted while he talked, and at the opener's deadline at the latest.
+  const saidFirst = await lead.opened;
+  if (signal.aborted) return;
   let answered = await think(draft, move, arriving).catch((error) => {
     board.close("the ask failed");
     throw error;

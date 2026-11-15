@@ -11,7 +11,7 @@ const UNFIT: [RegExp, string][] = [
 /**
  * Why a line the fast model wrote must not be said, or null when it may. A line that explains itself, speaks about
  * him in the third person, or carries the word for "no line" anywhere is dropped. It errs toward dropping: a dropped
- * opener is replaced by the fixed line, and a dropped line about the page is simply not said.
+ * quick line is replaced by the fixed line.
  */
 export function unfit(line: string): string | null {
   return UNFIT.find(([sign]) => sign.test(line))?.[1] ?? null;

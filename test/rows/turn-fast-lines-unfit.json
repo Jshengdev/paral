@@ -1,5 +1,5 @@
 {
- "name": "turn: the fast model speaks about him and explains itself: its opener is replaced by the fixed line, its line about the page is not said, and the answer follows",
+ "name": "turn: the fast model speaks about him and explains itself: its quick line is replaced by the fixed line, and the answer follows",
  "run": "turn",
  "in": {
   "tape": "unfit-fast-lines.json",
@@ -64,10 +64,7 @@
      "at": 2100
     }
    ]
-  ],
-  "set": {
-   "surfaceMaxWords": 12
-  }
+  ]
  },
  "out": [
   {

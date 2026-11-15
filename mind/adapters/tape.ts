@@ -9,7 +9,6 @@ const Tape = z.object({
   failSecondLook: z.boolean().optional(),
   holdOpener: z.boolean().optional(),
   opener: z.string().optional(),
-  seen: z.string().optional(),
   voice: z.boolean().optional(),
   clip: z.object({ clip: z.string(), still: z.string(), seconds: z.number() }).optional(),
 });
@@ -62,8 +61,8 @@ export function tape(path: string): Ports & { release(kind?: string): void; aske
         const { hold, late, ...answered } = takes[Math.min(turn, takes.length - 1)];
         // `late` holds the whole answer back, its first field too; `hold` lets the first fields out and holds the rest.
         if (late) await held(signal, "answer");
-        // A few ticks first, so a recorded opener and its line about the page are out before the answer's first field,
-        // the order the live services give (the fast model takes about a second, the deep one about three).
+        // A few ticks first, so what is sent as the ask begins is out before the answer's first field, the order
+        // the live services give (the deep model takes about three seconds).
         for (let tick = 0; tick < 4; tick++) await null;
         onPart?.({ problem: answered.problem, breakLine: answered.breakLine, breakIndex: answered.breakIndex ?? null, result: answered.result, lesson: answered.lesson ?? null, board: answered.board ?? null, nextMark: answered.beats[0].mark, beats: [], whole: false });
         if (hold) await held(signal, "answer");
@@ -92,7 +91,7 @@ export function tape(path: string): Ports & { release(kind?: string): void; aske
     opener: recorded.opener ? {
           async open(_words, _lines, signal) {
             if (recorded.holdOpener) await held(signal, "opener");
-            return { line: recorded.opener!, seen: Promise.resolve(recorded.seen ?? null) };
+            return recorded.opener!;
           },
         } : null,
     lessons: recorded.clip ? { render: async () => recorded.clip! } : null,

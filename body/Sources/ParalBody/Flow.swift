@@ -135,9 +135,10 @@ public final class Flow {
                 pcm = bytes.subdata(in: (data.upperBound + 4)..<bytes.count)
             }
             let trail = (ask["trail"] as? [[NSNumber]] ?? []).map { $0.map(\.doubleValue) }.filter { $0.count == 3 }
-            // With no circle (a path of fewer than two points) the picture is the one taken as he starts; with a circle
-            // it is taken at the release, the path on it.
-            if trail.count < 2 { Task { @MainActor in if let lines = try? await reading.value { picture(lines, lines, small) } } }
+            // The picture taken as he starts goes as soon as the page is read, as in the app, so the mind has the page's
+            // lines while he is still talking. With a circle (a path of two points or more) the part he drew around
+            // goes again at the release, the path on it.
+            Task { @MainActor in if let lines = try? await reading.value { picture(lines, lines, small) } }
             let chunk = 3200, chunkMs = 100.0
             var sent = 0, drawn = 0
             let holdMs = max(Double(pcm.count) / Double(chunk) * chunkMs, trail.last?[0] ?? 0)
@@ -164,7 +165,9 @@ public final class Flow {
                 let part = Screen.around(image, lines: lines, path: path, on: display, share: settings.cropShare, points: settings.cropPoints, color: color(tokens.accent), width: tokens.mark.width + 1)
                 let shown = dir.appendingPathComponent("page-with-his-path.jpg").path
                 try Screen.saveSmaller(part.image, to: shown, longEdge: settings.pictureLongEdge)
-                picture(lines, part.lines, shown)
+                // From here the whole-page picture is not sent any more, should the page only now have been read.
+                pictureSent = true
+                send(.screen(at: stamp(), display: display, path: shown, w: image.width, h: image.height, lines: part.lines), as: .screen(display: display, lines: lines))
             }
         }
         // A page that could not be read stops the run here, with its reason.

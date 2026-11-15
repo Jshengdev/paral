@@ -1,22 +1,22 @@
 import type { Setting } from "./types.ts";
 
-/** Settings for the fast lines said while the deep answer is worked out. */
+/** Settings for the quick line and the other fast lines said while the deep answer is worked out. */
 export const opener = {
   openerModel: {
     value: "claude-haiku-5-5",
-    why: "The opener is one short line said while the answer is being worked out, so it uses the small fast model.",
+    why: "The quick line is one short line said as he lets go, while the answer is being worked out, so it uses the small fast model. It may name the thing on his page that matters and never the result: the owner's choice on 2026-11-14 at 16:52, the way the earlier project this follows does it. The deep model is told the line word for word.",
     measured: "one live call: the opener came back in 1,260 ms (2026-11-14, one run)",
   } satisfies Setting<string>,
 
   openerMaxTokens: {
     value: 1000,
-    why: "The most the fast model may write for its two lines. They are about thirty words; the cap is far above that so a line is never cut, and low enough that a runaway reply ends quickly.",
+    why: "The most the fast model may write for its one line of about ten words. The cap is far above that so a line is never cut, and low enough that a runaway reply ends quickly.",
     measured: "not measured; no opener has come near it",
   } satisfies Setting<number>,
 
   openerEffort: {
     value: "low",
-    why: "The fast lines name an act and state one visible thing. They need no working out, and he is waiting.",
+    why: "The quick line names an act and the thing on the page it is about. It needs no working out, and he is waiting.",
     measured: "not compared with other efforts",
   } satisfies Setting<"low" | "medium" | "high">,
 
@@ -28,20 +28,20 @@ export const opener = {
 
   openerMaxWords: {
     value: 12,
-    why: "An opener longer than this is not said. While a long opener is spoken, the answer waits behind it.",
+    why: "A quick line longer than this is not said, and the fixed line stands in. While a long line is spoken, the answer waits behind it. Twelve is the owner's choice with the quick line itself.",
     measured: "one live run: a 22-word opener restated his question and held the first sentence back (2026-11-14)",
   } satisfies Setting<number>,
 
   openerDraftEveryMs: {
-    value: 600,
-    why: "While he talks, the opener is drafted from his words so far, at most this often. At the release the newest draft is said at once if it still fits his final words.",
-    measured: "one live run without drafting: the opener came 1.2 s after the release; an earlier project of ours drafts its first line as he talks and heard it 168 to 604 ms after the send",
+    value: 300,
+    why: "While he talks, the quick line is drafted from his words so far, at most this often. At the release the newest draft is said at once if it still fits his final words. The ear's words arrive about every 0.5 to 1 s, so at 300 every arrival gets a draft; the floor only stops a burst.",
+    measured: "one live run without drafting: the opener came 1.2 s after the release; an earlier project of ours drafts its first line as he talks and heard it 168 to 604 ms after the send. At 600, one live ask skipped the draft that would have been ready (its words came 597 ms after the draft before), and no line was ready at the release in 5 of 7 first asks (2026-11-14)",
   } satisfies Setting<number>,
 
   openerDraftShare: {
-    value: 0.6,
-    why: "A draft made from the start of his sentence is used when it covers at least this share of his final words; the opener only names the act, so the last few words rarely change it.",
-    measured: "15 recorded asks (2026-11-14): the last early draft was a clean start of his final words in 14; it covered 0.8 of them in 9 and 0.6 of them in 14. At 0.8 the other five waited for a fresh call after the release",
+    value: 0.8,
+    why: "A draft made from the start of his sentence is used when it covers at least this share of his final words. The quick line names the thing on his page that matters, and that thing is often named at the end of the question, so a draft from much less than the whole can name the wrong one.",
+    measured: "15 recorded asks (2026-11-14): the last early draft was a clean start of his final words in 14; it covered 0.8 of them in 9 and 0.6 of them in 14. At 0.6, one live ask (\"Where on this page do I find the paid university holidays?\") got a quick line drafted from its first words that named the fall term dates, and the answer began \"Actually,\"; that is why it is 0.8. Not yet counted live at 0.8",
   } satisfies Setting<number>,
 
   openerDraftWords: {
@@ -52,8 +52,14 @@ export const opener = {
 
   openerDeadlineMs: {
     value: 800,
-    why: "The latest moment after the true release (his finger lifting) at which first words may be sent. If no opener is out by then, the fixed line is said first and the model's own opener follows when it comes. Its reason: first words he can see and hear inside one second of the release (Nielsen's limit for keeping the train of thought), less the voice's first sound (95 to 124 ms measured), less a margin.",
+    why: "The latest moment after the true release (his finger lifting) at which first words may be sent. If no quick line is written by then, the fixed line is said first and the quick line follows if it comes within openerWaitMs. Its reason: first words he can see and hear inside one second of the release (Nielsen's limit for keeping the train of thought), less the voice's first sound (95 to 124 ms measured), less a margin.",
     measured: "the fast model's first line took 0.25 to 2.5 s over nine live scenarios. At 1,000 the fixed line went out 1,002 to 1,009 ms after the true release in five asks, a few ms over the bar before any sound (2026-11-14, the outside judge, on the true clock). An ask that uses a finished early draft has first words at about 450 ms",
+  } satisfies Setting<number>,
+
+  openerWaitMs: {
+    value: 1500,
+    why: "After the fixed line has stood in at the deadline, the quick line is still waited for until this long after the release, and said when it comes; the deep model's call waits with it, so that it can be told the line. Past this the answer is asked without it and a quick line that arrives is never said. The same wait, 1.5 s, as the earlier project this follows, where the owner chose that the deep model waits for the draft.",
+    measured: "51 asks of the fast model on the recorded pages: its line took a median of 0.84 s and at the slowest 1.75 to 2.4 s, so one asked afresh at the ear's final words (about 0.43 s after the release) is written by about 1.3 s in most asks and misses the 0.8 s deadline in nearly all (2026-11-14). How often the wait is used, and what it costs the answer, are in the notes of that day",
   } satisfies Setting<number>,
 
   stallAfterMs: {
@@ -85,10 +91,4 @@ export const opener = {
     why: "The opener while a wrong line is open. It is fixed because the opener's model sees his page and once named the kind of mistake before the hint did (\"Let's find the step where the signs slip.\").",
     measured: "that leak was seen once in six live scenarios (2026-11-14, the outside judge)",
   } satisfies Setting<string>,
-
-  surfaceMaxWords: {
-    value: 0,
-    why: "With its opener the fast model may give one line that states something anyone can read straight off the page. It is held until the deep answer says there is no wrong line, then said at once, so the wait for the first deep sentence is not silent. On a page with a wrong line it is never said: only the ladder speaks there. A line longer than this is dropped and the log says so, since a long one holds the answer back. Zero turns it off, and it is off: the one time it was heard in a live run it said something false about his page, and nothing checks what it says. It was said at 12; whether and when a fast line may speak of the page is the owner's to decide.",
-    measured: "at 16 words, nine live scenarios (2026-11-14, the outside judge): said in 2 asks, dropped for length in 4 (19 to 38 words), not given in 3; one that was said took 6.1 s and held the answer back by 5 s. At 12 words, 17 live asks with no wrong line: said in none, dropped for length in 11 (14 to 37 words), not given in the rest; on his own working not given 15 times of 15, as meant. Then three passes of thirteen scenarios (the outside judge, 66 asks): said once, dropped for length 29 times, not given 36 times. The one said was \"The screen lists four steps, plus two checks about passwords and cookies.\" on a page that lists six steps, and the deep answer did not put it right",
-  } satisfies Setting<number>,
 };

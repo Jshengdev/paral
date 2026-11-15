@@ -1,0 +1,168 @@
+{
+ "name": "turn: the deep model is told, word for word, the quick line he has just heard: the fast model's own line on a first ask, the fixed line once a wrong line is open",
+ "run": "turn",
+ "in": {
+  "tape": "spoken.json",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Solve for x: 2(x + 3) = 14",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 48
+       }
+      },
+      {
+       "text": "2x + 6 = 14, so x = 10",
+       "box": {
+        "x": 200,
+        "y": 460,
+        "w": 700,
+        "h": 48
+       }
+      }
+     ]
+    },
+    {
+     "say": "why is this wrong"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 2100
+    },
+    {
+     "until": "voice"
+    },
+    {
+     "until": "voice"
+    },
+    {
+     "release": true
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Solve for x: 2(x + 3) = 14",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 48
+       }
+      },
+      {
+       "text": "2x + 6 = 14, so x = 10",
+       "box": {
+        "x": 200,
+        "y": 460,
+        "w": 700,
+        "h": 48
+       }
+      }
+     ]
+    },
+    {
+     "say": "why is this wrong"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 2100
+    },
+    {
+     "until": "voice"
+    },
+    {
+     "until": "voice"
+    },
+    {
+     "release": true
+    }
+   ]
+  ],
+  "show": "saidFirst"
+ },
+ "out": {
+  "toldTheDeepModel": [
+   {
+    "words": "why is this wrong",
+    "saidFirst": "Let me look at that last line."
+   },
+   {
+    "words": "why is this wrong",
+    "saidFirst": "Okay, let's look at it again."
+   }
+  ],
+  "said": [
+   {
+    "beat": -1,
+    "text": "Let me look at that last line."
+   },
+   {
+    "beat": 0,
+    "text": "Read the highlighted line again, slowly."
+   },
+   {
+    "beat": 1,
+    "text": "Read the last line again: what did you do to the 6?"
+   },
+   {
+    "beat": -1,
+    "text": "Okay, let's look at it again."
+   },
+   {
+    "beat": 0,
+    "text": "Ask which rule the highlighted line has to obey."
+   },
+   {
+    "beat": 1,
+    "text": "Read the last line again: what did you do to the 6?"
+   }
+  ]
+ }
+}
