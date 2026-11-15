@@ -3,17 +3,24 @@ import AppKit
 extension Painter {
     /// Inks a mark as far as it has been drawn, and writes its label once the ink is whole. Gives back the mark's
     /// box, or nothing while no ink is down yet.
-    func mark(_ mark: MarkPicture, avoiding texts: [Box], _ ctx: CGContext) -> Box? {
+    /// `his` is for his own loop coming back: whatever its shape it is drawn by hand in ember with no wash, since
+    /// the wash is the kit's highlight for one line and he may have circled a whole table.
+    func mark(_ mark: MarkPicture, his: Bool = false, avoiding texts: [Box], _ ctx: CGContext) -> Box? {
         guard mark.drawn > 0 else { return nil }
         let points = Pen.path(of: mark, tokens: tokens, avoiding: texts)
         // The design kit's two ways to show a place. A ring or a line is drawn by hand, in ember. A box is the kit's
-        // neat highlight: a thinner cardinal edge, and a faint wash of cardinal that comes up as the edge is drawn.
-        let boxed = mark.kind == .box
+        // neat highlight: a thinner cardinal edge, and a faint wash of cardinal laid across the line from its start
+        // as the edge is drawn, the way a highlighter is pulled along. (A wash that came up all at once as it grew
+        // stronger read as popped in: every pixel of it crosses any line a reader draws at the same moment.)
+        let boxed = mark.kind == .box && !his
         if boxed, tokens.mark.wash > 0 {
             let hug = Pen.hug(mark.box, tokens: tokens, avoiding: texts)
+            ctx.saveGState()
+            ctx.clip(to: CGRect(x: hug.x, y: hug.y, width: hug.w * mark.drawn, height: hug.h))
             ctx.addPath(CGPath(roundedRect: CGRect(x: hug.x, y: hug.y, width: hug.w, height: hug.h), cornerWidth: min(Pen.corner, hug.h / 2), cornerHeight: min(Pen.corner, hug.h / 2), transform: nil))
-            ctx.setFillColor(cardinal.copy(alpha: tokens.mark.wash * mark.drawn) ?? cardinal)
+            ctx.setFillColor(cardinal.copy(alpha: tokens.mark.wash) ?? cardinal)
             ctx.fillPath()
+            ctx.restoreGState()
         }
         ctx.setStrokeColor(boxed ? cardinal : ember)
         ctx.setLineWidth(boxed ? tokens.mark.boxWidth : tokens.mark.width)
@@ -22,7 +29,7 @@ extension Painter {
         ctx.addLines(between: Pen.reach(points, mark.drawn).inked)
         ctx.strokePath()
         if let label = mark.label, mark.drawn >= 1 {
-            let text = inked(label, size: tokens.mark.labelType, color: cardinal, weight: .semibold, hand: true)
+            let text = inked(label, size: tokens.mark.labelType, color: cardinal, weight: .medium)
             let size = text.size()
             let w = Double(size.width), h = Double(size.height)
             let leftEdge = Double(points.map(\.x).min() ?? CGFloat(mark.box.x))

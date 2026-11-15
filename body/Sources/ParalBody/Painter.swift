@@ -13,18 +13,14 @@ func color(_ hex: String, alpha: Double = 1) -> CGColor {
     return CGColor(srgbRed: Double((value >> 16) & 255) / 255, green: Double((value >> 8) & 255) / 255, blue: Double(value & 255) / 255, alpha: alpha)
 }
 
-func inked(_ text: String, size: Double, color: CGColor, weight: NSFont.Weight = .regular, hand: Bool = false) -> NSAttributedString {
-    let font = (hand ? NSFont(name: "Bradley Hand", size: size) : nil) ?? NSFont.systemFont(ofSize: size, weight: weight)
-    return NSAttributedString(string: text, attributes: [.font: font, .foregroundColor: NSColor(cgColor: color) ?? .black])
-}
-
 /// Draws a picture. It decides nothing about what is shown, only how it looks, and every size and colour is a token.
 public struct Painter {
     public let tokens: Tokens
     public let width, height: Double
-    let ink, paper, ember, cardinal, cardinalDeep, light: CGColor
+    let ink, paper, ember, cardinal, cardinalDeep, light, gold, mist: CGColor
     public let accent: CGColor
     let frames = ClipFrames()
+    let faces: Faces
 
     public init(tokens: Tokens, width: Double, height: Double) {
         self.tokens = tokens
@@ -37,6 +33,14 @@ public struct Painter {
         cardinal = color(tokens.cardinal)
         cardinalDeep = color(tokens.cardinalDeep)
         light = color(tokens.light)
+        gold = color(tokens.gold)
+        mist = color(tokens.mist)
+        faces = Faces(family: tokens.font, optical: tokens.fontOptical)
+    }
+
+    /// Words in the look's typeface, ready to be measured and drawn.
+    func inked(_ text: String, size: Double, color: CGColor, weight: NSFont.Weight = .regular) -> NSAttributedString {
+        NSAttributedString(string: text, attributes: [.font: faces.face(size, weight), .foregroundColor: NSColor(cgColor: color) ?? .black])
     }
 
     /// The context's origin must be the display's top-left corner, y growing downward, one unit a point.
@@ -46,7 +50,7 @@ public struct Painter {
         defer { NSGraphicsContext.current = before }
         var drawn: [Drawn] = []
         if let box = trail(picture.trail, ctx) { drawn.append(Drawn(what: "trail", id: nil, box: box)) }
-        if let echo = picture.echo, let box = mark(echo, avoiding: picture.avoid, ctx) { drawn.append(Drawn(what: "echo", id: echo.key, box: box)) }
+        if let echo = picture.echo, let box = mark(echo, his: true, avoiding: picture.avoid, ctx) { drawn.append(Drawn(what: "echo", id: echo.key, box: box)) }
         for mark in picture.marks {
             if let box = self.mark(mark, avoiding: picture.avoid, ctx) { drawn.append(Drawn(what: "mark", id: mark.key, box: box)) }
         }
@@ -76,7 +80,7 @@ public struct Painter {
             let up = drawn.filter { ["board", "clip", "way"].contains($0.what) }.map(\.box)
             drawn.append(Drawn(what: "toast", id: nil, box: self.toast(toast, avoiding: picture.avoid + up, ctx)))
         }
-        if let pointer { drawn.append(Drawn(what: "pointer", id: nil, box: self.pointer(pointer, ctx))) }
+        if let pointer { drawn.append(Drawn(what: "pointer", id: nil, box: self.pointer(pointer, clock: picture.clock, ctx))) }
         drawn.append(Drawn(what: "capsule", id: nil, box: capsule(picture.capsule, clock: picture.clock, ctx)))
         return drawn
     }

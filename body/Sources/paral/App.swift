@@ -115,7 +115,7 @@ final class App: NSObject, NSApplicationDelegate {
             voiced.insert(id)
             speaker.play(sound)
         }
-        if case .open(let path) = seen, !Keep.open(path) { failed("the calendar file could not be opened") }
+        if case .open(let path, _) = seen, !Keep.open(path) { failed("the calendar file could not be opened") }
         tell(seen)
     }
 

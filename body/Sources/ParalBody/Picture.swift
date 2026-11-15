@@ -78,6 +78,10 @@ public struct PointerPicture: Equatable {
     /// pen; and `aside` is how far it has stepped aside to rest once the arrow is whole, 0 to 1.
     public var withWay: WithWay?
     public struct WithWay: Equatable { public var flight, aside: Double }
+    /// It wears its name tag while it comes in from nowhere, so he can tell whose cursor is moving.
+    public var tag = false
+    /// It wears the orb that says paral is working, while the capsule says so.
+    public var thinking = false
 }
 
 /// Everything on screen at one moment, as plain values. The painter draws it; nothing else decides what is shown.

@@ -54,18 +54,21 @@ extension Scene {
             // From one arrow to the next it does not fly: the next sits where the one before did.
             let flown = origin.atAnArrow ? 1 : min(max((t - way.at) / max(flight, 1), 0), 1)
             let aside = Motion.ease((t - inking(way).to) / max(ms(tokens.cursor.settleMs), 1))
-            return PointerPicture(x: origin.from.x, y: origin.from.y, alpha: 1, ripple: nil, withWay: .init(flight: flown, aside: aside))
+            let tagged = t < inking(way).to && pointer(at: way.at - 1) == nil
+            return PointerPicture(x: origin.from.x, y: origin.from.y, alpha: 1, ripple: nil, withWay: .init(flight: flown, aside: aside), tag: tagged)
         }
         guard let now = newest, let first = now.path.first, let last = now.path.last else { return nil }
         let inkAt = now.began + flight, inkedAt = inkAt + duration(now.kind)
+        // While it flies in and draws, having come from nowhere, it wears its name tag. At rest it wears nothing.
+        let tagged = t < inkedAt && pointer(at: now.began - 1) == nil
         if t < inkAt {
             let from = origin(before: now.began).from
             let at = Motion.arc(from: from, to: first, Motion.spring((t - now.began) / flight, bounce: tokens.motion.bounce), lift: tokens.motion.arc)
-            return PointerPicture(x: at.x, y: at.y, alpha: 1, ripple: nil)
+            return PointerPicture(x: at.x, y: at.y, alpha: 1, ripple: nil, tag: tagged)
         }
         if t < inkedAt {
             let tip = Pen.reach(now.path, Motion.land((t - inkAt) / duration(now.kind))).tip
-            return PointerPicture(x: tip.x, y: tip.y, alpha: 1, ripple: nil)
+            return PointerPicture(x: tip.x, y: tip.y, alpha: 1, ripple: nil, tag: tagged)
         }
         let settle = ms(tokens.cursor.settleMs), place = rest(beside: now.path)
         let aside = Motion.ease((t - inkedAt) / max(settle, 1))

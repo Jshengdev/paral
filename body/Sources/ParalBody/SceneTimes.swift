@@ -66,7 +66,7 @@ extension Scene {
         for echo in echoes { end = max(end, echo.at + flight + duration(.ring)) }
         for way in ways { end = max(end, min(way.clearedAt ?? .infinity, inking(way).to + ms(tokens.cursor.settleMs))) }
         for clip in clips { end = max(end, min(clip.clearedAt ?? .infinity, clip.at + ms(tokens.motion.boardMs) + clip.seconds * 1000)) }
-        if let opened = openedAt { end = max(end, opened + 2 * ms(tokens.motion.boardMs) + tokens.toast.stayMs) }
+        if let opened { end = max(end, opened.at + 2 * ms(tokens.motion.boardMs) + tokens.toast.stayMs) }
         if let closed = closedAt { end = max(end, closed + ms(tokens.motion.openMs)) }
         return end + 200
     }

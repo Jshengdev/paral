@@ -1,6 +1,15 @@
 import AppKit
 
 extension Painter {
+    /// The heights of the bars of the wave that says it is listening, as shares of the tallest: a dotted line with a
+    /// few bars standing up in it, after the wave in the design kit's voice pill.
+    private static let wave: [Double] = [0.15, 0.15, 0.5, 0.15, 0.9, 0.35, 0.15, 0.65, 0.15, 0.15]
+
+    /// The capsule, in the look of the design kit's voice pill: a light pill with a soft shadow and words in ink. At
+    /// rest it is collapsed to the kit's orb, or to a cross while paral's ink is on the page. Listening, a small wave
+    /// stands before his words, which are grey while they are still being heard and black once settled. Answering,
+    /// the words to come are grey and settle to black as they are said. The kit's pill also has a stop and a send
+    /// button; paral is held and let go, so it has neither.
     func capsule(_ c: CapsulePicture, clock: Double, _ ctx: CGContext) -> Box {
         // A trail of steps sits in its own band above the words, so the capsule is that much taller while it shows one.
         let band = c.trail.isEmpty ? 0 : Layout.band(tokens)
@@ -8,16 +17,19 @@ extension Painter {
         let rect = CGRect(x: box.x, y: box.y, width: box.w, height: box.h)
         let radius = min(box.h / 2, tokens.capsule.radius)
         let shape = CGPath(roundedRect: rect, cornerWidth: radius, cornerHeight: radius, transform: nil)
+        if c.open < 0.05, !c.closes {
+            orb(middle: CGPoint(x: rect.midX, y: rect.midY), across: box.w, clock: 0, ctx)
+            return box
+        }
+        ctx.saveGState()
+        ctx.setShadow(offset: .zero, blur: tokens.shadow, color: CGColor(gray: 0, alpha: 0.28))
         ctx.addPath(shape)
-        ctx.setFillColor(ink)
+        ctx.setFillColor(light.copy(alpha: tokens.glass) ?? light)
         ctx.fillPath()
-        ctx.addPath(shape)
-        ctx.setStrokeColor(paper.copy(alpha: 0.85) ?? paper)
-        ctx.setLineWidth(1.5)
-        ctx.strokePath()
+        ctx.restoreGState()
         if c.closes, c.open < 0.05 {
             let arm = box.w * 0.19
-            ctx.setStrokeColor(paper)
+            ctx.setStrokeColor(ink)
             ctx.setLineWidth(1.8)
             ctx.setLineCap(.round)
             for turn in [1.0, -1.0] {
@@ -32,11 +44,21 @@ extension Painter {
         case .rest:
             break
         case .listening:
-            if c.words.isEmpty { write([Word(text: c.note ?? "", bright: tokens.dim)], in: inner) } else { write(c.words, in: inner) }
+            // The wave stands at the pill's left end, and his words fill in beside it.
+            let bars = Painter.wave, step = 5.0, tall = tokens.capsule.type
+            ctx.setFillColor(ink.copy(alpha: 0.55) ?? ink)
+            for (index, share) in bars.enumerated() {
+                let h = max(tall * share, 2.5)
+                ctx.addPath(CGPath(roundedRect: CGRect(x: inner.minX + Double(index) * step, y: inner.midY - h / 2, width: 2.5, height: h), cornerWidth: 1.25, cornerHeight: 1.25, transform: nil))
+            }
+            ctx.fillPath()
+            let said = CGRect(x: inner.minX + Double(bars.count) * step + 10, y: inner.minY, width: inner.width - 2 * (Double(bars.count) * step + 10), height: inner.height)
+            // A word still being heard is grey, and black once it has settled: the other way round from brightness.
+            if c.words.isEmpty { write([Word(text: c.note ?? "", bright: tokens.dim)], in: said) } else { write(c.words.map { Word(text: $0.text, bright: $0.bright >= 1 ? tokens.dim : 1) }, in: said) }
         case .speaking:
             guard !c.trail.isEmpty else { write(c.words, in: inner); break }
             // The steps paral took, small and in a row, each lit once it is reached; the words go below them.
-            let steps = c.trail.map { inked($0.text.uppercased(), size: tokens.capsule.tagType, color: ($0.bright >= 1 ? accent : paper).copy(alpha: $0.bright >= 1 ? 1 : $0.bright) ?? paper, weight: .semibold) }
+            let steps = c.trail.map { inked($0.text.uppercased(), size: tokens.capsule.tagType, color: ($0.bright >= 1 ? cardinal : ink).copy(alpha: $0.bright >= 1 ? 1 : $0.bright) ?? ink, weight: .semibold) }
             let gap = 18.0
             let total = steps.reduce(0) { $0 + $1.size().width } + gap * Double(steps.count - 1)
             var x = inner.midX - total / 2
@@ -44,20 +66,20 @@ extension Painter {
                 step.draw(at: CGPoint(x: x, y: inner.minY + 1))
                 x += step.size().width
                 if index < steps.count - 1 {
-                    inked("›", size: tokens.capsule.tagType, color: paper.copy(alpha: 0.5) ?? paper, weight: .semibold).draw(at: CGPoint(x: x + gap / 2 - 3, y: inner.minY + 1))
+                    inked("›", size: tokens.capsule.tagType, color: ink.copy(alpha: 0.5) ?? ink, weight: .semibold).draw(at: CGPoint(x: x + gap / 2 - 3, y: inner.minY + 1))
                     x += gap
                 }
             }
             write(c.words, in: CGRect(x: inner.minX, y: inner.minY + band, width: inner.width, height: inner.height - band))
         case .thinking:
-            let tag = inked((c.note ?? "").uppercased(), size: tokens.capsule.tagType, color: paper.copy(alpha: 0.7) ?? paper, weight: .semibold)
+            let tag = inked((c.note ?? "").uppercased(), size: tokens.capsule.tagType, color: ink.copy(alpha: 0.6) ?? ink, weight: .semibold)
             let size = tag.size()
             let gap = Painter.waitingGap
             let x = inner.midX - (3 * gap + 10 + size.width) / 2
-            waiting(at: CGPoint(x: x + gap + 3, y: inner.midY), clock: clock, ctx)
+            waiting(at: CGPoint(x: x + gap + 3, y: inner.midY), clock: clock, in: ink, ctx)
             tag.draw(at: CGPoint(x: x + 3 * gap + 10, y: inner.midY - size.height / 2))
         case .failed:
-            let head = inked(tokens.strings.failed + "  ", size: tokens.capsule.type, color: accent, weight: .bold)
+            let head = inked(tokens.strings.failed + "  ", size: tokens.capsule.type, color: cardinal, weight: .bold)
             let rest = c.note ?? ""
             let words = rest.split(separator: " ").map { Word(text: String($0), bright: 1) }
             let lead = head.size().width
@@ -70,12 +92,12 @@ extension Painter {
     /// Up to two lines, the ones around the newest bright word; each word at its own brightness.
     func write(_ words: [Word], in area: CGRect, firstIndent: Double = 0, small: Bool = false) {
         let size = small ? tokens.capsule.type - 3 : tokens.capsule.type
-        let space = inked(" ", size: size, color: paper, weight: .medium).size().width
+        let space = inked(" ", size: size, color: ink, weight: .medium).size().width
         var lines: [[(Word, Double)]] = [[]]
         var used = firstIndent
         var newest = 0
         for word in words {
-            let w = inked(word.text, size: size, color: paper, weight: .medium).size().width
+            let w = inked(word.text, size: size, color: ink, weight: .medium).size().width
             if used + w > area.width, !(lines.last ?? []).isEmpty {
                 lines.append([])
                 used = 0
@@ -93,7 +115,7 @@ extension Painter {
             let indented = first == 0 && row == 0 && firstIndent > 0
             var x = indented ? area.minX + firstIndent : area.midX - lineWidth / 2
             for (word, w) in line {
-                inked(word.text, size: size, color: paper.copy(alpha: word.bright) ?? paper, weight: .medium).draw(at: CGPoint(x: x, y: y))
+                inked(word.text, size: size, color: ink.copy(alpha: word.bright) ?? ink, weight: .medium).draw(at: CGPoint(x: x, y: y))
                 x += w + space
             }
             y += lineHeight

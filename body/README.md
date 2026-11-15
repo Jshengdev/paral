@@ -5,6 +5,30 @@ Promises: the Mac side of paral. It reports what happened and draws what it is t
 Three programs come from one package: `ParalBody` (everything), `paral` (the app: thin hosts around it) and
 `paral-headless` (the same pieces with no window, for rows, flows and films).
 
+## Every piece on the screen
+
+What paral can put over a page, one row a piece. The names in the first column are the design kit's ("Lost and
+Found: brand kit"); where the kit has no frame for a piece, the name is the build's and says so. The mind decides
+when; the body only draws. Nothing here takes a click except the cross, and nothing here clicks.
+
+| piece (kit's name) | what it is for | the line that brings it | what ends it | tokens |
+|---|---|---|---|---|
+| Voice pill (the capsule) | paral's one voice on screen: his words as they are heard, that it is working, each sentence as it is said, a failure in words. At rest it is the kit's orb at the bottom centre | `key.down` (listening), `key.up` (working), `say` with `voice` or `mute` (answering), `state` failed; a `say` with a `trail` opens it with no key | the answer's end and a short linger, then it rests; the next press takes it over | `capsule.*`, `light`, `glass`, `shadow`, `ink`, `dim`, `font`, `motion.openMs`, `motion.lingerMs`, `motion.unaskedStayMs`, `strings.*` |
+| The trail (build's name; the kit has no frame) | the steps paral took before a line it said without being asked, in small capitals above the line, each cardinal once reached | `say` with `trail` | with its line | `capsule.tagType`, `cardinal`, `motion.trailStepMs` |
+| Highlight ring, and drawn notes | "this line": a ring, underline, wavy line or bracket drawn by hand in ember, with a note beside it when the mind sends one | `mark` (kind `ring`, `underline`, `wavy`, `bracket`; `label` for the note) | `clear`, a close, or a new mark on the same line | `mark.*`, `ember`, `cardinal` (the note) |
+| Highlight (the box) | "this line", where lines sit too close for a ring: a thin cardinal edge and a faint wash laid along the line by the pen | `mark` (kind `box`) | `clear`, a close, or a new mark on the same line | `mark.boxWidth`, `mark.wash`, `mark.ringMs`, `cardinal` |
+| Cursor | paral's own pointer: it shows where, never clicks. It flies to the newest mark or arrow, rides the pen, rests beside it; one ripple says "here" | the newest `mark`, `way` or `echo` on the page | goes with its mark or arrow; none with motion reduced | `cursor.*`, `cardinalDeep`, `cardinal`, `ember`, `motion.flightMs`, `motion.arc`, `motion.bounce` |
+| Cursor: tag | says whose cursor is moving: a light pill with the orb and the name, worn only while it comes in from nowhere | the first `mark` or `way` after the page was clean | its arrival | `strings.name`, `light`, `glass`, `shadow`, `gold` |
+| Cursor: thinking | says paral is working: the orb beside a cursor that is already on the page | `key.up`, until the answer begins | the answer's first sentence | `gold`, the cursor's reds |
+| The way arrow (build's name; after the kit's drawn arrow) | the thing is on this page and not in view: which way to scroll, and its name on a tag | `way` (`to`, `toward`) | `clear`, a close, a newer `way`, or a `mark` with the same id | `way.*`, `ember`, `light`, `glass`, `shadow`, `mark.width` |
+| The board (build's name; in the kit's language of card and buttons) | what is still ahead, or the parts of an answer, as boxes on a light card. On a board of steps the step he is on is the ink button | `board` (`rows`; `now` for the step) | `clear`, a close, a `clip`; the same rows again keep the card in place | `board.*`, `light`, `mist`, `ink`, `glass`, `shadow`, `motion.boardMs` |
+| Toast | confirms something paral did: "Open in your calendar · November 22" beside the capsule | `open` (`label` for the date) | four seconds; a `clear` does not take it | `toast.*`, `strings.opened`, `cardinal`, `light`, `glass`, `shadow` |
+| The lesson clip (build's name; no frame in the kit) | a rendered clip on an example that is not his, in the board's place, on a dark card | `clip` | `clear`, a close, a `board` | `board.pad`, `board.radius`, `board.maxWidth`, `ink` |
+| His own trail and his loop (build's names; they are his, not paral's) | the path of his pointer while he draws with the draw key held, and that loop drawn back by hand once his words are final | `trail` (from the body), `echo` | the trail fades as he lets go; the echo goes at his next press or when paral marks inside it | `accent` (the trail), `ember` (the echo), `mark.width`, `motion.trailFadeMs` |
+
+Not built from the kit: the nudge card's two buttons (the builder's cue cards in the menu are that), the pill's stop
+and send buttons (paral is held and let go), the cursor's click (paral clicks nothing), and the wordmark.
+
 ## Deciding what is on screen
 
 | file | job |
@@ -76,12 +100,36 @@ takes the place of the one before, and `clear` or a close wipes it. While it is 
 cross. Its looks are the `way` group and `ember` in `tokens.json`. Its shape is after the drawn arrow of the design
 kit ("Lost and Found: brand kit", page 08), drawn here in code; no picture is loaded.
 
+## The capsule, the board and the tags on the kit's light surface
+
+The capsule has the look of the design kit's voice pill within the states it already had: a light pill with a soft
+shadow and words in ink. At rest it is collapsed to the kit's orb (or to a cross while paral's ink is on the page).
+Listening, a small wave stands before his words, which are grey while still being heard and black once settled.
+Answering, the words to come are grey and settle to black as they are said; the steps of a look's trail are cardinal
+once reached. The kit's pill also has a stop and a send button and keeps its transcript in a bar of its own above the
+pill; paral is held and let go, so there are no buttons, and the transcript is in the pill. The board is a card of
+the same light surface: a box is the kit's quiet button (`mist`, written in ink) and the step he is on its main
+button (ink, written in white). The way arrow's tag, the cursor's tag and the toast are the same surface. `glass` is
+how solid it is and `shadow` how far its shadow spreads. The kit fills at 0.85 over a blur of the page; the overlay
+cannot blur what is under it, so `glass` is 0.97. Only the lesson clip keeps its dark card. Page 06 of the kit, the
+voice pill's own page, could not be read on the night this was made (the design tool stopped answering); the look
+is from the one pill on page 08 and a one-line account of its states, and where it guesses it says so here: the
+orb at rest, the wave's shape, and the transcript inside the pill.
+
+## Type and ink, after the design kit
+
+Everything is written in the typeface the `font` token names (the kit's DM Sans), at the optical size in
+`fontOptical` where the family has one (the kit's 14). `Faces.swift` makes each size and weight once. When the Mac
+does not have the family the system's font is used and that is said once on the error stream; nothing is downloaded.
+An empty `font` asks for the system's font. `ink` is the kit's #141414. `paper` stays white: in the kit, paper
+#F4F4F4 is for page backgrounds, and what it writes on ink is white.
+
 ## Marks and the cursor, after the design kit
 
 The seam's mark kinds are unchanged; the kit's look comes through tokens. A ring, an underline, a wavy line and a
 bracket are drawn by hand in `ember`. A box is the kit's neat highlight: a thinner edge (`mark.boxWidth`) in
-`cardinal` and a faint wash of cardinal inside it (`mark.wash`, the kit's 8 percent). The wash tints the words of
-the line and does not hide them.
+`cardinal` and a faint wash of cardinal inside it (`mark.wash`, the kit's 8 percent), laid across the line from its
+start as the edge is drawn, the way a highlighter is pulled along. The wash tints the words and does not hide them.
 
 The pointer is the kit's cursor: an arrow filled from `cardinalDeep` through `cardinal` to `ember` with a paper edge,
 its outline written in `PainterCursor.swift` from the corners of the kit's shape. It flies to where the newest mark
@@ -89,7 +137,12 @@ starts (from the capsule the first time, from wherever it was after that), rides
 then steps aside to rest just beside the mark on none of the page's read text (`Layout.beside`: to the right of the
 mark first), and a ripple spreads from it once. It points and never clicks: it is ink in the overlay, which lets
 every click through. It comes for a mark with no key pressed too (a look's mark), stays for as long as its mark is
-on the page, and goes with it on a clear or a close. With motion reduced there is no cursor.
+on the page, and goes with it on a clear or a close. With motion reduced there is no cursor. While it comes in from
+nowhere (its flight and its ride on the pen) it wears the kit's name tag, a light pill with the orb and
+`strings.name`, so he can tell whose cursor is moving; at rest it wears nothing. While the capsule says paral is
+working, a cursor that is on the page wears the kit's orb. The orb is drawn in code as rings of the cursor's reds
+and one of `gold`; the kit's own orb is a picture and is not loaded. His own loop comes back drawn by hand in ember
+whatever its shape, with no wash: the wash is the kit's highlight for one line, and he may have circled a table.
 
 ## A walk through steps ("show me")
 
