@@ -51,9 +51,9 @@ const NOT_AFTER_SO = /^(that|as|far|long|much|many|to|on|forth)$/i;
  * subject follows ("..., and you add 4"). It is cut at the last such place at or before the limit, or failing that
  * the first one after it; the rest is said next. A comma alone is no place to cut ("..., which is 13" stays whole),
  * and with no place at all the sentence is left as it is. A sentence within its words that is over its letters is
- * cut the same way, but never at a colon, and at a comma only when eight words or more follow it: what follows a
- * colon in a short sentence, or a few words after ", and", is most often a list or its last thing, which does not
- * stand alone.
+ * cut the same way, but never at a colon, and at a comma before "and" or "but" only when eight words or more follow:
+ * what follows a colon in a short sentence, or a few words after ", and", is most often a list or its last thing,
+ * which does not stand alone. After ", so" a clause follows, and it is cut there whatever its length.
  */
 export function split(sentence: string, limits: Limits): string[] {
   const words = sentence.trim().split(/\s+/);
@@ -66,9 +66,11 @@ export function split(sentence: string, limits: Limits): string[] {
   for (let first = 4; first <= words.length - 3; first++) {
     const before = words[first - 1];
     const next = words[first + 1] ?? "";
-    const opens = /^so$/i.test(words[first]) ? !NOT_AFTER_SO.test(next) : /^(and|but)$/i.test(words[first]) && SUBJECT.test(next);
-    // Within its words, what follows the comma must be long enough to be a clause: the last thing of a list is short ("..., and the summer program").
-    const joins = /,$/.test(before) && opens && (wordy || words.length - first >= 8);
+    const so = /^so$/i.test(words[first]);
+    const opens = so ? !NOT_AFTER_SO.test(next) : /^(and|but)$/i.test(words[first]) && SUBJECT.test(next);
+    // Within its words, what follows ", and" or ", but" must be long enough to be a clause: the last thing of a list is
+    // short ("..., and the summer program"). What follows ", so" is a clause however short ("..., so contact the office").
+    const joins = /,$/.test(before) && opens && (wordy || so || words.length - first >= 8);
     // After a colon a clause follows, or a name does ("Officer Trainings: Hazing Prevention and Officer Learning
     // Path"). A capital letter on a word that cannot open a sentence is a name, and a name is not cut in two.
     const named = /:$/.test(before) && /^\p{Lu}/u.test(words[first]) && !SUBJECT.test(words[first]);

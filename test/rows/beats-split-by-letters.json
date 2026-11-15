@@ -1,5 +1,5 @@
 {
- "name": "beats: a sentence within its words but over its letters is cut too, since it is the letters that take the time to say: at a comma before \"and\" with a subject and a whole clause after it, and at a semicolon; never at a colon, and never before the last thing of a list (\"..., and the Pembroke Cambridge summer program\"), which would be left standing alone; a list after \"like\" has no place to cut and stays whole; a sentence under the letters is left as it is",
+ "name": "beats: a sentence within its words but over its letters is cut too, since it is the letters that take the time to say: at a comma before \"and\" with a subject and a whole clause after it, at a comma before \"so\" whatever follows it, and at a semicolon; never at a colon, and never before the last thing of a list (\"..., and the Pembroke Cambridge summer program\"), which would be left standing alone; a list after \"like\" has no place to cut and stays whole; a sentence under the letters is left as it is",
  "run": "beats.split",
  "in": {
   "limits": {
@@ -12,7 +12,8 @@
    "a semicolon": "Re-establishing groups first submit the officer form; new groups use Register a new Recognized Student Organization in the EngageSC Directory.",
    "a colon and a list": "Its table lists when each term opens and closes: spring, fall or academic year, and the Pembroke Cambridge summer program.",
    "a list after like": "The 2027 Courses section lists five options, like marine microbiology, scientific diving, and coastal environmental history.",
-   "short enough": "Yes: each officer must finish Hazing Prevention 101 before the application deadline."
+   "short enough": "Yes: each officer must finish Hazing Prevention 101 before the application deadline.",
+   "so, and a short clause": "Not through this page, since its noon deadline of April 24, 2026 is already behind us, so contact the international programs office."
   }
  },
  "out": {
@@ -32,6 +33,10 @@
   ],
   "short enough": [
    "Yes: each officer must finish Hazing Prevention 101 before the application deadline."
+  ],
+  "so, and a short clause": [
+   "Not through this page, since its noon deadline of April 24, 2026 is already behind us.",
+   "So contact the international programs office."
   ]
  }
 }
