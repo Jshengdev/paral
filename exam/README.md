@@ -144,6 +144,8 @@ walk are kept outside this repo, beside the films, because the record quotes the
   same screen, a page it has not read) it shows nothing. The app's own watcher is not run by any film.
   One bar here is the judge's own proposal and not one he was shown: when a look sees another page come up, the
   marks drawn for the page before are cleared.
+  A page's first look that shows a date is also said aloud, once (his word of 2026-11-15, 00:02): a scenario marks
+  such a look `"spoken": true`, and the judge holds that sound was made for it and for no other look.
 - **Keeping a date** (`src/judge/keep.ts`). Asked to keep a date, the build writes a calendar file and hands it to
   the Mac; he adds it with his own click in Calendar. The judge holds that one such file was handed over and that it
   starts on the day the scenario names. It may say the date is open in his calendar, never that it was added.
@@ -155,6 +157,13 @@ walk are kept outside this repo, beside the films, because the record quotes the
 - **A board that can be read.** A board is shrunk to fit its room and its words shrink with it. Their size is worked
   out from the card the painter drew, and must be 10 points or more, the smallest text style the Mac itself uses.
   A look once drew a one-row board of three long steps 17.5 points tall, its words about 3.5 points.
+- **A mark is drawn by a pen** (`src/judge/motion.ts`). The pen's time is from a tenth of the mark's ink to nine
+  tenths of it, and must be over 0.1 s and under 1 s. Three things once fooled it and are held by planted cases
+  (`src/planted-pen.ts`): the cursor riding the pen and the name tag it wears are left out of the count; a waiting
+  step's ring pulses a second after it is drawn, so the pen ends when the ink holds still at half or more of what
+  the window ends with; and ink that dips is moving, not still.
+- **The pen's colour** in the picture sent with a circle is read from the build's own token (`body/tokens.json`,
+  `accent`), so a new look is followed without touching the judge.
 - Every bar names its source: the video, Nielsen's response-time limits, or the scenario.
 
 ## What a film does not prove
