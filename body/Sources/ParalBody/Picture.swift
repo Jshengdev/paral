@@ -29,8 +29,9 @@ public struct MarkPicture: Equatable {
     public var label: String?
     /// How far the ink has gone along the pen's path, 0 to 1.
     public var drawn: Double
-    /// How far into a breath it is, 0 to 1 and back. Only the mark of a walk's step breathes, while it waits for his click.
-    public var breath = 0.0
+    /// How far through one echo of its edge it is, 0 to 1, or nil for none. Only the mark of a walk's step sends
+    /// out echoes, while it waits for his click.
+    public var pulse: Double?
 }
 
 public struct BoardPicture: Equatable {
@@ -133,8 +134,9 @@ public struct PointerPicture: Equatable {
     /// out as the cursor comes: `tagGrown` is how far, 0 to 1 and a little past on the way.
     public var tag = false
     public var tagGrown = 1.0
-    /// It wears the orb that says paral is working, while the capsule says so.
+    /// It says paral is working, while the capsule says so, by breathing: `working` is how far it has swollen, 0 to 1.
     public var thinking = false
+    public var working = 0.0
 }
 
 /// Everything on screen at one moment, as plain values. The painter draws it; nothing else decides what is shown.
@@ -154,6 +156,8 @@ public struct Picture: Equatable {
     public var trail: [TrailPoint]
     /// Where the page's own text is, so nothing written beside a mark lands on it.
     public var avoid: [Box]
+    /// How much of the display's foot the Dock takes, in points. What sits at the bottom is placed above it.
+    public var bottomInset = 0.0
     /// The nudge card, while a line said without being asked is up.
     public var nudge: NudgePicture? = nil
 }

@@ -6,7 +6,7 @@ extension Painter {
     private static let wave: [Double] = [0.15, 0.15, 0.5, 0.15, 0.9, 0.35, 0.15, 0.65, 0.15, 0.15]
 
     /// The capsule, in the look of the design kit's voice pill: a light pill with a soft shadow and words in ink. At
-    /// rest it is collapsed to the kit's orb, or to a cross while paral's ink is on the page. Listening, a small wave
+    /// rest it is collapsed to the logo mark, or to a cross while paral's ink is on the page. Listening, a small wave
     /// stands before his words, which are grey while they are still being heard and black once settled. Answering,
     /// the words to come are grey and settle to black as they are said. The kit's pill also has a stop and a send
     /// button; paral is held and let go, so it has neither. Gives back the capsule's box, and the cross's own when
@@ -14,11 +14,11 @@ extension Painter {
     func capsule(_ c: CapsulePicture, clock: Double, _ ctx: CGContext) -> (box: Box, cross: Box?) {
         // A trail of steps sits in its own band above the words, so the capsule is that much taller while it shows one.
         let band = c.trail.isEmpty ? 0 : Layout.band(tokens)
-        let core = Layout.capsule(open: c.open, closes: c.closes, taller: band, width: width, height: height, tokens: tokens)
+        let core = Layout.capsule(open: c.open, closes: c.closes, taller: band, width: width, height: floor, tokens: tokens)
         // At rest with paral's ink on the page the capsule is a cross that clears it. A cross alone over a line of the
-        // page reads as a stray button, so it wears the orb and the name to its left: whose cross this is. The cross
+        // page reads as a stray button, so it wears the logo and the name to its left: whose cross this is. The cross
         // keeps its place, which is where a click is taken; the room for the name opens as the capsule shuts. The
-        // orb is the resting orb, and the room round it is what is left of the cross's circle.
+        // logo is the resting one, and the room round it is what is left of the cross's circle.
         let name = inked(tokens.strings.name, size: tokens.capsule.tagType, color: ink, weight: .medium)
         let room = (tokens.capsule.restClose - tokens.capsule.rest) / 2
         let worn = c.closes ? (3 * room + tokens.capsule.rest + name.size().width) * (1 - c.open) : 0
@@ -27,7 +27,7 @@ extension Painter {
         let radius = min(box.h / 2, tokens.capsule.radius)
         let shape = CGPath(roundedRect: rect, cornerWidth: radius, cornerHeight: radius, transform: nil)
         if c.open < 0.05, !c.closes {
-            orb(middle: CGPoint(x: rect.midX, y: rect.midY), across: box.w, clock: 0, ctx)
+            logo(in: rect, ctx)
             return (box, nil)
         }
         surface(shape, ctx)
@@ -41,10 +41,10 @@ extension Painter {
                 ctx.addLine(to: CGPoint(x: middle.x + arm, y: middle.y + arm * turn))
             }
             ctx.strokePath()
-            // The name and the orb are written from the cross leftward, so they stand still while the capsule shuts.
+            // The name and the logo are written from the cross leftward, so they stand still while the capsule shuts.
             let words = name.size(), left = middle.x - tokens.capsule.restClose / 2 - room - words.width
             name.draw(at: CGPoint(x: left, y: middle.y - words.height / 2))
-            orb(middle: CGPoint(x: left - room - tokens.capsule.rest / 2, y: middle.y), across: tokens.capsule.rest, clock: 0, ctx)
+            logo(middle: CGPoint(x: left - room - tokens.capsule.rest / 2, y: middle.y), across: tokens.capsule.rest, ctx)
             return (box, core)
         }
         guard c.open > 0.9 else { return (box, nil) }

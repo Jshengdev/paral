@@ -3,7 +3,7 @@ import { saysOnly } from "./cores/catch.ts";
 import { unknownDate } from "./cores/dates.ts";
 import type { Box } from "./cores/ground.ts";
 import { dateLine, type ToKeep } from "./cores/keep.ts";
-import { headingOf, type KeptPage } from "./cores/page.ts";
+import { headingOf, holds, type KeptPage } from "./cores/page.ts";
 import { inside, type Point } from "./cores/walk.ts";
 import type { Ahead, Led } from "./glance.ts";
 import { point, whereIs } from "./place.ts";
@@ -31,14 +31,16 @@ export function shows(hands: Hands, looks: Looks, showed: (date: ToKeep) => void
 
   /** Step `at` of what is ahead, worked out for the page on his screen: its sentence, the board, and the kept line that writes its date. */
   function step(at: number, ahead: Ahead[], page: KeptPage | null) {
-    const { step: words, by: written, from: url } = ahead[at];
+    const { step: words, by: written, from: url, at: where } = ahead[at];
     const from = ports.pages.find((kept) => kept.url === url) ?? null;
     // A date the step's page does not write would be made up, so it is left out of the sentence.
     const by = written !== "" && from !== null && unknownDate(written, from.lines) === null ? written : "";
-    /** The line of the step's page that writes its date: the place to box. */
+    /** The line of the step's page that writes its date: what "add it to my calendar" keeps while he is on this step. */
     const kept = by === "" || from === null ? null : dateLine(by, [from]);
+    /** The place to box: where the page writes the step, when the look named a line the page holds; else the line of its date. */
+    const line = where && from !== null && holds(from, where) ? where : (kept?.written ?? null);
     /** The heading that line sits under on its page: boxed when the line itself is folded away, and what an arrow names. */
-    const under = kept === null || from === null ? "" : headingOf(from, kept.written, "");
+    const under = line === null || from === null ? "" : headingOf(from, line, "");
     const here = from !== null && page !== null && from.name === page.name;
     const sentence = settings.showMeLine.value
       .replace("{n}", String(at + 1))
@@ -47,8 +49,8 @@ export function shows(hands: Hands, looks: Looks, showed: (date: ToKeep) => void
       .replace("{by}", by === "" ? "" : `, by ${by}`);
     const text = from !== null && !here ? sentence + settings.showMeElsewhere.value.replace("{page}", from.title.split(" - ")[0]) : sentence;
     const rows = ahead.map((each) => [each.by ? `${each.step}: ${each.by}` : each.step]);
-    const led: Led | null = from === null ? null : { page: from.name, line: kept?.written ?? null, under, text, rows, now: at, trail: ["show me", `step ${at + 1} of ${ahead.length}`] };
-    return { words, by, from, kept, under, here, text, rows, led };
+    const led: Led | null = from === null ? null : { page: from.name, line, under, text, rows, now: at, trail: ["show me", `step ${at + 1} of ${ahead.length}`] };
+    return { words, by, from, kept, line, under, here, text, rows, led };
   }
 
   return {
@@ -73,7 +75,7 @@ export function shows(hands: Hands, looks: Looks, showed: (date: ToKeep) => void
       }
       const now = step(on, ahead, page);
       send({ v, type: "clear" });
-      const where = now.here && now.kept !== null && page !== null ? whereIs(settings, seen, page, { line: now.kept.written, under: now.under }) : null;
+      const where = now.here && now.line !== null && page !== null ? whereIs(settings, seen, page, { line: now.line, under: now.under }) : null;
       let marked = `it is on ${now.from ? `the page "${now.from.title}"` : "a page that is no longer kept"}`;
       if (now.here) marked = where === null ? "no line of this page is known for the step, so nothing is marked" : point(send, id, where);
       send({ v, type: "board", id, rows: now.rows, now: on });
@@ -81,7 +83,9 @@ export function shows(hands: Hands, looks: Looks, showed: (date: ToKeep) => void
       looks.lead(now.led, where?.inView ? where.box : null);
       hands.noted?.({ kind: "showme" });
       log(`${id}: show me, step ${on + 1} of ${ahead.length}: ${now.words}${now.by === "" ? "" : ` (by ${now.by})`}; ${marked}`);
-      await sayLine(hands, id, now.text, signal);
+      // The sentence is not waited for: his click on the step's box counts from the moment the box is up, also while
+      // the step is still being said. A walk that waited for its own voice would lose that click.
+      void sayLine(hands, id, now.text, signal);
       return true;
     },
 

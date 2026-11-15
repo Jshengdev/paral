@@ -1,0 +1,35 @@
+{
+ "name": "catch: a hold heard nothing to ask when it heard no words or only a word or two of assent or filler; one word that is a question, or filler before a question, is asked",
+ "run": "catch.unasked",
+ "in": {
+  "filler": [
+   "yeah",
+   "okay",
+   "um",
+   "so",
+   "right"
+  ],
+  "holds": [
+   "",
+   "Yeah.",
+   "Okay so",
+   "Um, yeah.",
+   "Why?",
+   "Next",
+   "Okay, show me.",
+   "So when is it due?",
+   "yeah yeah yeah"
+  ]
+ },
+ "out": {
+  "": true,
+  "Yeah.": true,
+  "Okay so": true,
+  "Um, yeah.": true,
+  "Why?": false,
+  "Next": false,
+  "Okay, show me.": false,
+  "So when is it due?": false,
+  "yeah yeah yeah": false
+ }
+}

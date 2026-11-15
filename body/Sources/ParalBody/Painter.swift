@@ -19,12 +19,16 @@ func color(_ hex: String, alpha: Double = 1) -> CGColor {
 public struct Painter {
     public let tokens: Tokens
     public let width, height: Double
-    let ink, paper, ember, cardinal, cardinalDeep, light, gold, mist: CGColor
+    let ink, paper, ember, cardinal, light, mist: CGColor
     public let accent: CGColor
     let frames = ClipFrames()
     let ways = LeadWays()
     let nudges = NudgePlaces()
     let faces: Faces
+    /// How much of the display's foot the Dock takes in the picture being painted, and the height left above it:
+    /// the capsule and what sits beside it at the bottom are laid out above the Dock.
+    var inset = 0.0
+    var floor: Double { height - inset }
 
     public init(tokens: Tokens, width: Double, height: Double) {
         self.tokens = tokens
@@ -35,9 +39,7 @@ public struct Painter {
         accent = color(tokens.accent)
         ember = color(tokens.ember)
         cardinal = color(tokens.cardinal)
-        cardinalDeep = color(tokens.cardinalDeep)
         light = color(tokens.light)
-        gold = color(tokens.gold)
         mist = color(tokens.mist)
         faces = Faces(family: tokens.font, optical: tokens.fontOptical)
     }
@@ -64,6 +66,12 @@ public struct Painter {
         ctx.strokePath()
     }
 
+    /// The box round some points, or nothing for none.
+    static func bounds(of points: [CGPoint]) -> Box? {
+        guard let left = points.map(\.x).min(), let right = points.map(\.x).max(), let top = points.map(\.y).min(), let bottom = points.map(\.y).max() else { return nil }
+        return Box(x: left, y: top, w: max(right - left, 1), h: max(bottom - top, 1))
+    }
+
     /// Words in the look's typeface, ready to be measured and drawn.
     func inked(_ text: String, size: Double, color: CGColor, weight: NSFont.Weight = .regular) -> NSAttributedString {
         NSAttributedString(string: text, attributes: [.font: faces.face(size, weight), .foregroundColor: NSColor(cgColor: color) ?? .black])
@@ -71,6 +79,12 @@ public struct Painter {
 
     /// The context's origin must be the display's top-left corner, y growing downward, one unit a point.
     public func paint(_ picture: Picture, into ctx: CGContext) -> [Drawn] {
+        var lifted = self
+        lifted.inset = picture.bottomInset
+        return lifted.draw(picture, into: ctx)
+    }
+
+    private func draw(_ picture: Picture, into ctx: CGContext) -> [Drawn] {
         let before = NSGraphicsContext.current
         NSGraphicsContext.current = NSGraphicsContext(cgContext: ctx, flipped: true)
         defer { NSGraphicsContext.current = before }
@@ -80,8 +94,9 @@ public struct Painter {
         for mark in picture.marks {
             guard let ink = self.mark(mark, avoiding: picture.avoid, ctx) else { continue }
             drawn.append(Drawn(what: "mark", id: mark.key, box: ink.box, path: ink.inked))
-            // A breath is named too, with how far its glow reaches just then, so a film's record says when a mark breathes.
-            if mark.breath > 0 { drawn.append(Drawn(what: "breath", id: mark.key, box: ink.box.grown(tokens.mark.breath * mark.breath))) }
+            // An echo of the mark's edge is named too, with where it is just then, so a film's record says when a
+            // mark waits for his click. (It is `pulse` there: `echo` is his own loop coming back.)
+            if let echo = ink.echo, let far = Painter.bounds(of: echo) { drawn.append(Drawn(what: "pulse", id: mark.key, box: far, path: echo)) }
         }
         if let board = picture.board {
             let placed = self.board(board, clock: picture.clock, ctx)

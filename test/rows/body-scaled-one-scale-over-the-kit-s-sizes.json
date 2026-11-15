@@ -1,0 +1,72 @@
+{
+ "name": "body: one scale sits over the sizes the design kit gives: at a scale of a half the guide's card, the cursor and the toast are half their size, and the board, which is the build's own, is not changed",
+ "run": "body.scaled",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes.",
+   "Late applications are not accepted.",
+   "Info Sessions, Workshops, and Office Hours",
+   "Application deadline: November 2, 2026",
+   "Apply for the Catalina Maymester"
+  ],
+  "scale": 0.5,
+  "at": 4000,
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "t1",
+     "beat": 0,
+     "kind": "box",
+     "on": 6
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "board",
+     "id": "t1",
+     "rows": [
+      [
+       "Officers finish their training"
+      ],
+      [
+       "Submit the application: November 22 at 11:59pm"
+      ],
+      [
+       "Advisor requirements: December 1"
+      ]
+     ],
+     "now": 0
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "next",
+     "text": "Say: add it to my calendar",
+     "n": 6,
+     "of": 8
+    }
+   },
+   {
+    "at": 1500,
+    "line": {
+     "type": "open",
+     "path": "/tmp/kept.ics",
+     "label": "November 22"
+    }
+   }
+  ]
+ },
+ "out": {
+  "card": 0.5,
+  "cursor": 0.5,
+  "toast": 0.5,
+  "board": 1
+ }
+}

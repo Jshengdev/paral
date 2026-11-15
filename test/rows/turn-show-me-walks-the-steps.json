@@ -538,7 +538,7 @@
    "v": 1,
    "type": "mute",
    "id": "g1",
-   "why": "a look he did not ask for is shown, not spoken"
+   "why": "no voice is set up"
   },
   {
    "v": 1,
@@ -581,6 +581,13 @@
   {
    "v": 1,
    "type": "clear"
+  },
+  {
+   "v": 1,
+   "type": "way",
+   "id": "t1",
+   "to": "down",
+   "toward": "Officer Trainings"
   },
   {
    "v": 1,

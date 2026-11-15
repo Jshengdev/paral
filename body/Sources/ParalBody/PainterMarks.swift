@@ -2,10 +2,10 @@ import AppKit
 
 extension Painter {
     /// Inks a mark as far as it has been drawn, and writes its label once the ink is whole. Gives back the mark's
-    /// box, or nothing while no ink is down yet.
+    /// box, the points inked, and the echo of its edge when it has one just then; or nothing while no ink is down yet.
     /// `his` is for his own loop coming back: whatever its shape it is drawn by hand in ember with no wash, since
     /// the wash is the kit's highlight for one line and he may have circled a whole table.
-    func mark(_ mark: MarkPicture, his: Bool = false, avoiding texts: [Box], _ ctx: CGContext) -> (box: Box, inked: [CGPoint])? {
+    func mark(_ mark: MarkPicture, his: Bool = false, avoiding texts: [Box], _ ctx: CGContext) -> (box: Box, inked: [CGPoint], echo: [CGPoint]?)? {
         guard mark.drawn > 0 else { return nil }
         let points = Pen.path(of: mark, tokens: tokens, avoiding: texts, inside: (width, height))
         // The design kit's two ways to show a place. A ring or a line is drawn by hand, in ember. A box is the kit's
@@ -17,9 +17,8 @@ extension Painter {
             let hug = Pen.hug(mark.box, tokens: tokens, avoiding: texts)
             ctx.saveGState()
             ctx.clip(to: CGRect(x: hug.x, y: hug.y, width: hug.w * mark.drawn, height: hug.h))
-            ctx.addPath(CGPath(roundedRect: CGRect(x: hug.x, y: hug.y, width: hug.w, height: hug.h), cornerWidth: min(Pen.corner, hug.h / 2), cornerHeight: min(Pen.corner, hug.h / 2), transform: nil))
-            // While it breathes, the wash deepens with the glow and comes back.
-            ctx.setFillColor(cardinal.copy(alpha: tokens.mark.wash + max(tokens.mark.breathDeep - tokens.mark.wash, 0) * mark.breath) ?? cardinal)
+            ctx.addPath(CGPath(roundedRect: CGRect(x: hug.x, y: hug.y, width: hug.w, height: hug.h), cornerWidth: min(tokens.mark.boxRadius, hug.h / 2), cornerHeight: min(tokens.mark.boxRadius, hug.h / 2), transform: nil))
+            ctx.setFillColor(cardinal.copy(alpha: tokens.mark.wash) ?? cardinal)
             ctx.fillPath()
             ctx.restoreGState()
         }
@@ -27,12 +26,14 @@ extension Painter {
         let line = Pen.reach(points, mark.drawn).inked
         ctx.setLineCap(.round)
         ctx.setLineJoin(.round)
-        // A breath is a glow of the mark's own colour round its ink, which swells and goes back. It moves nothing
-        // and hides nothing: the words under it still read.
-        if mark.breath > 0 {
-            ctx.setStrokeColor(colour.copy(alpha: tokens.mark.breathDeep * mark.breath) ?? colour)
-            ctx.setLineWidth(wide + 2 * tokens.mark.breath * mark.breath)
-            ctx.addLines(between: line)
+        // The echo of a mark that waits for his click: a faint copy of its edge that sets off at once, lands softly
+        // a little larger, and fades as it goes. It is on no words: not the mark's own, which it only moves away
+        // from, nor the page's others (`Pen.echo`).
+        let echo = mark.pulse.map { Pen.echo(of: mark, grown: tokens.curves.arrive($0), tokens: tokens, avoiding: texts, inside: (width, height)) }
+        if let echo, let pulse = mark.pulse {
+            ctx.setStrokeColor(colour.copy(alpha: tokens.mark.echoStrength * (1 - tokens.curves.travel(pulse))) ?? colour)
+            ctx.setLineWidth(wide)
+            ctx.addLines(between: echo)
             ctx.strokePath()
         }
         ctx.setStrokeColor(colour)
@@ -59,7 +60,7 @@ extension Painter {
         }
         let xs = points.map(\.x), ys = points.map(\.y)
         let bounds = Box(x: xs.min() ?? 0, y: ys.min() ?? 0, w: max((xs.max() ?? 0) - (xs.min() ?? 0), 1), h: max((ys.max() ?? 0) - (ys.min() ?? 0), 1))
-        return (bounds, line)
+        return (bounds, line, echo)
     }
 
     func trail(_ points: [TrailPoint], _ ctx: CGContext) -> Box? {

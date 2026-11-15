@@ -109,10 +109,11 @@ export interface Lessons {
 /**
  * What a look he did not ask for found on a kept page: the line that holds the one thing that will cost him later,
  * the heading it sits under ("" for none), a sentence for when the line is not in view and one for when it is, and
- * what is still ahead for it, each step with its date as a page writes it ("" when none is given). Its kind is a
+ * what is still ahead for it, each step with its date as a page writes it ("" when none is given) and, when the page
+ * has one, the line where the step is written (`at`). Its kind is a
  * date still ahead, a step with no date, or a deadline that has passed on a page that still reads as open.
  */
-export type Glanced = { kind: "date" | "step" | "passed"; line: string; under: string; say: string; sayInView: string; ahead: { step: string; by: string }[] };
+export type Glanced = { kind: "date" | "step" | "passed"; line: string; under: string; say: string; sayInView: string; ahead: { step: string; by: string; at?: string }[] };
 
 /** What he asked a moment ago and what he was told, for a look at the page he then went to. */
 export type Following = { words: string; told: string[] };

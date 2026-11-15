@@ -71,6 +71,9 @@ extension Scene {
     /// Every spoken sentence so far, for laying the voice onto one sound track.
     public var spoken: [BeatTime] { asks.flatMap(times) }
 
+    /// The display's height less what the Dock takes of its foot: what is laid out at the bottom is laid out above this.
+    var floor: Double { height - bottomInset }
+
     /// Every motion time goes through here, so one dial (tempo) speeds up or slows down all of it together.
     func ms(_ value: Double) -> Double { value / max(tokens.motion.tempo, 0.1) }
 

@@ -7,7 +7,7 @@ import { join } from "node:path";
 import { tape } from "../mind/adapters/tape.ts";
 import { serve } from "../mind/server.ts";
 import { boxes, fitted, split, wipes } from "../mind/cores/beats.ts";
-import { asksFor, fits, hear, saysOnly, silence } from "../mind/cores/catch.ts";
+import { asksFor, fits, hear, saysOnly, silence, unasked } from "../mind/cores/catch.ts";
 import { datesIn, daysFrom, unknownDate, type Named } from "../mind/cores/dates.ts";
 import { calendarFile, dateLine, named, when } from "../mind/cores/keep.ts";
 import { nextStep, note, nothingYet, type Noted, type Step } from "../mind/cores/guide.ts";
@@ -31,9 +31,9 @@ import { boardType } from "./runners/boards.ts";
 import { filmedPages } from "./runners/pages.ts";
 import { cursor, cursorInside, guide, inkInside, resting, steps, toast, way } from "./runners/placed.ts";
 import { lead } from "./runners/leads.ts";
-import { breath } from "./runners/breath.ts";
+import { waiting } from "./runners/echo.ts";
 import { stands } from "./runners/stands.ts";
-import { curves, moves } from "./runners/motion.ts";
+import { curves, lifted, moves, scaled } from "./runners/motion.ts";
 import { nudge, seen } from "./runners/nudge.ts";
 
 // A row is JSON on disk: its "in" is whatever its runner takes, so it is typed where the runner reads it.
@@ -73,10 +73,12 @@ const runs: Record<string, (input: any) => unknown> = {
   "body.toast": toast,
   "body.guide": guide,
   "body.lead": lead,
-  "body.breath": breath,
+  "body.echo": waiting,
   "body.stands": stands,
   "body.curves": curves,
   "body.moves": moves,
+  "body.lifted": lifted,
+  "body.scaled": scaled,
   "body.resting": resting,
   "body.cursorInside": cursorInside,
   "body.inkInside": inkInside,
@@ -85,6 +87,7 @@ const runs: Record<string, (input: any) => unknown> = {
   "body.nudge": nudge,
   "body.seen": seen,
   catch: (input) => input.events.reduce(hear, silence),
+  "catch.unasked": (input) => Object.fromEntries(input.holds.map((words: string) => [words, unasked(words, input.filler)])),
   "catch.only": (input) => Object.fromEntries(input.asks.map((words: string) => [words, saysOnly(words, input.phrases)])),
   "catch.drawing": (input) => Object.fromEntries(input.asks.map((words: string) => [words, asksFor(words, input.phrases)])),
   "page.which": (input) => whichPage(input.seen, input.kept, input.least)?.name ?? null,

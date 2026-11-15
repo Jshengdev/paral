@@ -19,22 +19,19 @@ extension Painter {
     }
 
     /// Where the cursor rests beside the card's own mark, and the whole ink of every mark: the card keeps off both,
-    /// at their full size from the first moment, so it does not move as the pen draws.
+    /// at their full size from the first moment, so it does not move as the pen draws. The resting place is found as
+    /// the scene finds it (`ScenePointer.swift`).
     private func held(_ marks: [MarkPicture], of id: String, cursor: Bool, avoiding texts: [Box]) -> [Box] {
         let c = tokens.cursor
-        func box(_ path: [CGPoint]) -> Box {
-            let xs = path.map(\.x), ys = path.map(\.y), half = tokens.mark.width / 2
-            return Box(x: (xs.min() ?? 0) - half, y: (ys.min() ?? 0) - half, w: (xs.max() ?? 0) - (xs.min() ?? 0) + 2 * half, h: (ys.max() ?? 0) - (ys.min() ?? 0) + 2 * half)
-        }
         var held: [Box] = []
         for mark in marks {
             var whole = mark
             whole.drawn = 1
-            let ink = box(Pen.path(of: whole, tokens: tokens, avoiding: texts, inside: (width, height)))
-            held.append(ink)
+            guard let path = Painter.bounds(of: Pen.path(of: whole, tokens: tokens, avoiding: texts, inside: (width, height))) else { continue }
+            held.append(path.grown(tokens.mark.width / 2))
             guard cursor, mark.key.hasPrefix(id + "/") else { continue }
-            let tip = Layout.beside(ink, cursor: (c.size * Layout.cursorWide, c.size), edge: c.edge, gap: c.gap, texts: texts, width: width, height: height)
-            held.append(Box(x: tip.x - c.edge, y: tip.y - c.edge, w: Layout.cursorWide * c.size + 2 * c.edge, h: c.size + 2 * c.edge))
+            let tip = Layout.beside(path, cursor: c.size, gap: c.gap, texts: texts, width: width, height: height)
+            held.append(Layout.cursor(tip: tip, size: c.size))
         }
         return held
     }
@@ -48,7 +45,7 @@ extension Painter {
     /// each rising; it goes faster, fading and shrinking a little. A held button is drawn smaller. Gives back the card's
     /// place, and each button's while the card can be pressed.
     func nudge(_ card: NudgePicture, avoiding texts: [Box], taken: [Box], marks: [MarkPicture], cursor: Bool, _ ctx: CGContext) -> [Drawn] {
-        let n = tokens.nudge, stone = color(n.stone)
+        let n = tokens.nudge, stone = color(tokens.stone)
         let wrapped: NSString.DrawingOptions = [.usesLineFragmentOrigin, .usesFontLeading]
         let inner = n.width - 2 * n.pad, beyond = n.avatar + n.nameGap
         let name = inked(tokens.strings.name, size: n.nameType, color: stone, weight: .medium)
@@ -72,7 +69,7 @@ extension Painter {
         let asked = NudgePlaces.Asked(text: card.text, w: full.width, h: full.height, beside: card.beside, texts: texts)
         let was = nudges.asked == asked ? nudges.found : nil
         // A card that is going stays where it was, whatever has come up since.
-        let place = card.leave > 0 && was != nil ? was! : Layout.nudge(size: (full.width, full.height), beside: card.beside, texts: texts, taken: taken + held(marks, of: card.id, cursor: cursor, avoiding: texts), was: was, width: width, height: height, tokens: tokens)
+        let place = card.leave > 0 && was != nil ? was! : Layout.nudge(size: (full.width, full.height), beside: card.beside, texts: texts, taken: taken + held(marks, of: card.id, cursor: cursor, avoiding: texts), was: was, width: width, height: floor, tokens: tokens)
         (nudges.asked, nudges.found) = (asked, place)
 
         ctx.saveGState()
@@ -93,7 +90,7 @@ extension Painter {
         }
         var y = n.pad
         row(0) { rise in
-            orb(middle: CGPoint(x: n.pad + n.avatar / 2, y: y + rise + head / 2), across: n.avatar, clock: 0, ctx)
+            logo(middle: CGPoint(x: n.pad + n.avatar / 2, y: y + rise + head / 2), across: n.avatar, ctx)
             name.draw(at: CGPoint(x: n.pad + beyond, y: y + rise + (head - name.size().height) / 2))
             if !card.trail.isEmpty { trail.draw(with: CGRect(x: n.pad + beyond, y: y + rise + head + n.trailGap, width: inner - beyond, height: trailSize.height.rounded(.up)), options: wrapped) }
         }

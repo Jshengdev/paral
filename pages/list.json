@@ -12,5 +12,15 @@
  { "name": "overseas-studies-next-steps", "url": "https://dornsife.usc.edu/overseas-studies/next-steps-after-applying/" },
  { "name": "stars-report", "url": "https://arr.usc.edu/stars-report/" },
  { "name": "experience-usc", "url": "https://sites.usc.edu/experience-usc/" },
- { "name": "brightspace-student-guides", "url": "https://www.brightspacehelp.usc.edu/students/" }
+ { "name": "brightspace-student-guides", "url": "https://www.brightspacehelp.usc.edu/students/" },
+ { "name": "osas-accommodated-testing", "url": "https://osas.usc.edu/current-students/accommodated-testing/" },
+ { "name": "registration-calendar", "url": "https://arr.usc.edu/registration-calendar/" },
+ { "name": "financial-aid-dates-undergraduate", "url": "https://financialaid.usc.edu/undergraduate-financial-aid/admitted-and-continuing-students/dates-and-deadlines/" },
+ { "name": "financial-aid-dates-graduate", "url": "https://financialaid.usc.edu/graduate-professional-financial-aid/admitted-and-continuing-students/dates-and-deadlines/" },
+ { "name": "financial-aid-scholarships", "url": "https://financialaid.usc.edu/undergraduate-financial-aid/admitted-and-continuing-students/scholarships/" },
+ { "name": "basic-needs-programs", "url": "https://studentbasicneeds.usc.edu/programs-and-services/" },
+ { "name": "basic-needs-emergency-meal-swipe", "url": "https://studentbasicneeds.usc.edu/programs-and-services/food-support/emergency-meal-swipe/" },
+ { "name": "greif-center", "url": "https://students.marshall.usc.edu/lloyd-greif-center-entrepreneurial-studies" },
+ { "name": "osas-home", "url": "https://osas.usc.edu/" },
+ { "name": "academic-counseling", "url": "https://arr.usc.edu/academic-counseling/" }
 ]

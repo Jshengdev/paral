@@ -47,7 +47,7 @@ extension Painter {
         let shut = asked.texts.map { $0.grown(edge + tokens.lead.clear) } + [asked.mark.grown(1)] + (asked.cursor.map { [$0.grown(1)] } ?? [])
             + asked.taken.map { $0.grown(tokens.band + edge) } + [asked.target.grown(gap - 1)]
         func on(_ p: CGPoint, _ boxes: [Box]) -> Bool { boxes.contains { p.x > $0.x && p.x < $0.x + $0.w && p.y > $0.y && p.y < $0.y + $0.h } }
-        func blocked(_ p: CGPoint) -> Bool { p.x < edge || p.y < edge || p.x > width - edge || p.y > height - edge || on(p, shut) }
+        func blocked(_ p: CGPoint) -> Bool { p.x < edge || p.y < edge || p.x > width - edge || p.y > floor - edge || on(p, shut) }
         var best: (cost: Double, strokes: [[CGPoint]])?
         for start in edges(of: asked.mark) {
             // It begins straight out from the mark's edge, on the far side of the cursor where the cursor rests there.
@@ -89,7 +89,7 @@ extension Painter {
     func lead(_ picture: Picture, placed: [Drawn], _ ctx: CGContext) -> Drawn? {
         guard let lead = picture.lead, lead.drawn > 0, let mark = picture.marks.first(where: { $0.key == lead.from }) else { return nil }
         // The capsule at its full size, whatever it is doing at this moment, so the arrow's way does not move with it.
-        func pill(_ trail: Bool) -> Box { Layout.capsule(open: 1, taller: trail ? Layout.band(tokens) : 0, width: width, height: height, tokens: tokens) }
+        func pill(_ trail: Bool) -> Box { Layout.capsule(open: 1, taller: trail ? Layout.band(tokens) : 0, width: width, height: floor, tokens: tokens) }
         let card = placed.first { $0.what == "guide" }?.box
         var taken = placed.filter { ["board", "clip", "way", "toast"].contains($0.what) }.map(\.box)
         let target: Box, name: String
@@ -111,8 +111,7 @@ extension Painter {
         let b = mark.box, half = tokens.mark.width / 2
         let left = min(b.x, Double(ink.map(\.x).min() ?? 0)) - half, top = min(b.y, Double(ink.map(\.y).min() ?? 0)) - half
         let right = max(b.x + b.w, Double(ink.map(\.x).max() ?? 0)) + half, bottom = max(b.y + b.h, Double(ink.map(\.y).max() ?? 0)) + half
-        let c = tokens.cursor
-        let cursor = picture.pointer.flatMap { $0.withWay == nil ? Box(x: $0.x - c.edge, y: $0.y - c.edge, w: Layout.cursorWide * c.size + 2 * c.edge, h: c.size + 2 * c.edge) : nil }
+        let cursor = picture.pointer.flatMap { $0.withWay == nil ? Layout.cursor(tip: CGPoint(x: $0.x, y: $0.y), size: tokens.cursor.size) : nil }
         let asked = LeadWays.Asked(mark: Box(x: left, y: top, w: right - left, h: bottom - top), target: target, taken: taken, cursor: cursor, texts: picture.avoid)
         guard let strokes = way(asked) else { return nil }
         let inked = Pen.reach(arrow: strokes, lead.drawn, tokens: tokens)

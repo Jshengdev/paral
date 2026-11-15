@@ -143,7 +143,7 @@ public struct Scene {
             // The clip and the board share one place, so whichever comes takes it.
             for i in boards.indices where boards[i].clearedAt == nil { boards[i].clearedAt = at }
             for i in clips.indices where clips[i].clearedAt == nil { clips[i].clearedAt = at }
-            clips.append(Clip(id: id, path: path, still: still, seconds: seconds, at: at, room: Layout.room(texts: texts, width: width, height: height, tokens: tokens)))
+            clips.append(Clip(id: id, path: path, still: still, seconds: seconds, at: at, room: Layout.room(texts: texts, width: width, height: floor, tokens: tokens)))
         case .boardClose(let id):
             for i in boards.indices where boards[i].id == id && boards[i].clearedAt == nil && boards[i].rows.isEmpty { boards[i].clearedAt = at }
         case .board(let id, let rows, let now):
@@ -160,7 +160,7 @@ public struct Scene {
             // the page has moved and put text where the card was.
             let same = boards.last { $0.rows == rows && $0.clearedAt.map { at - $0 <= Scene.together } ?? false }
             let kept = same.flatMap { old in texts.contains { Scene.touch($0, old.room) } ? nil : old.room }
-            boards.append(Board(id: id, rows: rows, now: now, at: at, upSince: same?.upSince ?? at, room: kept ?? Layout.room(texts: texts, width: width, height: height, tokens: tokens)))
+            boards.append(Board(id: id, rows: rows, now: now, at: at, upSince: same?.upSince ?? at, room: kept ?? Layout.room(texts: texts, width: width, height: floor, tokens: tokens)))
         case .clear:
             wipe(at)
         case .close:

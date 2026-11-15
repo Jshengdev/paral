@@ -1,5 +1,5 @@
 {
- "name": "body: a mark that comes with no key pressed, as a look sends it, brings the cursor: nothing before the mark; it flies in and rides the pen along the mark wearing its name tag, since it has come from nowhere; then it rests just beside the mark on none of the page's text, the tag gone, while a ripple spreads from it once; after that it stays where it is, still; when he holds the key and lets go, it wears the orb that says paral is working for as long as the capsule says so, and not after the answer has begun; a clear takes it with the mark",
+ "name": "body: a mark that comes with no key pressed, as a look sends it, brings the cursor: nothing before the mark; it flies in and rides the pen along the mark wearing its name tag, since it has come from nowhere; then it rests just beside the mark on none of the page's text, the tag gone, while a ripple spreads from it once; after that it stays where it is, still; when he holds the key and lets go, it breathes, which says paral is working, for as long as the capsule says so, and not after the answer has begun; a clear takes it with the mark",
  "run": "body.cursor",
  "in": {
   "lines": [
@@ -114,7 +114,7 @@
     "tip": "beside the mark",
     "onText": false,
     "ripple": "none",
-    "wears": "the orb that says it is working"
+    "wears": "nothing, and breathes to say it is working"
    }
   },
   {

@@ -24,10 +24,11 @@ const headless = join(root, "body", ".build", "debug", "paral-headless");
 export const DISPLAY = { w: 1600, h: 1000 };
 const touches = (a: Box, b: Box) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
 export const textOf = (dir: string): Box[] => session(dir)[0].lines.map((line: { box: Box }) => line.box);
-// `guideOff` is the menu's "Show the guide" unticked and `notNow` the moments he pressed "Not now" on the nudge card:
-// no seam line carries either, so the probe is told by the environment.
-export const at = (dir: string, moments: number[], guideOff = false, notNow: number[] = []): Moment[] =>
-  JSON.parse(execFileSync(headless, ["placed", dir, join(root, "body", "tokens.json"), ...moments.map(String)], { encoding: "utf8", env: { ...process.env, PARAL_GUIDE: guideOff ? "off" : "on", PARAL_NOT_NOW: notNow.join(",") } }));
+// `guideOff` is the menu's "Show the guide" unticked, `inset` the points of the display's foot a Dock takes, and
+// `notNow` the moments he pressed "Not now" on the nudge card: no seam line carries any of them, so the probe is told
+// by the environment.
+export const at = (dir: string, moments: number[], guideOff = false, inset = 0, notNow: number[] = []): Moment[] =>
+  JSON.parse(execFileSync(headless, ["placed", dir, join(root, "body", "tokens.json"), ...moments.map(String)], { encoding: "utf8", env: { ...process.env, PARAL_GUIDE: guideOff ? "off" : "on", PARAL_INSET: String(inset), PARAL_NOT_NOW: notNow.join(",") } }));
 
 /**
  * At each moment: whether the arrow is up and, if it is, what it leads to, how far the pen has inked it, which edge
@@ -81,7 +82,7 @@ export function cursor(input: { lines: string[]; markOn: number; kind: string; m
     const moved = before === null || Math.hypot(pointer.x - before.x, pointer.y - before.y) > 0.5;
     before = pointer;
     const far = !mark ? Infinity : Math.max(mark.x - pointer.x, pointer.x - (mark.x + mark.w), mark.y - pointer.y, pointer.y - (mark.y + mark.h), 0);
-    const wears = pointer.thinking ? "the orb that says it is working" : pointer.tag ? "its name tag" : "nothing";
+    const wears = pointer.thinking ? "nothing, and breathes to say it is working" : pointer.tag ? "its name tag" : "nothing";
     return { cursor: { moved, tip: far === 0 ? "on the mark" : far <= 12 ? "beside the mark" : "away from it", onText: text.some((box) => touches(box, drawn)), ripple: pointer.ripple === null ? "none" : "spreading", wears } };
   });
 }

@@ -39,7 +39,7 @@ export function nudge(input: { lines: string[]; rows: Written[]; at: number[]; n
   writeFileSync(join(dir, "tokens.json"), JSON.stringify({ ...tokens, motion: { ...tokens.motion, reduce: input.still === true } }));
   const moments: ReturnType<typeof at> = input.still
     ? JSON.parse(execFileSync(headless, ["placed", dir, join(dir, "tokens.json"), ...input.at.map(String)], { encoding: "utf8", env: { ...process.env, PARAL_NOT_NOW: (input.notNow ?? []).join(",") } }))
-    : at(dir, input.at, false, input.notNow ?? []);
+    : at(dir, input.at, false, 0, input.notNow ?? []);
   return moments.map(({ placed, nudge, capsule, toast }) => {
     const card = placed.find((item) => item.what === "nudge");
     const also = { capsule: capsule.look, toast: toast !== null };

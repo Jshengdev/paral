@@ -7,10 +7,11 @@ extension Scene {
         var capsule = capsule(at: t)
         var pointer = pointer(at: t)
         pointer?.thinking = capsule.look == .thinking
+        if capsule.look == .thinking { pointer?.working = working(at: t) }
         let clip = clip(at: t)
         capsule.closes = capsule.look == .rest && (!marks.isEmpty || way != nil || board != nil || clip != nil)
         let nudge = nudge(at: t)
-        return Picture(clock: t, capsule: capsule, marks: marks, echo: echo(at: t), way: way, pointer: pointer, board: board, clip: clip, toast: toast(at: t), guide: guide(at: t), lead: lead(at: t, capsule: capsule, nudge: nudge), trail: trailUp(at: t), avoid: texts, nudge: nudge)
+        return Picture(clock: t, capsule: capsule, marks: marks, echo: echo(at: t), way: way, pointer: pointer, board: board, clip: clip, toast: toast(at: t), guide: guide(at: t), lead: lead(at: t, capsule: capsule, nudge: nudge), trail: trailUp(at: t), avoid: texts, bottomInset: bottomInset, nudge: nudge)
     }
 
     func capsule(at t: Double) -> CapsulePicture {
@@ -73,7 +74,7 @@ extension Scene {
     func marksUp(at t: Double) -> [MarkPicture] {
         marks.compactMap { mark in
             guard mark.at <= t, mark.clearedAt.map({ t < $0 }) ?? true, let began = start(mark), t >= began else { return nil }
-            return MarkPicture(key: "\(mark.id)/\(mark.beat)", kind: mark.kind, box: mark.box, label: mark.label, drawn: inked(mark.kind, since: began, at: t), breath: breath(of: mark, since: began, at: t))
+            return MarkPicture(key: "\(mark.id)/\(mark.beat)", kind: mark.kind, box: mark.box, label: mark.label, drawn: inked(mark.kind, since: began, at: t), pulse: pulse(of: mark, since: began, at: t))
         }
     }
 
