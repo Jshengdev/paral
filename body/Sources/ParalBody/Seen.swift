@@ -1,7 +1,11 @@
 import Foundation
 
 /// The kinds of stroke. `box` is only for his own loop coming back around several lines; the mind never sends it as a mark.
-public enum MarkKind: String { case ring, underline, wavy, bracket, box }
+/// `tick` says a line is done and `strike` that it has passed; a `tag` is not ink but a chip of a few words by its line.
+public enum MarkKind: String { case ring, underline, wavy, bracket, box, tick, strike, tag }
+
+/// How a tag looks: `strong` for what is next, `quiet` for what is done or passed, `date` for a count of days.
+public enum Tone: String { case strong, quiet, date }
 
 public struct BodySettings: Equatable {
     public var holdKey: String
@@ -44,7 +48,8 @@ public enum Seen {
     /// A calendar file the mind has written. The scene shows nothing for it; the app opens it (see `Keep`).
     /// `label` is the date in a few words ("November 22"), which the toast shows.
     case open(path: String, label: String?)
-    case mark(id: String, beat: Int, kind: MarkKind, box: Box, label: String?)
+    /// `tone` is only for a tag, whose words are its `label`; a tag with no tone is quiet.
+    case mark(id: String, beat: Int, kind: MarkKind, box: Box, label: String?, tone: Tone?)
     /// The thing is on this page and not in view: which way to scroll ("up" or "down") and what it leads to.
     case way(id: String, to: String, toward: String)
     case echo(id: String, box: Box, shape: String)
@@ -144,7 +149,10 @@ public enum Seen {
             guard let id, let beat, let kind = MarkKind(rawValue: s("kind") ?? ""), let b = box(f["box"]) else {
                 return .failure(Refused("mark: id, beat, a known kind and a box with positive w and h are needed"))
             }
-            return .success(.mark(id: id, beat: beat, kind: kind, box: b, label: s("label")))
+            let tone = s("tone").map { Tone(rawValue: $0) }
+            if tone == .some(nil) { return .failure(Refused("mark.tone: strong, quiet or date")) }
+            if kind == .tag, (s("label") ?? "").isEmpty { return .failure(Refused("mark: a tag needs its words in label")) }
+            return .success(.mark(id: id, beat: beat, kind: kind, box: b, label: s("label"), tone: tone ?? nil))
         case "way":
             guard let id, let to = s("to"), ["up", "down"].contains(to), let toward = s("toward"), !toward.isEmpty else { return .failure(Refused("way: id, to (up or down) and toward are needed")) }
             return .success(.way(id: id, to: to, toward: toward))

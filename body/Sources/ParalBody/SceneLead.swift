@@ -17,7 +17,8 @@ extension Scene {
     /// no arrow, and once one has gone it waits for that.
     func lead(at t: Double, capsule: CapsulePicture, nudge: NudgePicture?) -> LeadPicture? {
         guard wayUp(at: t) == nil else { return nil }
-        let up = marks.last { mark in mark.at <= t && (mark.clearedAt.map { t < $0 } ?? true) && (start(mark).map { $0 <= t } ?? false) }
+        // A tag is a chip beside a line's ink, not a mark of the line: the arrow leaves the ink.
+        let up = marks.last { mark in mark.kind != .tag && mark.at <= t && (mark.clearedAt.map { t < $0 } ?? true) && (start(mark).map { $0 <= t } ?? false) }
         guard let mark = up, let began = start(mark) else { return nil }
         let ready = still ? began : began + flight + duration(mark.kind) + ms(tokens.cursor.settleMs)
         let key = "\(mark.id)/\(mark.beat)"

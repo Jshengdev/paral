@@ -91,7 +91,7 @@ extension Painter {
     func lead(_ picture: Picture, placed: [Drawn], _ ctx: CGContext) -> Drawn? {
         guard let lead = picture.lead, lead.drawn > 0, let mark = picture.marks.first(where: { $0.key == lead.from }) else { return nil }
         let card = placed.first { $0.what == "guide" }?.box
-        var taken = placed.filter { ["board", "clip", "way", "toast"].contains($0.what) }.map(\.box)
+        var taken = placed.filter { ["board", "clip", "way", "toast", "chip"].contains($0.what) }.map(\.box)
         // An arrow to a card keeps off the pill's band at the foot, which is the pill's and its bubble's alone.
         let pillRoom = Layout.foot(width: width, height: floor, tokens: tokens)
         let target: Box, name: String

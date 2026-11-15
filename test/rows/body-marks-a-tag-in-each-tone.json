@@ -1,0 +1,373 @@
+{
+ "name": "body: a tag in each tone sits after its line's last word, 10 clear of the words and of the line's own ink (a tick, a strike, a ring or a box), level with the line; it pops out once its line's ink is whole, a little past its size and back; where the display's edge leaves no room after the line it sits above the line's end; in the pill's band at the foot it is not placed and the record says so; it is never on a read line or on another piece of ours, the cursor rests clear of it, and a clear takes every tag",
+ "run": "body.marks",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes. You must submit the form on EngageSC.",
+   "Late applications are not accepted.",
+   "Info Sessions, Workshops, and Office Hours",
+   "Application deadline: November 2, 2026",
+   "Apply for the Catalina Maymester",
+   "Questions about recognition go to the office."
+  ],
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "t2",
+     "beat": 0,
+     "kind": "box",
+     "on": 0
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "t2",
+     "beat": 0,
+     "kind": "tag",
+     "on": 0,
+     "label": "Next",
+     "tone": "strong"
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "t1",
+     "beat": 0,
+     "kind": "tick",
+     "on": 1
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "t1",
+     "beat": 0,
+     "kind": "tag",
+     "on": 1,
+     "label": "Done",
+     "tone": "quiet"
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "g2",
+     "beat": 0,
+     "kind": "ring",
+     "on": 5
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "g2",
+     "beat": 0,
+     "kind": "tag",
+     "on": 5,
+     "label": "7 days left",
+     "tone": "date"
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "g4",
+     "beat": 0,
+     "kind": "tag",
+     "on": 3,
+     "label": "16 days left",
+     "tone": "date"
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "g1",
+     "beat": 0,
+     "kind": "strike",
+     "on": 6
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "g1",
+     "beat": 0,
+     "kind": "tag",
+     "on": 6,
+     "label": "closed 13 days ago",
+     "tone": "quiet"
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "g5",
+     "beat": 0,
+     "kind": "tag",
+     "on": 8,
+     "label": "Ask the office",
+     "tone": "quiet"
+    }
+   },
+   {
+    "at": 4000,
+    "line": {
+     "type": "clear"
+    }
+   }
+  ],
+  "wholeAt": 3000,
+  "at": [
+   1000,
+   1650,
+   1900,
+   2000,
+   3000,
+   4100
+  ]
+ },
+ "out": [
+  {
+   "g5/0 tag": "not placed",
+   "cursor": "nearest nothing",
+   "arrowLeaves": null
+  },
+  {
+   "t2/0 box": "drawn",
+   "t1/0 tick": {
+    "leftOfItsWords": true,
+    "clearOfTheWords": 9,
+    "tall": 20,
+    "onAnyReadLine": false
+   },
+   "g2/0 ring": "drawn",
+   "g1/0 strike": {
+    "startsBeforeItsLine": 4,
+    "endsPastIt": -157.6,
+    "rises": true,
+    "insideItsLine": true,
+    "onOtherLines": false
+   },
+   "t1/0 tag": {
+    "where": "after its line",
+    "clearOfItsLineAndInk": 10,
+    "size": 0.66,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "g4/0 tag": {
+    "where": "above its line's end",
+    "rightEdgeAtTheLinesEnd": true,
+    "size": 1,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "g5/0 tag": "not placed",
+   "cursor": "on the pen's tip",
+   "arrowLeaves": null
+  },
+  {
+   "t2/0 box": "drawn",
+   "t1/0 tick": {
+    "leftOfItsWords": true,
+    "clearOfTheWords": 9,
+    "tall": 20,
+    "onAnyReadLine": false
+   },
+   "g2/0 ring": "drawn",
+   "g1/0 strike": {
+    "startsBeforeItsLine": 4,
+    "endsPastIt": 4,
+    "rises": true,
+    "insideItsLine": true,
+    "onOtherLines": false
+   },
+   "t2/0 tag": {
+    "where": "after its line",
+    "clearOfItsLineAndInk": 10,
+    "size": 0.77,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "t1/0 tag": {
+    "where": "after its line",
+    "clearOfItsLineAndInk": 10,
+    "size": 1,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "g2/0 tag": {
+    "where": "after its line",
+    "clearOfItsLineAndInk": 10,
+    "size": 0.77,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "g4/0 tag": {
+    "where": "above its line's end",
+    "rightEdgeAtTheLinesEnd": true,
+    "size": 1,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "g1/0 tag": {
+    "where": "after its line",
+    "clearOfItsLineAndInk": 10,
+    "size": 1.04,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "g5/0 tag": "not placed",
+   "cursor": "nearest g1/0 tag",
+   "arrowLeaves": null
+  },
+  {
+   "t2/0 box": "drawn",
+   "t1/0 tick": {
+    "leftOfItsWords": true,
+    "clearOfTheWords": 9,
+    "tall": 20,
+    "onAnyReadLine": false
+   },
+   "g2/0 ring": "drawn",
+   "g1/0 strike": {
+    "startsBeforeItsLine": 4,
+    "endsPastIt": 4,
+    "rises": true,
+    "insideItsLine": true,
+    "onOtherLines": false
+   },
+   "t2/0 tag": {
+    "where": "after its line",
+    "clearOfItsLineAndInk": 10,
+    "size": 1.03,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "t1/0 tag": {
+    "where": "after its line",
+    "clearOfItsLineAndInk": 10,
+    "size": 1,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "g2/0 tag": {
+    "where": "after its line",
+    "clearOfItsLineAndInk": 10,
+    "size": 1.03,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "g4/0 tag": {
+    "where": "above its line's end",
+    "rightEdgeAtTheLinesEnd": true,
+    "size": 1,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "g1/0 tag": {
+    "where": "after its line",
+    "clearOfItsLineAndInk": 10,
+    "size": 1,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "g5/0 tag": "not placed",
+   "cursor": "nearest g1/0 tag",
+   "arrowLeaves": null
+  },
+  {
+   "t2/0 box": "drawn",
+   "t1/0 tick": {
+    "leftOfItsWords": true,
+    "clearOfTheWords": 9,
+    "tall": 20,
+    "onAnyReadLine": false
+   },
+   "g2/0 ring": "drawn",
+   "g1/0 strike": {
+    "startsBeforeItsLine": 4,
+    "endsPastIt": 4,
+    "rises": true,
+    "insideItsLine": true,
+    "onOtherLines": false
+   },
+   "t2/0 tag": {
+    "where": "after its line",
+    "clearOfItsLineAndInk": 10,
+    "size": 1,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "t1/0 tag": {
+    "where": "after its line",
+    "clearOfItsLineAndInk": 10,
+    "size": 1,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "g2/0 tag": {
+    "where": "after its line",
+    "clearOfItsLineAndInk": 10,
+    "size": 1,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "g4/0 tag": {
+    "where": "above its line's end",
+    "rightEdgeAtTheLinesEnd": true,
+    "size": 1,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "g1/0 tag": {
+    "where": "after its line",
+    "clearOfItsLineAndInk": 10,
+    "size": 1,
+    "insideTheDisplay": true,
+    "onAReadLine": false,
+    "onOurPieces": []
+   },
+   "g5/0 tag": "not placed",
+   "cursor": "nearest g1/0 tag",
+   "arrowLeaves": null
+  },
+  {
+   "cursor": "none",
+   "arrowLeaves": null
+  }
+ ]
+}

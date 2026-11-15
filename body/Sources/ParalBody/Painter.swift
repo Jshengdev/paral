@@ -98,6 +98,8 @@ public struct Painter {
             // mark waits for his click. (It is `pulse` there: `echo` is his own loop coming back.)
             if let echo = ink.echo, let far = Painter.bounds(of: echo) { drawn.append(Drawn(what: "pulse", id: mark.key, box: far, path: echo)) }
         }
+        // The tags by their lines, where the scene placed them; every card placed below keeps off them.
+        drawn += tags(picture.tags, ctx)
         if let board = picture.board {
             let placed = self.board(board, clock: picture.clock, ctx)
             drawn.append(Drawn(what: "board", id: board.id, box: placed.card, type: placed.type))
@@ -109,7 +111,7 @@ public struct Painter {
         // The arrow keeps off the page's text and off whatever card is up, so it is placed once those are drawn. Only
         // then is it known where a cursor that is with the arrow is.
         if let way = picture.way {
-            let cards = drawn.filter { $0.what == "board" || $0.what == "clip" }.map(\.box)
+            let cards = drawn.filter { ["board", "clip", "chip"].contains($0.what) }.map(\.box)
             let place = self.place(way, avoiding: picture.avoid + cards)
             self.way(way, at: place, ctx)
             drawn.append(Drawn(what: "way", id: way.id, box: place.whole))
@@ -121,7 +123,7 @@ public struct Painter {
         }
         // The toast keeps off the text, the cards and the arrow, so it comes after them.
         if let toast = picture.toast {
-            let up = drawn.filter { ["board", "clip", "way"].contains($0.what) }.map(\.box)
+            let up = drawn.filter { ["board", "clip", "way", "chip"].contains($0.what) }.map(\.box)
             let made = self.toast(toast, avoiding: picture.avoid + up, ctx)
             drawn.append(Drawn(what: "toast", id: nil, box: made.place))
             // Its badge is named too, at the size it has just then and with as much of its tick as is drawn.
@@ -129,7 +131,7 @@ public struct Painter {
         }
         // The guide's card keeps off everything else, so it is placed last of the things that are placed.
         if let guide = picture.guide {
-            let up = drawn.filter { ["board", "clip", "way", "toast", "mark", "echo"].contains($0.what) }.map(\.box)
+            let up = drawn.filter { ["board", "clip", "way", "toast", "mark", "echo", "chip"].contains($0.what) }.map(\.box)
             let card = self.guide(guide, avoiding: picture.avoid + up, ctx)
             drawn.append(Drawn(what: "guide", id: nil, box: card.card))
             // Its lines are named too, each where it is just then, so a film's record says how the card came up.
@@ -138,8 +140,8 @@ public struct Painter {
         // The nudge card keeps off the page's words and every card placed so far, so it comes after them.
         var spoken = picture.capsule
         if let nudge = picture.nudge {
-            let up = drawn.filter { ["board", "clip", "way", "toast", "guide"].contains($0.what) }.map(\.box)
-            let card = self.nudge(nudge, avoiding: picture.avoid, taken: up, marks: picture.marks + (picture.echo.map { [$0] } ?? []), cursor: picture.pointer != nil, ctx)
+            let up = drawn.filter { ["board", "clip", "way", "toast", "guide", "chip"].contains($0.what) }.map(\.box)
+            let card = self.nudge(nudge, avoiding: picture.avoid, taken: up, marks: picture.marks + (picture.echo.map { [$0] } ?? []), tags: picture.tags, cursor: picture.pointer != nil, ctx)
             // Where no place is clear of the page's words its line is shown in the capsule, as it was before the card.
             if card.isEmpty { spoken = CapsulePicture(look: .speaking, open: min(nudge.coming.card, 1 - nudge.coming.gone), words: nudge.words, note: nil, bubble: min(nudge.coming.card, 1 - nudge.coming.gone), trail: nudge.trail, ask: nudge.id) }
             drawn += card

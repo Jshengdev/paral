@@ -91,11 +91,15 @@ extension Scene {
     /// How long the pen takes over a drawn arrow: its shaft, then its head.
     var arrowMs: Double { ms(tokens.mark.shaftMs + tokens.mark.headMs) }
 
+    /// How long the pen takes over a mark; for a tag, which is not ink, how long it takes to pop out.
     func duration(_ kind: MarkKind) -> Double {
         switch kind {
         case .ring, .box: return ms(tokens.mark.ringMs)
         case .bracket: return ms(tokens.mark.bracketMs)
         case .underline, .wavy: return ms(tokens.mark.lineMs)
+        case .tick: return ms(tokens.mark.tickMs)
+        case .strike: return ms(tokens.mark.strikeMs)
+        case .tag: return ms(tokens.chip.ms)
         }
     }
 
@@ -110,6 +114,7 @@ extension Scene {
         var end = lastAt
         for ask in asks { if let last = times(ask).last { end = max(end, last.end + tokens.motion.lingerMs + ms(tokens.motion.leaveMs)) } }
         for mark in marks { if let began = start(mark) { end = max(end, began + flight + duration(mark.kind)) } }
+        for tag in marks where tag.kind == .tag { if let came = arrives(tag) { end = max(end, came + duration(.tag)) } }
         for echo in echoes { end = max(end, echo.at + flight + duration(.ring)) }
         for way in ways { end = max(end, min(way.clearedAt ?? .infinity, inking(way).to + ms(tokens.cursor.settleMs))) }
         for clip in clips { end = max(end, min(clip.clearedAt ?? .infinity, clip.at + ms(tokens.motion.arriveMs) + clip.seconds * 1000)) }

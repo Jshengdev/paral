@@ -33,7 +33,15 @@ public struct Tokens: Codable {
         /// highlight does: how long after the edge is drawn the first sets off, how often one follows another, how
         /// much larger than the mark it grows (a share of the mark's size), and how strong it is when it sets off.
         public var echoAfterMs, echoEveryMs, echoGrows, echoStrength: Double
+        /// A tick left of a line and a strike through it, each inked at even speed: the pen's time over each, how far
+        /// the tick keeps from the line's first word and the tallest it is drawn, how far a strike runs past each end.
+        public var tickMs, strikeMs, tickGap, tickMost, strikePast: Double
     }
+    /// A tag, a chip of a few words that belongs to a line (`PainterTag.swift`, `LayoutTag.swift`): the size of its
+    /// words, the room round them, the width of a date's edge; how far after the line's ink it sits, how far above the
+    /// line when there is no room after it, and how far it keeps from the page's words; how small it is when it pops
+    /// out, as a share of its size, and how long that takes.
+    public struct Chip: Codable { public var type, padX, padY, edge, gap, above, clear, from, ms: Double }
     /// Paral's own cursor, after the design kit's: the logo mark.
     public struct Cursor: Codable {
         /// How large its square frame is, and how far from a mark it rests.
@@ -162,6 +170,7 @@ public struct Tokens: Codable {
     public var card: Card
     public var lead: Lead
     public var nudge: Nudge
+    public var chip: Chip
     public var motion: Motion
     /// The four curves everything moves on (`Motion.swift`).
     public var curves: Curves
@@ -186,6 +195,7 @@ public struct Tokens: Codable {
             \.bubble.padX, \.bubble.padY, \.bubble.radius, \.bubble.gap, \.bubble.maxWidth, \.bubble.caretWidth, \.bubble.caretHeight, \.bubble.caretGap, \.bubble.rise,
             \.nudge.width, \.nudge.pad, \.nudge.radius, \.nudge.gap, \.nudge.avatar, \.nudge.nameGap, \.nudge.nameType, \.nudge.trailType,
             \.nudge.trailGap, \.nudge.type, \.nudge.buttonType, \.nudge.tracking, \.nudge.buttonPadX, \.nudge.buttonPadY, \.nudge.buttonGap,
+            \.chip.type, \.chip.padX, \.chip.padY, \.chip.edge,
         ]
         for size in sizes { t[keyPath: size] *= scale }
         t.scale = 1

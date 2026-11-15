@@ -2,30 +2,32 @@ import CoreGraphics
 import Foundation
 
 extension Scene {
-    /// One stroke the cursor makes: when it begins, its kind, and the pen's whole path for it.
-    private typealias Stroke = (began: Double, kind: MarkKind, path: [CGPoint])
+    /// One stroke the cursor makes: when it begins, its kind, the pen's whole path for it, and the line it marks.
+    private typealias Stroke = (began: Double, kind: MarkKind, path: [CGPoint], line: Box?)
 
     /// The strokes on the page at `t`, the newest last. One that has been wiped is not among them, so a clear or a
-    /// close takes the cursor with the ink.
+    /// close takes the cursor with the ink. A tag is a chip and not ink: the cursor does not go to it.
     private func strokes(at t: Double) -> [Stroke] {
         func up(_ clearedAt: Double?) -> Bool { clearedAt.map { t < $0 } ?? true }
         var strokes: [Stroke] = []
         for echo in echoes where echo.at <= t && up(echo.clearedAt) {
-            strokes.append((echo.at, kind(of: echo), Pen.path(of: ring(for: echo, drawn: 1), tokens: tokens, avoiding: texts, inside: (width, height))))
+            strokes.append((echo.at, kind(of: echo), Pen.path(of: ring(for: echo, drawn: 1), tokens: tokens, avoiding: texts, inside: (width, height)), nil))
         }
-        for mark in marks where up(mark.clearedAt) {
+        for mark in marks where up(mark.clearedAt) && mark.kind != .tag {
             guard let began = start(mark), began <= t else { continue }
             let whole = MarkPicture(key: "\(mark.id)/\(mark.beat)", kind: mark.kind, box: mark.box, label: nil, drawn: 1)
-            strokes.append((began, mark.kind, Pen.path(of: whole, tokens: tokens, avoiding: texts, inside: (width, height))))
+            strokes.append((began, mark.kind, Pen.path(of: whole, tokens: tokens, avoiding: texts, inside: (width, height)), mark.box))
         }
         return strokes.sorted { $0.began < $1.began }
     }
 
-    /// Where the cursor's tip rests once a stroke is drawn: beside it, on none of the page's text.
-    private func rest(beside path: [CGPoint]) -> CGPoint {
-        let xs = path.map(\.x), ys = path.map(\.y)
+    /// Where the cursor's tip rests once a stroke is drawn: beside it and any tag on its line, on none of the page's
+    /// text (`Layout.resting`).
+    private func rest(beside stroke: Stroke, at t: Double) -> CGPoint {
+        let xs = stroke.path.map(\.x), ys = stroke.path.map(\.y)
         let drawn = Box(x: xs.min() ?? 0, y: ys.min() ?? 0, w: max((xs.max() ?? 0) - (xs.min() ?? 0), 1), h: max((ys.max() ?? 0) - (ys.min() ?? 0), 1))
-        return Layout.beside(drawn, cursor: tokens.cursor.size, gap: tokens.cursor.gap, texts: texts, width: width, height: height)
+        let near = Layout.resting(ink: drawn, kind: stroke.kind, line: stroke.line, tags: tags(on: stroke.line, at: t))
+        return Layout.beside(near, cursor: tokens.cursor.size, gap: tokens.cursor.gap, texts: texts, width: width, height: height)
     }
 
     /// Where the cursor sets off from for something that begins at `began`, and whether it was with an arrow then.
@@ -81,7 +83,7 @@ extension Scene {
             let tip = Pen.reach(now.path, Motion.even((t - inkAt) / duration(now.kind))).tip
             return PointerPicture(x: tip.x, y: tip.y, alpha: 1, ripple: nil, tag: tagged, tagGrown: popped(since: now.began, at: t))
         }
-        let settle = ms(tokens.cursor.settleMs), place = rest(beside: now.path)
+        let settle = ms(tokens.cursor.settleMs), place = rest(beside: now, at: t)
         let aside = tokens.curves.travel((t - inkedAt) / max(settle, 1))
         let spread = (t - inkedAt - settle) / max(ms(tokens.cursor.rippleMs), 1)
         // The ripple is given in fiftieths, so the picture changes only when it would be seen to.

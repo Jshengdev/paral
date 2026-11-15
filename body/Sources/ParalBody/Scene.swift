@@ -9,7 +9,7 @@ public struct Scene {
     /// `beganAt` is when its first line came; for a line said without being asked, when that line gets its turn in
     /// the capsule, which is when it came or later.
     struct Ask { var id: String; var beganAt: Double; var beats: [Int: Beat] = [:]; var mutedAt: Double?; var cutAt: Double?; var trail: [String]? }
-    struct Mark { var id: String; var beat: Int; var kind: MarkKind; var box: Box; var label: String?; var at: Double; var withSay: Bool; var clearedAt: Double? }
+    struct Mark { var id: String; var beat: Int; var kind: MarkKind; var box: Box; var label: String?; var tone: Tone? = nil; var at: Double; var withSay: Bool; var clearedAt: Double? }
     struct Echo { var id: String; var box: Box; var shape: String; var at: Double; var clearedAt: Double? }
     struct Way { var id: String; var down: Bool; var toward: String; var at: Double; var clearedAt: Double? }
     /// `upSince` is when its card first came up, which is before `at` for a board that takes the place of the same rows.
@@ -125,16 +125,17 @@ public struct Scene {
             edit(id) { $0.beats[beat]?.wordStart += start }
         case .mute(let id):
             edit(id) { $0.mutedAt = at }
-        case .mark(let id, let beat, let kind, let box, let label):
+        case .mark(let id, let beat, let kind, let box, let label, let tone):
             // The first mark of an ask lands the moment it arrives; later ones wait for their sentence.
             let withSay = asks.first { $0.id == id }?.beats[beat] != nil && marks.contains { $0.id == id }
             let here = box.moved(dx: -origin.x, dy: -origin.y)
-            for i in marks.indices where marks[i].clearedAt == nil && Scene.sameLine(marks[i].box, here) { marks[i].clearedAt = at }
+            // A new mark takes the place of the one on its line; a tag stands beside a line's ink, so it takes only a tag's.
+            for i in marks.indices where marks[i].clearedAt == nil && Scene.sameLine(marks[i].box, here) && (marks[i].kind == .tag) == (kind == .tag) { marks[i].clearedAt = at }
             // His own loop gives way once paral marks something inside it.
             for i in echoes.indices where echoes[i].clearedAt == nil && Scene.sameLine(echoes[i].box, here) { echoes[i].clearedAt = at }
             // The thing an arrow led to is in view once the same look or answer marks it, so that arrow goes.
             for i in ways.indices where ways[i].clearedAt == nil && ways[i].id == id { ways[i].clearedAt = at }
-            marks.append(Mark(id: id, beat: beat, kind: kind, box: box.moved(dx: -origin.x, dy: -origin.y), label: label, at: at, withSay: withSay))
+            marks.append(Mark(id: id, beat: beat, kind: kind, box: here, label: label, tone: tone, at: at, withSay: withSay))
         case .next(let text, let n, let of, let done):
             // New words take the place of the old in the same card once the old have stood their time, and no words
             // take the card away the same way. After an empty card a line comes at once.

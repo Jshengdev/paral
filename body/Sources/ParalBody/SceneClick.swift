@@ -11,9 +11,10 @@ public struct ClickPicture: Equatable {
 }
 
 extension Scene {
-    /// Whether a mark waits for his click at `t`: it is the mark of the step a board names.
+    /// Whether a mark waits for his click at `t`: it is the mark of the step a board names. A tick, a strike and a tag
+    /// say something of a line (done, passed, a few words) and do not ask for a click, so they never wait.
     func waits(_ mark: Mark, at t: Double) -> Bool {
-        boards.contains { $0.id == mark.id && $0.now != nil && $0.at <= t && ($0.clearedAt.map { t < $0 } ?? true) }
+        ![.tick, .strike, .tag].contains(mark.kind) && boards.contains { $0.id == mark.id && $0.now != nil && $0.at <= t && ($0.clearedAt.map { t < $0 } ?? true) }
     }
 
     /// His click, as it happens. Only a click on the mark that waits for it is answered: paral's cursor, which is

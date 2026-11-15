@@ -188,4 +188,6 @@ public struct Picture: Equatable {
     public var bottomInset = 0.0
     /// The nudge card, while a line said without being asked is up.
     public var nudge: NudgePicture? = nil
+    /// The tags by their lines, each a chip of a few words (`SceneTag.swift`).
+    public var tags: [TagPicture] = []
 }
