@@ -32,6 +32,8 @@ const UP = 3000;
 const DISPLAY = { id: 1, scale: 2, x: 0, y: 0, w: 1728, h: 1117 };
 const box = { x: 100, y: 80, w: 200, h: 20 };
 const PAGE = [{ id: "work", text: "My work", box }, { id: "limiter", text: "The rate limiter keeps its buckets in memory", box }];
+// A page whose subject is an address, which is one long word: "trycloudflare".
+const LINKS = [{ id: "head", text: "Short link", box }, { id: "link-1", text: "https://quiet-harbor-demo.trycloudflare.com/4CQMZu", box }];
 // A page with a due date and a range of dates, as two lines.
 const DATED = [{ id: "due", text: "Application deadline: March 1, 2027", box }, { id: "exams", text: "Exams December 9-16", box }];
 const say = (id: string, at: number, text: string, extra: Partial<{ opener: boolean; hint: boolean; top: boolean }> = {}): Moment => ({ at, kind: "say", id, text, opener: extra.opener ?? false, hint: extra.hint ?? false, top: extra.top ?? false });
@@ -85,6 +87,7 @@ const CASES: Case[] = [
   { name: "an answer that names nothing on the page", check: "The answer is about the page", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "Bananas are yellow and grow in bunches.")]), { sentences: 1 }, PAGE) },
   { name: "only a waiting line shares a word with the page", check: "The answer is about the page", mustPass: false, verdicts: () => spoken(ask([say("t1:-2", 5000, "Give me a moment to work it out.", { opener: true }), say("t1:0", 6000, "Bananas are yellow and grow in bunches.")]), { sentences: 1 }, PAGE) },
   { name: "an answer that names the page's limiter", check: "The answer is about the page", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "The rate limiter is the one to worry about.")]), { sentences: 1 }, PAGE) },
+  { name: "an answer that names part of an address on the page", check: "The answer is about the page", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "Almost all the length is the temporary Cloudflare tunnel name."), say("t1:1", 9000, "Buying a short domain of your own fixes it.")]), { sentences: 1 }, LINKS) },
   { name: "a sentence cut at a comma into a piece", check: "No piece is cut off", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "You add 4 to both sides, so y equals 9 plus 4."), say("t1:1", 9000, "Which is 13.")]), {}, []) },
   { name: "a whole sentence that begins with Like", check: "No piece is cut off", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "Like terms go together on one side.")]), {}, []) },
   { name: "the old answer goes on after he cuts in", check: "Nothing more of the old answer", mustPass: false, verdicts: () => cutIn(cutting([say("t1:1", 21000, "And the second step is this one.")]), ask([...sentence]), { stopsVoiceWithinMs: 300 }, null) },

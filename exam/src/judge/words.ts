@@ -25,6 +25,7 @@ export function spoken(ask: Ask, expect: Expect, truth: Truth[]): Verdict[] {
 // His click of 2026-11-14 at 16:52: the quick line is twelve words at most. Every line said while he waits is held
 // to it, the opener and the waiting lines alike. Whether a quick line is true of his page is a reader's to judge.
 const QUICK_WORDS = 12;
+const PART_OF_A_WORD = 6; // letters: shorter words sit inside others by chance ("port" in "report")
 
 function quickLines(ask: Ask): Verdict[] {
   const quick = of(ask.moments, "say").filter((m) => m.opener);
@@ -54,7 +55,10 @@ function aboutThePage(ask: Ask, expect: Expect, truth: Truth[]): Verdict[] {
   if (sentences.every((m) => m.hint)) return out;
   const answer = [...sentences.map((m) => m.text), ...of(ask.moments, "mark").map((m) => m.label ?? ""), ...of(ask.moments, "board").map((m) => m.text)].join(" ");
   const pageWords = new Set(truth.flatMap((t) => words(t.text)).filter((w) => w.length > 3 && !SMALL_WORDS.has(w)));
-  const shared = [...new Set(words(answer))].filter((w) => pageWords.has(w));
+  // An address on the page is one long word, and an answer names its part: "Cloudflare" for "trycloudflare". A long
+  // word of the answer that sits inside a word of the page counts (a right answer failed on this, 2026-11-14, 18:46).
+  const insideOne = (w: string) => w.length >= PART_OF_A_WORD && [...pageWords].some((p) => p.includes(w));
+  const shared = [...new Set(words(answer))].filter((w) => pageWords.has(w) || insideOne(w));
   const need = sentences.length >= 2 ? 2 : 1;
   const what = "The answer is about the page in front of him";
   return [...out, shared.length >= need ? yes("C13", s, what, `it names: ${shared.slice(0, 6).join(", ")}`) : no("C13", s, what, `it shares ${shared.length} words with the page`)];
