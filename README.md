@@ -102,7 +102,7 @@ three are drawn by the app's own drawing code in its tests.*
 | any question, with the right Option key held | a short answer aloud, with the line it means marked on your page |
 | "show me" | the steps, one at a time, each marked where it is |
 | "add it to my calendar" | the date opens in your calendar, ready to add |
-| "scroll for me" | the page turns to what it is pointing at |
+| "scroll for me" | the page turns to what it is pointing at (in tests; not yet in Chrome on a real screen) |
 | "open it for me" | the closed section it has marked is opened with one click |
 | "take me there" | the USC page it just named opens, with the right part ringed |
 | "draw everything I have to do, in order" | a map of the whole process beside the page |
@@ -200,9 +200,9 @@ there. `node pages/gather.ts` with no name reads every page on the list again.
   of the weekend, 1,912 of 1,914 checks pass. The two that do not are a true date shown as "December first"
   where the page writes "December 1".
 - **On a real screen** it has been recorded speaking first on six USC pages, answering spoken questions,
-  walking three steps by clicks, and ringing the atoms on a chemistry worksheet. "Open it for me" has been pressed
-  there, and two seconds later the closed section was open with its line marked. "Scroll for me" has been
-  pressed there too; whether the app's own scrolling moved the page is not confirmed.
+  walking three steps by clicks, and ringing the atoms on a chemistry worksheet. "Open it for me" has been recorded
+  there too: the app clicked the closed heading once, and two seconds later the section was open with its line
+  marked. "Scroll for me" did not move the page in Chrome when it was pressed there, and the app said so.
 
 The judge found real faults over the weekend, and each became a row before it was fixed: a date written in
 words that the date rule could not read, a question in a page's first second that silenced the page, sentences
@@ -216,9 +216,10 @@ that took too long to say.
   you about one you never visit.
 - It remembers one sitting. Close it and it starts over.
 - The kept pages are as fresh as their last reading. Reading them again every night is the next step.
-- "Take me there" pressed and the notes page run in tests and have not yet run on a real screen. "Open it for
-  me", "Scroll for me" and "Add to calendar" have been pressed there: the section opened and the date was
-  written, none of it filmed, and the scrolling itself is not yet confirmed.
+- "Scroll for me" works in tests and does not yet move a page in Chrome on a real screen. The app sends the
+  wheel's turns to the browser in a way Chrome ignores; when the page does not move it says so.
+- "Take me there" pressed and the notes page run in tests and have not yet run on a real screen. "Add to
+  calendar" has written its date there.
 - It does not work with a screen reader. Every spoken sentence is also shown as text, the demo's questions can be
   tapped from the menu, and it follows the Mac's Reduce Motion setting.
 
