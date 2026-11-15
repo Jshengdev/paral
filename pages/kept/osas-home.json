@@ -1,0 +1,57 @@
+{
+ "name": "osas-home",
+ "url": "https://osas.usc.edu/",
+ "readOn": "2026-11-15",
+ "title": "USC Office of Student Accessibility Services - A Division of Student Affairs",
+ "lines": [
+  "Welcome to OSAS!",
+  "We’re happy you’re here.",
+  "Learn more about OSAS",
+  "OSAS Virtual Drop-In Schedule",
+  "OSAS Specialist Virtual Drop-Ins",
+  "Fall 2026 Dates: August 24, 2026 – December 4, 202 6",
+  "Mondays : 10 am – 12 pm & 2 pm – 4 pm (PST)",
+  "Tuesdays : 10 am – 12 pm & 2 pm – 4 pm (PST)",
+  "Wednesdays : 2 pm – 4 pm (PST)",
+  "Thursdays : 10 am – 12 pm & 2 pm – 4 pm (PST)",
+  "For your personal well-being and privacy, ensure you are in a quiet, safe, and familiar location when joining Virtual Drop-Ins.",
+  "If you require immediate support, don’t hesitate to contact the OSAS front desk at OSAS Front Desk . For registered students, please email your OSAS Specialist.",
+  "Join Specialist Zoom Meeting",
+  "STUDENTS NEW TO OSAS",
+  "For students who are new to their connection to OSAS, this is a great place to start. Get to know the key steps for beginning your relationship with our office, including how to seek accommodations and services, the University’s documentation guidelines, and some general keys to success.",
+  "More for new students",
+  "CURRENT OSAS STUDENTS",
+  "For students who have established their relationship with OSAS, this section of the website helps deepen your connection and further your knowledge. It provides guidance on implementing accommodations, the role of your OSAS Specialist, and information on our student organizations.",
+  "More for new current students",
+  "FACULTY",
+  "For all faculty and instructors, as well as academic staff, this section is a key resource for OSAS information. You’ll find guidance on Roles, Rights & Responsibilities, guidance from your peers, information on accommodations and services, helpful How To’s, and support resources for your work with students with disabilities. Welcome!",
+  "More for new faculty",
+  "Important Timelines and Dates",
+  "Important Timelines for Fall 2026 Final Exams:",
+  "USC Gould School of Law Students Only : Approved Accommodation letters must be provided to the Gould School of Law Student Life department by Monday, 11/16/2026, at 5 pm (PST) to provide time to facilitate the proctoring and space for Fall 2026 Final Exams. Please apply to OSAS and submit sufficient documentation as early as possible in the semester. Requests may take three weeks or longer to review. This timeline is established to allow OSAS specialists to review the accommodation request(s) and to provide ample time for students to provide their letter of accommodation to the professor/designated contact.",
+  "USC Students (Excluding Gould Students) : The last day to submit your OSAS accommodation letter to your faculty/program contact is Wednesday, 11/25/2026, by 11:59 pm (PST) . Please apply to OSAS and submit sufficient documentation as early as possible in the semester. Requests may take three weeks or longer to review. New or additional accommodation requests for non-Gould students must be received by Wednesday, 11/11/2026, by 11:59 pm (PST) . This timeline is established to allow OSAS specialists to review the accommodation request(s) and to provide ample time for students to provide their letter of accommodation to the professor/designated program contact.",
+  "USC Students (Excluding Gould Students) : The deadline to schedule all final exams, make-up exams, and exams for Incomplete courses with the OSAS Testing Center is Wednesday, 12/2/26, by 11:59 pm (PST) ."
+ ],
+ "links": [
+  {
+   "text": "Learn more about OSAS",
+   "url": "https://osas.usc.edu/about/our-purpose-and-practice/"
+  },
+  {
+   "text": "Join Specialist Zoom Meeting",
+   "url": "https://usc.zoom.us/j/92233178255"
+  },
+  {
+   "text": "More for new students",
+   "url": "https://osas.usc.edu/new-students/"
+  },
+  {
+   "text": "More for new current students",
+   "url": "https://osas.usc.edu/current-students/"
+  },
+  {
+   "text": "More for new faculty",
+   "url": "https://osas.usc.edu/faculty/"
+  }
+ ]
+}
