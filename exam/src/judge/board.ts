@@ -2,7 +2,7 @@ import { existsSync } from "node:fs";
 import type { Box, Expect, Truth } from "../shape.ts";
 import type { Placed } from "../session.ts";
 import { first, of, spoken, type Ask } from "../timeline.ts";
-import { no, unseen, within, yes, type Verdict } from "../verdict.ts";
+import { no, unseen, yes, type Verdict } from "../verdict.ts";
 
 // C17: a rendered lesson. It may arrive late, but it must arrive, and it must be a real file.
 export function lesson(ask: Ask, expect: Expect): Verdict[] {
@@ -42,30 +42,36 @@ function plainBoxes(ask: Ask, last: { text: string }): Verdict {
     : no("C8", ask.index, "No box carries an arrow sign of its own", `"${marked[0].slice(0, 60)}"`);
 }
 
+// His click of 2026-11-14 at 16:52, with DuckyHelper's own notes in front of him ("the board never opens empty",
+// version 0.10.41): a board opens on its first row. A board line with no rows is an empty card, and none may be sent.
+function neverEmpty(ask: Ask): Verdict[] {
+  const boards = of(ask.moments, "board");
+  if (boards.length === 0) return [];
+  const empty = boards.filter((m) => m.text.trim() === "").length;
+  const what = "The board never opens empty";
+  return [empty === 0 ? yes("C8", ask.index, what, `${boards.length} board lines, each with rows`) : no("C8", ask.index, what, "a card opened with nothing on it")];
+}
+
 export function board(ask: Ask, expect: Expect, truth: Truth[], placed: Placed[]): Verdict[] {
   const s = ask.index;
-  const opened = first(ask.moments, "board");
-  // A card may open empty when he asks for a drawing. It must then be filled or taken away: an empty card is never left.
-  const lastBoard = of(ask.moments, "board").at(-1);
-  const closed = of(ask.moments, "board-closed").some((m) => lastBoard !== undefined && m.at >= lastBoard.at);
-  const leftEmpty = lastBoard !== undefined && lastBoard.text.trim() === "" && !closed;
-  if (leftEmpty) return [no("C8", s, "An empty card is filled or taken away", "the card opened and stayed empty")];
-  if (lastBoard !== undefined && lastBoard.text.trim() === "") return expect.board ? [no("C8", s, "A board opens", "a card opened and was taken away with no drawing")] : [yes("C8", s, "An empty card is filled or taken away", "it opened empty and was taken away")];
-  if (expect.board === undefined) return lastBoard ? [drawing(ask, lastBoard), plainBoxes(ask, lastBoard)] : [];
-  if (!expect.board) return [opened ? no("C8", s, "No board opens here", "one opened") : yes("C8", s, "No board opens here", "none")];
-  if (!opened || !lastBoard) return [no("C8", s, "A board opens", "none opened")];
+  const drawn = of(ask.moments, "board").filter((m) => m.text.trim() !== "");
+  const opened = drawn[0];
+  const last = drawn.at(-1);   // the board he is left with
+  const never = neverEmpty(ask);
+  if (expect.board === undefined) return last ? [...never, drawing(ask, last), plainBoxes(ask, last)] : never;
+  if (!expect.board) return [...never, opened ? no("C8", s, "No board opens here", "one opened") : yes("C8", s, "No board opens here", "none")];
+  if (!opened || !last) return [...never, no("C8", s, "A board opens", "none opened")];
   const firstWords = first(ask.moments, "say");
   const openers = new Set(of(ask.moments, "say").filter((m) => m.opener).map((m) => m.id));
   const answer = spoken(ask).find((sentence) => !openers.has(sentence.of));
   const early = "The board opens while the answer begins, not after it";
   const measured = `${firstWords ? Math.round(opened.at - firstWords.at) : "?"} ms after its first words${answer ? `, ${Math.round(answer.end - opened.at)} ms before the answer's first sentence ends` : ""}`;
+  const limit = "by the end of the first sentence after the opener (the video's order; his click of 11-14 at 16:52)";
   const out = [
-    !answer ? unseen("C8", s, early, "nothing was voiced after the opener") : opened.at <= answer.end ? yes("C8", s, early, measured, "by the end of the first sentence after the opener (the video's order)") : no("C8", s, early, measured, "by the end of the first sentence after the opener (the video's order)"),
-    drawing(ask, lastBoard),
-    plainBoxes(ask, lastBoard),
-    // His choice of 2026-11-14: the board opens within two seconds of the first words. The board's
-    // card may open empty and fill; its opening is the first board line of the ask.
-    within("C8", s, "The board opens within two seconds of the first words", firstWords ? opened.at - firstWords.at : null, 2000, "his click of 11-14, from the 04:30 page"),
+    ...never,
+    !answer ? unseen("C8", s, early, "nothing was voiced after the opener") : opened.at <= answer.end ? yes("C8", s, early, measured, limit) : no("C8", s, early, measured, limit),
+    drawing(ask, last),
+    plainBoxes(ask, last),
   ];
   const where = placed.filter((p) => p.what === "board" && p.at >= opened.at).at(-1);
   if (!where) return [...out, unseen("C8", s, "The board covers no text", "the film did not say where it put the board")];

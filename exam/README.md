@@ -9,8 +9,10 @@ a run leaves on disk.
 ## What it promises
 
 - `criteria.ts` is the list: seventeen things paral must do (C1 to C17), and six checks of use (U2 to U7).
-- Two bars were chosen by the person this is built for (2026-11-14): the board opens within two seconds of the first
-  words, and his first words show within about 2 s of the press (2.5 s in the judge).
+- Two bars were chosen by the person this is built for (2026-11-14): his first words show within about 2 s of the
+  press (2.5 s in the judge), and the board opens on its first row, never empty, and is open before the first
+  sentence of the answer ends. The second replaced his earlier choice of an empty card inside two seconds, once he had
+  DuckyHelper's own line in front of him ("the board never opens empty").
 - Each file in `scenarios/` is one scripted situation: a page, what he says, what he circles, and what must be true.
 - `node exam/run.ts prepare [scenario]` makes, under `tmp/runs/<scenario>/`: the page as a picture, `truth.json` (where
   every line of the page really is), each ask as a sound file, and `flow.json` for the app's `./flow`.
