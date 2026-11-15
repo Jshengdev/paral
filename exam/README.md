@@ -94,7 +94,9 @@ only when the builder says the tree is frozen, and the builder edits again only 
 - **The quick line is twelve words at most** (his choice of 2026-11-14, 16:52). Every line said while he waits is
   held to it. Whether a quick line is true of his page is a reader's to judge, run by run.
 - **Dates.** A wrong date costs a student a deadline. A date the scenario names (`says`) must be in the answer as the
-  page writes it, with "1st" read as "1". And every date in any answer, a month with its day, must be on the page.
+  page writes it, with "1st" read as "1". And every date in any answer, a month with its day, must be on a page it read. Today that is only the page in front
+  of him; when the build reads other pages, their lines count too (his words: it may say what it found on another page,
+  never what it has no page for).
 - **A piece cut off from its sentence.** A long sentence cut at a comma once left "Which is 13." said on its own.
   The judge holds three signs of that, each heard on film. A reader judges the rest.
 - A verdict is `works`, `fails` or `not shown`. `not shown` means this run could not prove it either way.

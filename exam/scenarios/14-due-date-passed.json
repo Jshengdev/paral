@@ -1,0 +1,22 @@
+{
+  "v": 1,
+  "id": "due-date-passed",
+  "title": "A real page whose application date has passed, asked six ways",
+  "criteria": ["C6", "C13"],
+  "page": "real:catalina-maymester",
+  "source": { "url": "https://dornsife.usc.edu/wrigley/education/catalina-residential-college/catalina-island-maymester/" },
+  "steps": [
+    { "say": "When is this due?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["November 2, 2026"], "mark": { "on": "Application deadline: November 2, 2026" } } },
+    { "say": "What's the deadline to apply?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["November 2"], "mark": { "on": "Application deadline: November 2, 2026" } } },
+    { "say": "Is it too late to apply?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["November 2"], "neverSays": ["you can still apply", "it's not too late", "it is not too late", "still time to apply"] } },
+    { "say": "Where is it?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "mark": { "on": "Application deadline: November 2, 2026" } } },
+    { "say": "Can I still get in if I apply tonight?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "neverSays": ["you can still apply", "it's not too late", "it is not too late", "still time to apply"] } },
+    { "say": "What is this program about?", "circle": null,
+      "expect": { "plain": true, "sentences": 1 } }
+  ]
+}

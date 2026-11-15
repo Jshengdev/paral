@@ -27,7 +27,10 @@ export async function fetchReal(name: string, url: string, at?: string): Promise
   await mkdir(dir, { recursive: true });
   const original = join(dir, "page.orig.html");
   await run("curl", ["--silent", "--fail", "--location", "--max-time", "30", "--user-agent", "Mozilla/5.0 (Macintosh)", "--output", original, url]);
-  const html = (await readFile(original, "utf8")).replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
+  // Scripts go, so two renders are the same. An embedded frame goes too: it is another site's page, whose own scripts
+  // would run here, and it holds a video, not words on the page. A grey box of a video's shape stands in its place.
+  const html = (await readFile(original, "utf8")).replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "")
+    .replace(/<iframe\b[^>]*>[\s\S]*?<\/iframe>/gi, '<div style="background:#d9dce1;aspect-ratio:16/9;max-width:100%"></div>');
   if (!/<head[^>]*>/i.test(html) || !/<\/head>/i.test(html) || !/<\/body>/i.test(html)) throw new Error(`${url} is not a page with a head and a body`);
   const truth = `<script src="${pathToFileURL(join(EXAM, "pages", "truth.js")).href}"></script>`;
   await writeFile(saved, html.replace(/<head[^>]*>/i, (head) => `${head}<base href="${url}">`).replace(/<\/head>/i, `${PAINTS}</head>`)

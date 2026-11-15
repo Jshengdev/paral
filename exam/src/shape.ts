@@ -27,6 +27,8 @@ const Expect = z.object({
   plain: z.boolean().optional(),
   /** Words the answer must hold as the page writes them, such as a due date. */
   says: z.array(z.string().min(1)).optional(),
+  /** Words the answer may not hold, such as "you can still apply" on a page whose date has passed. */
+  neverSays: z.array(z.string().min(1)).optional(),
   /** He pressed again at once: nothing of the ask before this one may be said or drawn after this press. */
   takesBackTheAskBefore: z.boolean().optional(),
 });

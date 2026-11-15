@@ -3,8 +3,10 @@ import { of, type Ask } from "../timeline.ts";
 import { no, yes, type Verdict } from "../verdict.ts";
 
 // A date is a month and a day, as "March 1", "Mar 1st" or "December 9-16". A wrong date costs a student a deadline,
-// so two things are held: a date the scenario names is said as the page writes it, and no date is said that the
-// page does not show.
+// so two things are held: a date the scenario names is said as the page writes it, and no date is said that it has
+// no page for. His words of 2026-11-14: it may say a date that is not on the page in front of him when it read it on
+// another page, and it "shouldn't say things that doesn't have information on". Today the page on screen is the
+// only one it reads, so that page is the whole of `truth`; when it reads others, their lines join it.
 const MONTHS = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
 const MONTH = new RegExp(`\\b(${MONTHS.join("|")}|${MONTHS.map((m) => m.slice(0, 3)).join("|")}|sept)\\b\\.?`, "gi");
 const key = (month: string) => month.toLowerCase().slice(0, 3);
@@ -34,10 +36,14 @@ export function datesSaid(ask: Ask, expect: Expect, truth: Truth[]): Verdict[] {
     const what = `It says "${phrase}", as the page writes it`;
     out.push(plain(answer).includes(plain(phrase)) ? yes("C13", s, what, "it does") : no("C13", s, what, `it said: "${answer.slice(0, 110)}"`));
   }
+  for (const phrase of expect.neverSays ?? []) {
+    const what = `It never says "${phrase}"`;
+    out.push(plain(answer).includes(plain(phrase)) ? no("C13", s, what, `it said: "${answer.slice(0, 110)}"`) : yes("C13", s, what, "it does not"));
+  }
   const said = dates(answer);
   if (said.length === 0 || truth.length === 0) return out;
   const shown = new Set(truth.flatMap((t) => dates(t.text)).map((d) => `${d.month} ${d.day}`));
   const madeUp = said.filter((d) => !shown.has(`${d.month} ${d.day}`));
-  const what = "Every date it says is on the page";
-  return [...out, madeUp.length === 0 ? yes("C13", s, what, `${said.length} dates, each on the page`) : no("C13", s, what, `it said ${madeUp[0].said}, which the page does not show`)];
+  const what = "Every date it says is on a page it read";
+  return [...out, madeUp.length === 0 ? yes("C13", s, what, `${said.length} dates, each on the page in front of him`) : no("C13", s, what, `it said ${madeUp[0].said}, which is on no page it read`)];
 }
