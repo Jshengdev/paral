@@ -8,6 +8,7 @@ import { board, lesson } from "./judge/board.ts";
 import { closing, cutIn, ending, pressedAgain } from "./judge/ending.ts";
 import { atEnd, atRest, inked, look, thinkingShown, trail } from "./judge/frames.ts";
 import { marks } from "./judge/marks.ts";
+import { pagesGiven } from "./judge/pages.ts";
 import { pictureSent } from "./judge/picture.ts";
 import { drawnIn } from "./judge/motion.ts";
 import { takenBack, thinkingSaid, timing } from "./judge/timing.ts";
@@ -51,12 +52,17 @@ function boxOf(truth: Truth[], name: string, scenario: string): Box {
   return found.box;
 }
 
+/** The build's own name for this ask ("t1"), which every line it says carries. */
+const turnOf = (ask: Ask) => first(ask.moments, "say")?.id.split(":")[0] ?? "";
+
 export async function judge(scenario: Scenario): Promise<Judged> {
   const dir = runDir(scenario.id);
   const truth = await read(join(dir, "truth.json"), z.array(Truth));
   const flow = await read(join(dir, "flow.json"), Flow);
   const all = asks(await moments(dir));
   const where = await placed(dir);
+  const given = await pagesGiven(dir);
+  const ran = (await stat(join(dir, "session.jsonl"))).mtime;
   const filmed = existsSync(join(dir, "frames"));
   const seen = filmed ? await look(dir, flow.display) : null;
   const voice = existsSync(join(dir, "voice.wav")) ? await sound(join(dir, "voice.wav")) : null;
@@ -69,7 +75,7 @@ export async function judge(scenario: Scenario): Promise<Judged> {
     const nextDown = all[index + 1]?.down ?? null;
     if (step.say !== "") verdicts.push(...timing(ask, step.expect, where, nextDown), ...(seen ? await thinkingShown(seen, ask, where) : thinkingSaid(ask)));
     if (!takenBack(ask, nextDown)) verdicts.push(...heardWhole(ask, step.say));
-    verdicts.push(...marks(ask, step.expect, truth), ...spoken(ask, step.expect, truth), ...voiced(ask, step.expect, all[index + 1]?.down ?? null),
+    verdicts.push(...marks(ask, step.expect, truth), ...spoken(ask, step.expect, truth, { pages: given.get(turnOf(ask)) ?? [], ranOn: ran }), ...voiced(ask, step.expect, all[index + 1]?.down ?? null),
       ...board(ask, step.expect, truth, where), ...lesson(ask, step.expect), ...cutIn(ask, all[index - 1] ?? null, step.expect, voice), ...pressedAgain(ask, all[index - 1] ?? null, step.expect));
     if (seen) {
       const circled = step.circle === null ? null : boxOf(truth, step.circle, scenario.id);
@@ -92,7 +98,7 @@ export async function judge(scenario: Scenario): Promise<Judged> {
     scenario, verdicts, stills: filmed ? await stills(dir, all, frames) : [],
     says: all.flatMap((ask) => [`(ask ${ask.index + 1}) he said: ${of(ask.moments, "heard").at(-1)?.text ?? ""}`, ...of(ask.moments, "say").map((m) => m.text)]),
     spentUsd: existsSync(spend) ? (await read(spend, z.object({ usd: z.number() }))).usd : null,
-    ranAt: (await stat(join(dir, "session.jsonl"))).mtime.toLocaleString("sv-SE", { timeZone: "America/Los_Angeles" }).slice(0, 16),
+    ranAt: ran.toLocaleString("sv-SE", { timeZone: "America/Los_Angeles" }).slice(0, 16),
   };
   await writeFile(join(dir, "verdicts.json"), JSON.stringify(judged, null, 2));
   return judged;

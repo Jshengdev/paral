@@ -1,0 +1,23 @@
+{
+  "v": 1,
+  "id": "date-ahead",
+  "title": "A real page with its dates in view, one of them eight days ahead",
+  "criteria": ["C6", "C13"],
+  "page": "real:rso-deadlines",
+  "source": { "url": "https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/", "at": "#accordion-item-1" },
+  "steps": [
+    { "say": "When does this close?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["November 22", "11:59"], "mark": { "on": "November 22 at 11:59pm:" },
+        "neverSays": ["has passed", "already passed", "too late", "you missed"] } },
+    { "say": "How many days do I have left?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "countsDaysTo": "November 22" } },
+    { "say": "What's due after that?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["December 1"] } },
+    { "say": "When did it open?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["October 27"] } },
+    { "say": "Is there an info session I can still make?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["November 17"] } },
+    { "say": "My advisor hasn't done anything yet. Are we in trouble?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["December 1"] } }
+  ]
+}

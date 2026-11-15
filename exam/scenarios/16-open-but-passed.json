@@ -1,0 +1,27 @@
+{
+  "v": 1,
+  "id": "open-but-passed",
+  "title": "A real page that says NOW Open over a date that has passed, asked five ways",
+  "criteria": ["C6", "C13"],
+  "page": "real:marshall-outgoing",
+  "source": { "url": "https://students.marshall.usc.edu/current-students/international-programs/international-exchange-program/outgoing-students" },
+  "steps": [
+    { "say": "Are applications open right now?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["April 24"],
+        "saysThat": { "what": "the date has passed", "anyOf": ["passed", "closed", "missed", "ago", "no longer", "too late", "was due", "deadline was", "already", "out of date", "outdated", "stale"] },
+        "neverSays": ["you can still apply", "not too late", "still time to apply", "hasn't passed", "has not passed", "depends on today"] } },
+    { "say": "When is it due?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["April 24, 2026"], "mark": { "on": "due NOON April 24, 2026" },
+        "saysThat": { "what": "the date has passed", "anyOf": ["passed", "closed", "missed", "ago", "no longer", "too late", "was due", "deadline was", "already", "out of date", "outdated", "stale"] },
+        "neverSays": ["you can still apply", "not too late", "still time to apply", "hasn't passed", "has not passed", "depends on today"] } },
+    { "say": "What time on that day?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["noon"] } },
+    { "say": "So can I send in my application for spring today?", "circle": null,
+      "expect": { "plain": true, "sentences": 1,
+        "saysThat": { "what": "the date has passed", "anyOf": ["passed", "closed", "missed", "ago", "no longer", "too late", "was due", "deadline was", "already", "out of date", "outdated", "stale"] },
+        "neverSays": ["you can still apply", "not too late", "still time to apply", "hasn't passed", "has not passed", "depends on today"] } },
+    { "say": "What about fall? When do I apply for that?", "circle": null,
+      "expect": { "plain": true, "sentences": 1,
+        "saysThat": { "what": "this page gives no fall date", "anyOf": ["doesn't", "does not", "isn't", "is not", "not listed", "not shown", "only", "can't", "cannot", "don't see", "do not see", "no fall", "no date", "nothing"] } } }
+  ]
+}

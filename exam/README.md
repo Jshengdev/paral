@@ -94,9 +94,12 @@ only when the builder says the tree is frozen, and the builder edits again only 
 - **The quick line is twelve words at most** (his choice of 2026-11-14, 16:52). Every line said while he waits is
   held to it. Whether a quick line is true of his page is a reader's to judge, run by run.
 - **Dates.** A wrong date costs a student a deadline. A date the scenario names (`says`) must be in the answer as the
-  page writes it, with "1st" read as "1". And every date in any answer, a month with its day, must be on a page it read. Today that is only the page in front
-  of him; when the build reads other pages, their lines count too (his words: it may say what it found on another page,
-  never what it has no page for).
+  page writes it, with "1st" read as "1". And every date in any answer, a month with its day, must be on a page it
+  read (his words: it may say what it found on another page, never what it has no page for). A page it read is the
+  page in front of him, or one of the build's kept pages that the mind's log says it gave the model with that ask
+  (`src/judge/pages.ts`). A date he said himself, and the day of the run, also count. The kept pages' text is the
+  builder's reading of each site; the judge does not check it against the site.
+  A scenario can ask that the days to a date be counted rightly from the day of the run (`countsDaysTo`).
   A scenario can also ask that the answer say something in its own words (`saysThat`), such as that the date has
   passed: any one of the listed words shows it, whole words only. The list is a sign, so a reader reads every pass.
 - **A piece cut off from its sentence.** A long sentence cut at a comma once left "Which is 13." said on its own.

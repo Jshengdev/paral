@@ -1,7 +1,7 @@
 import type { Expect, Truth } from "../shape.ts";
 import { of, type Ask } from "../timeline.ts";
 import { no, yes, type Verdict } from "../verdict.ts";
-import { datesSaid } from "./dates.ts";
+import { datesSaid, type Known } from "./dates.ts";
 import { ladder } from "./ladder.ts";
 import { sentenceForm } from "./sentences.ts";
 
@@ -18,8 +18,8 @@ const HIM_AS_SOMEONE_ELSE = /\b(the|a) (student|user|learner)('s| is| has| was| 
 const WORKINGS = [/\bNONE\b/, /\bI.ll say\b/i, HIM_AS_SOMEONE_ELSE, /\bas an AI\b/i, /\bmy (instructions|prompt)\b/i];
 
 /** Everything the judge holds about what was said in one ask: the answer itself, its sentences' form, and the hint ladder. */
-export function spoken(ask: Ask, expect: Expect, truth: Truth[]): Verdict[] {
-  return [...oneLine(ask, expect), ...quickLines(ask), ...aboutThePage(ask, expect, truth), aboutHim(ask), ...sentenceForm(ask), ...answered(ask), ...plainAnswer(ask, expect), ...datesSaid(ask, expect, truth), ...ladder(ask, expect)];
+export function spoken(ask: Ask, expect: Expect, truth: Truth[], known: Known | null = null): Verdict[] {
+  return [...oneLine(ask, expect), ...quickLines(ask), ...aboutThePage(ask, expect, truth), aboutHim(ask), ...sentenceForm(ask), ...answered(ask), ...plainAnswer(ask, expect), ...datesSaid(ask, expect, truth, known), ...ladder(ask, expect)];
 }
 
 // His click of 2026-11-14 at 16:52: the quick line is twelve words at most. Every line said while he waits is held

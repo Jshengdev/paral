@@ -1,0 +1,26 @@
+{
+  "v": 1,
+  "id": "date-in-a-closed-section",
+  "title": "A real page whose deadline is further down, in a section that is closed",
+  "criteria": ["C6", "C13"],
+  "page": "real:rso-recognition",
+  "source": { "url": "https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/" },
+  "steps": [
+    { "say": "When does this close?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["November 22"],
+        "saysThat": { "what": "where on the page the date is", "anyOf": ["deadlines", "important dates", "below", "further down", "scroll", "section"] },
+        "neverSays": ["closes June 30", "closes on June 30", "due June 30", "due on June 30", "deadline is June 30", "has passed", "already passed"] } },
+    { "say": "How long do I have?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "countsDaysTo": "November 22" } },
+    { "say": "Is recognition open right now?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["open"] } },
+    { "say": "Where do I send in the application?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["EngageSC"] } },
+    { "say": "How long does it last once we're approved?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["June 30, 2027"] } },
+    { "say": "I'm not listed as an officer on my old club's page. What do I do?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["form"] } },
+    { "say": "Where do I book a room for our first meeting?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["Space Requests"] } }
+  ]
+}

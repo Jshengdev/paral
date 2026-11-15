@@ -34,6 +34,10 @@ const box = { x: 100, y: 80, w: 200, h: 20 };
 const PAGE = [{ id: "work", text: "My work", box }, { id: "limiter", text: "The rate limiter keeps its buckets in memory", box }];
 // A page whose subject is an address, which is one long word: "trycloudflare".
 const LINKS = [{ id: "head", text: "Short link", box }, { id: "link-1", text: "https://quiet-harbor-demo.trycloudflare.com/4CQMZu", box }];
+// The day of a run: Saturday, November 14, 2026, at 7 pm in Los Angeles.
+const RAN = new Date("2026-11-14T19:00:00-08:00");
+// A page the build read ahead of time, as its record names it.
+const KEPT = { title: "Recognition Process", url: "https://example.edu/recognition", lines: ["Deadlines +", "November 22 at 11:59pm: Application closes."] };
 // Some signs that an answer says a date has passed. A scenario lists its own.
 const PASSED = { what: "the date has passed", anyOf: ["passed", "closed", "missed", "ago", "no longer"] };
 // A page with a due date and a range of dates, as two lines.
@@ -114,6 +118,12 @@ const CASES: Case[] = [
   { name: "the date it was asked for, with a spoken ending", check: "It says", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "It is due March 1st.")]), { says: ["March 1"] }, DATED) },
   { name: "it says he can still apply after the date", check: "It never says", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "The deadline was March 1, but you can still apply today.")]), { neverSays: ["you can still apply"] }, DATED) },
   { name: "it says the date has passed", check: "It never says", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "That deadline, March 1, has passed.")]), { neverSays: ["you can still apply"] }, DATED) },
+  { name: "a date from a kept page the build gave with the ask", check: "Every date it says is on a page it read", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "It closes November 22 at 11:59 pm, inside the Deadlines section.")]), {}, DATED, { pages: [KEPT], ranOn: RAN }) },
+  { name: "a date from a kept page that was not given with the ask", check: "Every date it says is on a page it read", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "It closes November 22 at 11:59 pm, inside the Deadlines section.")]), {}, DATED, { pages: [], ranOn: RAN }) },
+  { name: "a date he said himself, said back to him", check: "Every date it says is on a page it read", mustPass: true, verdicts: () => spoken(ask([{ at: 4000, kind: "heard", text: "Is it due November 20?" }, say("t1:0", 6000, "It is not November 20; the page says March 1, 2027.")]), {}, DATED, { pages: [], ranOn: RAN }) },
+  { name: "it says today's date", check: "Every date it says is on a page it read", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "Today is November 14, and the page says March 1, 2027.")]), {}, DATED, { pages: [], ranOn: RAN }) },
+  { name: "the right count of days to a date", check: "It counts the days to November 22 rightly", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "It closes November 22 at 11:59 pm, which is eight days from today.")]), { countsDaysTo: "November 22" }, DATED, { pages: [KEPT], ranOn: RAN }) },
+  { name: "a count of days that is one too many", check: "It counts the days to November 22 rightly", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "It closes November 22 at 11:59 pm, which is nine days from today.")]), { countsDaysTo: "November 22" }, DATED, { pages: [KEPT], ranOn: RAN }) },
   { name: "it says in its own words that the date has passed", check: "It says that the date has passed", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "It was due March 1, and that was two weeks ago.")]), { saysThat: PASSED }, DATED) },
   { name: "it gives a passed date as if it were ahead", check: "It says that the date has passed", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "Applications close on March 1, so you'd want everything submitted by then.")]), { saysThat: PASSED }, DATED) },
   { name: "it says it depends on today's date", check: "It says that the date has passed", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "Whether it's too late depends on today's date compared with the March 1 deadline.")]), { saysThat: PASSED }, DATED) },
