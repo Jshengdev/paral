@@ -12,10 +12,10 @@ public struct Tokens: Codable {
         /// The room the box leaves round the line it hugs, across and up and down, where the page has that much
         /// room; and how round its corners are.
         public var boxPadX, boxPadY, boxRadius: Double
-        /// The mark of a walk's step breathes while it waits for his click: how far the glow round its ink reaches at
-        /// the top of a breath, how strong the glow is then (a box's wash deepens to the same), and how long one
-        /// breath lasts. The rest between two is the way arrow's (`way.nodEveryMs`): both say "this waits for you".
-        public var breath, breathDeep, breathMs: Double
+        /// The mark of a walk's step sends out an echo of its edge while it waits for his click, as the design kit's
+        /// highlight does: how long after the edge is drawn the first sets off, how often one follows another, how
+        /// much larger than the mark it grows (a share of the mark's size), and how strong it is when it sets off.
+        public var echoAfterMs, echoEveryMs, echoGrows, echoStrength: Double
     }
     /// Paral's own cursor, after the design kit's: the logo mark.
     public struct Cursor: Codable {

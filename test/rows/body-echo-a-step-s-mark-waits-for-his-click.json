@@ -1,6 +1,6 @@
 {
- "name": "body: the mark of the step he is on waits for his click and breathes: a mark whose board names no step never does; a step's mark is still while the pen draws it and the cursor's ripple spreads, then swells to its full breath, is still again, and breathes again a rest later; after his click the mind sends the mark again on the same line, and it is drawn again by the pen and takes up its breath from its own ink, not where the one before left off; when the walk ends the mark and its breath are gone; with motion reduced nothing breathes",
- "run": "body.breath",
+ "name": "body: the mark of the step he is on waits for his click, and says so as the design kit's highlight does, with an echo of its edge that grows out of it and fades, again and again: a mark whose board names no step never has one; a step's mark has none while the pen draws it nor for half a second after; then the echo sets off at once, is nearly at its full reach half way through and starts over every 1.1 s; between the page's close lines it grows sideways and stays off every other line's words; after his click the mind sends the mark again on the same line, and it is drawn again by the pen and its echo starts over from its own ink; when the walk ends the mark and its echo are gone; with motion reduced there is no echo",
+ "run": "body.echo",
  "in": {
   "lines": [
    "Recognition Process",
@@ -88,7 +88,7 @@
      "type": "mark",
      "id": "t1",
      "beat": 0,
-     "kind": "ring",
+     "kind": "box",
      "on": 4
     }
    },
@@ -165,7 +165,7 @@
      "type": "mark",
      "id": "g2",
      "beat": 0,
-     "kind": "ring",
+     "kind": "box",
      "on": 4
     }
    },
@@ -248,14 +248,15 @@
   ],
   "at": [
    3050,
-   9500,
-   10650,
-   12500,
-   14250,
+   8600,
+   9200,
+   9480,
+   9920,
+   10360,
+   10580,
    18500,
-   19500,
-   20652,
-   21650,
+   19100,
+   19482,
    25500
   ]
  },
@@ -265,69 +266,96 @@
     "mark": {
      "onLine": 2,
      "ink": "whole",
-     "breathReaches": 0
-    }
-   },
-   {
-    "mark": {
-     "onLine": 4,
-     "ink": "whole",
-     "breathReaches": 0
-    }
-   },
-   {
-    "mark": {
-     "onLine": 4,
-     "ink": "whole",
-     "breathReaches": 5
-    }
-   },
-   {
-    "mark": {
-     "onLine": 4,
-     "ink": "whole",
-     "breathReaches": 0
-    }
-   },
-   {
-    "mark": {
-     "onLine": 4,
-     "ink": "whole",
-     "breathReaches": 5
+     "echo": "none"
     }
    },
    {
     "mark": {
      "onLine": 4,
      "ink": "being drawn",
-     "breathReaches": 0
+     "echo": "none"
     }
    },
    {
     "mark": {
      "onLine": 4,
      "ink": "whole",
-     "breathReaches": 0
+     "echo": "none"
     }
    },
    {
     "mark": {
      "onLine": 4,
      "ink": "whole",
-     "breathReaches": 5
+     "echo": {
+      "beyondItsSides": 35.4,
+      "aboveAndBelow": 3,
+      "onOtherWords": false
+     }
     }
    },
    {
     "mark": {
      "onLine": 4,
      "ink": "whole",
-     "breathReaches": 0
+     "echo": {
+      "beyondItsSides": 69.6,
+      "aboveAndBelow": 5.9,
+      "onOtherWords": false
+     }
+    }
+   },
+   {
+    "mark": {
+     "onLine": 4,
+     "ink": "whole",
+     "echo": {
+      "beyondItsSides": 71.6,
+      "aboveAndBelow": 6,
+      "onOtherWords": false
+     }
+    }
+   },
+   {
+    "mark": {
+     "onLine": 4,
+     "ink": "whole",
+     "echo": {
+      "beyondItsSides": 35.4,
+      "aboveAndBelow": 3,
+      "onOtherWords": false
+     }
+    }
+   },
+   {
+    "mark": {
+     "onLine": 4,
+     "ink": "being drawn",
+     "echo": "none"
+    }
+   },
+   {
+    "mark": {
+     "onLine": 4,
+     "ink": "whole",
+     "echo": "none"
+    }
+   },
+   {
+    "mark": {
+     "onLine": 4,
+     "ink": "whole",
+     "echo": {
+      "beyondItsSides": 35.4,
+      "aboveAndBelow": 3,
+      "onOtherWords": false
+     }
     }
    },
    {
     "mark": null
    }
   ],
-  "breathsWithMotionReduced": 0
+  "echoesWithMotionReduced": 0
  }
 }

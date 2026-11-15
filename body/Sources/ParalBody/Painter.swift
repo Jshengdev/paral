@@ -65,6 +65,12 @@ public struct Painter {
         ctx.strokePath()
     }
 
+    /// The box round some points, or nothing for none.
+    static func bounds(of points: [CGPoint]) -> Box? {
+        guard let left = points.map(\.x).min(), let right = points.map(\.x).max(), let top = points.map(\.y).min(), let bottom = points.map(\.y).max() else { return nil }
+        return Box(x: left, y: top, w: max(right - left, 1), h: max(bottom - top, 1))
+    }
+
     /// Words in the look's typeface, ready to be measured and drawn.
     func inked(_ text: String, size: Double, color: CGColor, weight: NSFont.Weight = .regular) -> NSAttributedString {
         NSAttributedString(string: text, attributes: [.font: faces.face(size, weight), .foregroundColor: NSColor(cgColor: color) ?? .black])
@@ -87,8 +93,9 @@ public struct Painter {
         for mark in picture.marks {
             guard let ink = self.mark(mark, avoiding: picture.avoid, ctx) else { continue }
             drawn.append(Drawn(what: "mark", id: mark.key, box: ink.box, path: ink.inked))
-            // A breath is named too, with how far its glow reaches just then, so a film's record says when a mark breathes.
-            if mark.breath > 0 { drawn.append(Drawn(what: "breath", id: mark.key, box: ink.box.grown(tokens.mark.breath * mark.breath))) }
+            // An echo of the mark's edge is named too, with where it is just then, so a film's record says when a
+            // mark waits for his click. (It is `pulse` there: `echo` is his own loop coming back.)
+            if let echo = ink.echo, let far = Painter.bounds(of: echo) { drawn.append(Drawn(what: "pulse", id: mark.key, box: far, path: echo)) }
         }
         if let board = picture.board {
             let placed = self.board(board, clock: picture.clock, ctx)

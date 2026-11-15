@@ -31,7 +31,7 @@ import { boardType } from "./runners/boards.ts";
 import { filmedPages } from "./runners/pages.ts";
 import { cursor, cursorInside, guide, inkInside, resting, steps, toast, way } from "./runners/placed.ts";
 import { lead } from "./runners/leads.ts";
-import { breath } from "./runners/breath.ts";
+import { waiting } from "./runners/echo.ts";
 import { stands } from "./runners/stands.ts";
 import { curves, lifted, moves, scaled } from "./runners/motion.ts";
 
@@ -72,7 +72,7 @@ const runs: Record<string, (input: any) => unknown> = {
   "body.toast": toast,
   "body.guide": guide,
   "body.lead": lead,
-  "body.breath": breath,
+  "body.echo": waiting,
   "body.stands": stands,
   "body.curves": curves,
   "body.moves": moves,
