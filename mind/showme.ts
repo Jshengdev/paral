@@ -6,7 +6,7 @@ import { dateLine, type ToKeep } from "./cores/keep.ts";
 import { headingOf, holds, type KeptPage } from "./cores/page.ts";
 import { inside, type Point } from "./cores/walk.ts";
 import type { Ahead, Led } from "./glance.ts";
-import { point, whereIs } from "./place.ts";
+import { finished, point, whereIs } from "./place.ts";
 import { sayLine } from "./speech.ts";
 import { SEAM_VERSION } from "../seam/schema.ts";
 
@@ -53,6 +53,14 @@ export function shows(hands: Hands, looks: Looks, showed: (date: ToKeep) => void
     return { words, by, from, kept, line, under, here, text, rows, led };
   }
 
+  /** The step with the lines of the steps behind it that are on the same page, for their ticks. */
+  function stepWithDone(at: number, ahead: Ahead[], page: KeptPage | null) {
+    const now = step(at, ahead, page);
+    const done = ahead.slice(0, at).map((_, i) => step(i, ahead, page)).filter((past) => past.line !== null && past.from?.name === now.from?.name && past.line !== now.line).map((past) => ({ line: past.line!, under: past.under }));
+    if (now.led) now.led.done = done;
+    return { ...now, done };
+  }
+
   return {
     /** Whether his words were a bare "show me" with steps to walk. If so it is done here, to the last sound. */
     async asked(id: string, words: string, ahead: Ahead[], seen: Screen, page: KeptPage | null, signal: AbortSignal): Promise<boolean> {
@@ -73,11 +81,13 @@ export function shows(hands: Hands, looks: Looks, showed: (date: ToKeep) => void
         await sayLine(hands, id, settings.showMeDoneLine.value, signal);
         return true;
       }
-      const now = step(on, ahead, page);
+      const now = stepWithDone(on, ahead, page);
       send({ v, type: "clear" });
       const where = now.here && now.line !== null && page !== null ? whereIs(settings, seen, page, { line: now.line, under: now.under }) : null;
       let marked = `it is on ${now.from ? `the page "${now.from.title}"` : "a page that is no longer kept"}`;
-      if (now.here) marked = where === null ? "no line of this page is known for the step, so nothing is marked" : point(send, id, where);
+      const tags = settings.markTags.value;
+      if (now.here) marked = where === null ? "no line of this page is known for the step, so nothing is marked" : point(send, id, where, tags ? { tag: { label: settings.walkTags.value.next, tone: "strong" } } : {});
+      if (tags && now.here && page !== null) finished(send, id, settings, seen, page, now.done, settings.walkTags.value.done);
       send({ v, type: "board", id, rows: now.rows, now: on });
       if (now.kept !== null) showed(now.kept);
       looks.lead(now.led, where?.inView ? where.box : null);
@@ -101,7 +111,7 @@ export function shows(hands: Hands, looks: Looks, showed: (date: ToKeep) => void
       const done = on + 1;
       on += 1;
       hands.noted?.({ kind: "showme" });
-      const next = on < ahead.length ? step(on, ahead, page) : null;
+      const next = on < ahead.length ? stepWithDone(on, ahead, page) : null;
       if (next?.kept) showed(next.kept);
       looks.lead(next?.led ?? null);
       // The looks place the next step from the last look they took; with none to place it on, it is shown without a mark.

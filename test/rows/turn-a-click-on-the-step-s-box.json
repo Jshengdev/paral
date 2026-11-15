@@ -348,6 +348,21 @@
   },
   {
    "v": 1,
+   "type": "mark",
+   "id": "g1",
+   "beat": 0,
+   "kind": "tag",
+   "box": {
+    "x": 100,
+    "y": 300,
+    "w": 450,
+    "h": 20
+   },
+   "label": "8 days left",
+   "tone": "date"
+  },
+  {
+   "v": 1,
    "type": "say",
    "id": "g1",
    "beat": 0,
@@ -490,6 +505,21 @@
   },
   {
    "v": 1,
+   "type": "mark",
+   "id": "t2",
+   "beat": 0,
+   "kind": "tag",
+   "box": {
+    "x": 100,
+    "y": 300,
+    "w": 450,
+    "h": 20
+   },
+   "label": "Next",
+   "tone": "strong"
+  },
+  {
+   "v": 1,
    "type": "board",
    "id": "t2",
    "rows": [
@@ -539,6 +569,49 @@
     "w": 450,
     "h": 20
    }
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "g2",
+   "beat": 0,
+   "kind": "tag",
+   "box": {
+    "x": 100,
+    "y": 350,
+    "w": 450,
+    "h": 20
+   },
+   "label": "Next",
+   "tone": "strong"
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "g2",
+   "beat": 0,
+   "kind": "tick",
+   "box": {
+    "x": 100,
+    "y": 300,
+    "w": 450,
+    "h": 20
+   }
+  },
+  {
+   "v": 1,
+   "type": "mark",
+   "id": "g2",
+   "beat": 0,
+   "kind": "tag",
+   "box": {
+    "x": 100,
+    "y": 300,
+    "w": 450,
+    "h": 20
+   },
+   "label": "Done",
+   "tone": "quiet"
   },
   {
    "v": 1,

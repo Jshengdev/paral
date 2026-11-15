@@ -8,7 +8,7 @@ import { tape } from "../mind/adapters/tape.ts";
 import { serve } from "../mind/server.ts";
 import { boxes, fitted, split, wipes } from "../mind/cores/beats.ts";
 import { asksFor, fits, hear, saysOnly, silence, unasked } from "../mind/cores/catch.ts";
-import { datesIn, daysFrom, unknownDate, type Named } from "../mind/cores/dates.ts";
+import { away, datesIn, daysFrom, unknownDate, type Named } from "../mind/cores/dates.ts";
 import { calendarFile, dateLine, named, when } from "../mind/cores/keep.ts";
 import { nextStep, note, nothingYet, type Noted, type Step } from "../mind/cores/guide.ts";
 import { headingOf, whichPage, whichWay } from "../mind/cores/page.ts";
@@ -118,6 +118,7 @@ const runs: Record<string, (input: any) => unknown> = {
     });
   },
   "page.way": (input) => input.cases.map(([seen, line]: [string[], string]) => whichWay(seen, input.page, line)),
+  "dates.away": (input) => input.cases.map(([line, today]: [string, string]) => away(line, new Date(today))?.words ?? null),
   "dates.in": (input) => input.texts.map((text: string) => datesIn(text)),
   "keep.when": (input) => input.cases.map(([written, today]: [string, string]) => when(written, new Date(today))),
   "keep.file": (input) => input.cases.map((entry: any) => calendarFile({ ...entry, today: new Date(entry.today) })),
