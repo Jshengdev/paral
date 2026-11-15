@@ -82,8 +82,11 @@ export const FromMind = z.discriminatedUnion("type", [
   /** A calendar file the mind has written for him to keep a date; the body opens it and his own click in Calendar adds it. */
   z.object({ v, type: z.literal("open"), id, path: z.string().min(1) }),
   z.object({ v, type: z.literal("mark"), id, beat, kind: MarkKind, box: Box, label: z.string().optional() }),
+  /** In place of a mark, when the thing is on this page and not in view: which way to scroll, and the name of what it leads to. `clear` wipes it. */
+  z.object({ v, type: z.literal("way"), id, to: z.enum(["up", "down"]), toward: z.string().min(1) }),
   z.object({ v, type: z.literal("echo"), id, box: Box, shape: z.enum(["loop", "ring", "box"]) }),
-  z.object({ v, type: z.literal("board"), id, rows: z.array(z.array(z.string().min(1)).min(1)) }),
+  /** `now` is only on a board of steps, one to a row: the number of the row, from 0, that is the step he is on. */
+  z.object({ v, type: z.literal("board"), id, rows: z.array(z.array(z.string().min(1)).min(1)), now: z.number().int().nonnegative().optional() }),
   z.object({ v, type: z.literal("board.close"), id }),
   z.object({ v, type: z.literal("clip"), id, name: z.string().min(1), clip: z.string().min(1), still: z.string().min(1), seconds: z.number().positive() }),
   z.object({ v, type: z.literal("clear") }),

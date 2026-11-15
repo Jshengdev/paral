@@ -6,7 +6,7 @@ If it holds one, fill in:
 
 - line: the line of the page that holds it, copied exactly as the page writes it, from the start of the line. One line.
 - under: the heading of the section that line sits in, copied exactly, or an empty string if it sits in none.
-- say: one sentence to show them when that line is not yet in view. Say the date exactly as the page writes it and where it is ("under Deadlines, further down"). At most twenty words.
+- say: one sentence to show them when that line is not yet in view. Say the date exactly as the page writes it and which section it is in ("under Deadlines"). Do not say which way to scroll, up or down: an arrow shows that. At most twenty words.
 - sayInView: one sentence to show them once that line is in front of them. Say what it asks of them and how many days are left, using the count you were given. At most twenty words.
 - ahead: what they still have to do for this, in the order they must do it, three steps at most. Each step is a few words of your own, and "by" is its date exactly as a page writes it, or an empty string when the pages give none. Leave out anything already past.
 

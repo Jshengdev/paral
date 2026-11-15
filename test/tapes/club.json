@@ -76,7 +76,10 @@
     "Deadlines +",
     "October 27: Application opens",
     "November 22 at 11:59pm: Application closes. You must submit the form on EngageSC before 11:59pm.",
-    "December 1: Deadline for advisors to submit their requirements."
+    "December 1: Deadline for advisors to submit their requirements.",
+    "Info Sessions, Workshops, and Office Hours +",
+    "Attend an info session to learn how the recognition process works.",
+    "Office hours are held every week in the Campus Activities office."
    ]
   },
   {
@@ -98,7 +101,7 @@
  "glance": {
   "line": "November 22 at 11:59pm: Application closes. You must submit the form on EngageSC before 11:59pm.",
   "under": "Deadlines +",
-  "say": "The application closes November 22 at 11:59pm; that is under Deadlines, further down.",
+  "say": "The application closes November 22 at 11:59pm; that is under Deadlines.",
   "sayInView": "This is the date to keep: the application closes in 8 days.",
   "ahead": [
    {

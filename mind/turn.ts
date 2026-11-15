@@ -10,6 +10,7 @@ import { glances, type Ahead, type Asked } from "./glance.ts";
 import { keeps } from "./keep.ts";
 import { drafts } from "./drafts.ts";
 import type { Listening, Ports } from "./ports.ts";
+import { wayToDate } from "./place.ts";
 import { ready } from "./ready.ts";
 import type { Settings } from "./settings.ts";
 import { speech } from "./speech.ts";
@@ -29,9 +30,9 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
   /** The kept page on his screen as last seen (null: none of them), and the one that was there when what is drawn was drawn. */
   let onPage: KeptPage | null = null;
   let drawnOn: KeptPage | null = null;
-  const which = (seen: Screen) => whichPage(seen.lines.map((line) => line.text), ports.pages, settings.pageLeastLines.value);
+  const which = (seen: Pick<Screen, "lines">) => whichPage(seen.lines.map((line) => line.text), ports.pages, settings.pageLeastLines.value);
   const send: Send = (line) => {
-    if (line.type === "mark" || line.type === "board" || line.type === "clip") [markUp, drawnOn] = [true, onPage];
+    if (line.type === "mark" || line.type === "way" || line.type === "board" || line.type === "clip") [markUp, drawnOn] = [true, onPage];
     if (line.type === "clear") markUp = false;
     toBody(line);
   };
@@ -162,6 +163,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
       const told = lesson.shown.filter((line) => !shownBefore.includes(line));
       if (!mine.signal.aborted && told.length > 0) asked = { words: words.text, told, page: onPage?.name ?? null, at: Date.now() };
       keeping.answered(told, onPage ? [onPage, ...ports.pages] : ports.pages);
+      if (onPage && !mine.signal.aborted) wayToDate({ ports, settings, send, log }, id, screen, onPage, told);
       if (!mine.signal.aborted) send({ v, type: "state", name: "idle" });
     } catch (error) {
       if (mine.signal.aborted) return;

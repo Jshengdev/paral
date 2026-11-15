@@ -1,14 +1,13 @@
 import type { Hands, Screen } from "./ask.ts";
 import { unknownDate, worded } from "./cores/dates.ts";
 import { named, type ToKeep } from "./cores/keep.ts";
-import { locate } from "./cores/ground.ts";
 import { whichPage } from "./cores/page.ts";
+import { point, whereIs } from "./place.ts";
 import type { Following, Glanced } from "./ports.ts";
 import { SEAM_VERSION, type FromBody } from "../seam/schema.ts";
 
 const v = SEAM_VERSION;
 type Look = Extract<FromBody, { type: "look" }>;
-const plain = (text: string) => text.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();
 
 /** One thing still ahead for him, as found on a kept page: what, by when as the page writes it, and the page's address. */
 export type Ahead = { step: string; by: string; from: string };
@@ -22,7 +21,8 @@ export type Asked = Following & { page: string | null };
  * open. Nothing read from his screen is sent for that. If it does,
  * the line is marked where it is on his screen now (the line itself, or the heading it sits under), one sentence is
  * shown in the capsule with the trail of what was done, and what is still ahead is drawn as a board. It is shown,
- * not spoken. When he scrolls or opens a section the mark moves to where the thing now is. A date it shows is
+ * not spoken. When he scrolls or opens a section the mark moves to where the thing now is; when the thing is
+ * out of view, the way to it is sent in the mark's place. A date it shows is
  * the one he can ask to keep.
  *
  * When he has just asked something and then come to another kept page, the look is for what he was sent there for:
@@ -68,23 +68,19 @@ export function glances({ ports, settings, send, log }: Hands, remember: (ahead:
       }
       const glanced = found.get(key);
       if (!glanced) return log(`${id}: this page was looked at before and holds nothing; nothing is shown`);
-      // Where the thing is on his screen now: the line itself when it is in view, or the heading it sits under. A
-      // kept line can be a whole paragraph where his screen breaks it into several, so the screen's line that the
-      // kept one begins with counts as the line.
-      const begins = look.lines.find((read) => plain(read.text).length >= 12 && plain(glanced.line).startsWith(plain(read.text)));
-      const line = locate(begins?.text ?? glanced.line, look.lines, look.display, settings.groundMinScore.value);
-      const heading = glanced.under === "" ? null : locate(glanced.under, look.lines, look.display, settings.groundMinScore.value);
-      const target = line.found ? line : heading?.found ? heading : null;
-      const text = line.found ? glanced.sayInView : glanced.say;
-      if (`${key} on ${target?.line ?? ""}` === shown) return log(`${id}: nothing has moved since the last look; what is shown stays`);
-      shown = `${key} on ${target?.line ?? ""}`;
+      // Where the thing is on his screen now: the line itself, the heading it sits under, or the way to it.
+      const where = whereIs(settings, look, page, glanced);
+      const text = where.inView ? glanced.sayInView : glanced.say;
+      const at = `${key} on ${where.on ?? where.to ?? ""}`;
+      if (at === shown) return log(`${id}: nothing has moved since the last look; what is shown stays`);
+      shown = at;
       // Push: a date this page does not hold would be made up, so a sentence that names one is not shown.
       const today = new Date(look.at).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
       const made = unknownDate(text, [today, ...page.lines]);
       if (made) return log(`${id}: push held back a look's sentence that names a date the page does not hold (${worded(made)}); it was: "${text}"`);
       send({ v, type: "clear" });
-      if (target) send({ v, type: "mark", id, beat: 0, kind: "box", box: target.box });
-      const reached = line.found ? "found the line" : "found where it is";
+      const marked = point(send, id, where);
+      const reached = where.inView ? "found the line" : "found where it is";
       // Each step of the trail is something that was done for this look. The model was given this one kept page, up to a number of lines.
       const read = page.lines.length <= settings.pageLinesGiven.value ? "read the whole page" : `read its first ${settings.pageLinesGiven.value} lines`;
       const what = glanced.kind === "passed" ? "found 1 date that has passed" : `found 1 ${glanced.kind}`;
@@ -96,7 +92,7 @@ export function glances({ ports, settings, send, log }: Hands, remember: (ahead:
       if (glanced.ahead.length > 0) send({ v, type: "board", id, rows: glanced.ahead.map((step) => [step.by ? `${step.step}: ${step.by}` : step.step]) });
       // Only a date still ahead is one he can ask to keep: a passed one is told, never offered.
       if (glanced.kind === "date") showed({ title: named(glanced.line, page.title), written: glanced.line, url: page.url });
-      log(`${id}: shown without being asked: "${text}"; the mark is on ${target ? `"${target.line}"` : "nothing, since neither the line nor its heading is in view"}`);
+      log(`${id}: shown without being asked: "${text}"; ${marked}`);
     },
   };
 }

@@ -29,6 +29,8 @@ public enum Seen {
     /// A calendar file the mind has written. The scene shows nothing for it; the app opens it (see `Keep`).
     case open(path: String)
     case mark(id: String, beat: Int, kind: MarkKind, box: Box, label: String?)
+    /// The thing is on this page and not in view: which way to scroll ("up" or "down") and what it leads to.
+    case way(id: String, to: String, toward: String)
     case echo(id: String, box: Box, shape: String)
     case board(id: String, rows: [[String]])
     case boardClose(id: String)
@@ -109,6 +111,9 @@ public enum Seen {
                 return .failure(Refused("mark: id, beat, a known kind and a box with positive w and h are needed"))
             }
             return .success(.mark(id: id, beat: beat, kind: kind, box: b, label: s("label")))
+        case "way":
+            guard let id, let to = s("to"), ["up", "down"].contains(to), let toward = s("toward"), !toward.isEmpty else { return .failure(Refused("way: id, to (up or down) and toward are needed")) }
+            return .success(.way(id: id, to: to, toward: toward))
         case "echo":
             guard let id, let b = box(f["box"]) else { return .failure(Refused("echo: id and a box with positive w and h are needed")) }
             return .success(.echo(id: id, box: b, shape: s("shape") ?? "loop"))

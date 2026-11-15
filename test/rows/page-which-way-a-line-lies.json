@@ -1,0 +1,72 @@
+{
+ "name": "page: which way a kept line lies from what is on his screen: down when the screen shows the page above it, up when it shows the page below it, and no way when the line is within what is in view, when no line on screen is the page's alone, or when the page does not hold the line",
+ "run": "page.way",
+ "in": {
+  "page": {
+   "name": "rso-recognition-process",
+   "url": "https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/",
+   "readOn": "2026-11-14",
+   "title": "Recognition Process - Campus Activities",
+   "lines": [
+    "Recognition Process",
+    "The Spring 2027 RSO Recognition process is now open on EngageSC for new RSOs and RSOs re-establishing after a lapse in recognition.",
+    "If you need accessibility accommodations or have questions related to RSO recognition, please contact Campus Activities.",
+    "Important Dates",
+    "Deadlines +",
+    "October 27: Application opens",
+    "November 22 at 11:59pm: Application closes. You must submit the form on EngageSC before 11:59pm.",
+    "December 1: Deadline for advisors to submit their requirements.",
+    "Info Sessions, Workshops, and Office Hours +",
+    "Attend an info session to learn how the recognition process works.",
+    "Office hours are held every week in the Campus Activities office."
+   ]
+  },
+  "cases": [
+   [
+    [
+     "Recognition Process",
+     "The Spring 2027 RSO Recognition process is now open on EngageSC",
+     "If you need accessibility accommodations or have questions related to RSO recognition,"
+    ],
+    "November 22 at 11:59pm: Application closes. You must submit the form on EngageSC before 11:59pm."
+   ],
+   [
+    [
+     "Info Sessions, Workshops, and Office Hours +",
+     "Attend an info session to learn how the recognition process works.",
+     "Office hours are held every week in the Campus Activities office."
+    ],
+    "November 22 at 11:59pm: Application closes. You must submit the form on EngageSC before 11:59pm."
+   ],
+   [
+    [
+     "The Spring 2027 RSO Recognition process is now open on EngageSC",
+     "Important Dates",
+     "Deadlines +",
+     "Info Sessions, Workshops, and Office Hours +"
+    ],
+    "November 22 at 11:59pm: Application closes. You must submit the form on EngageSC before 11:59pm."
+   ],
+   [
+    [
+     "Recognition Process",
+     "Deadlines +"
+    ],
+    "November 22 at 11:59pm: Application closes. You must submit the form on EngageSC before 11:59pm."
+   ],
+   [
+    [
+     "The Spring 2027 RSO Recognition process is now open on EngageSC"
+    ],
+    "A line this page does not hold at all"
+   ]
+  ]
+ },
+ "out": [
+  "down",
+  "up",
+  null,
+  null,
+  null
+ ]
+}

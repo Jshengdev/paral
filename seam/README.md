@@ -30,7 +30,8 @@ Promises: one schema for every line between body and mind (`schema.ts`), newline
 | `mute` | this answer has no voice, and why |
 | `open` | a calendar file (.ics) the mind has written for a date he asked to keep; the app opens it in his calendar app and clicks nothing there. The scene shows nothing for it, and the scripted stand-in does not open it |
 | `mark` | a ring, underline, wavy line, bracket or hugging box at a box, with the beat it belongs to |
-| `board` | rows of boxes joined by arrows. With no rows it is an empty card, which a later `board` with the same id fills; the mind sends an empty one only when `drawingAsks` holds words, and as set it holds none |
+| `way` | in place of a mark, when the thing is on this page and neither its line nor its heading is in view: `to` is `up` or `down`, `toward` names what it leads to ("Deadlines"). `clear` wipes it, as it wipes a mark |
+| `board` | rows of boxes joined by arrows. On a board of steps, one to a row, `now` is the number of the row (from 0) he is on. With no rows it is an empty card, which a later `board` with the same id fills; the mind sends an empty one only when `drawingAsks` holds words, and as set it holds none |
 | `board.close` | take away an empty card, since no board is coming |
 | `clip` | a lesson clip to play in the board's place: its name, the file, a first still, and its length |
 | `clear` | wipe paral's marks, board and clip |
