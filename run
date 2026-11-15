@@ -56,9 +56,9 @@ if [ "${1:-}" = grants ]; then grants "$key" "$pen"; exit 0; fi
 
 echo "run: building the app"
 (cd body && swift build -c release 2>&1 | tail -1 | grep -q "Build complete") || { echo "run: the body did not build; run (cd body && swift build -c release) to see why" >&2; exit 1; }
-# A running paral is ended before its file is replaced. Replaced under it, the old app goes on looking at the screen
-# from a file that is no longer there; macOS then cannot tell which app is looking, and puts its box that asks to
-# allow the app to see the screen in front of everything until it is answered.
+# A running paral is ended before its file is replaced, so no app is left running from a file that is gone. This does
+# not keep macOS's box away (the one that asks to allow the app to see the screen): that box comes when a running app
+# is stopped while one of its looks is on its way, at any stop (notes/2026-11-15.md).
 if pgrep -f "$app/Contents/MacOS/paral" >/dev/null 2>&1; then
   stop
   tries=0
