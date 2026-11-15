@@ -42,8 +42,8 @@ const SUBJECT = /^(i|you|he|she|it|we|they|the|a|an|this|that|these|those|your|i
 const NOT_AFTER_SO = /^(that|as|far|long|much|many|to|on|forth)$/i;
 
 /**
- * A spoken sentence over its limit is cut into two only where both parts stand as sentences: after a colon or a
- * semicolon, at a comma before "so" ("..., so undoing it means adding"), or at a comma before "and" or "but" when a
+ * A spoken sentence over its limit is cut into two only where both parts stand as sentences: after a semicolon, after
+ * a colon unless a name follows it, at a comma before "so" ("..., so undoing it means adding"), or at a comma before "and" or "but" when a
  * subject follows ("..., and you add 4"). It is cut at the last such place at or before the limit, or failing that
  * the first one after it; the rest is said next. A comma alone is no place to cut ("..., which is 13" stays whole),
  * and with no place at all the sentence is left as it is.
@@ -59,7 +59,10 @@ export function split(sentence: string, limits: Limits): string[] {
     const next = words[first + 1] ?? "";
     const opens = /^so$/i.test(words[first]) ? !NOT_AFTER_SO.test(next) : /^(and|but)$/i.test(words[first]) && SUBJECT.test(next);
     const joins = /,$/.test(before) && opens;
-    if (/[;:]$/.test(before) || joins) places.push(first);
+    // After a colon a clause follows, or a name does ("Officer Trainings: Hazing Prevention and Officer Learning
+    // Path"). A capital letter on a word that cannot open a sentence is a name, and a name is not cut in two.
+    const named = /:$/.test(before) && /^\p{Lu}/u.test(words[first]) && !SUBJECT.test(words[first]);
+    if ((/[;:]$/.test(before) && !named) || joins) places.push(first);
   }
   const first = places.filter((place) => place <= limit).at(-1) ?? places[0];
   if (first === undefined) return [sentence.trim()];

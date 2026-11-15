@@ -22,7 +22,7 @@ import { readings } from "./readings.ts";
 import { moments, placed } from "./session.ts";
 import { sound } from "./sound.ts";
 import { Flow, Truth, findNamed, type Box, type Scenario } from "./shape.ts";
-import { BUILD } from "./tools.ts";
+import { appCommit, BUILD } from "./tools.ts";
 import { asks, first, looks, of, spoken as aloud, type Ask, type Moment } from "./timeline.ts";
 import type { Verdict } from "./verdict.ts";
 
@@ -153,6 +153,7 @@ export async function judge(scenario: Scenario): Promise<Judged> {
     says: all.flatMap((ask) => [`(ask ${ask.index + 1}) he said: ${of(ask.moments, "heard").at(-1)?.text ?? ""}`, ...of(ask.moments, "say").map((m) => m.text)]),
     spentUsd: existsSync(spend) ? (await read(spend, z.object({ usd: z.number() }))).usd : null,
     ranAt: ran.toLocaleString("sv-SE", { timeZone: "America/Los_Angeles" }).slice(0, 16),
+    app: await appCommit(),
   };
   await writeFile(join(dir, "verdicts.json"), JSON.stringify(judged, null, 2));
   return judged;

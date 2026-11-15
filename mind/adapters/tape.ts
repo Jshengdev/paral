@@ -8,6 +8,8 @@ const Tape = z.object({
   holdSecondLook: z.boolean().optional(),
   failSecondLook: z.boolean().optional(),
   holdOpener: z.boolean().optional(),
+  /** A look's answer waits until a row releases it ("look"), so a row can press the key while a look is being answered. */
+  holdGlance: z.boolean().optional(),
   opener: z.string().optional(),
   /** What a look he did not ask for finds on a kept page; null for a page that holds nothing. Absent: no such looks. */
   glance: z.object({ kind: z.enum(["date", "step", "passed"]).optional(), line: z.string(), under: z.string(), say: z.string(), sayInView: z.string(), ahead: z.array(z.object({ step: z.string(), by: z.string() })) }).nullable().optional(),
@@ -103,7 +105,8 @@ export function tape(path: string): Ports & { release(kind?: string): void; aske
     glancer:
       recorded.glance !== undefined
         ? {
-            async glance(_page, _today, _signal, following) {
+            async glance(_page, _today, signal, following) {
+              if (recorded.holdGlance) await held(signal, "look");
               const found = following ? recorded.glanceAfterAsk : recorded.glance;
               return found ? { kind: following ? "step" : "date", ...found } : null;
             },

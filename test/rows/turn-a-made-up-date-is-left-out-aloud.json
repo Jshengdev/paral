@@ -151,13 +151,6 @@
   },
   {
    "v": 1,
-   "type": "way",
-   "id": "t1",
-   "to": "down",
-   "toward": "November 22 at 11:59pm"
-  },
-  {
-   "v": 1,
    "type": "state",
    "name": "idle"
   }

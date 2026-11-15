@@ -8,15 +8,18 @@ import type { Following, Glanced } from "./ports.ts";
 import { SEAM_VERSION, type FromBody } from "../seam/schema.ts";
 
 const v = SEAM_VERSION;
+/** A stop signal that never fires: a look's question to the model is not withdrawn (see `take`). */
+const never = new AbortController().signal;
 type Look = Extract<FromBody, { type: "look" }>;
 
 /** One thing still ahead for him, as found on a kept page: what, by when as the page writes it, and the page's address. */
 export type Ahead = { step: string; by: string; from: string };
 /**
  * A step he asked to be shown ("show me"): the kept page it is on, the line of that page that writes its date (null
- * when none is known), its sentence, and the board of all the steps with the row he is on.
+ * when none is known) and the heading the page puts that line under, its sentence, and the board of all the steps
+ * with the row he is on.
  */
-export type Led = { page: string; line: string | null; text: string; rows: string[][]; now: number; trail: string[] };
+export type Led = { page: string; line: string | null; under: string; text: string; rows: string[][]; now: number; trail: string[] };
 /** What he asked a moment ago, what he was told, and the kept page he was on then (null if none). */
 export type Asked = Following & { page: string | null };
 
@@ -47,6 +50,8 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
   let ringed: Box | null = null;
   /** The last look taken on a kept page, so a step can be placed again without waiting for the next one. */
   let last: { look: Look | Screen; page: KeptPage } | null = null;
+  /** The looks being answered by the model now, by the same key as `found`. */
+  const beingAsked = new Map<string, Promise<Glanced | null | void>>();
   /** The page on which each ask he followed was found to end, by the words of the ask. */
   const endedOn = new Map<string, string>();
 
@@ -54,7 +59,7 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
   function follow(look: Look | Screen, page: KeptPage, step: Led) {
     running?.abort();
     const id = `g${++looks}`;
-    const where = step.line === null ? null : whereIs(settings, look, page, { line: step.line, under: "" });
+    const where = step.line === null ? null : whereIs(settings, look, page, { line: step.line, under: step.under });
     ringed = where?.inView ? where.box : null;
     const at = `step ${step.now} on ${where?.on ?? where?.to ?? ""}`;
     if (at === shown) return log(`${id}: nothing has moved since the last look; what is shown stays`);
@@ -108,21 +113,32 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
       if (first) {
         const why = following ? `a look after his ask "${following.words}": he has come to` : "an unasked look: his screen is";
         log(`${id}: ${why} the kept page "${page.title}". Nothing read from his screen leaves the Mac for it: the deep model is asked about the kept page's own text${following ? ", with that question and its answer" : ""}`);
-        const glanced = await ports.glancer.glance(page, look.at, mine.signal, following ? { words: following.words, told: following.told } : undefined).catch((error) => {
-          if (!mine.signal.aborted) log(`${id}: the look failed (${error instanceof Error ? error.message : error}); nothing is shown`);
-          return undefined;
-        });
-        if (mine.signal.aborted || glanced === undefined) return;
-        // The heading is read from the kept page, not taken on the model's word: once it named the site's menu instead.
-        if (glanced !== null) glanced.under = headingOf(page, glanced.line, glanced.under);
-        found.set(key, glanced);
+        // The model is asked to the end even when he presses the key or another page comes up meanwhile: what it
+        // finds is kept, so the steps are there for "show me" and the page is not asked about twice. Only the showing
+        // stops. A look of the same page that comes while it is being asked waits for the same answer.
+        let asking = beingAsked.get(key);
+        if (asking === undefined) {
+          asking = ports.glancer
+            .glance(page, look.at, never, following ? { words: following.words, told: following.told } : undefined)
+            .catch((error) => void log(`${id}: the look failed (${error instanceof Error ? error.message : error}); nothing is shown`))
+            .finally(() => beingAsked.delete(key));
+          beingAsked.set(key, asking);
+        }
+        const glanced = await asking;
+        if (glanced === undefined) return;
+        if (!found.has(key)) {
+          // The heading is read from the kept page, not taken on the model's word: once it named the site's menu instead.
+          if (glanced !== null) glanced.under = headingOf(page, glanced.line, glanced.under);
+          found.set(key, glanced);
+          if (glanced !== null && following) endedOn.set(following.words, page.name);
+          if (glanced !== null && !following) remember(glanced.ahead.map((step) => ({ ...step, from: page.url })));
+        }
+        if (mine.signal.aborted) return log(`${id}: he pressed the key, or another page came up, before this look was answered; what it found is kept and not shown now`);
         if (glanced === null && following) {
           log(`${id}: what he was sent for is not on this page; the page gets a look of its own`);
           return this.take(look, asked);
         }
         if (glanced === null) return log(`${id}: the page holds nothing that will cost him later; nothing is shown`);
-        if (following) endedOn.set(following.words, page.name);
-        else remember(glanced.ahead.map((step) => ({ ...step, from: page.url })));
       }
       const glanced = found.get(key);
       if (!glanced) return log(`${id}: this page was looked at before and holds nothing; nothing is shown`);

@@ -1,0 +1,159 @@
+{
+ "answers": {
+  "what is left": [
+   {
+    "problem": "What is left before the club application closes",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "Three things are left, and the first is the officers' training.",
+      "mark": null
+     }
+    ]
+   }
+  ],
+  "where do i book a room": [
+   {
+    "problem": "Where to book a room for a club",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "Room booking is on the RSO Resources page, under Space Requests.",
+      "mark": null
+     }
+    ]
+   }
+  ],
+  "when does it close": [
+   {
+    "problem": "When the club application closes",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "The application closes November 22 at 11:59pm.",
+      "mark": null
+     },
+     {
+      "say": "A late form is taken until November 30.",
+      "mark": null
+     }
+    ]
+   }
+  ],
+  "what is still ahead for me": [
+   {
+    "problem": "What is still ahead for the club",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "You submit on EngageSC by November 22 at 11:59pm.",
+      "mark": null
+     },
+     {
+      "say": "Then your advisor's requirements are due December 1.",
+      "mark": null
+     }
+    ]
+   }
+  ],
+  "where are the info sessions": [
+   {
+    "problem": "Where the info sessions are listed",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "Those are further down this page, in the section called Info Sessions, Workshops, and Office Hours.",
+      "mark": null
+     }
+    ]
+   }
+  ]
+ },
+ "leaks": [],
+ "pages": [
+  {
+   "name": "rso-recognition-process",
+   "url": "https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/",
+   "readOn": "2026-11-14",
+   "title": "Recognition Process - Campus Activities",
+   "lines": [
+    "Recognition Process",
+    "The Spring 2027 RSO Recognition process is now open on EngageSC for new RSOs and RSOs re-establishing after a lapse in recognition.",
+    "If you need accessibility accommodations or have questions related to RSO recognition, please contact Campus Activities.",
+    "Important Dates",
+    "Deadlines +",
+    "October 27: Application opens",
+    "November 22 at 11:59pm: Application closes. You must submit the form on EngageSC before 11:59pm.",
+    "December 1: Deadline for advisors to submit their requirements.",
+    "Info Sessions, Workshops, and Office Hours +",
+    "Attend an info session to learn how the recognition process works.",
+    "Office hours are held every week in the Campus Activities office."
+   ]
+  },
+  {
+   "name": "rso-resources",
+   "url": "https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-resources/",
+   "readOn": "2026-11-14",
+   "title": "RSO Resources - Campus Activities",
+   "lines": [
+    "Recognized Student Organizations",
+    "RSO Resources",
+    "Resources for recognized student organizations at USC are gathered on this page.",
+    "Open a section below to see what it holds and how to use it.",
+    "EngageSC +",
+    "Review helpful tips on how to use all the features EngageSC has to offer.",
+    "Space Requests +",
+    "Recognized Student Organizations in good standing can request to book space on campus.",
+    "Groups interested in requesting a classroom space should submit the Classroom Scheduling form.",
+    "Recognized Student Organizations in good standing can open a USC Credit Union bank account."
+   ]
+  },
+  {
+   "name": "recognized-student-organizations",
+   "url": "https://campusactivities.usc.edu/programs/recognized-student-organizations/",
+   "readOn": "2026-11-14",
+   "title": "Recognized Student Organizations - Campus Activities",
+   "lines": [
+    "Recognized Student Organizations",
+    "USC is home to more than a thousand recognized student organizations.",
+    "Find an organization that fits you on the EngageSC directory.",
+    "Start a new organization through the recognition process each semester.",
+    "Meet the Campus Activities staff who advise student organizations.",
+    "The recognition application for new organizations closes November 22 at 11:59pm."
+   ]
+  }
+ ],
+ "glance": {
+  "line": "November 22 at 11:59pm: Application closes. You must submit the form on EngageSC before 11:59pm.",
+  "under": "Deadlines +",
+  "say": "The application closes November 22 at 11:59pm; that is under Deadlines.",
+  "sayInView": "This is the date to keep: the application closes in 8 days.",
+  "ahead": [
+   {
+    "step": "Officers finish their training",
+    "by": ""
+   },
+   {
+    "step": "Submit the application",
+    "by": "November 22 at 11:59pm"
+   },
+   {
+    "step": "Advisor requirements",
+    "by": "December 1"
+   }
+  ]
+ },
+ "glanceAfterAsk": {
+  "line": "Recognized Student Organizations in good standing can request to book space on campus.",
+  "under": "RSO Resources",
+  "say": "Here it is: open Space Requests to book a room.",
+  "sayInView": "Here it is: open Space Requests to book a room.",
+  "ahead": []
+ },
+ "holdGlance": true
+}
