@@ -8,10 +8,10 @@
   "steps": [
     { "say": "When is the fall application due?", "circle": null,
       "expect": { "plain": true, "sentences": 1,
-        "saysThat": { "what": "this page gives no fall date", "anyOf": ["doesn't", "does not", "isn't", "is not", "not listed", "not shown", "only", "can't", "cannot", "don't see", "do not see", "no fall", "no date", "nothing"] } } },
+        "saysThat": { "what": "there is no exact day for fall, only mid-February", "anyOf": ["mid-february", "no exact", "gives no", "give no", "doesn't", "does not", "isn't", "is not", "not listed", "not shown", "only", "can't", "cannot", "don't see", "do not see", "no fall", "no date", "nothing"] } } },
     { "say": "What day in February do I have to apply by?", "circle": null,
       "expect": { "plain": true, "sentences": 1,
-        "saysThat": { "what": "this page gives no day in February", "anyOf": ["doesn't", "does not", "isn't", "is not", "not listed", "not shown", "only", "can't", "cannot", "don't see", "do not see", "no february", "no date", "nothing"] } } },
+        "saysThat": { "what": "there is no exact day in February", "anyOf": ["no exact", "gives no", "give no", "don't have", "do not have", "doesn't", "does not", "isn't", "is not", "not listed", "not shown", "only", "can't", "cannot", "don't see", "do not see", "no february", "no date", "nothing"] } } },
     { "say": "Can I still apply for spring?", "circle": null,
       "expect": { "plain": true, "sentences": 1,
         "saysThat": { "what": "spring applications are closed", "anyOf": ["closed", "passed", "missed", "no longer", "too late"] },
