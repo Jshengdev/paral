@@ -1,5 +1,5 @@
 {
- "name": "body: the nudge card comes up on the arrive curve in 420 ms, and its rows after it, one after another, 60, 110 and 160 ms after the card began, each on the same curve; a line shown and not spoken is in ink at once; \"Not now\" sends it away on the leave curve in 160 ms, less than half the time it took to come; a line with a voice comes up when its sound begins, and its words go from stone to ink as each is said, all of them in ink once it has been said",
+ "name": "body: the nudge card sets off once the ring of its look is whole and comes up on the arrive curve in 420 ms, its name and its sentence 60 and 110 ms after the card began, each on the same curve, and its buttons last, once the sentence has arrived; a line shown and not spoken is in ink at once; \"Not now\" sends it away on the leave curve in 160 ms, less than half the time it took to come; a line with a voice comes up when its sound begins or once its ring is whole, whichever is later, and its words go from stone to ink as each is said, all of them in ink once it has been said",
  "run": "body.nudge",
  "in": {
   "lines": [
@@ -52,13 +52,13 @@
     }
    },
    {
-    "at": 5000,
+    "at": 6000,
     "line": {
      "type": "clear"
     }
    },
    {
-    "at": 5000,
+    "at": 6000,
     "line": {
      "type": "mark",
      "id": "g2",
@@ -68,7 +68,7 @@
     }
    },
    {
-    "at": 5000,
+    "at": 6000,
     "line": {
      "type": "say",
      "id": "g2",
@@ -83,7 +83,7 @@
     }
    },
    {
-    "at": 5200,
+    "at": 6200,
     "line": {
      "type": "voice",
      "id": "g2",
@@ -93,7 +93,7 @@
     }
    },
    {
-    "at": 5200,
+    "at": 6200,
     "line": {
      "type": "words",
      "id": "g2",
@@ -123,28 +123,28 @@
    }
   ],
   "notNow": [
-   3000
+   4000
   ],
   "motion": true,
   "at": [
-   1000,
-   1042,
-   1060,
-   1110,
-   1160,
-   1210,
-   1420,
-   1580,
-   3000,
-   3040,
-   3080,
-   3120,
-   3159,
-   5100,
-   5250,
-   5900,
-   6700,
-   7300
+   1990,
+   2032,
+   2050,
+   2100,
+   2150,
+   2200,
+   2410,
+   2570,
+   4000,
+   4040,
+   4080,
+   4120,
+   4159,
+   6100,
+   7040,
+   7700,
+   8300,
+   9000
   ]
  },
  "out": [
@@ -157,10 +157,7 @@
      "found 1 date"
     ],
     "look": "coming up",
-    "offers": [
-     "add",
-     "notNow"
-    ],
+    "offers": [],
     "buttonsInsideTheCard": true,
     "insideTheDisplay": true,
     "onText": false,
@@ -188,10 +185,7 @@
      "found 1 date"
     ],
     "look": "coming up",
-    "offers": [
-     "add",
-     "notNow"
-    ],
+    "offers": [],
     "buttonsInsideTheCard": true,
     "insideTheDisplay": true,
     "onText": false,
@@ -219,10 +213,7 @@
      "found 1 date"
     ],
     "look": "coming up",
-    "offers": [
-     "add",
-     "notNow"
-    ],
+    "offers": [],
     "buttonsInsideTheCard": true,
     "insideTheDisplay": true,
     "onText": false,
@@ -250,16 +241,13 @@
      "found 1 date"
     ],
     "look": "coming up",
-    "offers": [
-     "add",
-     "notNow"
-    ],
+    "offers": [],
     "buttonsInsideTheCard": true,
     "insideTheDisplay": true,
     "onText": false,
     "onPieces": [],
     "where": "level with its line, right of the text",
-    "arrowLeadsToIt": false,
+    "arrowLeadsToIt": true,
     "appear": 0.84,
     "rows": [
      0.56,
@@ -281,16 +269,13 @@
      "found 1 date"
     ],
     "look": "coming up",
-    "offers": [
-     "add",
-     "notNow"
-    ],
+    "offers": [],
     "buttonsInsideTheCard": true,
     "insideTheDisplay": true,
     "onText": false,
     "onPieces": [],
     "where": "level with its line, right of the text",
-    "arrowLeadsToIt": false,
+    "arrowLeadsToIt": true,
     "appear": 0.93,
     "rows": [
      0.81,
@@ -312,21 +297,18 @@
      "found 1 date"
     ],
     "look": "coming up",
-    "offers": [
-     "add",
-     "notNow"
-    ],
+    "offers": [],
     "buttonsInsideTheCard": true,
     "insideTheDisplay": true,
     "onText": false,
     "onPieces": [],
     "where": "level with its line, right of the text",
-    "arrowLeadsToIt": false,
+    "arrowLeadsToIt": true,
     "appear": 0.97,
     "rows": [
      0.92,
      0.81,
-     0.56
+     0
     ],
     "leave": 0,
     "wordsInInk": 12
@@ -343,21 +325,18 @@
      "found 1 date"
     ],
     "look": "up",
-    "offers": [
-     "add",
-     "notNow"
-    ],
+    "offers": [],
     "buttonsInsideTheCard": true,
     "insideTheDisplay": true,
     "onText": false,
     "onPieces": [],
     "where": "level with its line, right of the text",
-    "arrowLeadsToIt": false,
+    "arrowLeadsToIt": true,
     "appear": 1,
     "rows": [
      1,
      1,
-     0.99
+     0
     ],
     "leave": 0,
     "wordsInInk": 12
@@ -374,23 +353,18 @@
      "found 1 date"
     ],
     "look": "up",
-    "offers": [
-     "add",
-     "notNow"
-    ],
+    "offers": [],
     "buttonsInsideTheCard": true,
     "insideTheDisplay": true,
     "onText": false,
-    "onPieces": [
-     "tag"
-    ],
+    "onPieces": [],
     "where": "level with its line, right of the text",
-    "arrowLeadsToIt": false,
+    "arrowLeadsToIt": true,
     "appear": 1,
     "rows": [
      1,
      1,
-     1
+     0
     ],
     "leave": 0,
     "wordsInInk": 12
@@ -552,10 +526,7 @@
      "found 1 date"
     ],
     "look": "coming up",
-    "offers": [
-     "add",
-     "notNow"
-    ],
+    "offers": [],
     "buttonsInsideTheCard": true,
     "insideTheDisplay": true,
     "onText": false,
@@ -569,7 +540,7 @@
      0
     ],
     "leave": 0,
-    "wordsInInk": 1
+    "wordsInInk": 3
    },
    "capsule": "rest",
    "toast": false
@@ -583,24 +554,21 @@
      "found 1 date"
     ],
     "look": "up",
-    "offers": [
-     "add",
-     "notNow"
-    ],
+    "offers": [],
     "buttonsInsideTheCard": true,
     "insideTheDisplay": true,
     "onText": false,
     "onPieces": [],
     "where": "level with its line, right of the text",
-    "arrowLeadsToIt": false,
+    "arrowLeadsToIt": true,
     "appear": 1,
     "rows": [
      1,
      1,
-     1
+     0.63
     ],
     "leave": 0,
-    "wordsInInk": 2
+    "wordsInInk": 4
    },
    "capsule": "rest",
    "toast": false
@@ -631,7 +599,7 @@
      1
     ],
     "leave": 0,
-    "wordsInInk": 4
+    "wordsInInk": 5
    },
    "capsule": "rest",
    "toast": false

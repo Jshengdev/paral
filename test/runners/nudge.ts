@@ -102,3 +102,26 @@ export function usc(input: { addresses: string[] }) {
   const opens: boolean[] = JSON.parse(execFileSync(headless, ["usc", ...input.addresses], { encoding: "utf8" }));
   return Object.fromEntries(input.addresses.map((address, index) => [address, opens[index]]));
 }
+
+/**
+ * One thing at a time: at each moment of a hand-written run, how far each piece a look or an answer brings has come.
+ * The caption in the pill's bubble, the pointing (its marks inked, or its way arrow), the nudge card and its three rows (the name, the sentence, the
+ * buttons), the board, and whether the card's buttons take a click. "none", "coming" or "up" for each. `still`
+ * plays the run with motion reduced.
+ */
+export function order(input: { lines: string[]; rows: Written[]; at: number[]; still?: boolean }) {
+  const dir = handWritten("order", onTheirLines(input.rows, input.lines), input.lines);
+  const tokens = JSON.parse(readFileSync(join(root, "body", "tokens.json"), "utf8"));
+  writeFileSync(join(dir, "tokens.json"), JSON.stringify({ ...tokens, motion: { ...tokens.motion, reduce: input.still === true } }));
+  const moments = JSON.parse(execFileSync(headless, ["placed", dir, join(dir, "tokens.json"), ...input.at.map(String)], { encoding: "utf8" }));
+  const how = (share: number | undefined) => (share === undefined || share <= 0 ? "none" : share < 1 ? "coming" : "up");
+  return moments.map(({ placed, inked, way, nudge, board, capsule }: any) => ({
+    caption: capsule.look === "speaking" ? "up" : "none",
+    pointing: way ? how(way.drawn) : inked.length === 0 ? "none" : how(Math.min(...inked)),
+    card: how(nudge?.appear),
+    sentence: how(nudge?.rows[1]),
+    board: how(board?.appear),
+    buttons: how(nudge?.buttons ? nudge.rows[2] : undefined),
+    pressable: placed.filter((item: { what: string }) => item.what === "button").map((item: { id: string }) => item.id),
+  }));
+}

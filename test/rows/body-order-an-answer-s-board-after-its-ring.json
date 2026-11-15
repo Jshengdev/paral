@@ -1,0 +1,124 @@
+{
+ "name": "body: one thing at a time in an answer he asked for: its ring, its sentence and its board come in the same instant; the ring and the sentence keep their own time, and the board comes up only once the ring is whole and the sentence is up",
+ "run": "body.order",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Important Dates",
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes.",
+   "December 1: Deadline for advisors.",
+   "Info Sessions, Workshops, and Office Hours"
+  ],
+  "rows": [
+   {
+    "at": 500,
+    "line": {
+     "type": "key.down"
+    }
+   },
+   {
+    "at": 1500,
+    "line": {
+     "type": "key.up"
+    }
+   },
+   {
+    "at": 4000,
+    "line": {
+     "type": "mark",
+     "id": "t1",
+     "beat": 0,
+     "kind": "ring",
+     "on": 4
+    }
+   },
+   {
+    "at": 4000,
+    "line": {
+     "type": "board",
+     "id": "t1",
+     "rows": [
+      [
+       "Scroll past Before You Begin",
+       "Application Requirements",
+       "Officer Requirements"
+      ]
+     ]
+    }
+   },
+   {
+    "at": 4000,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 0,
+     "text": "Scroll down past Before You Begin until you reach Application Requirements."
+    }
+   },
+   {
+    "at": 4000,
+    "line": {
+     "type": "mute",
+     "id": "t1",
+     "why": "a row"
+    }
+   }
+  ],
+  "at": [
+   4100,
+   4800,
+   5000,
+   5300,
+   5700
+  ]
+ },
+ "out": [
+  {
+   "caption": "up",
+   "pointing": "none",
+   "card": "none",
+   "sentence": "none",
+   "board": "none",
+   "buttons": "none",
+   "pressable": []
+  },
+  {
+   "caption": "up",
+   "pointing": "coming",
+   "card": "none",
+   "sentence": "none",
+   "board": "none",
+   "buttons": "none",
+   "pressable": []
+  },
+  {
+   "caption": "up",
+   "pointing": "up",
+   "card": "none",
+   "sentence": "none",
+   "board": "coming",
+   "buttons": "none",
+   "pressable": []
+  },
+  {
+   "caption": "up",
+   "pointing": "up",
+   "card": "none",
+   "sentence": "none",
+   "board": "coming",
+   "buttons": "none",
+   "pressable": []
+  },
+  {
+   "caption": "up",
+   "pointing": "up",
+   "card": "none",
+   "sentence": "none",
+   "board": "up",
+   "buttons": "none",
+   "pressable": []
+  }
+ ]
+}

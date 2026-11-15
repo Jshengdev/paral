@@ -82,8 +82,8 @@
    }
   ],
   "at": [
-   1100,
-   3000,
+   3700,
+   4500,
    6000
   ]
  },
@@ -96,7 +96,7 @@
      "read the whole page",
      "found 1 date"
     ],
-    "look": "coming up",
+    "look": "up",
     "offers": [
      "add",
      "notNow"
@@ -106,7 +106,7 @@
     "onText": false,
     "onPieces": [],
     "where": "right of the text",
-    "arrowLeadsToIt": false
+    "arrowLeadsToIt": true
    },
    "capsule": "rest",
    "toast": false

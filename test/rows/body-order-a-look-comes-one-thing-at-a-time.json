@@ -1,0 +1,161 @@
+{
+ "name": "body: one thing at a time. A look's first sight brings a box, the nudge card with Add to calendar, and a board of three steps in the same instant: the box is inked first; the card comes up only once the box is whole, and its sentence after it; the board only once the sentence has arrived; the buttons last, once the board has, and they take no click until they have arrived",
+ "run": "body.order",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Important Dates",
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes.",
+   "December 1: Deadline for advisors.",
+   "Info Sessions, Workshops, and Office Hours"
+  ],
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "g1",
+     "beat": 0,
+     "kind": "box",
+     "on": 4
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "say",
+     "id": "g1",
+     "beat": 0,
+     "text": "The recognition application closes November 22 at 11:59pm, under Deadlines.",
+     "trail": [
+      "saw this page",
+      "read the whole page",
+      "found 1 date"
+     ],
+     "keep": true
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mute",
+     "id": "g1",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   },
+   {
+    "at": 1001,
+    "line": {
+     "type": "board",
+     "id": "g1",
+     "rows": [
+      [
+       "Officers finish trainings: November 22"
+      ],
+      [
+       "Submit application on EngageSC: November 22"
+      ],
+      [
+       "Advisor submits requirements: December 1"
+      ]
+     ]
+    }
+   }
+  ],
+  "at": [
+   1500,
+   1950,
+   2300,
+   2600,
+   2800,
+   3100,
+   3400,
+   3700
+  ]
+ },
+ "out": [
+  {
+   "caption": "none",
+   "pointing": "coming",
+   "card": "none",
+   "sentence": "none",
+   "board": "none",
+   "buttons": "none",
+   "pressable": []
+  },
+  {
+   "caption": "none",
+   "pointing": "up",
+   "card": "none",
+   "sentence": "none",
+   "board": "none",
+   "buttons": "none",
+   "pressable": []
+  },
+  {
+   "caption": "none",
+   "pointing": "up",
+   "card": "coming",
+   "sentence": "coming",
+   "board": "none",
+   "buttons": "none",
+   "pressable": []
+  },
+  {
+   "caption": "none",
+   "pointing": "up",
+   "card": "up",
+   "sentence": "up",
+   "board": "none",
+   "buttons": "none",
+   "pressable": []
+  },
+  {
+   "caption": "none",
+   "pointing": "up",
+   "card": "up",
+   "sentence": "up",
+   "board": "coming",
+   "buttons": "none",
+   "pressable": []
+  },
+  {
+   "caption": "none",
+   "pointing": "up",
+   "card": "up",
+   "sentence": "up",
+   "board": "up",
+   "buttons": "none",
+   "pressable": []
+  },
+  {
+   "caption": "none",
+   "pointing": "up",
+   "card": "up",
+   "sentence": "up",
+   "board": "up",
+   "buttons": "coming",
+   "pressable": []
+  },
+  {
+   "caption": "none",
+   "pointing": "up",
+   "card": "up",
+   "sentence": "up",
+   "board": "up",
+   "buttons": "up",
+   "pressable": [
+    "add",
+    "notNow"
+   ]
+  }
+ ]
+}

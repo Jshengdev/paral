@@ -127,7 +127,8 @@ extension Scene {
         // A board shown without being asked comes whole: nothing is spoken for its rows to keep step with.
         // A board of steps comes whole too: the step he is on may be its last row.
         let shown = over || ask?.trail != nil || board.now != nil ? board.rows.count : min(board.rows.count, max(1, begun))
-        let appear = still ? 1 : arriving(since: board.upSince, at: t)
+        // It comes up once what came with it has arrived (`SceneOrder.swift`).
+        let appear = still ? 1 : arriving(since: boardSince(board), at: t)
         // Until its rows have arrived the card is empty, whatever a later moment made of it.
         let rows = board.filledAt.map { t >= $0 } ?? true ? board.rows : []
         let filled = rows.isEmpty ? 0 : board.filledAt.map { still ? 1 : tokens.curves.travel((t - $0) / max(ms(tokens.motion.usualMs), 1)) } ?? 1

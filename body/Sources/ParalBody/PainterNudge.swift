@@ -115,8 +115,9 @@ extension Painter {
             }
         }
         var drawn = [Drawn(what: "nudge", id: card.id, box: place.box)]
-        // Where a click on each button is taken: its place on the card at rest, offered only while the card can be pressed.
-        guard card.coming.gone == 0, card.answered == nil else { return drawn }
+        // Where a click on each button is taken: its place on the card at rest, offered only while the card can be
+        // pressed, which is once the buttons have arrived (they come last) and until it begins to go.
+        guard card.coming.gone == 0, card.answered == nil, (card.coming.lines.last ?? 1) >= 1 else { return drawn }
         let s = place.scale
         for ((button, pill), x) in zip(pills, at) {
             drawn.append(Drawn(what: "button", id: button.rawValue, box: Box(x: place.box.x + s * x, y: place.box.y + s * row.minY, w: s * pill.size.width, h: s * pill.size.height)))

@@ -29,9 +29,9 @@ here clicks.
 | Cursor: thinking | says paral is working: a cursor that is already on the page breathes, swelling a little and coming back | `key.up`, until the answer begins | the answer's first sentence | `cursor.workGrows`, `cursor.workMs`, `curves.travel` |
 | Cursor: click | answers his own click on the mark of the step he is on: paral's cursor presses and two rings spread from under its tip, come to rest and fade. Paral clicks nothing | his `click` (from the body) on a mark whose board names the step | a moment later, by itself; none with motion reduced | `cursor.pressTo`, `cursor.clickMs`, `cursor.clickStayMs`, `cursor.ripple`, `motion.pressMs`, `motion.usualMs`, `motion.leaveMs`, `cardinal` |
 | The way arrow (build's name; after the kit's drawn arrow) | the thing is on this page and not in view: which way to scroll, and its name on a tag | `way` (`to`, `toward`) | `clear`, a close, a newer `way`, or a `mark` with the same id | `way.*`, `ember`, `light`, `glass`, `shadow`, `mark.width`, `mark.shaftMs`, `mark.headMs` |
-| The board (build's name; in the kit's language of card and buttons) | what is still ahead, or the parts of an answer, as boxes on a light card. On a board of steps the step he is on is the ink button | `board` (`rows`; `now` for the step) | `clear`, a close, a `clip`; the same rows again keep the card in place | `board.*`, `light`, `mist`, `ink`, `glass`, `shadow`, `motion.arriveMs`, `motion.usualMs` |
+| The board (build's name; in the kit's language of card and buttons) | what is still ahead, or the parts of an answer, as boxes on a light card. On a board of steps the step he is on is the ink button | `board` (`rows`; `now` for the step) | `clear`, a close, a `clip`; the same rows again keep the card in place | `board.*`, `light`, `mist`, `ink`, `glass`, `shadow`, `motion.arriveMs`, `motion.usualMs`, `motion.boardAfterMs` |
 | Toast | confirms something paral did: "Open in your calendar · November 22", or "Opening RSO Resources" for a page opened in his browser, beside the capsule | `open` (`label` for the date), `go` (`label` for the page) | four seconds; a `clear` does not take it | `toast.*`, `card.*`, `strings.opened`, `strings.going`, `cardinal`, `light`, `glass`, `shadow`, `motion.arriveMs`, `motion.leaveMs`, `motion.usualMs`, `curves.pop` |
-| Nudge (the kit's, with its pill buttons) | a line paral says without being asked, or any line with an offer: the name and the trail (when it has one), the message, and its offer's button ("Add to calendar" when its date can be kept) and "Not now". Beside the marked line, to the right of the page's text when there is room | `say` with `trail` or `offer` (`keep` or `offer` for the buttons); spoken words fill in from stone to ink with its `voice` | with buttons: "Not now", the hold key, a close, a newer such line taking its place, or after a press of its offer the mind's answer (`open`, `go`, its next `say`, a `clear`) or `nudge.answeredMs`; without: its reading time and `motion.unaskedStayMs`. Words he answered get no card again while the app runs | `nudge.*`, `scale`, `stone`, `light`, `mist`, `ink`, `paper`, `glass`, `shadow`, `band`, `curves.arrive`, `curves.leave`, `strings.name` |
+| Nudge (the kit's, with its pill buttons) | a line paral says without being asked, or any line with an offer: the name and the trail (when it has one), the message, and its offer's button ("Add to calendar" when its date can be kept) and "Not now". Beside the marked line, to the right of the page's text when there is room | `say` with `trail` or `offer` (`keep` or `offer` for the buttons); spoken words fill in from stone to ink with its `voice` | with buttons: "Not now", the hold key, a close, a newer such line taking its place, or after a press of its offer the mind's answer (`open`, `go`, its next `say`, a `clear`) or `nudge.answeredMs`; without: its reading time and `motion.unaskedStayMs`. Words he answered get no card again while the app runs | `nudge.*`, `scale`, `stone`, `light`, `mist`, `ink`, `paper`, `glass`, `shadow`, `band`, `curves.arrive`, `curves.leave`, `strings.name`, `motion.cardAfterMs`, `motion.buttonsAfterMs` |
 | Nudge, without its buttons (the guide's card) | says what to do next for the page he is on, and which step it is, so a first run needs no one beside him. The closing line comes when every step is done | `next` (`text`, `n`, `of`; `done` for the closing line) | a `next` with no words; the closing line goes by itself after the toast's stay; either way it goes in less time than it came; a `clear` does not take it. Not drawn at all when "Show the guide" is unticked in the menu | `guide.*`, `card.*`, `strings.step`, `strings.name`, `toast.stayMs`, `motion.arriveMs`, `motion.leaveMs`, `motion.standMsAWord`, `motion.readMsLeast`, `light`, `mist`, `stone`, `glass`, `shadow`, `cardinal` |
 | The lesson clip (build's name; no frame in the kit) | a rendered clip on an example that is not his, in the board's place, on a dark card | `clip` | `clear`, a close, a `board` | `board.pad`, `board.radius`, `board.maxWidth`, `ink` |
 | His own trail and his loop (build's names; they are his, not paral's) | the path of his pointer while he draws with the draw key held, and that loop drawn back by hand once his words are final | `trail` (from the body), `echo` | the trail fades as he lets go; the echo goes at his next press or when paral marks inside it | `accent` (the trail; the kit's ember, as the echo is), `ember` (the echo), `mark.width`, `motion.trailFadeMs` |
@@ -75,7 +75,8 @@ where and draws it (`PainterNudge.swift`, `Layout.nudge`), as for the guide's ca
   0.95 to the left of the board. It keeps its place while that stays free, and a card that is going does not move.
 - **How it moves.** It comes up as the guide's card does, with the same two helpers (`Scene.coming`,
   `Painter.card` and `Painter.line`, tokens `card`): on `arrive` in 420 ms from 0.96 of its size, anchored at its
-  top, and 10 points low; its three lines follow 60, 110 and 160 ms after it began, each rising 6. It goes on `leave`
+  top, and 10 points low; its name and its message follow 60 and 110 ms after it began, each rising 6, and its buttons
+  come last, after the board ("One thing at a time", below). It sets off only once its mark or way arrow is whole. It goes on `leave`
   in `nudge.leaveMs` (160), to 0.98 of its size. The kit's blur on arrival is not drawn. With motion reduced it is
   there or not. The drawn arrow lands on the card's near end about a third of the way down (`nudge.landing`), as the
   kit's newer pictures have it.
@@ -153,6 +154,7 @@ card is in the movie, this macOS records the window anyway and the setting does 
 | `SceneNudge.swift` | the nudge card: which line it shows, what he did with it, when it comes and goes, and which words get no card again |
 | `LayoutNudge.swift` | where the nudge card goes: beside its line, right of the text, else the nearest free place, shrunk only when none is free |
 | `SceneCard.swift` | how a card stands at one moment: the card coming up, then each of its lines in turn |
+| `SceneOrder.swift` | one thing at a time: when the card, the board and the card's buttons set off, each after what came before it has arrived |
 | `SceneClick.swift` | his click on the mark that waits for it: the cursor's press and the rings that answer it |
 
 ## Drawing it
@@ -335,6 +337,20 @@ slide. The film's record names each line where it is just then (`line`, `guide/0
 Another card is drawn the same way with three calls: `Scene.coming(since:lines:gone:at:)` for how it stands,
 `Painter.card(_:radius:_:_:contents:)` for its surface, and `Painter.line(_:of:on:at:_:_:)` for each of its lines
 inside `contents`. Its face is `Painter.logo(middle:across:_:)` (or `logo(in:_:)`), the mark the guide's card wears.
+
+## One thing at a time
+
+What a look or an answer brings in the same instant comes up in a fixed order, each piece after the one before has
+arrived (`SceneOrder.swift`), after the owner's take of 2026-11-15 where the box, the nudge card, its buttons, the board
+and the way's tag all came up at once. First the pointing: the pen finishes the mark (or inks the way arrow) as before.
+`motion.cardAfterMs` (120) after that the nudge card sets off, its name and its sentence after it as any card's lines;
+`motion.boardAfterMs` (120) after the sentence has arrived the board comes up; and `motion.buttonsAfterMs` (120) after
+the board has arrived the card's buttons come, last. A button takes no click until it has arrived. For a look's box
+that is the box whole at 0.87 s, the card at 0.99 s, the board at 1.64 s and the buttons
+pressable at 2.6 s. An answer he asked for keeps its voice's times: its marks and its words come as they are said, and
+only its board waits until the marks begun with it are whole and its sentence is in the bubble, and the gap. A card
+or board that was already up (the same words or rows sent again as the page scrolls) does not come again. With motion
+reduced everything is there at once, the buttons pressable at once. The gaps are chosen, not measured.
 
 ## The capsule clear of the Dock
 
@@ -560,5 +576,5 @@ tokens' size times whatever the card was shrunk by.
 shows at those moments), `curves TOKENS SHARE...` (each of the four curves at those shares of its time), `placed RUN TOKENS MS...` (where the painter puts each thing at those moments, the points
 the pen has inked of a mark and of a drawn arrow, the capsule's look, words, stone words, note, trail, caret, wave and breathing mark (`PARAL_INSET` for a Dock's height), and the way arrow's, the cursor's and the board's own values).
 
-Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way`, `body.cursor`, `body.steps`, `body.pages`, `body.toast`, `body.boardType`, `body.guide`, `body.lead`, `body.nudge`, `body.seen`, `body.echo`, `body.stands`, `body.resting`, `body.cursorInside`, `body.inkInside`, `body.curves`, `body.moves`, `body.pill`, `body.lifted`, `body.scaled`, `body.cardLines`, `body.toastTick`, `body.click`, `body.marks` rows, with no window. The look of the mark, the white surfaces, the trail's colour and the kit's sizes are checked on stills. The hosts are compiled and have never been run:
+Checked by: `body.landing`, `body.filmed`, `body.capsule`, `body.pressedAgain`, `body.way`, `body.cursor`, `body.steps`, `body.pages`, `body.toast`, `body.boardType`, `body.guide`, `body.lead`, `body.nudge`, `body.seen`, `body.echo`, `body.stands`, `body.resting`, `body.cursorInside`, `body.inkInside`, `body.curves`, `body.moves`, `body.pill`, `body.lifted`, `body.scaled`, `body.cardLines`, `body.toastTick`, `body.click`, `body.marks`, `body.order` rows, with no window. The look of the mark, the white surfaces, the trail's colour and the kit's sizes are checked on stills. The hosts are compiled and have never been run:
 the key, the microphone, the screen picture and the overlay wait for a person and their grants (`./run`).

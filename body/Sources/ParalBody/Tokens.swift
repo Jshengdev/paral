@@ -64,6 +64,9 @@ public struct Tokens: Codable {
         public var arriveMs, leaveMs, usualMs: Double
         /// How long a press down takes.
         public var pressMs: Double
+        /// One thing at a time (`SceneOrder.swift`): the gap after the pointing before the card, after the card's
+        /// words before the board, and after the board before the card's buttons.
+        public var cardAfterMs, boardAfterMs, buttonsAfterMs: Double
         /// For a line said without being asked: how long it stays after its reading time, and how long each step of its trail takes to light.
         public var unaskedStayMs, trailStepMs: Double
         /// How long a line stands, for each of its words, before another line may take its place in the capsule or on

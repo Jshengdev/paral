@@ -176,12 +176,12 @@
   ],
   "at": [
    900,
-   1100,
-   3000,
+   2100,
+   3600,
    5100,
-   7000,
+   7700,
    9100,
-   11000
+   11800
   ]
  },
  "out": [
@@ -199,16 +199,13 @@
      "found 1 date"
     ],
     "look": "coming up",
-    "offers": [
-     "add",
-     "notNow"
-    ],
+    "offers": [],
     "buttonsInsideTheCard": true,
     "insideTheDisplay": true,
     "onText": false,
     "onPieces": [],
     "where": "level with its line, right of the text",
-    "arrowLeadsToIt": false
+    "arrowLeadsToIt": true
    },
    "capsule": "rest",
    "toast": false
@@ -245,10 +242,7 @@
      "found 1 date"
     ],
     "look": "coming up",
-    "offers": [
-     "add",
-     "notNow"
-    ],
+    "offers": [],
     "buttonsInsideTheCard": true,
     "insideTheDisplay": true,
     "onText": false,
@@ -291,10 +285,7 @@
      "found 1 date"
     ],
     "look": "coming up",
-    "offers": [
-     "add",
-     "notNow"
-    ],
+    "offers": [],
     "buttonsInsideTheCard": true,
     "insideTheDisplay": true,
     "onText": false,

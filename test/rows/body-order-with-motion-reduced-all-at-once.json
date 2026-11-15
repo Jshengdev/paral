@@ -1,0 +1,105 @@
+{
+ "name": "body: one thing at a time, with motion reduced: the same look's box, card, sentence, board and buttons are all there at once, and the buttons take a click at once",
+ "run": "body.order",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Important Dates",
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes.",
+   "December 1: Deadline for advisors.",
+   "Info Sessions, Workshops, and Office Hours"
+  ],
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "g1",
+     "beat": 0,
+     "kind": "box",
+     "on": 4
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "say",
+     "id": "g1",
+     "beat": 0,
+     "text": "The recognition application closes November 22 at 11:59pm, under Deadlines.",
+     "trail": [
+      "saw this page",
+      "read the whole page",
+      "found 1 date"
+     ],
+     "keep": true
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mute",
+     "id": "g1",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   },
+   {
+    "at": 1001,
+    "line": {
+     "type": "board",
+     "id": "g1",
+     "rows": [
+      [
+       "Officers finish trainings: November 22"
+      ],
+      [
+       "Submit application on EngageSC: November 22"
+      ],
+      [
+       "Advisor submits requirements: December 1"
+      ]
+     ]
+    }
+   }
+  ],
+  "at": [
+   1001,
+   1500
+  ],
+  "still": true
+ },
+ "out": [
+  {
+   "caption": "none",
+   "pointing": "up",
+   "card": "up",
+   "sentence": "up",
+   "board": "up",
+   "buttons": "up",
+   "pressable": [
+    "add",
+    "notNow"
+   ]
+  },
+  {
+   "caption": "none",
+   "pointing": "up",
+   "card": "up",
+   "sentence": "up",
+   "board": "up",
+   "buttons": "up",
+   "pressable": [
+    "add",
+    "notNow"
+   ]
+  }
+ ]
+}

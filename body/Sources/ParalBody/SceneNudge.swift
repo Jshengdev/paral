@@ -111,15 +111,17 @@ extension Scene {
         let end = ends(ask)
         if let end, t >= end + (still ? 0 : ms(n.leaveMs)) { return nil }
         let gone = end.map { t < $0 ? 0 : tokens.curves.leave((t - $0) / max(ms(n.leaveMs), 1)) } ?? 0
-        // A line with a voice comes up when its sound begins, which may be after its turn; the same words sent again
-        // are the card that was already up. It comes up as any card does, its three lines after it.
-        let since = card.upSince < ask.beganAt ? card.upSince : max(card.upSince, now.start)
-        let arrival = coming(since: since, lines: 3, gone: gone, at: t)
+        // A line with a voice comes up when its sound begins, which may be after its turn, and after its pointing has
+        // arrived; the same words sent again are the card that was already up. It comes up as any card does, its name
+        // and its sentence after it, and its buttons last, after the board (`SceneOrder.swift`).
+        let since = cardSince(ask, card, first: now)
+        var arrival = coming(since: since, lines: 3, gone: gone, at: t)
+        if !still { arrival.lines[2] = arriving(since: buttonsSince(ask, cardSince: since), at: t) }
         // Its words fill in as they are said, as an answer's do in the capsule; shown and not spoken, they are whole.
         let whole = said.text.split(separator: " ").map { Word(text: String($0), bright: 1) }
         let spoken = said.soundAt != nil && t < now.end ? words(of: said, from: now, at: t) : whole
         // The steps light one after another, as they did in the capsule.
-        let trail = (ask.trail ?? []).enumerated().map { index, step in Word(text: step, bright: still || t - ask.beganAt >= Double(index) * ms(tokens.motion.trailStepMs) ? 1 : tokens.dim) }
+        let trail = (ask.trail ?? []).enumerated().map { index, step in Word(text: step, bright: still || t - since >= Double(index) * ms(tokens.motion.trailStepMs) ? 1 : tokens.dim) }
         let beside = marks.last { $0.id == ask.id && $0.at <= t }?.box
         return NudgePicture(id: ask.id, text: text, words: spoken, trail: trail, offer: card.offer, beside: beside, coming: arrival, answered: card.answered?.button)
     }

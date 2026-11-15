@@ -98,7 +98,7 @@ public enum Film {
             let board: Any = picture.board.map { ["id": $0.id, "now": $0.now ?? NSNull(), "appear": $0.appear] as [String: Any] } ?? NSNull()
             // A drawn arrow's row also gives the points the pen has inked, so a row can say what it lies on.
             let items = placed.map { item in ["what": item.what, "id": item.id ?? "", "box": item.box.json].merging(item.path.map { ["path": $0.map { [$0.x, $0.y] }] } ?? [:]) { $1 } as [String: Any] }
-            return ["placed": items, "way": way, "pointer": pointer, "board": board, "toast": picture.toast?.text ?? NSNull(),
+            return ["placed": items, "way": way, "pointer": pointer, "board": board, "toast": picture.toast?.text ?? NSNull(), "inked": picture.marks.map(\.drawn),
                     "capsule": pill(picture.capsule, painter),
                     "guide": picture.guide.map { ["text": $0.text, "n": $0.n ?? NSNull(), "of": $0.of ?? NSNull(), "appear": $0.appear] as [String: Any] } ?? NSNull(),
                     "nudge": picture.nudge.map { ["text": $0.text, "inked": $0.words.filter { $0.bright >= 1 }.count, "trail": $0.trail.map(\.text), "buttons": $0.offer != nil, "offer": $0.offer?.label ?? NSNull(), "appear": $0.coming.card, "rows": $0.coming.lines, "leave": $0.coming.gone] as [String: Any] } ?? NSNull()]

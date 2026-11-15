@@ -37,7 +37,7 @@ import { lead } from "./runners/leads.ts";
 import { waiting } from "./runners/echo.ts";
 import { stands } from "./runners/stands.ts";
 import { cardLines, clickPicture, curves, lifted, moves, scaled, toastTick } from "./runners/motion.ts";
-import { apart, nudge, seen, usc } from "./runners/nudge.ts";
+import { apart, nudge, order, seen, usc } from "./runners/nudge.ts";
 import { marks } from "./runners/marks.ts";
 
 // A row is JSON on disk: its "in" is whatever its runner takes, so it is typed where the runner reads it.
@@ -95,6 +95,7 @@ const runs: Record<string, (input: any) => unknown> = {
   "body.boardType": boardType,
   "body.pages": filmedPages,
   "body.nudge": nudge,
+  "body.order": order,
   "body.seen": seen,
   "body.marks": marks,
   "body.apart": apart,

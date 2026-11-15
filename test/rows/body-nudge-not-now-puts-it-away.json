@@ -12,7 +12,7 @@
    "Info Sessions, Workshops, and Office Hours"
   ],
   "notNow": [
-   3000
+   4000
   ],
   "rows": [
    {
@@ -54,13 +54,13 @@
     }
    },
    {
-    "at": 5000,
+    "at": 6000,
     "line": {
      "type": "clear"
     }
    },
    {
-    "at": 5000,
+    "at": 6000,
     "line": {
      "type": "mark",
      "id": "g2",
@@ -70,7 +70,7 @@
     }
    },
    {
-    "at": 5000,
+    "at": 6000,
     "line": {
      "type": "say",
      "id": "g2",
@@ -84,7 +84,7 @@
     }
    },
    {
-    "at": 5000,
+    "at": 6000,
     "line": {
      "type": "mute",
      "id": "g2",
@@ -92,13 +92,13 @@
     }
    },
    {
-    "at": 7000,
+    "at": 8000,
     "line": {
      "type": "clear"
     }
    },
    {
-    "at": 7000,
+    "at": 8000,
     "line": {
      "type": "mark",
      "id": "g3",
@@ -108,7 +108,7 @@
     }
    },
    {
-    "at": 7000,
+    "at": 8000,
     "line": {
      "type": "say",
      "id": "g3",
@@ -122,7 +122,7 @@
     }
    },
    {
-    "at": 7000,
+    "at": 8000,
     "line": {
      "type": "mute",
      "id": "g3",
@@ -130,21 +130,21 @@
     }
    },
    {
-    "at": 9000,
+    "at": 12000,
     "line": {
      "type": "key.down",
-     "at": 1009000
+     "at": 1012000
     }
    },
    {
-    "at": 9700,
+    "at": 12700,
     "line": {
      "type": "key.up",
-     "at": 1009700
+     "at": 1012700
     }
    },
    {
-    "at": 9900,
+    "at": 12900,
     "line": {
      "type": "say",
      "id": "t1",
@@ -153,7 +153,7 @@
     }
    },
    {
-    "at": 9900,
+    "at": 12900,
     "line": {
      "type": "mute",
      "id": "t1",
@@ -161,20 +161,20 @@
     }
    },
    {
-    "at": 9950,
+    "at": 12950,
     "line": {
      "type": "state",
      "name": "idle"
     }
    },
    {
-    "at": 14000,
+    "at": 17000,
     "line": {
      "type": "clear"
     }
    },
    {
-    "at": 14000,
+    "at": 17000,
     "line": {
      "type": "mark",
      "id": "g4",
@@ -184,7 +184,7 @@
     }
    },
    {
-    "at": 14000,
+    "at": 17000,
     "line": {
      "type": "say",
      "id": "g4",
@@ -198,7 +198,7 @@
     }
    },
    {
-    "at": 14000,
+    "at": 17000,
     "line": {
      "type": "mute",
      "id": "g4",
@@ -207,14 +207,14 @@
    }
   ],
   "at": [
-   2500,
-   3050,
-   3300,
-   5600,
-   7600,
-   9050,
-   9300,
-   14600
+   3500,
+   4050,
+   4300,
+   6600,
+   10600,
+   12050,
+   12300,
+   19600
   ]
  },
  "out": [
@@ -286,7 +286,7 @@
     "onText": false,
     "onPieces": [],
     "where": "level with its line, right of the text",
-    "arrowLeadsToIt": false
+    "arrowLeadsToIt": true
    },
    "capsule": "rest",
    "toast": false
@@ -332,7 +332,7 @@
     "onText": false,
     "onPieces": [],
     "where": "level with its line, right of the text",
-    "arrowLeadsToIt": false
+    "arrowLeadsToIt": true
    },
    "capsule": "rest",
    "toast": false

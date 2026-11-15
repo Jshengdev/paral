@@ -27,8 +27,10 @@ extension Scene {
         func inked(since from: Double) -> Double { still ? 1 : Motion.even((t - from) / max(arrowMs, 1)) }
 
         if let nudge, nudge.id == mark.id {
-            guard let ask = asks.first(where: { $0.id == mark.id }), let said = times(ask).first(where: { $0.beat == mark.beat }), t >= max(ready, said.start) else { return nil }
-            return LeadPicture(from: key, to: .nudge, drawn: min(inked(since: max(ready, said.start)), 1 - nudge.coming.gone))
+            // It is inked once the card has set off (`SceneOrder.swift`).
+            guard let ask = asks.first(where: { $0.id == mark.id }), let said = times(ask).first(where: { $0.beat == mark.beat }), let first = times(ask).first else { return nil }
+            let from = max(ready, said.start, cards[ask.id].map { cardSince(ask, $0, first: first) } ?? said.start)
+            return t >= from ? LeadPicture(from: key, to: .nudge, drawn: min(inked(since: from), 1 - nudge.coming.gone)) : nil
         }
         guard nudge == nil, capsule.look == .rest, capsule.open <= 0, let card = next(at: t), !card.done, names(card.text, mark) else { return nil }
         let from = max(ready, card.shownAt, rested(before: t) ?? 0, cardGone(before: t) ?? 0)
