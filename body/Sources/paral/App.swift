@@ -94,7 +94,7 @@ final class App: NSObject, NSApplicationDelegate {
         if case .ready(let settings) = seen, key == nil {
             self.settings = settings
             guard let which = Key.Which(rawValue: settings.holdKey) else { return failed("unknown hold key \"\(settings.holdKey)\"") }
-            let key = Key(which) { [weak self] at in self?.wire.send(.click(x: at.x, y: at.y, at: self?.stamp() ?? 0)) }
+            let key = Key(which) { [weak self] at in self?.wire.send(.click(x: at.x, y: at.y, at: self?.stamp() ?? 0)); self?.tell(.click(x: at.x, y: at.y)) }
             key.onDown = { [weak self] in self?.down() }
             key.onUp = { [weak self] in self?.up() }
             key.onHeld = { [weak self] in self?.draw() }
