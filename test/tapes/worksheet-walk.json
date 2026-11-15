@@ -1,0 +1,369 @@
+{
+ "answers": {
+  "walk me through it": [
+   {
+    "problem": "2. Draw mechanism and expect final product",
+    "breakLine": null,
+    "breakIndex": null,
+    "result": "ethyl benzoate",
+    "lesson": null,
+    "board": null,
+    "beats": [
+     {
+      "say": "The oxygen of ethanol uses a lone pair to attack the carbonyl carbon.",
+      "mark": null
+     },
+     {
+      "say": "That carbon is short of electrons, pulled on by both the O and the Cl.",
+      "mark": null
+     }
+    ],
+    "spots": [
+     "ethanol.O",
+     "benzoyl.C",
+     "benzoyl.C=O"
+    ],
+    "walk": {
+     "step": "O attacks carbonyl C",
+     "last": false
+    }
+   }
+  ],
+  "what happens next": [
+   {
+    "problem": "2. Draw mechanism and expect final product",
+    "breakLine": null,
+    "breakIndex": null,
+    "result": "ethyl benzoate",
+    "lesson": null,
+    "board": null,
+    "beats": [
+     {
+      "say": "The C=O pi bond breaks and its electrons move onto the carbonyl oxygen.",
+      "mark": null
+     },
+     {
+      "say": "That leaves a tetrahedral intermediate with a negative oxygen.",
+      "mark": null
+     }
+    ],
+    "spots": [
+     "benzoyl.C",
+     "benzoyl.O",
+     "benzoyl.C=O"
+    ],
+    "walk": {
+     "step": "Tetrahedral intermediate forms",
+     "last": false
+    }
+   },
+   {
+    "problem": "2. Draw mechanism and expect final product",
+    "breakLine": null,
+    "breakIndex": null,
+    "result": "ethyl benzoate",
+    "lesson": null,
+    "board": null,
+    "beats": [
+     {
+      "say": "The oxygen's electrons come back down and the C=O forms again.",
+      "mark": null
+     },
+     {
+      "say": "As it does, the C-Cl bond breaks and chloride leaves.",
+      "mark": null
+     }
+    ],
+    "spots": [
+     "benzoyl.O",
+     "benzoyl.C-Cl",
+     "benzoyl.Cl"
+    ],
+    "walk": {
+     "step": "C=O reforms, chloride leaves",
+     "last": false
+    }
+   },
+   {
+    "problem": "2. Draw mechanism and expect final product",
+    "breakLine": null,
+    "breakIndex": null,
+    "result": "ethyl benzoate",
+    "lesson": null,
+    "board": null,
+    "beats": [
+     {
+      "say": "The oxygen from ethanol now has a plus charge and still holds its H.",
+      "mark": null
+     },
+     {
+      "say": "Chloride takes that proton off, so the oxygen is neutral again.",
+      "mark": null
+     }
+    ],
+    "spots": [
+     "ethanol.O",
+     "ethanol.H"
+    ],
+    "walk": {
+     "step": "O loses its proton",
+     "last": false
+    }
+   },
+   {
+    "problem": "2. Draw mechanism and expect final product",
+    "breakLine": null,
+    "breakIndex": null,
+    "result": "ethyl benzoate",
+    "lesson": null,
+    "board": null,
+    "beats": [
+     {
+      "say": "So the working gives ethyl benzoate, with HCl as the other product.",
+      "mark": null
+     }
+    ],
+    "spots": [
+     "ethanol.O",
+     "benzoyl.C"
+    ],
+    "walk": {
+     "step": "Ethyl benzoate and HCl",
+     "last": true
+    }
+   }
+  ],
+  "so what is the final product": [
+   {
+    "problem": "2. Draw mechanism and expect final product",
+    "breakLine": "2. Draw mechanism and expect final product",
+    "result": "ethyl benzoate",
+    "beats": [
+     {
+      "say": "It gives ethyl benzoate, once the chloride has left.",
+      "mark": null
+     }
+    ],
+    "spots": [
+     "benzoyl.C",
+     "benzoyl.Cl",
+     "space",
+     "ethanol.O"
+    ]
+   }
+  ],
+  "then what": [
+   {
+    "problem": "2. Draw mechanism and expect final product",
+    "breakLine": null,
+    "breakIndex": null,
+    "result": "ethyl benzoate",
+    "lesson": null,
+    "board": null,
+    "beats": [
+     {
+      "say": "The oxygen attacks the carbonyl carbon, and in the end you get ethyl benzoate.",
+      "mark": null
+     }
+    ],
+    "spots": [
+     "ethanol.O",
+     "benzoyl.C"
+    ],
+    "walk": {
+     "step": "O attacks carbonyl C",
+     "last": false
+    }
+   }
+  ]
+ },
+ "leaks": [],
+ "sheets": [
+  {
+   "name": "chem-worksheet-question-2",
+   "about": "One worksheet page measured once: its size in points, some of its printed lines to find it by on a screen, and a box for each place of the drawing in its second question. Boxes are shares of the page's width and height from its top-left corner, tight on the ink.",
+   "page": {
+    "points": {
+     "w": 595.32,
+     "h": 841.92
+    }
+   },
+   "lines": [
+    {
+     "text": "1.",
+     "box": {
+      "x": 0.159,
+      "y": 0.10819,
+      "w": 0.012,
+      "h": 0.01025
+     }
+    },
+    {
+     "text": "22. The NMR spectra are shown for two isomeric compounds with formula C10H12O. Their in-",
+     "box": {
+      "x": 0.219,
+      "y": 0.14496,
+      "w": 0.548,
+      "h": 0.00778
+     }
+    },
+    {
+     "text": "frared spectra show strong bands near 1715 cm-1. Make no attempt to interpret the aromatic",
+     "box": {
+      "x": 0.2445,
+      "y": 0.15309,
+      "w": 0.522,
+      "h": 0.01202
+     }
+    },
+    {
+     "text": "proton area between 7.1 and 7.4 ppm except to determine the number of protons attached to the",
+     "box": {
+      "x": 0.2445,
+      "y": 0.16829,
+      "w": 0.522,
+      "h": 0.00884
+     }
+    },
+    {
+     "text": "aromatic ring. Draw the structure of the compounds.",
+     "box": {
+      "x": 0.244,
+      "y": 0.18031,
+      "w": 0.2885,
+      "h": 0.00884
+     }
+    },
+    {
+     "text": "(a)",
+     "box": {
+      "x": 0.4525,
+      "y": 0.40729,
+      "w": 0.014,
+      "h": 0.00707
+     }
+    },
+    {
+     "text": "(b)",
+     "box": {
+      "x": 0.4525,
+      "y": 0.62684,
+      "w": 0.014,
+      "h": 0.00778
+     }
+    },
+    {
+     "text": "2. Draw mechanism and expect final product",
+     "box": {
+      "x": 0.1585,
+      "y": 0.70179,
+      "w": 0.395,
+      "h": 0.01343
+     }
+    }
+   ],
+   "spots": {
+    "ethanol.O": {
+     "box": {
+      "x": 0.25,
+      "y": 0.84746,
+      "w": 0.0175,
+      "h": 0.01308
+     },
+     "tagSide": "below",
+     "what": "the O of ethanol's OH (drawn as a letter)"
+    },
+    "ethanol.H": {
+     "box": {
+      "x": 0.2705,
+      "y": 0.84746,
+      "w": 0.0145,
+      "h": 0.01273
+     },
+     "tagSide": "above",
+     "what": "the H on that O (drawn as a letter, right of the O)"
+    },
+    "benzoyl.C": {
+     "box": {
+      "x": 0.423,
+      "y": 0.79054,
+      "w": 0.0185,
+      "h": 0.00813
+     },
+     "tagSide": "below",
+     "what": "carbonyl carbon: unlabelled corner where C=O, C-Cl and the bond to the ring meet"
+    },
+    "benzoyl.O": {
+     "box": {
+      "x": 0.4235,
+      "y": 0.73291,
+      "w": 0.0175,
+      "h": 0.01308
+     },
+     "tagSide": "right",
+     "what": "carbonyl O (drawn as a letter)"
+    },
+    "benzoyl.Cl": {
+     "box": {
+      "x": 0.3465,
+      "y": 0.81352,
+      "w": 0.021,
+      "h": 0.01343
+     },
+     "tagSide": "below",
+     "what": "the Cl (drawn as letters)"
+    },
+    "benzoyl.C=O": {
+     "box": {
+      "x": 0.425,
+      "y": 0.74811,
+      "w": 0.015,
+      "h": 0.04419
+     },
+     "tagSide": "left",
+     "what": "the two lines of the C=O double bond"
+    },
+    "benzoyl.C-Cl": {
+     "box": {
+      "x": 0.3725,
+      "y": 0.79195,
+      "w": 0.058,
+      "h": 0.02581
+     },
+     "tagSide": "below",
+     "what": "the single line from Cl to the carbonyl carbon"
+    },
+    "plus": {
+     "box": {
+      "x": 0.3095,
+      "y": 0.83791,
+      "w": 0.016,
+      "h": 0.01131
+     },
+     "tagSide": "below",
+     "what": "the plus sign between the reactants"
+    },
+    "arrow": {
+     "box": {
+      "x": 0.6815,
+      "y": 0.82872,
+      "w": 0.1275,
+      "h": 0.00919
+     },
+     "tagSide": "above",
+     "what": "the reaction arrow, tail to head"
+    },
+    "space": {
+     "box": {
+      "x": 0.815,
+      "y": 0.71947,
+      "w": 0.1655,
+      "h": 0.26658
+     },
+     "tagSide": "above",
+     "what": "empty rectangle the arrow points into"
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,851 @@
+{
+ "name": "turn: work-through on: the fifth step is the last and the only one that says what the working gives; asking again after it hears the done line with no model asked; a step that named the product before the last would be held back and not put on the board",
+ "run": "turn",
+ "in": {
+  "tape": "worksheet-walk.json",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "hello",
+     "body": "row"
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "typed",
+     "text": "walk me through it",
+     "at": 1794700010000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1794700010005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "aromatic ring. Draw the structure of the compounds.",
+       "box": {
+        "x": 1181.03232,
+        "y": 707.2263808,
+        "w": 686.99928,
+        "h": 29.7702912
+       }
+      },
+      {
+       "text": "2. Draw mechanism and expect final product",
+       "box": {
+        "x": 977.4328800000001,
+        "y": 2463.4041472,
+        "w": 940.6056000000001,
+        "h": 45.227942399999996
+       }
+      }
+     ]
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "typed",
+     "text": "what happens next",
+     "at": 1794700030000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1794700030005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "aromatic ring. Draw the structure of the compounds.",
+       "box": {
+        "x": 1181.03232,
+        "y": 707.2263808,
+        "w": 686.99928,
+        "h": 29.7702912
+       }
+      },
+      {
+       "text": "2. Draw mechanism and expect final product",
+       "box": {
+        "x": 977.4328800000001,
+        "y": 2463.4041472,
+        "w": 940.6056000000001,
+        "h": 45.227942399999996
+       }
+      }
+     ]
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "typed",
+     "text": "what happens next",
+     "at": 1794700050000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1794700050005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "aromatic ring. Draw the structure of the compounds.",
+       "box": {
+        "x": 1181.03232,
+        "y": 707.2263808,
+        "w": 686.99928,
+        "h": 29.7702912
+       }
+      },
+      {
+       "text": "2. Draw mechanism and expect final product",
+       "box": {
+        "x": 977.4328800000001,
+        "y": 2463.4041472,
+        "w": 940.6056000000001,
+        "h": 45.227942399999996
+       }
+      }
+     ]
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "typed",
+     "text": "what happens next",
+     "at": 1794700070000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1794700070005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "aromatic ring. Draw the structure of the compounds.",
+       "box": {
+        "x": 1181.03232,
+        "y": 707.2263808,
+        "w": 686.99928,
+        "h": 29.7702912
+       }
+      },
+      {
+       "text": "2. Draw mechanism and expect final product",
+       "box": {
+        "x": 977.4328800000001,
+        "y": 2463.4041472,
+        "w": 940.6056000000001,
+        "h": 45.227942399999996
+       }
+      }
+     ]
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "typed",
+     "text": "what happens next",
+     "at": 1794700090000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1794700090005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "aromatic ring. Draw the structure of the compounds.",
+       "box": {
+        "x": 1181.03232,
+        "y": 707.2263808,
+        "w": 686.99928,
+        "h": 29.7702912
+       }
+      },
+      {
+       "text": "2. Draw mechanism and expect final product",
+       "box": {
+        "x": 977.4328800000001,
+        "y": 2463.4041472,
+        "w": 940.6056000000001,
+        "h": 45.227942399999996
+       }
+      }
+     ]
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "typed",
+     "text": "what happens next",
+     "at": 1794700110000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1794700110005,
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "aromatic ring. Draw the structure of the compounds.",
+       "box": {
+        "x": 1181.03232,
+        "y": 707.2263808,
+        "w": 686.99928,
+        "h": 29.7702912
+       }
+      },
+      {
+       "text": "2. Draw mechanism and expect final product",
+       "box": {
+        "x": 977.4328800000001,
+        "y": 2463.4041472,
+        "w": 940.6056000000001,
+        "h": 45.227942399999996
+       }
+      }
+     ]
+    }
+   ]
+  ],
+  "show": "walk",
+  "set": {
+   "workThrough": true
+  }
+ },
+ "out": {
+  "asked": [
+   {
+    "words": "walk me through it",
+    "walk": {
+     "steps": []
+    },
+    "spots": 7,
+    "shown": []
+   },
+   {
+    "words": "what happens next",
+    "walk": {
+     "steps": [
+      "O attacks carbonyl C"
+     ]
+    },
+    "spots": 7,
+    "shown": [
+     "The oxygen of ethanol uses a lone pair to attack the carbonyl carbon.",
+     "That carbon is short of electrons, pulled on by both the O and the Cl."
+    ]
+   },
+   {
+    "words": "what happens next",
+    "walk": {
+     "steps": [
+      "O attacks carbonyl C",
+      "Tetrahedral intermediate forms"
+     ]
+    },
+    "spots": 7,
+    "shown": [
+     "The oxygen of ethanol uses a lone pair to attack the carbonyl carbon.",
+     "That carbon is short of electrons, pulled on by both the O and the Cl.",
+     "The C=O pi bond breaks and its electrons move onto the carbonyl oxygen.",
+     "That leaves a tetrahedral intermediate with a negative oxygen."
+    ]
+   },
+   {
+    "words": "what happens next",
+    "walk": {
+     "steps": [
+      "O attacks carbonyl C",
+      "Tetrahedral intermediate forms",
+      "C=O reforms, chloride leaves"
+     ]
+    },
+    "spots": 7,
+    "shown": [
+     "The oxygen of ethanol uses a lone pair to attack the carbonyl carbon.",
+     "That carbon is short of electrons, pulled on by both the O and the Cl.",
+     "The C=O pi bond breaks and its electrons move onto the carbonyl oxygen.",
+     "That leaves a tetrahedral intermediate with a negative oxygen.",
+     "The oxygen's electrons come back down and the C=O forms again.",
+     "As it does, the C-Cl bond breaks and chloride leaves."
+    ]
+   },
+   {
+    "words": "what happens next",
+    "walk": {
+     "steps": [
+      "O attacks carbonyl C",
+      "Tetrahedral intermediate forms",
+      "C=O reforms, chloride leaves",
+      "O loses its proton"
+     ]
+    },
+    "spots": 7,
+    "shown": [
+     "The oxygen of ethanol uses a lone pair to attack the carbonyl carbon.",
+     "That carbon is short of electrons, pulled on by both the O and the Cl.",
+     "The C=O pi bond breaks and its electrons move onto the carbonyl oxygen.",
+     "That leaves a tetrahedral intermediate with a negative oxygen.",
+     "The oxygen's electrons come back down and the C=O forms again.",
+     "As it does, the C-Cl bond breaks and chloride leaves.",
+     "The oxygen from ethanol now has a plus charge and still holds its H.",
+     "Chloride takes that proton off, so the oxygen is neutral again."
+    ]
+   }
+  ],
+  "lines": [
+   {
+    "v": 1,
+    "type": "ready",
+    "mind": "paral",
+    "holdKey": "rightOption",
+    "drawKey": "shift",
+    "earGraceMs": 300,
+    "markPad": 4,
+    "pictureLongEdge": 1280,
+    "cropAround": {
+     "share": 1,
+     "points": 200
+    }
+   },
+   {
+    "v": 1,
+    "type": "state",
+    "name": "thinking"
+   },
+   {
+    "v": 1,
+    "type": "heard",
+    "text": "walk me through it",
+    "final": true
+   },
+   {
+    "v": 1,
+    "type": "say",
+    "id": "t1",
+    "beat": 0,
+    "text": "The oxygen of ethanol uses a lone pair to attack the carbonyl carbon."
+   },
+   {
+    "v": 1,
+    "type": "mute",
+    "id": "t1",
+    "why": "no voice is set up"
+   },
+   {
+    "v": 1,
+    "type": "say",
+    "id": "t1",
+    "beat": 1,
+    "text": "That carbon is short of electrons, pulled on by both the O and the Cl."
+   },
+   {
+    "v": 1,
+    "type": "mark",
+    "id": "t1",
+    "beat": 0,
+    "kind": "ring",
+    "box": {
+     "x": 597.6600000000001,
+     "y": 1476.9870463999998,
+     "w": 20.836200000000005,
+     "h": 22.024627199999998
+    },
+    "spot": true
+   },
+   {
+    "v": 1,
+    "type": "mark",
+    "id": "t1",
+    "beat": 0,
+    "kind": "ring",
+    "box": {
+     "x": 803.6407200000001,
+     "y": 1381.1428736,
+     "w": 22.02684,
+     "h": 13.6896192
+    },
+    "spot": true
+   },
+   {
+    "v": 1,
+    "type": "mark",
+    "id": "t1",
+    "beat": 0,
+    "kind": "ring",
+    "box": {
+     "x": 806.022,
+     "y": 1309.6975424,
+     "w": 17.8596,
+     "h": 74.4088896
+    },
+    "spot": true
+   },
+   {
+    "v": 1,
+    "type": "board",
+    "id": "t1",
+    "rows": [
+     [
+      "O attacks carbonyl C"
+     ]
+    ],
+    "now": 0
+   },
+   {
+    "v": 1,
+    "type": "state",
+    "name": "idle"
+   },
+   {
+    "v": 1,
+    "type": "state",
+    "name": "thinking"
+   },
+   {
+    "v": 1,
+    "type": "heard",
+    "text": "what happens next",
+    "final": true
+   },
+   {
+    "v": 1,
+    "type": "say",
+    "id": "t2",
+    "beat": 0,
+    "text": "The C=O pi bond breaks and its electrons move onto the carbonyl oxygen."
+   },
+   {
+    "v": 1,
+    "type": "mute",
+    "id": "t2",
+    "why": "no voice is set up"
+   },
+   {
+    "v": 1,
+    "type": "say",
+    "id": "t2",
+    "beat": 1,
+    "text": "That leaves a tetrahedral intermediate with a negative oxygen."
+   },
+   {
+    "v": 1,
+    "type": "mark",
+    "id": "t2",
+    "beat": 0,
+    "kind": "ring",
+    "box": {
+     "x": 803.6407200000001,
+     "y": 1381.1428736,
+     "w": 22.02684,
+     "h": 13.6896192
+    },
+    "spot": true
+   },
+   {
+    "v": 1,
+    "type": "mark",
+    "id": "t2",
+    "beat": 0,
+    "kind": "ring",
+    "box": {
+     "x": 804.23604,
+     "y": 1284.1031744,
+     "w": 20.836200000000005,
+     "h": 22.024627199999998
+    },
+    "spot": true
+   },
+   {
+    "v": 1,
+    "type": "mark",
+    "id": "t2",
+    "beat": 0,
+    "kind": "ring",
+    "box": {
+     "x": 806.022,
+     "y": 1309.6975424,
+     "w": 17.8596,
+     "h": 74.4088896
+    },
+    "spot": true
+   },
+   {
+    "v": 1,
+    "type": "board",
+    "id": "t2",
+    "rows": [
+     [
+      "O attacks carbonyl C"
+     ],
+     [
+      "Tetrahedral intermediate forms"
+     ]
+    ],
+    "now": 1
+   },
+   {
+    "v": 1,
+    "type": "state",
+    "name": "idle"
+   },
+   {
+    "v": 1,
+    "type": "state",
+    "name": "thinking"
+   },
+   {
+    "v": 1,
+    "type": "heard",
+    "text": "what happens next",
+    "final": true
+   },
+   {
+    "v": 1,
+    "type": "say",
+    "id": "t3",
+    "beat": 0,
+    "text": "The oxygen's electrons come back down and the C=O forms again."
+   },
+   {
+    "v": 1,
+    "type": "mute",
+    "id": "t3",
+    "why": "no voice is set up"
+   },
+   {
+    "v": 1,
+    "type": "say",
+    "id": "t3",
+    "beat": 1,
+    "text": "As it does, the C-Cl bond breaks and chloride leaves."
+   },
+   {
+    "v": 1,
+    "type": "mark",
+    "id": "t3",
+    "beat": 0,
+    "kind": "ring",
+    "box": {
+     "x": 804.23604,
+     "y": 1284.1031744,
+     "w": 20.836200000000005,
+     "h": 22.024627199999998
+    },
+    "spot": true
+   },
+   {
+    "v": 1,
+    "type": "mark",
+    "id": "t3",
+    "beat": 0,
+    "kind": "ring",
+    "box": {
+     "x": 743.5134,
+     "y": 1383.517088,
+     "w": 69.05712000000001,
+     "h": 43.4599104
+    },
+    "spot": true
+   },
+   {
+    "v": 1,
+    "type": "mark",
+    "id": "t3",
+    "beat": 0,
+    "kind": "ring",
+    "box": {
+     "x": 712.5567599999999,
+     "y": 1419.8375168,
+     "w": 25.003440000000005,
+     "h": 22.613971199999998
+    },
+    "spot": true
+   },
+   {
+    "v": 1,
+    "type": "board",
+    "id": "t3",
+    "rows": [
+     [
+      "O attacks carbonyl C"
+     ],
+     [
+      "Tetrahedral intermediate forms"
+     ],
+     [
+      "C=O reforms, chloride leaves"
+     ]
+    ],
+    "now": 2
+   },
+   {
+    "v": 1,
+    "type": "state",
+    "name": "idle"
+   },
+   {
+    "v": 1,
+    "type": "state",
+    "name": "thinking"
+   },
+   {
+    "v": 1,
+    "type": "heard",
+    "text": "what happens next",
+    "final": true
+   },
+   {
+    "v": 1,
+    "type": "say",
+    "id": "t4",
+    "beat": 0,
+    "text": "The oxygen from ethanol now has a plus charge and still holds its H."
+   },
+   {
+    "v": 1,
+    "type": "mute",
+    "id": "t4",
+    "why": "no voice is set up"
+   },
+   {
+    "v": 1,
+    "type": "say",
+    "id": "t4",
+    "beat": 1,
+    "text": "Chloride takes that proton off, so the oxygen is neutral again."
+   },
+   {
+    "v": 1,
+    "type": "mark",
+    "id": "t4",
+    "beat": 0,
+    "kind": "ring",
+    "box": {
+     "x": 597.6600000000001,
+     "y": 1476.9870463999998,
+     "w": 20.836200000000005,
+     "h": 22.024627199999998
+    },
+    "spot": true
+   },
+   {
+    "v": 1,
+    "type": "mark",
+    "id": "t4",
+    "beat": 0,
+    "kind": "ring",
+    "box": {
+     "x": 622.06812,
+     "y": 1476.9870463999998,
+     "w": 17.264280000000003,
+     "h": 21.4352832
+    },
+    "spot": true
+   },
+   {
+    "v": 1,
+    "type": "board",
+    "id": "t4",
+    "rows": [
+     [
+      "O attacks carbonyl C"
+     ],
+     [
+      "Tetrahedral intermediate forms"
+     ],
+     [
+      "C=O reforms, chloride leaves"
+     ],
+     [
+      "O loses its proton"
+     ]
+    ],
+    "now": 3
+   },
+   {
+    "v": 1,
+    "type": "state",
+    "name": "idle"
+   },
+   {
+    "v": 1,
+    "type": "state",
+    "name": "thinking"
+   },
+   {
+    "v": 1,
+    "type": "heard",
+    "text": "what happens next",
+    "final": true
+   },
+   {
+    "v": 1,
+    "type": "say",
+    "id": "t5",
+    "beat": 0,
+    "text": "So the working gives ethyl benzoate, with HCl as the other product."
+   },
+   {
+    "v": 1,
+    "type": "mute",
+    "id": "t5",
+    "why": "no voice is set up"
+   },
+   {
+    "v": 1,
+    "type": "mark",
+    "id": "t5",
+    "beat": 0,
+    "kind": "ring",
+    "box": {
+     "x": 597.6600000000001,
+     "y": 1476.9870463999998,
+     "w": 20.836200000000005,
+     "h": 22.024627199999998
+    },
+    "spot": true
+   },
+   {
+    "v": 1,
+    "type": "mark",
+    "id": "t5",
+    "beat": 0,
+    "kind": "ring",
+    "box": {
+     "x": 803.6407200000001,
+     "y": 1381.1428736,
+     "w": 22.02684,
+     "h": 13.6896192
+    },
+    "spot": true
+   },
+   {
+    "v": 1,
+    "type": "board",
+    "id": "t5",
+    "rows": [
+     [
+      "O attacks carbonyl C"
+     ],
+     [
+      "Tetrahedral intermediate forms"
+     ],
+     [
+      "C=O reforms, chloride leaves"
+     ],
+     [
+      "O loses its proton"
+     ],
+     [
+      "Ethyl benzoate and HCl"
+     ]
+    ],
+    "now": 4
+   },
+   {
+    "v": 1,
+    "type": "state",
+    "name": "idle"
+   },
+   {
+    "v": 1,
+    "type": "state",
+    "name": "thinking"
+   },
+   {
+    "v": 1,
+    "type": "heard",
+    "text": "what happens next",
+    "final": true
+   },
+   {
+    "v": 1,
+    "type": "say",
+    "id": "t6",
+    "beat": 0,
+    "text": "That was the last step: the working is all on your screen."
+   },
+   {
+    "v": 1,
+    "type": "mute",
+    "id": "t6",
+    "why": "no voice is set up"
+   },
+   {
+    "v": 1,
+    "type": "state",
+    "name": "idle"
+   }
+  ]
+ }
+}

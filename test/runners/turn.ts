@@ -26,7 +26,7 @@ function shorter(line: any) {
   return line;
 }
 
-export async function playTurn(input: { tape: string; tapeSet?: Record<string, unknown>; asks: Step[][]; set?: Record<string, unknown>; show?: "drawn" | "saidFirst" | "ahead" | "next" | "cuts" }): Promise<unknown> {
+export async function playTurn(input: { tape: string; tapeSet?: Record<string, unknown>; asks: Step[][]; set?: Record<string, unknown>; show?: "drawn" | "saidFirst" | "ahead" | "next" | "cuts" | "walk" }): Promise<unknown> {
   const path = fresh("row") + ".sock";
   const played = tape(join(import.meta.dirname, "..", "tapes", input.tape), input.tapeSet);
   const changed: any = { ...settings };
@@ -77,6 +77,8 @@ export async function playTurn(input: { tape: string; tapeSet?: Record<string, u
     if (input.show === "ahead") return played.asked.map((asked) => ({ words: asked.words, ahead: asked.ahead }));
     // What the cutting port was asked, with the file it was to write by its name only: it sits in this machine's temporary folder.
     if (input.show === "cuts") return { cuts: played.cuts.map((job) => ({ ...job, to: basename(job.to) })), opened: got.filter((line) => line.type === "open").map(shorter).map(({ holds: _holds, ...rest }) => rest), said: got.filter((line) => line.type === "say" && /^t/.test(line.id)).map((line) => `${line.id}: ${line.text}`) };
+    // What the deep model was asked for each ask, as the work-through sees it, and every line that went out.
+    if (input.show === "walk") return { asked: played.asked.map((asked) => ({ words: asked.words, walk: asked.walk ?? null, spots: asked.spots.length, shown: asked.lesson.shown })), lines: got.filter((line) => line.type !== "next").map(shorter) };
     if (input.show === "drawn") return played.asked.map((asked) => ({ words: asked.words, drawn: asked.lesson.drawn }));
     if (input.show === "saidFirst") return { toldTheDeepModel: played.asked.map((asked) => ({ words: asked.words, saidFirst: asked.saidFirst })), said: got.filter((line) => line.type === "say").map((line) => ({ beat: line.beat, text: line.text })) };
     // The guide's lines are a setting's doing and would sit in every row that looks at a kept page; one row shows them.

@@ -76,7 +76,7 @@
      ]
     },
     {
-     "until": "board"
+     "until": "mute"
     }
    ],
    [
@@ -447,27 +447,27 @@
     "file": "lost-and-found-notes.html",
     "label": "your notes",
     "reads": [
-     "Recognition Process · lost and found",
+     "Recognition Process \u00b7 lost and found",
      "lost and found",
      "Recognition Process",
      "You asked:",
-     "“what is left”",
-     "3 things to do, in this order · 2 done",
+     "\u201cwhat is left\u201d",
+     "3 things to do, in this order \u00b7 2 done",
      "1",
      "Officers finish their training",
      "done",
      "Find it: Recognition Process - Campus Activities",
-     "“Officer Trainings: Hazing Prevention and Officer Learning Path”",
+     "\u201cOfficer Trainings: Hazing Prevention and Officer Learning Path\u201d",
      "2",
      "Submit the application",
      "in your calendar",
      "Find it: Recognition Process - Campus Activities, under Deadlines",
-     "“November 22 at 11:59pm: Application closes. You must submit the form on EngageSC before 11:59pm.”",
+     "\u201cNovember 22 at 11:59pm: Application closes. You must submit the form on EngageSC before 11:59pm.\u201d",
      "3",
      "Advisor requirements",
-     "December 1 · 17 days left",
+     "December 1 \u00b7 17 days left",
      "Find it: Recognition Process - Campus Activities, under Deadlines",
-     "“December 1: Deadline for advisors to submit their requirements.”",
+     "\u201cDecember 1: Deadline for advisors to submit their requirements.\u201d",
      "What Lost and Found could not tell you",
      "No date is given for \"Officers finish their training\".",
      "Notes made November 14, 2026. Every date here is the page's own, as the page writes it."

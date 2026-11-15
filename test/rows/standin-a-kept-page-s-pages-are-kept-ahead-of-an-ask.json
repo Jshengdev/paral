@@ -1,0 +1,70 @@
+{
+ "name": "standin: when a look finds a kept page, the pages an ask there is given are kept ahead: one request with exactly what an ask sends ahead of what changes, a dot for the picture and a dot for the words, one token of reply; a second look of the page, a page already asked about, a mind with the switch off and one that has spent its share of the cap send nothing",
+ "run": "live.warm",
+ "in": {
+  "today": 1794772800000,
+  "pages": [
+   {
+    "name": "recognition",
+    "title": "Recognition Process",
+    "url": "https://campusactivities.usc.edu/recognition/",
+    "readOn": "2026-11-14",
+    "lines": [
+     "Recognition Process",
+     "Complete the application by November 22, 2026.",
+     "You need five officers and an advisor."
+    ]
+   },
+   {
+    "name": "resources",
+    "title": "RSO Resources",
+    "url": "https://campusactivities.usc.edu/resources/",
+    "readOn": "2026-11-14",
+    "lines": [
+     "RSO Resources",
+     "Book a room through the reservation system.",
+     "Bake sales need a food permit by December 1, 2026."
+    ]
+   },
+   {
+    "name": "accountability",
+    "title": "RSO Accountability",
+    "url": "https://campusactivities.usc.edu/accountability/",
+    "readOn": "2026-11-14",
+    "lines": [
+     "RSO Accountability",
+     "Membership must be open to every student."
+    ]
+   }
+  ]
+ },
+ "out": {
+  "requestsAfterTwoLooksOfOnePage": 1,
+  "requestsInAll": 2,
+  "theSecondPageIsWarmedWithItsOwnPagesFirst": true,
+  "aPageAlreadyAskedAboutIsNotWarmed": true,
+  "sameAsAnAsk": {
+   "model": true,
+   "system": true,
+   "betas": true,
+   "fallbacks": true,
+   "outputConfig": true,
+   "pagesBlock": true
+  },
+  "maxTokens": 1,
+  "blocks": [
+   "text",
+   "image",
+   "text"
+  ],
+  "thePictureIsOneDot": true,
+  "theWordsAreOneDot": ".",
+  "holdsNothingOfHisScreenOrWords": true,
+  "logged": [
+   "the pages for \"Recognition Process\" are kept ahead of an ask",
+   "the pages for \"RSO Resources\" are kept ahead of an ask"
+  ],
+  "requestsWithTheSwitchOff": 0,
+  "requestsOnceTheShareOfTheCapIsSpent": 1
+ }
+}

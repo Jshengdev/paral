@@ -115,7 +115,7 @@ final class App: NSObject, NSApplicationDelegate {
             speaker.play(sound)
         }
         if case .open(let path, _) = seen, !Keep.open(path) { failed(path.hasSuffix(".ics") ? "the calendar file could not be opened" : "the notes page could not be opened") }
-        does.take(seen, on: screen, watch: watch, boxed: { scene.boxed(x: $0, y: $1, at: clock()) }, way: { [unowned self] in self.held ? nil : self.scene.watching(at: self.clock()).down }) { [unowned self] in self.failed($0) }
+        does.take(seen, on: screen, watch: watch, boxed: { scene.boxed(x: $0, y: $1, at: clock()) }, tell: { [unowned self] in self.tell($0) }) { [unowned self] in self.failed($0) }
         tell(seen)
     }
 
@@ -215,5 +215,5 @@ final class App: NSObject, NSApplicationDelegate {
         wire.send(.close(at: stamp()))
     }
 
-    @objc private func quit() { NSApp.terminate(nil) }
+    @objc private func quit() { Screen.end { NSApp.terminate(nil) } }
 }

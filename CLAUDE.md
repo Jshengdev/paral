@@ -103,12 +103,21 @@ once the page is still has been answered: placed anew by the mind, or left to st
 sees a page it asks the deep model about the kept page's own text, whether it holds one thing that will cost him
 later; nothing read from his screen is sent for that. If so: a box on the line where it now is on his screen (the
 line itself, or the heading it sits under), one sentence on the nudge card with the trail of what was done under its name,
-and a board of what is still ahead. The first time a page's look shows a date the sentence is also said aloud,
+and the steps still ahead remembered for "show me" (they are not drawn with the look: a board beside every first
+look crowded the page). The first time a page's look shows a date the sentence is also said aloud,
 once (`unaskedVoice`); every later look of that page is shown and not spoken. When he scrolls or opens a section the mark moves. After an
 answer the looks of that page are the answer's until his next ask (`mind/after.ts`): while the page has not moved
 under it they change nothing, and when it has they wipe what was drawn and mark the place the answer sent him to,
 if it named one. The page's own first thing does not come back over an answer. A date he has kept is not offered to be kept again. What
 is ahead is remembered for the sitting and given to every ask. A press of the key takes over at once.
+
+**A page's pages are kept ahead of his first question (`warmPages`).** Every look of a kept page calls
+`Brain.warm` (`mind/adapters/anthropic.ts`): unless those pages were warmed or asked about in the last fifty minutes
+(`warmAgainAfterMs`), the service is sent what an ask there begins with (the answer's instructions and the pages the
+ask is given, marked to be kept for an hour), a picture of one dot, one dot of words, and room for one token of reply.
+An ask there then finds its pages kept and does not wait for them. Nothing of his screen or his words is in it. It is
+not sent once half the spend cap is spent (`warmUnderShare`). The pages' text holds the page on his screen first, so
+each kept page he lands on is one keeping, about $0.18 by the adapter's count.
 
 **A page's first look is kept.** Its question is about the kept page's own text and today's date, so the answer is
 the same all day: it is asked once, kept in `tmp/looks/`, and asked ahead for every kept page when the mind starts
@@ -145,6 +154,18 @@ a box with no model pointing at the picture. The model is told the places' names
 sentences speak of (`spots`); `mind/spots.ts` rings them with the sentence. Never the signs between the reactants,
 and never the space the result goes in. With no sheet on screen nothing changes.
 
+**Working an exercise through (a switch, off).** `workThrough` is off unless the mind is started with
+`PARAL_WORK_THROUGH=1` (`PARAL_WORK_THROUGH=1 ./run`, or before `./flow`). Off, nothing changes. On, an ask whose
+words ask for it (`workThroughAsks`: "walk me through", "what happens next", "then what" ...) while a measured sheet
+is on his screen is not a hint: it gives exactly the next step of the exercise's own working (`mind/through.ts`,
+`cores/through.ts`). The deep model gets `prompts/answer.md` with `prompts/work-through.md` added, the steps given so
+far (kept in the lesson, `cores/hold.ts`), and its own reply shape (`adapters/claude-walk.ts`). Each step is one or
+two sentences, up to three rings on the drawing (`workThroughSpotsMost`), and a board of every step so far, one a
+row, the newest lit; nothing drawn for earlier steps is cleared. Only the last step may say what the working gives;
+an earlier step that names the product is held back (`workThroughHeldLine`), and an ask after the last hears
+`workThroughDoneLine` with no model asked. Every other ask, a plain "what is the final product?" too, goes up the
+hint ladder with Push as before. The worksheet's menu ends with "walk me through it".
+
 **A tapped ask, and the demo's centre.** The menu bar's menu is where the demo is run from. The bank of scenarios is
 one setting, `cueCards` (sent in the ready line), his to edit: each scenario has a name, optionally the https usc.edu
 page it is run on, and its lines in the order he would say them. Each is its own submenu: "Open the page" first (the
@@ -168,9 +189,10 @@ nothing to offer it is a card that goes by itself. An answer on any other page i
 **"Scroll for me."** When an arrow says the thing is off his screen and he says or presses "scroll for me"
 (`scrollAsks`), the mind asks no model: it sends a `scroll` line with the way the arrow points (`mind/takes.ts`,
 `glance.ts` `wayNow`: the walk's step, else where his last answer sent him, else the page's own thing). The app
-(`Does.swift`, `Hand.swift`) turns the wheel for the app in front, half a display at a time, and after each reach
-waits for a look of the still page to be answered, so the mark lands on the line where the line is. It stops when the
-arrow goes, when he presses the key, when the page no longer moves, or after 30 s. It needs his Accessibility grant,
+(`Does.swift`, `Hand.swift`) puts the pointer over the page and turns the wheel as a real one does, a reach of less
+than half a display at a time; after each reach it lets the page rest, asks the watcher for a look taken then, and
+lets it be answered, so the mark lands on the line where the line is. It stops when the arrow goes, when he presses
+the key, when the page no longer moves, when it has gone past twice, or after 30 s; `tmp/body.log` says what it did. It needs his Accessibility grant,
 asks for it once, and says so when it has none. With no arrow up he is told so and nothing is scrolled.
 
 **"Open it for me."** The one click paral makes. When its box is on a heading that is closed over the thing, the
@@ -334,5 +356,9 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
   browse while it runs, and it does not know the page's address: it recognises a kept page from the lines on screen.
   A page that has changed since it was read is answered from the old text. A date it says must be on the screen or
   in a kept page, or the sentence is not said; other facts are not checked.
+- Working an exercise through has run only on tapes and in five scripted live runs on the worksheet's picture
+  (November 15), never on his real screen; its rings need the sheet found there, as above. Which step comes next,
+  and whether the chemistry is right, is the model's: no code checks the steps, only that a step before the last
+  does not name the product as the model wrote it. A walk spans one connection; "Start over" begins it again.
 - One lesson exists (`balance`), with three fixed examples.
 - Landing a mark on the right line is measured on generated pages only, not on real course pages.

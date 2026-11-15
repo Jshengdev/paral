@@ -19,8 +19,34 @@ public enum Screen {
         return (id, DisplayPlace(id: Int(id), scale: Double(screen.backingScaleFactor), x: Double(bounds.minX), y: Double(bounds.minY)), bounds.size)
     }
 
+    /// How many pictures are being taken now, and whether the app is ending; both behind `gate`.
+    private static let gate = NSLock()
+    nonisolated(unsafe) private static var taking = 0, ending = false
+    /// How long after the last picture has come back the app waits before it exits, in seconds: the system's capture
+    /// service goes on working on a request for a moment after it has answered it. Not measured.
+    public static let afterLast = 0.3
+    /// The longest the app waits for a picture on its way before it exits anyway, in seconds.
+    public static let endWithin = 2.0
+
+    /// Ends the taking of pictures, for an app about to exit: none is begun from now, and `then` is called on the main
+    /// queue once none is on its way and `afterLast` has passed, or after `endWithin`. macOS puts its box that asks to
+    /// allow the app to see the screen in front of everything when an app is gone while a request of its for a
+    /// picture is still being worked on, so the app does not exit with one on its way.
+    public static func end(_ then: @escaping () -> Void) {
+        gate.withLock { ending = true }
+        let began = Date()
+        func wait() {
+            let idle = gate.withLock { taking == 0 }
+            if !idle && Date().timeIntervalSince(began) < endWithin { return DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { wait() } }
+            DispatchQueue.main.asyncAfter(deadline: .now() + afterLast, execute: then)
+        }
+        wait()
+    }
+
     /// One picture of a display, with this app's own windows left out.
     public static func picture(of screen: NSScreen) async throws -> (image: CGImage, place: DisplayPlace) {
+        guard gate.withLock({ () -> Bool in if ending { return false }; taking += 1; return true }) else { throw Failed(why: "paral is ending") }
+        defer { gate.withLock { taking -= 1 } }
         guard let (id, place, size) = place(of: screen) else { throw Failed(why: "that display cannot be found") }
         let content = try await SCShareableContent.excludingDesktopWindows(false, onScreenWindowsOnly: true)
         guard let display = content.displays.first(where: { $0.displayID == id }) else { throw Failed(why: "that display cannot be captured") }

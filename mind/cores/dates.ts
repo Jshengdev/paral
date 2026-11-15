@@ -29,11 +29,17 @@ const WORDED = new RegExp(`\\b${MONTH}\\.?,? (?:the )?${SAID_DAY}\\b(?:,? (\\d{4
 const said = (word: string) => SAID.find(([each]) => new RegExp(`^${each}$`, "i").test(word))?.[1] ?? 0;
 
 /**
+ * A date written with slashes, month first, as some USC pages write it: "11/25/2026", "12/2/26". It must carry its
+ * year: "24/7" and "1/2" are not dates.
+ */
+const SLASHED = /(?<![\d/])(\d{1,2})\/(\d{1,2})\/(\d{4}|\d{2})(?![\d/])/g;
+
+/**
  * Every month and day a text names: "November 22", "Nov. 22nd", "July 1, 2026". A span gives both its ends, and a
  * year after it is the year of both: "December 9-16", "December 5 through 8, 2026". "May" with a number after it
  * counts; "may" alone does not. A day written in words is read too, since a model sometimes writes a date the way it
  * is said: "November twenty-second", "the thirtieth of November". There "may" is never a month ("you may first
- * need"), which leaves a worded date in May unread.
+ * need"), which leaves a worded date in May unread. A date written with slashes is read as well.
  */
 export function datesIn(text: string): Named[] {
   const digits = [...text.matchAll(NAMED)].flatMap(([, name, day, last, year]) => [day, ...(last === undefined ? [] : [last])].map((d) => ({ month: month(name), day: Number(d), year: year ? Number(year) : null })));
@@ -41,7 +47,10 @@ export function datesIn(text: string): Named[] {
     .map(([, name, day, year, dayFirst, nameAfter, yearAfter]) => ({ name: name ?? nameAfter, day: said(day ?? dayFirst), year: year ?? yearAfter }))
     .filter(({ name }) => name.toLowerCase() !== "may")
     .map(({ name, day, year }) => ({ month: month(name), day, year: year ? Number(year) : null }));
-  return [...digits, ...words].filter((date) => date.day >= 1 && date.day <= 31);
+  const slashed = [...text.matchAll(SLASHED)]
+    .map(([, m, d, y]) => ({ month: Number(m), day: Number(d), year: y.length === 2 ? 2000 + Number(y) : Number(y) }))
+    .filter((date) => date.month >= 1 && date.month <= 12);
+  return [...digits, ...words, ...slashed].filter((date) => date.day >= 1 && date.day <= 31);
 }
 
 const A_MONTH = new RegExp(`\\b${MONTH}\\b`, "gi");

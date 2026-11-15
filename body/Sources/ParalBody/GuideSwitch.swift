@@ -7,12 +7,15 @@ public final class GuideSwitch: NSObject {
     public static let shared = GuideSwitch()
     private var onChange: ((Bool) -> Void)?
 
-    /// Puts the item first in the menu, ticked, and gives the menu back. `onChange` is told each time he ticks or unticks it.
+    /// Puts the item first in the menu, not ticked, and gives the menu back: the guide's card is one more thing on a
+    /// page that already has a mark and a card, so it is there only when he asks for it. `onChange` is told at once
+    /// that it is off, and each time he ticks or unticks it.
     public func added(to menu: NSMenu, onChange: @escaping (Bool) -> Void) -> NSMenu {
         self.onChange = onChange
         let item = NSMenuItem(title: "Show the guide", action: #selector(flip(_:)), keyEquivalent: "")
         item.target = self
-        item.state = .on
+        item.state = .off
+        onChange(false)
         menu.insertItem(item, at: 0)
         menu.insertItem(.separator(), at: 1)
         return menu

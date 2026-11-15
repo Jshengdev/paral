@@ -5,15 +5,19 @@ import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import { z } from "zod";
 import { settled } from "../cores/partial.ts";
 import { arriving, asking, cleaned, Glance, pagesRead, Reply } from "./claude-shape.ts";
+import { Walk, walked, walking } from "./claude-walk.ts";
 import { Answered, type Brain, type Glancer, type Opener, type SecondLook } from "../ports.ts";
 import type { Settings } from "../settings.ts";
 
 
 const Look = z.object({ leaks: z.boolean() });
+/** A picture of one dot, for a request that keeps pages ahead of an ask. */
+const DOT = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==";
 
 type Usage = { input_tokens: number; output_tokens: number; cache_creation_input_tokens?: number | null; cache_read_input_tokens?: number | null };
 type Log = (line: string) => void;
-export type Prompts = { answer: string; secondLook: string; opener: string; glance: string };
+/** `workThrough` is added to the answer's prompt only for a step of the working he asked to have worked through. */
+export type Prompts = { answer: string; secondLook: string; opener: string; glance: string; workThrough?: string };
 
 
 /** Claude behind three ports. The client is built here; a row may hand in a stand-in instead. */
@@ -42,9 +46,35 @@ export function anthropic(settings: Settings, prompts: Prompts, log: Log, client
     log(`${model}: ${usage.input_tokens} tokens in${cached}, ${usage.output_tokens} out; $${spentUsd.toFixed(3)} spent of $${settings.spendCapUsd.value}`);
   }
 
+  /** When each set of kept pages was last asked to be kept, by its own text: an ask counts, since it keeps them too. */
+  const warmedAt = new Map<string, number>();
+  /** The kept pages as an ask sends them: a block of its own, marked to be kept by the service for an hour. */
+  const kept = (read: string) => [{ type: "text" as const, text: read, cache_control: { type: "ephemeral" as const, ttl: "1h" as const } }];
+
   return {
     spentUsd: () => spentUsd,
     brain: {
+      warm(known, today) {
+        const read = settings.warmPages.value ? pagesRead(known, today, settings.pageLinesGiven.value) : null;
+        if (read === null || Date.now() - (warmedAt.get(read) ?? -Infinity) < settings.warmAgainAfterMs.value) return;
+        if (spentUsd >= settings.spendCapUsd.value * settings.warmUnderShare.value) return;
+        warmedAt.set(read, Date.now());
+        const model = settings.brainModel.value;
+        // Everything an ask sends ahead of what changes, exactly as an ask sends it, with a picture of one dot in the
+        // place of his screen (a request with a picture and one without are not kept as one) and one token of reply.
+        client.beta.messages
+          .create({
+            model,
+            max_tokens: 1,
+            system: prompts.answer,
+            betas: ["server-side-fallback-2026-07-01"],
+            fallbacks: "default",
+            output_config: { effort: settings.brainEffort.value, format: betaZodOutputFormat(Reply) },
+            messages: [{ role: "user", content: [...kept(read), { type: "image", source: { type: "base64", media_type: "image/png", data: DOT } }, { type: "text", text: "." }] }],
+          })
+          .then((reply) => (count(reply.model, model, reply.usage), log(`the pages for "${known[0].title}" are kept ahead of an ask`)))
+          .catch((error) => log(`the pages for "${known[0].title}" could not be kept ahead (${error instanceof Error ? error.message : error}); an ask there keeps them itself`));
+      },
       async answer(asked, signal, onPart) {
         allowed();
         const model = settings.brainModel.value;
@@ -61,22 +91,26 @@ export function anthropic(settings: Settings, prompts: Prompts, log: Log, client
         // USC's kept pages go first and are marked to be kept by the service for an hour: they are the same for every
         // ask on that site, so after the first ask they cost a twentieth and no longer slow the answer.
         const read = pagesRead(asked.known, asked.today, settings.pageLinesGiven.value);
-        const pages = read === null ? [] : [{ type: "text" as const, text: read, cache_control: { type: "ephemeral" as const, ttl: "1h" as const } }];
+        const pages = read === null ? [] : kept(read);
+        if (read !== null) warmedAt.set(read, Date.now());
+        // A step of the working is asked with the answer's prompt and its own added, in its own shape; nothing else changes.
+        const walk = asked.walk;
+        if (walk && !prompts.workThrough) throw new Error("the work-through prompt was not loaded");
         const stream = client.beta.messages.stream(
           {
             model,
             max_tokens: settings.brainMaxTokens.value,
-            system: prompts.answer,
+            system: walk ? `${prompts.answer}\n\n${prompts.workThrough}` : prompts.answer,
             // Opted in on purpose: when the model will not take a request, the API may answer from its fallback model
             // instead of failing the ask.
             betas: ["server-side-fallback-2026-07-01"],
             fallbacks: "default",
-            output_config: { effort: settings.brainEffort.value, format: betaZodOutputFormat(Reply) },
-            messages: [{ role: "user", content: [...pages, ...picture, { type: "text", text: asking(asked) }] }],
+            output_config: { effort: settings.brainEffort.value, format: walk ? betaZodOutputFormat(Walk) : betaZodOutputFormat(Reply) },
+            messages: [{ role: "user", content: [...pages, ...picture, { type: "text", text: walk ? walking({ ...asked, walk }, settings.workThroughSpotsMost.value) : asking(asked) }] }],
           },
           { signal },
         );
-        if (onPart) {
+        if (onPart && !walk) {
           stream.on("text", (_delta: string, soFar: string) => {
             const part = settled(soFar);
             if (part !== null && !part.whole) onPart(arriving(part));
@@ -90,8 +124,8 @@ export function anthropic(settings: Settings, prompts: Prompts, log: Log, client
         }
         const text = reply.content.flatMap((block) => (block.type === "text" ? [block.text] : [])).join("");
         const whole = settled(text);
-        const parsed = whole?.whole ? Reply.safeParse(whole) : null;
-        const answered = parsed?.success ? Answered.safeParse(cleaned(parsed.data)) : null;
+        const parsed = whole?.whole ? (walk ? Walk : Reply).safeParse(whole) : null;
+        const answered = parsed?.success ? Answered.safeParse(walk ? walked(parsed.data as z.infer<typeof Walk>, walk.steps.length) : cleaned(parsed.data as z.infer<typeof Reply>)) : null;
         if (answered?.success) return answered.data;
         // The reason and the reply's own text are kept, so the log explains a failure by itself. He sees plain words.
         const why = answered ? answered.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`).join("; ") : `it did not fit the contract (it stopped with "${reply.stop_reason}")`;

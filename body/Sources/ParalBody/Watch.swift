@@ -19,17 +19,21 @@ public final class Watch {
     private var timer: Timer?
     private var looking = false
     private var rounds = Rounds()
-    /// How many looks have been sent so far: the scroller waits for the next one after each reach.
-    public private(set) var sent = 0
+    /// How many looks have been sent so far, when the picture of the newest was taken, and whether the page had
+    /// moved since the look before it. The scroller waits, after each reach, for a look taken once the page had stopped.
+    public private(set) var sent = 0, sentTaken = Date.distantPast, sentMoved = true
+    private var forcedAt: Date?
+    /// The page as the latest round saw it when the scroller began its reach: what a look it asks for is set against.
+    private var reachFrom = Data()
     private var next = Date.distantPast
     /// What the app and the scene say now: whether the key is held, and the scene's answer to the watcher
     /// (`Scene.watching`): an ask being heard or answered, which way the scroll arrow points if one is up, and
     /// whether any mark is placed on the page. Nil when the app is gone.
-    public var sees: () -> (held: Bool, scene: (busy: Bool, down: Bool?, placed: Bool))? = { nil }
+    public var sees: () -> (held: Bool, scene: (busy: Bool, down: Bool?, placed: Bool, markY: Double?))? = { nil }
     /// Told when the page starts or stops being moved away from under paral's marks. While it is, the marks are on
     /// the wrong words and the scene does not draw them.
     public var onStale: ((Bool) -> Void)?
-    private var stale = false, placedCount = 0
+    private var stale = false, placedCount = 0, pendingMoved = true
     /// How often it looks while marks are placed, in seconds: often enough that a mark is off the page within half
     /// a second of the page moving, and back about a second after it stops. Not measured on a real screen.
     public static let placedEvery = 0.5
@@ -68,6 +72,18 @@ public final class Watch {
         stale = false
     }
 
+    /// Asks for a look now, whatever the rounds would say: the next picture is read and sent even if the page has
+    /// not changed. The scroller asks for one after each reach, once the page has stopped.
+    public func force() {
+        forcedAt = Date()
+        next = .distantPast
+    }
+
+    /// The scroller is about to turn the wheel: the page as it stands now is what its next asked-for look is measured
+    /// from. Measured from the last look sent instead, a look sent of itself while the page was still moving made the
+    /// asked-for one read as "not moved", and the scrolling stopped a reach short.
+    public func reaching() { reachFrom = rounds.latest }
+
     /// The menu bar's height, in points: what the display has above the room it leaves to windows.
     private var bar: Double { max(0, screen.frame.maxY - screen.visibleFrame.maxY) }
 
@@ -89,7 +105,7 @@ public final class Watch {
     private func look() {
         guard !looking, Date() >= next, !busy(), Screen.allowed else { return }
         looking = true
-        let scene = sees()?.scene
+        let scene = sees()?.scene, taken = Date()
         next = Date().addingTimeInterval(scene?.placed == true ? min(Watch.placedEvery, everyMs / 1000) : everyMs / 1000)
         let screen = self.screen, bar = self.bar
         Task { [weak self] in
@@ -98,9 +114,16 @@ public final class Watch {
             let wanted = await MainActor.run { () -> Bool in
                 guard let self, !print.isEmpty, !self.busy() else { return false }
                 // The moment the page is not the one the marks were placed on, the scene is told, and again when it is.
-                let moved = scene?.placed == true && self.rounds.stale(print, within: Watch.within)
+                // Where the newest mark is, as a share of the print's height: the print leaves the menu bar out.
+                let high = Double(self.screen.frame.height) - bar
+                let band = scene?.markY.map { ($0 - bar) / max(high, 1) }
+                let moved = scene?.placed == true && self.rounds.stale(print, within: Watch.within, band: band)
                 if moved != self.stale { self.stale = moved; self.onStale?(moved) }
-                return self.rounds.report(print, waiting: scene?.down != nil, most: self.most, within: Watch.within)
+                // A look asked for by the scroller is sent whatever the rounds say, if its picture was taken after the asking.
+                let forced = self.forcedAt.map { taken >= $0 } ?? false
+                if forced { self.forcedAt = nil }
+                self.pendingMoved = forced ? !Screen.alike(print, self.reachFrom, within: Watch.within) : !self.rounds.unmoved(print, within: Watch.within)
+                return self.rounds.report(print, waiting: scene?.down != nil, most: self.most, within: Watch.within) || forced
             }
             let lines = wanted ? shot.flatMap { try? Screen.read($0.image) } : nil
             await MainActor.run {
@@ -109,7 +132,7 @@ public final class Watch {
                 guard let shot, let lines, !self.busy() else { return }
                 let path = NSTemporaryDirectory() + "paral-look.jpg"
                 guard (try? Screen.saveSmaller(shot.image, to: path, longEdge: self.longEdge)) != nil else { return }
-                self.sent += 1
+                (self.sent, self.sentTaken, self.sentMoved) = (self.sent + 1, taken, self.pendingMoved)
                 self.onLook?(path, shot.image.width, shot.image.height, shot.place, lines)
                 // If the mind places nothing new for this look, the marks stand by its own measure: they are drawn again.
                 let before = self.placedCount

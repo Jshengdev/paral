@@ -3,7 +3,7 @@ import type { Hands, Screen } from "./ask.ts";
 import { away, unknownDate, worded } from "./cores/dates.ts";
 import type { Box } from "./cores/ground.ts";
 import { named, type ToKeep } from "./cores/keep.ts";
-import { headingOf, whichPage, type KeptPage } from "./cores/page.ts";
+import { headingOf, together, whichPage, type KeptPage } from "./cores/page.ts";
 import { finished, point, whereIs, type More, type Where } from "./place.ts";
 import type { Following, Glanced } from "./ports.ts";
 import { speech } from "./speech.ts";
@@ -133,6 +133,7 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
       // On a page that is not kept nothing is pointed at: what the last kept page's look found is not kept for it.
       last = page === null ? null : { look, page };
       if (page === null || ports.glancer === null) return;
+      ports.brain.warm?.(together(page, ports.pages), look.at); // his first question here then finds its pages kept
       if (led !== null && led.page === page.name) return follow(look, page, led);
       // An answer holds a page's looks only once the page has had its own first look: an ask as the page came up lets go, and that look is taken.
       if (found.has(page.name) ? answer.take(look, page) : (answer.stop(), false)) return;
@@ -207,9 +208,8 @@ export function glances({ ports, settings, send, log, noted }: Hands, remember: 
         saidAloud.add(page.name);
         speech({ ports, settings, send, log }, id, mine.signal).speak(0, text);
       } else send({ v, type: "mute", id, why: "a look he did not ask for is shown, not spoken" });
-      // What is ahead stays drawn while he is on this page: it is sent again each time the mark moves. One step to a
-      // row: three steps with their dates side by side were shrunk to fit, down to words no one could read.
-      if (glanced.ahead.length > 0) send({ v, type: "board", id, rows: glanced.ahead.map((step) => [step.by ? `${step.step}: ${step.by}` : step.step]) });
+      // What is ahead is remembered and not drawn: a board of steps beside every first look crowded the page before he
+      // had asked for steps at all. "Show me", or an ask about what is ahead, draws them.
       // Only a date still ahead is one he can ask to keep: a passed one is told, never offered.
       if (glanced.kind === "date") showed({ title: named(glanced.line, page.title), written: glanced.line, url: page.url });
       log(`${id}: shown without being asked: "${text}"; ${marked}`);

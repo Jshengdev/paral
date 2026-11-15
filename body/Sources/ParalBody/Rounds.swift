@@ -41,6 +41,12 @@ public struct Rounds {
 
     public init() {}
 
+    /// The print of the latest round: the page as it was last seen, reported or not. Empty before the first round.
+    public var latest: Data { before }
+
+    /// Whether a print shows the page as the last look reported saw it: the page has not moved since.
+    public func unmoved(_ print: Data, within: Double) -> Bool { Screen.alike(print, reported, within: within) }
+
     /// Marks have just been placed: the page as the latest round saw it is the page they are on.
     public mutating func placed() { basis = before }
 
@@ -49,8 +55,17 @@ public struct Rounds {
     public mutating func stands() { basis = reported }
 
     /// Whether the page has moved under the marks: a print that is not the page they were placed on. False while
-    /// nothing has been placed.
-    public func stale(_ print: Data, within: Double) -> Bool { !basis.isEmpty && !Screen.alike(print, basis, within: within) }
+    /// nothing has been placed. With `band` (how far down the print the newest mark's middle is, 0 to 1) only the rows
+    /// round that place are compared, a tenth of the print's height each way: a scroll changes them, and a link
+    /// lighting up under the pointer somewhere else does not. `wide` is the print's width in points.
+    public func stale(_ print: Data, within: Double, band: Double? = nil, wide: Int = 320) -> Bool {
+        guard !basis.isEmpty, basis.count == print.count else { return false }
+        guard let band, wide > 0, print.count % wide == 0 else { return !Screen.alike(print, basis, within: within) }
+        let rows = print.count / wide, middle = Int((min(max(band, 0), 1) * Double(rows)).rounded(.down)), reach = max(1, rows / 10)
+        let from = max(0, middle - reach) * wide, to = min(rows, middle + reach + 1) * wide
+        guard from < to else { return false }
+        return !Screen.alike(print.subdata(in: from..<to), basis.subdata(in: from..<to), within: max(within, 0.01))
+    }
 
     /// Whether a print shows the page as the last look reported saw it, and, round a place of it (`near`, as shares
     /// of the print across and down), exactly so: in the 49 by 25 points round that place not one in a hundred may

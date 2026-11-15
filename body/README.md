@@ -427,8 +427,8 @@ no click: paral is held and let go. While paral's ink is on the page a cross tha
 middle; the orb in the middle says whose cross it is, so it no longer wears the logo mark and the name. A click is
 taken on the cross's own circle and nowhere else.
 
-- **The orb.** The designer's orb handoff (`raw/anchors/0112-orb-handoff`, made this weekend by the team's own
-  designer: a Metal shader, `LFOrb.swift`, the same in WebGL, `orb.html`, and a film of the light moving) is ported
+- **The orb.** The designer's orb handoff (made this weekend by the team's own designer and kept with the team's
+  own files, not in this repo: a Metal shader, the same in WebGL, and a film of the light moving) is ported
   here to the CPU, so the film and the window draw the same pixels with the same painter (`OrbLight.swift`): her
   value noise and its four octaves, her warped field squashed to 0.42 across, her two soft clips, her radial lift
   toward the middle, her 8 by 8 ordered dither to `orb.levels` (6) steps in cells of `orb.ditherCell` (1) point, her

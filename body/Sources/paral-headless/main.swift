@@ -61,7 +61,7 @@ case "rounds":
         if round["placed"] as? Bool == true { rounds.placed() }
         if round["stands"] as? Bool == true { rounds.stands() }
         let print = Data((round["print"] as? String ?? "").utf8)
-        stale.append(rounds.stale(print, within: within))
+        stale.append(rounds.stale(print, within: within, band: asked["band"] as? Double, wide: asked["wide"] as? Int ?? 320))
         return rounds.report(print, waiting: round["waiting"] as? Bool ?? false, most: most, within: within)
     }
     out(["reported": reported, "stale": stale])

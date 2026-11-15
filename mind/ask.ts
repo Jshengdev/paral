@@ -15,6 +15,8 @@ import type { Answered, Part, Ports } from "./ports.ts";
 import type { Settings } from "./settings.ts";
 import { speech } from "./speech.ts";
 import { spotsOn } from "./spots.ts";
+import { workedThrough } from "./through.ts";
+import { worksThrough } from "./cores/through.ts";
 import { SEAM_VERSION, type FromBody, type FromMind } from "../seam/schema.ts";
 
 export type Screen = Extract<FromBody, { type: "screen" }>;
@@ -57,13 +59,16 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
   const board = card(hands, asking, drew);
   const clip = lessonClip(hands, asking, drew);
   const lead = fast(hands, asking, talk, {
-    nothingSaid: () => explained.told() + hinted.told() === 0,
-    arriving: () => headed !== null,
+    nothingSaid: () => explained.told() + hinted.told() + worked.told() === 0,
+    arriving: () => headed !== null || worked.came(),
     shown: () => board.filled() || explained.markOut() || headed?.place?.found === true,
   });
   const spots = spotsOn(hands, id, seen);
   const explained = explanation(hands, asking, { talk, board, clip, lead, drew, sources });
   const hinted = ladderHint(hands, asking, { talk, clip, lead, drew });
+  /** With the switch on and his words asking for it, on a measured drawing, the ask is the next step of the working (`through.ts`). */
+  const walking = worksThrough(settings.workThrough.value, words, settings.workThroughAsks.value, spots.named.length > 0);
+  const worked = workedThrough(hands, asking, { talk, lead, spots, drew, given: () => draft.steps ?? [] });
 
   /** The rung this ask is on: the first on a new wrong line, the same again when he changed the line, otherwise one up. */
   const plan = (from: Lesson) =>
@@ -105,7 +110,7 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
     if (headed?.explains) explained.arriving(part);
   };
   /** Asks the deep model, telling it the quick line he has just heard, the lesson so far and the rung to write for. */
-  const think = (from: Lesson, rung: Move, onPart?: (part: Part) => void): Promise<Answered> => {
+  const think = (from: Lesson, rung: Move, onPart?: (part: Part) => void, walk?: { steps: string[] }): Promise<Answered> => {
     const asked = {
       words,
       saidFirst,
@@ -121,6 +126,7 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
       lesson: from,
       rung: ladder[rung.rung],
       fresh: rung.fresh,
+      ...(walk ? { walk } : {}),
     };
     return ports.brain.answer(asked, signal, onPart);
   };
@@ -129,6 +135,23 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
   // when it was drafted while he talked, and at the opener's deadline at the latest.
   const saidFirst = await lead.opened;
   if (signal.aborted) return;
+  if (walking) {
+    log(`${id}: he asked to have the exercise worked through; step ${(draft.steps ?? []).length + 1}${draft.worked ? ", after the last" : ""}`);
+    if (draft.worked) worked.done();
+    else {
+      const given = draft.steps ?? [];
+      const step = await think(draft, move, undefined, { steps: given });
+      if (signal.aborted) return;
+      // A walk begins on the exercise the model reads; once begun, its steps stay together whatever words the problem is put in.
+      const newProblem = draft.problem !== null && alike(step.problem, draft.problem) < settings.sameProblemScore.value;
+      if (given.length === 0 && newProblem && asking.markUp) send({ v, type: "clear" });
+      if (given.length === 0 && (draft.problem === null || newProblem)) drew({ type: "problem.read", text: step.problem });
+      drew({ type: "he.tried", words });
+      worked.finish(step);
+    }
+    keep(draft);
+    return talk.finished();
+  }
   let answered = await think(draft, move, arriving).catch((error) => {
     board.close("the ask failed");
     throw error;

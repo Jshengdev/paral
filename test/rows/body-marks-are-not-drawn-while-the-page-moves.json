@@ -1,5 +1,5 @@
 {
- "name": "body: the page moves away from under a box and its tag: from that moment neither is drawn and the cursor does not rest by them; when the page stands again as it did, both are back as they were, with nothing drawn anew; and marks the mind places while the page is taken as moved are drawn at once, since they are for the page as it stands",
+ "name": "body: the page moves away from under a box and its tag: from that moment neither is drawn and the cursor does not rest by them; when the page stands again as it did, both are back as they were, with nothing drawn anew; and marks the mind places while the page is taken as moved are drawn at once, since they are for the page as it stands; and while the app itself scrolls the page for him nothing is drawn either, until it says the scrolling has ended",
  "run": "body.marks",
  "in": {
   "lines": [
@@ -71,6 +71,22 @@
      "kind": "box",
      "on": 2
     }
+   },
+   {
+    "at": 12000,
+    "line": {
+     "type": "stale",
+     "moved": true,
+     "hand": true
+    }
+   },
+   {
+    "at": 14000,
+    "line": {
+     "type": "stale",
+     "moved": false,
+     "hand": true
+    }
    }
   ],
   "at": [
@@ -79,7 +95,9 @@
    5500,
    6100,
    8500,
-   11000
+   11000,
+   13000,
+   14500
   ]
  },
  "out": [
@@ -113,6 +131,15 @@
     "onOurPieces": []
    },
    "cursor": "nearest g1/0 tag",
+   "arrowLeaves": null
+  },
+  {
+   "cursor": "none",
+   "arrowLeaves": null
+  },
+  {
+   "g2/0 box": "drawn",
+   "cursor": "nearest g2/0 box",
    "arrowLeaves": null
   },
   {

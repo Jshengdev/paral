@@ -27,8 +27,8 @@ export const cues = {
   } satisfies Setting<Record<string, Step[]>>,
 
   openingLine: {
-    value: "I sit on top of the page you have open. When a USC page hides something that will cost you later, I box it, and I can keep the date for you.",
-    why: "Shown once in the capsule when the app starts, so a student who has just opened it knows what it is. It goes to the body in the ready line; the app shows it, not spoken, and a scripted run does not show it. An empty line shows nothing.",
+    value: "Open a USC page and I will mark what matters. Hold right Option to ask.",
+    why: "Shown once in the capsule when the app starts, so a student who has just opened it knows what it is. It goes to the body in the ready line; the app shows it, not spoken, and a scripted run does not show it. An empty line shows nothing. It was three sentences and stood about nine seconds over an empty tab; one short line is read and gone.",
     measured: "not seen on a Mac",
   } satisfies Setting<string>,
 
@@ -41,10 +41,10 @@ export const cues = {
   cueCards: {
     value: [
       { name: "Club recognition page", page: "https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/", lines: ["add it to my calendar", "do we need five officers and an advisor? there's only three of us", "show me", "what else do we have to finish by November 22?", "what is still ahead?", "can you help me find where to book this event?", "scroll for me", "show me my notes"] },
-      { name: "Chemistry worksheet", lines: ["what does this formula tell me?", "can you draw how these steps connect?", "what happens first?", "so, what is the final product?", "just tell me the answer", "show me my notes"] },
+      { name: "Chemistry worksheet", lines: ["what does this formula tell me?", "can you draw how these steps connect?", "what happens first?", "so, what is the final product?", "just tell me the answer", "show me my notes", "walk me through it"] },
       { name: "Maymester page", page: "https://dornsife.usc.edu/wrigley/education/catalina-residential-college/catalina-island-maymester/", lines: ["is it too late to apply?", "when does it open again?", "show me my notes"] },
     ],
-    why: "The demo's bank of scenarios, his to edit here and nowhere else: each is a submenu of the menu bar's menu (body/Sources/ParalBody/Centre.swift), with \"Open the page\" first when it has a page, then its lines in the order he would say them, for a hall too loud for the microphone and a demo clicked through without a word. A tapped line is asked exactly as a spoken one, with the same picture of the screen and no ear. `page` is the address the app opens in his browser, only an https address of a usc.edu site (Keep.go); any other is shown greyed out. The chemistry worksheet has none, since it is his own file. Each scenario ends with \"show me my notes\", so the notes of the sitting are one tap at the end of it. An empty list shows no scenarios.",
+    why: "The demo's bank of scenarios, his to edit here and nowhere else: each is a submenu of the menu bar's menu (body/Sources/ParalBody/Centre.swift), with \"Open the page\" first when it has a page, then its lines in the order he would say them, for a hall too loud for the microphone and a demo clicked through without a word. A tapped line is asked exactly as a spoken one, with the same picture of the screen and no ear. `page` is the address the app opens in his browser, only an https address of a usc.edu site (Keep.go); any other is shown greyed out. The chemistry worksheet has none, since it is his own file. Each scenario has \"show me my notes\" near its end, so the notes of the sitting are one tap away. The worksheet's last line, \"walk me through it\", works its exercise through one step a tap only with the work-through switch on (`workThrough`, PARAL_WORK_THROUGH=1); with it off it is an ordinary ask and gets a hint. Tapped again it gives the next step. An empty list shows no scenarios.",
     measured: "not tapped on a Mac yet; the lines had one live run through the scripted stand-in; the two pages are the ones pages/list.json keeps, and no menu item has opened them on a Mac",
   } satisfies Setting<{ name: string; page?: string; lines: string[] }[]>,
 };

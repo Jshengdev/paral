@@ -1,4 +1,5 @@
 // Runners for rows about adapters, with a stand-in where the outside service would be.
+import { createHash } from "node:crypto";
 import { writeFileSync } from "node:fs";
 import type Anthropic from "@anthropic-ai/sdk";
 import { anthropic } from "../../mind/adapters/anthropic.ts";
@@ -20,6 +21,8 @@ type StandIn = {
   brainModel?: string;
   asks?: number;
   board?: string[][];
+  /** Gives back only a fingerprint of the whole request to the deep model, so a row can hold it unchanged. */
+  fingerprint?: boolean;
 };
 /** The parts of a request to Claude that the stand-in looks at. */
 type Block = { type: string; text?: string };
@@ -28,6 +31,7 @@ type Options = { signal?: AbortSignal } | undefined;
 
 export async function standIn(input: StandIn) {
   const calls: unknown[] = [];
+  let request: Request | null = null;
   const seen = (kind: string, params: Request, options: Options) => {
     const content = params.messages[0].content;
     const text = typeof content === "string" ? content : (content.find((block) => block.type === "text")?.text ?? "");
@@ -49,6 +53,7 @@ export async function standIn(input: StandIn) {
   };
   const streamed = (params: Request, options: Options) => {
     seen("brain", params, options);
+    request = params;
     // Written in the order the model writes in: the board before the sentences.
     const { beats = [], ...head } = input.brainReply.parsed_output ?? {};
     const text = input.brainReply.parsed_output ? JSON.stringify({ lesson: null, spots: [], ...head, board: input.board ?? null, beats }) : "";
@@ -74,7 +79,7 @@ export async function standIn(input: StandIn) {
   const signal = new AbortController().signal;
   const asked = { words: "", lines: [], fresh: false, circled: [], leadIn: settings.ladder.value[0].safe, saidFirst: null, today: Date.UTC(2026, 10, 14, 20), known: [], ahead: [], lessons: [], spots: [], ...input.asked, lesson: { ...empty, ...input.asked.lesson }, picturePath: input.picture ? picturePath : null, rung: settings.ladder.value[0] };
   try {
-    const live = anthropic(changed, { answer: "answer prompt", secondLook: "second look prompt", opener: "opener prompt", glance: "glance prompt" }, (line) => logged.push(line), client);
+    const live = anthropic(changed, { answer: "answer prompt", secondLook: "second look prompt", opener: "opener prompt", glance: "glance prompt", workThrough: "work-through prompt" }, (line) => logged.push(line), client);
     let answered = null;
     let early = false;
     const boards = new Set<string>();
@@ -84,6 +89,7 @@ export async function standIn(input: StandIn) {
         if (part.board !== undefined) boards.add(JSON.stringify(part.board));
       });
     }
+    if (input.fingerprint) return { request: createHash("sha256").update(JSON.stringify(request)).digest("hex").slice(0, 12) };
     if (input.board) return { boardsGivenWhileItArrived: [...boards].map((board) => JSON.parse(board)), boardAtTheEnd: answered!.board };
     const leaks = await live.secondLook.leaks(answered!.beats[0].say, answered!.problem, signal);
     return { answered, leaks, calls, spentUsd: Number(live.spentUsd().toFixed(6)), toldTheLineEarly: early };
