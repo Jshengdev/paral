@@ -25,6 +25,8 @@ export const FromBody = z.discriminatedUnion("type", [
   z.object({ v, type: z.literal("mic"), pcm: z.string(), at }),
   z.object({ v, type: z.literal("trail"), x: z.number(), y: z.number(), at }),
   z.object({ v, type: z.literal("key.up"), at }),
+  /** An ask whose words were tapped or typed, not spoken. A `screen` line follows it, as after a press of the key. */
+  z.object({ v, type: z.literal("typed"), text: z.string().min(1), at }),
   z.object({ v, type: z.literal("close"), at }),
   z.object({
     v,
@@ -60,6 +62,8 @@ export const FromMind = z.discriminatedUnion("type", [
     cropAround: z.object({ share: z.number().nonnegative(), points: z.number().nonnegative() }),
     /** How often the body looks at the display with no key pressed, to send a `look` when it has changed. Absent or 0: never. */
     lookEveryMs: z.number().nonnegative().optional(),
+    /** Lines he can tap instead of saying them, in groups: the body shows them in its menu and sends a tapped one as `typed`. */
+    cues: z.array(z.object({ name: z.string().min(1), lines: z.array(z.string().min(1)) })).optional(),
   }),
   z.object({ v, type: z.literal("state"), name: z.enum(["idle", "listening", "thinking", "failed"]), detail: z.string().optional() }),
   z.object({ v, type: z.literal("heard"), text: z.string(), final: z.boolean() }),
@@ -79,8 +83,8 @@ export const FromMind = z.discriminatedUnion("type", [
   z.object({ v, type: z.literal("voice"), id, beat, pcm: z.string(), last: z.boolean().optional() }),
   z.object({ v, type: z.literal("words"), id, beat, words: z.array(z.string()), start: z.array(z.number()), end: z.array(z.number()) }),
   z.object({ v, type: z.literal("mute"), id, why: z.string() }),
-  /** A calendar file the mind has written for him to keep a date; the body opens it and his own click in Calendar adds it. */
-  z.object({ v, type: z.literal("open"), id, path: z.string().min(1) }),
+  /** A calendar file the mind has written for a date he asked to keep; the body opens it in his calendar app. `label` is the date in a few words ("November 22"), for the body to show. */
+  z.object({ v, type: z.literal("open"), id, path: z.string().min(1), label: z.string().optional() }),
   z.object({ v, type: z.literal("mark"), id, beat, kind: MarkKind, box: Box, label: z.string().optional() }),
   /** In place of a mark, when the thing is on this page and not in view: which way to scroll, and the name of what it leads to. `clear` wipes it. */
   z.object({ v, type: z.literal("way"), id, to: z.enum(["up", "down"]), toward: z.string().min(1) }),

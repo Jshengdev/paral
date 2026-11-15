@@ -19,6 +19,7 @@ Every decision is a pure function in `cores/`; every outside service is behind `
 | `speech.ts` | the voice for one ask: sentences one after another; a failure turns the rest to words only |
 | `glance.ts` | the looks taken without the key: on one of USC's kept pages, the one thing that will cost him later is marked where it is on his screen, with one line and its trail in the capsule and a board of what is ahead. After an answer that sent him to another kept page, the look there is for what he was sent for |
 | `place.ts` | where a kept line is on his screen now: its own line, the heading it sits under, or which way it lies; and the mark or the way line for it |
+| `settings/cues.ts` | the cue cards: lines he can tap instead of saying them |
 | `ready.ts` | the line the mind sends when the body connects: every setting the body needs |
 | `showme.ts` | "show me": the walk through what is ahead, one step each time he says it, with the board, one sentence and the box or the way; no model asked |
 | `keep.ts` | "add it to my calendar": the date last shown is written into a calendar file and the body is told to open it, with no model asked |

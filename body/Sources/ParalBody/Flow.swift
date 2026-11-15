@@ -134,6 +134,16 @@ public final class Flow {
                 send(.close(at: stamp()), as: .close)
                 continue
             }
+            // An ask that is tapped or typed: the words go as they are, with the picture of the screen and no sound.
+            if let text = ask["typed"] as? String {
+                seenTo = got.count
+                release.now()
+                send(.typed(text: text, at: stamp()), as: .typed)
+                let lines = try Screen.read(image)
+                send(.screen(at: stamp(), display: display, path: small, w: image.width, h: image.height, lines: lines), as: .screen(display: display, lines: lines))
+                releasedAt = clock()
+                continue
+            }
             seenTo = got.count
             // A press inside the grace of the hold before ends that hold first, as the app does.
             release.now()
