@@ -14,7 +14,7 @@ here clicks.
 
 | piece (kit's name) | what it is for | the line that brings it | what ends it | tokens |
 |---|---|---|---|---|
-| Voice pill (the capsule) | paral's one voice on screen, bottom centre, its foot 28 above the Dock: one capsule whose size changes between the collapsed pill (a row of dots) at rest and the full pill, a stop control, the wave and a send control. The wave scrolls in ink with the microphone's sound while he holds the key, and in stone with the voice's while paral works and answers; still dots on a failure. At rest with paral's ink on the page, a cross that clears it, with the logo mark and the name to its left. Open, it moves along the foot off the page's read text. While paral works with no cursor on the page, the logo mark by it breathes. The two controls take no click | `key.down` (listening), `key.up` (working), `say` with `voice` or `mute` (answering), `state` failed; the wave reads the microphone's sound in the body (and a film reads the record's `mic` lines), and the voice's | the answer's end and a short linger, then it rests; the next press takes it over | `capsule.*`, `wave.*`, `light`, `mist`, `ink`, `stone`, `paper`, `glass`, `shadow`, `cursor.workGrows`, `cursor.workMs`, `motion.arriveMs`, `motion.leaveMs`, `motion.lingerMs`, `curves.arrive`, `curves.leave`, `strings.name` (beside the cross) |
+| Voice pill (the capsule) | paral's one voice on screen, bottom centre, its foot 28 above the Dock: one capsule whose size changes between the collapsed pill (a row of dots) at rest and the full pill, a stop control, the wave and a send control. The wave scrolls in ink with the microphone's sound while he holds the key, and in stone with the voice's while paral works and answers; still dots on a failure. At rest with paral's ink on the page, a cross that clears it, with the logo mark and the name to its left. While paral works with no cursor on the page, the logo mark by it breathes. The two controls take no click | `key.down` (listening), `key.up` (working), `say` with `voice` or `mute` (answering), `state` failed; the wave reads the microphone's sound in the body (and a film reads the record's `mic` lines), and the voice's | the answer's end and a short linger, then it rests; the next press takes it over | `capsule.*`, `wave.*`, `light`, `mist`, `ink`, `stone`, `paper`, `glass`, `shadow`, `cursor.workGrows`, `cursor.workMs`, `motion.arriveMs`, `motion.leaveMs`, `motion.lingerMs`, `curves.arrive`, `curves.leave`, `strings.name` (beside the cross) |
 | Transcript bubble (the kit's) | every word the pill has to say, in a light card 8 above it: his words as they are heard (a word still being registered in stone, settling to ink; a caret that blinks; the oldest words dropped so the newest stay in view), his words in ink while paral works, each sentence as it is said (its words stone until said) and a failure, FAILED in cardinal and the reason | the pill's own lines; `heard` for his words | rises out of the pill as it opens and goes in 0.16 s as it shuts; a line stands its least time before the next takes its place | `bubble.*`, `capsule.type`, `ink`, `stone`, `cardinal`, `motion.wordMs`, `motion.standMsAWord`, `motion.readMsLeast`, `motion.unaskedStayMs`, `strings.listening`, `strings.thinking`, `strings.failed` |
 | The trail (build's name; the kit has no frame) | the steps paral took before a line it said without being asked, small in stone under the nudge card's name, joined by › as the capsule joined them, each lit once reached | `say` with `trail` | with its line | `nudge.trailType`, `nudge.trailGap`, `stone`, `dim`, `motion.trailStepMs` |
 | Highlight ring, and drawn notes | "this line": a ring, underline, wavy line or bracket drawn by hand in ember, with a note beside it when the mind sends one | `mark` (kind `ring`, `underline`, `wavy`, `bracket`; `label` for the note) | `clear`, a close, or a new mark on the same line | `mark.*`, `ember`, `cardinal` (the note) |
@@ -134,11 +134,11 @@ card is in the movie, this macOS records the window anyway and the setting does 
 | `Scene.swift`, `SceneTimes.swift`, `ScenePicture.swift` | events in, a `Picture` for any moment out. No clock, no drawing |
 | `ScenePill.swift` | the pill's wave (how loud it is at each sample, from the microphone's sound or the voice's) and the logo mark that breathes by it |
 | `Meter.swift` | how loud a chunk of sound is, 0 to 1, for the wave |
-| `ScreenInk.swift` | the page's own ink in the band at the foot, for the scene only, so the pill keeps off a drawing as it keeps off words |
+| `ScreenInk.swift` | the page's own ink in the band at the foot, for the scene only; kept for an arrow to keep off a drawing |
 | `SceneWay.swift` | the arrow that says which way to scroll: how far the pen has inked it, and its nod |
 | `ScenePointer.swift` | paral's own cursor: its flight to a mark, its ride on the pen, its rest beside the mark and the ripple there |
 | `Picture.swift` | what is on screen at one moment, as plain values |
-| `Layout.swift`, `LayoutPill.swift` | where the pill and its bubble sit, off the page's read text, the largest empty place for a board, the place at an edge for the way arrow, and where the cursor rests beside a mark |
+| `Layout.swift`, `LayoutPill.swift` | where the pill and its bubble sit, and the band at the foot that is theirs alone, the largest empty place for a board, the place at an edge for the way arrow, and where the cursor rests beside a mark |
 | `Motion.swift` | how things move: the four curves, even speed for ink, and the cursor's arc |
 | `Pen.swift` | the path the pen takes for each kind of mark |
 | `PenWay.swift` | the strokes the pen makes for the two drawn arrows: a shaft, then a head |
@@ -370,15 +370,12 @@ the name opens as the capsule shuts, and the name is written from the cross left
   same. A line said without being asked is the nudge card's, not the bubble's (below). A failure is FAILED in
   cardinal and bold and the reason after it, as before. It rises out of the pill as the pill opens (`bubble.rise`, on
   `arrive`) and goes in `bubble.leaveMs` (160, the handoff's exit) as the pill shuts, holding its last words while it goes.
-- **Off the page's words.** Open, the pill moves along the foot, a step of 24 points at a time, to the nearest place
-  where neither it nor the room its bubble may take (520 wide, two lines tall) lies on any of the page's read lines
-  (`Layout.pillMiddle`); where no place is clear, the one that covers least. At rest the collapsed pill, and the
-  cross with its logo and name, slide the same way to the nearest place that lies on no read line, and stay at the
-  middle where none is clear (`Layout.restMiddle`); the window takes a click on the cross where it was drawn.
-  The page's own ink in the band at the foot counts as well as its read lines, so a drawing is kept off too:
-  `Screen.inked` (`ScreenInk.swift`) finds it on every picture of the screen, cells of about 6 points that differ from
-  the page's own grey, and the app, the stand-in and the film give it to the scene only, as lines with no words. The
-  mind is sent the read lines as before.
+- **Always at the bottom centre.** The pill, its bubble, the collapsed pill and the cross stay at the display's
+  middle, 28 above the Dock, whatever is under them, and cover it with their solid surface, as the designer's
+  pictures do (the owner's word at 01:56; before that they slid along the foot off the page's words and ink). The
+  scene is still told of the page's own ink in the band at the foot (`Screen.inked`, `ScreenInk.swift`), beside the
+  read lines, by the app, the stand-in and the film; it moves nothing now and is kept for an arrow to keep off a
+  drawing. The mind is sent the read lines as before.
 - **The foot is the pill's alone.** The band across the whole foot, from the top of the room the bubble may take
   above the full pill down to the Dock (`Layout.foot`), holds the pill and its bubble and nothing else of paral's,
   after the designer's pictures: the way arrow pointing down and the toast sit just above it, and the board, the
