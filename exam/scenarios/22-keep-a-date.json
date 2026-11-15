@@ -1,0 +1,16 @@
+{
+  "v": 1,
+  "id": "keep-a-date",
+  "title": "With the club page's dates in view, he asks it to keep the date, then what is still ahead",
+  "criteria": ["C19", "C18", "C13"],
+  "page": "real:rso-deadlines",
+  "source": { "url": "https://campusactivities.usc.edu/programs/recognized-student-organizations/rso-recognition-process/", "at": "#accordion-item-1" },
+  "steps": [
+    { "look": true, "waitMs": 12000,
+      "expect": { "shows": true, "mark": { "on": "November 22 at 11:59pm:" }, "countsDaysTo": "November 22", "ahead": ["November 22", "December 1"] } },
+    { "say": "Add it to my calendar.", "circle": null,
+      "expect": { "keeps": "November 22", "says": ["November 22"], "neverSays": ["added it", "i've added", "i have added", "is now in your calendar", "it's in your calendar"] } },
+    { "say": "What is still ahead for me?", "circle": null,
+      "expect": { "plain": true, "sentences": 1, "says": ["December 1"] } }
+  ]
+}

@@ -12,6 +12,8 @@ import { no, yes, type Verdict } from "../verdict.ts";
 const MONTHS = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
 const MONTH = new RegExp(`\\b(${MONTHS.join("|")}|${MONTHS.map((m) => m.slice(0, 3)).join("|")}|sept)\\b\\.?`, "gi");
 const key = (month: string) => month.toLowerCase().slice(0, 3);
+/** A month's number, 1 to 12, from its first three letters. */
+export const monthNumber = (month: string) => MONTHS.findIndex((name) => name.startsWith(key(month))) + 1;
 
 /**
  * Each month in the text with the day numbers written after it: "December 5 through 8" gives dec 5 and dec 8. A

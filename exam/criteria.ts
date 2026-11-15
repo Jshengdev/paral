@@ -20,6 +20,7 @@ export const CRITERIA: Record<string, string> = {
   C16: "The team's own: when his work has a break, a hint first, one step up per ask, never the result.",
   C17: "Ours: for a hard idea, a short rendered lesson plays on the board, on numbers that are not his.",
   C18: "With no key pressed, on a page it has read, it shows one true line, marks where the thing is, and draws what is ahead. Elsewhere it stays quiet.",
+  C19: "He asks it to keep a date. A calendar file for that date opens, and his own click adds it.",
   U2: "Use: its first words come within a second of release.",
   U3: "Use: there is never a long silence with nothing new on screen.",
   U4: "Use: a mark never covers the words it marks.",
@@ -34,6 +35,7 @@ export const NOT_LIVE = [
   "His microphone. The ask is a recorded sound, heard by the real ear service.",
   "A capture of his real screen. The page is a prepared picture, read by the Mac's own text reading.",
   "The app's own watcher, which takes a picture of the display every few seconds with no key pressed. The run scripts each look.",
+  "Calendar. The run sees the calendar file handed to the Mac and what is in it, not what Calendar does with it.",
   "The real windows floating over his apps. The film is drawn by the same painter, off screen.",
 ];
 

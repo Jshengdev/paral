@@ -121,6 +121,9 @@ only when the builder says the tree is frozen, and the builder edits again only 
   same screen, a page it has not read) it shows nothing. The app's own watcher is not run by any film.
   One bar here is the judge's own proposal and not one he was shown: when a look sees another page come up, the
   marks drawn for the page before are cleared.
+- **Keeping a date** (`src/judge/keep.ts`). Asked to keep a date, the build writes a calendar file and hands it to
+  the Mac; he adds it with his own click in Calendar. The judge holds that one such file was handed over and that it
+  starts on the day the scenario names. It may say the date is open in his calendar, never that it was added.
 - **A board that can be read.** A board is shrunk to fit its room and its words shrink with it. Their size is worked
   out from the card the painter drew, and must be 10 points or more, the smallest text style the Mac itself uses.
   A look once drew a one-row board of three long steps 17.5 points tall, its words about 3.5 points.

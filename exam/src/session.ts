@@ -34,6 +34,7 @@ function moment(at: number, line: Record<string, unknown> & { type: string }): M
       return { at, kind: "picture", path: (line.picture as { path: string }).path, lines: lines.length, unread: lines.filter((read) => read.text === "").length };
     }
     case "look": return { at, kind: "glance", lines: (line.lines as unknown[]).length };
+    case "open": return { at, kind: "opened", path: String(line.path) };
     case "board.close": return { at, kind: "board-closed" };
     case "clear": return { at, kind: "clear" };
     case "close": return { at, kind: "close" };

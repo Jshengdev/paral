@@ -1,4 +1,8 @@
 import { board, readable } from "./judge/board.ts";
+import { mkdtempSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { kept } from "./judge/keep.ts";
 import { glanced, pageChanged } from "./judge/look.ts";
 import { marks, standingBefore } from "./judge/marks.ts";
 import { drawnIn } from "./judge/motion.ts";
@@ -44,6 +48,9 @@ const COLONS = [{ id: "closes", text: "November 22 at 11:59pm: Application close
 const RAN = new Date("2026-11-14T19:00:00-08:00");
 // A page the build read ahead of time, as its record names it.
 const KEPT = { title: "Recognition Process", url: "https://example.edu/recognition", lines: ["Deadlines +", "October 27: Application opens", "November 22 at 11:59pm: Application closes.", "December 1: Deadline for advisors to submit their requirements."] };
+// A calendar file as the build writes one, for the club's closing date.
+const ICS = join(mkdtempSync(join(tmpdir(), "paral-exam-keep-")), "keep.ics");
+writeFileSync(ICS, "BEGIN:VCALENDAR\nBEGIN:VEVENT\nDTSTART:20261122T235900\nSUMMARY:Application closes\nEND:VEVENT\nEND:VCALENDAR\n");
 // How the build draws a board, as its look file had it on 2026-11-14.
 const BOARD_LOOK = { pad: 20, boxPadY: 9, rowGap: 16, type: 15 };
 // A look with no key at 1000 ms, and the one line it shows a second later with a trail above it.
@@ -142,6 +149,8 @@ const CASES: Case[] = [
   { name: "a two-row board drawn 115.5 points tall", check: "The board's words are big enough to read", mustPass: true, verdicts: () => readable("C8", 0, 2, { x: 1112, y: 446, w: 560, h: 115.5 }, BOARD_LOOK) },
   { name: "another page comes up and the old underline stays over it", check: "When another page comes up", mustPass: false, verdicts: () => [pageChanged(0, standingBefore([mark("t1:0", 5000), { at: 9000, kind: "glance", lines: 30 }], { down: 9000, moments: [{ at: 9000, kind: "glance", lines: 30 }] }).length)] },
   { name: "another page comes up and the look clears what was drawn", check: "When another page comes up", mustPass: true, verdicts: () => [pageChanged(0, standingBefore([mark("t1:0", 5000), { at: 9000, kind: "glance", lines: 30 }, { at: 9100, kind: "clear" }], { down: 9000, moments: [{ at: 9000, kind: "glance", lines: 30 }, { at: 9100, kind: "clear" }] }).length)] },
+  { name: "asked to keep a date, it hands the Mac a calendar file for that day", check: "It opens a calendar file for November 22", mustPass: true, verdicts: () => kept(ask([{ at: 5000, kind: "opened", path: ICS }, say("t1:0", 5100, "November 22 is open in your calendar.")]), { keeps: "November 22" }) },
+  { name: "asked to keep a date, it only says it did", check: "It opens a calendar file for November 22", mustPass: false, verdicts: () => kept(ask([say("t1:0", 5100, "I've added November 22 to your calendar.")]), { keeps: "November 22" }) },
   { name: "a look that shows one true line, unspoken", check: "Each step of the trail above the line is true", mustPass: true, verdicts: () => glanced(looked([shownLine(["saw this page", "read 1 USC pages", "found 1 date"])]), { shows: true }, DATED, { pages: [KEPT], ranOn: RAN }) },
   { name: "a trail that says six pages were read when the record names one", check: "Each step of the trail above the line is true", mustPass: false, verdicts: () => glanced(looked([shownLine(["saw this page", "read 6 USC pages", "found 1 date"])]), { shows: true }, DATED, { pages: [KEPT], ranOn: RAN }) },
   { name: "a trail that says a date was found when the line names none", check: "Each step of the trail above the line is true", mustPass: false, verdicts: () => glanced(looked([{ ...shownLine(["saw this page", "found 1 date"]), text: "Fundraising needs approval first; see the rule further down." }]), { shows: true }, DATED, { pages: [KEPT], ranOn: RAN }) },

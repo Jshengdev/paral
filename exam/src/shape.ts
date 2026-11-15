@@ -35,6 +35,8 @@ const Expect = z.object({
   saysThat: z.object({ what: z.string().min(1), anyOf: z.array(z.string().min(1)).min(1) }).optional(),
   /** He pressed again at once: nothing of the ask before this one may be said or drawn after this press. */
   takesBackTheAskBefore: z.boolean().optional(),
+  /** He asks it to keep a date: the date, as a page writes it, that the calendar file it opens must hold. */
+  keeps: z.string().min(1).optional(),
   /** On a look with no key: whether anything may be shown at all. False on a page it has not read, or one it has already spoken to. */
   shows: z.boolean().optional(),
   /** On a look: the dates the board of what is still ahead must hold, soonest first, each as a page writes it. */

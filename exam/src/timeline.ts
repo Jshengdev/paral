@@ -7,6 +7,7 @@ export type Moment = { at: number } & (
   | { kind: "heard"; text: string }
   | { kind: "trail"; x: number; y: number }
   | { kind: "look"; name: string; detail?: string }
+  | { kind: "opened"; path: string }    // a file the mind handed to the Mac to open, such as a calendar file
   | { kind: "glance"; lines: number }   // a look with no key pressed: the body saw the display change and stand still
   | { kind: "say"; id: string; text: string; opener: boolean; hint: boolean; top: boolean; trail?: string[] }   // top: a hint on the last rung of the ladder; trail: the steps shown above a line he did not ask for
   | { kind: "mark"; id: string; mark: string; box: Box; label?: string }
