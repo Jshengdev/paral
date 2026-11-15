@@ -60,3 +60,12 @@ export function saysOnly(words: string, phrases: string[]): boolean {
   const said = bare(words).replace(/^((ok|okay|so|now|and|then|please|alright)\s)+/, "").replace(/(\splease)$/, "");
   return phrases.some((phrase) => bare(phrase) === said);
 }
+
+/**
+ * Whether a hold heard nothing to ask: no words at all, or only a word or two of assent or filler ("Yeah.", "Okay
+ * so"). That is him talking to someone else with the key brushed, not a question; answering it would speak over him.
+ */
+export function unasked(words: string, filler: string[]): boolean {
+  const said = words.toLowerCase().replace(/[^\p{L}\p{N}' ]+/gu, " ").trim().split(/\s+/).filter(Boolean);
+  return said.length <= 2 && said.every((word) => filler.includes(word));
+}
