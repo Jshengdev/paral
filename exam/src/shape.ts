@@ -25,6 +25,8 @@ const Expect = z.object({
   stopsVoiceWithinMs: z.number().positive().optional(),
   textOnly: z.boolean().optional(),
   plain: z.boolean().optional(),
+  /** Words the answer must hold as the page writes them, such as a due date. */
+  says: z.array(z.string().min(1)).optional(),
   /** He pressed again at once: nothing of the ask before this one may be said or drawn after this press. */
   takesBackTheAskBefore: z.boolean().optional(),
 });

@@ -32,6 +32,8 @@ const UP = 3000;
 const DISPLAY = { id: 1, scale: 2, x: 0, y: 0, w: 1728, h: 1117 };
 const box = { x: 100, y: 80, w: 200, h: 20 };
 const PAGE = [{ id: "work", text: "My work", box }, { id: "limiter", text: "The rate limiter keeps its buckets in memory", box }];
+// A page with a due date and a range of dates, as two lines.
+const DATED = [{ id: "due", text: "Application deadline: March 1, 2027", box }, { id: "exams", text: "Exams December 9-16", box }];
 const say = (id: string, at: number, text: string, extra: Partial<{ opener: boolean; hint: boolean; top: boolean }> = {}): Moment => ({ at, kind: "say", id, text, opener: extra.opener ?? false, hint: extra.hint ?? false, top: extra.top ?? false });
 const voice = (of: string, at: number, ms: number): Moment => ({ at, kind: "voice", of, ms });
 const mark = (id: string, at: number): Moment => ({ at, kind: "mark", id, mark: "underline", box });
@@ -101,6 +103,10 @@ const CASES: Case[] = [
   { name: "the only mark is on the row above the one he means", check: "A mark lands on", mustPass: false, verdicts: () => marks(ask([marked("underline", { x: 545, y: 770, w: 90, h: 15 })]), { mark: { on: "December 9-16" } }, TABLE) },
   { name: "a quick line of fifteen words", check: "A line said while he waits", mustPass: false, verdicts: () => spoken(ask([say("t1:-2", 3400, "The page shows six short links, each on the same long domain followed by a code.", { opener: true })]), {}, []) },
   { name: "a quick line of eight words", check: "A line said while he waits", mustPass: true, verdicts: () => spoken(ask([say("t1:-2", 3400, "Let's look at how these links are built.", { opener: true })]), {}, []) },
+  { name: "a due date that is not on the page", check: "Every date it says", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "The application is due March 3, so you have two weeks.")]), {}, DATED) },
+  { name: "the due date as the page writes it", check: "Every date it says", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "The application is due March 1st, and exams run December 9 through 16.")]), {}, DATED) },
+  { name: "the date it was asked for is left out", check: "It says", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "The deadline is in the spring; check the page.")]), { says: ["March 1"] }, DATED) },
+  { name: "the date it was asked for, with a spoken ending", check: "It says", mustPass: true, verdicts: () => spoken(ask([say("t1:0", 6000, "It is due March 1st.")]), { says: ["March 1"] }, DATED) },
   { name: "a hint on a plain question", check: "A plain question gets an answer", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "Read the highlighted line again, slowly.", { hint: true })]), { plain: true }, []) },
   { name: "his number in a worked example", check: "It never gives the result", mustPass: false, verdicts: () => spoken(ask([say("t1:0", 6000, "So a equals 2 plus 9, which is 11.")]), { never: ["11", "eleven"] }, []) },
   { name: "an ask that ends in the failed look", check: "The ask is answered", mustPass: false, verdicts: () => spoken(ask([{ at: 5000, kind: "look", name: "failed", detail: "I lost that answer on my side. Ask me again." }]), {}, []) },
