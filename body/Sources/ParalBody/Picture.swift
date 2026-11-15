@@ -104,8 +104,9 @@ public struct PointerPicture: Equatable {
     /// out as the cursor comes: `tagGrown` is how far, 0 to 1 and a little past on the way.
     public var tag = false
     public var tagGrown = 1.0
-    /// It wears the orb that says paral is working, while the capsule says so.
+    /// It says paral is working, while the capsule says so, by breathing: `working` is how far it has swollen, 0 to 1.
     public var thinking = false
+    public var working = 0.0
 }
 
 /// Everything on screen at one moment, as plain values. The painter draws it; nothing else decides what is shown.

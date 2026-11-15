@@ -1,0 +1,180 @@
+{
+ "name": "body: the cursor is the logo mark in a square frame, with its tip a tenth of the frame in from the frame's corner, while it rides the pen and while it rests; while paral works it breathes, swelling about its middle to 1.12 of its size and back every 1.2 s from the moment he lets go, and it is its own size again once the answer begins",
+ "run": "body.moves",
+ "in": {
+  "lines": [
+   "Recognition Process",
+   "Deadlines",
+   "October 27: Application opens",
+   "November 22 at 11:59pm: Application closes.",
+   "Late applications are not accepted.",
+   "Info Sessions, Workshops, and Office Hours",
+   "Application deadline: November 2, 2026",
+   "Apply for the Catalina Maymester"
+  ],
+  "watch": [
+   "cursorTip",
+   "cursorSize"
+  ],
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "g1",
+     "beat": 0,
+     "kind": "ring",
+     "on": 1
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "say",
+     "id": "g1",
+     "beat": 0,
+     "text": "The application closes November 22 at 11:59pm, under Deadlines.",
+     "trail": [
+      "saw this page",
+      "found where it is"
+     ]
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mute",
+     "id": "g1",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   },
+   {
+    "at": 5000,
+    "line": {
+     "type": "key.down",
+     "at": 1005000
+    }
+   },
+   {
+    "at": 5900,
+    "line": {
+     "type": "key.up",
+     "at": 1005900
+    }
+   },
+   {
+    "at": 7700,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 0,
+     "text": "It closes on November 22."
+    }
+   },
+   {
+    "at": 7700,
+    "line": {
+     "type": "mute",
+     "id": "t1",
+     "why": "no voice in a row"
+    }
+   },
+   {
+    "at": 7800,
+    "line": {
+     "type": "state",
+     "name": "idle"
+    }
+   }
+  ],
+  "at": [
+   900,
+   1600,
+   3000,
+   5900,
+   6200,
+   6500,
+   6800,
+   7100,
+   7400,
+   7650,
+   7750
+  ]
+ },
+ "out": [
+  {
+   "cursorTip": null,
+   "cursorSize": null
+  },
+  {
+   "cursorTip": [
+    0.1,
+    0.1
+   ],
+   "cursorSize": 1
+  },
+  {
+   "cursorTip": [
+    0.1,
+    0.1
+   ],
+   "cursorSize": 1
+  },
+  {
+   "cursorTip": [
+    0.1,
+    0.1
+   ],
+   "cursorSize": 1
+  },
+  {
+   "cursorTip": [
+    0.12,
+    0.12
+   ],
+   "cursorSize": 1.06
+  },
+  {
+   "cursorTip": [
+    0.14,
+    0.14
+   ],
+   "cursorSize": 1.12
+  },
+  {
+   "cursorTip": [
+    0.12,
+    0.12
+   ],
+   "cursorSize": 1.06
+  },
+  {
+   "cursorTip": [
+    0.1,
+    0.1
+   ],
+   "cursorSize": 1
+  },
+  {
+   "cursorTip": [
+    0.12,
+    0.12
+   ],
+   "cursorSize": 1.06
+  },
+  {
+   "cursorTip": [
+    0.14,
+    0.14
+   ],
+   "cursorSize": 1.12
+  },
+  {
+   "cursorTip": [
+    0.1,
+    0.1
+   ],
+   "cursorSize": 1
+  }
+ ]
+}

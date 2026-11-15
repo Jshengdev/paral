@@ -25,8 +25,7 @@ extension Scene {
     private func rest(beside path: [CGPoint]) -> CGPoint {
         let xs = path.map(\.x), ys = path.map(\.y)
         let drawn = Box(x: xs.min() ?? 0, y: ys.min() ?? 0, w: max((xs.max() ?? 0) - (xs.min() ?? 0), 1), h: max((ys.max() ?? 0) - (ys.min() ?? 0), 1))
-        let c = tokens.cursor
-        return Layout.beside(drawn, cursor: (c.size * Layout.cursorWide, c.size), edge: c.edge, gap: c.gap, texts: texts, width: width, height: height)
+        return Layout.beside(drawn, cursor: tokens.cursor.size, gap: tokens.cursor.gap, texts: texts, width: width, height: height)
     }
 
     /// Where the cursor sets off from for something that begins at `began`, and whether it was with an arrow then.
@@ -38,6 +37,15 @@ extension Scene {
         let home = CGPoint(x: capsule.x + capsule.w / 2, y: capsule.y)
         guard let before = pointer(at: began - 1) else { return (home, false) }
         return before.withWay == nil ? (CGPoint(x: before.x, y: before.y), false) : (home, true)
+    }
+
+    /// While paral works its cursor breathes: it swells and comes back, `cursor.workMs` each way and slow at both
+    /// ends, from the moment he let the key go. Given in twentieths, so the picture changes only when it would be
+    /// seen to.
+    func working(at t: Double) -> Double {
+        guard let up = holds.last(where: { $0.down <= t })?.up, t >= up else { return 0 }
+        let turn = ((t - up) / max(ms(tokens.cursor.workMs), 1)).truncatingRemainder(dividingBy: 2)
+        return (tokens.curves.travel(turn < 1 ? turn : 2 - turn) * 20).rounded() / 20
     }
 
     /// How far the cursor's name tag has popped out since the cursor came: 0 to 1, and a little past on the way.
