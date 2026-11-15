@@ -29,7 +29,7 @@ Every decision is a pure function in `cores/`; every outside service is behind `
 | his loop as a ring (`echo`) | nobody: code, from his path | right after his words are final |
 | the rung's fixed line | a setting (`ladder`) | with the ring, the moment the wrong line is known |
 | the hint | the deep model, one rung per ask, in the number of sentences its rung allows | after Push has passed it |
-| the fast line about the page | the fast model | only once the deep answer says there is no wrong line |
+| the fast line about the page | the fast model | switched off (`surfaceMaxWords` 0). When on: only once the deep answer says there is no wrong line |
 | the explanation | the deep model, up to three sentences | each sentence as it is finished. Its board goes out the moment it is whole and its first mark ahead of the first sentence, since the reply gives the board before the sentences and each mark before its words |
 
 Run: `npm run mind`, or let `./flow` and `./run` start it. Environment: `PARAL_TAPE` (recorded answers, no service),

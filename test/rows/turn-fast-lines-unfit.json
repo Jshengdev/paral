@@ -64,7 +64,10 @@
      "at": 2100
     }
    ]
-  ]
+  ],
+  "set": {
+   "surfaceMaxWords": 12
+  }
  },
  "out": [
   {

@@ -93,6 +93,7 @@ export function fast({ settings, send, log }: Hands, asking: Asking, talk: Speak
       }
       return first.seen.then((text) => {
         if (text === null) return log(`${id}: the fast model gave no line about the page`);
+        if (settings.surfaceMaxWords.value === 0) return log(`${id}: the fast line about the page is switched off and was not said`);
         if (count(text) > settings.surfaceMaxWords.value) return log(`${id}: the fast line about the page ran to ${count(text)} words and was not said`);
         const wrong = unfit(text);
         if (wrong !== null) return log(`${id}: the fast line about the page is not said: ${wrong}`);

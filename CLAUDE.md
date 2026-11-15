@@ -66,8 +66,8 @@ Scene → Picture → Painter                                    cores/    the l
 4. When the deep answer's first fields arrive, it is one of two things. **A wrong line in his work:** a ring on that
    line, the rung's fixed line said with it, then the model's hint once Push has passed it. One rung per ask, one sentence
    for the first three rungs. Where lines sit close the ring is a box that hugs the line.
-   **No wrong line:** the fast model's line about the page, then up to three sentences, each with its mark, and a
-   board at the end.
+   **No wrong line:** the board as soon as it is whole, the first mark, then up to three sentences, each with its
+   mark. (The fast model can also give one line about the page, said before these; it is switched off, see the limits.)
 5. If the model named a lesson, one sentence and then a rendered clip on an example that is not his.
 6. It rests. Marks stay. A follow-up is told what was said and what is still drawn. The cross on the resting circle
    clears it.
@@ -131,7 +131,8 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
 - A follow-up that the model words as a new problem wipes the marks of the one before.
 - The board comes before the sentences, three to five seconds after he lets go in the runs so far; nothing of the
   answer comes sooner than the reply's first fields.
-- The fast model's line about the page has not been heard in a live run. It writes the line longer than the limit
-  (`surfaceMaxWords`), and a long line is dropped and logged. The opener is what is heard first.
+- The fast model's line about the page is switched off (`surfaceMaxWords` is 0). In live runs it was said once in
+  about 200 asks, and that once it said something false about the page; nothing checks what it says. The opener is
+  what is heard first. A limit of 12 turns it back on.
 - One lesson exists (`balance`), with three fixed examples.
 - Landing a mark on the right line is measured on generated pages only, not on real course pages.

@@ -1,5 +1,5 @@
 {
- "name": "turn: with no wrong line, the fast model's line about the page is said first and the deep sentences follow it, numbered after it; on a page with a wrong line that line is never said",
+ "name": "turn: with the line about the page switched on (a limit of 12 words): with no wrong line it is said first and the deep sentences follow it, numbered after it; on a page with a wrong line it is never said",
  "run": "turn",
  "in": {
   "tape": "surface.json",
@@ -115,7 +115,10 @@
      "at": 2100
     }
    ]
-  ]
+  ],
+  "set": {
+   "surfaceMaxWords": 12
+  }
  },
  "out": [
   {
