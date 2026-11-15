@@ -3,7 +3,8 @@ import AppKit
 /// The last way found for the leading arrow and what it was found for. Finding a way tries a few hundred curves
 /// against every line of the page, and nothing it depends on moves while the arrow stands, so it is found once.
 final class LeadWays {
-    struct Asked: Equatable { var mark: Box; var target: Box; var taken: [Box]; var cursor: Box?; var texts: [Box] }
+    /// `landing` is where on the target's two ends the arrow may arrive, as a share of its height from the top.
+    struct Asked: Equatable { var mark: Box; var target: Box; var taken: [Box]; var cursor: Box?; var texts: [Box]; var landing = 0.5 }
     var asked: Asked?
     var found: [[CGPoint]]?
 }
@@ -26,10 +27,11 @@ extension Painter {
     /// drawn in pieces no longer than this many points, so what is checked along them holds for the whole curve.
     private static let coarse = 12, piece = 6.0
 
-    /// The middle of each end of a box, then three places along its bottom and its top. The ends come first, so
+    /// Each end of a box, at `landing` of its height (the middle, unless the target is the nudge card), then three
+    /// places along its bottom and its top. The ends come first, so
     /// of two ways that cost the same the one that leaves a line at its end wins, as the kit's arrow does.
-    private func edges(of b: Box) -> [Edge] {
-        let ends = [Edge(at: CGPoint(x: b.x + b.w, y: b.y + b.h / 2), out: CGPoint(x: 1, y: 0)), Edge(at: CGPoint(x: b.x, y: b.y + b.h / 2), out: CGPoint(x: -1, y: 0))]
+    private func edges(of b: Box, landing: Double = 0.5) -> [Edge] {
+        let ends = [Edge(at: CGPoint(x: b.x + b.w, y: b.y + b.h * landing), out: CGPoint(x: 1, y: 0)), Edge(at: CGPoint(x: b.x, y: b.y + b.h * landing), out: CGPoint(x: -1, y: 0))]
         return ends + [0.5, 0.85, 0.15].flatMap { share in
             [Edge(at: CGPoint(x: b.x + b.w * share, y: b.y + b.h), out: CGPoint(x: 0, y: 1)), Edge(at: CGPoint(x: b.x + b.w * share, y: b.y), out: CGPoint(x: 0, y: -1))]
         }
@@ -55,7 +57,7 @@ extension Painter {
             let behind = asked.cursor.flatMap { rest in Array(stride(from: 0.0, through: 3 * tokens.cursor.size, by: 2)).last { on(out(gap + $0), [rest.grown(gap / 2)]) } }
             let from = out(gap + (behind.map { $0 + gap } ?? 0))
             guard !blocked(from) else { continue }
-            for end in edges(of: asked.target) {
+            for end in edges(of: asked.target, landing: asked.landing) {
                 let to = CGPoint(x: end.at.x + end.out.x * gap, y: end.at.y + end.out.y * gap)
                 let far = hypot(to.x - from.x, to.y - from.y)
                 guard far >= Painter.leastHeads * tokens.way.head, far <= tokens.lead.longest else { continue }
@@ -103,7 +105,8 @@ extension Painter {
             (target, name) = (speaker(picture.capsule, avoiding: picture.avoid), "capsule")
             if let card { taken.append(card) }
         case .nudge:
-            guard let nudge = placed.first(where: { $0.what == "nudge" })?.box else { return nil }
+            // A card with no place clear of the words is shown in the capsule, and the arrow goes there.
+            guard let nudge = placed.first(where: { $0.what == "nudge" })?.box else { (target, name) = (Layout.capsule(open: 1, taller: Layout.band(tokens), width: width, height: floor, tokens: tokens), "capsule"); break }
             (target, name) = (nudge, "nudge")
             taken += [pillRoom] + (card.map { [$0] } ?? [])
         }
@@ -113,7 +116,7 @@ extension Painter {
         let left = min(b.x, Double(ink.map(\.x).min() ?? 0)) - half, top = min(b.y, Double(ink.map(\.y).min() ?? 0)) - half
         let right = max(b.x + b.w, Double(ink.map(\.x).max() ?? 0)) + half, bottom = max(b.y + b.h, Double(ink.map(\.y).max() ?? 0)) + half
         let cursor = picture.pointer.flatMap { $0.withWay == nil ? Layout.cursor(tip: CGPoint(x: $0.x, y: $0.y), size: tokens.cursor.size) : nil }
-        let asked = LeadWays.Asked(mark: Box(x: left, y: top, w: right - left, h: bottom - top), target: target, taken: taken, cursor: cursor, texts: picture.avoid)
+        let asked = LeadWays.Asked(mark: Box(x: left, y: top, w: right - left, h: bottom - top), target: target, taken: taken, cursor: cursor, texts: picture.avoid, landing: name == "nudge" ? tokens.nudge.landing : 0.5)
         guard let strokes = way(asked) else { return nil }
         let inked = Pen.reach(arrow: strokes, lead.drawn, tokens: tokens)
         self.ink(inked, wide: tokens.lead.width, ctx)

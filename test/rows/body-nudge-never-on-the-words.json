@@ -1,0 +1,91 @@
+{
+ "name": "body: on a page whose only free places are too small for the nudge card even at the smallest it may be shrunk to, no card is drawn, so none lies on the page's words: the look's line is shown in the capsule instead, as it was before the card, with the arrow leading there, and the film's record says so",
+ "run": "body.nudge",
+ "in": {
+  "lines": [
+   "The Spring 2027 RSO Recognition process is now open on EngageSC for new RSOs",
+   "and for organizations re-establishing after a lapse in recognition this year.",
+   "If you need accessibility accommodations or have questions about the process,",
+   "please contact Campus Activities at stuacts@usc.edu and allow three days.",
+   "November 22 at 11:59pm: Application closes. You must submit the form on time.",
+   "December 1: Deadline for advisors to submit their requirements on EngageSC.",
+   "Officers must finish their trainings before the application can be approved.",
+   "Late applications are not accepted, and a lapsed club waits for next spring."
+  ],
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "clear"
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mark",
+     "id": "g1",
+     "beat": 0,
+     "kind": "box",
+     "on": 4
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "say",
+     "id": "g1",
+     "beat": 0,
+     "text": "This is the date to keep: the application closes in 8 days.",
+     "trail": [
+      "saw this page",
+      "read the whole page",
+      "found 1 date"
+     ],
+     "keep": true
+    }
+   },
+   {
+    "at": 1000,
+    "line": {
+     "type": "mute",
+     "id": "g1",
+     "why": "a look he did not ask for is shown, not spoken"
+    }
+   }
+  ],
+  "at": [
+   1100,
+   3000,
+   6000
+  ]
+ },
+ "out": [
+  {
+   "card": null,
+   "inTheCapsule": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "onText": false,
+    "arrowLeadsToIt": false
+   },
+   "toast": false
+  },
+  {
+   "card": null,
+   "inTheCapsule": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "onText": false,
+    "arrowLeadsToIt": true
+   },
+   "toast": false
+  },
+  {
+   "card": null,
+   "inTheCapsule": {
+    "says": "This is the date to keep: the application closes in 8 days.",
+    "onText": false,
+    "arrowLeadsToIt": true
+   },
+   "toast": false
+  }
+ ]
+}

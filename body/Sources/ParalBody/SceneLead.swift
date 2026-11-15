@@ -30,7 +30,7 @@ extension Scene {
         }
         if let nudge, nudge.id == mark.id {
             guard let ask = asks.first(where: { $0.id == mark.id }), let said = times(ask).first(where: { $0.beat == mark.beat }), t >= max(ready, said.start) else { return nil }
-            return LeadPicture(from: key, to: .nudge, drawn: min(inked(since: max(ready, said.start)), 1 - nudge.leave))
+            return LeadPicture(from: key, to: .nudge, drawn: min(inked(since: max(ready, said.start)), 1 - nudge.coming.gone))
         }
         guard nudge == nil, capsule.look == .rest, capsule.open <= 0, let card = next(at: t), !card.done, names(card.text, mark) else { return nil }
         let from = max(ready, card.shownAt, rested(before: t) ?? 0, cardGone(before: t) ?? 0)

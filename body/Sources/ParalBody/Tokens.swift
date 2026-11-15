@@ -112,9 +112,11 @@ public struct Tokens: Codable {
         /// text column it sits, how far from the display's side and from its top (below the menu bar), the step of
         /// the search for a free place, and the least it may be shrunk to and by how much at a time when no place is free.
         public var clear, beside, edge, top, cell, least, shrink: Double
-        /// How it moves: its arrival and leaving; the first row's wait and the wait between rows; how far the card
-        /// and each row rise as they come; the size the card comes from and goes to; and the size of a held button.
-        public var arriveMs, leaveMs, rowMs, rowStepMs, rise, rowRise, from, leaveTo, pressed: Double
+        /// How long it takes to go (it comes up as any card does, `card`), and the size of a held button.
+        public var leaveMs, pressed: Double
+        /// Where the drawn arrow lands on the card's near end, as a share of its height from the top: the kit's
+        /// newer pictures land it about a third of the way down.
+        public var landing: Double
     }
     /// `opened` is what the toast says when a date has been opened in his calendar. It does not say "added": whether
     /// Calendar asks first or adds at once is not known.
