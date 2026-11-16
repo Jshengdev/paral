@@ -154,6 +154,20 @@ a box with no model pointing at the picture. The model is told the places' names
 sentences speak of (`spots`); `mind/spots.ts` rings them with the sentence. Never the signs between the reactants,
 and never the space the result goes in. With no sheet on screen nothing changes.
 
+**The whole thing drawn (a board that grows).** When his words ask for the whole thing drawn, start to finish
+(`wholeBoardAsks`: a word for drawing with a word for the whole, such as "draw … whole thing" or "draw … start to
+finish"), and no wrong line of his is open, the ask is told in up to `wholeBoardMost` (6) sentences in place of
+`maxBeats`, and its board has a row for each. The deep model gets its ordinary request with `prompts/whole-board.md`
+added after the ask's own words, so the instructions and the kept pages ahead of it are the same bytes as any ask's
+and are still read from what the service has kept. The board goes out with all its rows and `beats`, the beat of
+each row's sentence so far, and again with one more beat ahead of each sentence (`card.grow`, `cores/board.ts`); the
+app draws a row when its sentence begins to be voiced, and the card is not up before the first (`SceneBoards.swift`).
+Row k comes with the first part of written sentence k; a sentence held back takes its row and every row after; a row
+no sentence came for is never drawn. If the model reads his page as his own work with a wrong line it is a hint as
+always, with no board. Every other ask is byte for byte what it was (`live-standin-work-through-off-request-unchanged`),
+"draw out everything I have to do, in order" included: that still gets the small board. The film's record writes
+`rows` on a growing board's entries, the number drawn at that moment.
+
 **Working an exercise through (a switch, off).** `workThrough` is off unless the mind is started with
 `PARAL_WORK_THROUGH=1` (`PARAL_WORK_THROUGH=1 ./run`, or before `./flow`). Off, nothing changes. On, an ask whose
 words ask for it (`workThroughAsks`: "walk me through", "what happens next", "then what" ...) while a measured sheet
@@ -356,6 +370,10 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
   browse while it runs, and it does not know the page's address: it recognises a kept page from the lines on screen.
   A page that has changed since it was read is answered from the old text. A date it says must be on the screen or
   in a kept page, or the sentence is not said; other facts are not checked.
+- The whole thing drawn has run on tapes and in one scripted live run on a page drawn for it (November 15: five
+  sentences, five rows, each row drawn within 40 ms of its sentence beginning, the first sentence 4.9 s after the
+  ask), never on his real screen. On a page with little free room the six-row card is drawn small (10.2 points in
+  that run). Whether a row says only what its sentence says is the model's: no code checks it.
 - Working an exercise through has run only on tapes and in five scripted live runs on the worksheet's picture
   (November 15), never on his real screen; its rings need the sheet found there, as above. Which step comes next,
   and whether the chemistry is right, is the model's: no code checks the steps, only that a step before the last

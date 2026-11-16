@@ -101,6 +101,7 @@ three are drawn by the app's own drawing code in its tests.*
 | nothing | on a page it knows, it tells you the one date or step that matters |
 | any question, with the right Option key held | a short answer aloud, with the line it means marked on your page |
 | "show me" | the steps, one at a time, each marked where it is |
+| "draw the whole thing, start to finish" | the story in up to six sentences, on a board that grows a row with each |
 | "add it to my calendar" | the date opens in your calendar, ready to add |
 | "scroll for me" | the page turns to what it is pointing at |
 | "open it for me" | the closed section it has marked is opened with one click |
@@ -216,8 +217,8 @@ the way a real one is, so "Scroll for me" moves a page in Chrome; a page's first
 mark, and the board of steps comes when asked for; the pages a question is given are held ready by the model's
 service as soon as the page is seen, so a first question on a page no longer waits for them; dates written with
 slashes are read; a long sentence that ends by saying where a thing is written is said as two; the app finishes
-the look it is taking before it exits; and an exercise can be worked through step by step behind a switch that
-is off (`PARAL_WORK_THROUGH=1 ./run`). With all of
+the look it is taking before it exits; an exercise can be worked through step by step behind a switch that is
+off (`PARAL_WORK_THROUGH=1 ./run`); and, asked for the whole thing drawn, the board grows a row with each sentence. With all of
 that in, the judge's pass over the same 24 students is 1,901 of 1,902 checks; the one that does not pass is a
 sentence that takes 8.2 seconds to say against a limit of 8.
 
