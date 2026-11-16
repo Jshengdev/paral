@@ -1,6 +1,6 @@
 import type { Placed } from "../session.ts";
 import type { Expect } from "../shape.ts";
-import { of, spoken, type Ask } from "../timeline.ts";
+import { boxesOf, of, spoken, type Ask } from "../timeline.ts";
 import { no, unseen, yes, type Verdict } from "../verdict.ts";
 
 // C27: a board of words alone. His click of 2026-11-15, 18:47, from the reference's video:
@@ -19,7 +19,6 @@ const LARGE = 2;
 // The video shows two lines. Three is the most that still reads at a glance as a short list of examples.
 const MOST = 3;
 
-const linesOf = (text: string) => text.split(" | ").map((row) => row.trim()).filter((row) => row !== "");
 
 /** `boxType` is the size, in points, the build draws a box's words at. `until` is where this ask's stretch of the film ends. */
 export function writtenBoard(ask: Ask, expect: Expect, placed: Placed[], until: number, boxType: number): Verdict[] {
@@ -28,10 +27,11 @@ export function writtenBoard(ask: Ask, expect: Expect, placed: Placed[], until: 
   const alone = "Asked to be shown what it would look like, the board is words alone: no boxes, no arrows";
   const last = of(ask.moments, "board").filter((m) => m.text.trim() !== "").at(-1);
   if (!last) return [no("C27", s, alone, "no board was drawn")];
-  const lines = linesOf(last.text);
+  const rows = boxesOf(last);
+  const lines = rows.map((row) => row.join(" → "));
   const film = placed.filter((p) => p.what === "board" && p.at >= ask.down && p.at < until);
   const drawnAs = film.at(-1);
-  const joined = lines.find((line) => line.includes(" → "));
+  const joined = lines.find((_, at) => rows[at].length > 1);
   const example = new RegExp(expect.written, "i");
   const not = lines.find((line) => !example.test(line));
   const each = "Each line is a whole example of the thing he asked to see";

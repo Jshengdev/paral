@@ -81,11 +81,17 @@ export type Expect = z.infer<typeof Expect>;
 export const rowOf = (want: Truth, truth: Truth[]): Truth[] =>
   truth.filter((t) => t.box.h < 90 && Math.abs(t.box.y + t.box.h / 2 - (want.box.y + want.box.h / 2)) <= want.box.h / 2);
 
+// He drags the board of the ask before this step: `by` points across and down, starting `afterBoardMs` after the
+// board's first frame and taking `overMs`. `from` "beside" starts the press on the card just under the strip, and
+// must move nothing. The stand-in works out the points from where the strip is; the app's flow takes this as it is.
+const Drag = z.object({ by: z.tuple([z.number(), z.number()]), afterBoardMs: z.number().positive(), overMs: z.number().positive(), from: z.enum(["strip", "beside"]).optional() });
+
 const Step = z.union([
   // A step may cut in on the ask before it: `cutInAfterMs` after its first line of any kind,
   // `cutInAnswerAfterMs` after the first sentence of the answer itself, or `pressAgainAfterMs` after its release.
   z.object({ say: z.string(), circle: z.string().nullable(), page: z.string().min(1).optional(), cutInAfterMs: z.number().positive().optional(), cutInAnswerAfterMs: z.number().positive().optional(), pressAgainAfterMs: z.number().positive().optional(), expect: Expect }),
   z.object({ close: z.literal(true), expect: Expect.optional() }),
+  z.object({ drag: Drag }),
   // A look with no key pressed: what the app sends by itself when the display has changed and stood still.
   // `page` puts another page on the screen from this step on (he scrolled, or opened a section).
   z.object({ look: z.literal(true), page: z.string().min(1).optional(), waitMs: z.number().positive().optional(), expect: Expect }),
@@ -121,6 +127,7 @@ export const Flow = z.object({
   asks: z.array(z.union([
     z.object({ wav: z.string().min(1), trail: z.array(z.tuple([z.number(), z.number(), z.number()])), startAfter: StartAfter, page: z.string().min(1).optional() }),
     z.object({ close: z.literal(true) }),
+    z.object({ drag: Drag }),
     z.object({ look: z.literal(true), waitMs: z.number().positive(), page: z.string().min(1).optional() }),
   ])),
 });

@@ -44,6 +44,10 @@ export async function prepare(scenario: Scenario): Promise<string> {
       asks.push({ close: true });
       continue;
     }
+    if ("drag" in step) {
+      asks.push({ drag: step.drag });
+      continue;
+    }
     // Another page on the screen from this step on (he scrolled, or opened a section): its picture and what is on it
     // are kept beside the first page's, numbered.
     let other: string | undefined;

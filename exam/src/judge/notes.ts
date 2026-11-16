@@ -22,6 +22,10 @@ import { no, unseen, yes, type Verdict } from "../verdict.ts";
 const LETTERS_A_SECOND = 12;
 // The video's notes are four words and an arrow at most ("After response → Record click").
 const WORDS = 5;
+// A note begins inside the answer and may still be growing when the voice stops: at 24:14 the video's note is still
+// being written a second into the next sentence. After the last sentence it may run on for as long as U3 allows
+// with nothing new on screen, since a note still growing is something new.
+const RUNS_ON_MS = 2000;
 const letters = (says: string) => says.replace(/\s/g, "").length;
 const overlap = (a: Placed["box"], b: Placed["box"]) => Math.max(0, Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x)) * Math.max(0, Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y));
 const inside = (a: Placed["box"], b: Placed["box"]) => a.x >= b.x && a.y >= b.y && a.x + a.w <= b.x + b.w && a.y + a.h <= b.y + b.h;
@@ -65,7 +69,8 @@ export function notes(ask: Ask, expect: Expect, placed: Placed[], until: number)
     return off ? `at ${Math.round(off.at)} ms the pointer was not at the end of the writing` : null;
   }), "the pointer is at the end of the writing each time it grows"));
   out.push(said.length === 0 ? unseen("C24", s, "A note is written while the answer is being said", "nothing was voiced, so no sentence has a time")
-    : verdict("A note is written while the answer is being said", fault((grown, last) => (grown[0].at < said[0].start ? "it began before the answer did" : last.at > said.at(-1)!.end ? "it was still being written after the answer had ended" : null)), "each begins and ends inside the answer"));
+    : verdict("A note is written while the answer is being said", fault((grown, last) => (grown[0].at < said[0].start ? "it began before the answer did" : grown[0].at > said.at(-1)!.end ? "it began after the answer had ended"
+      : last.at > said.at(-1)!.end + RUNS_ON_MS ? `it was still being written ${((last.at - said.at(-1)!.end) / 1000).toFixed(1)} s after the answer had ended` : null)), `each begins inside the answer and is done within ${RUNS_ON_MS / 1000} s of its end`));
   out.push(verdict("A note is on the board and over none of its boxes", fault((_, last) => (!inside(last.box, board.box) ? "it runs off the board" : boxes.some((b) => overlap(last.box, b.box) > 0) ? "it lies over a box" : null)),
     boxes.length > 0 ? "inside the card, clear of every box" : "inside the card (the film names no boxes for this board)"));
   out.push(verdict("A note is a few words", fault((_, __, says) => (says.split(/\s+/).filter((w) => /\w/.test(w)).length > WORDS ? `${says.split(/\s+/).filter((w) => /\w/.test(w)).length} words` : null)), `${WORDS} words or fewer`));

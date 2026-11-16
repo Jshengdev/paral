@@ -1,6 +1,6 @@
 import type { Placed } from "../session.ts";
 import type { Expect } from "../shape.ts";
-import { of, type Ask } from "../timeline.ts";
+import { boxesOf, of, type Ask } from "../timeline.ts";
 import { no, unseen, yes, type Verdict } from "../verdict.ts";
 
 // C25: a chain of steps is drawn as one column. His click of 2026-11-15, 18:47, from the reference's video:
@@ -32,7 +32,6 @@ function standsAsAColumn(film: Placed, boxes: number, placed: Placed[], from: nu
   return joins < boxes - 1 ? `${joins} arrows join ${boxes} boxes` : null;
 }
 
-const boxesOf = (text: string) => text.split(" | ").map((row) => row.split(" → ").map((box) => box.trim()).filter((box) => box !== ""));
 const names = (box: string, step: string) => step.split("|").some((way) => box.toLowerCase().includes(way.trim().toLowerCase()));
 
 export function column(ask: Ask, expect: Expect, placed: Placed[], until: number): Verdict[] {
@@ -43,12 +42,12 @@ export function column(ask: Ask, expect: Expect, placed: Placed[], until: number
   if (expect.column === false) {
     const what = "A drawing of how things connect keeps its rows of boxes joined across";
     if (!last) return [];
-    const widest = Math.max(...boxesOf(last.text).map((row) => row.length));
+    const widest = Math.max(...boxesOf(last).map((row) => row.length));
     return [widest >= 2 ? yes("C25", s, what, `its widest row has ${widest} boxes`) : no("C25", s, what, `every row is one box: ${last.text.slice(0, 80)}`)];
   }
   const one = "Asked to draw the steps, the board is one column: a box to a row";
   if (!last) return [no("C25", s, one, "no board was drawn")];
-  const rows = boxesOf(last.text);
+  const rows = boxesOf(last);
   const boxes = rows.flat();
   const measured = `${rows.length} rows, ${boxes.length} boxes: ${last.text.slice(0, 90)}`;
   const film = placed.filter((p) => p.what === "board" && p.at >= ask.down && p.at < until).at(-1);
@@ -67,6 +66,6 @@ export function column(ask: Ask, expect: Expect, placed: Placed[], until: number
       : !inOrder ? no("C25", s, each, `out of the page's order: ${boxes.join(", ").slice(0, 110)}`)
       : boxes.length > steps.length + 1 ? no("C25", s, each, `${boxes.length} boxes for ${steps.length} steps`)
       : yes("C25", s, each, `${boxes.length} boxes for ${steps.length} steps`),
-    boxesOf(drawn[0].text).flat().length === boxes.length ? yes("C25", s, whole, `${boxes.length} boxes on the card as it opened`) : no("C25", s, whole, `it opened with ${boxesOf(drawn[0].text).flat().length} of its ${boxes.length} boxes`),
+    boxesOf(drawn[0]).flat().length === boxes.length ? yes("C25", s, whole, `${boxes.length} boxes on the card as it opened`) : no("C25", s, whole, `it opened with ${boxesOf(drawn[0]).flat().length} of its ${boxes.length} boxes`),
   ];
 }

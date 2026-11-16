@@ -13,7 +13,7 @@ export type Moment = { at: number } & (
   | { kind: "say"; id: string; text: string; opener: boolean; hint: boolean; top: boolean; trail?: string[] }   // top: a hint on the last rung of the ladder; trail: the steps shown above a line he did not ask for
   | { kind: "mark"; id: string; mark: string; box: Box; label?: string }
   | { kind: "echo"; box: Box }
-  | { kind: "board"; text: string; now?: number }   // now: on a board of steps, the row (from 0) that is the step he is on
+  | { kind: "board"; text: string; now?: number; boxes?: string[][] }   // now: on a board of steps, the row (from 0) that is the step he is on; boxes: the rows as they crossed, a box's words kept whole
   | { kind: "clip"; path: string; seconds: number }
   | { kind: "voice"; of: string; ms: number }
   | { kind: "voiced"; of: string; words: string[] }
@@ -24,6 +24,14 @@ export type Moment = { at: number } & (
 );
 
 export type Ask = { index: number; moments: Moment[]; down: number; up: number | null };
+
+/**
+ * A board's rows of boxes. `text` joins boxes with an arrow, so a box whose own words hold an arrow reads there as two
+ * boxes: a column with one such box once passed for a board of rows. The rows as they crossed are used when the
+ * record has them; a made-up moment in the judge's own test has only the text.
+ */
+export const boxesOf = (board: { text: string; boxes?: string[][] }): string[][] =>
+  board.boxes ?? board.text.split(" | ").map((row) => row.split(" → ").map((box) => box.trim()).filter((box) => box !== "")).filter((row) => row.length > 0);
 
 export const of = <K extends Moment["kind"]>(moments: Moment[], kind: K) => moments.filter((m): m is Extract<Moment, { kind: K }> => m.kind === kind);
 export const first = <K extends Moment["kind"]>(moments: Moment[], kind: K) => of(moments, kind)[0] ?? null;

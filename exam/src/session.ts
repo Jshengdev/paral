@@ -31,7 +31,7 @@ function moment(at: number, line: Record<string, unknown> & { type: string }): M
     case "words": return { at, kind: "voiced", of: sayId(line), words: (line.words as string[]).map(String) };
     case "mark": return { at, kind: "mark", id: sayId(line), mark: String(line.kind), box: Box.parse(line.box), label: line.label === undefined ? undefined : String(line.label) };
     case "echo": return { at, kind: "echo", box: Box.parse(line.box) };
-    case "board": return { at, kind: "board", text: (line.rows as string[][]).map((row) => row.join(" → ")).join(" | "), now: typeof line.now === "number" ? line.now : undefined };
+    case "board": return { at, kind: "board", text: (line.rows as string[][]).map((row) => row.join(" → ")).join(" | "), now: typeof line.now === "number" ? line.now : undefined, boxes: (line.rows as string[][]).map((row) => row.map(String)) };
     case "clip": return { at, kind: "clip", path: String(line.clip), seconds: Number(line.seconds) };
     case "screen": {
       const lines = line.lines as { text: string }[];

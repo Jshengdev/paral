@@ -1,7 +1,7 @@
 import { existsSync } from "node:fs";
 import type { Box, Expect, Truth } from "../shape.ts";
 import type { Placed } from "../session.ts";
-import { first, of, spoken, type Ask } from "../timeline.ts";
+import { boxesOf, first, of, spoken, type Ask } from "../timeline.ts";
 import { no, unseen, yes, type Verdict } from "../verdict.ts";
 
 // C17: a rendered lesson. It may arrive late, but it must arrive, and it must be a real file.
@@ -33,11 +33,12 @@ function drawing(ask: Ask, last: { text: string }): Verdict {
   return boxes >= BOXES ? yes("C8", ask.index, "The board is a drawing of two boxes or more", measured) : no("C8", ask.index, "The board is a drawing of two boxes or more", measured);
 }
 
-// The painter draws the arrow between two boxes. A box whose own words start or end with an arrow sign shows two
-// in a row. Seen once in fifteen boards over three passes ("→ most of length").
-function plainBoxes(ask: Ask, last: { text: string }): Verdict {
-  const cells = last.text.split(/ \| /).flatMap((row) => row.split(" → ")).map((cell) => cell.trim());
-  const marked = cells.filter((cell) => /^(→|->|=>)|(→|->|=>)$/.test(cell));
+// The painter draws the arrow between two boxes. A box whose own words hold an arrow sign shows two in a row, or
+// reads as two steps in one box. Seen at a box's start once in fifteen boards over three passes ("→ most of
+// length"), and inside a box twice in one run on 2026-11-15 ("Sign up → dashboard", once of them in a column).
+function plainBoxes(ask: Ask, last: { text: string; boxes?: string[][] }): Verdict {
+  const cells = boxesOf(last).flat();
+  const marked = cells.filter((cell) => /→|->|=>/.test(cell));
   return marked.length === 0 ? yes("C8", ask.index, "No box carries an arrow sign of its own", `${cells.length} boxes, none does`)
     : no("C8", ask.index, "No box carries an arrow sign of its own", `"${marked[0].slice(0, 60)}"`);
 }
@@ -73,7 +74,10 @@ export function board(ask: Ask, expect: Expect, truth: Truth[], placed: Placed[]
     drawing(ask, last),
     plainBoxes(ask, last),
   ];
-  const where = placed.filter((p) => p.what === "board" && p.at >= opened.at).at(-1);
+  // Where the board is drawn is the build's choice until he drags it. In a scenario that scripts a drag, the place
+  // it opened is what is held: where he then puts it, over text or not, is his.
+  const drawnAt = placed.filter((p) => p.what === "board" && p.at >= opened.at);
+  const where = expect.drag ? drawnAt[0] : drawnAt.at(-1);
   if (!where) return [...out, unseen("C8", s, "The board covers no text", "the film did not say where it put the board")];
   const covered = truth.filter((t) => t.box.h < 90 && overlap(where.box, t.box) > 0);
   return [...out, covered.length === 0 ? yes("C8", s, "The board covers no text", "it sits in an empty part of the page") : no("C8", s, "The board covers no text", `it covers "${covered[0].text.slice(0, 40)}"`)];
