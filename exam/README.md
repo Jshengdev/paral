@@ -8,7 +8,8 @@ a run leaves on disk.
 
 ## What it promises
 
-- `criteria.ts` is the list: twenty-three things paral must do (C1 to C23), and six checks of use (U2 to U7). C1 to
+- `criteria.ts` is the list: the things paral must do (C1 to C23, and C25 to C28 of the six added on
+  2026-11-15), and six checks of use (U2 to U7). C1 to
   C15 are what the video shows; C16 and C17 are the team's own (the hint ladder, the rendered lesson); C18 to C20
   came on the night of 2026-11-14 (the look with no key, keeping a date, "show me"); C21 to C23 are three more
   things the video shows, found when the whole of it was gone through again and made bars by his click of
@@ -16,8 +17,13 @@ a run leaves on disk.
   thing; six sentences for a broad follow-up). Their checks and the video's times are in `src/judge/video.ts`.
 - C24 to C29 are six more things the video shows, found when it was read one frame a second and every second of it
   measured, and made bars by his click of 2026-11-15, 18:47. Each is added to `criteria.ts` when its check is
-  written. The first is C28, the small label beside the open capsule that names the key to hold
-  (`src/judge/label.ts`, with the video's times). It is held on every ask made with the key, from the film's record.
+  written. C28 is the small label beside the open capsule that names the key to hold (`src/judge/label.ts`), held
+  on every ask made with the key. C25 is a chain of steps drawn as one column (`src/judge/column.ts`; scenarios 28
+  and 29, and `draw-the-flow` for what must stay rows). C27 is a board of words alone (`src/judge/written.ts`; the
+  second ask of `trace-links`). C26 is a board he can drag by its strip (`src/judge/drag.ts`; scenario 30, where
+  the stand-in plays the drag). Each file carries the video's times. All four are read from the film's record.
+  The check for writing on the board is written (`src/judge/notes.ts`) and joins the list when a scenario asks
+  for it.
 - Two bars were chosen by the person this is built for (2026-11-14): his first words show within about 2 s of the
   press (2.5 s in the judge), and the board opens on its first row, never empty, and is open before the first
   sentence of the answer ends. The second replaced his earlier choice of an empty card inside two seconds, once he had
