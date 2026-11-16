@@ -1,0 +1,671 @@
+{
+ "name": "turn: he asks to be shown what a link would look like, four times, after an ordinary question. The deep model is told so each time, and an ordinary question is not. The model writes two whole examples for three sentences: the board goes out as words, first with the beat of its first line ahead of the first sentence, then again with the second's ahead of the second, and the third sentence brings no line. Written as boxes joined across, the board goes out as it always did, once, with no shape. One example: one line, with its sentence. Four examples: cut to three, a line a sentence",
+ "run": "turn",
+ "in": {
+  "tape": "written.json",
+  "show": "written",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1005,
+     "display": {
+      "id": 1,
+      "scale": 1,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Short links I made today",
+       "box": {
+        "x": 100,
+        "y": 100,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "https://long-tunnel-name.example.com/4CQMZu",
+       "box": {
+        "x": 100,
+        "y": 180,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "https://long-tunnel-name.example.com/BF7zWC",
+       "box": {
+        "x": 100,
+        "y": 260,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "Then I tested the first link:",
+       "box": {
+        "x": 100,
+        "y": 340,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "I opened it twice.",
+       "box": {
+        "x": 100,
+        "y": 420,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "Both visits were counted.",
+       "box": {
+        "x": 100,
+        "y": 500,
+        "w": 620,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "What makes these links so long?"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 2100
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 9000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 9005,
+     "display": {
+      "id": 1,
+      "scale": 1,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Short links I made today",
+       "box": {
+        "x": 100,
+        "y": 100,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "https://long-tunnel-name.example.com/4CQMZu",
+       "box": {
+        "x": 100,
+        "y": 180,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "https://long-tunnel-name.example.com/BF7zWC",
+       "box": {
+        "x": 100,
+        "y": 260,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "Then I tested the first link:",
+       "box": {
+        "x": 100,
+        "y": 340,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "I opened it twice.",
+       "box": {
+        "x": 100,
+        "y": 420,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "Both visits were counted.",
+       "box": {
+        "x": 100,
+        "y": 500,
+        "w": 620,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "Which domain would you buy for it? Show me what one of these links would look like."
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 10100
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 18000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 18005,
+     "display": {
+      "id": 1,
+      "scale": 1,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Short links I made today",
+       "box": {
+        "x": 100,
+        "y": 100,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "https://long-tunnel-name.example.com/4CQMZu",
+       "box": {
+        "x": 100,
+        "y": 180,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "https://long-tunnel-name.example.com/BF7zWC",
+       "box": {
+        "x": 100,
+        "y": 260,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "Then I tested the first link:",
+       "box": {
+        "x": 100,
+        "y": 340,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "I opened it twice.",
+       "box": {
+        "x": 100,
+        "y": 420,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "Both visits were counted.",
+       "box": {
+        "x": 100,
+        "y": 500,
+        "w": 620,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "Which domain would you buy for it? Show me what one of these links would look like."
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 19100
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 27000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 27005,
+     "display": {
+      "id": 1,
+      "scale": 1,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Short links I made today",
+       "box": {
+        "x": 100,
+        "y": 100,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "https://long-tunnel-name.example.com/4CQMZu",
+       "box": {
+        "x": 100,
+        "y": 180,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "https://long-tunnel-name.example.com/BF7zWC",
+       "box": {
+        "x": 100,
+        "y": 260,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "Then I tested the first link:",
+       "box": {
+        "x": 100,
+        "y": 340,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "I opened it twice.",
+       "box": {
+        "x": 100,
+        "y": 420,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "Both visits were counted.",
+       "box": {
+        "x": 100,
+        "y": 500,
+        "w": 620,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "Which domain would you buy for it? Show me what one of these links would look like."
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 28100
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 36000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 36005,
+     "display": {
+      "id": 1,
+      "scale": 1,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Short links I made today",
+       "box": {
+        "x": 100,
+        "y": 100,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "https://long-tunnel-name.example.com/4CQMZu",
+       "box": {
+        "x": 100,
+        "y": 180,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "https://long-tunnel-name.example.com/BF7zWC",
+       "box": {
+        "x": 100,
+        "y": 260,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "Then I tested the first link:",
+       "box": {
+        "x": 100,
+        "y": 340,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "I opened it twice.",
+       "box": {
+        "x": 100,
+        "y": 420,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "Both visits were counted.",
+       "box": {
+        "x": 100,
+        "y": 500,
+        "w": 620,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "Which domain would you buy for it? Show me what one of these links would look like."
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 37100
+    }
+   ]
+  ]
+ },
+ "out": {
+  "asked": [
+   {
+    "words": "What makes these links so long?",
+    "written": false
+   },
+   {
+    "words": "Which domain would you buy for it? Show me what one of these links would look like.",
+    "written": true
+   },
+   {
+    "words": "Which domain would you buy for it? Show me what one of these links would look like.",
+    "written": true
+   },
+   {
+    "words": "Which domain would you buy for it? Show me what one of these links would look like.",
+    "written": true
+   },
+   {
+    "words": "Which domain would you buy for it? Show me what one of these links would look like.",
+    "written": true
+   }
+  ],
+  "lines": [
+   {
+    "type": "say",
+    "id": "t1",
+    "beat": 0,
+    "text": "The tunnel's name is most of each address."
+   },
+   {
+    "type": "say",
+    "id": "t1",
+    "beat": 1,
+    "text": "A domain of your own would cut it."
+   },
+   {
+    "type": "board",
+    "id": "t2",
+    "rows": [
+     [
+      "qh.link/4CQMZu"
+     ],
+     [
+      "linklet.link/4CQMZu"
+     ]
+    ],
+    "beats": [
+     0
+    ],
+    "shape": "words"
+   },
+   {
+    "type": "say",
+    "id": "t2",
+    "beat": 0,
+    "text": "My first choice would be q h dot link, short and easy to say."
+   },
+   {
+    "type": "board",
+    "id": "t2",
+    "rows": [
+     [
+      "qh.link/4CQMZu"
+     ],
+     [
+      "linklet.link/4CQMZu"
+     ]
+    ],
+    "beats": [
+     0,
+     1
+    ],
+    "shape": "words"
+   },
+   {
+    "type": "say",
+    "id": "t2",
+    "beat": 1,
+    "text": "For clearer branding, linklet dot link is longer."
+   },
+   {
+    "type": "say",
+    "id": "t2",
+    "beat": 2,
+    "text": "Either one cuts the address to a third."
+   },
+   {
+    "type": "board",
+    "id": "t3",
+    "rows": [
+     [
+      "Short domain",
+      "then slash",
+      "then code"
+     ],
+     [
+      "e.g. qh.link",
+      "/",
+      "4CQMZu"
+     ]
+    ]
+   },
+   {
+    "type": "say",
+    "id": "t3",
+    "beat": 0,
+    "text": "My first choice would be q h dot link, short and easy to say."
+   },
+   {
+    "type": "say",
+    "id": "t3",
+    "beat": 1,
+    "text": "For clearer branding, linklet dot link is longer."
+   },
+   {
+    "type": "say",
+    "id": "t3",
+    "beat": 2,
+    "text": "Either one cuts the address to a third."
+   },
+   {
+    "type": "board",
+    "id": "t4",
+    "rows": [
+     [
+      "qh.link/4CQMZu"
+     ]
+    ],
+    "beats": [
+     0
+    ],
+    "shape": "words"
+   },
+   {
+    "type": "say",
+    "id": "t4",
+    "beat": 0,
+    "text": "I would buy q h dot link."
+   },
+   {
+    "type": "say",
+    "id": "t4",
+    "beat": 1,
+    "text": "It is short and easy to say."
+   },
+   {
+    "type": "board",
+    "id": "t5",
+    "rows": [
+     [
+      "qh.link/4CQMZu"
+     ],
+     [
+      "linklet.link/4CQMZu"
+     ],
+     [
+      "lnk.lt/4CQMZu"
+     ]
+    ],
+    "beats": [
+     0
+    ],
+    "shape": "words"
+   },
+   {
+    "type": "say",
+    "id": "t5",
+    "beat": 0,
+    "text": "My first choice would be q h dot link, short and easy to say."
+   },
+   {
+    "type": "board",
+    "id": "t5",
+    "rows": [
+     [
+      "qh.link/4CQMZu"
+     ],
+     [
+      "linklet.link/4CQMZu"
+     ],
+     [
+      "lnk.lt/4CQMZu"
+     ]
+    ],
+    "beats": [
+     0,
+     1
+    ],
+    "shape": "words"
+   },
+   {
+    "type": "say",
+    "id": "t5",
+    "beat": 1,
+    "text": "For clearer branding, linklet dot link is longer."
+   },
+   {
+    "type": "board",
+    "id": "t5",
+    "rows": [
+     [
+      "qh.link/4CQMZu"
+     ],
+     [
+      "linklet.link/4CQMZu"
+     ],
+     [
+      "lnk.lt/4CQMZu"
+     ]
+    ],
+    "beats": [
+     0,
+     1,
+     2
+    ],
+    "shape": "words"
+   },
+   {
+    "type": "say",
+    "id": "t5",
+    "beat": 2,
+    "text": "Either one cuts the address to a third."
+   }
+  ]
+ }
+}

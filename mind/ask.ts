@@ -71,9 +71,11 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
   const whole = asking.lesson.breakLine === null && asksFor(words, settings.wholeBoardAsks.value);
   /** A follow-up that asks for a drawing of what was just said, with no wrong line of his open, may be drawn as one column. */
   const column = !whole && asking.lesson.breakLine === null && drawsWhatWasSaid(words, settings.columnAsks.value, asking.lesson.shown);
-  /** A broad follow-up, with no wrong line of his open, may be answered in more sentences; a whole board or a column is not also one. */
-  const full = !whole && !column && asking.lesson.breakLine === null && broadFollowUp(words, settings.fullAnswerAsks.value, asking.lesson.shown);
-  const explained = explanation(hands, asking, { talk, board, clip, lead, drew, sources, whole, full, column });
+  /** Asked to be shown what a thing would look like, with no wrong line of his open, the board may be whole examples written out. */
+  const written = !whole && !column && asking.lesson.breakLine === null && asksFor(words, settings.writtenAsks.value);
+  /** A broad follow-up, with no wrong line of his open, may be answered in more sentences; none of the three above is also one. */
+  const full = !whole && !column && !written && asking.lesson.breakLine === null && broadFollowUp(words, settings.fullAnswerAsks.value, asking.lesson.shown);
+  const explained = explanation(hands, asking, { talk, board, clip, lead, drew, sources, whole, full, column, written });
   const hinted = ladderHint(hands, asking, { talk, clip, lead, drew });
   /** With the switch on and his words asking for it, on a measured drawing, the ask is the next step of the working (`through.ts`). */
   const walking = worksThrough(settings.workThrough.value, words, settings.workThroughAsks.value, spots.named.length > 0);
@@ -135,7 +137,7 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
       lesson: from,
       rung: ladder[rung.rung],
       fresh: rung.fresh,
-      ...(walk ? { walk } : whole ? { whole: true as const } : column ? { column: true as const } : full ? { full: true as const } : {}),
+      ...(walk ? { walk } : whole ? { whole: true as const } : column ? { column: true as const } : written ? { written: true as const } : full ? { full: true as const } : {}),
     };
     return ports.brain.answer(asked, signal, onPart);
   };

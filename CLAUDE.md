@@ -190,6 +190,17 @@ record names the shape on the board's rows, with each box and each arrow. The sa
 ordinary ask. A drawing asked for by what it should show ("can you draw how these steps connect?") is not among the
 words, and an ask for the whole thing drawn is a whole board, never both.
 
+**Words alone (shown what a thing would look like).** When no wrong line of his is open and his words ask to be
+shown what a thing would look like written out (`writtenAsks`: "show me what … look", "what would … look like"), the
+deep model gets `prompts/written-board.md` after the ask's own words, as the paragraphs above are sent. It says:
+write each example whole, exactly as it would be written, one to a row, a row for each sentence that is about one.
+A board the model then writes with one box in every row goes out as `shape: "words"`, cut to `writtenMost` (3), and
+grows as the whole board does: all its lines with `beats`, one more ahead of each sentence (`cores/board.ts`,
+`explanation.ts`), so a line comes up as its sentence begins and a line no sentence came for is never drawn. The app
+writes the lines large (`board.wordsType`, 30, twice a box's words) from one left edge with no box behind them
+(`PainterBoard.swift`), and the film's record names the shape, the size and the number of lines drawn. A board the
+model writes any other way goes out as it always did. On his own work with a wrong line it is a hint, with no board.
+
 **Working an exercise through (a switch, off).** `workThrough` is off unless the mind is started with
 `PARAL_WORK_THROUGH=1` (`PARAL_WORK_THROUGH=1 ./run`, or before `./flow`). Off, nothing changes. On, an ask whose
 words ask for it (`workThroughAsks`: "walk me through", "what happens next", "then what" ...) while a measured sheet

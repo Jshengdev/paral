@@ -34,6 +34,8 @@ export type Asked = {
   whole?: true;
   /** Present only when, as a follow-up, his words ask for a drawing of what was just said: a list of steps may be drawn as one column. */
   column?: true;
+  /** Present only when his words ask to be shown what a thing would look like: the board may be whole examples written out, a line a sentence. */
+  written?: true;
   /** Present only on a broad follow-up (an answer came before, and his words ask for more than one thing): the answer may be longer. */
   full?: true;
 };

@@ -110,6 +110,18 @@ export const teach = {
     measured: "not measured live; seven boxes drawn on a stand-in page stood 438 points tall at the full size of their words (November 15)",
   } satisfies Setting<number>,
 
+  writtenAsks: {
+    value: ["show me what…look", "what would…look like", "what…would look like"],
+    why: "Words of his that ask to be shown what a thing would look like written out (`asksFor`). With no wrong line of his open, the model is given `prompts/written-board.md` after his own words: the board is each example written whole, one to a row, and the app writes them large with no boxes, a line as its sentence is said. A board the model writes any other way is drawn as boards always were.",
+    measured: "not measured; chosen from the judge's wording of November 15 (\"Show me what one of these links would look like.\"), which is the reference video's question at that point. No tapped line of the demo's bank holds one of them",
+  } satisfies Setting<string[]>,
+
+  writtenMost: {
+    value: 3,
+    why: "A board of words alone has at most this many lines: the reference video's has two, and three still read at a glance as a short list of examples. A line comes with its sentence, so there are never more lines than sentences.",
+    measured: "not measured",
+  } satisfies Setting<number>,
+
   drawingAsks: {
     value: [] as string[],
     why: "Words of his that ask for a drawing. With any here, an empty card opens the moment he says one, before any model has spoken, and the board fills it when it arrives; if none comes the card is taken away. The list is empty, so no empty card opens and the board appears on its first row: the owner's choice on 2026-11-14 at 16:52, in place of his earlier one for the card, since the tutor this follows never opens its board empty. To bring the card back, put the words back: draw, diagram, sketch, \"show me what … look\".",

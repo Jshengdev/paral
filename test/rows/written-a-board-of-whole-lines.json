@@ -1,0 +1,89 @@
+{
+ "name": "written: a board is words alone when every row is one box, which holds a whole example; it is cut to the most lines such a board may have. One line is enough. A board with any row of two boxes, an empty board and no board are not words alone",
+ "run": "written.rows",
+ "in": {
+  "most": 3,
+  "boards": [
+   [
+    [
+     "qh.link/4CQMZu"
+    ],
+    [
+     "linklet.link/4CQMZu"
+    ]
+   ],
+   [
+    [
+     "qh.link/4CQMZu"
+    ]
+   ],
+   [
+    [
+     "qh.link/4CQMZu"
+    ],
+    [
+     "linklet.link/4CQMZu"
+    ],
+    [
+     "lnk.lt/4CQMZu"
+    ],
+    [
+     "a.fourth/4CQMZu"
+    ]
+   ],
+   [
+    [
+     "Short domain",
+     "then slash",
+     "then code"
+    ],
+    [
+     "e.g. qh.link",
+     "/",
+     "4CQMZu"
+    ]
+   ],
+   [
+    [
+     "qh.link/4CQMZu"
+    ],
+    [
+     "or",
+     "linklet.link/4CQMZu"
+    ]
+   ],
+   [],
+   null
+  ]
+ },
+ "out": [
+  [
+   [
+    "qh.link/4CQMZu"
+   ],
+   [
+    "linklet.link/4CQMZu"
+   ]
+  ],
+  [
+   [
+    "qh.link/4CQMZu"
+   ]
+  ],
+  [
+   [
+    "qh.link/4CQMZu"
+   ],
+   [
+    "linklet.link/4CQMZu"
+   ],
+   [
+    "lnk.lt/4CQMZu"
+   ]
+  ],
+  null,
+  null,
+  null,
+  null
+ ]
+}

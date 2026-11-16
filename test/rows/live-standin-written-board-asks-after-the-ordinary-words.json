@@ -1,0 +1,100 @@
+{
+ "name": "standin: an ask to be shown what a thing would look like sends the ordinary instructions and the ordinary words, with the written board's paragraph after them and nothing before, so what the service has kept is still read",
+ "run": "live.standin",
+ "in": {
+  "asked": {
+   "words": "Which domain would you buy for it? Show me what one of these links would look like.",
+   "lines": [
+    "Short links I made today"
+   ],
+   "written": true
+  },
+  "picture": true,
+  "brainReply": {
+   "model": "claude-opus-5-5",
+   "stop_reason": "end_turn",
+   "usage": {
+    "input_tokens": 2000,
+    "output_tokens": 500
+   },
+   "parsed_output": {
+    "problem": "Which domain to buy",
+    "breakIndex": null,
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "I would buy q h dot link.",
+      "mark": null
+     }
+    ],
+    "board": [
+     [
+      "qh.link/4CQMZu"
+     ]
+    ]
+   }
+  },
+  "lookReply": {
+   "model": "claude-haiku-5-5",
+   "stop_reason": "end_turn",
+   "usage": {
+    "input_tokens": 300,
+    "output_tokens": 50
+   },
+   "parsed_output": {
+    "leaks": false
+   }
+  }
+ },
+ "out": {
+  "answered": {
+   "problem": "Which domain to buy",
+   "breakLine": null,
+   "breakIndex": null,
+   "result": null,
+   "lesson": null,
+   "beats": [
+    {
+     "say": "I would buy q h dot link.",
+     "mark": null
+    }
+   ],
+   "board": null,
+   "spots": []
+  },
+  "leaks": false,
+  "calls": [
+   {
+    "kind": "brain",
+    "model": "claude-opus-5-5",
+    "effort": "low",
+    "structured": "json_schema",
+    "fallbacks": "default",
+    "picture": true,
+    "signal": true,
+    "numbered": false,
+    "namesRung": true,
+    "instructionsAreTheOrdinaryOnes": true,
+    "endsWithTheWrittenBoardParagraph": true,
+    "ordinaryWordsComeFirst": true
+   },
+   {
+    "kind": "look",
+    "model": "claude-haiku-5-5",
+    "effort": "low",
+    "structured": "json_schema",
+    "fallbacks": null,
+    "picture": false,
+    "signal": true,
+    "numbered": false,
+    "namesRung": false,
+    "instructionsAreTheOrdinaryOnes": false,
+    "endsWithTheWrittenBoardParagraph": false,
+    "ordinaryWordsComeFirst": false
+   }
+  ],
+  "spentUsd": 0.018055,
+  "toldTheLineEarly": true
+ }
+}

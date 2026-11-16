@@ -695,7 +695,10 @@ one box to a row: every box as wide as the widest, one under another, each joine
 card's middle in the gap between them (`board.downGap`, 22), and it comes whole, not a row a sentence. Its place is
 judged for a card taller than it is wide (`Layout.room`, `tall`). The film's record then names the shape on every
 row of the board, and names each box (`what: "box"`, id `<board>/<n>`) and each arrow (`what: "join"`) where it was
-drawn; of a board with no shape it names neither.
+drawn; of a board with no shape it names neither. `words` are written lines, one to a row: each row's one text at
+`board.wordsType` (30), from one left edge, with no box behind it and no arrow, the rows with no gap between them.
+They come a line a sentence, by the board's `beats`, so the record's `rows` says how many are drawn and its `type`
+is the lines' own size.
 
 It says of the label under the pill what it says: a row `{"at", "what": "label", "box", "says"}` each time its words
 or its box change, and one more with `"says": null` and the box it last had in the first frame it is no longer drawn

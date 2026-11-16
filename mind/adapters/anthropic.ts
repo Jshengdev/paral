@@ -19,10 +19,11 @@ type Log = (line: string) => void;
 /**
  * `workThrough` is added to the answer's prompt only for a step of the working he asked to have worked through.
  * `wholeBoard` is added after the ask's own words, only when he asked for the whole thing drawn; `stepsColumn` the
- * same way only on a follow-up that asks for a drawing of what was just said, and `fullAnswer` only on a broad
- * follow-up: the prompt and the kept pages before it stay as they are, so the service still has them kept.
+ * same way only on a follow-up that asks for a drawing of what was just said, `writtenBoard` only when he asked to
+ * be shown what a thing would look like, and `fullAnswer` only on a broad follow-up: the prompt and the kept pages
+ * before it stay as they are, so the service still has them kept.
  */
-export type Prompts = { answer: string; secondLook: string; opener: string; glance: string; workThrough?: string; wholeBoard?: string; stepsColumn?: string; fullAnswer?: string };
+export type Prompts = { answer: string; secondLook: string; opener: string; glance: string; workThrough?: string; wholeBoard?: string; stepsColumn?: string; writtenBoard?: string; fullAnswer?: string };
 
 
 /** Claude behind three ports. The client is built here; a row may hand in a stand-in instead. */
@@ -101,7 +102,7 @@ export function anthropic(settings: Settings, prompts: Prompts, log: Log, client
         // A step of the working is asked with the answer's prompt and its own added, in its own shape; nothing else changes.
         const walk = asked.walk;
         if (walk && !prompts.workThrough) throw new Error("the work-through prompt was not loaded");
-        const which = asked.whole ? "wholeBoard" : asked.column ? "stepsColumn" : asked.full ? "fullAnswer" : null;
+        const which = asked.whole ? "wholeBoard" : asked.column ? "stepsColumn" : asked.written ? "writtenBoard" : asked.full ? "fullAnswer" : null;
         const added = which === null ? null : prompts[which];
         if (added === undefined) throw new Error(`the ${which} prompt was not loaded`);
         const words = walk ? walking({ ...asked, walk }, settings.workThroughSpotsMost.value) : added ? `${asking(asked)}\n\n${added}` : asking(asked);

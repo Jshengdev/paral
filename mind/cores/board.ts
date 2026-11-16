@@ -56,3 +56,14 @@ export function columnRows(written: string[][] | null | undefined, most: number)
   const rows = boxes(written ?? []);
   return rows.length >= 2 && rows.every((row) => row.length === 1) ? rows.slice(0, most) : null;
 }
+
+// Words alone: asked to be shown what a thing would look like, the board is each example written whole, a line at a time.
+
+/**
+ * The board as written lines, or null when the model did not write one: every row is one box, which holds a whole
+ * example. It is cut to `most` lines. Any other board is drawn as boards always were.
+ */
+export function writtenRows(written: string[][] | null | undefined, most: number): string[][] | null {
+  const rows = boxes(written ?? []);
+  return rows.length >= 1 && rows.every((row) => row.length === 1) ? rows.slice(0, most) : null;
+}

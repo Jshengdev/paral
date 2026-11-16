@@ -1,0 +1,45 @@
+{
+ "name": "body: the whole chain on a tape, filmed. After an ordinary question he asks to be shown what a link would look like: three sentences and two lines; the card is not up before its first sentence, each line comes once its own sentence has begun and before that sentence ends, and the film's record names words on that board, drawn at twice a box's size or more, with no box or arrow named",
+ "run": "body.writtenOnFilm",
+ "in": {
+  "lines": [
+   "Short links I made today",
+   "https://long-tunnel-name.example.com/4CQMZu",
+   "https://long-tunnel-name.example.com/BF7zWC",
+   "Then I tested the first link:",
+   "I opened it twice.",
+   "Both visits were counted."
+  ],
+  "tape": "written-filmed.json",
+  "asks": [
+   "what makes these links so long",
+   "which domain would you buy for it show me what one of these links would look like"
+  ]
+ },
+ "out": {
+  "sentences": 3,
+  "rowsAtTheEnd": 2,
+  "boardLinesWithBeats": [
+   1,
+   2
+  ],
+  "theCardIsNotUpBeforeItsFirstSentence": true,
+  "eachLine": [
+   {
+    "row": 1,
+    "cameOnceItsSentenceHadBegun": true,
+    "andBeforeItEnded": true
+   },
+   {
+    "row": 2,
+    "cameOnceItsSentenceHadBegun": true,
+    "andBeforeItEnded": true
+   }
+  ],
+  "theRecordNamesOnItsBoard": [
+   "words"
+  ],
+  "wordsAtTwiceABoxOrMore": true,
+  "boxesOrArrowsNamed": 0
+ }
+}

@@ -2,7 +2,7 @@ import type { Asking, Hands } from "./ask.ts";
 import type { card } from "./card.ts";
 import type { lessonClip } from "./clip.ts";
 import { explain, WHOLE, type Planned } from "./cores/beats.ts";
-import { columnRows, firstParts, grow, wholeRows, type Growing } from "./cores/board.ts";
+import { columnRows, firstParts, grow, wholeRows, writtenRows, type Growing } from "./cores/board.ts";
 import { unknownDate, worded } from "./cores/dates.ts";
 import type { HoldEvent } from "./cores/hold.ts";
 import { givesAway } from "./cores/push.ts";
@@ -26,6 +26,8 @@ type With = {
   full: boolean;
   /** Whether he asked, as a follow-up, for a drawing of what was just said: a board written one box to a row is a column (`cores/board.ts`). */
   column: boolean;
+  /** Whether he asked to be shown what a thing would look like: a board written one box to a row is words alone, a line a sentence. */
+  written: boolean;
 };
 
 /**
@@ -33,7 +35,7 @@ type With = {
  * while it arrives: the board goes out when it is whole, the first mark ahead of its sentence, and each sentence when
  * it is finished. With a lesson clip coming it is one sentence and no board.
  */
-export function explanation({ settings, send, log }: Hands, asking: Asking, { talk, board, clip, lead, drew, sources, whole, full, column }: With) {
+export function explanation({ settings, send, log }: Hands, asking: Asking, { talk, board, clip, lead, drew, sources, whole, full, column, written }: With) {
   const { id, seen } = asking;
   const since = () => Date.now() - asking.releasedAt;
   /** How many of its sentences are out, and whether the first mark went out ahead of its sentence. */
@@ -45,16 +47,21 @@ export function explanation({ settings, send, log }: Hands, asking: Asking, { ta
   /** How many sentences it may have, and how long each may be before it is spoken as two. */
   const most = () => (clip.on() ? 1 : whole ? settings.wholeBoardMost.value : full ? settings.fullAnswerMost.value : settings.maxBeats.value);
   const breath = () => (clip.on() ? WHOLE : settings.sentenceMaxWords.value);
-  /** Asked for the whole thing: the board's rows, where each written sentence starts among the spoken ones, and the rows said so far. */
+  /**
+   * A board that grows with its answer (the whole thing drawn, or words alone): its rows, where each written
+   * sentence starts among the spoken ones, and the rows said so far. `lines` reads them from the board as written:
+   * none for any other ask, and none when an ask for words alone was written as boxes.
+   */
+  const lines = (given: string[][] | null | undefined) => (whole ? wholeRows(given, most()) : written ? (writtenRows(given, settings.writtenMost.value) ?? []) : []);
   let rows: string[][] = [];
   let firsts: number[] = [];
   let growing: Growing = { beats: [], stopped: false };
   /** A spoken sentence has gone by, said on `beat` or held back (null): the board grows by its row, if it has one. */
   const grows = (place: number, beat: number | null) => {
-    const next = whole && !clip.on() ? grow(growing, rows.length, firsts, place, beat) : growing;
+    const next = rows.length > 0 && !clip.on() ? grow(growing, rows.length, firsts, place, beat) : growing;
     if (next === growing) return;
     growing = next;
-    if (beat !== null) board.grow(rows, growing.beats);
+    if (beat !== null) board.grow(rows, growing.beats, whole ? undefined : "words");
   };
 
   /** The board goes out as it was written, or as a column when this ask may be one and the model wrote one. */
@@ -116,8 +123,8 @@ export function explanation({ settings, send, log }: Hands, asking: Asking, { ta
     markOut: () => markOut,
     /** Part of the answer has arrived: the board once it is whole, the first mark, and each finished sentence. */
     arriving(part: Part) {
-      if (whole) rows = rows.length > 0 ? rows : wholeRows(part.board, most());
-      else if (!clip.on()) fill(part.board);
+      if (rows.length === 0) rows = lines(part.board);
+      if (!whole && rows.length === 0 && !clip.on()) fill(part.board);
       if (part.board === null) board.close("the answer has no board");
       markAhead(part);
       tell(plan(part));
@@ -131,15 +138,15 @@ export function explanation({ settings, send, log }: Hands, asking: Asking, { ta
       let sentences = plan(answered);
       const leak = givesAway(sentences, answered.result);
       // The rows are set before the last sentences are said; an answer held back, or one with a clip, has none.
-      if (whole) rows = leak || clip.on() ? [] : rows.length > 0 ? rows : wholeRows(answered.board, most());
+      if (whole || written) rows = leak || clip.on() ? [] : rows.length > 0 ? rows : lines(answered.board);
       if (leak) {
         log(`${id}: push held back an explanation that gave the result away; it was: "${sentences.map((beat) => beat.say).join(" ")}"`);
         sentences = [{ say: settings.heldBackLine.value, mark: null }];
         clip.drop();
       }
       tell(sentences);
-      if (!whole) fill(leak || clip.on() ? null : answered.board);
-      else if (growing.beats.length > 0) drew({ type: "board.drawn", rows: rows.slice(0, growing.beats.length) });
+      if (growing.beats.length > 0) drew({ type: "board.drawn", rows: rows.slice(0, growing.beats.length) });
+      else if (!whole && rows.length === 0) fill(leak || clip.on() ? null : answered.board);
       board.close("no board came");
       drew({ type: "break.fixed" });
       // A sentence held back for a date is never left out in silence: what is left can sound like the whole answer.

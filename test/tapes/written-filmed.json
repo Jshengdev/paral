@@ -1,0 +1,54 @@
+{
+ "answers": {
+  "what makes these links so long": [
+   {
+    "problem": "Why the links are long",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "The tunnel's name is most of each address.",
+      "mark": null
+     },
+     {
+      "say": "A domain of your own would cut it.",
+      "mark": null
+     }
+    ],
+    "board": null
+   }
+  ],
+  "which domain would you buy for it show me what one of these links would look like": [
+   {
+    "problem": "Which domain to buy for the short links",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "My first choice would be q h dot link, short and easy to say.",
+      "mark": null
+     },
+     {
+      "say": "For clearer branding, linklet dot link is longer.",
+      "mark": null
+     },
+     {
+      "say": "Either one cuts the address to a third.",
+      "mark": null
+     }
+    ],
+    "board": [
+     [
+      "qh.link/4CQMZu"
+     ],
+     [
+      "linklet.link/4CQMZu"
+     ]
+    ]
+   }
+  ]
+ },
+ "leaks": [],
+ "opener": "Let me look.",
+ "voice": true
+}

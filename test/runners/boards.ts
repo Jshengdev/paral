@@ -73,7 +73,9 @@ export function boardRows(input: { lines: string[]; rows: Written[]; begins: Rec
  * sentence began, and for each row whether it came once its own sentence had begun and before that sentence ended
  * (to a frame, 34 ms). For the asks before it: whether their boards came whole, with no row count in the record.
  */
-export function wholeOnFilm(input: { lines: string[]; tape: string; asks: string[] }) {
+export const wholeOnFilm = (input: { lines: string[]; tape: string; asks: string[] }) => grownOnFilm(input).out;
+
+function grownOnFilm(input: { lines: string[]; tape: string; asks: string[] }) {
   const dir = fresh("whole");
   mkdirSync(dir, { recursive: true });
   const page = join(dir, "page.png");
@@ -100,7 +102,7 @@ export function wholeOnFilm(input: { lines: string[]; tape: string; asks: string
   const cards = drawn.filter((item) => item.what === "board");
   const grew = cards.filter((item) => item.id === last);
   const came = (row: number) => grew.find((item) => (item.rows ?? 0) >= row)?.at;
-  return {
+  const out = {
     sentences: own.length,
     rowsAtTheEnd: grew.at(-1)?.rows ?? null,
     boardLinesWithBeats: rows.filter((row) => row.line.type === "board" && row.line.id === last).map((row) => row.line.beats?.length ?? null),
@@ -108,6 +110,7 @@ export function wholeOnFilm(input: { lines: string[]; tape: string; asks: string
     eachRow: own.map((times, index) => ({ row: index + 1, cameOnceItsSentenceHadBegun: (came(index + 1) ?? -Infinity) >= times.start - 34, andBeforeItEnded: (came(index + 1) ?? Infinity) <= times.end })),
     boardsOfTheAsksBeforeCameWhole: cards.filter((item) => item.id !== last).every((item) => item.rows === undefined) && cards.some((item) => item.id !== last),
   };
+  return { dir, out };
 }
 
 /** A growing board's decisions with no body: how many rows the written board is cut to, where each written sentence starts among the spoken ones, and the rows' beats after each spoken sentence (`said`: its beat, or null when it was held back). */
@@ -183,4 +186,20 @@ export function columnOnFilm(input: { lines: string[]; tape: string; asks: strin
     everyBoxWasThereInTheCardsFirstFrame: cardUp !== null && named("box").length > 0 && new Set(named("box").filter((item) => item.at === cardUp).map((item) => item.id)).size === new Set(named("box").map((item) => item.id)).size,
     shapesOnTheBoardsOfTheAsksBefore: [...new Set(drawn.filter((item) => item.what === "board" && !mine(item)).map((item) => item.shape ?? null))],
   };
+}
+
+/**
+ * The whole chain for a board of words alone, with no network: what `wholeOnFilm` gives for a board that grows with
+ * its answer, for each of its lines (a line with each sentence, none before its own), and what the film's record
+ * says of the last ask's board: the shape it names, whether its words were drawn at twice a box's size or more, and
+ * whether any box or arrow is named for it.
+ */
+export function writtenOnFilm(input: { lines: string[]; tape: string; asks: string[] }) {
+  const { dir, out } = grownOnFilm(input);
+  const drawn = readFileSync(join(dir, "drawn.jsonl"), "utf8").split("\n").filter(Boolean).map((line) => JSON.parse(line) as Item & { type?: number });
+  const last = drawn.findLast((item) => item.what === "board")?.id ?? "";
+  const mine = drawn.filter((item) => item.what === "board" && item.id === last);
+  const box: number = JSON.parse(readFileSync(join(root, "body", "tokens.json"), "utf8")).board.type;
+  const { boardsOfTheAsksBeforeCameWhole: _before, eachRow, ...rest } = out;
+  return { ...rest, eachLine: eachRow.slice(0, out.rowsAtTheEnd ?? 0), theRecordNamesOnItsBoard: [...new Set(mine.map((item) => item.shape ?? null))], wordsAtTwiceABoxOrMore: mine.length > 0 && mine.every((item) => (item.type ?? 0) >= 2 * box), boxesOrArrowsNamed: drawn.filter((item) => item.what === "box" || item.what === "join").length };
 }

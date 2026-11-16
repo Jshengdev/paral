@@ -1,0 +1,28 @@
+{
+ "name": "seam: the body reads a board whose shape is words",
+ "run": "body.seen",
+ "in": {
+  "lines": [
+   {
+    "v": 1,
+    "type": "board",
+    "id": "t1",
+    "rows": [
+     [
+      "qh.link/4CQMZu"
+     ],
+     [
+      "linklet.link/4CQMZu"
+     ]
+    ],
+    "beats": [
+     0
+    ],
+    "shape": "words"
+   }
+  ]
+ },
+ "out": [
+  "took board(id: \"t1\", rows: [[\"qh.link/4CQMZu\"], [\"linklet.link/4CQMZu\"]], now: nil, beats: Optional([0]), shape: Optional(ParalBody.BoardShape.words))"
+ ]
+}

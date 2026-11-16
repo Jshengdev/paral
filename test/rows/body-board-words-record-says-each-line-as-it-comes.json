@@ -1,0 +1,165 @@
+{
+ "name": "body: a board of words alone, two lines for an answer of three sentences: the film's record says how many lines are drawn, one and then two, each once its own sentence has begun and before the next line's has; the same lines sent with no beats come whole and the record says no number of rows",
+ "run": "body.boardRows",
+ "in": {
+  "lines": [
+   "Milestone 2 is done",
+   "Sign-up works with email and password.",
+   "Links are made on the server.",
+   "Clicks are counted per link.",
+   "Next: the dashboard",
+   "Charts by day"
+  ],
+  "rows": [
+   {
+    "at": 500,
+    "line": {
+     "type": "key.down"
+    }
+   },
+   {
+    "at": 1500,
+    "line": {
+     "type": "key.up"
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 0,
+     "text": "One moment, I am reading the page.",
+     "aside": true
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "mute",
+     "id": "t1",
+     "why": "a row"
+    }
+   },
+   {
+    "at": 3500,
+    "line": {
+     "type": "board",
+     "id": "t1",
+     "rows": [
+      [
+       "qh.link/4CQMZu"
+      ],
+      [
+       "linklet.link/4CQMZu"
+      ]
+     ],
+     "beats": [
+      1
+     ],
+     "shape": "words"
+    }
+   },
+   {
+    "at": 3500,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 1,
+     "text": "A student signs up with an email address first."
+    }
+   },
+   {
+    "at": 3600,
+    "line": {
+     "type": "board",
+     "id": "t1",
+     "rows": [
+      [
+       "qh.link/4CQMZu"
+      ],
+      [
+       "linklet.link/4CQMZu"
+      ]
+     ],
+     "beats": [
+      1,
+      2
+     ],
+     "shape": "words"
+    }
+   },
+   {
+    "at": 3600,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 2,
+     "text": "Then the app makes a short link for them."
+    }
+   }
+  ],
+  "begins": {
+   "1": 5100,
+   "2": 7800
+  },
+  "plain": [
+   {
+    "at": 500,
+    "line": {
+     "type": "key.down"
+    }
+   },
+   {
+    "at": 1500,
+    "line": {
+     "type": "key.up"
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "board",
+     "id": "t1",
+     "rows": [
+      [
+       "qh.link/4CQMZu"
+      ],
+      [
+       "linklet.link/4CQMZu"
+      ]
+     ],
+     "shape": "words"
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 0,
+     "text": "A student signs up with an email address first."
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "mute",
+     "id": "t1",
+     "why": "a row"
+    }
+   }
+  ]
+ },
+ "out": {
+  "rowsInOrder": [
+   1,
+   2
+  ],
+  "eachWithItsOwnSentence": [
+   true,
+   true
+  ],
+  "aBoardThatDoesNotGrowSaysNoRows": true
+ }
+}

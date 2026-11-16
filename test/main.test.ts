@@ -6,7 +6,7 @@ import { join } from "node:path";
 import { boxes, fitted, split, wipes } from "../mind/cores/beats.ts";
 import { asksFor, fits, hear, saysOnly, silence, unasked } from "../mind/cores/catch.ts";
 import { broadFollowUp } from "../mind/cores/full.ts";
-import { columnRows, drawsWhatWasSaid } from "../mind/cores/board.ts";
+import { columnRows, drawsWhatWasSaid, writtenRows } from "../mind/cores/board.ts";
 import { away, datesIn, daysFrom, unknownDate, type Named } from "../mind/cores/dates.ts";
 import { calendarFile, dateLine, named, when } from "../mind/cores/keep.ts";
 import { guideGoal, guideNext } from "./runners/guide.ts";
@@ -32,7 +32,7 @@ import { linesToTheMind, pillOnInk } from "./runners/ink.ts";
 import { stopped } from "./runners/stop.ts";
 import { notesRuns } from "./runners/notes.ts";
 import { playTurn } from "./runners/turn.ts";
-import { boardColumn, boardFits, boardGrows, boardRows, columnOnFilm, wholeOnFilm, boardType } from "./runners/boards.ts";
+import { boardColumn, boardFits, boardGrows, boardRows, columnOnFilm, wholeOnFilm, writtenOnFilm, boardType } from "./runners/boards.ts";
 import { filmedPages } from "./runners/pages.ts";
 import { cursor, cursorInside, guide, inkInside, resting, steps, toast, way } from "./runners/placed.ts";
 import { lead } from "./runners/leads.ts";
@@ -66,7 +66,7 @@ const runs: Record<string, (input: any) => unknown> = {
   "beats.wipes": (input) => input.cases.map(([fresh, last, now]: [boolean, string | null, string | null]) => wipes(fresh, last, now)),
   prompts: () =>
     Object.fromEntries(
-      ["answer", "second-look", "opener", "glance", "work-through", "whole-board", "full-answer", "steps-column"].map((name) => [
+      ["answer", "second-look", "opener", "glance", "work-through", "whole-board", "full-answer", "steps-column", "written-board"].map((name) => [
         name,
         createHash("sha256").update(readFileSync(join(import.meta.dirname, "..", "mind", "prompts", `${name}.md`))).digest("hex").slice(0, 12),
       ]),
@@ -124,7 +124,10 @@ const runs: Record<string, (input: any) => unknown> = {
   "column.asks": (input) => Object.fromEntries(input.asks.map((words: string) => [words, { first: drawsWhatWasSaid(words, settings.columnAsks.value, []), after: drawsWhatWasSaid(words, settings.columnAsks.value, ["An answer."]) }])),
   "column.cues": () => settings.cueCards.value.flatMap((card) => card.lines.filter((line) => drawsWhatWasSaid(line, settings.columnAsks.value, ["An answer."])).map((line) => `${card.name}: ${line}`)),
   "column.rows": (input) => input.boards.map((board: string[][] | null) => columnRows(board, input.most)),
-  "body.boardColumn": boardColumn, "body.columnOnFilm": columnOnFilm,
+  "body.boardColumn": boardColumn, "body.columnOnFilm": columnOnFilm, "body.writtenOnFilm": writtenOnFilm,
+  "written.asks": (input) => Object.fromEntries(input.asks.map((words: string) => [words, asksFor(words, settings.writtenAsks.value)])),
+  "written.cues": () => settings.cueCards.value.flatMap((card) => card.lines.filter((line) => asksFor(line, settings.writtenAsks.value)).map((line) => `${card.name}: ${line}`)),
+  "written.rows": (input) => input.boards.map((board: string[][] | null) => writtenRows(board, input.most)),
   "catch.drawing": (input) => Object.fromEntries(input.asks.map((words: string) => [words, asksFor(words, input.phrases)])),
   "page.which": (input) => whichPage(input.seen, input.kept, input.least)?.name ?? null,
   "page.moved": (input) => input.cases.map(([then, now]: [any[], any[]]) => movedUnder(then, now, input.least)),

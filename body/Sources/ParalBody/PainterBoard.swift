@@ -21,23 +21,25 @@ extension Painter {
     /// shrunk, words and all. With no rows yet it is an empty card with the waiting dots in it; when the rows come the
     /// card grows from that size to theirs and they fade in. The others stay as they are. A column (`BoardShape`) is
     /// one box to a row, every box as wide as the widest, each joined to the one under it by an arrow in the gap
-    /// between them (`board.downGap`). Gives back the card's box, the lit row's, the size the words were drawn at, and
-    /// for a column each box and each arrow where it was drawn.
+    /// between them (`board.downGap`). Words alone are written lines, one to a row from one left edge, at
+    /// `board.wordsType` and with no box behind them. Gives back the card's box, the lit row's, the size the words
+    /// were drawn at, and for a column each box and each arrow where it was drawn.
     func board(_ board: BoardPicture, clock: Double, _ ctx: CGContext) -> (card: Box, lit: Box?, type: Double, boxes: [Box], joins: [Box]) {
         let b = tokens.board
         let chalk = ink
-        let column = board.shape == .column, between = column ? b.downGap : b.rowGap
+        let column = board.shape == .column, written = board.shape == .words
+        let between = column ? b.downGap : written ? 0 : b.rowGap, type = written ? b.wordsType : b.type
         let wrapped: NSString.DrawingOptions = [.usesLineFragmentOrigin, .usesFontLeading]
         // The widest the words of one row may run: the card at its widest, or the room when that is narrower, less
         // the card's own edge. The boxes of a row share it.
         let widest = min(board.room.w, b.maxWidth) - 2 * b.pad
         let sized = board.rows.enumerated().map { index, row in row.map { text -> (NSAttributedString, CGSize) in
-            let label = inked(text, size: b.type, color: index == board.now ? paper : ink, weight: .medium)
-            let share = max((widest - b.gap * Double(row.count - 1)) / Double(row.count) - 2 * b.boxPadX, 4 * b.type)
+            let label = inked(text, size: type, color: index == board.now ? paper : ink, weight: .medium)
+            let share = max((widest - b.gap * Double(row.count - 1)) / Double(row.count) - 2 * b.boxPadX, 4 * type)
             let size = label.boundingRect(with: CGSize(width: share, height: .greatestFiniteMagnitude), options: wrapped).size
             return (label, CGSize(width: size.width.rounded(.up), height: size.height.rounded(.up)))
         } }
-        let rowHeights = sized.map { row in (row.map { $0.1.height }.max() ?? b.type) + 2 * b.boxPadY }
+        let rowHeights = sized.map { row in (row.map { $0.1.height }.max() ?? type) + 2 * b.boxPadY }
         let even = column ? sized.compactMap { $0.first?.1.width }.max() : nil
         let rowWidths = sized.map { row in row.reduce(0) { $0 + (even ?? $1.1.width) + 2 * b.boxPadX } + b.gap * Double(max(0, row.count - 1)) }
         let fullW = (rowWidths.max() ?? 0) + 2 * b.pad
@@ -76,15 +78,17 @@ extension Painter {
         // Where a place in the rows' own space is on the display, for the lit row's box.
         let rowsAt = CGPoint(x: origin.x + (cardW - fullW) / 2 * scale, y: origin.y + (cardH - shownH) / 2 * scale)
         for (index, row) in sized.enumerated() where index < board.shown {
-            var x = (fullW - rowWidths[index]) / 2
+            var x = written ? 0 : (fullW - rowWidths[index]) / 2
             let boxHeight = rowHeights[index]
             if index == board.now { lit = Box(x: rowsAt.x + x * scale, y: rowsAt.y + y * scale, w: rowWidths[index] * scale, h: boxHeight * scale) }
             for (cell, (label, size)) in row.enumerated() {
                 let boxW = (even ?? size.width) + 2 * b.boxPadX
                 // Writing a label leaves its own colour as the pen's, so the pen is set again for every box and arrow.
-                ctx.addPath(CGPath(roundedRect: CGRect(x: x, y: y, width: boxW, height: boxHeight), cornerWidth: min(12, boxHeight / 2), cornerHeight: min(12, boxHeight / 2), transform: nil))
-                ctx.setFillColor(index == board.now ? ink : mist)
-                ctx.fillPath()
+                if !written {
+                    ctx.addPath(CGPath(roundedRect: CGRect(x: x, y: y, width: boxW, height: boxHeight), cornerWidth: min(12, boxHeight / 2), cornerHeight: min(12, boxHeight / 2), transform: nil))
+                    ctx.setFillColor(index == board.now ? ink : mist)
+                    ctx.fillPath()
+                }
                 label.draw(with: CGRect(x: x + (even == nil ? b.boxPadX : (boxW - size.width) / 2), y: y + (boxHeight - size.height) / 2, width: size.width, height: size.height), options: wrapped)
                 if column { boxes.append(Box(x: rowsAt.x + x * scale, y: rowsAt.y + y * scale, w: boxW * scale, h: boxHeight * scale)) }
                 x += boxW
@@ -115,6 +119,6 @@ extension Painter {
             y += boxHeight + between
         }
         ctx.restoreGState()
-        return (Box(x: origin.x, y: origin.y, w: w, h: h), lit, b.type * scale, boxes, joins)
+        return (Box(x: origin.x, y: origin.y, w: w, h: h), lit, type * scale, boxes, joins)
     }
 }

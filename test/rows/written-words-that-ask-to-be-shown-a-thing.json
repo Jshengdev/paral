@@ -1,0 +1,28 @@
+{
+ "name": "written: words that ask to be shown what a thing would look like written out. \"Show me\" alone, \"show me my notes\" and \"show me where to book a room\" are other asks and do not count",
+ "run": "written.asks",
+ "in": {
+  "asks": [
+   "Which domain would you buy for it? Show me what one of these links would look like.",
+   "show me what one of these links would look like",
+   "What would a shorter link look like?",
+   "what do you think a good name would look like",
+   "show me",
+   "show me my notes",
+   "Show me where to book a room.",
+   "What makes these links so long?",
+   "Does this look right to you?"
+  ]
+ },
+ "out": {
+  "Which domain would you buy for it? Show me what one of these links would look like.": true,
+  "show me what one of these links would look like": true,
+  "What would a shorter link look like?": true,
+  "what do you think a good name would look like": true,
+  "show me": false,
+  "show me my notes": false,
+  "Show me where to book a room.": false,
+  "What makes these links so long?": false,
+  "Does this look right to you?": false
+ }
+}

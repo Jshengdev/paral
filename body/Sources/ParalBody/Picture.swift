@@ -53,8 +53,8 @@ public struct MarkPicture: Equatable {
 }
 
 /// How a board's boxes are laid. With none they are rows of boxes joined across, as a board always was; a `column`
-/// is one box to a row, each joined to the one under it.
-public enum BoardShape: String { case column }
+/// is one box to a row, each joined to the one under it; `words` are written lines, one to a row, large, with no box.
+public enum BoardShape: String { case column, words }
 
 public struct BoardPicture: Equatable {
     public var id: String

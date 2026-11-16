@@ -1,0 +1,28 @@
+{
+ "name": "seam: a board line may say its shape is words, with the beats its lines come on; the wire only grew",
+ "run": "seam.read",
+ "in": {
+  "from": "mind",
+  "text": "{\"v\": 1, \"type\": \"board\", \"id\": \"t1\", \"rows\": [[\"qh.link/4CQMZu\"], [\"linklet.link/4CQMZu\"]], \"beats\": [0], \"shape\": \"words\"}"
+ },
+ "out": {
+  "ok": true,
+  "line": {
+   "v": 1,
+   "type": "board",
+   "id": "t1",
+   "rows": [
+    [
+     "qh.link/4CQMZu"
+    ],
+    [
+     "linklet.link/4CQMZu"
+    ]
+   ],
+   "beats": [
+    0
+   ],
+   "shape": "words"
+  }
+ }
+}

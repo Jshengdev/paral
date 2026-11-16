@@ -26,7 +26,7 @@ function shorter(line: any) {
   return line;
 }
 
-export async function playTurn(input: { tape: string; tapeSet?: Record<string, unknown>; asks: Step[][]; set?: Record<string, unknown>; show?: "drawn" | "saidFirst" | "ahead" | "next" | "cuts" | "walk" | "whole" | "column" }): Promise<unknown> {
+export async function playTurn(input: { tape: string; tapeSet?: Record<string, unknown>; asks: Step[][]; set?: Record<string, unknown>; show?: "drawn" | "saidFirst" | "ahead" | "next" | "cuts" | "walk" | "whole" | "column" | "written" }): Promise<unknown> {
   const path = fresh("row") + ".sock";
   const played = tape(join(import.meta.dirname, "..", "tapes", input.tape), input.tapeSet);
   const changed: any = { ...settings };
@@ -83,6 +83,8 @@ export async function playTurn(input: { tape: string; tapeSet?: Record<string, u
     if (input.show === "whole") return { asked: played.asked.map((asked) => ({ words: asked.words, whole: asked.whole ?? false, full: asked.full ?? false })), lines: got.filter((line) => ["board", "say", "board.close"].includes(line.type)).map(({ v: _v, ...rest }) => rest), drawn: played.asked.at(-1)?.lesson.drawn };
     // Whether the deep model was asked for a drawing of what was just said, for each ask, and the boards and sentences that went out.
     if (input.show === "column") return { asked: played.asked.map((asked) => ({ words: asked.words, column: asked.column ?? false, full: asked.full ?? false })), lines: got.filter((line) => ["board", "say", "board.close"].includes(line.type)).map(({ v: _v, ...rest }) => rest) };
+    // Whether the deep model was told he asked to be shown what a thing would look like, for each ask, and the boards and sentences that went out.
+    if (input.show === "written") return { asked: played.asked.map((asked) => ({ words: asked.words, written: asked.written ?? false })), lines: got.filter((line) => ["board", "say", "board.close"].includes(line.type)).map(({ v: _v, ...rest }) => rest) };
     if (input.show === "drawn") return played.asked.map((asked) => ({ words: asked.words, drawn: asked.lesson.drawn }));
     if (input.show === "saidFirst") return { toldTheDeepModel: played.asked.map((asked) => ({ words: asked.words, saidFirst: asked.saidFirst })), said: got.filter((line) => line.type === "say").map((line) => ({ beat: line.beat, text: line.text })) };
     // The guide's lines are a setting's doing and would sit in every row that looks at a kept page; one row shows them.

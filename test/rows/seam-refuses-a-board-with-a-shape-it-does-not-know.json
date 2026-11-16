@@ -7,6 +7,6 @@
  },
  "out": {
   "ok": false,
-  "why": "shape: Invalid input: expected \"column\""
+  "why": "shape: Invalid option: expected one of \"column\"|\"words\""
  }
 }
