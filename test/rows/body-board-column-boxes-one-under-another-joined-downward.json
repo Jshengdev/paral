@@ -1,0 +1,181 @@
+{
+ "name": "body: a column of seven is drawn as seven boxes one under another, one width and one middle, each joined to the next by an arrow in the gap between them, all inside a card taller than it is wide, with its words at the tokens' size on a page that leaves it room; the film's record names the shape on every row of the board. The same boxes sent with no shape are a board as before: no shape in the record, and no box or arrow named",
+ "run": "body.boardColumn",
+ "in": {
+  "lines": [
+   "Request pipeline (create)",
+   "1. Authenticate. No identity, no further work.",
+   "2. Rate limit. Runs before the body is read.",
+   "3. Parse JSON. url must be a string.",
+   "4. Validate the URL.",
+   "5. Allocate a code.",
+   "6. Respond 201. short_url is built from the Host.",
+   "Rate limiting (token bucket)",
+   "Capacity 10, refilling 1 token every 6 seconds."
+  ],
+  "rows": [
+   {
+    "at": 500,
+    "line": {
+     "type": "key.down",
+     "at": 500
+    }
+   },
+   {
+    "at": 1500,
+    "line": {
+     "type": "key.up",
+     "at": 1500
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "board",
+     "id": "a1",
+     "rows": [
+      [
+       "API request"
+      ],
+      [
+       "Authenticate"
+      ],
+      [
+       "Rate limit"
+      ],
+      [
+       "Parse JSON"
+      ],
+      [
+       "Validate the URL"
+      ],
+      [
+       "Allocate a code"
+      ],
+      [
+       "Respond 201"
+      ]
+     ],
+     "shape": "column"
+    }
+   },
+   {
+    "at": 2600,
+    "line": {
+     "type": "say",
+     "id": "a1",
+     "beat": 0,
+     "text": "The request passes these checks in order."
+    }
+   },
+   {
+    "at": 2600,
+    "line": {
+     "type": "mute",
+     "id": "a1",
+     "why": "a row"
+    }
+   },
+   {
+    "at": 6000,
+    "line": {
+     "type": "state",
+     "name": "idle"
+    }
+   }
+  ],
+  "plain": [
+   {
+    "at": 500,
+    "line": {
+     "type": "key.down",
+     "at": 500
+    }
+   },
+   {
+    "at": 1500,
+    "line": {
+     "type": "key.up",
+     "at": 1500
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "board",
+     "id": "a1",
+     "rows": [
+      [
+       "API request"
+      ],
+      [
+       "Authenticate"
+      ],
+      [
+       "Rate limit"
+      ],
+      [
+       "Parse JSON"
+      ],
+      [
+       "Validate the URL"
+      ],
+      [
+       "Allocate a code"
+      ],
+      [
+       "Respond 201"
+      ]
+     ]
+    }
+   },
+   {
+    "at": 2600,
+    "line": {
+     "type": "say",
+     "id": "a1",
+     "beat": 0,
+     "text": "The request passes these checks in order."
+    }
+   },
+   {
+    "at": 2600,
+    "line": {
+     "type": "mute",
+     "id": "a1",
+     "why": "a row"
+    }
+   },
+   {
+    "at": 6000,
+    "line": {
+     "type": "state",
+     "name": "idle"
+    }
+   }
+  ],
+  "at": 4000
+ },
+ "out": {
+  "shape": "column",
+  "boxes": 7,
+  "arrows": 6,
+  "oneUnderAnother": true,
+  "oneWidthAndOneMiddle": true,
+  "eachArrowBetweenItsTwoBoxesOnTheMiddle": true,
+  "insideTheCard": true,
+  "cardTallerThanWide": true,
+  "record": {
+   "shapeOnEveryRowOfTheBoard": [
+    "column"
+   ],
+   "words": "at the tokens' size"
+  },
+  "sentWithNoShape": {
+   "shape": [
+    null
+   ],
+   "boxesOrArrowsNamed": 0
+  }
+ }
+}

@@ -97,7 +97,7 @@ public enum Film {
             let pointer: Any = picture.pointer.map { ["x": $0.x, "y": $0.y, "ripple": $0.ripple ?? NSNull(), "flight": $0.withWay?.flight ?? NSNull(), "tag": $0.tag, "thinking": $0.thinking] as [String: Any] } ?? NSNull()
             let board: Any = picture.board.map { ["id": $0.id, "now": $0.now ?? NSNull(), "appear": $0.appear] as [String: Any] } ?? NSNull()
             // A drawn arrow's row also gives the points the pen has inked, so a row can say what it lies on.
-            let items = placed.map { item in ["what": item.what, "id": item.id ?? "", "box": item.box.json].merging(item.path.map { ["path": $0.map { [$0.x, $0.y] }] } ?? [:]) { $1 }.merging(item.says.map { ["says": $0] } ?? [:]) { $1 } as [String: Any] }
+            let items = placed.map { item in ["what": item.what, "id": item.id ?? "", "box": item.box.json].merging(item.path.map { ["path": $0.map { [$0.x, $0.y] }] } ?? [:]) { $1 }.merging(item.says.map { ["says": $0] } ?? [:]) { $1 }.merging(item.shape.map { ["shape": $0] } ?? [:]) { $1 } as [String: Any] }
             return ["placed": items, "way": way, "pointer": pointer, "board": board, "toast": picture.toast?.text ?? NSNull(), "inked": picture.marks.map(\.drawn),
                     "capsule": pill(picture.capsule, painter),
                     "guide": picture.guide.map { ["text": $0.text, "n": $0.n ?? NSNull(), "of": $0.of ?? NSNull(), "appear": $0.appear] as [String: Any] } ?? NSNull(),
@@ -164,6 +164,7 @@ public enum Film {
                 if let type = item.type { line["type"] = (type * 10).rounded() / 10 }
                 if let rows = item.rows { line["rows"] = rows }
                 if let says = item.says { line["says"] = says }
+                if let shape = item.shape { line["shape"] = shape }
                 if let look {
                     line["look"] = look
                     lastLook = look

@@ -1,0 +1,244 @@
+{
+ "answers": {
+  "explain the request pipeline": [
+   {
+    "problem": "The request pipeline",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "A request goes through six checks in order.",
+      "mark": null
+     },
+     {
+      "say": "It stops at the first one that fails.",
+      "mark": null
+     }
+    ],
+    "board": [
+     [
+      "Authenticate",
+      "Rate limit",
+      "Parse JSON"
+     ],
+     [
+      "Validate the URL",
+      "Allocate a code",
+      "Respond 201"
+     ]
+    ]
+   },
+   {
+    "problem": "The request pipeline",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "A request goes through six checks in order.",
+      "mark": null
+     },
+     {
+      "say": "It stops at the first one that fails.",
+      "mark": null
+     }
+    ],
+    "board": [
+     [
+      "Authenticate",
+      "Rate limit",
+      "Parse JSON"
+     ],
+     [
+      "Validate the URL",
+      "Allocate a code",
+      "Respond 201"
+     ]
+    ]
+   },
+   {
+    "problem": "The request pipeline",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "A request goes through six checks in order.",
+      "mark": null
+     },
+     {
+      "say": "It stops at the first one that fails.",
+      "mark": null
+     }
+    ],
+    "board": [
+     [
+      "Authenticate",
+      "Rate limit",
+      "Parse JSON"
+     ],
+     [
+      "Validate the URL",
+      "Allocate a code",
+      "Respond 201"
+     ]
+    ]
+   }
+  ],
+  "draw a quick diagram": [
+   {
+    "problem": "The request pipeline",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "The limiter and the parser both feed the validator.",
+      "mark": null
+     }
+    ],
+    "board": [
+     [
+      "Rate limit",
+      "Validate the URL"
+     ],
+     [
+      "Parse JSON",
+      "Validate the URL"
+     ]
+    ]
+   },
+   {
+    "problem": "The request pipeline",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "The request passes these checks from top to bottom.",
+      "mark": null
+     }
+    ],
+    "board": [
+     [
+      "API request"
+     ],
+     [
+      "Authenticate"
+     ],
+     [
+      "Rate limit"
+     ],
+     [
+      "Parse JSON"
+     ],
+     [
+      "Validate the URL"
+     ],
+     [
+      "Allocate a code"
+     ],
+     [
+      "Respond 201"
+     ],
+     [
+      "An eighth box"
+     ],
+     [
+      "A ninth box"
+     ]
+    ]
+   },
+   {
+    "problem": "The request pipeline",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "The limiter and the parser both feed the validator.",
+      "mark": null
+     }
+    ],
+    "board": [
+     [
+      "Rate limit",
+      "Validate the URL"
+     ],
+     [
+      "Parse JSON",
+      "Validate the URL"
+     ]
+    ]
+   }
+  ],
+  "can you draw how these steps connect": [
+   {
+    "problem": "The request pipeline",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "The request passes these checks from top to bottom.",
+      "mark": null
+     }
+    ],
+    "board": [
+     [
+      "API request"
+     ],
+     [
+      "Authenticate"
+     ],
+     [
+      "Rate limit"
+     ],
+     [
+      "Parse JSON"
+     ],
+     [
+      "Validate the URL"
+     ],
+     [
+      "Allocate a code"
+     ],
+     [
+      "Respond 201"
+     ]
+    ]
+   }
+  ],
+  "draw my quick diagram": [
+   {
+    "problem": "The request pipeline",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "The request passes these checks from top to bottom.",
+      "mark": null
+     }
+    ],
+    "board": [
+     [
+      "API request"
+     ],
+     [
+      "Authenticate"
+     ],
+     [
+      "Rate limit"
+     ],
+     [
+      "Parse JSON"
+     ],
+     [
+      "Validate the URL"
+     ],
+     [
+      "Allocate a code"
+     ],
+     [
+      "Respond 201"
+     ]
+    ]
+   }
+  ]
+ },
+ "leaks": []
+}

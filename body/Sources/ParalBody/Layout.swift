@@ -105,9 +105,10 @@ public enum Layout {
     /// height fits in it, and only then by its area. By area alone a tall strip can win, and a card is then shrunk
     /// to squeeze into it (seen on the club page: a strip 336 points wide beat a place 640 wide, and three steps were
     /// drawn at under 9 points).
-    public static func room(texts: [Box], width: Double, height: Double, tokens: Tokens) -> Box {
+    /// A column of boxes is taller than it is wide (`tall`): its place is judged by a card half the widest across and the widest tall.
+    public static func room(texts: [Box], width: Double, height: Double, tokens: Tokens, tall: Bool = false) -> Box {
         let cell = 24.0, margin = tokens.board.margin
-        let card = (w: tokens.board.maxWidth, h: tokens.board.maxWidth / 2)
+        let card = tall ? (w: tokens.board.maxWidth / 2, h: tokens.board.maxWidth) : (w: tokens.board.maxWidth, h: tokens.board.maxWidth / 2)
         func fit(_ w: Int, _ h: Int) -> Double { min(1, Double(w) * cell / card.w, Double(h) * cell / card.h) }
         let cols = Int(width / cell), rows = Int(height / cell)
         guard cols > 2, rows > 2 else { return Box(x: 0, y: 0, w: max(width, 1), h: max(height, 1)) }

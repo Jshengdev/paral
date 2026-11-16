@@ -51,8 +51,8 @@
   ]
  },
  "out": [
-  "took board(id: \"t1\", rows: [[\"Sign up\", \"Email and password\"], [\"Make a link\", \"Paste a long address\"]], now: nil, beats: Optional([1]))",
-  "took board(id: \"t2\", rows: [[\"Sign up\", \"Email and password\"], [\"Make a link\", \"Paste a long address\"]], now: nil, beats: nil)",
-  "took board(id: \"t3\", rows: [[\"Sign up\", \"Email and password\"]], now: Optional(0), beats: nil)"
+  "took board(id: \"t1\", rows: [[\"Sign up\", \"Email and password\"], [\"Make a link\", \"Paste a long address\"]], now: nil, beats: Optional([1]), shape: nil)",
+  "took board(id: \"t2\", rows: [[\"Sign up\", \"Email and password\"], [\"Make a link\", \"Paste a long address\"]], now: nil, beats: nil, shape: nil)",
+  "took board(id: \"t3\", rows: [[\"Sign up\", \"Email and password\"]], now: Optional(0), beats: nil, shape: nil)"
  ]
 }

@@ -1,4 +1,5 @@
 import { boxes, split, type Limits } from "./beats.ts";
+import { asksFor } from "./catch.ts";
 
 // A board that grows with its answer: asked for the whole thing drawn, the answer is told in more sentences than an
 // ordinary one and its board has a row for each, drawn as that sentence is said.
@@ -33,4 +34,25 @@ export function grow(now: Growing, rows: number, firsts: number[], place: number
   const row = firsts.indexOf(place);
   if (now.stopped || row === -1 || row >= rows || row !== now.beats.length) return now;
   return beat === null ? { ...now, stopped: true } : { beats: [...now.beats, beat], stopped: false };
+}
+
+// A column: asked to draw the steps it has just explained, the board is one box to a row, joined downward.
+
+/**
+ * Whether an ask is for a drawing of what was just said: an answer came before it in this conversation (`shown`, the
+ * sentences said since the problem was read) and his words ask for a drawing ("Draw a quick diagram."). The same
+ * words as a first question are an ordinary ask, and so is a drawing asked for by what it should show ("draw how
+ * these connect"), which the phrases do not hold.
+ */
+export function drawsWhatWasSaid(words: string, phrases: string[], shown: string[]): boolean {
+  return shown.length > 0 && asksFor(words, phrases);
+}
+
+/**
+ * The board as a column, or null when the model did not write one: a column is two rows or more with one box in
+ * each. It is cut to `most` rows. Any other board is drawn as boards always were.
+ */
+export function columnRows(written: string[][] | null | undefined, most: number): string[][] | null {
+  const rows = boxes(written ?? []);
+  return rows.length >= 2 && rows.every((row) => row.length === 1) ? rows.slice(0, most) : null;
 }

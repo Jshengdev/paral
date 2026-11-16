@@ -1,0 +1,65 @@
+{
+ "name": "column: words that ask for a drawing of what was just said. They count only as a follow-up, after an answer: the same words as a first question are an ordinary ask. \"Can you draw how these steps connect?\" names what the drawing should show and does not count; nor do the words that ask for the whole thing drawn, which are their own ask. A longer line that holds \"draw ... diagram\" counts as a follow-up too, and the model then decides whether what it explained is a list of steps",
+ "run": "column.asks",
+ "in": {
+  "asks": [
+   "Draw a quick diagram.",
+   "draw a quick diagram",
+   "Can you draw that?",
+   "ok sketch it for me",
+   "Give me a quick sketch.",
+   "can you draw how these steps connect?",
+   "Can you draw me a quick diagram of how sign in, creating a link, and the click stats connect in this build?",
+   "Draw out the whole thing for me, start to finish.",
+   "What does the drawing show?",
+   "Explain the request pipeline.",
+   "withdraw it"
+  ]
+ },
+ "out": {
+  "Draw a quick diagram.": {
+   "first": false,
+   "after": true
+  },
+  "draw a quick diagram": {
+   "first": false,
+   "after": true
+  },
+  "Can you draw that?": {
+   "first": false,
+   "after": true
+  },
+  "ok sketch it for me": {
+   "first": false,
+   "after": true
+  },
+  "Give me a quick sketch.": {
+   "first": false,
+   "after": true
+  },
+  "can you draw how these steps connect?": {
+   "first": false,
+   "after": false
+  },
+  "Can you draw me a quick diagram of how sign in, creating a link, and the click stats connect in this build?": {
+   "first": false,
+   "after": true
+  },
+  "Draw out the whole thing for me, start to finish.": {
+   "first": false,
+   "after": false
+  },
+  "What does the drawing show?": {
+   "first": false,
+   "after": false
+  },
+  "Explain the request pipeline.": {
+   "first": false,
+   "after": false
+  },
+  "withdraw it": {
+   "first": false,
+   "after": false
+  }
+ }
+}

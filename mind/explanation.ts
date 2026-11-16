@@ -2,7 +2,7 @@ import type { Asking, Hands } from "./ask.ts";
 import type { card } from "./card.ts";
 import type { lessonClip } from "./clip.ts";
 import { explain, WHOLE, type Planned } from "./cores/beats.ts";
-import { firstParts, grow, wholeRows, type Growing } from "./cores/board.ts";
+import { columnRows, firstParts, grow, wholeRows, type Growing } from "./cores/board.ts";
 import { unknownDate, worded } from "./cores/dates.ts";
 import type { HoldEvent } from "./cores/hold.ts";
 import { givesAway } from "./cores/push.ts";
@@ -24,6 +24,8 @@ type With = {
   whole: boolean;
   /** Whether it is a broad follow-up: more sentences, and everything else as any explanation (`cores/full.ts`). */
   full: boolean;
+  /** Whether he asked, as a follow-up, for a drawing of what was just said: a board written one box to a row is a column (`cores/board.ts`). */
+  column: boolean;
 };
 
 /**
@@ -31,7 +33,7 @@ type With = {
  * while it arrives: the board goes out when it is whole, the first mark ahead of its sentence, and each sentence when
  * it is finished. With a lesson clip coming it is one sentence and no board.
  */
-export function explanation({ settings, send, log }: Hands, asking: Asking, { talk, board, clip, lead, drew, sources, whole, full }: With) {
+export function explanation({ settings, send, log }: Hands, asking: Asking, { talk, board, clip, lead, drew, sources, whole, full, column }: With) {
   const { id, seen } = asking;
   const since = () => Date.now() - asking.releasedAt;
   /** How many of its sentences are out, and whether the first mark went out ahead of its sentence. */
@@ -53,6 +55,13 @@ export function explanation({ settings, send, log }: Hands, asking: Asking, { ta
     if (next === growing) return;
     growing = next;
     if (beat !== null) board.grow(rows, growing.beats);
+  };
+
+  /** The board goes out as it was written, or as a column when this ask may be one and the model wrote one. */
+  const fill = (written: string[][] | null | undefined) => {
+    const steps = column ? columnRows(written, settings.columnMost.value) : null;
+    if (steps) board.fill(steps, "column");
+    else board.fill(written);
   };
 
   /** The reply so far as sentences, each with its mark found on his screen. */
@@ -108,7 +117,7 @@ export function explanation({ settings, send, log }: Hands, asking: Asking, { ta
     /** Part of the answer has arrived: the board once it is whole, the first mark, and each finished sentence. */
     arriving(part: Part) {
       if (whole) rows = rows.length > 0 ? rows : wholeRows(part.board, most());
-      else if (!clip.on()) board.fill(part.board);
+      else if (!clip.on()) fill(part.board);
       if (part.board === null) board.close("the answer has no board");
       markAhead(part);
       tell(plan(part));
@@ -129,7 +138,7 @@ export function explanation({ settings, send, log }: Hands, asking: Asking, { ta
         clip.drop();
       }
       tell(sentences);
-      if (!whole) board.fill(leak || clip.on() ? null : answered.board);
+      if (!whole) fill(leak || clip.on() ? null : answered.board);
       else if (growing.beats.length > 0) drew({ type: "board.drawn", rows: rows.slice(0, growing.beats.length) });
       board.close("no board came");
       drew({ type: "break.fixed" });

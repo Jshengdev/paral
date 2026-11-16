@@ -1,0 +1,39 @@
+{
+ "name": "seam: the body reads a board's shape, and a board with none is rows of boxes as before",
+ "run": "body.seen",
+ "in": {
+  "lines": [
+   {
+    "v": 1,
+    "type": "board",
+    "id": "t1",
+    "rows": [
+     [
+      "Authenticate"
+     ],
+     [
+      "Rate limit"
+     ]
+    ],
+    "shape": "column"
+   },
+   {
+    "v": 1,
+    "type": "board",
+    "id": "t2",
+    "rows": [
+     [
+      "Authenticate"
+     ],
+     [
+      "Rate limit"
+     ]
+    ]
+   }
+  ]
+ },
+ "out": [
+  "took board(id: \"t1\", rows: [[\"Authenticate\"], [\"Rate limit\"]], now: nil, beats: nil, shape: Optional(ParalBody.BoardShape.column))",
+  "took board(id: \"t2\", rows: [[\"Authenticate\"], [\"Rate limit\"]], now: nil, beats: nil, shape: nil)"
+ ]
+}

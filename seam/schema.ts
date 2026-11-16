@@ -129,8 +129,10 @@ export const FromMind = z.discriminatedUnion("type", [
    * `beats` is only on a board that grows with its answer: for each of its first rows, the number of the sentence
    * (the `say` line's beat) that row comes with. A row with no beat yet is not drawn. The mind sends the same rows
    * again with one more beat as each sentence is said; the card comes up when the first of those sentences begins.
+   * `shape` is only on a board that is not rows of boxes joined across: a `column` is one box to a row, each joined
+   * to the one under it, and it comes whole.
    */
-  z.object({ v, type: z.literal("board"), id, rows: z.array(z.array(z.string().min(1)).min(1)), now: z.number().int().nonnegative().optional(), beats: z.array(z.number().int().nonnegative()).optional() }),
+  z.object({ v, type: z.literal("board"), id, rows: z.array(z.array(z.string().min(1)).min(1)), now: z.number().int().nonnegative().optional(), beats: z.array(z.number().int().nonnegative()).optional(), shape: z.enum(["column"]).optional() }),
   z.object({ v, type: z.literal("board.close"), id }),
   z.object({ v, type: z.literal("clip"), id, name: z.string().min(1), clip: z.string().min(1), still: z.string().min(1), seconds: z.number().positive() }),
   z.object({ v, type: z.literal("clear") }),

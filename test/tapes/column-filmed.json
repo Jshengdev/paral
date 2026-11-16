@@ -1,0 +1,72 @@
+{
+ "answers": {
+  "explain the request pipeline": [
+   {
+    "problem": "The request pipeline",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "A request goes through six checks in order.",
+      "mark": null
+     },
+     {
+      "say": "It stops at the first one that fails.",
+      "mark": null
+     }
+    ],
+    "board": [
+     [
+      "Authenticate",
+      "Rate limit",
+      "Parse JSON"
+     ],
+     [
+      "Validate the URL",
+      "Allocate a code",
+      "Respond 201"
+     ]
+    ]
+   }
+  ],
+  "draw a quick diagram": [
+   {
+    "problem": "The request pipeline",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "The request passes these checks from top to bottom.",
+      "mark": null
+     }
+    ],
+    "board": [
+     [
+      "API request"
+     ],
+     [
+      "Authenticate"
+     ],
+     [
+      "Rate limit"
+     ],
+     [
+      "Parse JSON"
+     ],
+     [
+      "Validate the URL"
+     ],
+     [
+      "Allocate a code"
+     ],
+     [
+      "Respond 201"
+     ]
+    ]
+   }
+  ]
+ },
+ "leaks": [],
+ "opener": "Let me lay it out.",
+ "voice": true
+}

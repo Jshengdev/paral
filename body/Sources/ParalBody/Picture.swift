@@ -52,6 +52,10 @@ public struct MarkPicture: Equatable {
     public var pulse: Double?
 }
 
+/// How a board's boxes are laid. With none they are rows of boxes joined across, as a board always was; a `column`
+/// is one box to a row, each joined to the one under it.
+public enum BoardShape: String { case column }
+
 public struct BoardPicture: Equatable {
     public var id: String
     public var rows: [[String]]
@@ -66,6 +70,7 @@ public struct BoardPicture: Equatable {
     public var coming = 1.0
     /// Whether it grows with its answer, a row a sentence: the film's record then says how many rows are drawn.
     public var growing = false
+    public var shape: BoardShape? = nil
 }
 
 public struct ClipPicture: Equatable {

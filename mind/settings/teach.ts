@@ -98,6 +98,18 @@ export const teach = {
     measured: "not measured for this ask. On the whole board's one live run (November 15) five sentences took 21.6 s to say, the first beginning 4.9 s after the ask; six at that pace is about 26 s, against about 12 s for three",
   } satisfies Setting<number>,
 
+  columnAsks: {
+    value: ["draw…diagram", "quick diagram", "quick sketch", "draw that", "draw it", "sketch that", "sketch it", "diagram of that", "diagram of it"],
+    why: "Words of his that ask for a drawing of what was just said (`asksFor`). Said as a follow-up, after an answer in the same conversation and with no wrong line of his open, the model is given `prompts/steps-column.md` after his own words: when what it explained is a list of steps written on his page in order, the board is one column, a box to a row, joined downward and whole as it opens. A first question in the same words is an ordinary ask and sends the request it always sent. A drawing asked for by what it should show (\"can you draw how these steps connect?\", a tapped line of the chemistry worksheet) is left out on purpose: none of these phrases holds it.",
+    measured: "not measured; chosen from the reference video's own words (\"Draw a quick diagram.\", said right after \"Explain the request pipeline.\") and the judge's wording of November 15",
+  } satisfies Setting<string[]>,
+
+  columnMost: {
+    value: 7,
+    why: "A column has at most this many boxes, one to a row: the reference video's has seven, one for what comes in and one for each of six steps. At the tokens' sizes seven boxes one under another stand about 440 points tall. A longer one is cut here, which leaves steps out, so the prompt asks for no more.",
+    measured: "not measured live; seven boxes drawn on a stand-in page stood 438 points tall at the full size of their words (November 15)",
+  } satisfies Setting<number>,
+
   drawingAsks: {
     value: [] as string[],
     why: "Words of his that ask for a drawing. With any here, an empty card opens the moment he says one, before any model has spoken, and the board fills it when it arrives; if none comes the card is taken away. The list is empty, so no empty card opens and the board appears on its first row: the owner's choice on 2026-11-14 at 16:52, in place of his earlier one for the card, since the tutor this follows never opens its board empty. To bring the card back, put the words back: draw, diagram, sketch, \"show me what … look\".",

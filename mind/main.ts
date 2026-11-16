@@ -35,7 +35,7 @@ let looksAhead: (pages: KeptPage[]) => void = () => {};
 
 /** Claude for the answer, the second look and the fast lines. */
 function claude(): Partial<Ports> {
-  const live = anthropic(settings, { answer: prompt("answer"), secondLook: prompt("second-look"), opener: prompt("opener"), glance: prompt("glance"), workThrough: prompt("work-through"), wholeBoard: prompt("whole-board"), fullAnswer: prompt("full-answer") }, log);
+  const live = anthropic(settings, { answer: prompt("answer"), secondLook: prompt("second-look"), opener: prompt("opener"), glance: prompt("glance"), workThrough: prompt("work-through"), wholeBoard: prompt("whole-board"), stepsColumn: prompt("steps-column"), fullAnswer: prompt("full-answer") }, log);
   spent.usd = live.spentUsd;
   using.push(`brain ${settings.brainModel.value} (cap $${settings.spendCapUsd.value})`);
   // A page's first look is kept on disk for the day, named by what would change it, and asked ahead at the start

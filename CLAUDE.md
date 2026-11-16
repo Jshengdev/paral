@@ -178,6 +178,18 @@ ordinary ask; on his own work with a wrong line they get a hint; and an ask for 
 board, never both. "What else" is not among the words: "what else do we have to finish by November 22?" is a line
 of the demo and stays at three sentences.
 
+**A column (the steps it just explained, drawn).** When an answer has come before in the conversation, no wrong line
+of his is open, and his words ask for a drawing of what was just said (`columnAsks`: "draw … diagram", "quick
+sketch", "draw that" ...), the deep model gets `prompts/steps-column.md` after the ask's own words, as the two
+paragraphs above are sent (`cores/board.ts`). It says: if what was explained is a list of steps written on his page
+in order, write the board one box to a row, a row a step, in the page's order. A board the model then writes as two
+rows or more of one box each goes out once, whole, with `shape: "column"`, cut to `columnMost` (7); any other board
+goes out as it always did, with no shape. The app draws a column as boxes of one width one under another, each
+joined to the next by an arrow (`PainterBoard.swift`), in a place judged for a card taller than wide, and the film's
+record names the shape on the board's rows, with each box and each arrow. The same words as a first question are an
+ordinary ask. A drawing asked for by what it should show ("can you draw how these steps connect?") is not among the
+words, and an ask for the whole thing drawn is a whole board, never both.
+
 **Working an exercise through (a switch, off).** `workThrough` is off unless the mind is started with
 `PARAL_WORK_THROUGH=1` (`PARAL_WORK_THROUGH=1 ./run`, or before `./flow`). Off, nothing changes. On, an ask whose
 words ask for it (`workThroughAsks`: "walk me through", "what happens next", "then what" ...) while a measured sheet

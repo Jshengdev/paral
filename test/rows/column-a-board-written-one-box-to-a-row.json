@@ -1,0 +1,177 @@
+{
+ "name": "column: a board is a column when it is written as two rows or more with one box in each, and it is cut to the most boxes a column may have; a single box, a board with any row of two boxes, an empty board and no board are not columns",
+ "run": "column.rows",
+ "in": {
+  "most": 7,
+  "boards": [
+   [
+    [
+     "API request"
+    ],
+    [
+     "Authenticate"
+    ],
+    [
+     "Rate limit"
+    ],
+    [
+     "Parse JSON"
+    ],
+    [
+     "Validate the URL"
+    ],
+    [
+     "Allocate a code"
+    ],
+    [
+     "Respond 201"
+    ]
+   ],
+   [
+    [
+     "API request"
+    ],
+    [
+     "Authenticate"
+    ],
+    [
+     "Rate limit"
+    ],
+    [
+     "Parse JSON"
+    ],
+    [
+     "Validate the URL"
+    ],
+    [
+     "Allocate a code"
+    ],
+    [
+     "Respond 201"
+    ],
+    [
+     "An eighth box"
+    ],
+    [
+     "A ninth box"
+    ]
+   ],
+   [
+    [
+     "One"
+    ],
+    [
+     "Two"
+    ]
+   ],
+   [
+    [
+     "Only one"
+    ]
+   ],
+   [
+    [
+     "Authenticate",
+     "Rate limit",
+     "Parse JSON"
+    ],
+    [
+     "Validate the URL",
+     "Allocate a code",
+     "Respond 201"
+    ]
+   ],
+   [
+    [
+     "One"
+    ],
+    [
+     "Two",
+     "Three"
+    ]
+   ],
+   [
+    [
+     "One"
+    ],
+    [
+     ""
+    ],
+    [
+     "Two"
+    ]
+   ],
+   [],
+   null
+  ]
+ },
+ "out": [
+  [
+   [
+    "API request"
+   ],
+   [
+    "Authenticate"
+   ],
+   [
+    "Rate limit"
+   ],
+   [
+    "Parse JSON"
+   ],
+   [
+    "Validate the URL"
+   ],
+   [
+    "Allocate a code"
+   ],
+   [
+    "Respond 201"
+   ]
+  ],
+  [
+   [
+    "API request"
+   ],
+   [
+    "Authenticate"
+   ],
+   [
+    "Rate limit"
+   ],
+   [
+    "Parse JSON"
+   ],
+   [
+    "Validate the URL"
+   ],
+   [
+    "Allocate a code"
+   ],
+   [
+    "Respond 201"
+   ]
+  ],
+  [
+   [
+    "One"
+   ],
+   [
+    "Two"
+   ]
+  ],
+  null,
+  null,
+  null,
+  [
+   [
+    "One"
+   ],
+   [
+    "Two"
+   ]
+  ],
+  null,
+  null
+ ]
+}

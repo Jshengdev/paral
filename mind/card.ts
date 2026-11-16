@@ -25,15 +25,15 @@ export function card({ settings, send, log }: Hands, asking: Asking, drew: (even
   return {
     /** Whether a board with its rows is on his screen. An empty card does not count. */
     filled: () => filled,
-    /** Sends the board the moment it is whole; it fills the card when one is open. */
-    fill(written: string[][] | null | undefined) {
+    /** Sends the board the moment it is whole; it fills the card when one is open. `shape` says it is not rows joined across. */
+    fill(written: string[][] | null | undefined, shape?: "column") {
       const rows = boxes(written ?? []);
       if (rows.length === 0 || filled) return;
       filled = true;
       open = false;
-      send({ v, type: "board", id, rows });
+      send({ v, type: "board", id, rows, ...(shape ? { shape } : {}) });
       drew({ type: "board.drawn", rows });
-      log(`${id}: the board at ${since()} ms from the release`);
+      log(`${id}: the board${shape ? `, a ${shape} of ${rows.length}` : ""} at ${since()} ms from the release`);
     },
     /**
      * A board that grows with its answer: all its rows, and the beats of the rows that have a sentence so far. It is

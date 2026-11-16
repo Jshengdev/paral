@@ -19,11 +19,14 @@ extension Painter {
     /// its main button (ink, written in white). Words that are too long for the card's widest
     /// wrap onto more lines inside their box at full size; only a card that is still too large for its room is
     /// shrunk, words and all. With no rows yet it is an empty card with the waiting dots in it; when the rows come the
-    /// card grows from that size to theirs and they fade in. The others stay as they are. Gives back the card's box, the lit
-    /// row's, and the size the words were drawn at.
-    func board(_ board: BoardPicture, clock: Double, _ ctx: CGContext) -> (card: Box, lit: Box?, type: Double) {
+    /// card grows from that size to theirs and they fade in. The others stay as they are. A column (`BoardShape`) is
+    /// one box to a row, every box as wide as the widest, each joined to the one under it by an arrow in the gap
+    /// between them (`board.downGap`). Gives back the card's box, the lit row's, the size the words were drawn at, and
+    /// for a column each box and each arrow where it was drawn.
+    func board(_ board: BoardPicture, clock: Double, _ ctx: CGContext) -> (card: Box, lit: Box?, type: Double, boxes: [Box], joins: [Box]) {
         let b = tokens.board
         let chalk = ink
+        let column = board.shape == .column, between = column ? b.downGap : b.rowGap
         let wrapped: NSString.DrawingOptions = [.usesLineFragmentOrigin, .usesFontLeading]
         // The widest the words of one row may run: the card at its widest, or the room when that is narrower, less
         // the card's own edge. The boxes of a row share it.
@@ -35,13 +38,14 @@ extension Painter {
             return (label, CGSize(width: size.width.rounded(.up), height: size.height.rounded(.up)))
         } }
         let rowHeights = sized.map { row in (row.map { $0.1.height }.max() ?? b.type) + 2 * b.boxPadY }
-        let rowWidths = sized.map { row in row.reduce(0) { $0 + $1.1.width + 2 * b.boxPadX } + b.gap * Double(max(0, row.count - 1)) }
+        let even = column ? sized.compactMap { $0.first?.1.width }.max() : nil
+        let rowWidths = sized.map { row in row.reduce(0) { $0 + (even ?? $1.1.width) + 2 * b.boxPadX } + b.gap * Double(max(0, row.count - 1)) }
         let fullW = (rowWidths.max() ?? 0) + 2 * b.pad
         // The card is as tall as the rows shown so far need (an answer's rows come one a sentence), the newest growing
         // in as it comes; it is placed and sized for all of them, so it grows downward and never moves or shrinks.
         func tall(_ rows: Int, _ last: Double = 1) -> Double {
-            let heights = rowHeights.prefix(rows).enumerated().map { $0.offset == rows - 1 ? $0.element * last + b.rowGap * (last - 1) : $0.element }
-            return heights.reduce(0, +) + Double(max(0, rows - 1)) * b.rowGap + 2 * b.pad
+            let heights = rowHeights.prefix(rows).enumerated().map { $0.offset == rows - 1 ? $0.element * last + between * (last - 1) : $0.element }
+            return heights.reduce(0, +) + Double(max(0, rows - 1)) * between + 2 * b.pad
         }
         let shownCount = min(board.shown, sized.count)
         let fullH = tall(sized.count), shownH = tall(shownCount, shownCount > 1 ? min(max(board.coming, 0), 1) : 1)
@@ -68,7 +72,7 @@ extension Painter {
         ctx.setLineWidth(1.5)
         ctx.setLineCap(.round)
         var y = b.pad
-        var lit: Box?
+        var lit: Box?, boxes: [Box] = [], joins: [Box] = []
         // Where a place in the rows' own space is on the display, for the lit row's box.
         let rowsAt = CGPoint(x: origin.x + (cardW - fullW) / 2 * scale, y: origin.y + (cardH - shownH) / 2 * scale)
         for (index, row) in sized.enumerated() where index < board.shown {
@@ -76,12 +80,13 @@ extension Painter {
             let boxHeight = rowHeights[index]
             if index == board.now { lit = Box(x: rowsAt.x + x * scale, y: rowsAt.y + y * scale, w: rowWidths[index] * scale, h: boxHeight * scale) }
             for (cell, (label, size)) in row.enumerated() {
-                let boxW = size.width + 2 * b.boxPadX
+                let boxW = (even ?? size.width) + 2 * b.boxPadX
                 // Writing a label leaves its own colour as the pen's, so the pen is set again for every box and arrow.
                 ctx.addPath(CGPath(roundedRect: CGRect(x: x, y: y, width: boxW, height: boxHeight), cornerWidth: min(12, boxHeight / 2), cornerHeight: min(12, boxHeight / 2), transform: nil))
                 ctx.setFillColor(index == board.now ? ink : mist)
                 ctx.fillPath()
-                label.draw(with: CGRect(x: x + b.boxPadX, y: y + (boxHeight - size.height) / 2, width: size.width, height: size.height), options: wrapped)
+                label.draw(with: CGRect(x: x + (even == nil ? b.boxPadX : (boxW - size.width) / 2), y: y + (boxHeight - size.height) / 2, width: size.width, height: size.height), options: wrapped)
+                if column { boxes.append(Box(x: rowsAt.x + x * scale, y: rowsAt.y + y * scale, w: boxW * scale, h: boxHeight * scale)) }
                 x += boxW
                 if cell < row.count - 1 {
                     ctx.setStrokeColor(chalk.copy(alpha: 0.6) ?? chalk)
@@ -95,9 +100,21 @@ extension Painter {
                     x += b.gap
                 }
             }
-            y += boxHeight + b.rowGap
+            // A column's boxes are joined downward: an arrow from each to the one under it, down the card's middle.
+            if column, index + 1 < min(board.shown, sized.count) {
+                let mid = fullW / 2, from = y + boxHeight + 4, to = y + boxHeight + between - 4
+                ctx.setStrokeColor(chalk.copy(alpha: 0.6) ?? chalk)
+                ctx.move(to: CGPoint(x: mid, y: from))
+                ctx.addLine(to: CGPoint(x: mid, y: to))
+                ctx.move(to: CGPoint(x: mid - 5, y: to - 6))
+                ctx.addLine(to: CGPoint(x: mid, y: to))
+                ctx.addLine(to: CGPoint(x: mid + 5, y: to - 6))
+                ctx.strokePath()
+                joins.append(Box(x: rowsAt.x + (mid - 5) * scale, y: rowsAt.y + from * scale, w: 10 * scale, h: (to - from) * scale))
+            }
+            y += boxHeight + between
         }
         ctx.restoreGState()
-        return (Box(x: origin.x, y: origin.y, w: w, h: h), lit, b.type * scale)
+        return (Box(x: origin.x, y: origin.y, w: w, h: h), lit, b.type * scale, boxes, joins)
     }
 }

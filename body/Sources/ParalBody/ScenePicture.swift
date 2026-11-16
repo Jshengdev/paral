@@ -126,14 +126,14 @@ extension Scene {
             guard let up = grown(board, at: t) else { return nil }
             let coming = still ? 1 : tokens.curves.travel((t - up.newest) / max(ms(tokens.motion.usualMs), 1))
             let appear = still ? 1 : arriving(since: max(boardSince(board), up.first), at: t)
-            return BoardPicture(id: board.id, rows: board.rows, shown: up.shown, appear: appear, filled: 1, room: board.room, now: board.now, coming: coming, growing: true)
+            return BoardPicture(id: board.id, rows: board.rows, shown: up.shown, appear: appear, filled: 1, room: board.room, now: board.now, coming: coming, growing: true, shape: board.shape)
         }
         let ask = asks.first { $0.id == board.id }
         let begun = ask.map { times($0).filter { $0.beat >= 0 && $0.start <= t }.count } ?? board.rows.count
         let over = ask.map { ask in times(ask).last.map { $0.end <= t && $0.beat == ask.beats.keys.max() } ?? false } ?? true
         // A board shown without being asked comes whole: nothing is spoken for its rows to keep step with.
-        // A board of steps comes whole too: the step he is on may be its last row.
-        let shown = over || ask?.trail != nil || board.now != nil ? board.rows.count : min(board.rows.count, max(1, begun))
+        // A board of steps comes whole too: the step he is on may be its last row. So does a column: it is one chain.
+        let shown = over || ask?.trail != nil || board.now != nil || board.shape == .column ? board.rows.count : min(board.rows.count, max(1, begun))
         // The card grows to hold a row as its sentence begins (`PainterBoard.swift`).
         let newest = ask.flatMap { ask in times(ask).filter { $0.beat >= 0 }.dropFirst(max(shown - 1, 0)).first?.start }
         let coming = still || shown == board.rows.count && over ? 1 : newest.map { tokens.curves.travel((t - $0) / max(ms(tokens.motion.usualMs), 1)) } ?? 1
@@ -142,7 +142,7 @@ extension Scene {
         // Until its rows have arrived the card is empty, whatever a later moment made of it.
         let rows = board.filledAt.map { t >= $0 } ?? true ? board.rows : []
         let filled = rows.isEmpty ? 0 : board.filledAt.map { still ? 1 : tokens.curves.travel((t - $0) / max(ms(tokens.motion.usualMs), 1)) } ?? 1
-        return BoardPicture(id: board.id, rows: rows, shown: min(shown, rows.count), appear: appear, filled: filled, room: board.room, now: board.now, coming: coming)
+        return BoardPicture(id: board.id, rows: rows, shown: min(shown, rows.count), appear: appear, filled: filled, room: board.room, now: board.now, coming: coming, shape: board.shape)
     }
 
     /// The clip plays once from the moment its card is up, then holds its last frame.

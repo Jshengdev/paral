@@ -1,0 +1,522 @@
+{
+ "name": "turn: he asks for a quick diagram three times. First of all, with nothing said before: an ordinary ask, and the board goes out as written, with no shape. Then, after an explanation, the same words: the deep model is told it is a drawing of what was just said, it writes nine boxes one to a row, and the board goes out once, whole, as a column cut to seven. A third time the model writes rows of boxes joined across, since that is how those things connect: the board goes out as written, with no shape",
+ "run": "turn",
+ "in": {
+  "tape": "column.json",
+  "show": "column",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1005,
+     "display": {
+      "id": 1,
+      "scale": 1,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Request pipeline (create)",
+       "box": {
+        "x": 100,
+        "y": 100,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "1. Authenticate. No identity, no further work.",
+       "box": {
+        "x": 100,
+        "y": 180,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "2. Rate limit. Runs before the body is read.",
+       "box": {
+        "x": 100,
+        "y": 260,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "3. Parse JSON. url must be a string.",
+       "box": {
+        "x": 100,
+        "y": 340,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "4. Validate the URL.",
+       "box": {
+        "x": 100,
+        "y": 420,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "5. Allocate a code.",
+       "box": {
+        "x": 100,
+        "y": 500,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "6. Respond 201. short_url is built from the Host.",
+       "box": {
+        "x": 100,
+        "y": 580,
+        "w": 620,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "Draw a quick diagram."
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 2100
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 9000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 9005,
+     "display": {
+      "id": 1,
+      "scale": 1,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Request pipeline (create)",
+       "box": {
+        "x": 100,
+        "y": 100,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "1. Authenticate. No identity, no further work.",
+       "box": {
+        "x": 100,
+        "y": 180,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "2. Rate limit. Runs before the body is read.",
+       "box": {
+        "x": 100,
+        "y": 260,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "3. Parse JSON. url must be a string.",
+       "box": {
+        "x": 100,
+        "y": 340,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "4. Validate the URL.",
+       "box": {
+        "x": 100,
+        "y": 420,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "5. Allocate a code.",
+       "box": {
+        "x": 100,
+        "y": 500,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "6. Respond 201. short_url is built from the Host.",
+       "box": {
+        "x": 100,
+        "y": 580,
+        "w": 620,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "Explain the request pipeline."
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 10100
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 18000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 18005,
+     "display": {
+      "id": 1,
+      "scale": 1,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Request pipeline (create)",
+       "box": {
+        "x": 100,
+        "y": 100,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "1. Authenticate. No identity, no further work.",
+       "box": {
+        "x": 100,
+        "y": 180,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "2. Rate limit. Runs before the body is read.",
+       "box": {
+        "x": 100,
+        "y": 260,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "3. Parse JSON. url must be a string.",
+       "box": {
+        "x": 100,
+        "y": 340,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "4. Validate the URL.",
+       "box": {
+        "x": 100,
+        "y": 420,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "5. Allocate a code.",
+       "box": {
+        "x": 100,
+        "y": 500,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "6. Respond 201. short_url is built from the Host.",
+       "box": {
+        "x": 100,
+        "y": 580,
+        "w": 620,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "Draw a quick diagram."
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 19100
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 27000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 27005,
+     "display": {
+      "id": 1,
+      "scale": 1,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Request pipeline (create)",
+       "box": {
+        "x": 100,
+        "y": 100,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "1. Authenticate. No identity, no further work.",
+       "box": {
+        "x": 100,
+        "y": 180,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "2. Rate limit. Runs before the body is read.",
+       "box": {
+        "x": 100,
+        "y": 260,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "3. Parse JSON. url must be a string.",
+       "box": {
+        "x": 100,
+        "y": 340,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "4. Validate the URL.",
+       "box": {
+        "x": 100,
+        "y": 420,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "5. Allocate a code.",
+       "box": {
+        "x": 100,
+        "y": 500,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "6. Respond 201. short_url is built from the Host.",
+       "box": {
+        "x": 100,
+        "y": 580,
+        "w": 620,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "Draw a quick diagram."
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 28100
+    }
+   ]
+  ]
+ },
+ "out": {
+  "asked": [
+   {
+    "words": "Draw a quick diagram.",
+    "column": false,
+    "full": false
+   },
+   {
+    "words": "Explain the request pipeline.",
+    "column": false,
+    "full": false
+   },
+   {
+    "words": "Draw a quick diagram.",
+    "column": true,
+    "full": false
+   },
+   {
+    "words": "Draw a quick diagram.",
+    "column": true,
+    "full": false
+   }
+  ],
+  "lines": [
+   {
+    "type": "board",
+    "id": "t1",
+    "rows": [
+     [
+      "Rate limit",
+      "Validate the URL"
+     ],
+     [
+      "Parse JSON",
+      "Validate the URL"
+     ]
+    ]
+   },
+   {
+    "type": "say",
+    "id": "t1",
+    "beat": 0,
+    "text": "The limiter and the parser both feed the validator."
+   },
+   {
+    "type": "board",
+    "id": "t2",
+    "rows": [
+     [
+      "Authenticate",
+      "Rate limit",
+      "Parse JSON"
+     ],
+     [
+      "Validate the URL",
+      "Allocate a code",
+      "Respond 201"
+     ]
+    ]
+   },
+   {
+    "type": "say",
+    "id": "t2",
+    "beat": 0,
+    "text": "A request goes through six checks in order."
+   },
+   {
+    "type": "say",
+    "id": "t2",
+    "beat": 1,
+    "text": "It stops at the first one that fails."
+   },
+   {
+    "type": "board",
+    "id": "t3",
+    "rows": [
+     [
+      "API request"
+     ],
+     [
+      "Authenticate"
+     ],
+     [
+      "Rate limit"
+     ],
+     [
+      "Parse JSON"
+     ],
+     [
+      "Validate the URL"
+     ],
+     [
+      "Allocate a code"
+     ],
+     [
+      "Respond 201"
+     ]
+    ],
+    "shape": "column"
+   },
+   {
+    "type": "say",
+    "id": "t3",
+    "beat": 0,
+    "text": "The request passes these checks from top to bottom."
+   },
+   {
+    "type": "board",
+    "id": "t4",
+    "rows": [
+     [
+      "Rate limit",
+      "Validate the URL"
+     ],
+     [
+      "Parse JSON",
+      "Validate the URL"
+     ]
+    ]
+   },
+   {
+    "type": "say",
+    "id": "t4",
+    "beat": 0,
+    "text": "The limiter and the parser both feed the validator."
+   }
+  ]
+ }
+}

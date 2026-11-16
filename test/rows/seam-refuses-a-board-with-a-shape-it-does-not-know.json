@@ -1,0 +1,12 @@
+{
+ "name": "seam: a board line with a shape the seam does not know is refused, so a mistyped shape is not drawn as something else in silence",
+ "run": "seam.read",
+ "in": {
+  "from": "mind",
+  "text": "{\"v\": 1, \"type\": \"board\", \"id\": \"t1\", \"rows\": [[\"Authenticate\"], [\"Rate limit\"]], \"shape\": \"spiral\"}"
+ },
+ "out": {
+  "ok": false,
+  "why": "shape: Invalid input: expected \"column\""
+ }
+}

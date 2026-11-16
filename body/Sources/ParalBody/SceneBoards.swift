@@ -2,7 +2,7 @@ import Foundation
 
 extension Scene {
     /// Takes a `board` line. A board and a clip share one place, so whichever comes takes it.
-    mutating func board(_ id: String, _ rows: [[String]], now: Int?, beats: [Int]?, at: Double) {
+    mutating func board(_ id: String, _ rows: [[String]], now: Int?, beats: [Int]?, shape: BoardShape? = nil, at: Double) {
         for i in clips.indices where clips[i].clearedAt == nil { clips[i].clearedAt = at }
         // A board for an ask whose empty card is open fills that card; it does not open a second one.
         if let open = boards.lastIndex(where: { $0.id == id && $0.clearedAt == nil && $0.rows.isEmpty }) {
@@ -10,6 +10,7 @@ extension Scene {
             boards[open].now = now
             boards[open].filledAt = at
             boards[open].beats = beats
+            boards[open].shape = shape
             return
         }
         // A board that grows with its answer comes again with the same rows and one more beat: it is the same card,
@@ -21,9 +22,9 @@ extension Scene {
         // The same rows coming again right after a clear are the same card: the next step of a walk, or a look
         // that moved the box with the page. It does not fade in a second time, and it stays where it is unless
         // the page has moved and put text where the card was.
-        let same = boards.last { $0.rows == rows && $0.clearedAt.map { at - $0 <= Scene.together } ?? false }
+        let same = boards.last { $0.rows == rows && $0.shape == shape && $0.clearedAt.map { at - $0 <= Scene.together } ?? false }
         let kept = same.flatMap { old in texts.contains { Scene.touch($0, old.room) } ? nil : old.room }
-        boards.append(Board(id: id, rows: rows, now: now, at: at, upSince: same?.upSince ?? at, room: kept ?? Layout.room(texts: texts, width: width, height: floor, tokens: tokens), beats: beats))
+        boards.append(Board(id: id, rows: rows, now: now, at: at, upSince: same?.upSince ?? at, room: kept ?? Layout.room(texts: texts, width: width, height: floor, tokens: tokens, tall: shape == .column), beats: beats, shape: shape))
     }
 
     /// A board that grows with its answer (`beats`): how many of its rows are drawn at `t`, when the first of them

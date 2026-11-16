@@ -1,0 +1,42 @@
+{
+ "name": "body: the whole chain on a tape, filmed. He asks for the request pipeline to be explained, then for a quick diagram: the mind sends the second board once, as a column of seven, one box to a row; the film's record names a column on it, with seven boxes and six arrows, every box there in the card's first frame; the first ask's board has no shape",
+ "run": "body.columnOnFilm",
+ "in": {
+  "lines": [
+   "Request pipeline (create)",
+   "1. Authenticate. No identity, no further work.",
+   "2. Rate limit. Runs before the body is read.",
+   "3. Parse JSON. url must be a string.",
+   "4. Validate the URL.",
+   "5. Allocate a code.",
+   "6. Respond 201. short_url is built from the Host.",
+   "Rate limiting (token bucket)",
+   "Capacity 10, refilling 1 token every 6 seconds."
+  ],
+  "tape": "column-filmed.json",
+  "asks": [
+   "explain the request pipeline",
+   "draw a quick diagram"
+  ]
+ },
+ "out": {
+  "boardLinesOfTheLastAsk": [
+   {
+    "shape": "column",
+    "rows": 7,
+    "boxesInARow": [
+     1
+    ]
+   }
+  ],
+  "theRecordNamesOnItsBoard": [
+   "column"
+  ],
+  "boxes": 7,
+  "arrows": 6,
+  "everyBoxWasThereInTheCardsFirstFrame": true,
+  "shapesOnTheBoardsOfTheAsksBefore": [
+   null
+  ]
+ }
+}

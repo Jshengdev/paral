@@ -690,6 +690,13 @@ take it and it brings no cross. It is not blurred behind as the kit's is, since 
 A film's record (`drawn.jsonl`) says of each board, in `type`, the size its words were drawn at in points: the
 tokens' size times whatever the card was shrunk by.
 
+A board line may carry a `shape`. With none it is rows of boxes joined across, as a board always was. A `column` is
+one box to a row: every box as wide as the widest, one under another, each joined to the next by an arrow down the
+card's middle in the gap between them (`board.downGap`, 22), and it comes whole, not a row a sentence. Its place is
+judged for a card taller than it is wide (`Layout.room`, `tall`). The film's record then names the shape on every
+row of the board, and names each box (`what: "box"`, id `<board>/<n>`) and each arrow (`what: "join"`) where it was
+drawn; of a board with no shape it names neither.
+
 It says of the label under the pill what it says: a row `{"at", "what": "label", "box", "says"}` each time its words
 or its box change, and one more with `"says": null` and the box it last had in the first frame it is no longer drawn
 (`FilmLabel.swift`). Of nothing else does the record say when it goes.
