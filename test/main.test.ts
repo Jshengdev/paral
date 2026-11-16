@@ -47,6 +47,7 @@ import { scrollButton, wayTag } from "./runners/ways.ts";
 import { marks } from "./runners/marks.ts";
 import { bank, centre } from "./runners/centre.ts";
 import { sheetPlace } from "./runners/sheet.ts";
+import { quickDeadline } from "./runners/quickline.ts";
 
 // A row is JSON on disk: its "in" is whatever its runner takes, so it is typed where the runner reads it.
 type Row = { name: string; run: string; in: any; out: unknown };
@@ -152,6 +153,8 @@ const runs: Record<string, (input: any) => unknown> = {
   "dates.unknown": (input) => input.cases.map(([said, sources]: [string, string[]]) => unknownDate(said, sources)),
   "dates.days": (input) => input.cases.map(([today, date]: [string, Named]) => daysFrom(new Date(today), date)),
   "catch.fits": (input) => input.cases.map(([drafted, final]: [string, string]) => fits(drafted, final, { share: input.share, least: input.least ?? 0, small: input.small ?? [] })),
+  "catch.used": (input) => input.cases.map(([drafted, final]: [string, string]) => fits(drafted, final, { share: settings.openerDraftShare.value, least: settings.openerDraftLeast.value, small: settings.openerSmallWords.value })),
+  "quick.deadline": quickDeadline,
   circle: (input) =>
     Object.fromEntries(
       Object.entries(input.trails).map(([name, trail]: [string, any]) => [

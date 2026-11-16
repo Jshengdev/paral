@@ -1,0 +1,20 @@
+{
+ "name": "catch: as the build is set, a line drafted from the start of his question is used once it heard half of his words and at least six (\"This is the plan for the app\" of thirteen; eleven of twenty-two, but not ten); a start of four or five words is not, however short the question, unless only small words follow; the starts are from recorded asks, and two of the short ones had given a line that named the wrong part of the page",
+ "run": "catch.used",
+ "in": {
+  "cases": [
+   ["This is the plan for the app", "This is the plan for the app. Does it look right to you?"],
+   ["When do final exams start this semester, and how", "When do final exams start this semester, and how many study days do I get before them?"],
+   ["Can you draw me a quick diagram of how sign", "Can you draw me a quick diagram of how sign in, creating a link, and the click stats connect in this build?"],
+   ["Can you draw me a quick diagram of how sign in", "Can you draw me a quick diagram of how sign in, creating a link, and the click stats connect in this build?"],
+   ["How long does it", "How long does it last once we are approved?"],
+   ["What day in February", "What day in February do I have to apply by?"],
+   ["So, can I send in my", "So, can I send in my application for Spring today?"],
+   ["Which of these 6 checks should I", "Which of these 6 checks should I try first and why?"],
+   ["I'm not listed as", "I'm not listed as an officer on my old club's page. What do I do?"],
+   ["These short links are still", "These short links are still really long. What makes them so long and how could I make them shorter?"],
+   ["There's a hold on my account", "There's a hold on my account and I can't register. Why?"]
+  ]
+ },
+ "out": [true, true, false, true, false, false, true, true, false, false, true]
+}

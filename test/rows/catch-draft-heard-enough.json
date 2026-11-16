@@ -1,5 +1,5 @@
 {
- "name": "catch: a drafted line is used when it heard enough of his question (0.7 of the words and at least six), or everything but small words (\"try first and why\"); a short start is not used when the words after it hold what he is asking about (\"forced cookie mean\", \"in this file layout\")",
+ "name": "catch: with a share of 0.7 asked for, a drafted line is used when it heard enough of his question (0.7 of the words and at least six), or everything but small words (\"try first and why\"); a short start is not used when the words after it hold what he is asking about (\"forced cookie mean\", \"in this file layout\")",
  "run": "catch.fits",
  "in": {
   "share": 0.7,

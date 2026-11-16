@@ -1,0 +1,22 @@
+{
+ "name": "quick: as the build is set, the mind waits half a second from the release for the quick line of its own: a line written before his words arrive is said the moment they do, one written 480 ms after the release is said then, and one written at 520 ms is never said: the fixed line goes out at 500 ms and is the line the deep model is told; when his words arrive after the half second, a written line is still said and otherwise the fixed line at once",
+ "run": "quick.deadline",
+ "in": {
+  "cases": [
+   { "heard": 420, "written": 300 },
+   { "heard": 420, "written": 480 },
+   { "heard": 420, "written": 520 },
+   { "heard": 420, "written": null },
+   { "heard": 650, "written": 600 },
+   { "heard": 650, "written": 700 }
+  ]
+ },
+ "out": [
+  { "heard": 420, "written": 300, "first": { "text": "Let's look through your plan.", "at": 420 }, "own": true, "toldTheDeepModel": "Let's look through your plan.", "modelLineEverSaid": true },
+  { "heard": 420, "written": 480, "first": { "text": "Let's look through your plan.", "at": 480 }, "own": true, "toldTheDeepModel": "Let's look through your plan.", "modelLineEverSaid": true },
+  { "heard": 420, "written": 520, "first": { "text": "Okay, let me look.", "at": 500 }, "own": false, "toldTheDeepModel": "Okay, let me look.", "modelLineEverSaid": false },
+  { "heard": 420, "written": null, "first": { "text": "Okay, let me look.", "at": 500 }, "own": false, "toldTheDeepModel": "Okay, let me look.", "modelLineEverSaid": false },
+  { "heard": 650, "written": 600, "first": { "text": "Let's look through your plan.", "at": 650 }, "own": true, "toldTheDeepModel": "Let's look through your plan.", "modelLineEverSaid": true },
+  { "heard": 650, "written": 700, "first": { "text": "Okay, let me look.", "at": 651 }, "own": false, "toldTheDeepModel": "Okay, let me look.", "modelLineEverSaid": false }
+ ]
+}

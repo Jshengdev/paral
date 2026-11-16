@@ -44,7 +44,7 @@ Every decision is a pure function in `cores/`; every outside service is behind `
 
 | line | who writes it | when it is said |
 |---|---|---|
-| the quick line | the fast model, from his words and the lines read off his page: what it is about to look at, naming the thing that matters; on his own working only that it will go through his steps. A fixed line while a wrong line is open, or when the model's line is long, unfit or fails | as he lets go, when a draft made while he talked heard enough of his question and is written by 0.8 s after release. Otherwise a fixed line is said at that mark and a quick line that comes later is never said. The deep model is told the line he heard |
+| the quick line | the fast model, from his words and the lines read off his page: what it is about to look at, naming the thing that matters; on his own working only that it will go through his steps. A fixed line while a wrong line is open, or when the model's line is long, unfit or fails | as he lets go, when a draft made while he talked heard enough of his question (half of his words, six at least) and is written by 0.5 s after release. Otherwise a fixed line is said at that mark and a quick line that comes later is never said. The deep model is told the line he heard |
 | his loop as a ring (`echo`) | nobody: code, from his path | right after his words are final |
 | the rung's fixed line | a setting (`ladder`) | with the ring, the moment the wrong line is known |
 | the hint | the deep model, one rung per ask, in the number of sentences its rung allows | after Push has passed it |
