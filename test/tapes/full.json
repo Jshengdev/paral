@@ -1,0 +1,128 @@
+{
+ "answers": {
+  "would you add anything else before i build it": [
+   {
+    "problem": "The plan for the link shortener",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "Rate-limit sign-up so one address cannot flood it.",
+      "mark": null
+     },
+     {
+      "say": "Check a pasted address is a real web address.",
+      "mark": null
+     },
+     {
+      "say": "Expire links nobody has opened in a year.",
+      "mark": null
+     },
+     {
+      "say": "Let an owner delete a link.",
+      "mark": null
+     },
+     {
+      "say": "Count a click once for each visitor an hour.",
+      "mark": null
+     },
+     {
+      "say": "Back the database up nightly.",
+      "mark": null
+     },
+     {
+      "say": "A seventh thing that is past the most.",
+      "mark": null
+     },
+     {
+      "say": "An eighth thing that is past the most.",
+      "mark": null
+     }
+    ],
+    "board": null
+   },
+   {
+    "problem": "The plan for the link shortener",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "Rate-limit sign-up so one address cannot flood it.",
+      "mark": null
+     },
+     {
+      "say": "Check a pasted address is a real web address.",
+      "mark": null
+     },
+     {
+      "say": "Expire links nobody has opened in a year.",
+      "mark": null
+     },
+     {
+      "say": "Let an owner delete a link.",
+      "mark": null
+     },
+     {
+      "say": "Count a click once for each visitor an hour.",
+      "mark": null
+     },
+     {
+      "say": "Back the database up nightly.",
+      "mark": null
+     },
+     {
+      "say": "A seventh thing that is past the most.",
+      "mark": null
+     },
+     {
+      "say": "An eighth thing that is past the most.",
+      "mark": null
+     }
+    ],
+    "board": null
+   }
+  ],
+  "does this plan look right": [
+   {
+    "problem": "The plan for the link shortener",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "Yes, the four parts are in the right order.",
+      "mark": null
+     },
+     {
+      "say": "Accounts come first because links belong to them.",
+      "mark": null
+     },
+     {
+      "say": "Stats last is right.",
+      "mark": null
+     },
+     {
+      "say": "A fourth sentence that is past the cap.",
+      "mark": null
+     }
+    ],
+    "board": null
+   }
+  ],
+  "is there anything else on my line": [
+   {
+    "problem": "Solve for x: 2(x + 3) = 14",
+    "breakLine": "3. Click counts per link",
+    "breakIndex": 3,
+    "result": "x = 4",
+    "beats": [
+     {
+      "say": "Read that line again: what happens to the 3?",
+      "mark": null
+     }
+    ],
+    "board": null
+   }
+  ]
+ },
+ "leaks": []
+}

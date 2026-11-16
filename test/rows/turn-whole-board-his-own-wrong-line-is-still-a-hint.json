@@ -89,7 +89,8 @@
   "asked": [
    {
     "words": "Draw my whole thing, start to finish.",
-    "whole": true
+    "whole": true,
+    "full": false
    }
   ],
   "lines": [

@@ -22,6 +22,8 @@ type With = {
   sources: string[];
   /** Whether he asked for the whole thing drawn: more sentences, and a board that grows a row with each (`cores/board.ts`). */
   whole: boolean;
+  /** Whether it is a broad follow-up: more sentences, and everything else as any explanation (`cores/full.ts`). */
+  full: boolean;
 };
 
 /**
@@ -29,7 +31,7 @@ type With = {
  * while it arrives: the board goes out when it is whole, the first mark ahead of its sentence, and each sentence when
  * it is finished. With a lesson clip coming it is one sentence and no board.
  */
-export function explanation({ settings, send, log }: Hands, asking: Asking, { talk, board, clip, lead, drew, sources, whole }: With) {
+export function explanation({ settings, send, log }: Hands, asking: Asking, { talk, board, clip, lead, drew, sources, whole, full }: With) {
   const { id, seen } = asking;
   const since = () => Date.now() - asking.releasedAt;
   /** How many of its sentences are out, and whether the first mark went out ahead of its sentence. */
@@ -39,7 +41,7 @@ export function explanation({ settings, send, log }: Hands, asking: Asking, { ta
   const held = new Set<string>();
 
   /** How many sentences it may have, and how long each may be before it is spoken as two. */
-  const most = () => (clip.on() ? 1 : whole ? settings.wholeBoardMost.value : settings.maxBeats.value);
+  const most = () => (clip.on() ? 1 : whole ? settings.wholeBoardMost.value : full ? settings.fullAnswerMost.value : settings.maxBeats.value);
   const breath = () => (clip.on() ? WHOLE : settings.sentenceMaxWords.value);
   /** Asked for the whole thing: the board's rows, where each written sentence starts among the spoken ones, and the rows said so far. */
   let rows: string[][] = [];

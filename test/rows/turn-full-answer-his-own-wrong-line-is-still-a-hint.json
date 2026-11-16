@@ -1,0 +1,217 @@
+{
+ "name": "turn: words that ask for more, after an answer, on his own work with a wrong line get a hint as always: one hint, not six sentences",
+ "run": "turn",
+ "in": {
+  "tape": "full.json",
+  "show": "whole",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1005,
+     "display": {
+      "id": 1,
+      "scale": 1,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "The plan for the link shortener",
+       "box": {
+        "x": 100,
+        "y": 100,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "1. Accounts with email and password",
+       "box": {
+        "x": 100,
+        "y": 180,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "2. Short links made on the server",
+       "box": {
+        "x": 100,
+        "y": 260,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "3. Click counts per link",
+       "box": {
+        "x": 100,
+        "y": 340,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "4. A stats page",
+       "box": {
+        "x": 100,
+        "y": 420,
+        "w": 620,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "Does this plan look right?"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 2100
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 9000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 9005,
+     "display": {
+      "id": 1,
+      "scale": 1,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "The plan for the link shortener",
+       "box": {
+        "x": 100,
+        "y": 100,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "1. Accounts with email and password",
+       "box": {
+        "x": 100,
+        "y": 180,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "2. Short links made on the server",
+       "box": {
+        "x": 100,
+        "y": 260,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "3. Click counts per link",
+       "box": {
+        "x": 100,
+        "y": 340,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "4. A stats page",
+       "box": {
+        "x": 100,
+        "y": 420,
+        "w": 620,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "Is there anything else on my line?"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 10100
+    }
+   ]
+  ]
+ },
+ "out": {
+  "asked": [
+   {
+    "words": "Does this plan look right?",
+    "whole": false,
+    "full": false
+   },
+   {
+    "words": "Is there anything else on my line?",
+    "whole": false,
+    "full": true
+   }
+  ],
+  "lines": [
+   {
+    "type": "say",
+    "id": "t1",
+    "beat": 0,
+    "text": "Yes, the four parts are in the right order."
+   },
+   {
+    "type": "say",
+    "id": "t1",
+    "beat": 1,
+    "text": "Accounts come first because links belong to them."
+   },
+   {
+    "type": "say",
+    "id": "t1",
+    "beat": 2,
+    "text": "Stats last is right."
+   },
+   {
+    "type": "say",
+    "id": "t2",
+    "beat": 0,
+    "text": "Read the highlighted line again, slowly.",
+    "rung": 0,
+    "of": 4
+   },
+   {
+    "type": "say",
+    "id": "t2",
+    "beat": 1,
+    "text": "Read that line again: what happens to the 3?",
+    "rung": 0,
+    "of": 4
+   }
+  ],
+  "drawn": []
+ }
+}

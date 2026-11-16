@@ -1,0 +1,338 @@
+{
+ "name": "turn: a broad follow-up is answered in six sentences, cut from the eight the model wrote, and the deep model is told it is one; the same words as a first question are an ordinary ask of three sentences, and so is the question before the follow-up",
+ "run": "turn",
+ "in": {
+  "tape": "full.json",
+  "show": "whole",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1005,
+     "display": {
+      "id": 1,
+      "scale": 1,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "The plan for the link shortener",
+       "box": {
+        "x": 100,
+        "y": 100,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "1. Accounts with email and password",
+       "box": {
+        "x": 100,
+        "y": 180,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "2. Short links made on the server",
+       "box": {
+        "x": 100,
+        "y": 260,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "3. Click counts per link",
+       "box": {
+        "x": 100,
+        "y": 340,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "4. A stats page",
+       "box": {
+        "x": 100,
+        "y": 420,
+        "w": 620,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "Would you add anything else before I build it?"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 2100
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 9000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 9005,
+     "display": {
+      "id": 1,
+      "scale": 1,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "The plan for the link shortener",
+       "box": {
+        "x": 100,
+        "y": 100,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "1. Accounts with email and password",
+       "box": {
+        "x": 100,
+        "y": 180,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "2. Short links made on the server",
+       "box": {
+        "x": 100,
+        "y": 260,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "3. Click counts per link",
+       "box": {
+        "x": 100,
+        "y": 340,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "4. A stats page",
+       "box": {
+        "x": 100,
+        "y": 420,
+        "w": 620,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "Does this plan look right?"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 10100
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 18000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 18005,
+     "display": {
+      "id": 1,
+      "scale": 1,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "The plan for the link shortener",
+       "box": {
+        "x": 100,
+        "y": 100,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "1. Accounts with email and password",
+       "box": {
+        "x": 100,
+        "y": 180,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "2. Short links made on the server",
+       "box": {
+        "x": 100,
+        "y": 260,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "3. Click counts per link",
+       "box": {
+        "x": 100,
+        "y": 340,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "4. A stats page",
+       "box": {
+        "x": 100,
+        "y": 420,
+        "w": 620,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "Would you add anything else before I build it?"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 19100
+    }
+   ]
+  ]
+ },
+ "out": {
+  "asked": [
+   {
+    "words": "Would you add anything else before I build it?",
+    "whole": false,
+    "full": false
+   },
+   {
+    "words": "Does this plan look right?",
+    "whole": false,
+    "full": false
+   },
+   {
+    "words": "Would you add anything else before I build it?",
+    "whole": false,
+    "full": true
+   }
+  ],
+  "lines": [
+   {
+    "type": "say",
+    "id": "t1",
+    "beat": 0,
+    "text": "Rate-limit sign-up so one address cannot flood it."
+   },
+   {
+    "type": "say",
+    "id": "t1",
+    "beat": 1,
+    "text": "Check a pasted address is a real web address."
+   },
+   {
+    "type": "say",
+    "id": "t1",
+    "beat": 2,
+    "text": "Expire links nobody has opened in a year."
+   },
+   {
+    "type": "say",
+    "id": "t2",
+    "beat": 0,
+    "text": "Yes, the four parts are in the right order."
+   },
+   {
+    "type": "say",
+    "id": "t2",
+    "beat": 1,
+    "text": "Accounts come first because links belong to them."
+   },
+   {
+    "type": "say",
+    "id": "t2",
+    "beat": 2,
+    "text": "Stats last is right."
+   },
+   {
+    "type": "say",
+    "id": "t3",
+    "beat": 0,
+    "text": "Rate-limit sign-up so one address cannot flood it."
+   },
+   {
+    "type": "say",
+    "id": "t3",
+    "beat": 1,
+    "text": "Check a pasted address is a real web address."
+   },
+   {
+    "type": "say",
+    "id": "t3",
+    "beat": 2,
+    "text": "Expire links nobody has opened in a year."
+   },
+   {
+    "type": "say",
+    "id": "t3",
+    "beat": 3,
+    "text": "Let an owner delete a link."
+   },
+   {
+    "type": "say",
+    "id": "t3",
+    "beat": 4,
+    "text": "Count a click once for each visitor an hour."
+   },
+   {
+    "type": "say",
+    "id": "t3",
+    "beat": 5,
+    "text": "Back the database up nightly."
+   }
+  ],
+  "drawn": []
+ }
+}

@@ -168,6 +168,16 @@ always, with no board. Every other ask is byte for byte what it was (`live-stand
 "draw out everything I have to do, in order" included: that still gets the small board. The film's record writes
 `rows` on a growing board's entries, the number drawn at that moment.
 
+**A full answer to a broad follow-up.** When an answer has come before in the conversation (`Lesson.shown` is not
+empty), no wrong line of his is open, and his words ask for more than one thing (`fullAnswerAsks`: "anything else",
+"would you add", "what would we do next" ...), the explanation may run to `fullAnswerMost` (6) sentences in place of
+`maxBeats` (`cores/full.ts`). The deep model gets `prompts/full-answer.md` after the ask's own words, as the whole
+board's paragraph is sent, so the instructions and kept pages ahead of it are unchanged. Nothing else differs: the
+board, the marks, Push and a press of the key are as for any explanation. The same words as a first question are an
+ordinary ask; on his own work with a wrong line they get a hint; and an ask for the whole thing drawn is a whole
+board, never both. "What else" is not among the words: "what else do we have to finish by November 22?" is a line
+of the demo and stays at three sentences.
+
 **Working an exercise through (a switch, off).** `workThrough` is off unless the mind is started with
 `PARAL_WORK_THROUGH=1` (`PARAL_WORK_THROUGH=1 ./run`, or before `./flow`). Off, nothing changes. On, an ask whose
 words ask for it (`workThroughAsks`: "walk me through", "what happens next", "then what" ...) while a measured sheet
@@ -370,6 +380,9 @@ compositions. `tmp/runs/` is the exam's; your own runs go in `tmp/dev/`.
   browse while it runs, and it does not know the page's address: it recognises a kept page from the lines on screen.
   A page that has changed since it was read is answered from the old text. A date it says must be on the screen or
   in a kept page, or the sentence is not said; other facts are not checked.
+- A full answer to a broad follow-up has run on a tape and in one scripted live run on a page drawn from the
+  judge's plan page (November 15): six sentences of 11 to 14 words, 3.3 to 5.2 s each, about 25 s of speech, the
+  first 4.1 s after the ask. Never on his real screen. Whether a sentence is padding is the model's: no code checks it.
 - The whole thing drawn has run on tapes and in one scripted live run on a page drawn for it (November 15: five
   sentences, five rows, each row drawn within 40 ms of its sentence beginning, the first sentence 4.9 s after the
   ask), never on his real screen. On a page with little free room the six-row card is drawn small (10.2 points in

@@ -48,6 +48,7 @@ export async function standIn(input: StandIn) {
       ...(input.asked.lines?.includes("") ? { hiddenLinesAreLeftOutAndNumbersKept: !/^\d+: $/m.test(text) && text.includes(`${input.asked.lines.length - 1}: ${input.asked.lines.at(-1)}`) } : {}),
       ...(input.asked.circled ? { namesWhatHeDrewAround: text.includes(`drew around lines ${input.asked.circled.join(", ")}`) } : {}),
       ...(input.asked.saidFirst ? { namesWhatWasSaid: text.includes(`You have already answered aloud with this one line, while you looked: "${input.asked.saidFirst}"`) } : {}),
+      ...(input.asked.full ? { instructionsAreTheOrdinaryOnes: params.system === "answer prompt", endsWithTheFullAnswerParagraph: text.endsWith("\n\nfull-answer prompt"), ordinaryWordsComeFirst: text.includes("Write the hint for this rung") } : {}),
       ...(input.asked.whole ? { instructionsAreTheOrdinaryOnes: params.system === "answer prompt", endsWithTheWholeBoardParagraph: text.endsWith("\n\nwhole-board prompt"), ordinaryWordsComeFirst: text.includes("Write the hint for this rung") } : {}),
       ...(input.asked.lesson?.drawn ? { namesWhatIsDrawn: text.includes(`still on their screen: ${input.asked.lesson.drawn.join("; ")}`) } : {}),
     });
@@ -80,7 +81,7 @@ export async function standIn(input: StandIn) {
   const signal = new AbortController().signal;
   const asked = { words: "", lines: [], fresh: false, circled: [], leadIn: settings.ladder.value[0].safe, saidFirst: null, today: Date.UTC(2026, 10, 14, 20), known: [], ahead: [], lessons: [], spots: [], ...input.asked, lesson: { ...empty, ...input.asked.lesson }, picturePath: input.picture ? picturePath : null, rung: settings.ladder.value[0] };
   try {
-    const live = anthropic(changed, { answer: "answer prompt", secondLook: "second look prompt", opener: "opener prompt", glance: "glance prompt", workThrough: "work-through prompt", wholeBoard: "whole-board prompt" }, (line) => logged.push(line), client);
+    const live = anthropic(changed, { answer: "answer prompt", secondLook: "second look prompt", opener: "opener prompt", glance: "glance prompt", workThrough: "work-through prompt", wholeBoard: "whole-board prompt", fullAnswer: "full-answer prompt" }, (line) => logged.push(line), client);
     let answered = null;
     let early = false;
     const boards = new Set<string>();

@@ -2,6 +2,7 @@ import { card } from "./card.ts";
 import { lessonClip } from "./clip.ts";
 import { wipes } from "./cores/beats.ts";
 import { asksFor } from "./cores/catch.ts";
+import { broadFollowUp } from "./cores/full.ts";
 import { alike, locate, type Found } from "./cores/ground.ts";
 import { happened } from "./cores/happened.ts";
 import type { Noted } from "./cores/guide.ts";
@@ -67,7 +68,9 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
   const spots = spotsOn(hands, id, seen);
   /** Asked for the whole thing drawn, with no wrong line of his open, the explanation may be longer and its board grows a row a sentence. */
   const whole = asking.lesson.breakLine === null && asksFor(words, settings.wholeBoardAsks.value);
-  const explained = explanation(hands, asking, { talk, board, clip, lead, drew, sources, whole });
+  /** A broad follow-up, with no wrong line of his open, may be answered in more sentences; a whole board is not also one. */
+  const full = !whole && asking.lesson.breakLine === null && broadFollowUp(words, settings.fullAnswerAsks.value, asking.lesson.shown);
+  const explained = explanation(hands, asking, { talk, board, clip, lead, drew, sources, whole, full });
   const hinted = ladderHint(hands, asking, { talk, clip, lead, drew });
   /** With the switch on and his words asking for it, on a measured drawing, the ask is the next step of the working (`through.ts`). */
   const walking = worksThrough(settings.workThrough.value, words, settings.workThroughAsks.value, spots.named.length > 0);
@@ -129,7 +132,7 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
       lesson: from,
       rung: ladder[rung.rung],
       fresh: rung.fresh,
-      ...(walk ? { walk } : whole ? { whole: true as const } : {}),
+      ...(walk ? { walk } : whole ? { whole: true as const } : full ? { full: true as const } : {}),
     };
     return ports.brain.answer(asked, signal, onPart);
   };

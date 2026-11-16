@@ -80,7 +80,7 @@ export async function playTurn(input: { tape: string; tapeSet?: Record<string, u
     // What the deep model was asked for each ask, as the work-through sees it, and every line that went out.
     if (input.show === "walk") return { asked: played.asked.map((asked) => ({ words: asked.words, walk: asked.walk ?? null, spots: asked.spots.length, shown: asked.lesson.shown })), lines: got.filter((line) => line.type !== "next").map(shorter) };
     // Whether the deep model was asked for the whole thing drawn, for each ask, and the boards and sentences that went out.
-    if (input.show === "whole") return { asked: played.asked.map((asked) => ({ words: asked.words, whole: asked.whole ?? false })), lines: got.filter((line) => ["board", "say", "board.close"].includes(line.type)).map(({ v: _v, ...rest }) => rest), drawn: played.asked.at(-1)?.lesson.drawn };
+    if (input.show === "whole") return { asked: played.asked.map((asked) => ({ words: asked.words, whole: asked.whole ?? false, full: asked.full ?? false })), lines: got.filter((line) => ["board", "say", "board.close"].includes(line.type)).map(({ v: _v, ...rest }) => rest), drawn: played.asked.at(-1)?.lesson.drawn };
     if (input.show === "drawn") return played.asked.map((asked) => ({ words: asked.words, drawn: asked.lesson.drawn }));
     if (input.show === "saidFirst") return { toldTheDeepModel: played.asked.map((asked) => ({ words: asked.words, saidFirst: asked.saidFirst })), said: got.filter((line) => line.type === "say").map((line) => ({ beat: line.beat, text: line.text })) };
     // The guide's lines are a setting's doing and would sit in every row that looks at a kept page; one row shows them.

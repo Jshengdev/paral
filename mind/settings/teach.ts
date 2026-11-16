@@ -86,6 +86,18 @@ export const teach = {
     measured: "not measured for this ask. `maxBeats` records one live run at six sentences on November 14: about 120 words, 40 s of speech, the first sentence 7.8 s after the release",
   } satisfies Setting<number>,
 
+  fullAnswerAsks: {
+    value: ["anything else", "would you add", "what would you add", "what would we do next", "what would you do next", "what should…do next"],
+    why: "Words of his that ask for more than one thing (`asksFor`). Said as a follow-up, after an answer in the same conversation and with no wrong line of his open, the answer may run to `fullAnswerMost` sentences; the model is given `prompts/full-answer.md` after its ordinary request, for that ask only (`cores/full.ts`). Said as a first question they are an ordinary ask. Each phrase is one only a broad follow-up says: \"what's next\" and \"next step\" alone are the walk's own words, and \"what is the next deadline?\" has one fact for an answer, so no phrase here is as loose as \"what … next\". \"What else\" is left out on purpose: \"what else do we have to finish by November 22?\" is a line of his demo and of the judge, answered in three sentences, and it stays so.",
+    measured: "not measured; chosen from the demo video's two follow-ups (\"would you add anything else?\", \"what would we do next to fully secure the app then?\") and the judge's wording of November 15",
+  } satisfies Setting<string[]>,
+
+  fullAnswerMost: {
+    value: 6,
+    why: "A broad follow-up is answered in at most this many spoken sentences, against `maxBeats` for any other ask: the demo video's two such follow-ups run to six. He has heard an answer already and is asking for the rest, so the length is asked for; it stops at once when he presses the key.",
+    measured: "not measured for this ask. On the whole board's one live run (November 15) five sentences took 21.6 s to say, the first beginning 4.9 s after the ask; six at that pace is about 26 s, against about 12 s for three",
+  } satisfies Setting<number>,
+
   drawingAsks: {
     value: [] as string[],
     why: "Words of his that ask for a drawing. With any here, an empty card opens the moment he says one, before any model has spoken, and the board fills it when it arrives; if none comes the card is taken away. The list is empty, so no empty card opens and the board appears on its first row: the owner's choice on 2026-11-14 at 16:52, in place of his earlier one for the card, since the tutor this follows never opens its board empty. To bring the card back, put the words back: draw, diagram, sketch, \"show me what … look\".",

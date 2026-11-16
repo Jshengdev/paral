@@ -167,11 +167,13 @@
   "asked": [
    {
     "words": "what does this mean",
-    "whole": false
+    "whole": false,
+    "full": false
    },
    {
     "words": "Draw out the whole thing for me, start to finish.",
-    "whole": true
+    "whole": true,
+    "full": false
    }
   ],
   "lines": [

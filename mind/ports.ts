@@ -32,6 +32,8 @@ export type Asked = {
   walk?: { steps: string[] };
   /** Present only when his words ask for the whole thing drawn, start to finish: the answer may be longer and its board has a row a sentence. */
   whole?: true;
+  /** Present only on a broad follow-up (an answer came before, and his words ask for more than one thing): the answer may be longer. */
+  full?: true;
 };
 
 export const Beat = z.object({

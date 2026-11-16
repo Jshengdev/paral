@@ -1,0 +1,55 @@
+{
+ "name": "full: which of his words make a follow-up a broad one (asked first, never; asked after an answer, only words that ask for more than one thing): the judge's wording and the video's two do; \"what else do we have to finish by November 22?\", \"what is the next deadline?\", the walk's \"what's next\" and a plain question do not",
+ "run": "full.asks",
+ "in": {
+  "asks": [
+   "Would you add anything else before I build it?",
+   "does that look robust or would you add anything else?",
+   "what would we do next to fully secure the app then?",
+   "What should I do next to be ready?",
+   "what else do we have to finish by November 22?",
+   "What else do I need before then?",
+   "What is the next deadline?",
+   "what's next",
+   "Is it too late to apply?"
+  ]
+ },
+ "out": {
+  "Would you add anything else before I build it?": {
+   "first": false,
+   "after": true
+  },
+  "does that look robust or would you add anything else?": {
+   "first": false,
+   "after": true
+  },
+  "what would we do next to fully secure the app then?": {
+   "first": false,
+   "after": true
+  },
+  "What should I do next to be ready?": {
+   "first": false,
+   "after": true
+  },
+  "what else do we have to finish by November 22?": {
+   "first": false,
+   "after": false
+  },
+  "What else do I need before then?": {
+   "first": false,
+   "after": false
+  },
+  "What is the next deadline?": {
+   "first": false,
+   "after": false
+  },
+  "what's next": {
+   "first": false,
+   "after": false
+  },
+  "Is it too late to apply?": {
+   "first": false,
+   "after": false
+  }
+ }
+}

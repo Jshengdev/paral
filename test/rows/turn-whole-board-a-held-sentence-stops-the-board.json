@@ -89,7 +89,8 @@
   "asked": [
    {
     "words": "Draw the whole thing, start to finish, with the dates.",
-    "whole": true
+    "whole": true,
+    "full": false
    }
   ],
   "lines": [

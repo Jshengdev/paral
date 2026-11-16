@@ -5,6 +5,7 @@ import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { boxes, fitted, split, wipes } from "../mind/cores/beats.ts";
 import { asksFor, fits, hear, saysOnly, silence, unasked } from "../mind/cores/catch.ts";
+import { broadFollowUp } from "../mind/cores/full.ts";
 import { away, datesIn, daysFrom, unknownDate, type Named } from "../mind/cores/dates.ts";
 import { calendarFile, dateLine, named, when } from "../mind/cores/keep.ts";
 import { guideGoal, guideNext } from "./runners/guide.ts";
@@ -63,7 +64,7 @@ const runs: Record<string, (input: any) => unknown> = {
   "beats.wipes": (input) => input.cases.map(([fresh, last, now]: [boolean, string | null, string | null]) => wipes(fresh, last, now)),
   prompts: () =>
     Object.fromEntries(
-      ["answer", "second-look", "opener", "glance", "work-through", "whole-board"].map((name) => [
+      ["answer", "second-look", "opener", "glance", "work-through", "whole-board", "full-answer"].map((name) => [
         name,
         createHash("sha256").update(readFileSync(join(import.meta.dirname, "..", "mind", "prompts", `${name}.md`))).digest("hex").slice(0, 12),
       ]),
@@ -115,6 +116,7 @@ const runs: Record<string, (input: any) => unknown> = {
   "catch.unasked": (input) => Object.fromEntries(input.holds.map((words: string) => [words, unasked(words, input.filler)])),
   "catch.only": (input) => Object.fromEntries(input.asks.map((words: string) => [words, saysOnly(words, input.phrases)])),
   // Which of his words ask for the whole thing drawn, by the setting itself: the list is what a row should hold.
+  "full.asks": (input) => Object.fromEntries(input.asks.map((words: string) => [words, { first: broadFollowUp(words, settings.fullAnswerAsks.value, []), after: broadFollowUp(words, settings.fullAnswerAsks.value, ["An answer."]) }])),
   "board.asks": (input) => Object.fromEntries(input.asks.map((words: string) => [words, asksFor(words, settings.wholeBoardAsks.value)])),
   "board.grows": boardGrows,
   "catch.drawing": (input) => Object.fromEntries(input.asks.map((words: string) => [words, asksFor(words, input.phrases)])),

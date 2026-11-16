@@ -92,7 +92,8 @@
   "asked": [
    {
     "words": "Can you draw a full board of how this works, start to finish?",
-    "whole": true
+    "whole": true,
+    "full": false
    }
   ],
   "lines": [
