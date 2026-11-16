@@ -6,8 +6,8 @@ import { join } from "node:path";
 import { handWritten, session, type Written } from "./body.ts";
 
 export type Box = { x: number; y: number; w: number; h: number };
-// `path` is given for a drawn arrow only: the points the pen has inked so far, in the order it draws them.
-type Placed = { what: string; id?: string; box: Box; path?: [number, number][] };
+// `path` is for a drawn arrow only: the points the pen has inked so far, in the order drawn. `says` is for the label under the pill only: its words.
+type Placed = { what: string; id?: string; box: Box; path?: [number, number][]; says?: string };
 type Moment = {
   placed: Placed[];
   way: { id: string; to: string; toward: string; drawn: number } | null;

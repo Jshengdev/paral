@@ -59,6 +59,8 @@ public struct Scene {
     var failed: (detail: String, at: Double)?
     var idleAt: Double?, staleAt: Double?, handAt: Double?  // the page moved under the marks; the app is scrolling (`SceneStale.swift`)
     var closedAt: Double?
+    /// The key he holds to talk, as the mind's `ready` line names it. Nil until the mind is linked.
+    var holdKey: String?
     var lastAt = 0.0
 
     public init(width: Double, height: Double, tokens: Tokens, bottomInset: Double = 0) {
@@ -168,9 +170,10 @@ public struct Scene {
             closedAt = at
             for i in asks.indices where asks[i].cutAt == nil { asks[i].cutAt = at }
             if let last = holds.indices.last, holds[last].up == nil { holds[last].up = at }
-        case .ready:
+        case .ready(let told):
             // The mind is linked. A failure from before the first press (the mind was not running) no longer stands.
             if holds.isEmpty { failed = nil }
+            holdKey = told.holdKey
         case .open(let path, let label):
             opened = (at, label, path.hasSuffix(".html"))
             kept(at)

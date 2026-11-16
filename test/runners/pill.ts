@@ -12,7 +12,7 @@ const round = (value: number) => Math.round(value * 2) / 2;
  * A row writes a mic or voice line by its loudness: `amp` is the height of a square wave and `ms` how long it lasts,
  * at the microphone's 16 kHz or the voice's 24 kHz. Here it becomes that sound.
  */
-function sounded(rows: Written[]): Written[] {
+export function sounded(rows: Written[]): Written[] {
   return rows.map((row) => {
     const { amp, ms, ...line } = row.line as Record<string, unknown>;
     if (typeof amp !== "number" || typeof ms !== "number") return row;
@@ -41,7 +41,7 @@ export function pill(input: { lines?: string[]; rows: Written[]; at: number[]; d
   const { capsule: k, bubble: b, orb: o } = tokens;
   const top = DISPLAY.h - dock - k.bottom - k.height - b.gap - (2 * k.type * b.leading + 2 * b.padY);
   const band: Box = { x: 0, y: top, w: DISPLAY.w, h: DISPLAY.h - dock - top };
-  const own = ["capsule", "cross", "orb", "bubble", "pointer", "tag", "lead", "mark", "echo", "pulse", "trail"];
+  const own = ["capsule", "cross", "orb", "bubble", "label", "pointer", "tag", "lead", "mark", "echo", "pulse", "trail"];
   return at(dir, input.at, false, dock).map(({ placed, capsule }) => {
     const cross = placed.find((item) => item.what === "cross")?.box;
     const light = placed.find((item) => item.what === "orb")?.box;

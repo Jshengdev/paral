@@ -1,0 +1,223 @@
+{
+ "name": "body: a small label stands under the open pill. While he holds the key and talks there is none; from the moment he lets go it says paral is working (\"On it\"); while paral answers it names the key he holds to talk; at rest there is none. It stands in the 28 points between the pill's foot and the floor, its middle the pill's, and is at most half as tall as the pill",
+ "run": "body.label",
+ "in": {
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "key.down",
+     "at": 1000
+    }
+   },
+   {
+    "at": 1001,
+    "line": {
+     "type": "state",
+     "name": "listening"
+    }
+   },
+   {
+    "at": 1200,
+    "line": {
+     "type": "heard",
+     "text": "where do",
+     "final": false
+    }
+   },
+   {
+    "at": 1700,
+    "line": {
+     "type": "heard",
+     "text": "where do i book",
+     "final": false
+    }
+   },
+   {
+    "at": 2200,
+    "line": {
+     "type": "key.up",
+     "at": 2200
+    }
+   },
+   {
+    "at": 2201,
+    "line": {
+     "type": "state",
+     "name": "thinking"
+    }
+   },
+   {
+    "at": 2300,
+    "line": {
+     "type": "heard",
+     "text": "where do i book",
+     "final": true
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "say",
+     "id": "a1",
+     "beat": 0,
+     "text": "You book it on EngageSC."
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "voice",
+     "id": "a1",
+     "beat": 0,
+     "amp": 8000,
+     "ms": 1000,
+     "last": true
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "words",
+     "id": "a1",
+     "beat": 0,
+     "start": [
+      0,
+      0.2,
+      0.4,
+      0.6,
+      0.75
+     ],
+     "end": [
+      0.2,
+      0.4,
+      0.6,
+      0.75,
+      1
+     ]
+    }
+   },
+   {
+    "at": 3600,
+    "line": {
+     "type": "state",
+     "name": "idle"
+    }
+   }
+  ],
+  "at": [
+   900,
+   1050,
+   1750,
+   2150,
+   2210,
+   2400,
+   2510,
+   3300,
+   3500,
+   5200,
+   9000
+  ],
+  "keys": [
+   "rightOption"
+  ]
+ },
+ "out": {
+  "first": [
+   {
+    "look": "rest",
+    "label": null
+   },
+   {
+    "look": "listening",
+    "label": null
+   },
+   {
+    "look": "listening",
+    "label": null
+   },
+   {
+    "look": "listening",
+    "label": null
+   },
+   {
+    "look": "thinking",
+    "label": {
+     "says": "On it",
+     "underThePill": 4,
+     "aboveTheFloor": 4,
+     "middle": "the pill's",
+     "tall": 20,
+     "atMostHalfThePill": true
+    }
+   },
+   {
+    "look": "thinking",
+    "label": {
+     "says": "On it",
+     "underThePill": 4,
+     "aboveTheFloor": 4,
+     "middle": "the pill's",
+     "tall": 20,
+     "atMostHalfThePill": true
+    }
+   },
+   {
+    "look": "speaking",
+    "label": {
+     "says": "Hold right option to talk",
+     "underThePill": 4,
+     "aboveTheFloor": 4,
+     "middle": "the pill's",
+     "tall": 20,
+     "atMostHalfThePill": true
+    }
+   },
+   {
+    "look": "speaking",
+    "label": {
+     "says": "Hold right option to talk",
+     "underThePill": 4,
+     "aboveTheFloor": 4,
+     "middle": "the pill's",
+     "tall": 20,
+     "atMostHalfThePill": true
+    }
+   },
+   {
+    "look": "speaking",
+    "label": {
+     "says": "Hold right option to talk",
+     "underThePill": 4,
+     "aboveTheFloor": 4,
+     "middle": "the pill's",
+     "tall": 20,
+     "atMostHalfThePill": true
+    }
+   },
+   {
+    "look": "rest",
+    "label": null
+   },
+   {
+    "look": "rest",
+    "label": null
+   }
+  ],
+  "says": {
+   "rightOption": [
+    null,
+    null,
+    null,
+    null,
+    "On it",
+    "On it",
+    "Hold right option to talk",
+    "Hold right option to talk",
+    "Hold right option to talk",
+    null,
+    null
+   ]
+  }
+ }
+}

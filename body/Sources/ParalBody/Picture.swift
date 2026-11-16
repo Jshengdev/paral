@@ -36,6 +36,8 @@ public struct CapsulePicture: Equatable {
     public var ask: String?
     /// The orb the pill shuts into, while the pill is not fully open (`SceneOrb.swift`). Nil while it is.
     public var orb: OrbPicture? = nil
+    /// What the small label under the open pill says (`PainterLabel.swift`). Nil for no label.
+    public var label: String? = nil
 }
 
 public struct MarkPicture: Equatable {

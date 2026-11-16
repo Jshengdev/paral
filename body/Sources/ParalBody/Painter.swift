@@ -10,6 +10,8 @@ public struct Drawn: Equatable {
     public var path: [CGPoint]?
     /// For a board that grows with its answer: how many of its rows are drawn.
     public var rows: Int?
+    /// For the label under the pill: its words.
+    public var says: String?
 }
 
 func color(_ hex: String, alpha: Double = 1) -> CGColor {
@@ -180,6 +182,7 @@ public struct Painter {
         // and the bubble, which carries the pill's words.
         if let cross = pill.cross { drawn.append(Drawn(what: "cross", id: nil, box: cross)) }
         if let bubble = pill.bubble { drawn.append(Drawn(what: "bubble", id: nil, box: bubble)) }
+        if let label = label(spoken, ctx) { drawn.append(Drawn(what: "label", id: nil, box: label, says: spoken.label)) }
         // The orb's square of light, while it is drawn: the overlay draws only that square again while nothing else moves.
         if let orb = pill.orb { drawn.append(Drawn(what: "orb", id: nil, box: orb)) }
         return drawn

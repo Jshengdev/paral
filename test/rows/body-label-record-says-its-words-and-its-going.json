@@ -1,0 +1,127 @@
+{
+ "name": "body: a film's record has a row for the label each time its words or its box change, with the words, and one more with its words null in the first frame it is no longer drawn (the record says of nothing else when it goes). Every row carries a box, the last one the box it had",
+ "run": "body.labelRecord",
+ "in": {
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "key.down",
+     "at": 1000
+    }
+   },
+   {
+    "at": 1001,
+    "line": {
+     "type": "state",
+     "name": "listening"
+    }
+   },
+   {
+    "at": 1200,
+    "line": {
+     "type": "heard",
+     "text": "where do",
+     "final": false
+    }
+   },
+   {
+    "at": 1700,
+    "line": {
+     "type": "heard",
+     "text": "where do i book",
+     "final": false
+    }
+   },
+   {
+    "at": 2200,
+    "line": {
+     "type": "key.up",
+     "at": 2200
+    }
+   },
+   {
+    "at": 2201,
+    "line": {
+     "type": "state",
+     "name": "thinking"
+    }
+   },
+   {
+    "at": 2300,
+    "line": {
+     "type": "heard",
+     "text": "where do i book",
+     "final": true
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "say",
+     "id": "a1",
+     "beat": 0,
+     "text": "You book it on EngageSC."
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "voice",
+     "id": "a1",
+     "beat": 0,
+     "amp": 8000,
+     "ms": 1000,
+     "last": true
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "words",
+     "id": "a1",
+     "beat": 0,
+     "start": [
+      0,
+      0.2,
+      0.4,
+      0.6,
+      0.75
+     ],
+     "end": [
+      0.2,
+      0.4,
+      0.6,
+      0.75,
+      1
+     ]
+    }
+   },
+   {
+    "at": 3600,
+    "line": {
+     "type": "state",
+     "name": "idle"
+    }
+   }
+  ],
+  "key": "rightOption"
+ },
+ "out": {
+  "rows": [
+   {
+    "at": 2200,
+    "says": "On it"
+   },
+   {
+    "at": 2500,
+    "says": "Hold right option to talk"
+   },
+   {
+    "at": 4700,
+    "says": null
+   }
+  ],
+  "everyRowHasABox": true
+ }
+}

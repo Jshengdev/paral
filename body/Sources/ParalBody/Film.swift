@@ -97,7 +97,7 @@ public enum Film {
             let pointer: Any = picture.pointer.map { ["x": $0.x, "y": $0.y, "ripple": $0.ripple ?? NSNull(), "flight": $0.withWay?.flight ?? NSNull(), "tag": $0.tag, "thinking": $0.thinking] as [String: Any] } ?? NSNull()
             let board: Any = picture.board.map { ["id": $0.id, "now": $0.now ?? NSNull(), "appear": $0.appear] as [String: Any] } ?? NSNull()
             // A drawn arrow's row also gives the points the pen has inked, so a row can say what it lies on.
-            let items = placed.map { item in ["what": item.what, "id": item.id ?? "", "box": item.box.json].merging(item.path.map { ["path": $0.map { [$0.x, $0.y] }] } ?? [:]) { $1 } as [String: Any] }
+            let items = placed.map { item in ["what": item.what, "id": item.id ?? "", "box": item.box.json].merging(item.path.map { ["path": $0.map { [$0.x, $0.y] }] } ?? [:]) { $1 }.merging(item.says.map { ["says": $0] } ?? [:]) { $1 } as [String: Any] }
             return ["placed": items, "way": way, "pointer": pointer, "board": board, "toast": picture.toast?.text ?? NSNull(), "inked": picture.marks.map(\.drawn),
                     "capsule": pill(picture.capsule, painter),
                     "guide": picture.guide.map { ["text": $0.text, "n": $0.n ?? NSNull(), "of": $0.of ?? NSNull(), "appear": $0.appear] as [String: Any] } ?? NSNull(),
@@ -133,7 +133,7 @@ public enum Film {
 
         var scene = loaded.scene(tokens)
         var next = 0, frame = 1
-        var lastBox: [String: Box] = [:]
+        var lastBox: [String: Box] = [:], lastSays: [String: String] = [:]
         var lastLook = ""
         var looks: [(at: Double, look: String)] = []
         var drawn = ""
@@ -150,18 +150,20 @@ public enum Film {
             }
             let image = render(pages.pictures[page], w, h) { ctx in placed = painter.paint(picture, into: ctx) }
             try save(image, to: frames.appendingPathComponent(String(format: "f_%05d.png", frame)))
+            if let stood = lastBox["label/"], !placed.contains(where: { $0.what == "label" }) { drawn += try gone("label", stood, at: t); lastBox["label/"] = nil; lastSays["label/"] = nil }
             for item in placed {
                 let key = item.what + "/" + (item.id ?? "")
                 let box = Box(x: (item.box.x * 2).rounded() / 2, y: (item.box.y * 2).rounded() / 2, w: (item.box.w * 2).rounded() / 2, h: (item.box.h * 2).rounded() / 2)
                 // The capsule's row also names its look, and a new row is written when the look changes though the box does not.
                 let look = item.what == "capsule" ? picture.capsule.look.rawValue : nil
-                guard lastBox[key] != box || (look != nil && look != lastLook) else { continue }
-                lastBox[key] = box
+                guard lastBox[key] != box || (look != nil && look != lastLook) || item.says != lastSays[key] else { continue }
+                (lastBox[key], lastSays[key]) = (box, item.says)
                 var line: [String: Any] = ["at": t.rounded(), "what": item.what, "box": box.json]
                 if let id = item.id { line["id"] = id }
                 // A board's row also says how large its words were drawn, so a reader need not work it out from the card.
                 if let type = item.type { line["type"] = (type * 10).rounded() / 10 }
                 if let rows = item.rows { line["rows"] = rows }
+                if let says = item.says { line["says"] = says }
                 if let look {
                     line["look"] = look
                     lastLook = look

@@ -31,6 +31,13 @@ extension Layout {
         return Box(x: blob.x + blob.w + tokens.orb.crossGap, y: blob.y + blob.h / 2 - side / 2, w: side, h: side)
     }
 
+    /// The label under the open pill: a chip of `size`, centred under the full pill and midway between its foot and
+    /// the floor.
+    public static func label(size: (w: Double, h: Double), width: Double, height: Double, tokens: Tokens) -> Box {
+        let full = pill(open: 1, width: width, height: height, tokens: tokens), foot = full.y + full.h
+        return Box(x: full.x + full.w / 2 - size.w / 2, y: foot + (height - foot - size.h) / 2, w: size.w, h: size.h)
+    }
+
     /// The room above the full pill that its bubble may take at most: its widest, two lines of words tall, and
     /// taller by `trail` when it carries the steps of a line said without being asked.
     public static func bubbleRoom(over pill: Box, trail: Double = 0, tokens: Tokens) -> Box {

@@ -1,0 +1,30 @@
+{
+ "name": "body: the whole chain on a tape, filmed. An ask made with the key: the mind's own ready line names the key, and in the very frame the capsule takes each look the label says what belongs to it: that paral is working once he lets go, the key while it answers, nothing at rest; and no label stands while he talks",
+ "run": "body.labelOnFilm",
+ "in": {
+  "lines": [
+   "Milestone 2 is done",
+   "Sign-up works with email and password.",
+   "Links are made on the server.",
+   "Clicks are counted per link.",
+   "Next: the dashboard"
+  ],
+  "tape": "whole-filmed.json",
+  "asks": [
+   "what does this mean"
+  ]
+ },
+ "out": {
+  "theKeyTheMindNamed": "rightOption",
+  "onceHeLetGo": [
+   "On it"
+  ],
+  "whileItAnswered": [
+   "Hold right option to talk"
+  ],
+  "atRest": [
+   null
+  ],
+  "noLabelWhileHeTalked": true
+ }
+}

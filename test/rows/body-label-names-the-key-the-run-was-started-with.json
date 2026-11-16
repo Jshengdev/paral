@@ -1,0 +1,183 @@
+{
+ "name": "body: the label names the key the run was started with, as the mind's ready line gives it, and not a fixed one: started on fn it says fn, on control with option it says both, and on a key the tokens have no name for it gives the setting's own word. A run whose record has no ready line has no label at all, so every older record films as it did",
+ "run": "body.label",
+ "in": {
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "key.down",
+     "at": 1000
+    }
+   },
+   {
+    "at": 1001,
+    "line": {
+     "type": "state",
+     "name": "listening"
+    }
+   },
+   {
+    "at": 1200,
+    "line": {
+     "type": "heard",
+     "text": "where do",
+     "final": false
+    }
+   },
+   {
+    "at": 1700,
+    "line": {
+     "type": "heard",
+     "text": "where do i book",
+     "final": false
+    }
+   },
+   {
+    "at": 2200,
+    "line": {
+     "type": "key.up",
+     "at": 2200
+    }
+   },
+   {
+    "at": 2201,
+    "line": {
+     "type": "state",
+     "name": "thinking"
+    }
+   },
+   {
+    "at": 2300,
+    "line": {
+     "type": "heard",
+     "text": "where do i book",
+     "final": true
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "say",
+     "id": "a1",
+     "beat": 0,
+     "text": "You book it on EngageSC."
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "voice",
+     "id": "a1",
+     "beat": 0,
+     "amp": 8000,
+     "ms": 1000,
+     "last": true
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "words",
+     "id": "a1",
+     "beat": 0,
+     "start": [
+      0,
+      0.2,
+      0.4,
+      0.6,
+      0.75
+     ],
+     "end": [
+      0.2,
+      0.4,
+      0.6,
+      0.75,
+      1
+     ]
+    }
+   },
+   {
+    "at": 3600,
+    "line": {
+     "type": "state",
+     "name": "idle"
+    }
+   }
+  ],
+  "at": [
+   2400,
+   2700
+  ],
+  "keys": [
+   "rightOption",
+   "fn",
+   "controlOption",
+   "shift",
+   "control",
+   "command",
+   "capsLock",
+   null
+  ]
+ },
+ "out": {
+  "first": [
+   {
+    "look": "thinking",
+    "label": {
+     "says": "On it",
+     "underThePill": 4,
+     "aboveTheFloor": 4,
+     "middle": "the pill's",
+     "tall": 20,
+     "atMostHalfThePill": true
+    }
+   },
+   {
+    "look": "speaking",
+    "label": {
+     "says": "Hold right option to talk",
+     "underThePill": 4,
+     "aboveTheFloor": 4,
+     "middle": "the pill's",
+     "tall": 20,
+     "atMostHalfThePill": true
+    }
+   }
+  ],
+  "says": {
+   "rightOption": [
+    "On it",
+    "Hold right option to talk"
+   ],
+   "fn": [
+    "On it",
+    "Hold fn to talk"
+   ],
+   "controlOption": [
+    "On it",
+    "Hold control and option to talk"
+   ],
+   "shift": [
+    "On it",
+    "Hold shift to talk"
+   ],
+   "control": [
+    "On it",
+    "Hold control to talk"
+   ],
+   "command": [
+    "On it",
+    "Hold command to talk"
+   ],
+   "capsLock": [
+    "On it",
+    "Hold capsLock to talk"
+   ],
+   "no ready line": [
+    null,
+    null
+   ]
+  }
+ }
+}

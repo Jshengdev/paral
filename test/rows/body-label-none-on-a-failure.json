@@ -1,0 +1,104 @@
+{
+ "name": "body: a failure has no label: holding the key does not mend it. The label that said paral was working goes in the frame the failure shows",
+ "run": "body.label",
+ "in": {
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "key.down",
+     "at": 1000
+    }
+   },
+   {
+    "at": 1001,
+    "line": {
+     "type": "state",
+     "name": "listening"
+    }
+   },
+   {
+    "at": 1200,
+    "line": {
+     "type": "heard",
+     "text": "where do",
+     "final": false
+    }
+   },
+   {
+    "at": 1700,
+    "line": {
+     "type": "heard",
+     "text": "where do i book",
+     "final": false
+    }
+   },
+   {
+    "at": 2200,
+    "line": {
+     "type": "key.up",
+     "at": 2200
+    }
+   },
+   {
+    "at": 2201,
+    "line": {
+     "type": "state",
+     "name": "thinking"
+    }
+   },
+   {
+    "at": 2600,
+    "line": {
+     "type": "state",
+     "name": "failed",
+     "detail": "the answer did not come"
+    }
+   }
+  ],
+  "at": [
+   2400,
+   2600,
+   2700,
+   4000
+  ],
+  "keys": [
+   "rightOption"
+  ]
+ },
+ "out": {
+  "first": [
+   {
+    "look": "thinking",
+    "label": {
+     "says": "On it",
+     "underThePill": 4,
+     "aboveTheFloor": 4,
+     "middle": "the pill's",
+     "tall": 20,
+     "atMostHalfThePill": true
+    }
+   },
+   {
+    "look": "failed",
+    "label": null
+   },
+   {
+    "look": "failed",
+    "label": null
+   },
+   {
+    "look": "failed",
+    "label": null
+   }
+  ],
+  "says": {
+   "rightOption": [
+    "On it",
+    null,
+    null,
+    null
+   ]
+  }
+ }
+}

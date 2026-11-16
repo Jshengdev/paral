@@ -4,6 +4,12 @@ extension Scene {
     /// What the pill shows besides its words: its wave, and the logo mark that breathes by it while paral works.
     func dress(_ capsule: inout CapsulePicture, at t: Double, cursorUp: Bool) {
         if capsule.look == .thinking, !cursorUp { capsule.working = still ? 0 : working(at: t) }
+        // The label under the open pill: for the moment after he lets go it says paral is working, and while paral
+        // answers it names the key to hold. There is none while he talks, none at rest, and none on a failure, which
+        // holding the key does not mend.
+        if let key = holdKey, capsule.look == .thinking || capsule.look == .speaking {
+            capsule.label = capsule.look == .thinking ? tokens.strings.thinking : tokens.strings.hold.replacingOccurrences(of: "{key}", with: tokens.strings.keys[key] ?? key)
+        }
         // The orb shows while the pill is not fully open: it is what the pill shuts into.
         capsule.orb = capsule.open < 1 ? orb(at: t) : nil
         // The wave moves while he speaks and while paral thinks or answers; at rest and on a failure it is still dots.

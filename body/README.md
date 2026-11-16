@@ -470,6 +470,14 @@ taken on the cross's own circle and nowhere else.
   same. A line said without being asked is the nudge card's, not the bubble's (below). A failure is FAILED in
   cardinal and bold and the reason after it, as before. It rises out of the pill as the pill opens (`bubble.rise`, on
   `arrive`) and goes in `bubble.leaveMs` (160, the handoff's exit) as the pill shuts, holding its last words while it goes.
+- **The label** (`PainterLabel.swift`), a quiet chip under the open pill (mist, written in stone, DM Sans Medium 11,
+  `capsule.labelPadX` 9 across and `capsule.labelPadY` 3 up and down), midway in the 28 between the pill's foot and
+  the floor and centred on the pill. For the moment after he lets go it says paral is working (`strings.thinking`);
+  while paral answers it names the key he holds to talk (`strings.hold`, "Hold {key} to talk", the key as
+  `strings.keys` names the hold key the mind's `ready` line gave, or that setting's own word when the tokens have no
+  name for it). There is none while he talks, none at rest, none on a failure, and none in a run whose record has
+  no `ready` line. Where the pill is still opening it comes in as the pill's surface does. The words are tokens, so
+  a change of wording is a change to `tokens.json` alone.
 - **Always at the bottom centre.** The pill, its bubble, the orb and the cross beside it stay at the display's
   middle, 28 above the Dock, whatever is under them, and cover it with their solid surface, as the designer's
   pictures do (the owner's word at 01:56; before that they slid along the foot off the page's words and ink). The
@@ -681,6 +689,10 @@ take it and it brings no cross. It is not blurred behind as the kit's is, since 
 
 A film's record (`drawn.jsonl`) says of each board, in `type`, the size its words were drawn at in points: the
 tokens' size times whatever the card was shrunk by.
+
+It says of the label under the pill what it says: a row `{"at", "what": "label", "box", "says"}` each time its words
+or its box change, and one more with `"says": null` and the box it last had in the first frame it is no longer drawn
+(`FilmLabel.swift`). Of nothing else does the record say when it goes.
 
 `paral-headless` commands: `read`, `smaller`, `page`, `lines`, `keys SECONDS NAME` (watch a key), `flow`, `film`,
 `frame RUN TOKENS MS OUT.png` (one moment of a run, for the dials page), `capsule RUN TOKENS MS...` (what the capsule

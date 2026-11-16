@@ -9,7 +9,7 @@ public struct Tokens: Codable {
     /// pill while paral works and no cursor is on the page. `type` is the bubble's words, `tagType` the trail's.
     public struct Capsule: Codable {
         public var restClose, width, height, radius, bottom, pad, gap, control, type, tagType: Double
-        public var stopSquare, stopCorner, arrowLine, face: Double
+        public var stopSquare, stopCorner, arrowLine, face, labelPadX, labelPadY: Double
     }
     /// The pill's wave, after the kit's: `width` by `height`, one sample every `sampleMs` at a `pitch` apart, each a
     /// dot of `dot` (a level under `quiet`, drawn at `quietInk`), a bar `bar` by `short` (under `loud`) or `bar` by
@@ -140,8 +140,9 @@ public struct Tokens: Codable {
     /// Calendar asks first or adds at once is not known.
     /// `name` is what the cursor's tag says: whose cursor it is.
     public struct Strings: Codable { public var thinking, listening, failed, opened, name, step: String
-        /// What the toast says before the name of a page of USC's opened in his browser.
-        public var going: String
+        /// `going`: the toast's word before the name of a USC page opened in his browser. `hold`: the label under the open pill, `{key}` as `keys` names the hold key.
+        public var going, hold: String
+        public var keys: [String: String]
     }
 
     public var ink, paper, accent: String
