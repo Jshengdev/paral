@@ -1,3 +1,4 @@
+import type { Placed } from "../session.ts";
 import type { Expect } from "../shape.ts";
 import { of, spoken, type Ask } from "../timeline.ts";
 import { no, unseen, yes, type Verdict } from "../verdict.ts";
@@ -19,8 +20,13 @@ export function cannotKnow(ask: Ask, expect: Expect): Verdict[] {
   return [hit ? yes("C21", ask.index, what, `"${hit}" in: ${said.slice(0, 110)}`) : no("C21", ask.index, what, said.slice(0, 140) || "nothing was said")];
 }
 
-/** C22. The board he is left with has four to six rows, one for each sentence, and they came a row at a time. */
-export function wholeBoard(ask: Ask, expect: Expect): Verdict[] {
+/**
+ * C22. The board he is left with has four to six rows, one for each sentence, and each row was drawn with its own
+ * sentence. When a row was drawn is the film's to say, not the seam's: the board's lines cross early, as each
+ * sentence's words are settled, and the scene holds a row until that sentence begins to be voiced. The film's record
+ * names the rows drawn at each moment for a board that grows. `until` is where this ask's stretch of the film ends.
+ */
+export function wholeBoard(ask: Ask, expect: Expect, placed: Placed[], until: number): Verdict[] {
   if (!expect.wholeBoard) return [];
   const s = ask.index;
   const boards = of(ask.moments, "board").filter((m) => m.text.trim() !== "");
@@ -29,20 +35,33 @@ export function wholeBoard(ask: Ask, expect: Expect): Verdict[] {
   const rows = rowsOf(boards.at(-1)!.text);
   const sentences = answerOf(ask);
   const each = "The board has a row for each sentence";
-  const one = "The board grows a row at a time, as each sentence is said";
-  // The steps in which it grew: the first board line, and each later one with more rows than the one before it.
-  const steps = boards.filter((m, index) => index === 0 || rowsOf(m.text) > rowsOf(boards[index - 1].text));
-  // A row may lead its own sentence, as a mark does. It may not be up before the sentence before it has begun.
-  const began = new Map(spoken(ask).map((voiced) => [voiced.of, voiced.start]));
-  const early = steps.findIndex((m, index) => index >= 1 && sentences[index - 1] !== undefined && m.at < (began.get(sentences[index - 1].id) ?? -Infinity));
-  const paced = steps.length < rows ? no("C22", s, one, `${rows} rows came in ${steps.length} ${steps.length === 1 ? "step" : "steps"}`)
-    : began.size === 0 ? unseen("C22", s, one, "nothing was voiced, so no sentence has a time")
-    : early >= 0 ? no("C22", s, one, `row ${early + 1} was up before sentence ${early} began`) : yes("C22", s, one, `${steps.length} steps for ${rows} rows`);
   return [
     rows >= 4 && rows <= 6 ? yes("C22", s, grows, `${rows} rows`) : no("C22", s, grows, `${rows} ${rows === 1 ? "row" : "rows"}`),
     rows === sentences.length ? yes("C22", s, each, `${rows} rows, ${sentences.length} sentences`) : no("C22", s, each, `${rows} rows, ${sentences.length} sentences`),
-    paced,
+    paced(ask, rows, placed.filter((p) => p.what === "board" && p.rows !== undefined && p.at >= ask.down && p.at < until)),
   ];
+}
+
+// A row may lead its own sentence, as a mark does: it may not be up before the sentence before it has begun, and it
+// may not come after its own sentence has ended. Two rows never come together.
+function paced(ask: Ask, rows: number, drawn: Placed[]): Verdict {
+  const s = ask.index;
+  const what = "The board grows a row at a time, each row with its sentence";
+  if (drawn.length === 0) return no("C22", s, what, "the film's record names no row as it was drawn: the card came whole");
+  const voiced = new Map(spoken(ask).map((sentence) => [sentence.of, sentence]));
+  if (voiced.size === 0) return unseen("C22", s, what, "nothing was voiced, so no sentence has a time");
+  const sentences = answerOf(ask);
+  const cameUp = (row: number) => drawn.find((p) => (p.rows ?? 0) >= row)?.at;
+  for (let row = 1; row <= rows; row++) {
+    const at = cameUp(row);
+    if (at === undefined) return no("C22", s, what, `row ${row} was never drawn`);
+    if (row > 1 && at <= (cameUp(row - 1) ?? -Infinity)) return no("C22", s, what, `rows ${row - 1} and ${row} came together`);
+    const before = row > 1 ? voiced.get(sentences[row - 2]?.id ?? "") : undefined;
+    if (before && at < before.start) return no("C22", s, what, `row ${row} was up before sentence ${row - 1} began`);
+    const own = voiced.get(sentences[row - 1]?.id ?? "");
+    if (own && at > own.end) return no("C22", s, what, `row ${row} came after its sentence had ended`);
+  }
+  return yes("C22", s, what, `${rows} rows, each drawn with its sentence`);
 }
 
 /** C23. A broad follow-up runs to six sentences or more; any other answer the scenario marks stays short. */
