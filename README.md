@@ -253,6 +253,29 @@ the words 4 of 4, the drag 24 of 24, the notes 48 of 48. The ten that do not pas
 None of the five has been seen on a real screen. They have run in the judge's filmed runs only, and a film cannot
 show the real window taking the mouse on a board's strip.
 
+**In the night after.** Two changes, judged together. The first line said after you let go may now come from a
+draft that had heard half of your question, where it had to have heard seven tenths; and the app waits half a
+second for that line before it says the fixed one, "Okay, let me look.", where it waited 0.8 seconds. And a date
+the model writes the way it is said ("November twenty-second") is shown the way the page writes it, when a page it
+has read holds that day. The judge's pass over all 30 scenarios, run once, is 2,610 of 2,617 checks. In it a first
+line of the app's own came on 15 of 72 asks, where the two passes before had 8 of 72 and 9 of 71. The first sound
+came a median 502 ms after the release and 622 at the slowest, where the median was 802. With the old code and the
+new run at the same time on 68 asks, the answer's first sentence began a median 293 ms sooner. All 110 dates in the
+pass were in digits; the pass's records cannot say whether the date change turned any of them. The seven that do
+not pass:
+
+- a first line that named something the page does not show. Asked "There's a hold on my account and I can't
+  register. Why?" on a counseling page, it said "Let's look for the hold details on your account page." Run twice
+  more, it said "Let's check the holds section on this page." once, on a page with no such section, and was right
+  once. Both times the answer's first sentence took it back. This fault came with the change: the line was drafted
+  from the first six of the question's eleven words, which could not be used before. It is left as it is.
+- three sentences that take 8.2, 8.4 and 9.0 seconds to say against a limit of 8.
+- the same fixed line said twice on one question, after a hint was held back for giving the answer away.
+- a box that reads "Sign up → dashboard", where an arrow belongs between two boxes.
+- a sentence that said "a user" where the page's own heading says "you". It comes and goes between runs.
+
+Neither change has been seen on a real screen.
+
 ## What it does not do yet
 
 - It runs on a Mac only.
@@ -266,6 +289,8 @@ show the real window taking the mouse on a board's strip.
   is changed and has not been seen there since.
 - The label under the pill, the column, the board of words, the dragged board and the notes written on a board
   have run in the judge's filmed runs and have not yet run on a real screen.
+- Its first line can say a thing is on your page when it is not. It has happened on a question about something
+  the page does not show, in two of three runs of that question; the answer then says so.
 - "Take me there" pressed and the notes page run in tests and have not yet run on a real screen. "Add to
   calendar" has written its date there.
 - It does not work with a screen reader. Every spoken sentence is also shown as text, the demo's questions can be
