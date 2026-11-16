@@ -14,6 +14,10 @@ a run leaves on disk.
   things the video shows, found when the whole of it was gone through again and made bars by his click of
   2026-11-15, 16:26 (it says what a page cannot prove; the board that grows to six rows when he asks for the whole
   thing; six sentences for a broad follow-up). Their checks and the video's times are in `src/judge/video.ts`.
+- C24 to C29 are six more things the video shows, found when it was read one frame a second and every second of it
+  measured, and made bars by his click of 2026-11-15, 18:47. Each is added to `criteria.ts` when its check is
+  written. The first is C28, the small label beside the open capsule that names the key to hold
+  (`src/judge/label.ts`, with the video's times). It is held on every ask made with the key, from the film's record.
 - Two bars were chosen by the person this is built for (2026-11-14): his first words show within about 2 s of the
   press (2.5 s in the judge), and the board opens on its first row, never empty, and is open before the first
   sentence of the answer ends. The second replaced his earlier choice of an empty card inside two seconds, once he had

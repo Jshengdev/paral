@@ -9,7 +9,8 @@ import type { Moment } from "./timeline.ts";
 const Recorded = z.object({ at: z.number(), from: z.enum(["body", "mind"]), line: z.object({ type: z.string() }).loose() });
 // `type` is on a board's record when the film says it: the size, in points, its words were drawn at.
 // `rows`: on a board that grows, how many of its rows are drawn at that moment (the film writes it for such a board only).
-const Placed = z.object({ at: z.number(), what: z.string(), id: z.string().optional(), look: z.string().optional(), box: Box, type: z.number().positive().optional(), rows: z.number().int().nonnegative().optional() });
+// `text`: on the capsule's label, its words at that moment; empty when the label has gone.
+const Placed = z.object({ at: z.number(), what: z.string(), id: z.string().optional(), look: z.string().optional(), box: Box, type: z.number().positive().optional(), rows: z.number().int().nonnegative().optional(), text: z.string().optional() });
 export type Placed = z.infer<typeof Placed>;
 
 const VOICE_RATE = 24_000;

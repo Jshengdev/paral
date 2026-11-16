@@ -7,6 +7,7 @@ import { walked } from "./judge/showme.ts";
 import { glanced, pageChanged, wayDrawn } from "./judge/look.ts";
 import { marks, standingBefore } from "./judge/marks.ts";
 import { onlyThePart } from "./judge/picture.ts";
+import { LABEL_CASES } from "./planted-label.ts";
 import { PEN_CASES } from "./planted-pen.ts";
 import { VIDEO_CASES } from "./planted-video.ts";
 import { cutIn, pressedAgain } from "./judge/ending.ts";
@@ -202,6 +203,7 @@ const CASES: Case[] = [
   { name: "he circles and a part is sent", check: "When he circles, the answer is made from", mustPass: true, verdicts: () => [onlyThePart(0, { w: 1136, h: 948 }, { lines: 20, unread: 6 }, DISPLAY)] },
   ...PEN_CASES,
   ...VIDEO_CASES,
+  ...LABEL_CASES,
 ];
 
 export async function planted(): Promise<{ name: string; ok: boolean; why: string }[]> {

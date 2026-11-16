@@ -1,7 +1,10 @@
 // What paral must do. C1 to C15 are what the person in the video does with DuckyHelper (youtu.be/PHswiY3YUO0, times in
 // the scenarios). C16 is the team's own and C17 is ours. C18 is the look he chose on 2026-11-14 at
 // 19:02, made quieter by his click of 2026-11-15, 14:55: a look draws no board. C21 to C23 are three more things the
-// video shows, written from the whole of it and made bars by his click of 2026-11-15, 16:26 (sources in src/judge/video.ts). U2 to U7 are checks of use, with their sources in src/judge/.
+// video shows, written from the whole of it and made bars by his click of 2026-11-15, 16:26 (sources in src/judge/video.ts).
+// C24 to C29 are six more, found when the video was read one frame a second and every second of it measured, and made
+// bars by his click of 2026-11-15, 18:47. Each is written here when its check is (C28: src/judge/label.ts).
+// U2 to U7 are checks of use, with their sources in src/judge/.
 export const CRITERIA: Record<string, string> = {
   C1: "At rest, one small circle sits at the bottom centre, above other apps.",
   C2: "He holds the key and talks. The circle widens and his words show as he says them.",
@@ -26,6 +29,7 @@ export const CRITERIA: Record<string, string> = {
   C21: "It says what the page in front of him cannot show it or prove.",
   C22: "Asked for the whole thing drawn, its board grows to as many rows as it has sentences, four to six, a row at a time.",
   C23: "A broad follow-up, one that asks what else or what next, gets six sentences or more.",
+  C28: "A small label beside the open capsule names the key to hold, and says it is working for a moment after he lets go.",
   U2: "Use: its first words come within a second of release.",
   U3: "Use: there is never a long silence with nothing new on screen.",
   U4: "Use: a mark never covers the words it marks.",
