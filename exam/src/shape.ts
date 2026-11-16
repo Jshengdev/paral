@@ -50,6 +50,14 @@ const Expect = z.object({
    * drawn (what is ahead waits for his ask); on a "show me" step the walk's board must hold them in this order.
    */
   ahead: z.array(z.string().min(1)).optional(),
+  /** Something the page cannot show it, which it must say it cannot know: `what` it is, and words any one of which says so. */
+  cannotKnow: z.object({ what: z.string().min(1), anyOf: z.array(z.string().min(1)).min(1) }).optional(),
+  /** He asks for the whole thing drawn: the board must grow to four rows or more, a row for each sentence, a row at a time. */
+  wholeBoard: z.boolean().optional(),
+  /** A broad follow-up (what else, what next): the answer must run to six sentences or more. */
+  fullAnswer: z.boolean().optional(),
+  /** An answer that must stay short: the most sentences it may have. */
+  sentencesMost: z.number().int().positive().optional(),
 });
 export type Expect = z.infer<typeof Expect>;
 

@@ -1,0 +1,39 @@
+{
+  "v": 1,
+  "id": "what-it-cannot-know",
+  "title": "She asks about her own account on a page that cannot show it",
+  "criteria": [
+    "C13",
+    "C21"
+  ],
+  "video": "09:10, 16:31, 20:08 and 22:34: it says what the page does not prove",
+  "page": "real:academic-counseling",
+  "source": {
+    "url": "https://arr.usc.edu/academic-counseling/"
+  },
+  "steps": [
+    {
+      "say": "There's a hold on my account and I can't register. Why?",
+      "circle": null,
+      "expect": {
+        "plain": true,
+        "sentences": 2,
+        "cannotKnow": {
+          "what": "which hold is on her account",
+          "anyOf": ["can't see your account", "cannot see your account", "don't have your account", "do not have your account", "can't see which hold", "cannot see which hold", "can't tell which hold", "no way to see your account", "don't have access to your account"]
+        }
+      }
+    },
+    {
+      "say": "What is my GPA right now?",
+      "circle": null,
+      "expect": {
+        "plain": true,
+        "cannotKnow": {
+          "what": "her own grade point average",
+          "anyOf": ["can't see your", "cannot see your", "don't have your", "do not have your", "isn't on this page", "is not on this page", "not on this page", "no way to see", "don't have access"]
+        }
+      }
+    }
+  ]
+}

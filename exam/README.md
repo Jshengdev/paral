@@ -8,9 +8,12 @@ a run leaves on disk.
 
 ## What it promises
 
-- `criteria.ts` is the list: twenty things paral must do (C1 to C20), and six checks of use (U2 to U7). C1 to C15
-  are what the video shows; C16 and C17 are the team's own (the hint ladder, the rendered lesson); C18 to C20 came
-  on the night of 2026-11-14 (the look with no key, keeping a date, "show me").
+- `criteria.ts` is the list: twenty-three things paral must do (C1 to C23), and six checks of use (U2 to U7). C1 to
+  C15 are what the video shows; C16 and C17 are the team's own (the hint ladder, the rendered lesson); C18 to C20
+  came on the night of 2026-11-14 (the look with no key, keeping a date, "show me"); C21 to C23 are three more
+  things the video shows, found when the whole of it was gone through again and made bars by his click of
+  2026-11-15, 16:26 (it says what a page cannot prove; the board that grows to six rows when he asks for the whole
+  thing; six sentences for a broad follow-up). Their checks and the video's times are in `src/judge/video.ts`.
 - Two bars were chosen by the person this is built for (2026-11-14): his first words show within about 2 s of the
   press (2.5 s in the judge), and the board opens on its first row, never empty, and is open before the first
   sentence of the answer ends. The second replaced his earlier choice of an empty card inside two seconds, once he had

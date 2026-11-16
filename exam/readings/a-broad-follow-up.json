@@ -1,0 +1,1 @@
+{"session": "not read yet", "by": "nobody yet", "verdicts": [{"criterion": "C23", "step": 1, "pass": true, "what": "None of its sentences is padding", "measured": "not read yet"}, {"criterion": "C10", "step": 1, "pass": true, "what": "The follow-up builds on the first answer", "measured": "not read yet"}]}

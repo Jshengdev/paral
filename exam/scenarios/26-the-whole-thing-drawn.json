@@ -1,0 +1,23 @@
+{
+  "v": 1,
+  "id": "the-whole-thing-drawn",
+  "title": "He asks for the whole thing drawn, start to finish",
+  "criteria": [
+    "C8",
+    "C22"
+  ],
+  "video": "23:27 to 24:19: a board that grows to six rows, one as each sentence is said",
+  "page": "milestone",
+  "steps": [
+    {
+      "say": "Draw out the whole thing for me, start to finish: how someone signs up, makes a link, and sees its clicks.",
+      "circle": null,
+      "expect": {
+        "opener": true,
+        "board": true,
+        "wholeBoard": true,
+        "plain": true
+      }
+    }
+  ]
+}

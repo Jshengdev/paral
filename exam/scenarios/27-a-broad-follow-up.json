@@ -1,0 +1,33 @@
+{
+  "v": 1,
+  "id": "a-broad-follow-up",
+  "title": "After an answer he asks what else it would add",
+  "criteria": [
+    "C7",
+    "C10",
+    "C23"
+  ],
+  "video": "09:51 to 10:40 and 16:37 to 17:16: a follow-up answered in six sentences",
+  "page": "plan",
+  "steps": [
+    {
+      "say": "This is the plan for the app. Does it look right to you?",
+      "circle": null,
+      "expect": {
+        "opener": true,
+        "sentences": 2,
+        "sentencesMost": 4,
+        "plain": true
+      }
+    },
+    {
+      "say": "Would you add anything else before I build it?",
+      "circle": null,
+      "expect": {
+        "sentences": 2,
+        "fullAnswer": true,
+        "plain": true
+      }
+    }
+  ]
+}

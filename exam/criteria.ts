@@ -1,6 +1,7 @@
 // What paral must do. C1 to C15 are what the person in the video does with DuckyHelper (youtu.be/PHswiY3YUO0, times in
 // the scenarios). C16 is the team's own and C17 is ours. C18 is the look he chose on 2026-11-14 at
-// 19:02, made quieter by his click of 2026-11-15, 14:55: a look draws no board. U2 to U7 are checks of use, with their sources in src/judge/.
+// 19:02, made quieter by his click of 2026-11-15, 14:55: a look draws no board. C21 to C23 are three more things the
+// video shows, written from the whole of it and made bars by his click of 2026-11-15, 16:26 (sources in src/judge/video.ts). U2 to U7 are checks of use, with their sources in src/judge/.
 export const CRITERIA: Record<string, string> = {
   C1: "At rest, one small circle sits at the bottom centre, above other apps.",
   C2: "He holds the key and talks. The circle widens and his words show as he says them.",
@@ -22,6 +23,9 @@ export const CRITERIA: Record<string, string> = {
   C18: "With no key pressed, on a page it has read, it shows one true line and marks where the thing is. It draws no board: what is ahead is drawn when he asks. Elsewhere it stays quiet.",
   C19: "He asks it to keep a date. A calendar file for that date opens, and his own click adds it.",
   C20: "He says \"show me\". It walks what is ahead one step at a time: the step named on the board, said in one sentence, and marked or pointed to.",
+  C21: "It says what the page in front of him cannot show it or prove.",
+  C22: "Asked for the whole thing drawn, its board grows to as many rows as it has sentences, four to six, a row at a time.",
+  C23: "A broad follow-up, one that asks what else or what next, gets six sentences or more.",
   U2: "Use: its first words come within a second of release.",
   U3: "Use: there is never a long silence with nothing new on screen.",
   U4: "Use: a mark never covers the words it marks.",
