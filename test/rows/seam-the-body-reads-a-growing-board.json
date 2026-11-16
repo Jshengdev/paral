@@ -1,0 +1,58 @@
+{
+ "name": "seam: the body's own reader takes a board line with its beats, and one without them as before",
+ "run": "body.seen",
+ "in": {
+  "lines": [
+   {
+    "v": 1,
+    "type": "board",
+    "id": "t1",
+    "rows": [
+     [
+      "Sign up",
+      "Email and password"
+     ],
+     [
+      "Make a link",
+      "Paste a long address"
+     ]
+    ],
+    "beats": [
+     1
+    ]
+   },
+   {
+    "v": 1,
+    "type": "board",
+    "id": "t2",
+    "rows": [
+     [
+      "Sign up",
+      "Email and password"
+     ],
+     [
+      "Make a link",
+      "Paste a long address"
+     ]
+    ]
+   },
+   {
+    "v": 1,
+    "type": "board",
+    "id": "t3",
+    "rows": [
+     [
+      "Sign up",
+      "Email and password"
+     ]
+    ],
+    "now": 0
+   }
+  ]
+ },
+ "out": [
+  "took board(id: \"t1\", rows: [[\"Sign up\", \"Email and password\"], [\"Make a link\", \"Paste a long address\"]], now: nil, beats: Optional([1]))",
+  "took board(id: \"t2\", rows: [[\"Sign up\", \"Email and password\"], [\"Make a link\", \"Paste a long address\"]], now: nil, beats: nil)",
+  "took board(id: \"t3\", rows: [[\"Sign up\", \"Email and password\"]], now: Optional(0), beats: nil)"
+ ]
+}

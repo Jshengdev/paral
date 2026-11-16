@@ -74,6 +74,18 @@ export const teach = {
     measured: "with a free share of half the line's height, a heading 14.4 points above a 19.5-point line was still inked by 11% (2026-11-14, the outside judge): the ring reaches 13.9 points plus the pen there. In a code block a ring had inked 21% of the line above it",
   } satisfies Setting<{ share: number; points: number; snug: number }>,
 
+  wholeBoardAsks: {
+    value: ["draw…whole thing", "draw…start to finish", "draw…full board", "draw…full-scale", "board…start to finish"],
+    why: "Words of his that ask for the whole thing drawn, from start to finish (`asksFor`: a phrase from the start of a word, with … for the words between). Such an ask is told in up to `wholeBoardMost` sentences and its board has a row for each, drawn as that sentence is said (`cores/board.ts`); the model is given `prompts/whole-board.md` after its ordinary request, for that ask only. Each phrase needs a word for drawing and a word for the whole, so a plain ask for a drawing (\"draw out everything I have to do, in order\") still gets the small board, and a question that only says \"start to finish\" is an ordinary ask. It does not apply while a wrong line of his own is open: that ask is a hint.",
+    measured: "not measured; chosen from the demo video's own words (\"draw a full-scale blackboard explanation of start to finish how this works\") and the judge's two wordings of November 15",
+  } satisfies Setting<string[]>,
+
+  wholeBoardMost: {
+    value: 6,
+    why: "Asked for the whole thing drawn, the answer is at most this many spoken sentences and its board at most this many rows, one row a sentence, against `maxBeats` sentences and two rows for any other ask. Six, because the demo video's last board grows to six rows, a sentence each. It is long on purpose and only on those words: every word is written before anything shows.",
+    measured: "not measured for this ask. `maxBeats` records one live run at six sentences on November 14: about 120 words, 40 s of speech, the first sentence 7.8 s after the release",
+  } satisfies Setting<number>,
+
   drawingAsks: {
     value: [] as string[],
     why: "Words of his that ask for a drawing. With any here, an empty card opens the moment he says one, before any model has spoken, and the board fills it when it arrives; if none comes the card is taken away. The list is empty, so no empty card opens and the board appears on its first row: the owner's choice on 2026-11-14 at 16:52, in place of his earlier one for the card, since the tutor this follows never opens its board empty. To bring the card back, put the words back: draw, diagram, sketch, \"show me what … look\".",

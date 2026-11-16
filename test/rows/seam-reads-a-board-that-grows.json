@@ -1,0 +1,33 @@
+{
+ "name": "seam: a board line that grows with its answer is read: its rows, and for each row that has a sentence so far, that sentence's beat; a beat that is not a whole number from 0 is refused",
+ "run": "seam.read",
+ "in": {
+  "from": "mind",
+  "text": "{\"v\": 1, \"type\": \"board\", \"id\": \"t1\", \"rows\": [[\"Sign up\", \"Email and password\"], [\"Make a link\", \"Paste a long address\"], [\"Share it\"]], \"beats\": [1, 2]}"
+ },
+ "out": {
+  "ok": true,
+  "line": {
+   "v": 1,
+   "type": "board",
+   "id": "t1",
+   "rows": [
+    [
+     "Sign up",
+     "Email and password"
+    ],
+    [
+     "Make a link",
+     "Paste a long address"
+    ],
+    [
+     "Share it"
+    ]
+   ],
+   "beats": [
+    1,
+    2
+   ]
+  }
+ }
+}

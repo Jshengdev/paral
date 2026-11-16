@@ -74,8 +74,9 @@ public enum Seen {
     /// The thing is on this page and not in view: which way to scroll ("up" or "down") and what it leads to.
     case way(id: String, to: String, toward: String)
     case echo(id: String, box: Box, shape: String)
-    /// `now` is set on a board of steps: the number of the row that is the step he is on, from 0.
-    case board(id: String, rows: [[String]], now: Int?)
+    /// `now` is set on a board of steps: the number of the row that is the step he is on, from 0. `beats` is set on a
+    /// board that grows with its answer: for each of its first rows, the beat of the sentence it comes with.
+    case board(id: String, rows: [[String]], now: Int?, beats: [Int]?)
     case boardClose(id: String)
     case clip(id: String, path: String, still: String, seconds: Double)
     case clear
@@ -195,7 +196,7 @@ public enum Seen {
             return .success(.clip(id: id, path: path, still: still, seconds: seconds))
         case "board":
             guard let id, let rows = f["rows"] as? [[String]] else { return .failure(Refused("board: id and rows are needed")) }
-            return .success(.board(id: id, rows: rows, now: (f["now"] as? NSNumber)?.intValue))
+            return .success(.board(id: id, rows: rows, now: (f["now"] as? NSNumber)?.intValue, beats: f["beats"] as? [Int]))
         case "board.close":
             guard let id else { return .failure(Refused("board.close.id: missing")) }
             return .success(.boardClose(id: id))

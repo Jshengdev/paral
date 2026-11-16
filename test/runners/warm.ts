@@ -49,7 +49,7 @@ export async function warmed(input: { pages: KeptPage[]; today: number }) {
   const [warm, ask] = [on.warms[0], on.asks[0]];
   const blocks = warm.messages[0].content;
 
-  const off = mind({ ...settings, warmPages: { ...settings.warmPages, value: false } }, 1000);
+  const off = mind({ ...settings, warmPages: { ...settings.warmPages, value: false } } as unknown as typeof settings, 1000);
   off.brain.warm!(first, input.today);
   // One keeping of two million tokens is more than the cap's share by the adapter's own count.
   const spent = mind(settings, 2_000_000);

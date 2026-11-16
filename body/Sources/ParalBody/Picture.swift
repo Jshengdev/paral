@@ -62,6 +62,8 @@ public struct BoardPicture: Equatable {
     public var now: Int?
     /// How far the card has grown to hold the newest of its `shown` rows, 0 to 1: the card is as tall as the rows it shows.
     public var coming = 1.0
+    /// Whether it grows with its answer, a row a sentence: the film's record then says how many rows are drawn.
+    public var growing = false
 }
 
 public struct ClipPicture: Equatable {

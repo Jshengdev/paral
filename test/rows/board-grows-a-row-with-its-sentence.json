@@ -1,0 +1,82 @@
+{
+ "name": "board: a growing board's rows get their beats one by one: row k with the first part of the written sentence k (a long sentence is spoken as two and its second part brings no row), in order; a sentence past the last row brings none; the board as written is cut to the most rows",
+ "run": "board.grows",
+ "in": {
+  "board": [
+   [
+    "a"
+   ],
+   [
+    "b"
+   ],
+   [
+    "c"
+   ],
+   [
+    "d"
+   ],
+   [
+    "e"
+   ],
+   [
+    "f"
+   ],
+   [
+    "g"
+   ]
+  ],
+  "most": 6,
+  "rows": 3,
+  "says": [
+   "One comes first.",
+   "The advisor signs the commitment form and returns it to the office, and then the officers each finish Hazing Prevention 101 before the application can be sent in.",
+   "Three follows.",
+   "Four has no row."
+  ],
+  "limits": {
+   "plain": 22,
+   "withNumbers": 14,
+   "letters": 110
+  },
+  "said": [
+   1,
+   2,
+   3,
+   4,
+   5
+  ]
+ },
+ "out": {
+  "rows": 6,
+  "firsts": [
+   0,
+   1,
+   3,
+   4
+  ],
+  "after": [
+   [
+    1
+   ],
+   [
+    1,
+    2
+   ],
+   [
+    1,
+    2
+   ],
+   [
+    1,
+    2,
+    4
+   ],
+   [
+    1,
+    2,
+    4
+   ]
+  ],
+  "stopped": false
+ }
+}

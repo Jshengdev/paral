@@ -1,8 +1,11 @@
 // The runner for rows about what a film's record says of a board: a hand-written run, filmed. No mind, no service.
 import { execFileSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { handWritten, type Written } from "./body.ts";
+import { fakeWav, handWritten, type Written } from "./body.ts";
+import { firstParts, grow, wholeRows, type Growing } from "../../mind/cores/board.ts";
+import type { Limits } from "../../mind/cores/beats.ts";
+import { fresh } from "./temp.ts";
 
 const root = join(import.meta.dirname, "..", "..");
 const headless = join(root, "body", ".build", "debug", "paral-headless");
@@ -39,4 +42,78 @@ export function boardFits(input: { lines: string[]; rows: Written[]; at: number[
     top = box.y;
     return { asTallAsItsRowsNeed: Math.abs(box.h - alone.h) < 0.5, topStays: stays };
   });
+}
+
+/**
+ * What the film's record says of a growing board: for each number of rows drawn, when the record first says so, and
+ * whether that is once that row's own sentence has begun (`begins`, by row from 1) and before the next row's has;
+ * and whether a board that does not grow writes any such number.
+ */
+export function boardRows(input: { lines: string[]; rows: Written[]; begins: Record<string, number>; plain: Written[] }) {
+  const tokens = join(root, "body", "tokens.json");
+  const record = (name: string, rows: Written[]) => {
+    const dir = handWritten(name, rows, input.lines);
+    execFileSync(headless, ["film", dir, tokens], { encoding: "utf8" });
+    return readFileSync(join(dir, "drawn.jsonl"), "utf8").split("\n").filter(Boolean).map((line) => JSON.parse(line) as { at: number; what: string; rows?: number }).filter((item) => item.what === "board");
+  };
+  const grew = record("board-rows", input.rows);
+  const first = new Map<number, number>();
+  for (const item of grew) if (item.rows !== undefined && !first.has(item.rows)) first.set(item.rows, item.at);
+  return {
+    rowsInOrder: [...first.keys()],
+    eachWithItsOwnSentence: [...first].map(([rows, at]) => at >= input.begins[String(rows)] && (input.begins[String(rows + 1)] === undefined || at < input.begins[String(rows + 1)])),
+    aBoardThatDoesNotGrowSaysNoRows: record("board-plain", input.plain).every((item) => item.rows === undefined),
+  };
+}
+
+/**
+ * The whole chain for a board that grows with its answer, with no network: the headless body plays the asks against
+ * the mind on a tape, the run is filmed, and the film's record is set against when each sentence was voiced. For the
+ * last ask: how many sentences it had, how many rows the record ends on, whether the card was up before its first
+ * sentence began, and for each row whether it came once its own sentence had begun and before that sentence ended
+ * (to a frame, 34 ms). For the asks before it: whether their boards came whole, with no row count in the record.
+ */
+export function wholeOnFilm(input: { lines: string[]; tape: string; asks: string[] }) {
+  const dir = fresh("whole");
+  mkdirSync(dir, { recursive: true });
+  const page = join(dir, "page.png");
+  execFileSync(headless, ["page", page, ...input.lines], { encoding: "utf8" });
+  const asks = input.asks.map((words, index) => (fakeWav(join(dir, `ask-${index + 1}.wav`), words), { wav: join(dir, `ask-${index + 1}.wav`), trail: [], startAfter: "idle" }));
+  writeFileSync(join(dir, "flow.json"), JSON.stringify({ v: 1, display: { id: 2, scale: 1, x: 0, y: 0, w: 1600, h: 1000 }, page, asks }));
+  const quiet = { cwd: root, encoding: "utf8" as const, stdio: ["ignore", "pipe", "pipe"] as ["ignore", "pipe", "pipe"] };
+  execFileSync("./flow", [join(dir, "flow.json")], { ...quiet, env: { ...process.env, PARAL_TAPE: join(root, "test", "tapes", input.tape) } });
+  execFileSync("./film", [dir], quiet);
+  const rows = readFileSync(join(dir, "session.jsonl"), "utf8").split("\n").filter(Boolean).map((row) => JSON.parse(row) as { at: number; line: any });
+  const drawn = readFileSync(join(dir, "drawn.jsonl"), "utf8").split("\n").filter(Boolean).map((line) => JSON.parse(line) as { at: number; what: string; id?: string; rows?: number });
+  const last = rows.findLast((row) => row.line.type === "say")!.line.id as string;
+  // When each sentence of the last ask is voiced, as the scene works it out: its sound's first arrival, or the end of the one before.
+  const voiced = new Map<number, { start: number; end: number }>();
+  let cursor = -Infinity;
+  for (const beat of [...new Set(rows.filter((row) => row.line.type === "say" && row.line.id === last).map((row) => row.line.beat as number))].sort((a, b) => a - b)) {
+    const sound = rows.filter((row) => row.line.type === "voice" && row.line.id === last && row.line.beat === beat && row.line.pcm !== "");
+    if (sound.length === 0) break;
+    const start = Math.max(sound[0].at, cursor);
+    cursor = start + sound.reduce((bytes, row) => bytes + Buffer.from(row.line.pcm, "base64").length, 0) / 48;
+    voiced.set(beat, { start, end: cursor });
+  }
+  const own = [...voiced].filter(([beat]) => beat >= 0).map(([, times]) => times);
+  const cards = drawn.filter((item) => item.what === "board");
+  const grew = cards.filter((item) => item.id === last);
+  const came = (row: number) => grew.find((item) => (item.rows ?? 0) >= row)?.at;
+  return {
+    sentences: own.length,
+    rowsAtTheEnd: grew.at(-1)?.rows ?? null,
+    boardLinesWithBeats: rows.filter((row) => row.line.type === "board" && row.line.id === last).map((row) => row.line.beats?.length ?? null),
+    theCardIsNotUpBeforeItsFirstSentence: grew.length > 0 && grew[0].at >= own[0].start - 34,
+    eachRow: own.map((times, index) => ({ row: index + 1, cameOnceItsSentenceHadBegun: (came(index + 1) ?? -Infinity) >= times.start - 34, andBeforeItEnded: (came(index + 1) ?? Infinity) <= times.end })),
+    boardsOfTheAsksBeforeCameWhole: cards.filter((item) => item.id !== last).every((item) => item.rows === undefined) && cards.some((item) => item.id !== last),
+  };
+}
+
+/** A growing board's decisions with no body: how many rows the written board is cut to, where each written sentence starts among the spoken ones, and the rows' beats after each spoken sentence (`said`: its beat, or null when it was held back). */
+export function boardGrows(input: { board: string[][]; most: number; rows: number; says: string[]; limits: Limits; said: (number | null)[] }) {
+  const firsts = firstParts(input.says, input.limits);
+  let now: Growing = { beats: [], stopped: false };
+  const after = input.said.map((beat, place) => [...(now = grow(now, input.rows, firsts, place, beat)).beats]);
+  return { rows: wholeRows(input.board, input.most).length, firsts, after, stopped: now.stopped };
 }

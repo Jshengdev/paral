@@ -29,7 +29,7 @@ import { linesToTheMind, pillOnInk } from "./runners/ink.ts";
 import { stopped } from "./runners/stop.ts";
 import { notesRuns } from "./runners/notes.ts";
 import { playTurn } from "./runners/turn.ts";
-import { boardFits, boardType } from "./runners/boards.ts";
+import { boardFits, boardGrows, boardRows, wholeOnFilm, boardType } from "./runners/boards.ts";
 import { filmedPages } from "./runners/pages.ts";
 import { cursor, cursorInside, guide, inkInside, resting, steps, toast, way } from "./runners/placed.ts";
 import { lead } from "./runners/leads.ts";
@@ -63,7 +63,7 @@ const runs: Record<string, (input: any) => unknown> = {
   "beats.wipes": (input) => input.cases.map(([fresh, last, now]: [boolean, string | null, string | null]) => wipes(fresh, last, now)),
   prompts: () =>
     Object.fromEntries(
-      ["answer", "second-look", "opener", "glance", "work-through"].map((name) => [
+      ["answer", "second-look", "opener", "glance", "work-through", "whole-board"].map((name) => [
         name,
         createHash("sha256").update(readFileSync(join(import.meta.dirname, "..", "mind", "prompts", `${name}.md`))).digest("hex").slice(0, 12),
       ]),
@@ -98,6 +98,8 @@ const runs: Record<string, (input: any) => unknown> = {
   "body.linesToTheMind": linesToTheMind,
   "body.boardType": boardType,
   "body.boardFits": boardFits,
+  "body.boardRows": boardRows,
+  "body.wholeOnFilm": wholeOnFilm,
   "body.pages": filmedPages,
   "body.nudge": nudge,
   "body.order": order,
@@ -112,6 +114,9 @@ const runs: Record<string, (input: any) => unknown> = {
   catch: (input) => input.events.reduce(hear, silence),
   "catch.unasked": (input) => Object.fromEntries(input.holds.map((words: string) => [words, unasked(words, input.filler)])),
   "catch.only": (input) => Object.fromEntries(input.asks.map((words: string) => [words, saysOnly(words, input.phrases)])),
+  // Which of his words ask for the whole thing drawn, by the setting itself: the list is what a row should hold.
+  "board.asks": (input) => Object.fromEntries(input.asks.map((words: string) => [words, asksFor(words, settings.wholeBoardAsks.value)])),
+  "board.grows": boardGrows,
   "catch.drawing": (input) => Object.fromEntries(input.asks.map((words: string) => [words, asksFor(words, input.phrases)])),
   "page.which": (input) => whichPage(input.seen, input.kept, input.least)?.name ?? null,
   "page.moved": (input) => input.cases.map(([then, now]: [any[], any[]]) => movedUnder(then, now, input.least)),

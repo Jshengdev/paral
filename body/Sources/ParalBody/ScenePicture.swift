@@ -121,6 +121,13 @@ extension Scene {
 
     func board(at t: Double) -> BoardPicture? {
         guard let board = boards.last(where: { $0.at <= t && ($0.clearedAt.map { t < $0 } ?? true) }) else { return nil }
+        // A board that grows with its answer draws each row as that row's own sentence begins (`SceneBoards.swift`).
+        if board.beats != nil {
+            guard let up = grown(board, at: t) else { return nil }
+            let coming = still ? 1 : tokens.curves.travel((t - up.newest) / max(ms(tokens.motion.usualMs), 1))
+            let appear = still ? 1 : arriving(since: max(boardSince(board), up.first), at: t)
+            return BoardPicture(id: board.id, rows: board.rows, shown: up.shown, appear: appear, filled: 1, room: board.room, now: board.now, coming: coming, growing: true)
+        }
         let ask = asks.first { $0.id == board.id }
         let begun = ask.map { times($0).filter { $0.beat >= 0 && $0.start <= t }.count } ?? board.rows.count
         let over = ask.map { ask in times(ask).last.map { $0.end <= t && $0.beat == ask.beats.keys.max() } ?? false } ?? true

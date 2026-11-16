@@ -124,8 +124,13 @@ export const FromMind = z.discriminatedUnion("type", [
   /** In place of a mark, when the thing is on this page and not in view: which way to scroll, and the name of what it leads to. `clear` wipes it. */
   z.object({ v, type: z.literal("way"), id, to: z.enum(["up", "down"]), toward: z.string().min(1) }),
   z.object({ v, type: z.literal("echo"), id, box: Box, shape: z.enum(["loop", "ring", "box"]) }),
-  /** `now` is only on a board of steps, one to a row: the number of the row, from 0, that is the step he is on. */
-  z.object({ v, type: z.literal("board"), id, rows: z.array(z.array(z.string().min(1)).min(1)), now: z.number().int().nonnegative().optional() }),
+  /**
+   * `now` is only on a board of steps, one to a row: the number of the row, from 0, that is the step he is on.
+   * `beats` is only on a board that grows with its answer: for each of its first rows, the number of the sentence
+   * (the `say` line's beat) that row comes with. A row with no beat yet is not drawn. The mind sends the same rows
+   * again with one more beat as each sentence is said; the card comes up when the first of those sentences begins.
+   */
+  z.object({ v, type: z.literal("board"), id, rows: z.array(z.array(z.string().min(1)).min(1)), now: z.number().int().nonnegative().optional(), beats: z.array(z.number().int().nonnegative()).optional() }),
   z.object({ v, type: z.literal("board.close"), id }),
   z.object({ v, type: z.literal("clip"), id, name: z.string().min(1), clip: z.string().min(1), still: z.string().min(1), seconds: z.number().positive() }),
   z.object({ v, type: z.literal("clear") }),

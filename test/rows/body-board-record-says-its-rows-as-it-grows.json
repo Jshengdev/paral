@@ -1,0 +1,281 @@
+{
+ "name": "body: the film's record says how many rows of a growing board are drawn, each time its card changes: one, then two, three and four, each first written after its own sentence has begun and before the next has; a board that does not grow writes no such number",
+ "run": "body.boardRows",
+ "in": {
+  "lines": [
+   "Milestone 2 is done",
+   "Sign-up works with email and password.",
+   "Links are made on the server.",
+   "Clicks are counted per link.",
+   "Next: the dashboard",
+   "Charts by day"
+  ],
+  "rows": [
+   {
+    "at": 500,
+    "line": {
+     "type": "key.down"
+    }
+   },
+   {
+    "at": 1500,
+    "line": {
+     "type": "key.up"
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 0,
+     "text": "One moment, I am reading the page.",
+     "aside": true
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "mute",
+     "id": "t1",
+     "why": "a row"
+    }
+   },
+   {
+    "at": 3500,
+    "line": {
+     "type": "board",
+     "id": "t1",
+     "rows": [
+      [
+       "Sign up",
+       "Email and password"
+      ],
+      [
+       "Make a link",
+       "Paste a long address"
+      ],
+      [
+       "Share it"
+      ],
+      [
+       "Someone clicks",
+       "Count goes up"
+      ],
+      [
+       "Dashboard",
+       "Clicks by day"
+      ]
+     ],
+     "beats": [
+      1
+     ]
+    }
+   },
+   {
+    "at": 3500,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 1,
+     "text": "A student signs up with an email address first."
+    }
+   },
+   {
+    "at": 3600,
+    "line": {
+     "type": "board",
+     "id": "t1",
+     "rows": [
+      [
+       "Sign up",
+       "Email and password"
+      ],
+      [
+       "Make a link",
+       "Paste a long address"
+      ],
+      [
+       "Share it"
+      ],
+      [
+       "Someone clicks",
+       "Count goes up"
+      ],
+      [
+       "Dashboard",
+       "Clicks by day"
+      ]
+     ],
+     "beats": [
+      1,
+      2
+     ]
+    }
+   },
+   {
+    "at": 3600,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 2,
+     "text": "Then the app makes a short link for them."
+    }
+   },
+   {
+    "at": 3700,
+    "line": {
+     "type": "board",
+     "id": "t1",
+     "rows": [
+      [
+       "Sign up",
+       "Email and password"
+      ],
+      [
+       "Make a link",
+       "Paste a long address"
+      ],
+      [
+       "Share it"
+      ],
+      [
+       "Someone clicks",
+       "Count goes up"
+      ],
+      [
+       "Dashboard",
+       "Clicks by day"
+      ]
+     ],
+     "beats": [
+      1,
+      2,
+      3
+     ]
+    }
+   },
+   {
+    "at": 3700,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 3,
+     "text": "Each click on the link is counted."
+    }
+   },
+   {
+    "at": 3800,
+    "line": {
+     "type": "board",
+     "id": "t1",
+     "rows": [
+      [
+       "Sign up",
+       "Email and password"
+      ],
+      [
+       "Make a link",
+       "Paste a long address"
+      ],
+      [
+       "Share it"
+      ],
+      [
+       "Someone clicks",
+       "Count goes up"
+      ],
+      [
+       "Dashboard",
+       "Clicks by day"
+      ]
+     ],
+     "beats": [
+      1,
+      2,
+      3,
+      4
+     ]
+    }
+   },
+   {
+    "at": 3800,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 4,
+     "text": "The dashboard shows the count."
+    }
+   }
+  ],
+  "begins": {
+   "1": 5100,
+   "2": 7800,
+   "3": 10500,
+   "4": 12600
+  },
+  "plain": [
+   {
+    "at": 500,
+    "line": {
+     "type": "key.down"
+    }
+   },
+   {
+    "at": 1500,
+    "line": {
+     "type": "key.up"
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "board",
+     "id": "t1",
+     "rows": [
+      [
+       "Sign up",
+       "Email and password"
+      ],
+      [
+       "Make a link",
+       "Paste a long address"
+      ]
+     ]
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 0,
+     "text": "A student signs up with an email address first."
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "mute",
+     "id": "t1",
+     "why": "a row"
+    }
+   }
+  ]
+ },
+ "out": {
+  "rowsInOrder": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "eachWithItsOwnSentence": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "aBoardThatDoesNotGrowSaysNoRows": true
+ }
+}

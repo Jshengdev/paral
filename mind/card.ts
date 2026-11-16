@@ -35,6 +35,17 @@ export function card({ settings, send, log }: Hands, asking: Asking, drew: (even
       drew({ type: "board.drawn", rows });
       log(`${id}: the board at ${since()} ms from the release`);
     },
+    /**
+     * A board that grows with its answer: all its rows, and the beats of the rows that have a sentence so far. It is
+     * sent again with one more beat as each sentence is said; the app draws a row when its sentence begins.
+     */
+    grow(rows: string[][], beats: number[]) {
+      if (rows.length === 0 || beats.length === 0) return;
+      if (!filled) log(`${id}: the board's first row goes with its sentence at ${since()} ms from the release; it has ${rows.length} rows to grow to`);
+      filled = true;
+      open = false;
+      send({ v, type: "board", id, rows, beats });
+    },
     /** Takes an empty card away, since no board is coming. */
     close(why: string) {
       if (!open || signal.aborted) return;

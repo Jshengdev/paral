@@ -2,6 +2,7 @@ import type { Asking, Hands } from "./ask.ts";
 import type { card } from "./card.ts";
 import type { lessonClip } from "./clip.ts";
 import { explain, WHOLE, type Planned } from "./cores/beats.ts";
+import { firstParts, grow, wholeRows, type Growing } from "./cores/board.ts";
 import { unknownDate, worded } from "./cores/dates.ts";
 import type { HoldEvent } from "./cores/hold.ts";
 import { givesAway } from "./cores/push.ts";
@@ -19,6 +20,8 @@ type With = {
   drew(event: HoldEvent): void;
   /** Everything a date may be taken from: his words, the lines on his screen, and the kept pages given with this ask. */
   sources: string[];
+  /** Whether he asked for the whole thing drawn: more sentences, and a board that grows a row with each (`cores/board.ts`). */
+  whole: boolean;
 };
 
 /**
@@ -26,7 +29,7 @@ type With = {
  * while it arrives: the board goes out when it is whole, the first mark ahead of its sentence, and each sentence when
  * it is finished. With a lesson clip coming it is one sentence and no board.
  */
-export function explanation({ settings, send, log }: Hands, asking: Asking, { talk, board, clip, lead, drew, sources }: With) {
+export function explanation({ settings, send, log }: Hands, asking: Asking, { talk, board, clip, lead, drew, sources, whole }: With) {
   const { id, seen } = asking;
   const since = () => Date.now() - asking.releasedAt;
   /** How many of its sentences are out, and whether the first mark went out ahead of its sentence. */
@@ -35,9 +38,29 @@ export function explanation({ settings, send, log }: Hands, asking: Asking, { ta
   /** Sentences that were not said, since they named a date found on no page paral has read. */
   const held = new Set<string>();
 
+  /** How many sentences it may have, and how long each may be before it is spoken as two. */
+  const most = () => (clip.on() ? 1 : whole ? settings.wholeBoardMost.value : settings.maxBeats.value);
+  const breath = () => (clip.on() ? WHOLE : settings.sentenceMaxWords.value);
+  /** Asked for the whole thing: the board's rows, where each written sentence starts among the spoken ones, and the rows said so far. */
+  let rows: string[][] = [];
+  let firsts: number[] = [];
+  let growing: Growing = { beats: [], stopped: false };
+  /** A spoken sentence has gone by, said on `beat` or held back (null): the board grows by its row, if it has one. */
+  const grows = (place: number, beat: number | null) => {
+    const next = whole && !clip.on() ? grow(growing, rows.length, firsts, place, beat) : growing;
+    if (next === growing) return;
+    growing = next;
+    if (beat !== null) board.grow(rows, growing.beats);
+  };
+
   /** The reply so far as sentences, each with its mark found on his screen. */
   const planned = (reply: { result?: string | null; beats: Answered["beats"] }) =>
-    explain({ result: reply.result ?? null, beats: reply.beats }, seen.lines, seen.display, settings.groundMinScore.value, clip.on() ? 1 : settings.maxBeats.value, settings.ringReach.value, clip.on() ? WHOLE : settings.sentenceMaxWords.value);
+    explain({ result: reply.result ?? null, beats: reply.beats }, seen.lines, seen.display, settings.groundMinScore.value, most(), settings.ringReach.value, breath());
+  /** The same, for the answer's own sentences: it also notes where each written sentence starts among the spoken ones. */
+  const plan = (reply: { result?: string | null; beats: Answered["beats"] }) => {
+    firsts = firstParts(reply.beats.slice(0, most()).map((beat) => beat.say), breath());
+    return planned(reply);
+  };
 
   const draw = (beat: number, mark: NonNullable<Planned["mark"]>) => {
     send({ v, type: "mark", id, beat, kind: mark.kind, box: mark.box, ...(mark.label ? { label: mark.label } : {}) });
@@ -54,8 +77,10 @@ export function explanation({ settings, send, log }: Hands, asking: Asking, { ta
       if (made) {
         held.add(say);
         log(`${id}: push held back a sentence that names a date found on no page it has read (${worded(made)}); it was: "${say}"`);
+        grows(told, null);
         continue;
       }
+      grows(told, beat);
       send({ v, type: "say", id, beat, text: say });
       if (mark && !(told === 0 && markOut)) draw(beat, mark);
       talk.speak(beat, say);
@@ -80,10 +105,11 @@ export function explanation({ settings, send, log }: Hands, asking: Asking, { ta
     markOut: () => markOut,
     /** Part of the answer has arrived: the board once it is whole, the first mark, and each finished sentence. */
     arriving(part: Part) {
-      if (!clip.on()) board.fill(part.board);
+      if (whole) rows = rows.length > 0 ? rows : wholeRows(part.board, most());
+      else if (!clip.on()) board.fill(part.board);
       if (part.board === null) board.close("the answer has no board");
       markAhead(part);
-      tell(planned(part));
+      tell(plan(part));
     },
     /**
      * The whole answer is here: the sentences still to say, then the board. An answer that gives his result away is
@@ -91,15 +117,18 @@ export function explanation({ settings, send, log }: Hands, asking: Asking, { ta
      * sentences were said.
      */
     finish(answered: Answered): boolean {
-      let sentences = planned(answered);
+      let sentences = plan(answered);
       const leak = givesAway(sentences, answered.result);
+      // The rows are set before the last sentences are said; an answer held back, or one with a clip, has none.
+      if (whole) rows = leak || clip.on() ? [] : rows.length > 0 ? rows : wholeRows(answered.board, most());
       if (leak) {
         log(`${id}: push held back an explanation that gave the result away; it was: "${sentences.map((beat) => beat.say).join(" ")}"`);
         sentences = [{ say: settings.heldBackLine.value, mark: null }];
         clip.drop();
       }
       tell(sentences);
-      board.fill(leak || clip.on() ? null : answered.board);
+      if (!whole) board.fill(leak || clip.on() ? null : answered.board);
+      else if (growing.beats.length > 0) drew({ type: "board.drawn", rows: rows.slice(0, growing.beats.length) });
       board.close("no board came");
       drew({ type: "break.fixed" });
       // A sentence held back for a date is never left out in silence: what is left can sound like the whole answer.

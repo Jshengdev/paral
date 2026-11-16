@@ -1,0 +1,148 @@
+{
+ "name": "turn: when a sentence of a whole board names a date that is on no page, it is not said, and the board stops at the row before it: the later sentences are said with no rows, and he is told a part was left out",
+ "run": "turn",
+ "in": {
+  "tape": "whole.json",
+  "show": "whole",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1005,
+     "display": {
+      "id": 1,
+      "scale": 1,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Milestone 2 is done",
+       "box": {
+        "x": 100,
+        "y": 100,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "Sign-up works with email and password.",
+       "box": {
+        "x": 100,
+        "y": 180,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "Links are made on the server.",
+       "box": {
+        "x": 100,
+        "y": 260,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "Clicks are counted per link.",
+       "box": {
+        "x": 100,
+        "y": 340,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "Next: the dashboard",
+       "box": {
+        "x": 100,
+        "y": 420,
+        "w": 620,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "Draw the whole thing, start to finish, with the dates."
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 2100
+    }
+   ]
+  ]
+ },
+ "out": {
+  "asked": [
+   {
+    "words": "Draw the whole thing, start to finish, with the dates.",
+    "whole": true
+   }
+  ],
+  "lines": [
+   {
+    "type": "board",
+    "id": "t1",
+    "rows": [
+     [
+      "Sign up",
+      "Email",
+      "Password"
+     ],
+     [
+      "Sign in",
+      "Paste a long address"
+     ],
+     [
+      "Server",
+      "Short link"
+     ],
+     [
+      "Share the link"
+     ]
+    ],
+    "beats": [
+     0
+    ]
+   },
+   {
+    "type": "say",
+    "id": "t1",
+    "beat": 0,
+    "text": "Someone signs up with an email and a password."
+   },
+   {
+    "type": "say",
+    "id": "t1",
+    "beat": 2,
+    "text": "The server makes a short link for it."
+   },
+   {
+    "type": "say",
+    "id": "t1",
+    "beat": 3,
+    "text": "They share the short link anywhere."
+   },
+   {
+    "type": "say",
+    "id": "t1",
+    "beat": 4,
+    "text": "I left out part of that: it named a date I could not find on a page I have read."
+   }
+  ],
+  "drawn": []
+ }
+}

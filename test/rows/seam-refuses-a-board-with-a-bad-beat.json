@@ -1,0 +1,12 @@
+{
+ "name": "seam: a board line whose beats are not whole numbers from 0 is refused",
+ "run": "seam.read",
+ "in": {
+  "from": "mind",
+  "text": "{\"v\": 1, \"type\": \"board\", \"id\": \"t1\", \"rows\": [[\"Sign up\", \"Email and password\"], [\"Make a link\", \"Paste a long address\"], [\"Share it\"]], \"beats\": [1, -2]}"
+ },
+ "out": {
+  "ok": false,
+  "why": "beats.1: Too small: expected number to be >=0"
+ }
+}

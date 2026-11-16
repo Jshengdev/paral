@@ -8,6 +8,8 @@ public struct Drawn: Equatable {
     public var type: Double?
     /// For a mark and for a drawn arrow: the points the pen has inked so far, in the order it draws them.
     public var path: [CGPoint]?
+    /// For a board that grows with its answer: how many of its rows are drawn.
+    public var rows: Int?
 }
 
 func color(_ hex: String, alpha: Double = 1) -> CGColor {
@@ -108,7 +110,7 @@ public struct Painter {
         drawn += tags(picture.tags, ctx)
         if let board = picture.board {
             let placed = self.board(board, clock: picture.clock, ctx)
-            drawn.append(Drawn(what: "board", id: board.id, box: placed.card, type: placed.type))
+            drawn.append(Drawn(what: "board", id: board.id, box: placed.card, type: placed.type, rows: board.growing ? min(board.shown, board.rows.count) : nil))
             // The lit row of a board of steps is named too, with its number, so a film's record says which step is lit.
             if let now = board.now, let lit = placed.lit { drawn.append(Drawn(what: "step", id: "\(board.id)/\(now)", box: lit)) }
         }

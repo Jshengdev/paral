@@ -1,0 +1,283 @@
+{
+ "answers": {
+  "what does this mean": [
+   {
+    "problem": "What Milestone 2 covers",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "Milestone 2 is the part that makes and counts links.",
+      "mark": null
+     },
+     {
+      "say": "Sign-up comes first.",
+      "mark": null
+     },
+     {
+      "say": "Then links, then clicks.",
+      "mark": null
+     },
+     {
+      "say": "A fourth sentence that is past the cap.",
+      "mark": null
+     }
+    ],
+    "board": [
+     [
+      "sign-up",
+      "links",
+      "clicks"
+     ],
+     [
+      "dashboard next"
+     ]
+    ]
+   }
+  ],
+  "draw out the whole thing for me start to finish": [
+   {
+    "problem": "How the link shortener works, start to finish",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "Someone signs up with an email and a password.",
+      "mark": {
+       "kind": "underline",
+       "index": 1,
+       "quote": "Sign-up works with email and password.",
+       "label": null
+      }
+     },
+     {
+      "say": "Signed in, they paste a long address.",
+      "mark": null
+     },
+     {
+      "say": "The server makes a short link for it.",
+      "mark": {
+       "kind": "underline",
+       "index": 2,
+       "quote": "Links are made on the server.",
+       "label": null
+      }
+     },
+     {
+      "say": "They share the short link anywhere.",
+      "mark": null
+     },
+     {
+      "say": "Each click on it is counted.",
+      "mark": {
+       "kind": "underline",
+       "index": 3,
+       "quote": "Clicks are counted per link.",
+       "label": null
+      }
+     },
+     {
+      "say": "The dashboard, still to come, will chart the clicks.",
+      "mark": null
+     }
+    ],
+    "board": [
+     [
+      "Sign up",
+      "Email",
+      "Password"
+     ],
+     [
+      "Sign in",
+      "Paste a long address"
+     ],
+     [
+      "Server",
+      "Short link"
+     ],
+     [
+      "Share the link"
+     ],
+     [
+      "A click",
+      "Count goes up"
+     ],
+     [
+      "Dashboard",
+      "Clicks by day"
+     ]
+    ]
+   }
+  ],
+  "can you draw a full board of how this works start to finish": [
+   {
+    "problem": "How the link shortener works, start to finish",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "Someone signs up with an email and a password.",
+      "mark": {
+       "kind": "underline",
+       "index": 1,
+       "quote": "Sign-up works with email and password.",
+       "label": null
+      }
+     },
+     {
+      "say": "Signed in, they paste a long address.",
+      "mark": null
+     },
+     {
+      "say": "The server makes a short link for it.",
+      "mark": {
+       "kind": "underline",
+       "index": 2,
+       "quote": "Links are made on the server.",
+       "label": null
+      }
+     },
+     {
+      "say": "They share the short link anywhere.",
+      "mark": null
+     },
+     {
+      "say": "Each click on it is counted.",
+      "mark": {
+       "kind": "underline",
+       "index": 3,
+       "quote": "Clicks are counted per link.",
+       "label": null
+      }
+     }
+    ],
+    "board": [
+     [
+      "Sign up",
+      "Email",
+      "Password"
+     ],
+     [
+      "Sign in",
+      "Paste a long address"
+     ],
+     [
+      "Server",
+      "Short link"
+     ],
+     [
+      "Share the link"
+     ],
+     [
+      "A click",
+      "Count goes up"
+     ],
+     [
+      "Dashboard",
+      "Clicks by day"
+     ],
+     [
+      "A seventh row"
+     ],
+     [
+      "An eighth row"
+     ]
+    ]
+   }
+  ],
+  "draw the whole thing start to finish with the dates": [
+   {
+    "problem": "How the link shortener works, start to finish",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "Someone signs up with an email and a password.",
+      "mark": {
+       "kind": "underline",
+       "index": 1,
+       "quote": "Sign-up works with email and password.",
+       "label": null
+      }
+     },
+     {
+      "say": "Links opened to everyone on March 3.",
+      "mark": null
+     },
+     {
+      "say": "The server makes a short link for it.",
+      "mark": {
+       "kind": "underline",
+       "index": 2,
+       "quote": "Links are made on the server.",
+       "label": null
+      }
+     },
+     {
+      "say": "They share the short link anywhere.",
+      "mark": null
+     }
+    ],
+    "board": [
+     [
+      "Sign up",
+      "Email",
+      "Password"
+     ],
+     [
+      "Sign in",
+      "Paste a long address"
+     ],
+     [
+      "Server",
+      "Short link"
+     ],
+     [
+      "Share the link"
+     ]
+    ]
+   }
+  ],
+  "draw my whole thing start to finish": [
+   {
+    "problem": "Solve for x: 2(x + 3) = 14",
+    "breakLine": "Links are made on the server.",
+    "breakIndex": 2,
+    "result": "x = 4",
+    "beats": [
+     {
+      "say": "Read that line again: what happens to the 3?",
+      "mark": null
+     }
+    ],
+    "board": [
+     [
+      "Sign up",
+      "Email",
+      "Password"
+     ],
+     [
+      "Sign in",
+      "Paste a long address"
+     ],
+     [
+      "Server",
+      "Short link"
+     ],
+     [
+      "Share the link"
+     ],
+     [
+      "A click",
+      "Count goes up"
+     ],
+     [
+      "Dashboard",
+      "Clicks by day"
+     ]
+    ]
+   }
+  ]
+ },
+ "leaks": []
+}

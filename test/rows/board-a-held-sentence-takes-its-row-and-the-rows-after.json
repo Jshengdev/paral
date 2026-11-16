@@ -1,0 +1,63 @@
+{
+ "name": "board: a sentence that was held back and not said takes its row with it, and every row after: the board stops growing there, since a row no sentence said is never drawn and a board grows only downward",
+ "run": "board.grows",
+ "in": {
+  "board": [
+   [
+    "a"
+   ],
+   [
+    "b"
+   ],
+   [
+    "c"
+   ],
+   [
+    "d"
+   ]
+  ],
+  "most": 6,
+  "rows": 4,
+  "says": [
+   "One.",
+   "Two names a date.",
+   "Three.",
+   "Four."
+  ],
+  "limits": {
+   "plain": 22,
+   "withNumbers": 14,
+   "letters": 110
+  },
+  "said": [
+   1,
+   null,
+   3,
+   4
+  ]
+ },
+ "out": {
+  "rows": 4,
+  "firsts": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "after": [
+   [
+    1
+   ],
+   [
+    1
+   ],
+   [
+    1
+   ],
+   [
+    1
+   ]
+  ],
+  "stopped": true
+ }
+}

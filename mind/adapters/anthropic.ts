@@ -16,8 +16,12 @@ const DOT = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwA
 
 type Usage = { input_tokens: number; output_tokens: number; cache_creation_input_tokens?: number | null; cache_read_input_tokens?: number | null };
 type Log = (line: string) => void;
-/** `workThrough` is added to the answer's prompt only for a step of the working he asked to have worked through. */
-export type Prompts = { answer: string; secondLook: string; opener: string; glance: string; workThrough?: string };
+/**
+ * `workThrough` is added to the answer's prompt only for a step of the working he asked to have worked through.
+ * `wholeBoard` is added after the ask's own words, only when he asked for the whole thing drawn: the prompt and the
+ * kept pages before it stay as they are, so the service still has them kept.
+ */
+export type Prompts = { answer: string; secondLook: string; opener: string; glance: string; workThrough?: string; wholeBoard?: string };
 
 
 /** Claude behind three ports. The client is built here; a row may hand in a stand-in instead. */
@@ -96,6 +100,8 @@ export function anthropic(settings: Settings, prompts: Prompts, log: Log, client
         // A step of the working is asked with the answer's prompt and its own added, in its own shape; nothing else changes.
         const walk = asked.walk;
         if (walk && !prompts.workThrough) throw new Error("the work-through prompt was not loaded");
+        if (asked.whole && !prompts.wholeBoard) throw new Error("the whole-board prompt was not loaded");
+        const words = walk ? walking({ ...asked, walk }, settings.workThroughSpotsMost.value) : asked.whole ? `${asking(asked)}\n\n${prompts.wholeBoard}` : asking(asked);
         const stream = client.beta.messages.stream(
           {
             model,
@@ -106,7 +112,7 @@ export function anthropic(settings: Settings, prompts: Prompts, log: Log, client
             betas: ["server-side-fallback-2026-07-01"],
             fallbacks: "default",
             output_config: { effort: settings.brainEffort.value, format: walk ? betaZodOutputFormat(Walk) : betaZodOutputFormat(Reply) },
-            messages: [{ role: "user", content: [...pages, ...picture, { type: "text", text: walk ? walking({ ...asked, walk }, settings.workThroughSpotsMost.value) : asking(asked) }] }],
+            messages: [{ role: "user", content: [...pages, ...picture, { type: "text", text: words }] }],
           },
           { signal },
         );

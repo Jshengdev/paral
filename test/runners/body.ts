@@ -41,7 +41,7 @@ export function landing(input: { pages: Page[]; minScore: number; minOverlap: nu
   return { ...count, missed };
 }
 
-function fakeWav(path: string, words: string) {
+export function fakeWav(path: string, words: string) {
   const data = Buffer.from(words);
   const head = Buffer.alloc(44);
   head.write("RIFF", 0);

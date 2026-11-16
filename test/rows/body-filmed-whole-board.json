@@ -1,0 +1,64 @@
+{
+ "name": "body: the whole chain for a board that grows, on a tape with a voice: after an ordinary ask whose board comes whole, he asks for the whole thing drawn; the answer is six voiced sentences after a quick line, the board is sent six times with one more beat each, the card is not up before the first of those sentences begins, each row is drawn once its own sentence has begun and before it ends, and the film's record ends on six rows",
+ "run": "body.wholeOnFilm",
+ "in": {
+  "lines": [
+   "Milestone 2 is done",
+   "Sign-up works with email and password.",
+   "Links are made on the server.",
+   "Clicks are counted per link.",
+   "Next: the dashboard"
+  ],
+  "tape": "whole-filmed.json",
+  "asks": [
+   "what does this mean",
+   "Draw out the whole thing for me, start to finish."
+  ]
+ },
+ "out": {
+  "sentences": 6,
+  "rowsAtTheEnd": 6,
+  "boardLinesWithBeats": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "theCardIsNotUpBeforeItsFirstSentence": true,
+  "eachRow": [
+   {
+    "row": 1,
+    "cameOnceItsSentenceHadBegun": true,
+    "andBeforeItEnded": true
+   },
+   {
+    "row": 2,
+    "cameOnceItsSentenceHadBegun": true,
+    "andBeforeItEnded": true
+   },
+   {
+    "row": 3,
+    "cameOnceItsSentenceHadBegun": true,
+    "andBeforeItEnded": true
+   },
+   {
+    "row": 4,
+    "cameOnceItsSentenceHadBegun": true,
+    "andBeforeItEnded": true
+   },
+   {
+    "row": 5,
+    "cameOnceItsSentenceHadBegun": true,
+    "andBeforeItEnded": true
+   },
+   {
+    "row": 6,
+    "cameOnceItsSentenceHadBegun": true,
+    "andBeforeItEnded": true
+   }
+  ],
+  "boardsOfTheAsksBeforeCameWhole": true
+ }
+}

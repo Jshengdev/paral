@@ -30,6 +30,8 @@ export type Asked = {
   fresh: boolean;
   /** Present only when the switch is on and he asked to have the exercise worked through: the steps given so far, in order. */
   walk?: { steps: string[] };
+  /** Present only when his words ask for the whole thing drawn, start to finish: the answer may be longer and its board has a row a sentence. */
+  whole?: true;
 };
 
 export const Beat = z.object({

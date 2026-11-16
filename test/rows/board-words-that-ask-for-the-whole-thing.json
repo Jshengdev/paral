@@ -1,0 +1,28 @@
+{
+ "name": "board: which of his words ask for the whole thing drawn: a word for drawing with a word for the whole (the judge's two wordings and the video's own); a plain ask for a drawing, the map he asks for (\"draw out everything I have to do, in order\"), and a question that only says \"start to finish\" do not",
+ "run": "board.asks",
+ "in": {
+  "asks": [
+   "Draw out the whole thing for me, start to finish: how someone signs up, makes a link, and sees its clicks.",
+   "Can you draw a full board of how this works, start to finish?",
+   "could you finally draw a full-scale blackboard explanation of start to finish how this works",
+   "Put it on a board for me from start to finish.",
+   "Can you draw out everything I have to do, in order?",
+   "can you draw how these steps connect?",
+   "How long does recognition take from start to finish?",
+   "what does this whole thing mean?",
+   "I withdrew the whole thing last week."
+  ]
+ },
+ "out": {
+  "Draw out the whole thing for me, start to finish: how someone signs up, makes a link, and sees its clicks.": true,
+  "Can you draw a full board of how this works, start to finish?": true,
+  "could you finally draw a full-scale blackboard explanation of start to finish how this works": true,
+  "Put it on a board for me from start to finish.": true,
+  "Can you draw out everything I have to do, in order?": false,
+  "can you draw how these steps connect?": false,
+  "How long does recognition take from start to finish?": false,
+  "what does this whole thing mean?": false,
+  "I withdrew the whole thing last week.": false
+ }
+}
