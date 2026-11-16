@@ -222,8 +222,8 @@ the look it is taking before it exits; an exercise can be worked through step by
 off (`PARAL_WORK_THROUGH=1 ./run`). With those in, the judge's pass over the same 24 students was 1,901 of 1,902
 checks.
 
-**After the event.** Two things the demo video does that the build did not were added that evening, once the
-judging was over. Asked for the whole thing drawn, start to finish, the answer runs to six sentences and the board
+**After the event.** Two things the tutor in the reference video does that this build did not (the video the
+judge's bars are written from, `exam/README.md`) were added that evening, once the judging was over. Asked for the whole thing drawn, start to finish, the answer runs to six sentences and the board
 grows a row with each. And a follow-up that asks for more than one thing ("would you add anything else?") gets up
 to six sentences. The judge gained three scenarios for them. Over all 27, its pass is 2,015 of 2,019 checks. The
 four that do not pass: a sentence that takes 8.2 seconds to say against a limit of 8, a date said as "December
