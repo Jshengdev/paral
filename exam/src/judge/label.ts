@@ -8,12 +8,22 @@ import { no, unseen, yes, type Verdict } from "../verdict.ts";
 //   21:49.0, 02:09.4, 12:48.2   while the capsule shows the tutor's own words, it reads "Hold fn to talk"
 //   02:08.6, 11:46.4, 12:49.8   the circle alone carries no label
 //   11:48.4 to 11:50, 21:48.4   while he talks it does not tell him to hold the key
-// Ours listens on the right Option key, so its label names that key.
+// Ours can listen on one of six keys, and the run's own record says which (the `ready` line's holdKey). The label
+// must name that key: a fixed line would pass a label that lies on any other key. A Mac has two Option keys, so
+// for the right one the label says right.
 //
 // The label's words and its place are the film's to say; the seam carries neither. The film's record lists the label
-// (`what: "label"`, with its `text`) each time its words or its place change, and with empty words when it goes.
+// (`what: "label"`, with what it `says`) each time its words or its place change, and with null when it goes.
 
-const NAMES_THE_KEY = /\bhold\b.*(\boption\b|⌥)/i;
+const KEY_NAMED: Record<string, RegExp> = {
+  rightOption: /\bright\b.*(\boption\b|⌥)/i,
+  fn: /\bfn\b|\bglobe\b/i,
+  controlOption: /(\bcontrol\b|\bctrl\b|⌃).*(\boption\b|⌥)/i,
+  shift: /\bshift\b|⇧/i,
+  control: /\bcontrol\b|\bctrl\b|⌃/i,
+  command: /\bcommand\b|\bcmd\b|⌘/i,
+};
+const TELLS_HIM_TO_HOLD = /\bhold\b/i;
 const SAYS_WORKING = /\b(working|on it)\b/i;
 // The film is thirty frames a second. A label drawn with the look it belongs to is in the record within three frames.
 const SETTLE_MS = 100;
@@ -21,7 +31,7 @@ const SETTLE_MS = 100;
 const SMALL = 0.5;
 
 const inForce = (rows: Placed[], at: number) => rows.filter((p) => p.at <= at).at(-1);
-const words = (label: Placed | undefined) => (label?.text ?? "").trim();
+const words = (label: Placed | undefined) => (label?.says ?? "").trim();
 const shows = (label: Placed | undefined) => (words(label) === "" ? "no label" : `"${words(label)}"`);
 
 /** The label sits close beside the capsule, is smaller than it, and is not over it. */
@@ -37,8 +47,8 @@ function placedWell(label: Placed, capsule: Placed): string | null {
   return null;
 }
 
-/** C28, for one ask he made with the key. `until` is where this ask's stretch of the film ends. */
-export function keyLabel(ask: Ask, placed: Placed[], until: number): Verdict[] {
+/** C28, for one ask he made with the key. `until` is where this ask's stretch of the film ends; `key` is the key the run listens on. */
+export function keyLabel(ask: Ask, placed: Placed[], until: number, key: string | null): Verdict[] {
   const s = ask.index;
   const capsule = placed.filter((p) => p.what === "capsule");
   const labels = placed.filter((p) => p.what === "label");
@@ -59,8 +69,10 @@ export function keyLabel(ask: Ask, placed: Placed[], until: number): Verdict[] {
   if (speaking) {
     const names = "While its own words show, the label names the key to hold";
     const label = inForce(labels, speaking.at + SETTLE_MS);
-    const named = NAMES_THE_KEY.test(words(label));
-    out.push(named ? yes("C28", s, names, shows(label)) : no("C28", s, names, shows(label)));
+    const pattern = key === null ? undefined : KEY_NAMED[key];
+    const named = pattern !== undefined && TELLS_HIM_TO_HOLD.test(words(label)) && pattern.test(words(label));
+    const measured = `${shows(label)}, on a run that listens on ${key ?? "a key the record does not name"}`;
+    out.push(pattern === undefined ? unseen("C28", s, names, measured) : named ? yes("C28", s, names, measured) : no("C28", s, names, measured));
     const beside = "The label sits close beside the capsule, smaller than it, and not over it";
     const fault = named ? placedWell(label!, inForce(capsule, speaking.at + SETTLE_MS)!) : null;
     out.push(!named ? unseen("C28", s, beside, "no label names the key, so there is none to place") : fault === null ? yes("C28", s, beside, `${Math.round(label!.box.h)} pt tall`) : no("C28", s, beside, fault));
@@ -68,7 +80,7 @@ export function keyLabel(ask: Ask, placed: Placed[], until: number): Verdict[] {
   if (labels.length === 0) return out;
 
   // While he holds the key, whatever label stood before has had three frames to go.
-  const held = [inForce(labels, ask.down + SETTLE_MS), ...labels.filter((p) => p.at > ask.down + SETTLE_MS && p.at < ask.up!)].find((p) => NAMES_THE_KEY.test(words(p)));
+  const held = [inForce(labels, ask.down + SETTLE_MS), ...labels.filter((p) => p.at > ask.down + SETTLE_MS && p.at < ask.up!)].find((p) => TELLS_HIM_TO_HOLD.test(words(p)));
   const holding = "While he holds the key, the label does not tell him to hold it";
   const when = held && held.at <= ask.down ? "still up three frames into his press" : `${Math.round((held?.at ?? 0) - ask.down)} ms after his press`;
   out.push(held ? no("C28", s, holding, `${shows(held)} ${when}`) : yes("C28", s, holding, "no such label between press and release"));

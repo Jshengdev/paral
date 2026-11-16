@@ -21,7 +21,7 @@ import { heardWhole, voiced } from "./judge/voice.ts";
 import { spoken } from "./judge/words.ts";
 import { runDir } from "./prepare.ts";
 import { readings } from "./readings.ts";
-import { moments, placed } from "./session.ts";
+import { holdKey, moments, placed } from "./session.ts";
 import { sound } from "./sound.ts";
 import { Flow, Truth, findNamed, type Box, type Scenario } from "./shape.ts";
 import { appCommit, BUILD } from "./tools.ts";
@@ -78,6 +78,7 @@ export async function judge(scenario: Scenario): Promise<Judged> {
   }
   const numbered = scenario.steps.map((step, at) => ({ step, truth: truths[at] }));
   const where = await placed(dir);
+  const heldKey = await holdKey(dir);
   const given = await pagesGiven(dir);
   /**
    * Every page read in the sitting by the time something named `name` was said: the pages the record gives under each
@@ -113,7 +114,7 @@ export async function judge(scenario: Scenario): Promise<Judged> {
     if (!takenBack(ask, nextDown)) verdicts.push(...heardWhole(ask, step.say));
     verdicts.push(...marks(ask, step.expect, truth, standingBefore(everything, ask)), ...spoken(ask, step.expect, truth, { pages: readBy(turnOf(ask), ask.down), ranOn: ran }), ...voiced(ask, step.expect, all[index + 1]?.down ?? null),
       ...board(ask, step.expect, truth, where), ...lesson(ask, step.expect), ...cutIn(ask, all[index - 1] ?? null, step.expect, voice), ...pressedAgain(ask, all[index - 1] ?? null, step.expect), ...kept(ask, step.expect), ...walked(ask, step.expect, ran), ...cannotKnow(ask, step.expect), ...wholeBoard(ask, step.expect, where, nextStart), ...fullAnswer(ask, step.expect), ...wayShown("C20", ask.index, ask.moments, step.expect), ...(filmed ? wayDrawn("C20", ask.index, ask.moments, step.expect, where, truth, flow.display) : []));
-    verdicts.push(...keyLabel(ask, where, nextStart));
+    verdicts.push(...keyLabel(ask, where, nextStart, heldKey));
     const drawnBoard = lastBoard(ask.moments, turnOf(ask));
     verdicts.push(...readable("C8", ask.index, drawnBoard.rows, drawnBoard.card, boardLook, drawnBoard.type));
     if (seen) {
