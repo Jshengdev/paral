@@ -270,7 +270,8 @@ not pass:
   once. Both times the answer's first sentence took it back. This fault came with the change: the line was drafted
   from the first six of the question's eleven words, which could not be used before. It is left as it is.
 - three sentences that take 8.2, 8.4 and 9.0 seconds to say against a limit of 8.
-- the same fixed line said twice on one question, after a hint was held back for giving the answer away.
+- the same fixed line and nothing new on a third ask for the answer ("is it eleven?"), after a hint was held back
+  for giving the answer away.
 - a box that reads "Sign up → dashboard", where an arrow belongs between two boxes.
 - a sentence that said "a user" where the page's own heading says "you". It comes and goes between runs.
 
