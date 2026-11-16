@@ -1,0 +1,33 @@
+{
+  "v": 1,
+  "id": "connections-as-a-follow-up",
+  "title": "After an answer about a list, he asks for a drawing of how three things connect",
+  "criteria": [
+    "C8",
+    "C10",
+    "C25"
+  ],
+  "video": "11:50 to 13:26: after earlier answers on the same page he asks how signing up, links and clicks connect; the board is rows of boxes joined across, not a column of the page's list",
+  "page": "milestone",
+  "steps": [
+    {
+      "say": "What does this page say I should see?",
+      "circle": null,
+      "expect": {
+        "opener": true,
+        "sentences": 2,
+        "sentencesMost": 4,
+        "plain": true
+      }
+    },
+    {
+      "say": "Can you draw me a quick diagram of how sign in, creating a link, and the click stats connect in this build?",
+      "circle": null,
+      "expect": {
+        "board": true,
+        "column": false,
+        "plain": true
+      }
+    }
+  ]
+}
