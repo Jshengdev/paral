@@ -1,3 +1,4 @@
+import { board as held } from "./judge/board.ts";
 import { writtenBoard } from "./judge/written.ts";
 import type { Placed } from "./session.ts";
 import type { Ask, Moment } from "./timeline.ts";
@@ -24,7 +25,13 @@ const EACH = "Each line is a whole example of the thing he asked to see";
 const LARGE = "The words are written large";
 const ADDED = "Each line is added as the answer comes to it";
 
+// The older check that a board is a drawing of two boxes or more, on a card that holds one written link.
+const TWO_BOXES = "The board is a drawing of two boxes or more";
+const oneLine = (expect: { written?: string }) => held(asked([...SAID, board(4500, [TWO[0]])]), expect, [], []);
+
 export const WRITTEN_CASES: { name: string; check: string; mustPass: boolean; verdicts: () => Verdict[] }[] = [
+  { name: "one written link on a board of words is not asked for two boxes", check: TWO_BOXES, mustPass: true, verdicts: () => oneLine({ written: LINK }) },
+  { name: "a board of boxes cut down to one box is still caught", check: TWO_BOXES, mustPass: false, verdicts: () => oneLine({}) },
   { name: "two links written as words", check: ALONE, mustPass: true, verdicts: () => judged(TWO, GOOD) },
   { name: "each line a whole short link", check: EACH, mustPass: true, verdicts: () => judged(TWO, GOOD) },
   { name: "the two links at twice a box's size and more", check: LARGE, mustPass: true, verdicts: () => judged(TWO, GOOD) },

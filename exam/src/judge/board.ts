@@ -25,10 +25,12 @@ const overlap = (a: Box, b: Box) => Math.max(0, Math.min(a.x + a.w, b.x + b.w) -
 
 // A board is a drawing: at least two boxes, so that something joins something. One pass sent every board cut down
 // to its first box, and the old check, "it is not empty", passed it. The last board line is the one he is left with.
+// A board of words alone is not such a drawing: one written example is whole by itself, and C27 holds what it must be.
 const BOXES = 2;
 
-function drawing(ask: Ask, last: { text: string }): Verdict {
-  const boxes = last.text.split(/ → | \| /).filter((cell) => cell.trim() !== "").length;
+function drawing(ask: Ask, last: { text: string; boxes?: string[][] }, written: boolean): Verdict {
+  if (written) return yes("C8", ask.index, "The board is a drawing of two boxes or more", "a board of words alone, held by its own bar");
+  const boxes = boxesOf(last).flat().length;
   const measured = `${boxes} ${boxes === 1 ? "box" : "boxes"}: ${last.text.slice(0, 80)}`;
   return boxes >= BOXES ? yes("C8", ask.index, "The board is a drawing of two boxes or more", measured) : no("C8", ask.index, "The board is a drawing of two boxes or more", measured);
 }
@@ -59,7 +61,7 @@ export function board(ask: Ask, expect: Expect, truth: Truth[], placed: Placed[]
   const opened = drawn[0];
   const last = drawn.at(-1);   // the board he is left with
   const never = neverEmpty(ask);
-  if (expect.board === undefined) return last ? [...never, drawing(ask, last), plainBoxes(ask, last)] : never;
+  if (expect.board === undefined) return last ? [...never, drawing(ask, last, expect.written !== undefined), plainBoxes(ask, last)] : never;
   if (!expect.board) return [...never, opened ? no("C8", s, "No board opens here", "one opened") : yes("C8", s, "No board opens here", "none")];
   if (!opened || !last) return [...never, no("C8", s, "A board opens", "none opened")];
   const firstWords = first(ask.moments, "say");
@@ -71,7 +73,7 @@ export function board(ask: Ask, expect: Expect, truth: Truth[], placed: Placed[]
   const out = [
     ...never,
     !answer ? unseen("C8", s, early, "nothing was voiced after the opener") : opened.at <= answer.end ? yes("C8", s, early, measured, limit) : no("C8", s, early, measured, limit),
-    drawing(ask, last),
+    drawing(ask, last, expect.written !== undefined),
     plainBoxes(ask, last),
   ];
   // Where the board is drawn is the build's choice until he drags it. In a scenario that scripts a drag, the place
