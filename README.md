@@ -103,6 +103,8 @@ three are drawn by the app's own drawing code in its tests.*
 | "show me" | the steps, one at a time, each marked where it is |
 | "draw the whole thing, start to finish" | the story in up to six sentences, on a board that grows a row with each |
 | "would you add anything else?", after an answer | a fuller answer, up to six sentences |
+| "draw a quick diagram", after an answer | the steps it has just explained as one column, up to seven boxes, one under another |
+| "show me what one would look like" | each example written whole and large on a board of words alone, up to three lines |
 | "add it to my calendar" | the date opens in your calendar, ready to add |
 | "scroll for me" | the page turns to what it is pointing at |
 | "open it for me" | the closed section it has marked is opened with one click |
@@ -197,7 +199,7 @@ there. `node pages/gather.ts` with no name reads every page on the list again.
 
 - **`./check`** runs one test file over the rows in `test/rows/`. Each row is a small data file stating one
   thing that must be true. It needs no key, microphone or screen.
-- **`exam/`** is a separate judge that imports nothing from the app. It plays scripted students (24 at the submission, 27 now) through the
+- **`exam/`** is a separate judge that imports nothing from the app. It plays scripted students (24 at the submission, 30 now) through the
   real AI and voice, films what the app draws, and reads every frame. Is the mark on the line it named? Does ink
   cover any words? Was every date on a page it had read? Did the tutor give the answer away? On the last build
   of the weekend, 1,912 of 1,914 checks pass. The two that do not are a true date shown as "December first"
@@ -230,6 +232,27 @@ four that do not pass: a sentence that takes 8.2 seconds to say against a limit 
 first" where the page writes December 1, an answer that named a part of the page out of view, and one silence of
 2.1 seconds against a limit of 2.
 
+**Later that evening.** Five more things the tutor in that video does were added. Under the open pill a small
+label says it is working, then names the key to hold. Asked after an answer for a quick diagram, it draws the
+steps it has just explained as one column, up to seven boxes. Asked to be shown what a thing would look like, its
+board is words alone, each example written whole and large. A board can be dragged by a strip at its top and
+stays where it is left. And on a column or a whole board its pointer writes a note of a few words while the
+sentence about them is said. The judge gained three more scenarios. Over all 30, its pass is 2,606 of 2,616
+checks, and every check of the five new things passes in every run: the label 543 of 543, the column 17 of 17,
+the words 4 of 4, the drag 24 of 24, the notes 48 of 48. The ten that do not pass:
+
+- four silences over the limit of 2 seconds: three in one minute when the model's service answered 15 to 23
+  seconds late, and one of 3.1 seconds. Each of those runs passed when run again.
+- one board that covered a line of the page. That was the test's stand-in replaying an older run's drag; it is
+  mended, and three clean runs pass.
+- a date said as "back in April" where the page writes April 24.
+- a box that reads "Sign up → dashboard", where an arrow belongs between two boxes.
+- the same fixed line said twice on one question, after a hint was held back for giving the answer away.
+- two sentences that take 8.2 and 8.4 seconds to say against a limit of 8.
+
+None of the five has been seen on a real screen. They have run in the judge's filmed runs only, and a film cannot
+show the real window taking the mouse on a board's strip.
+
 ## What it does not do yet
 
 - It runs on a Mac only.
@@ -241,6 +264,8 @@ first" where the page writes December 1, an answer that named a part of the page
 - "Scroll for me" has worked on a real screen only when pressed on a page's first look. Pressed beside an
   answer's card there, the page turned and the heading was marked, but the app said the page had not moved; that
   is changed and has not been seen there since.
+- The label under the pill, the column, the board of words, the dragged board and the notes written on a board
+  have run in the judge's filmed runs and have not yet run on a real screen.
 - "Take me there" pressed and the notes page run in tests and have not yet run on a real screen. "Add to
   calendar" has written its date there.
 - It does not work with a screen reader. Every spoken sentence is also shown as text, the demo's questions can be
@@ -255,7 +280,7 @@ first" where the page writes December 1, an answer that named a part of the page
 | `seam/` | the one list of messages between the two |
 | `pages/` | the list of USC pages and their kept text |
 | `test/` | the rows and the one test file |
-| `exam/` | the separate judge and its 24 scenarios |
+| `exam/` | the separate judge and its 30 scenarios |
 | `lessons/`, `dials/` | the short lesson clips, and the dials page |
 
 `CLAUDE.md` describes each part and how to add one. No file in the app is longer than 219 lines, and a check
