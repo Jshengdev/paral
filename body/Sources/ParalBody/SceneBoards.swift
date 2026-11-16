@@ -38,4 +38,25 @@ extension Scene {
         guard let first = begun.first, let newest = begun.last else { return nil }
         return (begun.count, first, newest)
     }
+
+    /// Where a board's room is at `t`, with every drag of it by its strip up to then: each drag begins from where
+    /// the one before left the board, and the board stays where the last left it. A board he has not touched is
+    /// where it was placed. The place is the board's alone: the next answer's board is placed as boards always were.
+    func place(of board: Board, at t: Double) -> Box {
+        var now = (x: 0.0, y: 0.0), held = (x: 0.0, y: 0.0)
+        for drag in drags where drag.id == board.id && drag.at <= t {
+            if drag.began { held = now }
+            now = (held.x + drag.dx, held.y + drag.dy)
+        }
+        return Box(x: board.room.x + now.x, y: board.room.y + now.y, w: board.room.w, h: board.room.h)
+    }
+
+    /// When the board of his newest ask was first drawn with a row on it, or nil while it is not up at `t`. A board
+    /// the ask before left on the screen does not count: it stays only until the new one comes.
+    func boardUp(at t: Double) -> Double? {
+        guard let board = boards.last(where: { $0.at <= t && ($0.clearedAt.map { t < $0 } ?? true) }), !board.rows.isEmpty, board.at >= (holds.last?.down ?? 0) else { return nil }
+        if board.beats != nil { return grown(board, at: t).map { max(boardSince(board), $0.first) } }
+        let since = boardSince(board)
+        return since <= t ? since : nil
+    }
 }

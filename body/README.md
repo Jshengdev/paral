@@ -248,7 +248,7 @@ cross. `startAfter` says when the key goes down for an ask after the first:
 | `{ "firstAnswerPlusMs": N }` | N ms after the first sentence of its answer, not a line said while he waits |
 | `{ "releasePlusMs": N }` | N ms after the key was let go; under 300 it is inside the microphone's grace |
 
-A step with `"look": true` in place of a `wav` is a look with no key pressed: what the app's watcher sends by itself. `"page": PATH` on any step puts another page on the screen from that step on (he clicked, scrolled or opened a section), and `"waitMs": N` is how long a look step waits before the next one (6000 if left out). A flow with `"live": true` is walked a step at a time by whoever writes the file: when the steps so far are played it waits for another to be added, and `"end": true` closes it. Any other flow ends with its last step. `{"move": [x, y]}` puts his pointer at a place on the display with no key pressed, and `{"move": [[ms, x, y], ...]}` moves it along a path, each point that many ms after the step began; it is seen sixty times a second along the way, as the app sees it, and the step then waits `waitMs` (1500 if left out). Nothing of it goes to the mind: the sights the scene kept are written to `pointer.jsonl` beside the record, `{"at": the body's stamp, "x", "y"}` a line, and the film reads them from there.
+A step with `"look": true` in place of a `wav` is a look with no key pressed: what the app's watcher sends by itself. `"page": PATH` on any step puts another page on the screen from that step on (he clicked, scrolled or opened a section), and `"waitMs": N` is how long a look step waits before the next one (6000 if left out). A flow with `"live": true` is walked a step at a time by whoever writes the file: when the steps so far are played it waits for another to be added, and `"end": true` closes it. Any other flow ends with its last step. `{"move": [x, y]}` puts his pointer at a place on the display with no key pressed, and `{"move": [[ms, x, y], ...]}` moves it along a path, each point that many ms after the step began; it is seen sixty times a second along the way, as the app sees it, and the step then waits `waitMs` (1500 if left out). Nothing of it goes to the mind: the sights the scene kept are written to `pointer.jsonl` beside the record, `{"at": the body's stamp, "x", "y"}` a line, and the film reads them from there. `{"drag": {"by": [dx, dy], "overMs": N, "afterBoardMs": M}}` presses the strip of the newest ask's board, `afterBoardMs` after that board's first frame, and drags it `by` over `overMs`, while the answer goes on; with `"from": "beside"` the press comes down on the card just under the strip, where it takes hold of nothing. It does not wait for the answer to end, and what it told the scene is written to `drags.jsonl` beside the record, `{"at", "id", "dx", "dy", "began"}` a line.
 
 ## The way arrow
 
@@ -699,6 +699,22 @@ drawn; of a board with no shape it names neither. `words` are written lines, one
 `board.wordsType` (30), from one left edge, with no box behind it and no arrow, the rows with no gap between them.
 They come a line a sentence, by the board's `beats`, so the record's `rows` says how many are drawn and its `type`
 is the lines' own size.
+
+**A board he can drag.** Every card carries a strip at its top: a short bar (`board.stripWidth` 36 by
+`board.stripHeight` 4, `board.stripTop` 8 down, in stone at `board.stripInk`), and the band a press takes hold of is
+the card's whole width and its top pad (20, less on a shrunk card). `Overlay.hits` lists that band with the card's
+own box, `Overlay.which` takes a press in exactly it (a button is taken a little wider; a strip is not, so a press
+beside it is the page's), and while the button is down the board goes with his pointer: the overlay tells the app
+how far the pointer is from where it came down, held back so the card stays wholly on the display
+(`Overlay.within`), and the app tells the scene (`Seen.drag`). The scene keeps every drag with its time
+(`Scene.drags`) and a board's place is its room moved by them (`Scene.place`): each drag begins from where the one
+before left the board, and the board stays there while its later rows come, growing downward from the same corner.
+The place is that board's alone; the next answer's board opens where a board always opens. Nothing of it crosses
+the seam. The film's record names the strip (`what: "strip"`, id `<board>/strip`) beside the board's own rows. A
+scripted run plays a drag with a `drag` step (`FlowDrag.swift`): it decides what the press takes hold of with the
+overlay's own functions and writes what it told the scene to `drags.jsonl` beside the record, which the film reads.
+Not shown by any stand-in: the window itself taking the mouse on the strip, and a click beside the board reaching
+the page.
 
 It says of the label under the pill what it says: a row `{"at", "what": "label", "box", "says"}` each time its words
 or its box change, and one more with `"says": null` and the box it last had in the first frame it is no longer drawn

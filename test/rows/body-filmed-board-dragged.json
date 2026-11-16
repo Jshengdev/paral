@@ -1,0 +1,56 @@
+{
+ "name": "body: the whole chain on a tape, filmed. He asks for the whole thing drawn; a second and a half after the board's first frame he presses its strip and drags it 200 left and 60 down over a little more than a second, and later presses the card just under the strip and makes a drag of the same kind. The board ends 200 left and 60 down from where it opened: the press beside the strip took hold of nothing. It passed through three places or more, nothing moved it after he let go, its rows went on growing where he left it, and the record names the strip in the top of the card",
+ "run": "body.dragOnFilm",
+ "in": {
+  "lines": [
+   "Milestone 2 is done",
+   "Sign-up works with email and password.",
+   "Links are made on the server.",
+   "Clicks are counted per link.",
+   "Next: the dashboard"
+  ],
+  "tape": "whole-filmed.json",
+  "steps": [
+   "what does this mean",
+   "Draw out the whole thing for me, start to finish.",
+   {
+    "drag": {
+     "by": [
+      -200,
+      60
+     ],
+     "afterBoardMs": 1500,
+     "overMs": 1200
+    }
+   },
+   {
+    "drag": {
+     "by": [
+      80,
+      50
+     ],
+     "afterBoardMs": 6000,
+     "overMs": 600,
+     "from": "beside"
+    }
+   }
+  ]
+ },
+ "out": {
+  "theDragsKeptBesideTheRecord": {
+   "presses": 1,
+   "lastOffset": [
+    -200,
+    60
+   ]
+  },
+  "endedFromWhereItOpened": [
+   -200,
+   60
+  ],
+  "passedThroughThreePlacesOrMore": true,
+  "noMoveMoreThanHalfASecondAfterTheOneBefore": true,
+  "rowsWentOnGrowingAfterItsLastMove": true,
+  "stripNamedInTheTopOfTheCard": true
+ }
+}

@@ -41,7 +41,8 @@ export function pill(input: { lines?: string[]; rows: Written[]; at: number[]; d
   const { capsule: k, bubble: b, orb: o } = tokens;
   const top = DISPLAY.h - dock - k.bottom - k.height - b.gap - (2 * k.type * b.leading + 2 * b.padY);
   const band: Box = { x: 0, y: top, w: DISPLAY.w, h: DISPLAY.h - dock - top };
-  const own = ["capsule", "cross", "orb", "bubble", "label", "pointer", "tag", "lead", "mark", "echo", "pulse", "trail"];
+  // A board's strip is part of its card, and is named with it.
+  const own = ["capsule", "cross", "orb", "bubble", "label", "pointer", "tag", "lead", "mark", "echo", "pulse", "trail", "strip"];
   return at(dir, input.at, false, dock).map(({ placed, capsule }) => {
     const cross = placed.find((item) => item.what === "cross")?.box;
     const light = placed.find((item) => item.what === "orb")?.box;

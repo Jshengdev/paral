@@ -14,7 +14,7 @@ public enum Film {
     }
     static let rate = 24000.0
 
-    struct Loaded { var pages: FilmPages; var w, h: Double; var events: [(at: Double, seen: Seen)]; var sound: [String: Data]; var skipped: Int; var moves: [(x: Double, y: Double, at: Double)] }
+    struct Loaded { var pages: FilmPages; var w, h: Double; var events: [(at: Double, seen: Seen)]; var sound: [String: Data]; var skipped: Int; var moves: [(x: Double, y: Double, at: Double)]; var drags: [(id: String, dx: Double, dy: Double, began: Bool, at: Double)] = [] }
 
     /// A recorded run as the film needs it: the page's picture, the display's size, and every line in order. The
     /// scene is told of the page's ink at the foot as the app tells it (`Screen.taken`), for `tokens` and a Dock of
@@ -51,7 +51,7 @@ public enum Film {
         }
         // Moving the release earlier can put it ahead of lines that arrived before it; the order is by time again.
         let ordered = events.enumerated().sorted { ($0.element.at, $0.offset) < ($1.element.at, $1.offset) }.map(\.element)
-        return Loaded(pages: pages, w: w, h: h, events: ordered, sound: sound, skipped: skipped, moves: try moves(dir))
+        return Loaded(pages: pages, w: w, h: h, events: ordered, sound: sound, skipped: skipped, moves: try moves(dir), drags: try drags(dir))
     }
 
     /// One frame of a recorded run at one moment, drawn the way the film draws it. For looking at a change of tokens

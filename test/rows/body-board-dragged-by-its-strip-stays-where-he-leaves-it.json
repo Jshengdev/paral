@@ -1,0 +1,405 @@
+{
+ "name": "body: a board that grows with its answer, dragged by its strip while its second row is up: the card goes with his pointer, is where he let go from then on, and the rows that come after are drawn on it there, the card growing downward from the same corner. A second drag begins from where the first left it. At every moment the strip lies in the top of the card and the window takes a press in exactly the strip's box",
+ "run": "body.dragged",
+ "in": {
+  "lines": [
+   "Milestone 2 is done",
+   "Sign-up works with email and password.",
+   "Links are made on the server.",
+   "Clicks are counted per link.",
+   "Next: the dashboard"
+  ],
+  "rows": [
+   {
+    "at": 500,
+    "line": {
+     "type": "key.down"
+    }
+   },
+   {
+    "at": 1500,
+    "line": {
+     "type": "key.up"
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 0,
+     "text": "One moment, I am reading the page.",
+     "aside": true
+    }
+   },
+   {
+    "at": 3000,
+    "line": {
+     "type": "mute",
+     "id": "t1",
+     "why": "a row"
+    }
+   },
+   {
+    "at": 3500,
+    "line": {
+     "type": "board",
+     "id": "t1",
+     "rows": [
+      [
+       "Sign up",
+       "Email and password"
+      ],
+      [
+       "Make a link",
+       "Paste a long address"
+      ],
+      [
+       "Share it"
+      ],
+      [
+       "Someone clicks",
+       "Count goes up"
+      ],
+      [
+       "Dashboard",
+       "Clicks by day"
+      ]
+     ],
+     "beats": [
+      1
+     ]
+    }
+   },
+   {
+    "at": 3500,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 1,
+     "text": "A student signs up with an email address first."
+    }
+   },
+   {
+    "at": 3600,
+    "line": {
+     "type": "board",
+     "id": "t1",
+     "rows": [
+      [
+       "Sign up",
+       "Email and password"
+      ],
+      [
+       "Make a link",
+       "Paste a long address"
+      ],
+      [
+       "Share it"
+      ],
+      [
+       "Someone clicks",
+       "Count goes up"
+      ],
+      [
+       "Dashboard",
+       "Clicks by day"
+      ]
+     ],
+     "beats": [
+      1,
+      2
+     ]
+    }
+   },
+   {
+    "at": 3600,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 2,
+     "text": "Then the app makes a short link for them."
+    }
+   },
+   {
+    "at": 3700,
+    "line": {
+     "type": "board",
+     "id": "t1",
+     "rows": [
+      [
+       "Sign up",
+       "Email and password"
+      ],
+      [
+       "Make a link",
+       "Paste a long address"
+      ],
+      [
+       "Share it"
+      ],
+      [
+       "Someone clicks",
+       "Count goes up"
+      ],
+      [
+       "Dashboard",
+       "Clicks by day"
+      ]
+     ],
+     "beats": [
+      1,
+      2,
+      3
+     ]
+    }
+   },
+   {
+    "at": 3700,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 3,
+     "text": "Each click on the link is counted."
+    }
+   },
+   {
+    "at": 3800,
+    "line": {
+     "type": "board",
+     "id": "t1",
+     "rows": [
+      [
+       "Sign up",
+       "Email and password"
+      ],
+      [
+       "Make a link",
+       "Paste a long address"
+      ],
+      [
+       "Share it"
+      ],
+      [
+       "Someone clicks",
+       "Count goes up"
+      ],
+      [
+       "Dashboard",
+       "Clicks by day"
+      ]
+     ],
+     "beats": [
+      1,
+      2,
+      3,
+      4
+     ]
+    }
+   },
+   {
+    "at": 3800,
+    "line": {
+     "type": "say",
+     "id": "t1",
+     "beat": 4,
+     "text": "The dashboard shows the count."
+    }
+   }
+  ],
+  "drags": [
+   {
+    "at": 8200,
+    "id": "t1",
+    "dx": 0,
+    "dy": 0,
+    "began": true
+   },
+   {
+    "at": 8300,
+    "id": "t1",
+    "dx": -20,
+    "dy": 10,
+    "began": false
+   },
+   {
+    "at": 8400,
+    "id": "t1",
+    "dx": -40,
+    "dy": 20,
+    "began": false
+   },
+   {
+    "at": 8500,
+    "id": "t1",
+    "dx": -60,
+    "dy": 30,
+    "began": false
+   },
+   {
+    "at": 8600,
+    "id": "t1",
+    "dx": -80,
+    "dy": 40,
+    "began": false
+   },
+   {
+    "at": 8700,
+    "id": "t1",
+    "dx": -100,
+    "dy": 50,
+    "began": false
+   },
+   {
+    "at": 8800,
+    "id": "t1",
+    "dx": -120,
+    "dy": 60,
+    "began": false
+   },
+   {
+    "at": 13400,
+    "id": "t1",
+    "dx": 0,
+    "dy": 0,
+    "began": true
+   },
+   {
+    "at": 13500,
+    "id": "t1",
+    "dx": 5,
+    "dy": -1.7,
+    "began": false
+   },
+   {
+    "at": 13600,
+    "id": "t1",
+    "dx": 10,
+    "dy": -3.3,
+    "began": false
+   },
+   {
+    "at": 13700,
+    "id": "t1",
+    "dx": 15,
+    "dy": -5,
+    "began": false
+   },
+   {
+    "at": 13800,
+    "id": "t1",
+    "dx": 20,
+    "dy": -6.7,
+    "began": false
+   },
+   {
+    "at": 13900,
+    "id": "t1",
+    "dx": 25,
+    "dy": -8.3,
+    "began": false
+   },
+   {
+    "at": 14000,
+    "id": "t1",
+    "dx": 30,
+    "dy": -10,
+    "began": false
+   }
+  ],
+  "at": [
+   5600,
+   8100,
+   8500,
+   8900,
+   11000,
+   13000,
+   13300,
+   14200,
+   16000
+  ]
+ },
+ "out": [
+  {
+   "fromWhereItOpened": [
+    0,
+    0
+   ],
+   "taller": 0,
+   "stripInTheTopOfTheCard": true,
+   "aPressOnTheStripIsTaken": true
+  },
+  {
+   "fromWhereItOpened": [
+    0,
+    0
+   ],
+   "taller": 54,
+   "stripInTheTopOfTheCard": true,
+   "aPressOnTheStripIsTaken": true
+  },
+  {
+   "fromWhereItOpened": [
+    -60,
+    30
+   ],
+   "taller": 54,
+   "stripInTheTopOfTheCard": true,
+   "aPressOnTheStripIsTaken": true
+  },
+  {
+   "fromWhereItOpened": [
+    -120,
+    60
+   ],
+   "taller": 54,
+   "stripInTheTopOfTheCard": true,
+   "aPressOnTheStripIsTaken": true
+  },
+  {
+   "fromWhereItOpened": [
+    -120,
+    60
+   ],
+   "taller": 108,
+   "stripInTheTopOfTheCard": true,
+   "aPressOnTheStripIsTaken": true
+  },
+  {
+   "fromWhereItOpened": [
+    -120,
+    60
+   ],
+   "taller": 162,
+   "stripInTheTopOfTheCard": true,
+   "aPressOnTheStripIsTaken": true
+  },
+  {
+   "fromWhereItOpened": [
+    -120,
+    60
+   ],
+   "taller": 162,
+   "stripInTheTopOfTheCard": true,
+   "aPressOnTheStripIsTaken": true
+  },
+  {
+   "fromWhereItOpened": [
+    -90,
+    50
+   ],
+   "taller": 162,
+   "stripInTheTopOfTheCard": true,
+   "aPressOnTheStripIsTaken": true
+  },
+  {
+   "fromWhereItOpened": [
+    -90,
+    50
+   ],
+   "taller": 162,
+   "stripInTheTopOfTheCard": true,
+   "aPressOnTheStripIsTaken": true
+  }
+ ]
+}

@@ -54,6 +54,7 @@ public struct Scene {
     var clicked: (at: Double, x: Double, y: Double, mark: String)?
     var trail: [(x: Double, y: Double, at: Double)] = []
     var his: (kept: [(x: Double, y: Double, at: Double)], last: (x: Double, y: Double)?) = ([], nil)  // his own pointer (`SceneFollow.swift`)
+    public var drags: [(id: String, dx: Double, dy: Double, began: Bool, at: Double)] = []  // his drags of a board by its strip (`SceneBoards.swift`)
     /// Each chunk of the microphone's sound: when it came, how long it lasts and how loud it was. The wave reads it.
     var sounds: [(at: Double, ms: Double, level: Double)] = []
     var failed: (detail: String, at: Double)?
@@ -91,6 +92,8 @@ public struct Scene {
             take(.keyUp, at: at)
         case .notNow:
             answer(.notNow, at)
+        case .drag(let id, let dx, let dy, let began):
+            drags.append((id, dx, dy, began, at))
         case .trail(let x, let y):
             trail.append((x - origin.x, y - origin.y, at))
         case .mic(let level, let ms):

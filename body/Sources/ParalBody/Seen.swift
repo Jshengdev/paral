@@ -41,6 +41,8 @@ public enum Seen {
     case typed(text: String)
     /// He pressed "Not now" on the nudge card. It never crosses the seam: the body tells itself.
     case notNow
+    /// He holds a board by its strip: `began` at the press, then how far his pointer is from where it came down. The body tells itself.
+    case drag(id: String, dx: Double, dy: Double, began: Bool)
     case trail(x: Double, y: Double)
     /// A chunk of the microphone's sound: how loud it was, 0 to 1 (`Meter`), and how long it lasts. Only the wave shows it.
     case mic(level: Double, ms: Double)

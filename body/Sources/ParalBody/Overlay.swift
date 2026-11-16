@@ -4,6 +4,7 @@ final class Canvas: NSView {
     var paint: ((CGContext) -> Void)?
     var onDown: ((CGPoint) -> Void)?
     var onUp: ((CGPoint) -> Void)?
+    var onDrag: ((CGPoint) -> Void)?
     override var isFlipped: Bool { true }
     override func acceptsFirstMouse(for event: NSEvent?) -> Bool { true }
     override func draw(_ dirty: NSRect) {
@@ -11,11 +12,14 @@ final class Canvas: NSView {
     }
     override func mouseDown(with event: NSEvent) { onDown?(convert(event.locationInWindow, from: nil)) }
     override func mouseUp(with event: NSEvent) { onUp?(convert(event.locationInWindow, from: nil)) }
+    override func mouseDragged(with event: NSEvent) { onDrag?(convert(event.locationInWindow, from: nil)) }
 }
 
 /// What on the overlay takes a click: the cross on the resting circle, the nudge card's buttons while it offers
-/// them (its offer's, with the words a press sends, and "Not now"), and the way tag's "Scroll for me", an offer too.
-public enum Hit: Equatable { case cross, offer(send: String), notNow }
+/// them (its offer's, with the words a press sends, and "Not now"), the way tag's "Scroll for me", an offer too,
+/// and a board's strip, which takes a press and the drag that follows (`card` is the board's whole box then). `drag`
+/// is what the overlay says while he drags: how far his pointer is from where it came down, held on the display.
+public enum Hit: Equatable { case cross, offer(send: String), notNow, strip(id: String, card: Box), drag(id: String, dx: Double, dy: Double, began: Bool) }
 
 /// One see-through window over a display, above everything, that lets every click through. It hosts the painter and
 /// redraws only when the picture has changed. What takes a click is what the last picture drew as taking one: the
@@ -40,6 +44,8 @@ public final class Overlay {
     /// Where the orb's square of light was drawn last, if it was.
     private var orb: Box?
     private var held: Hit?
+    /// The board he holds by its strip, where his pointer came down, and the board's box then.
+    private var grabbed: (id: String, at: CGPoint, card: Box)?
 
     public init(screen: NSScreen, painter: Painter, picture: @escaping () -> Picture) {
         self.painter = painter
@@ -65,13 +71,21 @@ public final class Overlay {
         }
         // The cross clears at the press, as it always has; a button is pressed at the press and asks at the release.
         canvas.onDown = { [weak self] point in
-            guard let self, let hit = self.hit(at: point) else { return }
+            guard let self, let hit = Overlay.which(at: point, of: self.hits) else { return }
             if hit == .cross { self.onPress?(.cross) } else { self.held = hit }
+            // A press on a board's strip takes hold of the board; it moves with his pointer until he lets go.
+            if case .strip(let id, let card) = hit { self.grabbed = (id, point, card); self.onPress?(.drag(id: id, dx: 0, dy: 0, began: true)) }
+        }
+        canvas.onDrag = { [weak self] point in
+            guard let self, let grabbed = self.grabbed else { return }
+            let by = Overlay.within(grabbed.card, dx: point.x - grabbed.at.x, dy: point.y - grabbed.at.y, width: self.canvas.bounds.width, height: self.canvas.bounds.height)
+            self.onPress?(.drag(id: grabbed.id, dx: by.dx, dy: by.dy, began: false))
         }
         canvas.onUp = { [weak self] point in
             guard let self, let held = self.held else { return }
             self.held = nil
-            if self.hit(at: point) == held { self.onPress?(held) }
+            if self.grabbed != nil { self.grabbed = nil; return }
+            if Overlay.which(at: point, of: self.hits) == held { self.onPress?(held) }
         }
         window.orderFrontRegardless()
         let timer = Timer(timeInterval: 1.0 / 60, repeats: true) { [weak self] _ in
@@ -79,7 +93,7 @@ public final class Overlay {
             var now = picture()
             // The clock only matters while something pulses: the thinking dots, or the dots in an empty card.
             if now.capsule.look != .thinking && !(now.board?.rows.isEmpty ?? false) { now.clock = 0 }
-            if let held = self.held, held != .cross, held != .offer(send: ScrollButton.asks) { now.nudge?.held = held == .notNow ? .notNow : .add }
+            if let held = self.held, self.grabbed == nil, held != .cross, held != .offer(send: ScrollButton.asks) { now.nudge?.held = held == .notNow ? .notNow : .add }
             // The window starts taking clicks while the pointer is still on its way to a button: switching it on only
             // once the pointer was on the button left a moment in which a quick press fell through to the page, and on
             // his screen one followed a link there.
@@ -103,24 +117,37 @@ public final class Overlay {
     public static func hits(_ placed: [Drawn], _ picture: Picture) -> [(hit: Hit, box: Box)] {
         placed.compactMap { item in
             if item.what == "cross" { return (.cross, item.box) }
+            // A board's strip, with the board's own box: a drag is held to where that box stays on the display.
+            if item.what == "strip", let id = item.id.map({ String($0.dropLast("/strip".count)) }) {
+                return placed.first { $0.what == "board" && $0.id == id }.map { (.strip(id: id, card: $0.box), item.box) }
+            }
             guard item.what == "button" else { return nil }
             if item.id == ScrollButton.button { return (.offer(send: ScrollButton.asks), item.box) }
             return item.id == NudgeButton.notNow.rawValue ? (.notNow, item.box) : picture.nudge?.offer.map { (.offer(send: $0.send), item.box) }
         }
     }
 
-    /// What takes a click at this point, if anything: a thing's box a little wider than it is drawn.
-    private func hit(at point: CGPoint) -> Hit? {
+    /// What takes a click at this point, if anything: a thing's box a little wider than it is drawn. A strip is taken
+    /// at its own box and no wider, so a press beside it is the page's.
+    public static func which(at point: CGPoint, of hits: [(hit: Hit, box: Box)]) -> Hit? {
         hits.first { item in
-            let box = item.box.grown(6)
+            let box = item.box.grown(Overlay.reach(item.hit, 6))
             return CGRect(x: box.x, y: box.y, width: box.w, height: box.h).contains(point)
         }?.hit
+    }
+
+    /// How far round a thing a press still counts, or the window already takes the mouse: `usual` for a button, none for a strip.
+    static func reach(_ hit: Hit, _ usual: Double) -> Double { if case .strip = hit { return 0 } else { return usual } }
+
+    /// A drag's offset, held back so that the board's box stays wholly on the display.
+    public static func within(_ card: Box, dx: Double, dy: Double, width: Double, height: Double) -> (dx: Double, dy: Double) {
+        (min(max(dx, -card.x), max(width - card.x - card.w, -card.x)), min(max(dy, -card.y), max(height - card.y - card.h, -card.y)))
     }
 
     /// Whether the pointer is on a thing that takes a click or within `Overlay.approach` of one.
     private func near(_ point: CGPoint) -> Bool {
         hits.contains { item in
-            let box = item.box.grown(Overlay.approach)
+            let box = item.box.grown(Overlay.reach(item.hit, Overlay.approach))
             return CGRect(x: box.x, y: box.y, width: box.w, height: box.h).contains(point)
         }
     }

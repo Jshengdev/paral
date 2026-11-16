@@ -21,7 +21,7 @@ func why(_ error: Error) -> String {
 // the cure; it costs nothing.
 _ = Bundle.main.infoDictionary
 
-let usage = "usage: read PICTURE | smaller PICTURE OUT.jpg LONG_EDGE | same PICTURE PICTURE | rounds ROUNDS.json | page OUT.png LINE... | lines | keys SECONDS rightOption|fn|controlOption | flow FLOW.json SOCKET TOKENS.json | film RUN_DIR TOKENS.json | frame RUN_DIR TOKENS.json MS OUT.png | capsule RUN_DIR TOKENS.json MS... | placed RUN_DIR TOKENS.json MS... | apart RUN_DIR TOKENS.json MS MARGIN | hits RUN_DIR TOKENS.json MS... | usc ADDRESS... | notes FOLDER PATH... | centre < BANK.json | curves TOKENS.json SHARE... | orb TOKENS.json SIDE FRAMES OUT.png SECONDS..."
+let usage = "usage: read PICTURE | smaller PICTURE OUT.jpg LONG_EDGE | same PICTURE PICTURE | rounds ROUNDS.json | page OUT.png LINE... | lines | keys SECONDS rightOption|fn|controlOption | flow FLOW.json SOCKET TOKENS.json | film RUN_DIR TOKENS.json | frame RUN_DIR TOKENS.json MS OUT.png | capsule RUN_DIR TOKENS.json MS... | placed RUN_DIR TOKENS.json MS... | apart RUN_DIR TOKENS.json MS MARGIN | hits RUN_DIR TOKENS.json MS... | within X Y W H DX DY WIDTH HEIGHT | usc ADDRESS... | notes FOLDER PATH... | centre < BANK.json | curves TOKENS.json SHARE... | orb TOKENS.json SIDE FRAMES OUT.png SECONDS..."
 let arguments = Array(CommandLine.arguments.dropFirst())
 
 switch arguments.first {
@@ -129,6 +129,13 @@ case "hits":
     // What the overlay takes a click on at those moments, and what a press of each does (`Overlay.hits`), for rows.
     guard arguments.count >= 4 else { fail(usage) }
     do { out(try Film.hits(run: arguments[1], tokens: try Tokens.load(arguments[2]), at: arguments.dropFirst(3).compactMap(Double.init))) } catch { fail(why(error)) }
+
+case "within":
+    // How far a drag of a board may go (`Overlay.within`), for rows: the board's box, the drag, the display's size.
+    let n = arguments.dropFirst().compactMap(Double.init)
+    guard n.count == 8 else { fail(usage) }
+    let held = Overlay.within(Box(x: n[0], y: n[1], w: n[2], h: n[3]), dx: n[4], dy: n[5], width: n[6], height: n[7])
+    out(["dx": held.dx, "dy": held.dy])
 
 case "usc":
     // Whether the app would open each address in his browser (`Keep.usc`), for rows.

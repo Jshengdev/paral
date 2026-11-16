@@ -23,8 +23,10 @@ extension Painter {
     /// one box to a row, every box as wide as the widest, each joined to the one under it by an arrow in the gap
     /// between them (`board.downGap`). Words alone are written lines, one to a row from one left edge, at
     /// `board.wordsType` and with no box behind them. Gives back the card's box, the lit row's, the size the words
-    /// were drawn at, and for a column each box and each arrow where it was drawn.
-    func board(_ board: BoardPicture, clock: Double, _ ctx: CGContext) -> (card: Box, lit: Box?, type: Double, boxes: [Box], joins: [Box]) {
+    /// were drawn at, and for a column each box and each arrow where it was drawn. Every card carries a strip at its
+    /// top, a short bar he takes hold of to move the card (`board.strip…`); the band a press takes hold of is the
+    /// card's whole width and its top pad, which is given back too.
+    func board(_ board: BoardPicture, clock: Double, _ ctx: CGContext) -> (card: Box, lit: Box?, type: Double, boxes: [Box], joins: [Box], strip: Box) {
         let b = tokens.board
         let chalk = ink
         let column = board.shape == .column, written = board.shape == .words
@@ -64,6 +66,9 @@ extension Painter {
         ctx.scaleBy(x: scale, y: scale)
         let card = CGPath(roundedRect: CGRect(x: 0, y: 0, width: cardW, height: cardH), cornerWidth: b.radius, cornerHeight: b.radius, transform: nil)
         surface(card, ctx)
+        ctx.addPath(CGPath(roundedRect: CGRect(x: (cardW - b.stripWidth) / 2, y: b.stripTop, width: b.stripWidth, height: b.stripHeight), cornerWidth: b.stripHeight / 2, cornerHeight: b.stripHeight / 2, transform: nil))
+        ctx.setFillColor(color(tokens.stone, alpha: b.stripInk))
+        ctx.fillPath()
         if sized.isEmpty { waiting(at: CGPoint(x: cardW / 2, y: cardH / 2), clock: clock, in: ink, ctx) }
         // The rows are laid out for the full card and shown through the card as it grows.
         ctx.addPath(card)
@@ -119,6 +124,6 @@ extension Painter {
             y += boxHeight + between
         }
         ctx.restoreGState()
-        return (Box(x: origin.x, y: origin.y, w: w, h: h), lit, type * scale, boxes, joins)
+        return (Box(x: origin.x, y: origin.y, w: w, h: h), lit, type * scale, boxes, joins, Box(x: origin.x, y: origin.y, w: w, h: min(b.pad * scale, h / 2)))
     }
 }

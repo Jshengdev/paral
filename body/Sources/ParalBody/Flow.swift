@@ -90,6 +90,8 @@ public final class Flow {
         var readings: [Task<[ReadLine], Error>] = []
         var steps = FlowSteps(path: path, live: file["live"] as? Bool == true, asks: asks)
         while let ask = await steps.next() {
+            // His press on a board's strip and the drag that follows, made while the answer goes on (`FlowDrag.swift`).
+            if let drag = ask["drag"] as? [String: Any] { try await dragged(drag); continue }
             if !first {
                 let after = ask["startAfter"] as? [String: Any]
                 // A start it does not know is a mistake in the flow file, not "idle".

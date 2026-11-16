@@ -1,0 +1,74 @@
+{
+ "name": "body: a drag of a board is held back so the card stays wholly on the display: asked to go past the right edge it stops at it, past the top it stops at the top, and a drag that fits is given whole",
+ "run": "body.dragWithin",
+ "in": {
+  "cases": [
+   {
+    "card": {
+     "x": 1100,
+     "y": 300,
+     "w": 340,
+     "h": 200
+    },
+    "by": [
+     -200,
+     60
+    ]
+   },
+   {
+    "card": {
+     "x": 1100,
+     "y": 300,
+     "w": 340,
+     "h": 200
+    },
+    "by": [
+     400,
+     0
+    ]
+   },
+   {
+    "card": {
+     "x": 1100,
+     "y": 300,
+     "w": 340,
+     "h": 200
+    },
+    "by": [
+     0,
+     -500
+    ]
+   },
+   {
+    "card": {
+     "x": 1100,
+     "y": 300,
+     "w": 340,
+     "h": 200
+    },
+    "by": [
+     -2000,
+     2000
+    ]
+   }
+  ]
+ },
+ "out": [
+  [
+   -200,
+   60
+  ],
+  [
+   160,
+   0
+  ],
+  [
+   0,
+   -300
+  ],
+  [
+   -1100,
+   500
+  ]
+ ]
+}

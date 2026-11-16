@@ -115,6 +115,8 @@ public struct Painter {
         if let board = picture.board {
             let placed = self.board(board, clock: picture.clock, ctx)
             drawn.append(Drawn(what: "board", id: board.id, box: placed.card, type: placed.type, rows: board.growing ? min(board.shown, board.rows.count) : nil, shape: board.shape?.rawValue))
+            // The strip he takes hold of is named too: it takes a press (`Overlay.hits`), and a film's record says where it was.
+            drawn.append(Drawn(what: "strip", id: "\(board.id)/strip", box: placed.strip))
             // A column's boxes and the arrows that join them are named too, so a film's record says they stand one under another.
             drawn += placed.boxes.enumerated().map { Drawn(what: "box", id: "\(board.id)/\($0.offset)", box: $0.element) } + placed.joins.enumerated().map { Drawn(what: "join", id: "\(board.id)/\($0.offset)", box: $0.element) }
             // The lit row of a board of steps is named too, with its number, so a film's record says which step is lit.

@@ -34,13 +34,13 @@ extension Film {
             var placed: [Drawn] = []
             _ = clear(run.w, run.h) { placed = Painter(tokens: tokens, width: run.w, height: run.h).paint(picture, into: $0) }
             return Overlay.hits(placed, picture).map { hit, box in
-                let does: String = { switch hit { case .cross: return "cross"; case .notNow: return "notNow"; case .offer(let send): return send } }()
+                let does: String = { switch hit { case .cross: return "cross"; case .notNow: return "notNow"; case .offer(let send): return send; case .strip, .drag: return "takes hold of the board" } }()
                 return ["does": does, "box": box.json]
             }
         }
     }
 
-    private static func clear(_ w: Double, _ h: Double, _ draw: (CGContext) -> Void) -> CGContext {
+    static func clear(_ w: Double, _ h: Double, _ draw: (CGContext) -> Void) -> CGContext {
         let ctx = CGContext(data: nil, width: Int(w), height: Int(h), bitsPerComponent: 8, bytesPerRow: 0, space: CGColorSpace(name: CGColorSpace.sRGB)!, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
         ctx.translateBy(x: 0, y: h)
         ctx.scaleBy(x: 1, y: -1)
