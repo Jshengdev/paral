@@ -1,0 +1,35 @@
+{
+ "name": "dates: a date the model wrote the way it is said is put back the way a page writes it, when a page it has read holds that day: \"November twenty-second\" becomes \"November 22\", \"the twenty-second of November\" too, a year is kept; a day no page holds is left alone, and so are words that only look like a date (\"you may first need\", \"March first-year students\")",
+ "run": "dates.written",
+ "in": {
+  "sources": [
+   "Deadlines",
+   "November 22 at 11:59pm: Application closes.",
+   "December 1: Advisor requirements due.",
+   "Payment deadline: January 8, 2027",
+   "March 1: Orientation"
+  ],
+  "texts": [
+   "The application closes November twenty-second at eleven fifty-nine p.m., which is seven days from today.",
+   "Your advisor's own requirements are due later, on December first.",
+   "It is due on the twenty-second of November.",
+   "by November twenty two at the latest",
+   "January the eighth, 2027 is the payment deadline",
+   "A late form is taken until November thirtieth.",
+   "You may first need to add an officer.",
+   "In March first-year students register before everyone else.",
+   "The application closes November 22 at 11:59pm."
+  ]
+ },
+ "out": [
+  "The application closes November 22 at eleven fifty-nine p.m., which is seven days from today.",
+  "Your advisor's own requirements are due later, on December 1.",
+  "It is due on November 22.",
+  "by November 22 at the latest",
+  "January 8, 2027 is the payment deadline",
+  "A late form is taken until November thirtieth.",
+  "You may first need to add an officer.",
+  "In March first-year students register before everyone else.",
+  "The application closes November 22 at 11:59pm."
+ ]
+}

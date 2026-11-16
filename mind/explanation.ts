@@ -3,7 +3,7 @@ import type { card } from "./card.ts";
 import type { lessonClip } from "./clip.ts";
 import { explain, WHOLE, type Planned } from "./cores/beats.ts";
 import { columnNotes, columnRows, firstParts, grow, lifted, rowNotes, wholeRows, writtenRows, type Growing, type Note } from "./cores/board.ts";
-import { unknownDate, worded } from "./cores/dates.ts";
+import { asWritten, unknownDate, worded } from "./cores/dates.ts";
 import type { HoldEvent } from "./cores/hold.ts";
 import { givesAway } from "./cores/push.ts";
 import type { Answered, Part } from "./ports.ts";
@@ -98,12 +98,14 @@ export function explanation({ settings, send, log }: Hands, asking: Asking, { ta
     board.fill(made, "column", columnNotes(noted.filter((note) => note.row < made.length), []));
   };
 
+  /** The model's sentences, with a date it wrote the way it is said put back the way a page writes it (`asWritten`). */
+  const asThePage = (beats: Answered["beats"]) => beats.map((beat) => ({ ...beat, say: asWritten(beat.say, sources) }));
   /** The reply so far as sentences, each with its mark found on his screen. */
-  const planned = (reply: { result?: string | null; beats: Answered["beats"] }) =>
-    explain({ result: reply.result ?? null, beats: reply.beats }, seen.lines, seen.display, settings.groundMinScore.value, most(), settings.ringReach.value, breath());
+  const planned =(reply: { result?: string | null; beats: Answered["beats"] }) =>
+    explain({ result: reply.result ?? null, beats: asThePage(reply.beats) }, seen.lines, seen.display, settings.groundMinScore.value, most(), settings.ringReach.value, breath());
   /** The same, for the answer's own sentences: it also notes where each written sentence starts among the spoken ones. */
   const plan = (reply: { result?: string | null; beats: Answered["beats"] }) => {
-    firsts = firstParts(reply.beats.slice(0, most()).map((beat) => beat.say), breath());
+    firsts = firstParts(asThePage(reply.beats).slice(0, most()).map((beat) => beat.say), breath());
     return planned(reply);
   };
 

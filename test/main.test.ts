@@ -7,7 +7,7 @@ import { boxes, fitted, split, wipes } from "../mind/cores/beats.ts";
 import { asksFor, fits, hear, saysOnly, silence, unasked } from "../mind/cores/catch.ts";
 import { broadFollowUp } from "../mind/cores/full.ts";
 import { columnNotes, columnRows, drawsWhatWasSaid, lifted as liftedNotes, rowNotes, writtenRows } from "../mind/cores/board.ts";
-import { away, datesIn, daysFrom, unknownDate, type Named } from "../mind/cores/dates.ts";
+import { asWritten, away, datesIn, daysFrom, unknownDate, type Named } from "../mind/cores/dates.ts";
 import { calendarFile, dateLine, named, when } from "../mind/cores/keep.ts";
 import { guideGoal, guideNext } from "./runners/guide.ts";
 import { foldedUnder, headingOf, movedUnder, whichPage, whichWay } from "../mind/cores/page.ts";
@@ -145,6 +145,7 @@ const runs: Record<string, (input: any) => unknown> = {
   "page.way": (input) => input.cases.map(([seen, line]: [string[], string]) => whichWay(seen, input.page, line)),
   "dates.away": (input) => input.cases.map(([line, today]: [string, string]) => away(line, new Date(today))?.words ?? null),
   "dates.in": (input) => input.texts.map((text: string) => datesIn(text)),
+  "dates.written": (input) => input.texts.map((text: string) => asWritten(text, input.sources)),
   "keep.when": (input) => input.cases.map(([written, today]: [string, string]) => when(written, new Date(today))),
   "keep.file": (input) => input.cases.map((entry: any) => calendarFile({ ...entry, today: new Date(entry.today) })),
   "keep.line": (input) => ({ named: input.named.map(([written, page]: [string, string]) => named(written, page)), kept: input.said.map((said: string) => dateLine(said, input.pages)) }),

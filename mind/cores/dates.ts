@@ -79,6 +79,29 @@ export function unknownDate(said: string, sources: string[]): Named | null {
   return datesIn(said).find((date) => !known.has(`${date.month}-${date.day}`)) ?? null;
 }
 
+/**
+ * The text with each date it says in words put back the way a page writes it: "November twenty-second" becomes
+ * "November 22", "the twenty-second of November" too, and a year after it is kept. A model sometimes writes a date
+ * the way it is said, and the words go on his screen as well as into the voice, which says "November 22" the same.
+ * Only a day that one of the sources holds is rewritten, and never one with a hyphen and a word after it ("March
+ * first-year students"), so words that only look like a date are left as they are.
+ */
+export function asWritten(text: string, sources: string[]): string {
+  const known = new Set([...sources.flatMap(datesIn).map((date) => `${date.month}-${date.day}`), ...sources.flatMap(daysHeld)]);
+  let out = "", from = 0;
+  for (const found of text.matchAll(WORDED)) {
+    const [whole, name, day, year, dayFirst, nameAfter, yearAfter] = found;
+    const named = name ?? nameAfter, date = { month: month(named), day: said(day ?? dayFirst), year: year ?? yearAfter };
+    const joined = /^-[a-z]/i.test(text.slice(found.index + whole.length));
+    if (named.toLowerCase() === "may" || joined || !known.has(`${date.month}-${date.day}`)) continue;
+    // "the twenty-second of November" loses its "the" with its "of": "on November 22", not "on the November 22".
+    const lead = dayFirst !== undefined && text.slice(from, found.index).endsWith("the ") ? 4 : 0;
+    out += `${text.slice(from, found.index - lead)}${named[0].toUpperCase()}${named.slice(1)} ${date.day}${date.year ? `, ${date.year}` : ""}`;
+    from = found.index + whole.length;
+  }
+  return out + text.slice(from);
+}
+
 const DAY = 24 * 60 * 60 * 1000;
 
 /**
