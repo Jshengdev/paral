@@ -101,7 +101,7 @@ export function explanation({ settings, send, log }: Hands, asking: Asking, { ta
   /** The model's sentences, with a date it wrote the way it is said put back the way a page writes it (`asWritten`). */
   const asThePage = (beats: Answered["beats"]) => beats.map((beat) => ({ ...beat, say: asWritten(beat.say, sources) }));
   /** The reply so far as sentences, each with its mark found on his screen. */
-  const planned =(reply: { result?: string | null; beats: Answered["beats"] }) =>
+  const planned = (reply: { result?: string | null; beats: Answered["beats"] }) =>
     explain({ result: reply.result ?? null, beats: asThePage(reply.beats) }, seen.lines, seen.display, settings.groundMinScore.value, most(), settings.ringReach.value, breath());
   /** The same, for the answer's own sentences: it also notes where each written sentence starts among the spoken ones. */
   const plan = (reply: { result?: string | null; beats: Answered["beats"] }) => {
