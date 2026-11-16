@@ -104,6 +104,18 @@ export const teach = {
     measured: "not measured; chosen from the reference video's own words (\"Draw a quick diagram.\", said right after \"Explain the request pipeline.\") and the judge's wording of November 15",
   } satisfies Setting<string[]>,
 
+  notesMost: {
+    value: 2,
+    why: "On a column or a board that grows with its answer, at most this many notes are written on the board, a row holding one at most. The reference video writes one on each such board; a second fits a column's third sentence. More would have the pointer writing through the whole answer.",
+    measured: "not measured",
+  } satisfies Setting<number>,
+
+  noteWords: {
+    value: 5,
+    why: "A note on the board is cut to this many words: the reference video's are four words and an arrow at most. At six letters a second five short words take about four seconds to write, as long as the sentence they are written with.",
+    measured: "not measured",
+  } satisfies Setting<number>,
+
   columnNames: {
     value: ["how", "showing", "that shows", "connect", "between", "of the", "of my", "of our", "of these", "of those"],
     why: "Words that say for themselves what a drawing should show (`asksFor`). A follow-up that asks for a drawing and holds one of these is an ordinary ask, whatever was explained before it: \"draw me a quick diagram of how sign in, creating a link, and the click stats connect\" names three things and how they connect, and is drawn as rows joined across. \"Draw a quick diagram\", \"can you draw that\" and \"sketch it for me\" name nothing, so they ask for what was just said.",

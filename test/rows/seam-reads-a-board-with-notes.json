@@ -1,0 +1,36 @@
+{
+ "name": "seam: a board line may carry notes, each with its row, its words and, once its sentence has come, that sentence's beat; the wire only grew",
+ "run": "seam.read",
+ "in": {
+  "from": "mind",
+  "text": "{\"v\": 1, \"type\": \"board\", \"id\": \"t1\", \"rows\": [[\"Authenticate\"], [\"Rate limit\"]], \"shape\": \"column\", \"notes\": [{\"row\": 1, \"says\": \"fails with 429\", \"beat\": 1}, {\"row\": 0, \"says\": \"no identity\"}]}"
+ },
+ "out": {
+  "ok": true,
+  "line": {
+   "v": 1,
+   "type": "board",
+   "id": "t1",
+   "rows": [
+    [
+     "Authenticate"
+    ],
+    [
+     "Rate limit"
+    ]
+   ],
+   "shape": "column",
+   "notes": [
+    {
+     "row": 1,
+     "says": "fails with 429",
+     "beat": 1
+    },
+    {
+     "row": 0,
+     "says": "no identity"
+    }
+   ]
+  }
+ }
+}

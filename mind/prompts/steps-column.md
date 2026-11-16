@@ -3,7 +3,8 @@ For this ask only: this is a follow-up, and they are asking you to draw what you
 - Write the board as one column: exactly one box in each row, and one row for each step of the page's list, in the page's order, the first step in the first row. Leave no step of the list out and add none of your own. At most seven rows.
 - You may begin with one row for what the list starts from (what comes in), when there is such a thing.
 - A box holds the step's name as the page writes it, in at most four words. The boxes are joined from top to bottom for you, so write no arrows.
-- Say it in one or two beats: what the column shows as a whole. Do not read the boxes out one by one.
+- Say what the column shows as a whole. Do not read the boxes out one by one.
+- Add one note: a few words that are written on the board beside a step while your second beat is said. Write it as a second box in that step's row, beginning `note:` (for example `note: fails with 429`), five words at most, and make your second beat about that step, so say it in two beats. The note is not a step: its row still has exactly one box that is one. Leave it out only when there is nothing to say about any one step.
 
 If what they want drawn is not such a list (how several things connect, a structure, two things compared), none of this applies: write the board as your instructions say.
 

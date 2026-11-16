@@ -1,0 +1,123 @@
+{
+ "answers": {
+  "explain the request pipeline": [
+   {
+    "problem": "The request pipeline",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "A request goes through six checks in order.",
+      "mark": null
+     },
+     {
+      "say": "It stops at the first one that fails.",
+      "mark": null
+     }
+    ],
+    "board": [
+     [
+      "Authenticate",
+      "Rate limit",
+      "Parse JSON"
+     ],
+     [
+      "Validate the URL",
+      "Allocate a code",
+      "Respond 201"
+     ]
+    ]
+   }
+  ],
+  "draw a quick diagram": [
+   {
+    "problem": "The request pipeline",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "The request passes these checks from top to bottom.",
+      "mark": null
+     },
+     {
+      "say": "A caller over the limit is turned away at the rate limit with a 429.",
+      "mark": null
+     }
+    ],
+    "board": [
+     [
+      "API request"
+     ],
+     [
+      "Authenticate"
+     ],
+     [
+      "Rate limit",
+      "note: fails with 429"
+     ],
+     [
+      "Parse JSON"
+     ],
+     [
+      "Validate the URL"
+     ],
+     [
+      "Allocate a code"
+     ],
+     [
+      "Respond 201"
+     ]
+    ]
+   }
+  ],
+  "draw out the whole thing for me start to finish": [
+   {
+    "problem": "How the link shortener works, start to finish",
+    "breakLine": null,
+    "result": null,
+    "beats": [
+     {
+      "say": "Someone signs up with an email and a password, and only a hash is kept.",
+      "mark": null
+     },
+     {
+      "say": "Signed in, they paste a long address.",
+      "mark": null
+     },
+     {
+      "say": "The server makes a short link, and a click is counted after the redirect.",
+      "mark": null
+     },
+     {
+      "say": "Each click raises the count.",
+      "mark": null
+     }
+    ],
+    "board": [
+     [
+      "Sign up",
+      "Email",
+      "Password",
+      "note: no password is stored"
+     ],
+     [
+      "Sign in",
+      "Paste a long address"
+     ],
+     [
+      "Server",
+      "Short link"
+     ],
+     [
+      "note: counted after the redirect"
+     ],
+     [
+      "A click",
+      "Count goes up"
+     ]
+    ]
+   }
+  ]
+ },
+ "leaks": []
+}

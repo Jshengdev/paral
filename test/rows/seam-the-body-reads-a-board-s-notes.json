@@ -1,0 +1,36 @@
+{
+ "name": "seam: the body reads a board's notes, with and without a beat, and leaves out one with no words or no row",
+ "run": "body.seen",
+ "in": {
+  "lines": [
+   {
+    "v": 1,
+    "type": "board",
+    "id": "t1",
+    "rows": [
+     [
+      "Authenticate"
+     ],
+     [
+      "Rate limit"
+     ]
+    ],
+    "shape": "column",
+    "notes": [
+     {
+      "row": 1,
+      "says": "fails with 429",
+      "beat": 1
+     },
+     {
+      "row": 0,
+      "says": "no identity"
+     }
+    ]
+   }
+  ]
+ },
+ "out": [
+  "took board(id: \"t1\", rows: [[\"Authenticate\"], [\"Rate limit\"]], now: nil, beats: nil, shape: Optional(ParalBody.BoardShape.column), notes: [ParalBody.BoardNote(row: 1, says: \"fails with 429\", beat: Optional(1)), ParalBody.BoardNote(row: 0, says: \"no identity\", beat: nil)])"
+ ]
+}

@@ -23,6 +23,6 @@
   ]
  },
  "out": [
-  "took board(id: \"t1\", rows: [[\"qh.link/4CQMZu\"], [\"linklet.link/4CQMZu\"]], now: nil, beats: Optional([0]), shape: Optional(ParalBody.BoardShape.words))"
+  "took board(id: \"t1\", rows: [[\"qh.link/4CQMZu\"], [\"linklet.link/4CQMZu\"]], now: nil, beats: Optional([0]), shape: Optional(ParalBody.BoardShape.words), notes: [])"
  ]
 }

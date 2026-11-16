@@ -6,7 +6,7 @@ import { join } from "node:path";
 import { boxes, fitted, split, wipes } from "../mind/cores/beats.ts";
 import { asksFor, fits, hear, saysOnly, silence, unasked } from "../mind/cores/catch.ts";
 import { broadFollowUp } from "../mind/cores/full.ts";
-import { columnRows, drawsWhatWasSaid, writtenRows } from "../mind/cores/board.ts";
+import { columnNotes, columnRows, drawsWhatWasSaid, lifted as liftedNotes, rowNotes, writtenRows } from "../mind/cores/board.ts";
 import { away, datesIn, daysFrom, unknownDate, type Named } from "../mind/cores/dates.ts";
 import { calendarFile, dateLine, named, when } from "../mind/cores/keep.ts";
 import { guideGoal, guideNext } from "./runners/guide.ts";
@@ -28,6 +28,7 @@ import { capsule, cardOnFilm, filmed, landing, pressedAgain, sameToTheWatcher } 
 import { pill } from "./runners/pill.ts";
 import { label, labelOnFilm, labelRecord } from "./runners/label.ts";
 import { dragged, dragOnFilm, dragWithin } from "./runners/drag.ts";
+import { noted, notedRecord, notesOnFilm } from "./runners/boardnotes.ts";
 import { orbLight, orbWakes } from "./runners/orb.ts";
 import { linesToTheMind, pillOnInk } from "./runners/ink.ts";
 import { stopped } from "./runners/stop.ts";
@@ -99,6 +100,9 @@ const runs: Record<string, (input: any) => unknown> = {
   "body.inkInside": inkInside,
   "body.pill": pill, "body.orbLight": orbLight, "body.orbWakes": orbWakes,
   "body.dragged": dragged, "body.dragWithin": dragWithin, "body.dragOnFilm": dragOnFilm,
+  "body.noted": noted, "body.notedRecord": notedRecord, "body.notesOnFilm": notesOnFilm,
+  "notes.lifted": (input) => input.boards.map((board: string[][]) => liftedNotes(board, input.most, input.words)),
+  "notes.when": (input) => ({ onAColumn: columnNotes(input.notes, input.beats), onABoardThatGrows: rowNotes(input.notes, input.beats) }),
   "body.pillOnInk": pillOnInk, "body.label": label, "body.labelRecord": labelRecord, "body.labelOnFilm": labelOnFilm,
   "body.linesToTheMind": linesToTheMind,
   "body.boardType": boardType,

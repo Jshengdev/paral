@@ -700,6 +700,17 @@ drawn; of a board with no shape it names neither. `words` are written lines, one
 They come a line a sentence, by the board's `beats`, so the record's `rows` says how many are drawn and its `type`
 is the lines' own size.
 
+**A note written on a board** (`SceneNotes.swift`, `PainterBoard.swift`). A board line may carry `notes`, each with
+its row, its words and, once it has come, the beat of the sentence it is written with. From `board.noteAfterMs`
+(300) after that sentence begins, the note is written `board.noteLettersASecond` (6) letters a second, in cardinal
+at `board.noteType` (13): beside its box on a column (`board.noteGap` to its right, level with it), under its row
+on any other board (`board.noteTop` below it, from the row's left). The card is laid out for the whole note from
+the moment it opens, so it does not grow or move as the letters come. While a note is being written, and for
+`board.noteStayMs` (500) after its last letter, paral's pointer is at the end of the writing, wherever it was
+before; then it goes back to where the scene has it. A note whose sentence has not come is not written. The film's
+record names a note (`what: "note"`, id `<board>/note/<n>`, `says` so far) each time it grows, and names the boxes
+of a board that grows with its answer as it names a column's, so a reader can see a note lies over none of them.
+
 **A board he can drag.** Every card carries a strip at its top: a short bar (`board.stripWidth` 36 by
 `board.stripHeight` 4, `board.stripTop` 8 down, in stone at `board.stripInk`), and the band a press takes hold of is
 the card's whole width and its top pad (20, less on a shrunk card). `Overlay.hits` lists that band with the card's

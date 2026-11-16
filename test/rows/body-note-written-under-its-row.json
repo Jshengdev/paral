@@ -1,0 +1,339 @@
+{
+ "name": "body: a board that grows with its answer, with a note on its second row. The note is written under that row as the row's own sentence is said, inside the card and over no box; the third row comes below it; the card keeps its width from the start",
+ "run": "body.noted",
+ "in": {
+  "lines": [
+   "Milestone 2 is done",
+   "Sign-up works with email and password.",
+   "Links are made on the server.",
+   "Clicks are counted per link.",
+   "Next: the dashboard"
+  ],
+  "rows": [
+   {
+    "at": 500,
+    "line": {
+     "type": "key.down",
+     "at": 500
+    }
+   },
+   {
+    "at": 1500,
+    "line": {
+     "type": "key.up",
+     "at": 1500
+    }
+   },
+   {
+    "at": 2400,
+    "line": {
+     "type": "board",
+     "id": "a1",
+     "rows": [
+      [
+       "Sign up",
+       "Email and password"
+      ],
+      [
+       "Make a link",
+       "Paste a long address"
+      ],
+      [
+       "A click",
+       "Count goes up"
+      ]
+     ],
+     "beats": [
+      0
+     ],
+     "notes": [
+      {
+       "row": 1,
+       "says": "made on the server"
+      }
+     ]
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "say",
+     "id": "a1",
+     "beat": 0,
+     "text": "Someone signs up with an email."
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "voice",
+     "id": "a1",
+     "beat": 0,
+     "amp": 8000,
+     "ms": 2000,
+     "last": true
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "words",
+     "id": "a1",
+     "beat": 0,
+     "start": [
+      0,
+      0.167,
+      0.333,
+      0.5,
+      0.667,
+      0.833
+     ],
+     "end": [
+      0.167,
+      0.333,
+      0.5,
+      0.667,
+      0.833,
+      1
+     ]
+    }
+   },
+   {
+    "at": 2600,
+    "line": {
+     "type": "board",
+     "id": "a1",
+     "rows": [
+      [
+       "Sign up",
+       "Email and password"
+      ],
+      [
+       "Make a link",
+       "Paste a long address"
+      ],
+      [
+       "A click",
+       "Count goes up"
+      ]
+     ],
+     "beats": [
+      0,
+      1
+     ],
+     "notes": [
+      {
+       "row": 1,
+       "says": "made on the server",
+       "beat": 1
+      }
+     ]
+    }
+   },
+   {
+    "at": 2600,
+    "line": {
+     "type": "say",
+     "id": "a1",
+     "beat": 1,
+     "text": "They paste a long address and the server makes the link."
+    }
+   },
+   {
+    "at": 2600,
+    "line": {
+     "type": "voice",
+     "id": "a1",
+     "beat": 1,
+     "amp": 8000,
+     "ms": 3000,
+     "last": true
+    }
+   },
+   {
+    "at": 2600,
+    "line": {
+     "type": "words",
+     "id": "a1",
+     "beat": 1,
+     "start": [
+      0,
+      0.091,
+      0.182,
+      0.273,
+      0.364,
+      0.455,
+      0.545,
+      0.636,
+      0.727,
+      0.818,
+      0.909
+     ],
+     "end": [
+      0.091,
+      0.182,
+      0.273,
+      0.364,
+      0.455,
+      0.545,
+      0.636,
+      0.727,
+      0.818,
+      0.909,
+      1
+     ]
+    }
+   },
+   {
+    "at": 2700,
+    "line": {
+     "type": "board",
+     "id": "a1",
+     "rows": [
+      [
+       "Sign up",
+       "Email and password"
+      ],
+      [
+       "Make a link",
+       "Paste a long address"
+      ],
+      [
+       "A click",
+       "Count goes up"
+      ]
+     ],
+     "beats": [
+      0,
+      1,
+      2
+     ],
+     "notes": [
+      {
+       "row": 1,
+       "says": "made on the server",
+       "beat": 1
+      }
+     ]
+    }
+   },
+   {
+    "at": 2700,
+    "line": {
+     "type": "say",
+     "id": "a1",
+     "beat": 2,
+     "text": "Each click raises the count."
+    }
+   },
+   {
+    "at": 2700,
+    "line": {
+     "type": "voice",
+     "id": "a1",
+     "beat": 2,
+     "amp": 8000,
+     "ms": 2500,
+     "last": true
+    }
+   },
+   {
+    "at": 2700,
+    "line": {
+     "type": "words",
+     "id": "a1",
+     "beat": 2,
+     "start": [
+      0,
+      0.2,
+      0.4,
+      0.6,
+      0.8
+     ],
+     "end": [
+      0.2,
+      0.4,
+      0.6,
+      0.8,
+      1
+     ]
+    }
+   },
+   {
+    "at": 11000,
+    "line": {
+     "type": "state",
+     "name": "idle"
+    }
+   }
+  ],
+  "at": [
+   3000,
+   4700,
+   5200,
+   6500,
+   8200,
+   9500
+  ]
+ },
+ "out": [
+  {
+   "note": null,
+   "card": [
+    354,
+    78
+   ]
+  },
+  {
+   "note": null,
+   "card": [
+    354,
+    147.5
+   ]
+  },
+  {
+   "note": "ma",
+   "pointerAtTheEndOfTheWriting": true,
+   "insideTheCard": true,
+   "overNoBox": true,
+   "stands": "under 4 of the 4 boxes drawn, above 0",
+   "card": [
+    354,
+    153
+   ]
+  },
+  {
+   "note": "made on th",
+   "pointerAtTheEndOfTheWriting": true,
+   "insideTheCard": true,
+   "overNoBox": true,
+   "stands": "under 4 of the 4 boxes drawn, above 0",
+   "card": [
+    354,
+    153
+   ]
+  },
+  {
+   "note": "made on the server",
+   "pointerAtTheEndOfTheWriting": true,
+   "insideTheCard": true,
+   "overNoBox": true,
+   "stands": "under 4 of the 6 boxes drawn, above 2",
+   "card": [
+    354,
+    207
+   ]
+  },
+  {
+   "note": "made on the server",
+   "pointerAtTheEndOfTheWriting": false,
+   "insideTheCard": true,
+   "overNoBox": true,
+   "stands": "under 4 of the 6 boxes drawn, above 2",
+   "card": [
+    354,
+    207
+   ]
+  }
+ ]
+}

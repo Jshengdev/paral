@@ -58,7 +58,7 @@ public struct Tokens: Codable {
         /// how long it stays by what it drew before it flies back, and how far and how often a sight of it is kept.
         public var followX, followY, followMs, stayMs, followLeast, followEveryMs: Double
     }
-    public struct Board: Codable { public var pad, boxPadX, boxPadY, gap, rowGap, downGap, type, wordsType, radius, maxWidth, margin, emptyWidth, emptyHeight, stripWidth, stripHeight, stripTop, stripInk: Double }
+    public struct Board: Codable { public var pad, boxPadX, boxPadY, gap, rowGap, downGap, type, wordsType, radius, maxWidth, margin, emptyWidth, emptyHeight, stripWidth, stripHeight, stripTop, stripInk, noteType, noteGap, noteTop, noteLettersASecond, noteAfterMs, noteStayMs: Double }
     public struct Motion: Codable {
         public var tempo, lingerMs, wordMs, trailFadeMs, readMsAWord, readMsLeast, flightMs, arc: Double
         /// How long a thing takes to arrive, how long to leave (less: what goes is gone sooner than it came), and how

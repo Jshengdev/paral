@@ -204,6 +204,18 @@ writes the lines large (`board.wordsType`, 30, twice a box's words) from one lef
 (`PainterBoard.swift`), and the film's record names the shape, the size and the number of lines drawn. A board the
 model writes any other way goes out as it always did. On his own work with a wrong line it is a hint, with no board.
 
+**Writing on the board (a note).** On the two boards that already get an added paragraph, the column and the whole
+board, the model may write a note or two into its board: one more box in a row, beginning `note:`, five words at
+most. The reply's shape has no place for a note, and a second shape for some asks would lose what the service has
+kept, so this is how one arrives. `cores/board.ts` lifts them out (`lifted`): the rows go on without them, a row
+keeps one, `notesMost` (2) are kept, each cut to `noteWords` (5). The board line carries them as `notes`, each with
+its row and, once its sentence has come, that sentence's beat. On a column, which comes whole with the first
+sentence, the first note is written with the second sentence (the same rows are sent again with its beat); on the
+whole board a note is written with its own row's sentence. The app writes a note in cardinal, six letters a second
+(`board.noteLettersASecond`), beside its box on a column and under its row on the whole board, with paral's pointer
+at the end of the writing; the card keeps room for the whole note from the start. The film's record names a note
+each time it grows, with its words so far. An ordinary board never has one: its request is unchanged.
+
 **Working an exercise through (a switch, off).** `workThrough` is off unless the mind is started with
 `PARAL_WORK_THROUGH=1` (`PARAL_WORK_THROUGH=1 ./run`, or before `./flow`). Off, nothing changes. On, an ask whose
 words ask for it (`workThroughAsks`: "walk me through", "what happens next", "then what" ...) while a measured sheet

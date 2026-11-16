@@ -1,0 +1,280 @@
+{
+ "name": "turn: he asks for the whole thing drawn and the model writes two notes into its board, one in the first row and one in a row of its own after the third. The board's rows go out without them; each growing line names both notes, and a note has its beat from the line that brings its own row's sentence",
+ "run": "turn",
+ "in": {
+  "tape": "notes.json",
+  "show": "whole",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1005,
+     "display": {
+      "id": 1,
+      "scale": 1,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Milestone 2 is done",
+       "box": {
+        "x": 100,
+        "y": 100,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "Sign-up works with email and password.",
+       "box": {
+        "x": 100,
+        "y": 180,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "Links are made on the server.",
+       "box": {
+        "x": 100,
+        "y": 260,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "Clicks are counted per link.",
+       "box": {
+        "x": 100,
+        "y": 340,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "Next: the dashboard",
+       "box": {
+        "x": 100,
+        "y": 420,
+        "w": 620,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "Draw out the whole thing for me, start to finish."
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 2100
+    }
+   ]
+  ]
+ },
+ "out": {
+  "asked": [
+   {
+    "words": "Draw out the whole thing for me, start to finish.",
+    "whole": true,
+    "full": false
+   }
+  ],
+  "lines": [
+   {
+    "type": "board",
+    "id": "t1",
+    "rows": [
+     [
+      "Sign up",
+      "Email",
+      "Password"
+     ],
+     [
+      "Sign in",
+      "Paste a long address"
+     ],
+     [
+      "Server",
+      "Short link"
+     ],
+     [
+      "A click",
+      "Count goes up"
+     ]
+    ],
+    "beats": [
+     0
+    ],
+    "notes": [
+     {
+      "row": 0,
+      "says": "no password is stored",
+      "beat": 0
+     },
+     {
+      "row": 2,
+      "says": "counted after the redirect"
+     }
+    ]
+   },
+   {
+    "type": "say",
+    "id": "t1",
+    "beat": 0,
+    "text": "Someone signs up with an email and a password, and only a hash is kept."
+   },
+   {
+    "type": "board",
+    "id": "t1",
+    "rows": [
+     [
+      "Sign up",
+      "Email",
+      "Password"
+     ],
+     [
+      "Sign in",
+      "Paste a long address"
+     ],
+     [
+      "Server",
+      "Short link"
+     ],
+     [
+      "A click",
+      "Count goes up"
+     ]
+    ],
+    "beats": [
+     0,
+     1
+    ],
+    "notes": [
+     {
+      "row": 0,
+      "says": "no password is stored",
+      "beat": 0
+     },
+     {
+      "row": 2,
+      "says": "counted after the redirect"
+     }
+    ]
+   },
+   {
+    "type": "say",
+    "id": "t1",
+    "beat": 1,
+    "text": "Signed in, they paste a long address."
+   },
+   {
+    "type": "board",
+    "id": "t1",
+    "rows": [
+     [
+      "Sign up",
+      "Email",
+      "Password"
+     ],
+     [
+      "Sign in",
+      "Paste a long address"
+     ],
+     [
+      "Server",
+      "Short link"
+     ],
+     [
+      "A click",
+      "Count goes up"
+     ]
+    ],
+    "beats": [
+     0,
+     1,
+     2
+    ],
+    "notes": [
+     {
+      "row": 0,
+      "says": "no password is stored",
+      "beat": 0
+     },
+     {
+      "row": 2,
+      "says": "counted after the redirect",
+      "beat": 2
+     }
+    ]
+   },
+   {
+    "type": "say",
+    "id": "t1",
+    "beat": 2,
+    "text": "The server makes a short link, and a click is counted after the redirect."
+   },
+   {
+    "type": "board",
+    "id": "t1",
+    "rows": [
+     [
+      "Sign up",
+      "Email",
+      "Password"
+     ],
+     [
+      "Sign in",
+      "Paste a long address"
+     ],
+     [
+      "Server",
+      "Short link"
+     ],
+     [
+      "A click",
+      "Count goes up"
+     ]
+    ],
+    "beats": [
+     0,
+     1,
+     2,
+     3
+    ],
+    "notes": [
+     {
+      "row": 0,
+      "says": "no password is stored",
+      "beat": 0
+     },
+     {
+      "row": 2,
+      "says": "counted after the redirect",
+      "beat": 2
+     }
+    ]
+   },
+   {
+    "type": "say",
+    "id": "t1",
+    "beat": 3,
+    "text": "Each click raises the count."
+   }
+  ],
+  "drawn": []
+ }
+}

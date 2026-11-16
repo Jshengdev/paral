@@ -69,3 +69,51 @@ export function writtenRows(written: string[][] | null | undefined, most: number
   const rows = boxes(written ?? []);
   return rows.length >= 1 && rows.every((row) => row.length === 1) ? rows.slice(0, most) : null;
 }
+
+// Notes written on a board. On a column, and on a board that grows with its answer, the model may add a note or two:
+// a few words paral's pointer writes on the board as the sentence about them is said. The reply's shape has no place
+// for them (a second shape for some asks would also lose what the service has kept), so the model writes a note as
+// one more box in a row, beginning "note:", and they are lifted out here.
+
+/** A note: the row it belongs to, from 0, its words, and the sentence (the `say` line's beat) it is written with, once that has come. */
+export type Note = { row: number; says: string; beat?: number };
+
+const NOTE = /^\s*note\s*:\s*/i;
+
+/**
+ * Lifts the notes out of a board as the model wrote it. A box that begins "note:" is a note of the row it stands
+ * in; in a row of its own it is a note of the row before, and one that comes before any row is dropped. A note of no
+ * words is dropped, a longer one is cut to `words` words, a row keeps only its first note, and only the first `most`
+ * are kept, in the board's order. Gives the rows without them (a row left empty goes) and the notes, each with the
+ * number of its row among the rows that are left.
+ */
+export function lifted(written: string[][], most: number, words: number): { rows: string[][]; notes: Note[] } {
+  const rows: string[][] = [];
+  const notes: Note[] = [];
+  for (const row of written) {
+    const boxes = row.filter((box) => !NOTE.test(box) && box.trim() !== "");
+    if (boxes.length > 0) rows.push(boxes);
+    for (const box of row.filter((text) => NOTE.test(text))) {
+      const says = box.replace(NOTE, "").trim().split(/\s+/).filter(Boolean).slice(0, words).join(" ");
+      if (says !== "" && rows.length > 0 && notes.length < most && !notes.some((note) => note.row === rows.length - 1)) notes.push({ row: rows.length - 1, says });
+    }
+  }
+  return { rows, notes };
+}
+
+/**
+ * A column's notes, each with its beat once its sentence has been said. A column comes whole with the first
+ * sentence, so its notes come with the sentences after it: the first note with the second sentence, the second with
+ * the third. `beats` are the beats of the answer's sentences said so far, in order.
+ */
+export function columnNotes(notes: Note[], beats: number[]): Note[] {
+  return notes.map(({ row, says }, index) => (beats[index + 1] === undefined ? { row, says } : { row, says, beat: beats[index + 1] }));
+}
+
+/**
+ * The notes of a board that grows with its answer, each with its beat once its row has one: a note of row k is
+ * written with row k's own sentence, when the row is up. `beats` are the beats of the rows that have a sentence so far.
+ */
+export function rowNotes(notes: Note[], beats: number[]): Note[] {
+  return notes.map(({ row, says }) => (beats[row] === undefined ? { row, says } : { row, says, beat: beats[row] }));
+}

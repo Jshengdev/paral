@@ -1,0 +1,81 @@
+{
+ "name": "body: the whole chain on a tape, filmed. He asks for the whole thing drawn and the model writes two notes into its board: each growing line names them, each gets its sentence with its own row, and the film's record shows each written piece by piece under its row, the pointer at its end, over none of the board's boxes",
+ "run": "body.notesOnFilm",
+ "in": {
+  "lines": [
+   "Milestone 2 is done",
+   "Sign-up works with email and password.",
+   "Links are made on the server.",
+   "Clicks are counted per link.",
+   "Next: the dashboard"
+  ],
+  "tape": "notes-filmed.json",
+  "asks": [
+   "draw out the whole thing for me start to finish"
+  ]
+ },
+ "out": {
+  "boardLinesOfTheLastAsk": [
+   {
+    "rows": 4,
+    "shape": null,
+    "rowsWithASentence": 1,
+    "notes": [
+     "row 0: \"no password is stored\", with its sentence",
+     "row 2: \"counted after the redirect\", not yet"
+    ]
+   },
+   {
+    "rows": 4,
+    "shape": null,
+    "rowsWithASentence": 2,
+    "notes": [
+     "row 0: \"no password is stored\", with its sentence",
+     "row 2: \"counted after the redirect\", not yet"
+    ]
+   },
+   {
+    "rows": 4,
+    "shape": null,
+    "rowsWithASentence": 3,
+    "notes": [
+     "row 0: \"no password is stored\", with its sentence",
+     "row 2: \"counted after the redirect\", with its sentence"
+    ]
+   },
+   {
+    "rows": 4,
+    "shape": null,
+    "rowsWithASentence": 4,
+    "notes": [
+     "row 0: \"no password is stored\", with its sentence",
+     "row 2: \"counted after the redirect\", with its sentence"
+    ]
+   }
+  ],
+  "theFilmsRecord": [
+   {
+    "id": "<board>/note/0",
+    "says": "no password is stored",
+    "cameInThreePiecesOrMore": true,
+    "eachPieceLongerThanTheLast": true,
+    "sixLettersASecondOrFewer": true,
+    "pointerAtTheEndEachTimeItGrows": true,
+    "insideTheCard": true,
+    "overNoBox": true,
+    "boxesNamed": 9
+   },
+   {
+    "id": "<board>/note/1",
+    "says": "counted after the redirect",
+    "cameInThreePiecesOrMore": true,
+    "eachPieceLongerThanTheLast": true,
+    "sixLettersASecondOrFewer": true,
+    "pointerAtTheEndEachTimeItGrows": true,
+    "insideTheCard": true,
+    "overNoBox": true,
+    "boxesNamed": 9
+   }
+  ]
+ }
+}

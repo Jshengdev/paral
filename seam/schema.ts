@@ -132,8 +132,11 @@ export const FromMind = z.discriminatedUnion("type", [
    * `shape` is only on a board that is not rows of boxes joined across: a `column` is one box to a row, each joined
    * to the one under it, and it comes whole; `words` are whole lines written large, one to a row, with no box, and
    * they come a line a sentence, by `beats`.
+   * `notes` are only on a column or a board that grows: a few words written on the board by paral's pointer, each
+   * with the row it belongs to and, once its sentence has come, that sentence's beat. A note with no beat yet is not
+   * written, but the card keeps room for it. The mind sends the same rows again when a note gets its beat.
    */
-  z.object({ v, type: z.literal("board"), id, rows: z.array(z.array(z.string().min(1)).min(1)), now: z.number().int().nonnegative().optional(), beats: z.array(z.number().int().nonnegative()).optional(), shape: z.enum(["column", "words"]).optional() }),
+  z.object({ v, type: z.literal("board"), id, rows: z.array(z.array(z.string().min(1)).min(1)), now: z.number().int().nonnegative().optional(), beats: z.array(z.number().int().nonnegative()).optional(), shape: z.enum(["column", "words"]).optional(), notes: z.array(z.object({ row: z.number().int().nonnegative(), says: z.string().min(1), beat: z.number().int().nonnegative().optional() })).optional() }),
   z.object({ v, type: z.literal("board.close"), id }),
   z.object({ v, type: z.literal("clip"), id, name: z.string().min(1), clip: z.string().min(1), still: z.string().min(1), seconds: z.number().positive() }),
   z.object({ v, type: z.literal("clear") }),

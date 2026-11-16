@@ -1,0 +1,228 @@
+{
+ "name": "body: a film's record names a note each time it grows, with its words so far: three pieces or more, each longer than the last, at six letters a second or fewer, the pointer at the end of the writing each time, inside the card and over none of the column's named boxes",
+ "run": "body.notedRecord",
+ "in": {
+  "lines": [
+   "Request pipeline (create)",
+   "1. Authenticate. No identity, no further work.",
+   "2. Rate limit. Runs before the body is read.",
+   "3. Parse JSON. url must be a string.",
+   "4. Validate the URL.",
+   "5. Allocate a code.",
+   "6. Respond 201. short_url is built from the Host.",
+   "Rate limiting (token bucket)",
+   "Capacity 10, refilling 1 token every 6 seconds."
+  ],
+  "rows": [
+   {
+    "at": 500,
+    "line": {
+     "type": "key.down",
+     "at": 500
+    }
+   },
+   {
+    "at": 1500,
+    "line": {
+     "type": "key.up",
+     "at": 1500
+    }
+   },
+   {
+    "at": 2400,
+    "line": {
+     "type": "board",
+     "id": "a1",
+     "rows": [
+      [
+       "API request"
+      ],
+      [
+       "Authenticate"
+      ],
+      [
+       "Rate limit"
+      ],
+      [
+       "Parse JSON"
+      ],
+      [
+       "Validate the URL"
+      ],
+      [
+       "Allocate a code"
+      ],
+      [
+       "Respond 201"
+      ]
+     ],
+     "shape": "column",
+     "notes": [
+      {
+       "row": 2,
+       "says": "fails with 429"
+      }
+     ]
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "say",
+     "id": "a1",
+     "beat": 0,
+     "text": "The request passes these checks in order."
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "voice",
+     "id": "a1",
+     "beat": 0,
+     "amp": 8000,
+     "ms": 2000,
+     "last": true
+    }
+   },
+   {
+    "at": 2500,
+    "line": {
+     "type": "words",
+     "id": "a1",
+     "beat": 0,
+     "start": [
+      0,
+      0.143,
+      0.286,
+      0.429,
+      0.571,
+      0.714,
+      0.857
+     ],
+     "end": [
+      0.143,
+      0.286,
+      0.429,
+      0.571,
+      0.714,
+      0.857,
+      1
+     ]
+    }
+   },
+   {
+    "at": 2600,
+    "line": {
+     "type": "board",
+     "id": "a1",
+     "rows": [
+      [
+       "API request"
+      ],
+      [
+       "Authenticate"
+      ],
+      [
+       "Rate limit"
+      ],
+      [
+       "Parse JSON"
+      ],
+      [
+       "Validate the URL"
+      ],
+      [
+       "Allocate a code"
+      ],
+      [
+       "Respond 201"
+      ]
+     ],
+     "shape": "column",
+     "notes": [
+      {
+       "row": 2,
+       "says": "fails with 429",
+       "beat": 1
+      }
+     ]
+    }
+   },
+   {
+    "at": 2600,
+    "line": {
+     "type": "say",
+     "id": "a1",
+     "beat": 1,
+     "text": "A caller over the limit is turned away with a 429."
+    }
+   },
+   {
+    "at": 2600,
+    "line": {
+     "type": "voice",
+     "id": "a1",
+     "beat": 1,
+     "amp": 8000,
+     "ms": 4000,
+     "last": true
+    }
+   },
+   {
+    "at": 2600,
+    "line": {
+     "type": "words",
+     "id": "a1",
+     "beat": 1,
+     "start": [
+      0,
+      0.091,
+      0.182,
+      0.273,
+      0.364,
+      0.455,
+      0.545,
+      0.636,
+      0.727,
+      0.818,
+      0.909
+     ],
+     "end": [
+      0.091,
+      0.182,
+      0.273,
+      0.364,
+      0.455,
+      0.545,
+      0.636,
+      0.727,
+      0.818,
+      0.909,
+      1
+     ]
+    }
+   },
+   {
+    "at": 9000,
+    "line": {
+     "type": "state",
+     "name": "idle"
+    }
+   }
+  ]
+ },
+ "out": [
+  {
+   "id": "<board>/note/0",
+   "says": "fails with 429",
+   "cameInThreePiecesOrMore": true,
+   "eachPieceLongerThanTheLast": true,
+   "sixLettersASecondOrFewer": true,
+   "pointerAtTheEndEachTimeItGrows": true,
+   "insideTheCard": true,
+   "overNoBox": true,
+   "boxesNamed": 7
+  }
+ ]
+}

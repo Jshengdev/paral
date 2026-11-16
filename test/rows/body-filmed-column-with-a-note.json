@@ -1,0 +1,55 @@
+{
+ "name": "body: the whole chain on a tape, filmed. He asks for the pipeline to be explained, then for a quick diagram, and the model writes a column with a note: the mind sends the column whole with the note named, then the same rows again with the note's sentence; the film's record shows the note written piece by piece beside its box, the pointer at its end",
+ "run": "body.notesOnFilm",
+ "in": {
+  "lines": [
+   "Request pipeline (create)",
+   "1. Authenticate. No identity, no further work.",
+   "2. Rate limit. Runs before the body is read.",
+   "3. Parse JSON. url must be a string.",
+   "4. Validate the URL.",
+   "5. Allocate a code.",
+   "6. Respond 201. short_url is built from the Host.",
+   "Rate limiting (token bucket)",
+   "Capacity 10, refilling 1 token every 6 seconds."
+  ],
+  "tape": "notes-filmed.json",
+  "asks": [
+   "explain the request pipeline",
+   "draw a quick diagram"
+  ]
+ },
+ "out": {
+  "boardLinesOfTheLastAsk": [
+   {
+    "rows": 7,
+    "shape": "column",
+    "rowsWithASentence": null,
+    "notes": [
+     "row 2: \"fails with 429\", not yet"
+    ]
+   },
+   {
+    "rows": 7,
+    "shape": "column",
+    "rowsWithASentence": null,
+    "notes": [
+     "row 2: \"fails with 429\", with its sentence"
+    ]
+   }
+  ],
+  "theFilmsRecord": [
+   {
+    "id": "<board>/note/0",
+    "says": "fails with 429",
+    "cameInThreePiecesOrMore": true,
+    "eachPieceLongerThanTheLast": true,
+    "sixLettersASecondOrFewer": true,
+    "pointerAtTheEndEachTimeItGrows": true,
+    "insideTheCard": true,
+    "overNoBox": true,
+    "boxesNamed": 7
+   }
+  ]
+ }
+}

@@ -1,0 +1,327 @@
+{
+ "name": "turn: after an explanation he asks for a quick diagram and the model writes a column with a note in its third row. The board goes out once, whole, as a column of seven with the note named and no sentence yet; ahead of the second sentence the same rows go again with that sentence's beat on the note; the note's box is in no row",
+ "run": "turn",
+ "in": {
+  "tape": "notes.json",
+  "show": "column",
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 1000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 1005,
+     "display": {
+      "id": 1,
+      "scale": 1,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Request pipeline (create)",
+       "box": {
+        "x": 100,
+        "y": 100,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "1. Authenticate. No identity, no further work.",
+       "box": {
+        "x": 100,
+        "y": 180,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "2. Rate limit. Runs before the body is read.",
+       "box": {
+        "x": 100,
+        "y": 260,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "3. Parse JSON. url must be a string.",
+       "box": {
+        "x": 100,
+        "y": 340,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "4. Validate the URL.",
+       "box": {
+        "x": 100,
+        "y": 420,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "5. Allocate a code.",
+       "box": {
+        "x": 100,
+        "y": 500,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "6. Respond 201. short_url is built from the Host.",
+       "box": {
+        "x": 100,
+        "y": 580,
+        "w": 620,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "Explain the request pipeline."
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 2100
+    }
+   ],
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": 9000
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": 9005,
+     "display": {
+      "id": 1,
+      "scale": 1,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Request pipeline (create)",
+       "box": {
+        "x": 100,
+        "y": 100,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "1. Authenticate. No identity, no further work.",
+       "box": {
+        "x": 100,
+        "y": 180,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "2. Rate limit. Runs before the body is read.",
+       "box": {
+        "x": 100,
+        "y": 260,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "3. Parse JSON. url must be a string.",
+       "box": {
+        "x": 100,
+        "y": 340,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "4. Validate the URL.",
+       "box": {
+        "x": 100,
+        "y": 420,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "5. Allocate a code.",
+       "box": {
+        "x": 100,
+        "y": 500,
+        "w": 620,
+        "h": 40
+       }
+      },
+      {
+       "text": "6. Respond 201. short_url is built from the Host.",
+       "box": {
+        "x": 100,
+        "y": 580,
+        "w": 620,
+        "h": 40
+       }
+      }
+     ]
+    },
+    {
+     "say": "Draw a quick diagram."
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": 10100
+    }
+   ]
+  ]
+ },
+ "out": {
+  "asked": [
+   {
+    "words": "Explain the request pipeline.",
+    "column": false,
+    "full": false
+   },
+   {
+    "words": "Draw a quick diagram.",
+    "column": true,
+    "full": false
+   }
+  ],
+  "lines": [
+   {
+    "type": "board",
+    "id": "t1",
+    "rows": [
+     [
+      "Authenticate",
+      "Rate limit",
+      "Parse JSON"
+     ],
+     [
+      "Validate the URL",
+      "Allocate a code",
+      "Respond 201"
+     ]
+    ]
+   },
+   {
+    "type": "say",
+    "id": "t1",
+    "beat": 0,
+    "text": "A request goes through six checks in order."
+   },
+   {
+    "type": "say",
+    "id": "t1",
+    "beat": 1,
+    "text": "It stops at the first one that fails."
+   },
+   {
+    "type": "board",
+    "id": "t2",
+    "rows": [
+     [
+      "API request"
+     ],
+     [
+      "Authenticate"
+     ],
+     [
+      "Rate limit"
+     ],
+     [
+      "Parse JSON"
+     ],
+     [
+      "Validate the URL"
+     ],
+     [
+      "Allocate a code"
+     ],
+     [
+      "Respond 201"
+     ]
+    ],
+    "shape": "column",
+    "notes": [
+     {
+      "row": 2,
+      "says": "fails with 429"
+     }
+    ]
+   },
+   {
+    "type": "say",
+    "id": "t2",
+    "beat": 0,
+    "text": "The request passes these checks from top to bottom."
+   },
+   {
+    "type": "board",
+    "id": "t2",
+    "rows": [
+     [
+      "API request"
+     ],
+     [
+      "Authenticate"
+     ],
+     [
+      "Rate limit"
+     ],
+     [
+      "Parse JSON"
+     ],
+     [
+      "Validate the URL"
+     ],
+     [
+      "Allocate a code"
+     ],
+     [
+      "Respond 201"
+     ]
+    ],
+    "shape": "column",
+    "notes": [
+     {
+      "row": 2,
+      "says": "fails with 429",
+      "beat": 1
+     }
+    ]
+   },
+   {
+    "type": "say",
+    "id": "t2",
+    "beat": 1,
+    "text": "A caller over the limit is turned away at the rate limit with a 429."
+   }
+  ]
+ }
+}

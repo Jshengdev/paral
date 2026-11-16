@@ -33,7 +33,7 @@
   ]
  },
  "out": [
-  "took board(id: \"t1\", rows: [[\"Authenticate\"], [\"Rate limit\"]], now: nil, beats: nil, shape: Optional(ParalBody.BoardShape.column))",
-  "took board(id: \"t2\", rows: [[\"Authenticate\"], [\"Rate limit\"]], now: nil, beats: nil, shape: nil)"
+  "took board(id: \"t1\", rows: [[\"Authenticate\"], [\"Rate limit\"]], now: nil, beats: nil, shape: Optional(ParalBody.BoardShape.column), notes: [])",
+  "took board(id: \"t2\", rows: [[\"Authenticate\"], [\"Rate limit\"]], now: nil, beats: nil, shape: nil, notes: [])"
  ]
 }

@@ -1,0 +1,44 @@
+{
+ "name": "notes: on a column, which comes whole with the first sentence, the first note is written with the second sentence and the second with the third; on a board that grows, a note is written with its own row's sentence; a note whose sentence has not come has no beat yet",
+ "run": "notes.when",
+ "in": {
+  "notes": [
+   {
+    "row": 0,
+    "says": "first"
+   },
+   {
+    "row": 2,
+    "says": "second"
+   }
+  ],
+  "beats": [
+   4,
+   5
+  ]
+ },
+ "out": {
+  "onAColumn": [
+   {
+    "row": 0,
+    "says": "first",
+    "beat": 5
+   },
+   {
+    "row": 2,
+    "says": "second"
+   }
+  ],
+  "onABoardThatGrows": [
+   {
+    "row": 0,
+    "says": "first",
+    "beat": 4
+   },
+   {
+    "row": 2,
+    "says": "second"
+   }
+  ]
+ }
+}

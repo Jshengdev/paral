@@ -2,7 +2,7 @@ import Foundation
 
 extension Scene {
     /// Takes a `board` line. A board and a clip share one place, so whichever comes takes it.
-    mutating func board(_ id: String, _ rows: [[String]], now: Int?, beats: [Int]?, shape: BoardShape? = nil, at: Double) {
+    mutating func board(_ id: String, _ rows: [[String]], now: Int?, beats: [Int]?, shape: BoardShape? = nil, notes: [BoardNote] = [], at: Double) {
         for i in clips.indices where clips[i].clearedAt == nil { clips[i].clearedAt = at }
         // A board for an ask whose empty card is open fills that card; it does not open a second one.
         if let open = boards.lastIndex(where: { $0.id == id && $0.clearedAt == nil && $0.rows.isEmpty }) {
@@ -11,12 +11,15 @@ extension Scene {
             boards[open].filledAt = at
             boards[open].beats = beats
             boards[open].shape = shape
+            boards[open].notes = notes
             return
         }
         // A board that grows with its answer comes again with the same rows and one more beat: it is the same card,
         // which now has one more row to draw when that sentence begins.
-        if let beats, let growing = boards.lastIndex(where: { $0.id == id && $0.clearedAt == nil && $0.beats != nil && $0.rows == rows }) {
-            boards[growing].beats = beats
+        // A board with notes comes again the same way when a note gets its sentence.
+        if beats != nil || !notes.isEmpty, let again = boards.lastIndex(where: { $0.id == id && $0.clearedAt == nil && ($0.beats != nil) == (beats != nil) && $0.rows == rows }) {
+            boards[again].beats = beats
+            boards[again].notes = notes
             return
         }
         // The same rows coming again right after a clear are the same card: the next step of a walk, or a look
@@ -24,7 +27,7 @@ extension Scene {
         // the page has moved and put text where the card was.
         let same = boards.last { $0.rows == rows && $0.shape == shape && $0.clearedAt.map { at - $0 <= Scene.together } ?? false }
         let kept = same.flatMap { old in texts.contains { Scene.touch($0, old.room) } ? nil : old.room }
-        boards.append(Board(id: id, rows: rows, now: now, at: at, upSince: same?.upSince ?? at, room: kept ?? Layout.room(texts: texts, width: width, height: floor, tokens: tokens, tall: shape == .column), beats: beats, shape: shape))
+        boards.append(Board(id: id, rows: rows, now: now, at: at, upSince: same?.upSince ?? at, room: kept ?? Layout.room(texts: texts, width: width, height: floor, tokens: tokens, tall: shape == .column), beats: beats, shape: shape, notes: notes))
     }
 
     /// A board that grows with its answer (`beats`): how many of its rows are drawn at `t`, when the first of them

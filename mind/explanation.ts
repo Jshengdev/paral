@@ -2,7 +2,7 @@ import type { Asking, Hands } from "./ask.ts";
 import type { card } from "./card.ts";
 import type { lessonClip } from "./clip.ts";
 import { explain, WHOLE, type Planned } from "./cores/beats.ts";
-import { columnRows, firstParts, grow, wholeRows, writtenRows, type Growing } from "./cores/board.ts";
+import { columnNotes, columnRows, firstParts, grow, lifted, rowNotes, wholeRows, writtenRows, type Growing, type Note } from "./cores/board.ts";
 import { unknownDate, worded } from "./cores/dates.ts";
 import type { HoldEvent } from "./cores/hold.ts";
 import { givesAway } from "./cores/push.ts";
@@ -48,11 +48,27 @@ export function explanation({ settings, send, log }: Hands, asking: Asking, { ta
   const most = () => (clip.on() ? 1 : whole ? settings.wholeBoardMost.value : full ? settings.fullAnswerMost.value : settings.maxBeats.value);
   const breath = () => (clip.on() ? WHOLE : settings.sentenceMaxWords.value);
   /**
+   * On a whole board and on a column the model may write a note or two into the rows (`cores/board.ts`): they are
+   * lifted out, and the rows go on without them. `noted` keeps them; any other ask's board is left as it was written.
+   */
+  let noted: Note[] = [];
+  const clean = (given: string[][] | null | undefined) => {
+    if (!(whole || column) || !given) return given;
+    const got = lifted(given, settings.notesMost.value, settings.noteWords.value);
+    noted = got.notes;
+    return got.rows;
+  };
+  /** A column that is out, and the beats of the answer's sentences said so far: its notes come with the sentences after the first. */
+  let steps: string[][] | null = null;
+  const saidOn: number[] = [];
+  let notesOut = 0;
+
+  /**
    * A board that grows with its answer (the whole thing drawn, or words alone): its rows, where each written
    * sentence starts among the spoken ones, and the rows said so far. `lines` reads them from the board as written:
    * none for any other ask, and none when an ask for words alone was written as boxes.
    */
-  const lines = (given: string[][] | null | undefined) => (whole ? wholeRows(given, most()) : written ? (writtenRows(given, settings.writtenMost.value) ?? []) : []);
+  const lines = (given: string[][] | null | undefined) => (whole ? wholeRows(clean(given), most()) : written ? (writtenRows(given, settings.writtenMost.value) ?? []) : []);
   let rows: string[][] = [];
   let firsts: number[] = [];
   let growing: Growing = { beats: [], stopped: false };
@@ -61,14 +77,25 @@ export function explanation({ settings, send, log }: Hands, asking: Asking, { ta
     const next = rows.length > 0 && !clip.on() ? grow(growing, rows.length, firsts, place, beat) : growing;
     if (next === growing) return;
     growing = next;
-    if (beat !== null) board.grow(rows, growing.beats, whole ? undefined : "words");
+    if (beat !== null) board.grow(rows, growing.beats, whole ? undefined : "words", whole ? rowNotes(noted.filter((note) => note.row < rows.length), growing.beats) : []);
+  };
+  /** A sentence is about to be said on `beat`: a column's next note gets it, and the board says so. */
+  const notes = (beat: number) => {
+    saidOn.push(beat);
+    if (!steps) return;
+    const now = columnNotes(noted.filter((note) => note.row < steps!.length), saidOn);
+    const withBeat = now.filter((note) => note.beat !== undefined).length;
+    if (withBeat > notesOut) board.note(steps, now);
+    notesOut = withBeat;
   };
 
   /** The board goes out as it was written, or as a column when this ask may be one and the model wrote one. */
   const fill = (written: string[][] | null | undefined) => {
-    const steps = column ? columnRows(written, settings.columnMost.value) : null;
-    if (steps) board.fill(steps, "column");
-    else board.fill(written);
+    const given = clean(written);
+    const made = column ? columnRows(given, settings.columnMost.value) : null;
+    if (!made) return board.fill(given);
+    if (!board.filled()) steps = made;
+    board.fill(made, "column", columnNotes(noted.filter((note) => note.row < made.length), []));
   };
 
   /** The reply so far as sentences, each with its mark found on his screen. */
@@ -99,6 +126,7 @@ export function explanation({ settings, send, log }: Hands, asking: Asking, { ta
         continue;
       }
       grows(told, beat);
+      notes(beat);
       send({ v, type: "say", id, beat, text: say });
       if (mark && !(told === 0 && markOut)) draw(beat, mark);
       talk.speak(beat, say);

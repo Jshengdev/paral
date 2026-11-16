@@ -71,6 +71,8 @@ public struct BoardPicture: Equatable {
     /// Whether it grows with its answer, a row a sentence: the film's record then says how many rows are drawn.
     public var growing = false
     public var shape: BoardShape? = nil
+    /// What paral's pointer writes on it (`SceneNotes.swift`).
+    public var notes: [NotePicture] = []
 }
 
 public struct ClipPicture: Equatable {

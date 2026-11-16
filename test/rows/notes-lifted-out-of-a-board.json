@@ -1,0 +1,240 @@
+{
+ "name": "notes: a box that begins \"note:\" is lifted out of the board as a note of the row it stands in, and the rows go on without it; a note in a row of its own belongs to the row before; one before any row, and one with no words, are dropped; a long one is cut to five words; a row keeps one note; and two notes are kept at most. A board with none is left as it is",
+ "run": "notes.lifted",
+ "in": {
+  "most": 2,
+  "words": 5,
+  "boards": [
+   [
+    [
+     "API request"
+    ],
+    [
+     "Authenticate"
+    ],
+    [
+     "Rate limit",
+     "note: fails with 429"
+    ],
+    [
+     "Parse JSON"
+    ],
+    [
+     "Validate the URL"
+    ],
+    [
+     "Allocate a code"
+    ],
+    [
+     "Respond 201"
+    ]
+   ],
+   [
+    [
+     "Sign up",
+     "Email",
+     "Password",
+     "note: no password is stored"
+    ],
+    [
+     "Sign in",
+     "Paste a long address"
+    ],
+    [
+     "Server",
+     "Short link"
+    ],
+    [
+     "note: counted after the redirect"
+    ],
+    [
+     "A click",
+     "Count goes up"
+    ]
+   ],
+   [
+    [
+     "note: before any row"
+    ],
+    [
+     "One",
+     "Two"
+    ],
+    [
+     "note:"
+    ],
+    [
+     "Three",
+     "Note: a second, much longer note than five words allow"
+    ],
+    [
+     "Four",
+     "note: a third"
+    ]
+   ],
+   [
+    [
+     "One",
+     "note: first",
+     "note: second on the same row"
+    ],
+    [
+     "Two"
+    ]
+   ],
+   [
+    [
+     "API request"
+    ],
+    [
+     "Authenticate"
+    ],
+    [
+     "Rate limit"
+    ],
+    [
+     "Parse JSON"
+    ],
+    [
+     "Validate the URL"
+    ],
+    [
+     "Allocate a code"
+    ],
+    [
+     "Respond 201"
+    ]
+   ]
+  ]
+ },
+ "out": [
+  {
+   "rows": [
+    [
+     "API request"
+    ],
+    [
+     "Authenticate"
+    ],
+    [
+     "Rate limit"
+    ],
+    [
+     "Parse JSON"
+    ],
+    [
+     "Validate the URL"
+    ],
+    [
+     "Allocate a code"
+    ],
+    [
+     "Respond 201"
+    ]
+   ],
+   "notes": [
+    {
+     "row": 2,
+     "says": "fails with 429"
+    }
+   ]
+  },
+  {
+   "rows": [
+    [
+     "Sign up",
+     "Email",
+     "Password"
+    ],
+    [
+     "Sign in",
+     "Paste a long address"
+    ],
+    [
+     "Server",
+     "Short link"
+    ],
+    [
+     "A click",
+     "Count goes up"
+    ]
+   ],
+   "notes": [
+    {
+     "row": 0,
+     "says": "no password is stored"
+    },
+    {
+     "row": 2,
+     "says": "counted after the redirect"
+    }
+   ]
+  },
+  {
+   "rows": [
+    [
+     "One",
+     "Two"
+    ],
+    [
+     "Three"
+    ],
+    [
+     "Four"
+    ]
+   ],
+   "notes": [
+    {
+     "row": 1,
+     "says": "a second, much longer note"
+    },
+    {
+     "row": 2,
+     "says": "a third"
+    }
+   ]
+  },
+  {
+   "rows": [
+    [
+     "One"
+    ],
+    [
+     "Two"
+    ]
+   ],
+   "notes": [
+    {
+     "row": 0,
+     "says": "first"
+    }
+   ]
+  },
+  {
+   "rows": [
+    [
+     "API request"
+    ],
+    [
+     "Authenticate"
+    ],
+    [
+     "Rate limit"
+    ],
+    [
+     "Parse JSON"
+    ],
+    [
+     "Validate the URL"
+    ],
+    [
+     "Allocate a code"
+    ],
+    [
+     "Respond 201"
+    ]
+   ],
+   "notes": []
+  }
+ ]
+}

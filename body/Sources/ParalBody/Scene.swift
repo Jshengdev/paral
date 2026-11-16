@@ -13,7 +13,7 @@ public struct Scene {
     struct Echo { var id: String; var box: Box; var shape: String; var at: Double; var clearedAt: Double? }
     struct Way { var id: String; var down: Bool; var toward: String; var at: Double; var clearedAt: Double? }
     /// `upSince` is when its card first came up, which is before `at` for a board that takes the place of the same rows.
-    struct Board { var id: String; var rows: [[String]]; var now: Int?; var at: Double; var upSince: Double; var room: Box; var filledAt: Double?; var clearedAt: Double?; var beats: [Int]? = nil; var shape: BoardShape? = nil }
+    struct Board { var id: String; var rows: [[String]]; var now: Int?; var at: Double; var upSince: Double; var room: Box; var filledAt: Double?; var clearedAt: Double?; var beats: [Int]? = nil; var shape: BoardShape? = nil; var notes: [BoardNote] = [] }
     struct Clip { var id: String; var path: String; var still: String; var seconds: Double; var at: Double; var room: Box; var clearedAt: Double? }
     struct Hold { var down: Double; var up: Double? }
 
@@ -161,8 +161,8 @@ public struct Scene {
             clips.append(Clip(id: id, path: path, still: still, seconds: seconds, at: at, room: Layout.room(texts: texts, width: width, height: floor, tokens: tokens)))
         case .boardClose(let id):
             for i in boards.indices where boards[i].id == id && boards[i].clearedAt == nil && boards[i].rows.isEmpty { boards[i].clearedAt = at }
-        case .board(let id, let rows, let now, let beats, let shape):
-            board(id, rows, now: now, beats: beats, shape: shape, at: at)
+        case .board(let id, let rows, let now, let beats, let shape, let notes):
+            board(id, rows, now: now, beats: beats, shape: shape, notes: notes, at: at)
         case .clear:
             goes(at, onlyAnswered: true)
             wipe(at)

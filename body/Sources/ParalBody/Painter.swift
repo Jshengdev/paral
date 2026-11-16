@@ -112,6 +112,7 @@ public struct Painter {
         }
         // The tags by their lines, where the scene placed them; every card placed below keeps off them.
         drawn += tags(picture.tags, ctx)
+        var riding: CGPoint?
         if let board = picture.board {
             let placed = self.board(board, clock: picture.clock, ctx)
             drawn.append(Drawn(what: "board", id: board.id, box: placed.card, type: placed.type, rows: board.growing ? min(board.shown, board.rows.count) : nil, shape: board.shape?.rawValue))
@@ -119,11 +120,15 @@ public struct Painter {
             drawn.append(Drawn(what: "strip", id: "\(board.id)/strip", box: placed.strip))
             // A column's boxes and the arrows that join them are named too, so a film's record says they stand one under another.
             drawn += placed.boxes.enumerated().map { Drawn(what: "box", id: "\(board.id)/\($0.offset)", box: $0.element) } + placed.joins.enumerated().map { Drawn(what: "join", id: "\(board.id)/\($0.offset)", box: $0.element) }
+            // A note is named as far as it is written, with its words so far, so a film's record says how it was written.
+            drawn += placed.notes.map { Drawn(what: "note", id: "\(board.id)/note/\($0.n)", box: $0.box, says: $0.says) }
+            riding = placed.tip
             // The lit row of a board of steps is named too, with its number, so a film's record says which step is lit.
             if let now = board.now, let lit = placed.lit { drawn.append(Drawn(what: "step", id: "\(board.id)/\(now)", box: lit)) }
         }
         if let clip = picture.clip { drawn.append(Drawn(what: "clip", id: clip.id, box: self.clip(clip, ctx))) }
-        var pointer = picture.pointer
+        // While paral writes a note on the board its pointer is at the end of the writing, wherever it was before.
+        var pointer = riding.map { PointerPicture(x: $0.x, y: $0.y, alpha: 1, ripple: nil) } ?? picture.pointer
         // The arrow keeps off the page's text and off whatever card is up, so it is placed once those are drawn. Only
         // then is it known where a cursor that is with the arrow is.
         if let way = picture.way {

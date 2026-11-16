@@ -1,5 +1,6 @@
 import type { Asking, Hands } from "./ask.ts";
 import { boxes } from "./cores/beats.ts";
+import type { Note } from "./cores/board.ts";
 import { asksFor } from "./cores/catch.ts";
 import type { HoldEvent } from "./cores/hold.ts";
 import { SEAM_VERSION } from "../seam/schema.ts";
@@ -25,13 +26,13 @@ export function card({ settings, send, log }: Hands, asking: Asking, drew: (even
   return {
     /** Whether a board with its rows is on his screen. An empty card does not count. */
     filled: () => filled,
-    /** Sends the board the moment it is whole; it fills the card when one is open. `shape` says it is not rows joined across. */
-    fill(written: string[][] | null | undefined, shape?: "column") {
+    /** Sends the board the moment it is whole; it fills the card when one is open. `shape` says it is not rows joined across, and `notes` are the words to be written on it. */
+    fill(written: string[][] | null | undefined, shape?: "column", notes: Note[] = []) {
       const rows = boxes(written ?? []);
       if (rows.length === 0 || filled) return;
       filled = true;
       open = false;
-      send({ v, type: "board", id, rows, ...(shape ? { shape } : {}) });
+      send({ v, type: "board", id, rows, ...(shape ? { shape } : {}), ...(notes.length > 0 ? { notes } : {}) });
       drew({ type: "board.drawn", rows });
       log(`${id}: the board${shape ? `, a ${shape} of ${rows.length}` : ""} at ${since()} ms from the release`);
     },
@@ -40,12 +41,17 @@ export function card({ settings, send, log }: Hands, asking: Asking, drew: (even
      * sent again with one more beat as each sentence is said; the app draws a row when its sentence begins. `shape`
      * says its rows are written lines, not boxes.
      */
-    grow(rows: string[][], beats: number[], shape?: "words") {
+    grow(rows: string[][], beats: number[], shape?: "words", notes: Note[] = []) {
       if (rows.length === 0 || beats.length === 0) return;
       if (!filled) log(`${id}: the board's first row goes with its sentence at ${since()} ms from the release; it has ${rows.length} rows to grow to`);
       filled = true;
       open = false;
-      send({ v, type: "board", id, rows, beats, ...(shape ? { shape } : {}) });
+      send({ v, type: "board", id, rows, beats, ...(shape ? { shape } : {}), ...(notes.length > 0 ? { notes } : {}) });
+    },
+    /** A column's notes, as one of them gets its sentence: the same rows again, and the app writes that note on the card that is up. */
+    note(rows: string[][], notes: Note[]) {
+      if (!filled || signal.aborted) return;
+      send({ v, type: "board", id, rows, shape: "column", notes });
     },
     /** Takes an empty card away, since no board is coming. */
     close(why: string) {

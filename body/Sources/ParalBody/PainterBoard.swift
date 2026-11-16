@@ -25,8 +25,11 @@ extension Painter {
     /// `board.wordsType` and with no box behind them. Gives back the card's box, the lit row's, the size the words
     /// were drawn at, and for a column each box and each arrow where it was drawn. Every card carries a strip at its
     /// top, a short bar he takes hold of to move the card (`board.strip…`); the band a press takes hold of is the
-    /// card's whole width and its top pad, which is given back too.
-    func board(_ board: BoardPicture, clock: Double, _ ctx: CGContext) -> (card: Box, lit: Box?, type: Double, boxes: [Box], joins: [Box], strip: Box) {
+    /// card's whole width and its top pad, which is given back too. A note (`SceneNotes.swift`) is written in
+    /// cardinal at `board.noteType`, as many of its letters as are written so far: beside its box on a column, under
+    /// its row on any other board, the card keeping room for all of it from the start. Each note is given back as far
+    /// as it is written, and where the writing ends while the pointer rides it.
+    func board(_ board: BoardPicture, clock: Double, _ ctx: CGContext) -> (card: Box, lit: Box?, type: Double, boxes: [Box], joins: [Box], strip: Box, notes: [(n: Int, box: Box, says: String)], tip: CGPoint?) {
         let b = tokens.board
         let chalk = ink
         let column = board.shape == .column, written = board.shape == .words
@@ -44,11 +47,16 @@ extension Painter {
         let rowHeights = sized.map { row in (row.map { $0.1.height }.max() ?? type) + 2 * b.boxPadY }
         let even = column ? sized.compactMap { $0.first?.1.width }.max() : nil
         let rowWidths = sized.map { row in row.reduce(0) { $0 + (even ?? $1.1.width) + 2 * b.boxPadX } + b.gap * Double(max(0, row.count - 1)) }
-        let fullW = (rowWidths.max() ?? 0) + 2 * b.pad
+        let notes = board.notes.filter { $0.row < sized.count }
+        let noteSizes = notes.map { inked($0.says, size: b.noteType, color: cardinal, weight: .medium).size() }
+        let noteWide = noteSizes.map { Double($0.width) }.max() ?? 0, noteTall = noteSizes.map { Double($0.height) }.max() ?? 0
+        let beside = column && !notes.isEmpty ? b.noteGap + noteWide : 0
+        let under = sized.indices.map { index in !column && notes.contains { $0.row == index } ? b.noteTop + noteTall : 0 }
+        let fullW = max((rowWidths.max() ?? 0) + beside, column ? 0 : noteWide + 2 * b.boxPadX) + 2 * b.pad
         // The card is as tall as the rows shown so far need (an answer's rows come one a sentence), the newest growing
         // in as it comes; it is placed and sized for all of them, so it grows downward and never moves or shrinks.
         func tall(_ rows: Int, _ last: Double = 1) -> Double {
-            let heights = rowHeights.prefix(rows).enumerated().map { $0.offset == rows - 1 ? $0.element * last + between * (last - 1) : $0.element }
+            let heights = rowHeights.prefix(rows).enumerated().map { ($0.offset == rows - 1 ? $0.element * last + between * (last - 1) : $0.element) + under[$0.offset] }
             return heights.reduce(0, +) + Double(max(0, rows - 1)) * between + 2 * b.pad
         }
         let shownCount = min(board.shown, sized.count)
@@ -79,12 +87,12 @@ extension Painter {
         ctx.setLineWidth(1.5)
         ctx.setLineCap(.round)
         var y = b.pad
-        var lit: Box?, boxes: [Box] = [], joins: [Box] = []
+        var lit: Box?, boxes: [Box] = [], joins: [Box] = [], noted: [(n: Int, box: Box, says: String)] = [], tip: CGPoint?
         // Where a place in the rows' own space is on the display, for the lit row's box.
         let rowsAt = CGPoint(x: origin.x + (cardW - fullW) / 2 * scale, y: origin.y + (cardH - shownH) / 2 * scale)
         for (index, row) in sized.enumerated() where index < board.shown {
-            var x = written ? 0 : (fullW - rowWidths[index]) / 2
-            let boxHeight = rowHeights[index]
+            var x = written ? b.pad : (fullW - beside - rowWidths[index]) / 2
+            let boxHeight = rowHeights[index], left = x
             if index == board.now { lit = Box(x: rowsAt.x + x * scale, y: rowsAt.y + y * scale, w: rowWidths[index] * scale, h: boxHeight * scale) }
             for (cell, (label, size)) in row.enumerated() {
                 let boxW = (even ?? size.width) + 2 * b.boxPadX
@@ -95,7 +103,7 @@ extension Painter {
                     ctx.fillPath()
                 }
                 label.draw(with: CGRect(x: x + (even == nil ? b.boxPadX : (boxW - size.width) / 2), y: y + (boxHeight - size.height) / 2, width: size.width, height: size.height), options: wrapped)
-                if column { boxes.append(Box(x: rowsAt.x + x * scale, y: rowsAt.y + y * scale, w: boxW * scale, h: boxHeight * scale)) }
+                if column || (board.growing && !written) { boxes.append(Box(x: rowsAt.x + x * scale, y: rowsAt.y + y * scale, w: boxW * scale, h: boxHeight * scale)) }
                 x += boxW
                 if cell < row.count - 1 {
                     ctx.setStrokeColor(chalk.copy(alpha: 0.6) ?? chalk)
@@ -109,9 +117,20 @@ extension Painter {
                     x += b.gap
                 }
             }
-            // A column's boxes are joined downward: an arrow from each to the one under it, down the card's middle.
+            // The note of this row, as far as it is written: beside a column's box, or under the row.
+            if let n = notes.firstIndex(where: { $0.row == index }) {
+                let at = column ? CGPoint(x: x + b.noteGap, y: y + (boxHeight - noteSizes[n].height) / 2) : CGPoint(x: left + b.boxPadX, y: y + boxHeight + b.noteTop)
+                let soFar = String(notes[n].says.prefix(notes[n].written))
+                let done = inked(soFar, size: b.noteType, color: cardinal, weight: .medium), wide = Double(done.size().width), high = Double(noteSizes[n].height)
+                if notes[n].written > 0 {
+                    done.draw(at: at)
+                    noted.append((n, Box(x: rowsAt.x + at.x * scale, y: rowsAt.y + at.y * scale, w: wide * scale, h: high * scale), soFar))
+                }
+                if notes[n].riding { tip = CGPoint(x: rowsAt.x + (at.x + wide) * scale, y: rowsAt.y + (at.y + high / 2) * scale) }
+            }
+            // A column's boxes are joined downward: an arrow from each to the one under it, down its boxes' middle.
             if column, index + 1 < min(board.shown, sized.count) {
-                let mid = fullW / 2, from = y + boxHeight + 4, to = y + boxHeight + between - 4
+                let mid = (fullW - beside) / 2, from = y + boxHeight + 4, to = y + boxHeight + between - 4
                 ctx.setStrokeColor(chalk.copy(alpha: 0.6) ?? chalk)
                 ctx.move(to: CGPoint(x: mid, y: from))
                 ctx.addLine(to: CGPoint(x: mid, y: to))
@@ -121,9 +140,9 @@ extension Painter {
                 ctx.strokePath()
                 joins.append(Box(x: rowsAt.x + (mid - 5) * scale, y: rowsAt.y + from * scale, w: 10 * scale, h: (to - from) * scale))
             }
-            y += boxHeight + between
+            y += boxHeight + under[index] + between
         }
         ctx.restoreGState()
-        return (Box(x: origin.x, y: origin.y, w: w, h: h), lit, type * scale, boxes, joins, Box(x: origin.x, y: origin.y, w: w, h: min(b.pad * scale, h / 2)))
+        return (Box(x: origin.x, y: origin.y, w: w, h: h), lit, type * scale, boxes, joins, Box(x: origin.x, y: origin.y, w: w, h: min(b.pad * scale, h / 2)), noted, tip)
     }
 }
