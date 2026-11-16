@@ -188,7 +188,10 @@ goes out as it always did, with no shape. The app draws a column as boxes of one
 joined to the next by an arrow (`PainterBoard.swift`), in a place judged for a card taller than wide, and the film's
 record names the shape on the board's rows, with each box and each arrow. The same words as a first question are an
 ordinary ask. A drawing asked for by what it should show ("can you draw how these steps connect?") is not among the
-words, and an ask for the whole thing drawn is a whole board, never both.
+words, and an ask for the whole thing drawn is a whole board, never both. Words that say for themselves what the
+drawing should show (`columnNames`: "how", "showing", "connect", "of the" ...) switch it off in code, whatever was
+explained before: on its first live run the model, left to decide, drew a column for "a quick diagram of how sign
+in, creating a link, and the click stats connect". A board with an arrow inside a box is never a column.
 
 **Words alone (shown what a thing would look like).** When no wrong line of his is open and his words ask to be
 shown what a thing would look like written out (`writtenAsks`: "show me what … look", "what would … look like"), the

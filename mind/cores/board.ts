@@ -40,21 +40,23 @@ export function grow(now: Growing, rows: number, firsts: number[], place: number
 
 /**
  * Whether an ask is for a drawing of what was just said: an answer came before it in this conversation (`shown`, the
- * sentences said since the problem was read) and his words ask for a drawing ("Draw a quick diagram."). The same
- * words as a first question are an ordinary ask, and so is a drawing asked for by what it should show ("draw how
- * these connect"), which the phrases do not hold.
+ * sentences said since the problem was read), his words ask for a drawing ("Draw a quick diagram."), and they do not
+ * say for themselves what the drawing should show (`names`: "... of how sign in and the stats connect"). The same
+ * words as a first question are an ordinary ask. Whether his words name their own subject is told here and not left
+ * to the model: on its first live run the model drew a column for a drawing of how three named things connect.
  */
-export function drawsWhatWasSaid(words: string, phrases: string[], shown: string[]): boolean {
-  return shown.length > 0 && asksFor(words, phrases);
+export function drawsWhatWasSaid(words: string, phrases: string[], shown: string[], names: string[] = []): boolean {
+  return shown.length > 0 && asksFor(words, phrases) && !asksFor(words, names);
 }
 
 /**
  * The board as a column, or null when the model did not write one: a column is two rows or more with one box in
- * each. It is cut to `most` rows. Any other board is drawn as boards always were.
+ * each, and no box holds an arrow of its own ("Sign up → dashboard" is two steps in one box, and reads as a row).
+ * It is cut to `most` rows. Any other board is drawn as boards always were.
  */
 export function columnRows(written: string[][] | null | undefined, most: number): string[][] | null {
   const rows = boxes(written ?? []);
-  return rows.length >= 2 && rows.every((row) => row.length === 1) ? rows.slice(0, most) : null;
+  return rows.length >= 2 && rows.every((row) => row.length === 1 && !/→|->|=>|⇒/.test(row[0])) ? rows.slice(0, most) : null;
 }
 
 // Words alone: asked to be shown what a thing would look like, the board is each example written whole, a line at a time.

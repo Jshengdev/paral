@@ -1,5 +1,5 @@
 {
- "name": "column: a board is a column when it is written as two rows or more with one box in each, and it is cut to the most boxes a column may have; a single box, a board with any row of two boxes, an empty board and no board are not columns",
+ "name": "column: a board is a column when it is written as two rows or more with one box in each, and it is cut to the most boxes a column may have; a single box, a board with any row of two boxes, an empty board and no board are not columns, and neither is one where a box holds an arrow of its own",
  "run": "column.rows",
  "in": {
   "most": 7,
@@ -102,7 +102,18 @@
     ]
    ],
    [],
-   null
+   null,
+   [
+    [
+     "Homepage pitch"
+    ],
+    [
+     "Sign up → dashboard"
+    ],
+    [
+     "Stats page"
+    ]
+   ]
   ]
  },
  "out": [
@@ -171,6 +182,7 @@
     "Two"
    ]
   ],
+  null,
   null,
   null
  ]

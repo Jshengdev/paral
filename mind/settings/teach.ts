@@ -104,6 +104,12 @@ export const teach = {
     measured: "not measured; chosen from the reference video's own words (\"Draw a quick diagram.\", said right after \"Explain the request pipeline.\") and the judge's wording of November 15",
   } satisfies Setting<string[]>,
 
+  columnNames: {
+    value: ["how", "showing", "that shows", "connect", "between", "of the", "of my", "of our", "of these", "of those"],
+    why: "Words that say for themselves what a drawing should show (`asksFor`). A follow-up that asks for a drawing and holds one of these is an ordinary ask, whatever was explained before it: \"draw me a quick diagram of how sign in, creating a link, and the click stats connect\" names three things and how they connect, and is drawn as rows joined across. \"Draw a quick diagram\", \"can you draw that\" and \"sketch it for me\" name nothing, so they ask for what was just said.",
+    measured: "the judge's first live run of the column (November 15): the long line above, said as a follow-up after an answer about the page's numbered list, was drawn as a column of six, since the model took the list as what was asked for. With these words the model is no longer the one that decides",
+  } satisfies Setting<string[]>,
+
   columnMost: {
     value: 7,
     why: "A column has at most this many boxes, one to a row: the reference video's has seven, one for what comes in and one for each of six steps. At the tokens' sizes seven boxes one under another stand about 440 points tall. A longer one is cut here, which leaves steps out, so the prompt asks for no more.",

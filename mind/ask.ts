@@ -70,7 +70,7 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
   /** Asked for the whole thing drawn, with no wrong line of his open, the explanation may be longer and its board grows a row a sentence. */
   const whole = asking.lesson.breakLine === null && asksFor(words, settings.wholeBoardAsks.value);
   /** A follow-up that asks for a drawing of what was just said, with no wrong line of his open, may be drawn as one column. */
-  const column = !whole && asking.lesson.breakLine === null && drawsWhatWasSaid(words, settings.columnAsks.value, asking.lesson.shown);
+  const column = !whole && asking.lesson.breakLine === null && drawsWhatWasSaid(words, settings.columnAsks.value, asking.lesson.shown, settings.columnNames.value);
   /** Asked to be shown what a thing would look like, with no wrong line of his open, the board may be whole examples written out. */
   const written = !whole && !column && asking.lesson.breakLine === null && asksFor(words, settings.writtenAsks.value);
   /** A broad follow-up, with no wrong line of his open, may be answered in more sentences; none of the three above is also one. */
