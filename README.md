@@ -102,6 +102,7 @@ three are drawn by the app's own drawing code in its tests.*
 | any question, with the right Option key held | a short answer aloud, with the line it means marked on your page |
 | "show me" | the steps, one at a time, each marked where it is |
 | "draw the whole thing, start to finish" | the story in up to six sentences, on a board that grows a row with each |
+| "would you add anything else?", after an answer | a fuller answer, up to six sentences |
 | "add it to my calendar" | the date opens in your calendar, ready to add |
 | "scroll for me" | the page turns to what it is pointing at |
 | "open it for me" | the closed section it has marked is opened with one click |
@@ -196,7 +197,7 @@ there. `node pages/gather.ts` with no name reads every page on the list again.
 
 - **`./check`** runs one test file over the rows in `test/rows/`. Each row is a small data file stating one
   thing that must be true. It needs no key, microphone or screen.
-- **`exam/`** is a separate judge that imports nothing from the app. It plays 24 scripted students through the
+- **`exam/`** is a separate judge that imports nothing from the app. It plays scripted students (24 at the submission, 27 now) through the
   real AI and voice, films what the app draws, and reads every frame. Is the mark on the line it named? Does ink
   cover any words? Was every date on a page it had read? Did the tutor give the answer away? On the last build
   of the weekend, 1,912 of 1,914 checks pass. The two that do not are a true date shown as "December first"
@@ -218,9 +219,16 @@ mark, and the board of steps comes when asked for; the pages a question is given
 service as soon as the page is seen, so a first question on a page no longer waits for them; dates written with
 slashes are read; a long sentence that ends by saying where a thing is written is said as two; the app finishes
 the look it is taking before it exits; an exercise can be worked through step by step behind a switch that is
-off (`PARAL_WORK_THROUGH=1 ./run`); and, asked for the whole thing drawn, the board grows a row with each sentence. With all of
-that in, the judge's pass over the same 24 students is 1,901 of 1,902 checks; the one that does not pass is a
-sentence that takes 8.2 seconds to say against a limit of 8.
+off (`PARAL_WORK_THROUGH=1 ./run`). With those in, the judge's pass over the same 24 students was 1,901 of 1,902
+checks.
+
+**After the event.** Two things the demo video does that the build did not were added that evening, once the
+judging was over. Asked for the whole thing drawn, start to finish, the answer runs to six sentences and the board
+grows a row with each. And a follow-up that asks for more than one thing ("would you add anything else?") gets up
+to six sentences. The judge gained three scenarios for them. Over all 27, its pass is 2,015 of 2,019 checks. The
+four that do not pass: a sentence that takes 8.2 seconds to say against a limit of 8, a date said as "December
+first" where the page writes December 1, an answer that named a part of the page out of view, and one silence of
+2.1 seconds against a limit of 2.
 
 ## What it does not do yet
 
