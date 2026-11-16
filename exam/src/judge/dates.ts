@@ -19,7 +19,9 @@ export const monthNumber = (month: string) => MONTHS.findIndex((name) => name.st
  * Each month in the text with the day numbers written after it: "December 5 through 8" gives dec 5 and dec 8. A
  * number with a colon and a digit after it is a time ("11:59"), not a day; "December 1: Deadline" is still a day
  * (the judge once read no date in that line, and failed three right answers for it). A number
- * with "days" after it is a count ("December 1, which is 17 days away" names one date, not two).
+ * with "days" after it is a count ("December 1, which is 17 days away" names one date, not two). A number with am or
+ * pm after it is an hour, and so is the one before "to" in "from 4 to 5 pm" (read as days, "the November 17 session,
+ * from 4 to 5 pm" once gave a November 5 that no page had).
  */
 export function dates(text: string): { month: string; day: number; said: string }[] {
   const found = [...text.matchAll(MONTH)];
@@ -29,7 +31,7 @@ export function dates(text: string): { month: string; day: number; said: string 
     // The numbers are looked for in everything after the month and kept when they begin inside its window, so that
     // what follows a number is the text's own: cut at the window's edge, "closed 13 days ago" once ended at "13" and
     // was read as a day.
-    const days = [...text.slice(from).matchAll(/\b([12]?\d|3[01])(?:st|nd|rd|th)?\b(?!:\d| days?\b)/g)].filter((d) => (d.index ?? 0) < until - from).map((d) => Number(d[1])).filter((d) => d >= 1 && d <= 31);
+    const days = [...text.slice(from).matchAll(/\b([12]?\d|3[01])(?:st|nd|rd|th)?\b(?!:\d| days?\b|\s?(?:[ap]m|[ap]\.m\.)(?![a-z])| to \d{1,2}(?::\d\d)?\s?(?:[ap]m|[ap]\.m\.)(?![a-z]))/gi)].filter((d) => (d.index ?? 0) < until - from).map((d) => Number(d[1])).filter((d) => d >= 1 && d <= 31);
     return days.map((day) => ({ month: key(m[1]), day, said: `${m[1]} ${day}` }));
   });
 }
