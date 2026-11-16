@@ -45,4 +45,11 @@ extension Flow {
         }
         try tell(by[0].doubleValue, by[1].doubleValue, began: false)
     }
+
+    /// The files a run keeps beside its record (`pointer.jsonl`, `drags.jsonl`) are that run's alone. They are added
+    /// to as the run goes, so a run that begins takes away what an earlier run in the same folder left: a film of
+    /// the new run would otherwise replay the old run's drags and pointer too, ahead of its own.
+    public func begin() {
+        for name in ["pointer.jsonl", "drags.jsonl"] { try? FileManager.default.removeItem(at: dir.appendingPathComponent(name)) }
+    }
 }

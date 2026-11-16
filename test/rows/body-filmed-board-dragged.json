@@ -1,5 +1,5 @@
 {
- "name": "body: the whole chain on a tape, filmed. He asks for the whole thing drawn; a second and a half after the board's first frame he presses its strip and drags it 200 left and 60 down over a little more than a second, and later presses the card just under the strip and makes a drag of the same kind. The board ends 200 left and 60 down from where it opened: the press beside the strip took hold of nothing. It passed through three places or more, nothing moved it after he let go, its rows went on growing where he left it, and the record names the strip in the top of the card",
+ "name": "body: the whole chain on a tape, filmed. He asks for the whole thing drawn; a second and a half after the board's first frame he presses its strip and drags it 200 left and 60 down over a little more than a second, and later presses the card just under the strip and makes a drag of the same kind. The board ends 200 left and 60 down from where it opened: the press beside the strip took hold of nothing. It passed through three places or more, nothing moved it after he let go, its rows went on growing where he left it, and the record names the strip in the top of the card. The folder held an earlier run's drag and pointer files when the run began: the run took them away, so one press is kept and it is its own",
  "run": "body.dragOnFilm",
  "in": {
   "lines": [
@@ -37,6 +37,7 @@
   ]
  },
  "out": {
+  "sightsOfHisPointerLeftFromBefore": 0,
   "theDragsKeptBesideTheRecord": {
    "presses": 1,
    "lastOffset": [

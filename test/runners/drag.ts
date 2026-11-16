@@ -1,7 +1,7 @@
 // The runner for rows about a board he drags by its strip: moments of a hand-written run with drags kept beside it,
 // how far a drag may go, and the whole chain on a tape, filmed. No service, no window.
 import { execFileSync } from "node:child_process";
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fakeWav, handWritten, type Written } from "./body.ts";
 import { at, type Box } from "./placed.ts";
@@ -53,7 +53,9 @@ export function dragWithin(input: { cases: { card: Box; by: [number, number] }[]
  * or a drag step as flow.json writes it), the run is filmed, and the film's record of the last board is read. How
  * far it ended from where it opened; whether it passed through three places or more on the way; whether its rows
  * went on growing after its last move, on the board where he left it; whether no move came more than half a second
- * after the one before it; and whether every row of the record names the strip in the top of the card.
+ * after the one before it; and whether every row of the record names the strip in the top of the card. Before the
+ * run, the folder is given what an earlier run would have left beside its record (a drag far off to one side, and a
+ * sight of his pointer): a run that begins takes those away, so only its own are kept.
  */
 export function dragOnFilm(input: { lines: string[]; tape: string; steps: (string | { drag: Record<string, unknown> })[] }) {
   const dir = fresh("drag");
@@ -62,6 +64,8 @@ export function dragOnFilm(input: { lines: string[]; tape: string; steps: (strin
   execFileSync(headless, ["page", page, ...input.lines], { encoding: "utf8" });
   const asks = input.steps.map((step, index) => (typeof step === "string" ? (fakeWav(join(dir, `ask-${index + 1}.wav`), step), { wav: join(dir, `ask-${index + 1}.wav`), trail: [], startAfter: "idle" }) : step));
   writeFileSync(join(dir, "flow.json"), JSON.stringify({ v: 1, display: { id: 2, scale: 1, x: 0, y: 0, w: 1600, h: 1000 }, page, asks }));
+  writeFileSync(join(dir, "drags.jsonl"), '{"at":1,"id":"t2","dx":0,"dy":0,"began":true}\n{"at":2,"id":"t2","dx":-555,"dy":333,"began":false}\n');
+  writeFileSync(join(dir, "pointer.jsonl"), '{"at":1,"x":5,"y":5}\n');
   const quiet = { cwd: root, encoding: "utf8" as const, stdio: ["ignore", "pipe", "pipe"] as ["ignore", "pipe", "pipe"] };
   execFileSync("./flow", [join(dir, "flow.json")], { ...quiet, env: { ...process.env, PARAL_TAPE: join(root, "test", "tapes", input.tape) } });
   execFileSync("./film", [dir], quiet);
@@ -73,6 +77,7 @@ export function dragOnFilm(input: { lines: string[]; tape: string; steps: (strin
   const lastMove = moves.at(-1)?.at ?? -Infinity;
   const told = existsDrags(dir);
   return {
+    sightsOfHisPointerLeftFromBefore: existsSync(join(dir, "pointer.jsonl")) ? readFileSync(join(dir, "pointer.jsonl"), "utf8").split("\n").filter(Boolean).length : 0,
     theDragsKeptBesideTheRecord: { presses: told.filter((drag) => drag.began).length, lastOffset: told.at(-1) ? [told.at(-1)!.dx, told.at(-1)!.dy] : null },
     endedFromWhereItOpened: card.length > 0 ? [round(card.at(-1)!.box.x - card[0].box.x), round(card.at(-1)!.box.y - card[0].box.y)] : null,
     passedThroughThreePlacesOrMore: new Set(moves.map((item) => `${item.box.x},${item.box.y}`)).size >= 3,

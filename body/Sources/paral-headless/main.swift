@@ -82,7 +82,9 @@ case "flow":
     guard arguments.count == 4 else { fail(usage) }
     Task { @MainActor in
         do {
-            try await Flow(file: arguments[1], socket: arguments[2], tokens: try Tokens.load(arguments[3])).play()
+            let flow = try Flow(file: arguments[1], socket: arguments[2], tokens: try Tokens.load(arguments[3]))
+            flow.begin()
+            try await flow.play()
             exit(0)
         } catch { fail(why(error)) }
     }
