@@ -8,6 +8,7 @@ import { glanced, pageChanged, wayDrawn } from "./judge/look.ts";
 import { marks, standingBefore } from "./judge/marks.ts";
 import { onlyThePart } from "./judge/picture.ts";
 import { PEN_CASES } from "./planted-pen.ts";
+import { POINTER_CASES } from "./planted-pointer.ts";
 import { SIX_CASES } from "./planted-six.ts";
 import { VIDEO_CASES } from "./planted-video.ts";
 import { cutIn, pressedAgain } from "./judge/ending.ts";
@@ -149,8 +150,8 @@ const CASES: Case[] = [
   { name: "a board the painter says it drew at 8.5 points", check: "The board's words are big enough to read", mustPass: false, verdicts: () => readable("C8", 0, 3, { x: 1112, y: 446, w: 560, h: 160 }, BOARD_LOOK, 8.5) },
   { name: "a board the painter says it drew at 15 points", check: "The board's words are big enough to read", mustPass: true, verdicts: () => readable("C8", 0, 3, { x: 1112, y: 446, w: 560, h: 60 }, BOARD_LOOK, 15) },
   { name: "a two-row board drawn 115.5 points tall", check: "The board's words are big enough to read", mustPass: true, verdicts: () => readable("C8", 0, 2, { x: 1112, y: 446, w: 560, h: 115.5 }, BOARD_LOOK) },
-  { name: "another page comes up and the old underline stays over it", check: "When another page comes up", mustPass: false, verdicts: () => [pageChanged(0, standingBefore([mark("t1:0", 5000), { at: 9000, kind: "glance", lines: 30 }], { down: 9000, moments: [{ at: 9000, kind: "glance", lines: 30 }] }).length)] },
-  { name: "another page comes up and the look clears what was drawn", check: "When another page comes up", mustPass: true, verdicts: () => [pageChanged(0, standingBefore([mark("t1:0", 5000), { at: 9000, kind: "glance", lines: 30 }, { at: 9100, kind: "clear" }], { down: 9000, moments: [{ at: 9000, kind: "glance", lines: 30 }, { at: 9100, kind: "clear" }] }).length)] },
+  { name: "another page comes up and the old underline stays over it", check: "When the page under its marks changes", mustPass: false, verdicts: () => [pageChanged(0, standingBefore([mark("t1:0", 5000), { at: 9000, kind: "glance", lines: 30 }], { down: 9000, moments: [{ at: 9000, kind: "glance", lines: 30 }] }).length)] },
+  { name: "another page comes up and the look clears what was drawn", check: "When the page under its marks changes", mustPass: true, verdicts: () => [pageChanged(0, standingBefore([mark("t1:0", 5000), { at: 9000, kind: "glance", lines: 30 }, { at: 9100, kind: "clear" }], { down: 9000, moments: [{ at: 9000, kind: "glance", lines: 30 }, { at: 9100, kind: "clear" }] }).length)] },
   { name: "asked to keep a date, it hands the Mac a calendar file for that day", check: "It opens a calendar file for November 22", mustPass: true, verdicts: () => kept(ask([{ at: 5000, kind: "opened", path: ICS }, say("t1:0", 5100, "November 22 is open in your calendar.")]), { keeps: "November 22" }) },
   { name: "asked to keep a date, it only says it did", check: "It opens a calendar file for November 22", mustPass: false, verdicts: () => kept(ask([say("t1:0", 5100, "I've added November 22 to your calendar.")]), { keeps: "November 22" }) },
   { name: "the thing is further down and the way says down", check: "It shows the way to scroll", mustPass: true, verdicts: () => glanced(looked([shownLine(["saw this page"]), { at: 2000, kind: "way", to: "down", toward: "Deadlines" }]), { shows: true, way: { to: "down", toward: "Deadlines" } }, DATED, { pages: [KEPT], ranOn: RAN }) },
@@ -204,7 +205,7 @@ const CASES: Case[] = [
   { name: "he circles and a part is sent", check: "When he circles, the answer is made from", mustPass: true, verdicts: () => [onlyThePart(0, { w: 1136, h: 948 }, { lines: 20, unread: 6 }, DISPLAY)] },
   ...PEN_CASES,
   ...VIDEO_CASES,
-  ...SIX_CASES,
+  ...SIX_CASES, ...POINTER_CASES,
 ];
 
 export async function planted(): Promise<{ name: string; ok: boolean; why: string }[]> {

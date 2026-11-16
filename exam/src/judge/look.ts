@@ -86,12 +86,14 @@ export function aheadInOrder(criterion: string, s: number, board: string | null,
   return [order, held ? yes(criterion, s, holds, board) : no(criterion, s, holds, board)];
 }
 
-// The judge's own proposal, not a bar he was shown: a mark is drawn for one page. When the look sees another page
-// come up, a ring left over it points at nothing. Seen 2026-11-14: he went from the club page to another site, and
-// two underlines, a box and a board stayed over it until he next asked something.
+// C31. A mark is drawn for the lines that were on the screen. When the look sees them change (he scrolled, opened a
+// section, or another page came up), a ring left where it was points at nothing. Seen 2026-11-14: he went from the
+// club page to another site, and two underlines, a box and a board stayed over it until he next asked something.
+// The video shows the same care at 09:34: when he scrolls, its marks do not stay over the wrong lines. It was the
+// judge's own proposal under C18 until his click of 2026-11-16, 03:46 made it a bar of its own.
 export function pageChanged(s: number, standing: number): Verdict {
-  const what = "When another page comes up, the marks drawn for the page before are cleared";
-  return standing === 0 ? yes(C, s, what, "nothing of the page before is left over it") : no(C, s, what, `${standing} marks drawn for the page before are still on the screen`);
+  const what = "When the page under its marks changes, the marks drawn for the page before are cleared";
+  return standing === 0 ? yes("C31", s, what, "nothing of the page before is left over it") : no("C31", s, what, `${standing} marks drawn for the page before are still on the screen`);
 }
 
 

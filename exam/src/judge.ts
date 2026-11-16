@@ -17,6 +17,7 @@ import { notes } from "./judge/notes.ts";
 import { cannotKnow, fullAnswer, wholeBoard } from "./judge/video.ts";
 import { writtenBoard } from "./judge/written.ts";
 import { glanced, pageChanged, wayDrawn, wayShown } from "./judge/look.ts";
+import { pointerAtMarks } from "./judge/pointer.ts";
 import { pagesGiven, readSoFar, type PageRead } from "./judge/pages.ts";
 import { pictureSent } from "./judge/picture.ts";
 import { drawnIn } from "./judge/motion.ts";
@@ -118,7 +119,7 @@ export async function judge(scenario: Scenario): Promise<Judged> {
     if (!takenBack(ask, nextDown)) verdicts.push(...heardWhole(ask, step.say));
     verdicts.push(...marks(ask, step.expect, truth, standingBefore(everything, ask)), ...spoken(ask, step.expect, truth, { pages: readBy(turnOf(ask), ask.down), ranOn: ran }), ...voiced(ask, step.expect, all[index + 1]?.down ?? null),
       ...board(ask, step.expect, truth, where), ...lesson(ask, step.expect), ...cutIn(ask, all[index - 1] ?? null, step.expect, voice), ...pressedAgain(ask, all[index - 1] ?? null, step.expect), ...kept(ask, step.expect), ...walked(ask, step.expect, ran), ...cannotKnow(ask, step.expect), ...wholeBoard(ask, step.expect, where, nextStart), ...fullAnswer(ask, step.expect), ...wayShown("C20", ask.index, ask.moments, step.expect), ...(filmed ? wayDrawn("C20", ask.index, ask.moments, step.expect, where, truth, flow.display) : []));
-    verdicts.push(...keyLabel(ask, where, nextStart, heldKey), ...column(ask, step.expect, where, nextStart), ...writtenBoard(ask, step.expect, where, nextStart, boardLook.type), ...notes(ask, step.expect, where, nextStart), ...dragged(ask, step.expect, where, nextStart));
+    verdicts.push(...keyLabel(ask, where, nextStart, heldKey), ...pointerAtMarks(ask.index, ask.down, nextStart, where), ...column(ask, step.expect, where, nextStart), ...writtenBoard(ask, step.expect, where, nextStart, boardLook.type), ...notes(ask, step.expect, where, nextStart), ...dragged(ask, step.expect, where, nextStart));
     const drawnBoard = lastBoard(ask.moments, turnOf(ask));
     verdicts.push(...readable("C8", ask.index, drawnBoard.rows, drawnBoard.card, boardLook, drawnBoard.type));
     if (seen) {
@@ -145,6 +146,7 @@ export async function judge(scenario: Scenario): Promise<Judged> {
     if (filmed) verdicts.push(...wayDrawn("C18", seenLook.index, seenLook.moments, step.expect, where, truth, flow.display));
     const drawnBoard = lastBoard(seenLook.moments, name);
     verdicts.push(...readable("C18", seenLook.index, drawnBoard.rows, drawnBoard.card, boardLook, drawnBoard.type));
+    verdicts.push(...pointerAtMarks(seenLook.index, seenLook.at, everything.find((m) => (m.kind === "key-down" || m.kind === "glance") && m.at > seenLook.at)?.at ?? Infinity, where));
     if (step.page) verdicts.push(pageChanged(seenLook.index, standingBefore(everything, { down: seenLook.at, moments: seenLook.moments }).length));
   }
   if (all.length === 0) throw new Error(`${scenario.id}: the run holds no ask; a scenario needs one so its ending can be judged`);
