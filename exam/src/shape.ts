@@ -67,6 +67,8 @@ const Expect = z.object({
    * that fits this pattern (a regular expression, letters of either case), written large, a line at a time.
    */
   written: z.string().min(1).optional(),
+  /** After this ask's board is up he drags it by its strip, `by` points across and down, and presses once beside the strip: it must go that far and no further, and stay. */
+  drag: z.object({ by: z.tuple([z.number(), z.number()]) }).optional(),
   /** The answer adds something about one part of its drawing: it must write a short note on the board, with its pointer, as it says it. */
   notes: z.boolean().optional(),
   /** An answer that must stay short: the most sentences it may have. */

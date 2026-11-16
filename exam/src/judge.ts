@@ -11,6 +11,7 @@ import { marks, standingBefore } from "./judge/marks.ts";
 import { kept } from "./judge/keep.ts";
 import { walked } from "./judge/showme.ts";
 import { column } from "./judge/column.ts";
+import { dragged } from "./judge/drag.ts";
 import { keyLabel } from "./judge/label.ts";
 import { notes } from "./judge/notes.ts";
 import { cannotKnow, fullAnswer, wholeBoard } from "./judge/video.ts";
@@ -117,7 +118,7 @@ export async function judge(scenario: Scenario): Promise<Judged> {
     if (!takenBack(ask, nextDown)) verdicts.push(...heardWhole(ask, step.say));
     verdicts.push(...marks(ask, step.expect, truth, standingBefore(everything, ask)), ...spoken(ask, step.expect, truth, { pages: readBy(turnOf(ask), ask.down), ranOn: ran }), ...voiced(ask, step.expect, all[index + 1]?.down ?? null),
       ...board(ask, step.expect, truth, where), ...lesson(ask, step.expect), ...cutIn(ask, all[index - 1] ?? null, step.expect, voice), ...pressedAgain(ask, all[index - 1] ?? null, step.expect), ...kept(ask, step.expect), ...walked(ask, step.expect, ran), ...cannotKnow(ask, step.expect), ...wholeBoard(ask, step.expect, where, nextStart), ...fullAnswer(ask, step.expect), ...wayShown("C20", ask.index, ask.moments, step.expect), ...(filmed ? wayDrawn("C20", ask.index, ask.moments, step.expect, where, truth, flow.display) : []));
-    verdicts.push(...keyLabel(ask, where, nextStart, heldKey), ...column(ask, step.expect, where, nextStart), ...writtenBoard(ask, step.expect, where, nextStart, boardLook.type), ...notes(ask, step.expect, where, nextStart));
+    verdicts.push(...keyLabel(ask, where, nextStart, heldKey), ...column(ask, step.expect, where, nextStart), ...writtenBoard(ask, step.expect, where, nextStart, boardLook.type), ...notes(ask, step.expect, where, nextStart), ...dragged(ask, step.expect, where, nextStart));
     const drawnBoard = lastBoard(ask.moments, turnOf(ask));
     verdicts.push(...readable("C8", ask.index, drawnBoard.rows, drawnBoard.card, boardLook, drawnBoard.type));
     if (seen) {
