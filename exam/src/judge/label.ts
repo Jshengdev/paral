@@ -31,6 +31,15 @@ const SETTLE_MS = 100;
 const SMALL = 0.5;
 
 const inForce = (rows: Placed[], at: number) => rows.filter((p) => p.at <= at).at(-1);
+/**
+ * When to read the label that belongs to a look: three frames after the look began, or the capsule's last frame in
+ * that look if it changed sooner. (He let go and pressed again a tenth of a second later: the label said it was
+ * working for those three frames and went with his press, and reading it after them called it missing.)
+ */
+function settled(capsule: Placed[], look: Placed): number {
+  const next = capsule.find((p) => p.at > look.at && p.look !== look.look);
+  return Math.min(look.at + SETTLE_MS, next ? next.at - 1 : Infinity);
+}
 const words = (label: Placed | undefined) => (label?.says ?? "").trim();
 const shows = (label: Placed | undefined) => (words(label) === "" ? "no label" : `"${words(label)}"`);
 
@@ -61,20 +70,20 @@ export function keyLabel(ask: Ask, placed: Placed[], until: number, key: string 
   const thinking = capsule.find((p) => p.look === "thinking" && p.at >= ask.up! && p.at < until);
   if (!thinking) out.push(unseen("C28", s, working, "the film shows no thinking look after this release"));
   else {
-    const label = inForce(labels, thinking.at + SETTLE_MS);
+    const label = inForce(labels, settled(capsule, thinking));
     out.push(SAYS_WORKING.test(words(label)) ? yes("C28", s, working, shows(label)) : no("C28", s, working, shows(label)));
   }
 
   const speaking = capsule.find((p) => p.look === "speaking" && p.at >= ask.up! && p.at < until);
   if (speaking) {
     const names = "While its own words show, the label names the key to hold";
-    const label = inForce(labels, speaking.at + SETTLE_MS);
+    const label = inForce(labels, settled(capsule, speaking));
     const pattern = key === null ? undefined : KEY_NAMED[key];
     const named = pattern !== undefined && TELLS_HIM_TO_HOLD.test(words(label)) && pattern.test(words(label));
     const measured = `${shows(label)}, on a run that listens on ${key ?? "a key the record does not name"}`;
     out.push(pattern === undefined ? unseen("C28", s, names, measured) : named ? yes("C28", s, names, measured) : no("C28", s, names, measured));
     const beside = "The label sits close beside the capsule, smaller than it, and not over it";
-    const fault = named ? placedWell(label!, inForce(capsule, speaking.at + SETTLE_MS)!) : null;
+    const fault = named ? placedWell(label!, inForce(capsule, settled(capsule, speaking))!) : null;
     out.push(!named ? unseen("C28", s, beside, "no label names the key, so there is none to place") : fault === null ? yes("C28", s, beside, `${Math.round(label!.box.h)} pt tall`) : no("C28", s, beside, fault));
   }
   if (labels.length === 0) return out;

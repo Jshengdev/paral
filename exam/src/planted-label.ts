@@ -26,6 +26,8 @@ export const LABEL_CASES: { name: string; check: string; mustPass: boolean; verd
   { name: "the label sits under the capsule, a third of its height", check: BESIDE, mustPass: true, verdicts: () => judged(GOOD) },
   { name: "the label is gone while he holds the key", check: HOLDING, mustPass: true, verdicts: () => judged(GOOD) },
   { name: "the label goes when the circle is alone again", check: REST, mustPass: true, verdicts: () => judged(GOOD) },
+  { name: "he presses again a tenth of a second after letting go, and the label said it was working until then", check: WORKING, mustPass: true, verdicts: () => keyLabel(ASK, [capsule(0, "rest", 46), capsule(1033, "listening", 82), capsule(4000, "thinking"), label(4000, "On it"), label(4100, null), capsule(4100, "listening", 48)], Infinity, "rightOption") },
+  { name: "he presses again a tenth of a second after letting go, and no label came in between", check: WORKING, mustPass: false, verdicts: () => keyLabel(ASK, [capsule(0, "rest", 46), capsule(1033, "listening", 82), capsule(4000, "thinking"), capsule(4100, "listening", 48)], Infinity, "rightOption") },
   { name: "no label at all, as the build draws today", check: WORKING, mustPass: false, verdicts: () => judged([]) },
   { name: "no label at all while it speaks", check: NAMES, mustPass: false, verdicts: () => judged([]) },
   { name: "the key is named but it never says it is working", check: WORKING, mustPass: false, verdicts: () => judged([label(5000, "Hold right option to talk"), label(20000, null)]) },
