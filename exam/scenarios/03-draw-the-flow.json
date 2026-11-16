@@ -7,7 +7,8 @@
     "C7",
     "C8",
     "C9",
-    "C13"
+    "C13",
+    "C25"
   ],
   "video": "13:02 to 13:26",
   "page": "milestone",
@@ -19,7 +20,8 @@
         "opener": true,
         "board": true,
         "sentences": 2,
-        "plain": true
+        "plain": true,
+        "column": false
       }
     }
   ]

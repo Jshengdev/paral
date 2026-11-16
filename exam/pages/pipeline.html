@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Creating a short link</title><link rel="stylesheet" href="page.css"><script src="truth.js"></script></head>
+<body><main>
+<h1>The API: creating a short link</h1>
+<p data-id="intro">One request makes one short link. It goes through six steps, in this order.</p>
+<h2 data-id="pipeline">Request pipeline</h2>
+<ol>
+<li data-id="step-auth">Authenticate. The key is looked up, and with no valid key the request stops here.</li>
+<li data-id="step-rate">Rate limit. Each key may make ten requests a minute.</li>
+<li data-id="step-parse">Parse the body. It must be JSON with a url field.</li>
+<li data-id="step-validate">Validate the address. Only http and https, at most 2,048 characters.</li>
+<li data-id="step-code">Allocate a code. Six characters, tried again if the code is taken.</li>
+<li data-id="step-respond">Respond. The short address is returned with status 201.</li>
+</ol>
+<h2>When a step fails</h2>
+<ul>
+<li data-id="fail-auth">A missing or wrong key gets 401.</li>
+<li data-id="fail-rate">Too many requests gets 429, with the seconds to wait.</li>
+<li data-id="fail-body">A body that is not JSON, or an address that is not allowed, gets 400.</li>
+</ul>
+</main></body></html>

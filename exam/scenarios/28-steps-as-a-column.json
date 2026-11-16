@@ -1,0 +1,35 @@
+{
+  "v": 1,
+  "id": "steps-as-a-column",
+  "title": "He asks for a drawing of the steps it has just explained",
+  "criteria": [
+    "C5",
+    "C7",
+    "C8",
+    "C10",
+    "C25"
+  ],
+  "video": "20:14 to 20:58: \"Explain the request pipeline.\", then \"Draw a quick diagram.\"; the board comes as one column of seven boxes",
+  "page": "pipeline",
+  "steps": [
+    {
+      "say": "Explain the request pipeline.",
+      "circle": null,
+      "expect": {
+        "opener": true,
+        "sentences": 2,
+        "sentencesMost": 4,
+        "plain": true
+      }
+    },
+    {
+      "say": "Draw a quick diagram.",
+      "circle": null,
+      "expect": {
+        "board": true,
+        "column": ["Authenticate", "Rate limit", "Parse", "Validate", "Allocate", "Respond|Return"],
+        "plain": true
+      }
+    }
+  ]
+}

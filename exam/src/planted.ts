@@ -7,6 +7,7 @@ import { walked } from "./judge/showme.ts";
 import { glanced, pageChanged, wayDrawn } from "./judge/look.ts";
 import { marks, standingBefore } from "./judge/marks.ts";
 import { onlyThePart } from "./judge/picture.ts";
+import { COLUMN_CASES } from "./planted-column.ts";
 import { LABEL_CASES } from "./planted-label.ts";
 import { PEN_CASES } from "./planted-pen.ts";
 import { VIDEO_CASES } from "./planted-video.ts";
@@ -204,6 +205,7 @@ const CASES: Case[] = [
   ...PEN_CASES,
   ...VIDEO_CASES,
   ...LABEL_CASES,
+  ...COLUMN_CASES,
 ];
 
 export async function planted(): Promise<{ name: string; ok: boolean; why: string }[]> {

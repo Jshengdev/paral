@@ -56,6 +56,12 @@ const Expect = z.object({
   wholeBoard: z.boolean().optional(),
   /** A broad follow-up (what else, what next): the answer must run to six sentences or more. */
   fullAnswer: z.boolean().optional(),
+  /**
+   * He asks for a drawing of the steps it has just explained: the board must be one column, with a box for each of
+   * these steps in this order (a word or two of each as the page writes it; `a|b` when either names it). False on
+   * a drawing of how things connect, which must keep its rows of boxes joined across.
+   */
+  column: z.union([z.array(z.string().min(1)).min(2), z.literal(false)]).optional(),
   /** An answer that must stay short: the most sentences it may have. */
   sentencesMost: z.number().int().positive().optional(),
 });
