@@ -4,7 +4,8 @@
   "title": "He asks for the whole thing drawn, start to finish",
   "criteria": [
     "C8",
-    "C22"
+    "C22",
+    "C24"
   ],
   "video": "23:27 to 24:19: a board that grows to six rows, one as each sentence is said",
   "page": "milestone",
@@ -16,7 +17,8 @@
         "opener": true,
         "board": true,
         "wholeBoard": true,
-        "plain": true
+        "plain": true,
+        "notes": true
       }
     }
   ]

@@ -22,8 +22,8 @@ a run leaves on disk.
   and 29, and `draw-the-flow` for what must stay rows). C27 is a board of words alone (`src/judge/written.ts`; the
   second ask of `trace-links`). C26 is a board he can drag by its strip (`src/judge/drag.ts`; scenario 30, where
   the stand-in plays the drag). Each file carries the video's times. All four are read from the film's record.
-  The check for writing on the board is written (`src/judge/notes.ts`) and joins the list when a scenario asks
-  for it.
+  C24 is writing on the board with its pointer (`src/judge/notes.ts`; the second ask of scenario 28 and
+  `the-whole-thing-drawn`, the two boards the video writes on).
 - Two bars were chosen by the person this is built for (2026-11-14): his first words show within about 2 s of the
   press (2.5 s in the judge), and the board opens on its first row, never empty, and is open before the first
   sentence of the answer ends. The second replaced his earlier choice of an empty card inside two seconds, once he had

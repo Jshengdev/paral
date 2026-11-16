@@ -3,7 +3,7 @@
 // 19:02, made quieter by his click of 2026-11-15, 14:55: a look draws no board. C21 to C23 are three more things the
 // video shows, written from the whole of it and made bars by his click of 2026-11-15, 16:26 (sources in src/judge/video.ts).
 // C24 to C29 are six more, found when the video was read one frame a second and every second of it measured, and made
-// bars by his click of 2026-11-15, 18:47. Each is written here when its check is (C25: src/judge/column.ts; C26: src/judge/drag.ts; C27: src/judge/written.ts; C28: src/judge/label.ts).
+// bars by his click of 2026-11-15, 18:47. Each is written here when its check is (C24: src/judge/notes.ts; C25: src/judge/column.ts; C26: src/judge/drag.ts; C27: src/judge/written.ts; C28: src/judge/label.ts).
 // U2 to U7 are checks of use, with their sources in src/judge/.
 export const CRITERIA: Record<string, string> = {
   C1: "At rest, one small circle sits at the bottom centre, above other apps.",
@@ -29,6 +29,7 @@ export const CRITERIA: Record<string, string> = {
   C21: "It says what the page in front of him cannot show it or prove.",
   C22: "Asked for the whole thing drawn, its board grows to as many rows as it has sentences, four to six, a row at a time.",
   C23: "A broad follow-up, one that asks what else or what next, gets six sentences or more.",
+  C24: "On a column and on the whole board it writes a short note with its pointer as it talks, a few letters at a time.",
   C25: "Asked to draw the steps it has just explained, it draws them as one column: a box for each step, joined downward, all at once.",
   C26: "He can drag the board by the strip at its top, and it stays where he puts it.",
   C27: "Asked to be shown what a thing would look like, its board is words alone: each example written large, a line at a time.",
