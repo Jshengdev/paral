@@ -62,6 +62,11 @@ const Expect = z.object({
    * a drawing of how things connect, which must keep its rows of boxes joined across.
    */
   column: z.union([z.array(z.string().min(1)).min(2), z.literal(false)]).optional(),
+  /**
+   * He asks to be shown what a thing would look like: the board must be words alone, each line a whole example
+   * that fits this pattern (a regular expression, letters of either case), written large, a line at a time.
+   */
+  written: z.string().min(1).optional(),
   /** An answer that must stay short: the most sentences it may have. */
   sentencesMost: z.number().int().positive().optional(),
 });

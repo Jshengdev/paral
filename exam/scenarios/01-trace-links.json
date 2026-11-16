@@ -13,7 +13,8 @@
     "C8",
     "C9",
     "C10",
-    "C13"
+    "C13",
+    "C27"
   ],
   "video": "21:41 to 22:46",
   "page": "links",
@@ -36,7 +37,8 @@
       "expect": {
         "board": true,
         "sentences": 2,
-        "plain": true
+        "plain": true,
+        "written": "^[a-z0-9-]+(\\.[a-z0-9-]+)+/[a-z0-9]+$"
       }
     }
   ]

@@ -11,6 +11,7 @@ import { COLUMN_CASES } from "./planted-column.ts";
 import { LABEL_CASES } from "./planted-label.ts";
 import { PEN_CASES } from "./planted-pen.ts";
 import { VIDEO_CASES } from "./planted-video.ts";
+import { WRITTEN_CASES } from "./planted-written.ts";
 import { cutIn, pressedAgain } from "./judge/ending.ts";
 import { timing } from "./judge/timing.ts";
 import { heardWhole, voiced } from "./judge/voice.ts";
@@ -206,6 +207,7 @@ const CASES: Case[] = [
   ...VIDEO_CASES,
   ...LABEL_CASES,
   ...COLUMN_CASES,
+  ...WRITTEN_CASES,
 ];
 
 export async function planted(): Promise<{ name: string; ok: boolean; why: string }[]> {
