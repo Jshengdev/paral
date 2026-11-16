@@ -7,7 +7,7 @@
     "C22",
     "C26"
   ],
-  "video": "23:51 to 24:19: the board has its first row, he takes it by the strip at its top and moves it, and five more rows are drawn where he left it",
+  "video": "23:51 to 24:19: the board has its first row, he takes it by the strip at its top and moves it up and to the right, and five more rows are drawn where he left it",
   "page": "milestone",
   "steps": [
     {
@@ -17,11 +17,11 @@
         "opener": true,
         "board": true,
         "wholeBoard": true,
-        "drag": { "by": [-120, -180] },
+        "drag": { "by": [200, -60] },
         "plain": true
       }
     },
-    { "drag": { "by": [-120, -180], "afterBoardMs": 2000, "overMs": 1500 } },
+    { "drag": { "by": [200, -60], "afterBoardMs": 2000, "overMs": 1500 } },
     { "drag": { "by": [60, 40], "afterBoardMs": 5000, "overMs": 600, "from": "beside" } }
   ]
 }

@@ -4,7 +4,7 @@ import type { Ask } from "./timeline.ts";
 import type { Verdict } from "./verdict.ts";
 
 // The planted cases of C26, a board he can drag. Each run here is made up, with one fault planted in it, to prove
-// that the check can fail. The drag is 120 points to the right and 180 up, as the video's goes up and to the right.
+// that the check can fail. The made-up drag is 120 points to the right and 180 up.
 const ASK: Ask = { index: 0, moments: [], down: 0, up: 3000 };
 const BY: [number, number] = [120, -180];
 const board = (at: number, x: number, y: number, h = 90): Placed => ({ at, what: "board", id: "t1", box: { x, y, w: 420, h } });
