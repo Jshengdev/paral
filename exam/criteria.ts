@@ -5,7 +5,8 @@
 // C24 to C29 are six more, found when the video was read one frame a second and every second of it measured, and made
 // bars by his click of 2026-11-15, 18:47. Each is written here when its check is (C24: src/judge/notes.ts; C25: src/judge/column.ts; C26: src/judge/drag.ts; C27: src/judge/written.ts; C28: src/judge/label.ts).
 // C30 and C31 are two things the video shows that ours already did with no bar of the judge's, made bars by his click of
-// 2026-11-16, 03:46 (C30: src/judge/pointer.ts; C31: `pageChanged` in src/judge/look.ts). C29 is kept for the sixth of the six.
+// 2026-11-16, 03:46 (C30: src/judge/pointer.ts; C31: `pageChanged` in src/judge/look.ts). C29 is the sixth of the six, the dim line, built
+// the way his click of 2026-11-16 chose (src/judge/thought.ts).
 // U2 to U7 are checks of use, with their sources in src/judge/.
 export const CRITERIA: Record<string, string> = {
   C1: "At rest, one small circle sits at the bottom centre, above other apps.",
@@ -36,6 +37,7 @@ export const CRITERIA: Record<string, string> = {
   C26: "He can drag the board by the strip at its top, and it stays where he puts it.",
   C27: "Asked to be shown what a thing would look like, its board is words alone: each example written large, a line at a time.",
   C28: "A small label beside the open capsule names the key to hold, and says it is working for a moment after he lets go.",
+  C29: "While it thinks, a line of its own that is already written shows dim in the capsule from the moment he lets go, until its first line is said.",
   C30: "Its own pointer comes to each thing it marks: it is at the mark as the mark is drawn.",
   C31: "When the page under what it drew changes (he scrolls, opens a section, or another page comes up), what it drew is wiped.",
   U2: "Use: its first words come within a second of release.",

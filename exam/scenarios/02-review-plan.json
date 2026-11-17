@@ -18,6 +18,7 @@
       "say": "This is the plan for the app. Does it look right to you, and is there anything in the file layout I should worry about?",
       "circle": "files",
       "expect": {
+        "dimLine": true,
         "opener": true,
         "mark": {
           "on": "file-rate"

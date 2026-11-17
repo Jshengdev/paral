@@ -8,7 +8,7 @@ a run leaves on disk.
 
 ## What it promises
 
-- `criteria.ts` is the list: the things paral must do (C1 to C23, C25 to C28 of the six added on
+- `criteria.ts` is the list: the things paral must do (C1 to C23, C25 to C29 of the six added on
   2026-11-15, and C30 and C31 added on 2026-11-16), and six checks of use (U2 to U7). C1 to
   C15 are what the video shows; C16 and C17 are the team's own (the hint ladder, the rendered lesson); C18 to C20
   came on the night of 2026-11-14 (the look with no key, keeping a date, "show me"); C21 to C23 are three more
@@ -27,6 +27,15 @@ a run leaves on disk.
   the film's record on every ask and every look that draws a mark). C31: when the page under its marks changes,
   they are cleared (`pageChanged` in `src/judge/look.ts`, on every look step that puts another page on the screen;
   it was the judge's own proposal under C18 before).
+- C29 is the sixth of the six, the dim line while it thinks, built the way his click of 2026-11-16 chose
+  (`src/judge/thought.ts`). While he talks the mind sends each written draft's line (`thought`, with how many of
+  his words the draft had heard and when); the body shows the newest one, dim, from the moment his finger lifts
+  until the first line of that hold is said. Held on every hold made with the key: none while he is still
+  talking; only a line the mind sent, read by its stamp against his release; it goes as the first line begins;
+  that first line is the dim line's own words or the build's fixed line (read from `mind/settings/opener.ts`),
+  never another line of its own; and no draft that heard fewer than six words is sent. Three long questions say
+  `"dimLine": true` (the first asks of `review-plan`, `the-whole-thing-drawn` and `trace-links`): there a line
+  must have been sent by the release, so the bar cannot pass by never showing one. Its look is a reader's.
   C24 is writing on the board with its pointer (`src/judge/notes.ts`; the second ask of scenario 28 and
   `the-whole-thing-drawn`, the two boards the video writes on).
 - Two bars were chosen by the person this is built for (2026-11-14): his first words show within about 2 s of the

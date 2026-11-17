@@ -71,6 +71,8 @@ const Expect = z.object({
   drag: z.object({ by: z.tuple([z.number(), z.number()]) }).optional(),
   /** The answer adds something about one part of its drawing: it must write a short note on the board, with its pointer, as it says it. */
   notes: z.boolean().optional(),
+  /** A question long enough that a line of its own is written before he lets go: it must be sent and shown dim. */
+  dimLine: z.boolean().optional(),
   /** An answer that must stay short: the most sentences it may have. */
   sentencesMost: z.number().int().positive().optional(),
 });

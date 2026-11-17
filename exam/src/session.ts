@@ -23,6 +23,7 @@ function moment(at: number, line: Record<string, unknown> & { type: string }): M
     case "key.down": return { at, kind: "key-down" };
     case "key.up": return { at, kind: "key-up" };
     case "heard": return { at, kind: "heard", text: String(line.text) };
+    case "thought": return { at, kind: "thought", text: String(line.text), heard: Number(line.heard) };
     case "trail": return { at, kind: "trail", x: Number(line.x), y: Number(line.y) };
     case "state": return { at, kind: "look", name: String(line.name), detail: line.detail === undefined ? undefined : String(line.detail) };
     case "mute": return { at, kind: "look", name: "voice down", detail: String(line.why), of: line.id === undefined ? undefined : String(line.id) };
@@ -64,7 +65,9 @@ export async function moments(dir: string): Promise<Moment[]> {
   let ahead: number | null = null;
   const out = recorded.map((r) => {
     const stamp = typeof r.line.at === "number" ? r.line.at : null;
-    if (r.line.type === "key.up" && stamp !== null && ahead !== null) return moment(stamp + ahead, r.line);
+    // The release and a thought carry the moment they belong to, not the moment they crossed: the release is sent
+    // after the ear's grace, and a thought is shown or not by its own stamp against his finger lifting.
+    if ((r.line.type === "key.up" || r.line.type === "thought") && stamp !== null && ahead !== null) return moment(stamp + ahead, r.line);
     if (r.from === "body" && stamp !== null) ahead = r.at - stamp;
     return moment(r.at, r.line);
   });

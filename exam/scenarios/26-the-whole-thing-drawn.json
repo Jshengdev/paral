@@ -14,6 +14,7 @@
       "say": "Draw out the whole thing for me, start to finish: how someone signs up, makes a link, and sees its clicks.",
       "circle": null,
       "expect": {
+        "dimLine": true,
         "opener": true,
         "board": true,
         "wholeBoard": true,

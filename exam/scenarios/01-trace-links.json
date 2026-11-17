@@ -23,6 +23,7 @@
       "say": "These short links are still really long. What makes them so long, and how could I make them shorter?",
       "circle": "table",
       "expect": {
+        "dimLine": true,
         "opener": true,
         "mark": {
           "on": "link-1"

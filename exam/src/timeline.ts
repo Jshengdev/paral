@@ -5,6 +5,7 @@ export type Moment = { at: number } & (
   | { kind: "key-down" }
   | { kind: "key-up" }
   | { kind: "heard"; text: string }
+  | { kind: "thought"; text: string; heard: number }   // a draft's line sent to be shown dim: how many of his words the draft had heard
   | { kind: "trail"; x: number; y: number }
   | { kind: "look"; name: string; detail?: string; /** For "voice down": the id of the line the mind marked as shown and not spoken. */ of?: string }
   | { kind: "way"; to: "up" | "down"; toward: string }   // in a mark's place: which way to scroll to a thing not in view
