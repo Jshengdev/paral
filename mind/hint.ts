@@ -57,7 +57,8 @@ export function ladderHint({ ports, settings, send, log }: Hands, asking: Asking
     /**
      * The whole answer is here: the hint is cut to the rung's length and judged. A hint that gives his result away,
      * or says a sum that does not add up, is swapped for the rung's fixed line; when that line was already said with
-     * the ring, nothing more is said. Gives back whether the model's own hint was said.
+     * the ring, he is told how to test an answer of his own instead (`heldBackHintLine`). Gives back whether the
+     * model's own hint was said.
      */
     async finish(answered: Answered, place: Found, rung: number): Promise<boolean> {
       const { safe } = ladder[rung];
@@ -84,7 +85,8 @@ export function ladderHint({ ports, settings, send, log }: Hands, asking: Asking
         log(`${id}: push swapped ${what} for the safe line of rung ${rung} (${verdict.why}); the hint it replaced was: "${line}"`);
         clip.drop();
       }
-      const shown = !swapped ? sentences : led ? [] : [safe];
+      // Held back with the rung's line already said: one more fixed line, so the ask does not end on a line just heard.
+      const shown = !swapped ? sentences : led ? [settings.heldBackHintLine.value] : [safe];
       const from = led ? 1 : 0;
       shown.forEach((text, index) => say(lead.count() + from + index, index === 0 && !place.found ? `${settings.notFoundLine.value} ${text}` : text, rung));
       told = from + shown.length;

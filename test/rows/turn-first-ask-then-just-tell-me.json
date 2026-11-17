@@ -1,5 +1,5 @@
 {
- "name": "turn: a first ask rings the break and says the first rung's fixed line with the ring, then the hint; \"just tell me\" climbs one rung, its leaked answer is dropped and only that rung's fixed line is heard; the ring on the same line is not wiped",
+ "name": "turn: a first ask rings the break and says the first rung's fixed line with the ring, then the hint; \"just tell me\" climbs one rung, its leaked answer is dropped and, after that rung's fixed line, he is told how to test an answer of his own; the ring on the same line is not wiped",
  "run": "turn",
  "in": {
   "tape": "algebra.json",
@@ -243,6 +243,15 @@
    "type": "mute",
    "id": "t2",
    "why": "no voice is set up"
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t2",
+   "beat": 1,
+   "text": "I won't say if that's it. Put your own answer back into the first line and see if both sides match.",
+   "rung": 1,
+   "of": 4
   },
   {
    "v": 1,

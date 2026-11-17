@@ -1,5 +1,5 @@
 {
- "name": "turn: the second look cannot answer (it fails): the hint is treated as a leak, so only the rung's fixed line is heard, and the ask ends resting, not failed",
+ "name": "turn: the second look cannot answer (it fails): the hint is treated as a leak, so the hint is not said: he hears the rung's fixed line and then how to test an answer of his own, and the ask ends resting, not failed",
  "run": "turn",
  "in": {
   "tape": "second-look-fails.json",
@@ -128,6 +128,15 @@
    "type": "mute",
    "id": "t1",
    "why": "no voice is set up"
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t1",
+   "beat": 1,
+   "text": "I won't say if that's it. Put your own answer back into the first line and see if both sides match.",
+   "rung": 0,
+   "of": 4
   },
   {
    "v": 1,

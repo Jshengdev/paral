@@ -1,5 +1,5 @@
 {
- "name": "turn: the top rung asked a second time: its fixed line is said with the ring again, the hint is swapped by the second look, and the safe line is not said a second time, so the ask ends on the fixed line it already said",
+ "name": "turn: the top rung asked a second time: its fixed line is said with the ring again, the hint is swapped by the second look, and since the rung's line was already said he is told one more fixed line, how to test an answer of his own, so the ask does not end on a line he has heard",
  "run": "turn",
  "in": {
   "tape": "top-rung.json",
@@ -567,6 +567,15 @@
    "type": "mute",
    "id": "t5",
    "why": "no voice is set up"
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t5",
+   "beat": 1,
+   "text": "I won't say if that's it. Put your own answer back into the first line and see if both sides match.",
+   "rung": 3,
+   "of": 4
   },
   {
    "v": 1,

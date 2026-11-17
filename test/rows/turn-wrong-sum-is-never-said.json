@@ -1,5 +1,5 @@
 {
- "name": "turn: the model's hint says a wrong sum (\"8 plus 3 ... so k is 12\"): it is never said; the rung's fixed line, already said with the ring, is all he hears",
+ "name": "turn: the model's hint says a wrong sum (\"8 plus 3 ... so k is 12\"): it is never said; after the rung's fixed line, already said with the ring, he is told how to test an answer of his own",
  "run": "turn",
  "in": {
   "tape": "algebra.json",
@@ -243,6 +243,15 @@
    "type": "mute",
    "id": "t2",
    "why": "no voice is set up"
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t2",
+   "beat": 1,
+   "text": "I won't say if that's it. Put your own answer back into the first line and see if both sides match.",
+   "rung": 1,
+   "of": 4
   },
   {
    "v": 1,

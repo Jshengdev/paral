@@ -1,5 +1,5 @@
 {
- "name": "turn: work-through on: after the first step, a plain \"so what is the final product\" is not a step: it goes up the hint ladder, and a hint that names the product is swapped by Push for the rung's fixed line; the step's rings and board stay",
+ "name": "turn: work-through on: after the first step, a plain \"so what is the final product\" is not a step: it goes up the hint ladder, and a hint that names the product is swapped by Push for the rung's fixed line, with how to test an answer of his own after it; the step's rings and board stay",
  "run": "turn",
  "in": {
   "tape": "worksheet-walk.json",
@@ -267,6 +267,15 @@
     "type": "mute",
     "id": "t2",
     "why": "no voice is set up"
+   },
+   {
+    "v": 1,
+    "type": "say",
+    "id": "t2",
+    "beat": 1,
+    "text": "I won't say if that's it. Put your own answer back into the first line and see if both sides match.",
+    "rung": 0,
+    "of": 4
    },
    {
     "v": 1,

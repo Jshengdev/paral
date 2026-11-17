@@ -44,6 +44,12 @@ export const teach = {
     measured: "not measured",
   } satisfies Setting<string>,
 
+  heldBackHintLine: {
+    value: "I won't say if that's it. Put your own answer back into the first line and see if both sides match.",
+    why: "Said when a hint is held back (it gave his result away, or said a sum that does not add up) and the rung's own fixed line was already said with the ring: without it the ask ends on a line he has just heard. It tells him how to test an answer of his own, which is what the hints that pass say in their own words when he names a guess. It holds no number and neither confirms nor denies anything, so his result is still never said. The words were chosen by the owner from one candidate.",
+    measured: "49 recorded runs of the own-work scenarios, 132 hints: a hint was held back 5 times, all at the top rung and all on the one ask that names a guess (\"Is it eleven?\", run 13 times), and each time he heard only the rung's fixed line for the third time (2026-11-16, the outside judge's recorded passes). A second guess held back in the same sitting would hear this line again; not measured live.",
+  } satisfies Setting<string>,
+
   notFoundLine: {
     value: "I could not find that line on your screen.",
     why: "Said in front of the hint when the quoted line matches nothing read from the picture, so paral never draws a guess.",
