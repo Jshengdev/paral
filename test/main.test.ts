@@ -19,6 +19,7 @@ import { locate } from "../mind/cores/ground.ts";
 import { pick, seconds } from "../mind/cores/lesson.ts";
 import { next, type Happened } from "../mind/cores/teach.ts";
 import { givesAway, judge, wrongSum, type Judged } from "../mind/cores/push.ts";
+import { toHim } from "../mind/cores/you.ts";
 import { empty, fold, NO_RUNG } from "../mind/cores/hold.ts";
 import { FromBody, FromMind, read, write } from "../seam/schema.ts";
 import { settings } from "../mind/settings.ts";
@@ -156,6 +157,7 @@ const runs: Record<string, (input: any) => unknown> = {
   "catch.fits": (input) => input.cases.map(([drafted, final]: [string, string]) => fits(drafted, final, { share: input.share, least: input.least ?? 0, small: input.small ?? [] })),
   "catch.used": (input) => input.cases.map(([drafted, final]: [string, string]) => fits(drafted, final, { share: settings.openerDraftShare.value, least: settings.openerDraftLeast.value, small: settings.openerSmallWords.value })),
   "quick.deadline": quickDeadline,
+  "you.said": (input) => input.cases.map(([said, sources]: [string, string[]]) => toHim(said, sources)),
   circle: (input) =>
     Object.fromEntries(
       Object.entries(input.trails).map(([name, trail]: [string, any]) => [

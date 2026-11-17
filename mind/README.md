@@ -39,6 +39,8 @@ Every decision is a pure function in `cores/`; every outside service is behind `
 | `settings.ts`, `settings/` | every value, one file per thing it governs |
 | `prompts/` | one prompt per job; a row holds each one's fingerprint |
 | `cores/page.ts`, `cores/dates.ts` | which of USC's kept pages (`../pages/kept/`) is on his screen; the dates a text names, counted from today, and whether a date said is on a page that was read |
+| `cores/you.ts` | a sentence that speaks of him as someone else ("a user should see") is said to him ("you should see"), unless his words, his screen or a page given with the ask speak of users or students themselves |
+| `cores/beats.ts` (`arrowsWorded`) | an arrow sign inside a box's own words is written ", then" and the box stays one box; used where boxes go to the app, never on a board of written lines |
 
 ## What is said, and by whom
 

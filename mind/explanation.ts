@@ -6,6 +6,7 @@ import { columnNotes, columnRows, firstParts, grow, lifted, rowNotes, wholeRows,
 import { asWritten, unknownDate, worded } from "./cores/dates.ts";
 import type { HoldEvent } from "./cores/hold.ts";
 import { givesAway } from "./cores/push.ts";
+import { toHim } from "./cores/you.ts";
 import type { Answered, Part } from "./ports.ts";
 import { SEAM_VERSION } from "../seam/schema.ts";
 
@@ -98,8 +99,11 @@ export function explanation({ settings, send, log }: Hands, asking: Asking, { ta
     board.fill(made, "column", columnNotes(noted.filter((note) => note.row < made.length), []));
   };
 
-  /** The model's sentences, with a date it wrote the way it is said put back the way a page writes it (`asWritten`). */
-  const asThePage = (beats: Answered["beats"]) => beats.map((beat) => ({ ...beat, say: asWritten(beat.say, sources) }));
+  /**
+   * The model's sentences, with a date it wrote the way it is said put back the way a page writes it (`asWritten`),
+   * and a sentence that speaks of him as someone else said to him (`toHim`).
+   */
+  const asThePage = (beats: Answered["beats"]) => beats.map((beat) => ({ ...beat, say: toHim(asWritten(beat.say, sources), sources) }));
   /** The reply so far as sentences, each with its mark found on his screen. */
   const planned = (reply: { result?: string | null; beats: Answered["beats"] }) =>
     explain({ result: reply.result ?? null, beats: asThePage(reply.beats) }, seen.lines, seen.display, settings.groundMinScore.value, most(), settings.ringReach.value, breath());

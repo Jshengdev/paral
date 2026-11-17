@@ -4,6 +4,7 @@ import { fitted, hint, WHOLE } from "./cores/beats.ts";
 import type { Found } from "./cores/ground.ts";
 import type { HoldEvent } from "./cores/hold.ts";
 import { judge } from "./cores/push.ts";
+import { toHim } from "./cores/you.ts";
 import type { Answered } from "./ports.ts";
 import { SEAM_VERSION } from "../seam/schema.ts";
 
@@ -15,13 +16,15 @@ type With = {
   clip: ReturnType<typeof lessonClip>;
   lead: { count(): number };
   drew(event: HoldEvent): void;
+  /** His own words, the lines on his screen and the kept pages given with this ask: what a sentence may speak of as someone else's. */
+  sources: string[];
 };
 
 /**
  * The answer when his own work has a wrong line: a ring on that line, the rung's fixed line said with the ring, then
  * the model's hint once Push has passed it. One rung of the ladder per ask, and never his result.
  */
-export function ladderHint({ ports, settings, send, log }: Hands, asking: Asking, { talk, clip, lead, drew }: With) {
+export function ladderHint({ ports, settings, send, log }: Hands, asking: Asking, { talk, clip, lead, drew, sources }: With) {
   const { id, seen, signal } = asking;
   const ladder = settings.ladder.value;
   const since = () => Date.now() - asking.releasedAt;
@@ -58,7 +61,8 @@ export function ladderHint({ ports, settings, send, log }: Hands, asking: Asking
      */
     async finish(answered: Answered, place: Found, rung: number): Promise<boolean> {
       const { safe } = ladder[rung];
-      const sentences = hint(answered, clip.on() ? 1 : ladder[rung].sentences, clip.on() ? WHOLE : settings.sentenceMaxWords.value);
+      // A hint that speaks of him as someone else ("the student should") is said to him; it is judged as it will be said.
+      const sentences = hint(answered, clip.on() ? 1 : ladder[rung].sentences, clip.on() ? WHOLE : settings.sentenceMaxWords.value).map((say) => toHim(say, sources));
       const line = sentences.join(" ");
       // Numbers that stand on his own wrong line may be spoken of; any other number of his result may not.
       const onHisLine = [answered.breakLine, place.found ? place.line : "", asking.lesson.breakRead ?? ""].join(" ");

@@ -1,0 +1,128 @@
+{
+ "name": "you: a sentence that speaks of him as someone else is said to him. The one sentence of the recorded runs, in both its wordings (\"It lists six things a user should see\" on a page headed \"What you should see\"), becomes \"you should see\"; the verb is put right (\"the student is\" to \"you are\", \"the learner has\" to \"you have\", \"the user's\" to \"your\") and a sentence that began with it still begins with a capital; when his screen, his own words or a page given with the ask speak of users or students, the sentence is about them and is left as written; a sentence with none of these wordings is left as written",
+ "run": "you.said",
+ "in": {
+  "cases": [
+   [
+    "It lists six things a user should see, starting at the homepage with Sign up and Log in.",
+    [
+     "Can you draw me a quick diagram of how sign in, creating a link, and the click stats connect in this build?",
+     "Milestone 2: accounts and links",
+     "What you should see",
+     "1. The homepage has a one-line pitch with Sign up and Log in buttons.",
+     "2. Logged out, opening the dashboard sends you to the login page.",
+     "3. Sign up puts you on the dashboard, with your email and a Log out button."
+    ]
+   ],
+   [
+    "It lists six things a user should see, walking from the homepage through to the stats page.",
+    [
+     "Can you draw me a quick diagram of how sign in, creating a link, and the click stats connect in this build?",
+     "Milestone 2: accounts and links",
+     "What you should see",
+     "1. The homepage has a one-line pitch with Sign up and Log in buttons.",
+     "2. Logged out, opening the dashboard sends you to the login page.",
+     "3. Sign up puts you on the dashboard, with your email and a Log out button."
+    ]
+   ],
+   [
+    "The student is asked to sign up first, and the user's email shows on the dashboard.",
+    [
+     "Can you draw me a quick diagram of how sign in, creating a link, and the click stats connect in this build?",
+     "Milestone 2: accounts and links",
+     "What you should see",
+     "1. The homepage has a one-line pitch with Sign up and Log in buttons.",
+     "2. Logged out, opening the dashboard sends you to the login page.",
+     "3. Sign up puts you on the dashboard, with your email and a Log out button."
+    ]
+   ],
+   [
+    "A learner has to sign up before the user can make a link.",
+    [
+     "Can you draw me a quick diagram of how sign in, creating a link, and the click stats connect in this build?",
+     "Milestone 2: accounts and links",
+     "What you should see",
+     "1. The homepage has a one-line pitch with Sign up and Log in buttons.",
+     "2. Logged out, opening the dashboard sends you to the login page.",
+     "3. Sign up puts you on the dashboard, with your email and a Log out button."
+    ]
+   ],
+   [
+    "The user was logged out, so the user wants the login page and the student needs an account.",
+    [
+     "Can you draw me a quick diagram of how sign in, creating a link, and the click stats connect in this build?",
+     "Milestone 2: accounts and links",
+     "What you should see",
+     "1. The homepage has a one-line pitch with Sign up and Log in buttons.",
+     "2. Logged out, opening the dashboard sends you to the login page.",
+     "3. Sign up puts you on the dashboard, with your email and a Log out button."
+    ]
+   ],
+   [
+    "It lists six things a user should see, starting at the homepage.",
+    [
+     "Can you draw me a quick diagram of how sign in, creating a link, and the click stats connect in this build?",
+     "Each user gets a dashboard of their own.",
+     "Milestone 2: accounts and links",
+     "What you should see",
+     "1. The homepage has a one-line pitch with Sign up and Log in buttons.",
+     "2. Logged out, opening the dashboard sends you to the login page.",
+     "3. Sign up puts you on the dashboard, with your email and a Log out button."
+    ]
+   ],
+   [
+    "It lists six things a user should see, starting at the homepage.",
+    [
+     "what should a user see here?",
+     "Milestone 2: accounts and links",
+     "What you should see",
+     "1. The homepage has a one-line pitch with Sign up and Log in buttons.",
+     "2. Logged out, opening the dashboard sends you to the login page.",
+     "3. Sign up puts you on the dashboard, with your email and a Log out button."
+    ]
+   ],
+   [
+    "The hold is for the student whose GPA falls below 2.0, and the student is told by email.",
+    [
+     "There's a hold on my account",
+     "Academic Notice",
+     "Students on academic notice meet a counselor before registering."
+    ]
+   ],
+   [
+    "You should see six things, starting at the homepage.",
+    [
+     "Can you draw me a quick diagram of how sign in, creating a link, and the click stats connect in this build?",
+     "Milestone 2: accounts and links",
+     "What you should see",
+     "1. The homepage has a one-line pitch with Sign up and Log in buttons.",
+     "2. Logged out, opening the dashboard sends you to the login page.",
+     "3. Sign up puts you on the dashboard, with your email and a Log out button."
+    ]
+   ],
+   [
+    "The users list is on the stats page, and a student group can share one link.",
+    [
+     "Can you draw me a quick diagram of how sign in, creating a link, and the click stats connect in this build?",
+     "Milestone 2: accounts and links",
+     "What you should see",
+     "1. The homepage has a one-line pitch with Sign up and Log in buttons.",
+     "2. Logged out, opening the dashboard sends you to the login page.",
+     "3. Sign up puts you on the dashboard, with your email and a Log out button."
+    ]
+   ]
+  ]
+ },
+ "out": [
+  "It lists six things you should see, starting at the homepage with Sign up and Log in.",
+  "It lists six things you should see, walking from the homepage through to the stats page.",
+  "You are asked to sign up first, and your email shows on the dashboard.",
+  "You have to sign up before you can make a link.",
+  "You were logged out, so you want the login page and you need an account.",
+  "It lists six things a user should see, starting at the homepage.",
+  "It lists six things a user should see, starting at the homepage.",
+  "The hold is for the student whose GPA falls below 2.0, and the student is told by email.",
+  "You should see six things, starting at the homepage.",
+  "The users list is on the stats page, and a student group can share one link."
+ ]
+}

@@ -76,7 +76,7 @@ export async function ask(hands: Hands, asking: Asking, keep: (lesson: Lesson) =
   /** A broad follow-up, with no wrong line of his open, may be answered in more sentences; none of the three above is also one. */
   const full = !whole && !column && !written && asking.lesson.breakLine === null && broadFollowUp(words, settings.fullAnswerAsks.value, asking.lesson.shown);
   const explained = explanation(hands, asking, { talk, board, clip, lead, drew, sources, whole, full, column, written });
-  const hinted = ladderHint(hands, asking, { talk, clip, lead, drew });
+  const hinted = ladderHint(hands, asking, { talk, clip, lead, drew, sources });
   /** With the switch on and his words asking for it, on a measured drawing, the ask is the next step of the working (`through.ts`). */
   const walking = worksThrough(settings.workThrough.value, words, settings.workThroughAsks.value, spots.named.length > 0);
   const worked = workedThrough(hands, asking, { talk, lead, spots, drew, given: () => draft.steps ?? [] });
