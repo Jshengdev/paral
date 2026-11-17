@@ -1,7 +1,7 @@
 import type { Asking, Hands } from "./ask.ts";
 import type { card } from "./card.ts";
 import type { lessonClip } from "./clip.ts";
-import { explain, WHOLE, type Planned } from "./cores/beats.ts";
+import { arrowsWorded, explain, WHOLE, type Planned } from "./cores/beats.ts";
 import { columnNotes, columnRows, firstParts, grow, lifted, rowNotes, wholeRows, writtenRows, type Growing, type Note } from "./cores/board.ts";
 import { asWritten, unknownDate, worded } from "./cores/dates.ts";
 import type { HoldEvent } from "./cores/hold.ts";
@@ -68,7 +68,7 @@ export function explanation({ settings, send, log }: Hands, asking: Asking, { ta
    * sentence starts among the spoken ones, and the rows said so far. `lines` reads them from the board as written:
    * none for any other ask, and none when an ask for words alone was written as boxes.
    */
-  const lines = (given: string[][] | null | undefined) => (whole ? wholeRows(clean(given), most()) : written ? (writtenRows(given, settings.writtenMost.value) ?? []) : []);
+  const lines = (given: string[][] | null | undefined) => (whole ? arrowsWorded(wholeRows(clean(given), most())) : written ? (writtenRows(given, settings.writtenMost.value) ?? []) : []);
   let rows: string[][] = [];
   let firsts: number[] = [];
   let growing: Growing = { beats: [], stopped: false };

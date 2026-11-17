@@ -123,6 +123,15 @@ export function boxes(rows: string[][]): string[][] {
   return rows.map((row) => row.map((box) => box.replace(arrows, "").trim()).filter(Boolean)).filter((row) => row.length > 0);
 }
 
+/**
+ * A box whose own words hold an arrow sign ("Sign up → dashboard") is one step shortened, not two boxes: the sign is
+ * written ", then" and the box stays one box, so a row keeps its count. The signs at a box's ends are the painter's
+ * arrows and went in `boxes`; a board of written lines is not boxes and is never passed through here.
+ */
+export function arrowsWorded(rows: string[][]): string[][] {
+  return rows.map((row) => row.map((box) => box.replace(/\s*(→|⇒|➜|->|=>)\s*/g, ", then ")));
+}
+
 /** What was drawn before stays through a follow-up. It goes when the problem is new, or when the line that was wrong is no longer the wrong one. */
 export function wipes(newProblem: boolean, lastBreak: string | null, nowBreak: string | null): boolean {
   return newProblem || (lastBreak !== null && lastBreak !== nowBreak);

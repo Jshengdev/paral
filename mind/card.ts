@@ -1,5 +1,5 @@
 import type { Asking, Hands } from "./ask.ts";
-import { boxes } from "./cores/beats.ts";
+import { boxes, arrowsWorded } from "./cores/beats.ts";
 import type { Note } from "./cores/board.ts";
 import { asksFor } from "./cores/catch.ts";
 import type { HoldEvent } from "./cores/hold.ts";
@@ -28,7 +28,8 @@ export function card({ settings, send, log }: Hands, asking: Asking, drew: (even
     filled: () => filled,
     /** Sends the board the moment it is whole; it fills the card when one is open. `shape` says it is not rows joined across, and `notes` are the words to be written on it. */
     fill(written: string[][] | null | undefined, shape?: "column", notes: Note[] = []) {
-      const rows = boxes(written ?? []);
+      // An arrow sign inside a box's own words is written out (`arrowsWorded`); the lesson's record holds the board as it was drawn.
+      const rows = arrowsWorded(boxes(written ?? []));
       if (rows.length === 0 || filled) return;
       filled = true;
       open = false;

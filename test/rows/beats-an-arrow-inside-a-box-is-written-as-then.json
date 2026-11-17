@@ -1,0 +1,44 @@
+{
+ "name": "beats: an arrow sign inside a box's own words is one step of the page shortened, so it is written \", then\" and the box stays one box (the ten boxes of the recorded runs: \"Sign up → dashboard\" nine times, with \"Logged out → login\" and \"/4CQMZu → short\"); any arrow sign, with or without spaces around it, and each one in a box that has two; a box with no arrow, a greater-than sign and a row's count of boxes are left as they are",
+ "run": "beats.arrowsWorded",
+ "in": {
+  "boards": {
+   "the board of the recorded runs": [
+    ["Homepage pitch", "Dashboard needs login", "Sign up → dashboard"],
+    ["Create short link", "Click recorded, redirect", "Stats page"]
+   ],
+   "two in one row": [
+    ["Homepage pitch", "Logged out → login", "Sign up → dashboard"]
+   ],
+   "the one that reads less well": [
+    ["quiet-harbor-demo.trycloudflare.com", "long part", "/4CQMZu → short"]
+   ],
+   "other signs, and no spaces": [
+    ["Sign in -> dashboard", "Paste=>short link", "a ⇒ b ➜ c"]
+   ],
+   "left as they are": [
+    ["Stats page", "> 5 clicks", "Click recorded, redirect"],
+    ["one box"]
+   ]
+  }
+ },
+ "out": {
+  "the board of the recorded runs": [
+   ["Homepage pitch", "Dashboard needs login", "Sign up, then dashboard"],
+   ["Create short link", "Click recorded, redirect", "Stats page"]
+  ],
+  "two in one row": [
+   ["Homepage pitch", "Logged out, then login", "Sign up, then dashboard"]
+  ],
+  "the one that reads less well": [
+   ["quiet-harbor-demo.trycloudflare.com", "long part", "/4CQMZu, then short"]
+  ],
+  "other signs, and no spaces": [
+   ["Sign in, then dashboard", "Paste, then short link", "a, then b, then c"]
+  ],
+  "left as they are": [
+   ["Stats page", "> 5 clicks", "Click recorded, redirect"],
+   ["one box"]
+  ]
+ }
+}
