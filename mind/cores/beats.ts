@@ -1,5 +1,6 @@
 import type { MarkKind } from "../../seam/schema.ts";
 import { locate, type Box, type Display, type ReadLine } from "./ground.ts";
+import { sayMs, type Pace } from "./pace.ts";
 
 type Pointed = { kind: MarkKind; index: number | null; quote: string; label: string | null; toIndex?: number | null; toQuote?: string | null };
 type Reply = { result: string | null; beats: { say: string; mark: Pointed | null }[] };
@@ -33,9 +34,11 @@ export function fitted(kind: MarkKind, text: string, lines: ReadLine[], reach: R
 /**
  * The most words a spoken sentence may have: plain, and when it works a step with numbers, which are slower to say.
  * `letters` is the most letters it may have whatever its words: a sentence of twenty long words and two dates takes
- * as long to say as one of thirty short ones. With no `letters` only the words count.
+ * as long to say as one of thirty short ones. With no `letters` only the words count. `pace` estimates the time to
+ * say it (`cores/pace.ts`): a sentence within its words and letters that is still estimated over `pace.most` is tried
+ * for a cut as one over its letters is ("RNR01" and "11:59pm" are few letters and slow to say).
  */
-export type Limits = { plain: number; withNumbers: number; letters?: number };
+export type Limits = { plain: number; withNumbers: number; letters?: number; pace?: Pace };
 
 /** No limit: a lesson's one sentence is never cut. */
 export const WHOLE: Limits = { plain: Infinity, withNumbers: Infinity };
@@ -46,6 +49,31 @@ const SUBJECT = /^(i|you|he|she|it|we|they|the|a|an|this|that|these|those|your|i
 const NOT_AFTER_SO = /^(that|as|far|long|much|many|to|on|forth)$/i;
 /** After a comma, "per the ..." is a tail that says where the thing is written. "Per" before anything else is a rate ("twelve dollars, per transcript"). */
 const WRITTEN_IN = /^(the|this|that|its|their|your)$/i;
+/** After ", which", a verb that tells what a thing on the page says: the clause stands alone as "It says ..." or "They list ...". */
+const TELLS = /^(says|lists|shows|names|covers|explains|describes|tells|gives|means|holds)$/i;
+const TELL = /^(say|list|show|name|cover|explain|describe|tell|give|mean|hold)$/i;
+
+/**
+ * Further places to cut, tried only where `split` finds none of its own, so no sentence it cuts today is cut
+ * elsewhere. Each leaves two parts that stand as sentences: at ", but" with six words or more after it ("But
+ * further down this page ..."); at ", which says" and its like, said as "It says ..." ("They list ..." for a plain
+ * verb), with five words or more; at ", then" with five words or more ("Then submit on EngageSC ..."); and at a
+ * colon with seven words or more after it and no comma among them, which is a clause and not a list, unless a
+ * name or a number follows. `lead` is the word the second part begins with in place of "which".
+ */
+function further(words: string[]): { at: number; lead?: string }[] {
+  const places: { at: number; lead?: string }[] = [];
+  for (let at = 4; at <= words.length - 3; at++) {
+    const [before, word, next] = [words[at - 1], words[at], words[at + 1] ?? ""];
+    const left = words.length - at;
+    const comma = /,$/.test(before);
+    if (comma && /^but$/i.test(word) && left >= 6) places.push({ at });
+    else if (comma && /^which$/i.test(word) && (TELLS.test(next) || TELL.test(next)) && left >= 5) places.push({ at, lead: TELLS.test(next) ? "It" : "They" });
+    else if (comma && /^then$/i.test(word) && left >= 5) places.push({ at });
+    else if (/:$/.test(before) && !(/^\p{Lu}/u.test(word) && !SUBJECT.test(word)) && !/^\d/.test(word) && left >= 7 && !words.slice(at).join(" ").includes(",")) places.push({ at });
+  }
+  return places;
+}
 
 /**
  * A spoken sentence over its limit is cut into two only where both parts stand as sentences: after a semicolon, after
@@ -58,15 +86,16 @@ const WRITTEN_IN = /^(the|this|that|its|their|your)$/i;
  * which does not stand alone. After ", so" a clause follows, and it is cut there whatever its length. A tail that
  * says where the thing is written ("..., per the closed Deadlines section under Important Dates") is no sentence as
  * it stands, so it is cut there and said as one: "That's per the closed Deadlines section under Important Dates."
+ * Where none of these places is found, a few further ones are tried (`further`).
  */
 export function split(sentence: string, limits: Limits): string[] {
   const words = sentence.trim().split(/\s+/);
   // "With numbers" means a worked step: three numbers or more. One number, or the word "equals", does not count.
   const limit = (sentence.match(/\d+/g)?.length ?? 0) >= 3 ? limits.withNumbers : limits.plain;
-  const long = sentence.trim().length > (limits.letters ?? Infinity);
+  const long = sentence.trim().length > (limits.letters ?? Infinity) || (limits.pace !== undefined && sayMs(sentence.trim(), limits.pace) > limits.pace.most);
   if (words.length <= limit && !long) return [sentence.trim()];
   const wordy = words.length > limit;
-  const places: number[] = [];
+  const places: { at: number; lead?: string }[] = [];
   for (let first = 4; first <= words.length - 3; first++) {
     const before = words[first - 1];
     const next = words[first + 1] ?? "";
@@ -79,12 +108,14 @@ export function split(sentence: string, limits: Limits): string[] {
     // Path"). A capital letter on a word that cannot open a sentence is a name, and a name is not cut in two.
     const named = /:$/.test(before) && /^\p{Lu}/u.test(words[first]) && !SUBJECT.test(words[first]);
     const written = /,$/.test(before) && /^per$/i.test(words[first]) && WRITTEN_IN.test(next);
-    if ((/;$/.test(before) || (wordy && /:$/.test(before) && !named)) || joins || written) places.push(first);
+    if ((/;$/.test(before) || (wordy && /:$/.test(before) && !named)) || joins || written) places.push({ at: first });
   }
-  const first = places.filter((place) => place <= limit).at(-1) ?? places[0];
-  if (first === undefined) return [sentence.trim()];
-  const rest = words.slice(first).join(" ");
-  const next = /^per$/i.test(words[first]) ? `That's ${rest}` : rest[0].toUpperCase() + rest.slice(1);
+  const pool = places.length > 0 ? places : further(words);
+  const place = pool.filter(({ at }) => at <= limit).at(-1) ?? pool[0];
+  if (place === undefined) return [sentence.trim()];
+  const { at: first, lead } = place;
+  const rest = words.slice(lead ? first + 1 : first).join(" ");
+  const next = lead ? `${lead} ${rest}` : /^per$/i.test(words[first]) ? `That's ${rest}` : rest[0].toUpperCase() + rest.slice(1);
   return [words.slice(0, first).join(" ").replace(/[,;:]$/, "") + ".", ...split(next, limits)];
 }
 

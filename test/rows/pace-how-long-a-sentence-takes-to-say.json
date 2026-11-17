@@ -1,0 +1,24 @@
+{
+ "name": "pace: about how long the voice takes to say a sentence, in ms, as the build is set, beside how long each recorded sentence took (the time in its name). Digits, commas and codes in capitals are slow: a sentence of 96 letters that names \"RNR01\", \"GPA\" and \"2.0\" took 8.2 s. The estimate was a median 0.23 s from the true time on 2,000 recorded lines, and it is short on the code's sentence, which is why that one is not seen as slow",
+ "run": "pace.ms",
+ "in": {
+  "sentences": {
+   "took 9.4 s": "The dates on your screen are for spring 2027, but further down this same page, in the Deadlines table, fall applications are due mid-February.",
+   "took 9.0 s": "Next, scroll down to Submitting the Application, which says the designated officer submits everything on EngageSC from a laptop or desktop.",
+   "took 8.4 s, 101 letters": "I can't see your account, so I can't tell which hold you have; your hold list on my.usc.edu names it.",
+   "took 8.2 s, 96 letters": "The Academic Notice section says an RNR01 hold goes on when your cumulative GPA drops below 2.0.",
+   "took 8.4 s, an address": "For anything about late applications, the page lists the Wrigley Institute's contact email, wies@usc.edu.",
+   "took 4.0 s": "Decide what happens when a link is deleted but old clicks remain.",
+   "took 1.4 s, the fixed line": "Okay, let me look."
+  }
+ },
+ "out": {
+  "took 9.4 s": 9343,
+  "took 9.0 s": 8036,
+  "took 8.4 s, 101 letters": 7930,
+  "took 8.2 s, 96 letters": 6790,
+  "took 8.4 s, an address": 8720,
+  "took 4.0 s": 3582,
+  "took 1.4 s, the fixed line": 1331
+ }
+}

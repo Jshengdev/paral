@@ -4,6 +4,7 @@ import { createHash } from "node:crypto";
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { boxes, fitted, split, wipes, arrowsWorded } from "../mind/cores/beats.ts";
+import { sayMs } from "../mind/cores/pace.ts";
 import { asksFor, fits, hear, saysOnly, silence, unasked } from "../mind/cores/catch.ts";
 import { broadFollowUp } from "../mind/cores/full.ts";
 import { columnNotes, columnRows, drawsWhatWasSaid, lifted as liftedNotes, rowNotes, writtenRows } from "../mind/cores/board.ts";
@@ -62,6 +63,7 @@ const runs: Record<string, (input: any) => unknown> = {
   "live.warm": warmed,
   "beats.fitted": (input) => Object.fromEntries(Object.entries(input.marks).map(([name, [kind, text]]: [string, any]) => [name, fitted(kind, text, input.lines, input.reach, input.scale)])),
   "beats.split": (input) => Object.fromEntries(Object.entries(input.sentences).map(([name, text]) => [name, split(text as string, input.limits)])),
+  "pace.ms": (input) => Object.fromEntries(Object.entries(input.sentences).map(([took, text]) => [took, sayMs(text as string, settings.sentenceMaxWords.value.pace)])),
   fit: (input) => Object.fromEntries(input.lines.map((line: string) => [line, unfit(line)])),
   "fit.showable": (input) => Object.fromEntries(input.messages.map((message: string) => [message.slice(0, 60), showable(message)])),
   "beats.boxes": (input) => Object.fromEntries(Object.entries(input.boards).map(([name, rows]) => [name, boxes(rows as string[][])])),

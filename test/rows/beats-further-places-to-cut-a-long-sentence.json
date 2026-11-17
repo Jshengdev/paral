@@ -1,0 +1,168 @@
+{
+ "name": "beats: a long sentence with no place of the old kind is cut at a further one, and a sentence slow to say is tried too. The sentences are the recorded ones that took over 8 s (their time is in each name): seven are now said as two, at \", but\", \", which says\" (\"It says ...\"), \", then\", a colon before a clause, and at a semicolon in a sentence of few letters that the estimate sees as slow; the ones that name a code (\"RNR01\"), an address or a list of numbers have no place and stay whole, as does one with an aside between commas. Eight recorded sentences of 6 to 8 s are newly said as two. A comma before \"which is 13\", a list after a colon, a few words after \", but\" and a name after a colon are left whole",
+ "run": "beats.split",
+ "in": {
+  "limits": {
+   "plain": 22,
+   "withNumbers": 14,
+   "letters": 110,
+   "pace": {
+    "most": 7500,
+    "letter": 53.3,
+    "digit": 223,
+    "stop": 255,
+    "code": 83,
+    "address": 192,
+    "base": 117
+   }
+  },
+  "sentences": {
+   "9.9 s: This page's Academic Notice section de": "This page's Academic Notice section describes one hold, called RNR01, for students whose cumulative GPA falls below 2.0.",
+   "9.4 s: The dates on your screen are for sprin": "The dates on your screen are for spring 2027, but further down this same page, in the Deadlines table, fall applications are due mid-February.",
+   "9.0 s: Next, scroll down to Submitting the Ap": "Next, scroll down to Submitting the Application, which says the designated officer submits everything on EngageSC from a laptop or desktop.",
+   "9.0 s: This page's Academic Notice section na": "This page's Academic Notice section names one hold, RNR01, placed when your cumulative GPA drops below 2.0.",
+   "8.8 s: The dates on your screen are for sprin": "The dates on your screen are for spring 2027, but further down this page, in the Deadlines table, fall's deadline is mid-February.",
+   "8.6 s: You and your officers finish trainings": "You and your officers finish trainings and the commitment form, then submit on EngageSC, both by November 22 at 11:59pm.",
+   "8.6 s: The RSO Resources page covers this und": "The RSO Resources page covers this under Space Requests: recognized groups in good standing book rooms through Trojan Event Services' online form.",
+   "8.4 s: There are five four-unit courses, like": "There are five four-unit courses, like marine microbiology and scientific diving, listed further down under 2027 Courses.",
+   "8.4 s: I can't see your account, so I can't t": "I can't see your account, so I can't tell which hold you have; your hold list on my.usc.edu names it.",
+   "8.4 s: For anything about late applications, ": "For anything about late applications, the page lists the Wrigley Institute's contact email, wies@usc.edu.",
+   "8.2 s: The Academic Notice section says an RN": "The Academic Notice section says an RNR01 hold goes on when your cumulative GPA drops below 2.0.",
+   "8.2 s: If it's an RNR01 hold, the Academic No": "If it's an RNR01 hold, the Academic Notice section says it's placed when your cumulative GPA drops below 2.0.",
+   "8.2 s: The Academic Notice section names an R": "The Academic Notice section names an RNR01 hold, placed when your cumulative GPA drops below 2.0.",
+   "8.2 s: So a bad key gets 401 before rate limi": "So a bad key gets 401 before rate limiting, too many requests get 429, and bad input gets 400.",
+   "8.2 s: It says noon on April 24, 2026, but to": "It says noon on April 24, 2026, but today is November 15, 2026, so that date has passed.",
+   "8.2 s: I can't see your account, so check tha": "I can't see your account, so check that the hold's code really is RNR01; other holds aren't covered here.",
+   "8.1 s: If it's an RNR01 hold, the Academic No": "If it's an RNR01 hold, the Academic Notice section says it comes when your cumulative GPA drops below 2.0.",
+   "8.1 s: For questions about late options, the ": "For questions about late options, the Wrigley Institute contact is on this page, at wies@usc.edu.",
+   "8.1 s: The Academic Notice section says an RN": "The Academic Notice section says an RNR01 hold appears when your cumulative GPA falls below 2.0.",
+   "7.6 s, newly two: First, all five officers finish th": "First, all five officers finish their trainings and Commitment to Community forms, then the application goes in on EngageSC.",
+   "6.6 s, newly two: For every term, scroll down this p": "For every term, scroll down this page to the Deadlines table, which lists when each application opens and closes.",
+   "7.6 s, newly two: It's check six, the last numbered ": "It's check six, the last numbered line, which lists total clicks, fourteen bars, top referrers and top countries.",
+   "7.0 s, newly two: SOAR funding applications closed N": "SOAR funding applications closed November 5, 2026, per the Key Application Dates section further down.",
+   "7.4 s, newly two: The page gives noon on April 24, 2": "The page gives noon on April 24, 2026, but that date already passed, so confirm with International Programs.",
+   "6.1 s, newly two: They take two trainings and sign a": "They take two trainings and sign a Commitment to Community form, then send all three to the submitting officer.",
+   "7.8 s, newly two: Yes, the deadline was November 2, ": "Yes, the deadline was November 2, 2026, fourteen days ago, and I have no page about late applications.",
+   "7.9 s, newly two: Your officers finish their trainin": "Your officers finish their trainings and forms, then you submit on EngageSC by November 22 at 11:59pm.",
+   "stays whole: a comma before which and a number": "Add four to both sides of the equation to undo the minus four on the left, which is 13 for this line and not twelve as written.",
+   "stays whole: a list after a colon": "Three things are still needed for the recognition application this term: the officer trainings, the commitment form, the advisor's requirements.",
+   "stays whole: a few words after but": "The Spring 2027 recognition application is open now on EngageSC for new and returning organizations, but not for long.",
+   "stays whole: a name after a colon": "Each officer completes both of the trainings that are listed under the heading Officer Trainings: Hazing Prevention and Officer Learning Path today.",
+   "they, for a plain verb after which": "Scroll down this page to the two closed sections under Important Dates, which list every deadline and each info session this term."
+  }
+ },
+ "out": {
+  "9.9 s: This page's Academic Notice section de": [
+   "This page's Academic Notice section describes one hold, called RNR01, for students whose cumulative GPA falls below 2.0."
+  ],
+  "9.4 s: The dates on your screen are for sprin": [
+   "The dates on your screen are for spring 2027.",
+   "But further down this same page, in the Deadlines table, fall applications are due mid-February."
+  ],
+  "9.0 s: Next, scroll down to Submitting the Ap": [
+   "Next, scroll down to Submitting the Application.",
+   "It says the designated officer submits everything on EngageSC from a laptop or desktop."
+  ],
+  "9.0 s: This page's Academic Notice section na": [
+   "This page's Academic Notice section names one hold, RNR01, placed when your cumulative GPA drops below 2.0."
+  ],
+  "8.8 s: The dates on your screen are for sprin": [
+   "The dates on your screen are for spring 2027.",
+   "But further down this page, in the Deadlines table, fall's deadline is mid-February."
+  ],
+  "8.6 s: You and your officers finish trainings": [
+   "You and your officers finish trainings and the commitment form.",
+   "Then submit on EngageSC, both by November 22 at 11:59pm."
+  ],
+  "8.6 s: The RSO Resources page covers this und": [
+   "The RSO Resources page covers this under Space Requests.",
+   "Recognized groups in good standing book rooms through Trojan Event Services' online form."
+  ],
+  "8.4 s: There are five four-unit courses, like": [
+   "There are five four-unit courses, like marine microbiology and scientific diving, listed further down under 2027 Courses."
+  ],
+  "8.4 s: I can't see your account, so I can't t": [
+   "I can't see your account, so I can't tell which hold you have.",
+   "Your hold list on my.usc.edu names it."
+  ],
+  "8.4 s: For anything about late applications, ": [
+   "For anything about late applications, the page lists the Wrigley Institute's contact email, wies@usc.edu."
+  ],
+  "8.2 s: The Academic Notice section says an RN": [
+   "The Academic Notice section says an RNR01 hold goes on when your cumulative GPA drops below 2.0."
+  ],
+  "8.2 s: If it's an RNR01 hold, the Academic No": [
+   "If it's an RNR01 hold, the Academic Notice section says it's placed when your cumulative GPA drops below 2.0."
+  ],
+  "8.2 s: The Academic Notice section names an R": [
+   "The Academic Notice section names an RNR01 hold, placed when your cumulative GPA drops below 2.0."
+  ],
+  "8.2 s: So a bad key gets 401 before rate limi": [
+   "So a bad key gets 401 before rate limiting, too many requests get 429, and bad input gets 400."
+  ],
+  "8.2 s: It says noon on April 24, 2026, but to": [
+   "It says noon on April 24, 2026.",
+   "But today is November 15, 2026, so that date has passed."
+  ],
+  "8.2 s: I can't see your account, so check tha": [
+   "I can't see your account, so check that the hold's code really is RNR01; other holds aren't covered here."
+  ],
+  "8.1 s: If it's an RNR01 hold, the Academic No": [
+   "If it's an RNR01 hold, the Academic Notice section says it comes when your cumulative GPA drops below 2.0."
+  ],
+  "8.1 s: For questions about late options, the ": [
+   "For questions about late options, the Wrigley Institute contact is on this page, at wies@usc.edu."
+  ],
+  "8.1 s: The Academic Notice section says an RN": [
+   "The Academic Notice section says an RNR01 hold appears when your cumulative GPA falls below 2.0."
+  ],
+  "7.6 s, newly two: First, all five officers finish th": [
+   "First, all five officers finish their trainings and Commitment to Community forms.",
+   "Then the application goes in on EngageSC."
+  ],
+  "6.6 s, newly two: For every term, scroll down this p": [
+   "For every term, scroll down this page to the Deadlines table.",
+   "It lists when each application opens and closes."
+  ],
+  "7.6 s, newly two: It's check six, the last numbered ": [
+   "It's check six, the last numbered line.",
+   "It lists total clicks, fourteen bars, top referrers and top countries."
+  ],
+  "7.0 s, newly two: SOAR funding applications closed N": [
+   "SOAR funding applications closed November 5, 2026.",
+   "That's per the Key Application Dates section further down."
+  ],
+  "7.4 s, newly two: The page gives noon on April 24, 2": [
+   "The page gives noon on April 24, 2026, but that date already passed.",
+   "So confirm with International Programs."
+  ],
+  "6.1 s, newly two: They take two trainings and sign a": [
+   "They take two trainings and sign a Commitment to Community form.",
+   "Then send all three to the submitting officer."
+  ],
+  "7.8 s, newly two: Yes, the deadline was November 2, ": [
+   "Yes, the deadline was November 2, 2026, fourteen days ago.",
+   "And I have no page about late applications."
+  ],
+  "7.9 s, newly two: Your officers finish their trainin": [
+   "Your officers finish their trainings and forms.",
+   "Then you submit on EngageSC by November 22 at 11:59pm."
+  ],
+  "stays whole: a comma before which and a number": [
+   "Add four to both sides of the equation to undo the minus four on the left, which is 13 for this line and not twelve as written."
+  ],
+  "stays whole: a list after a colon": [
+   "Three things are still needed for the recognition application this term: the officer trainings, the commitment form, the advisor's requirements."
+  ],
+  "stays whole: a few words after but": [
+   "The Spring 2027 recognition application is open now on EngageSC for new and returning organizations, but not for long."
+  ],
+  "stays whole: a name after a colon": [
+   "Each officer completes both of the trainings that are listed under the heading Officer Trainings: Hazing Prevention and Officer Learning Path today."
+  ],
+  "they, for a plain verb after which": [
+   "Scroll down this page to the two closed sections under Important Dates.",
+   "They list every deadline and each info session this term."
+  ]
+ }
+}
