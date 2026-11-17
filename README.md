@@ -277,6 +277,38 @@ not pass:
 
 Neither change has been seen on a real screen.
 
+**The last build.** Five things more, and the work on this repo ends with them. While it thinks, a line of its
+own now shows dim under your words from the moment you let go: the fast model's draft, when that draft had heard
+six words or more. It is the line you then hear when the draft had heard half of what you went on to ask;
+otherwise you hear the fixed line. An arrow sign written inside a board's box is written ", then". A sentence that
+speaks of you as "a user" says "you". A long sentence has four more places where it may be cut for the voice
+(", but", ", which says", ", then", and a colon before a clause), and one that is slow to say is tried for a cut
+too. And when a hint is held back after its rung's fixed line was said, one more fixed line tells you how to test
+an answer of your own. The judge gained three bars and now holds all 25 things the reference video shows: the dim
+line, its pointer at each mark as the mark is drawn, and marks cleared when the page changes. Its pass over all 30
+scenarios, run once, is 2,889 of 2,892 checks. In that pass:
+
+- the dim line showed on 14 of 84 holds. The same line was then said on 12 and the fixed line on 2. A different
+  line of its own followed on none, and none was shown from a draft of under six words.
+- a first line of its own came on 17 of 72 asks, and the first sound a median 501 ms after the release, 565 at the
+  slowest.
+- the box reads "Sign up, then dashboard", and the same ask said "you". The pass's records cannot say whether
+  these two changes acted or the model wrote it so in that run.
+- two sentences ran over 8 seconds, where three did the night before.
+- the new line for a held-back hint was not heard: no hint was held back in that run. The build's own rows hold
+  it, and nothing else does.
+
+The three that do not pass:
+
+- a sentence that takes 8.6 seconds to say. It turns at ", which walks through", which is not one of the places
+  the new rule cuts.
+- a sentence of 8.2 seconds that names the code "RNR01". The code alone takes 1.8 seconds to say, and the
+  sentence has no place to cut.
+- a date said as "back in April of this year" where the page says April 24.
+
+The line spoken on a page's first look is not cut for the voice: its card is made for one line. None of the five
+has been seen on a real screen.
+
 ## What it does not do yet
 
 - It runs on a Mac only.
@@ -292,6 +324,8 @@ Neither change has been seen on a real screen.
   have run in the judge's filmed runs and have not yet run on a real screen.
 - Its first line can say a thing is on your page when it is not. It has happened on a question about something
   the page does not show, in two of three runs of that question; the answer then says so.
+- The dim line, the further cuts of a long sentence, and the line for a held-back hint have run in the judge's
+  filmed runs or in the build's own tests, and not on a real screen.
 - "Take me there" pressed and the notes page run in tests and have not yet run on a real screen. "Add to
   calendar" has written its date there.
 - It does not work with a screen reader. Every spoken sentence is also shown as text, the demo's questions can be
