@@ -18,7 +18,8 @@ import { no, unseen, yes, type Verdict } from "../verdict.ts";
 // The mind hears of the release about 0.3 s late and keeps sending until then, so which line was shown is read by
 // stamps, not by the order of the record's lines: the newest thought stamped at or before his finger lifting.
 // The film's record lists the dim line (`what: "thought"`, with what it `says`) each time its words or its place
-// change, and with null when it goes.
+// change, and with null when it goes. Whether it looks dim and upright under his own words is a reader's, kept in
+// the readings of the three long questions like every other reading.
 
 // The film is thirty frames a second. A thing drawn with the moment it belongs to is in the record within three frames.
 const FRAME_MS = 34;
@@ -32,7 +33,6 @@ const GOES = "The dim line goes when its first line is said";
 const SAME = "After a dim line he hears that line or the fixed line";
 const SENT = "A dim line is only a line the mind sent in that hold";
 const HEARD = "Only a draft that heard six words or more is shown dim";
-const LOOK = "The dim line looks dim and upright under his own words";
 
 /** The build's own fixed quick lines, read from its settings by their names: after a dim line he may hear one of these. */
 export async function fixedLines(build: string): Promise<string[]> {
@@ -75,6 +75,5 @@ export function dimLine(ask: Ask, expect: Expect, placed: Placed[], until: numbe
   out.push(fault ? no("C29", s, GOES, fault) : yes("C29", s, GOES, said === null ? "no line was said; it went before the next press" : `it stood ${Math.round((gone?.at ?? 0) - shown.at)} ms and went as the first line began`));
   const firstLine = of(ask.moments, "say").find((m) => m.opener) ?? null;
   if (firstLine) out.push(firstLine.text === sent.text || fixed.includes(firstLine.text) ? yes("C29", s, SAME, firstLine.text === sent.text ? "the same line" : `the fixed line: "${firstLine.text}"`) : no("C29", s, SAME, `it showed "${sent.text}" and then said "${firstLine.text}"`));
-  if (expect.dimLine) out.push(unseen("C29", s, LOOK, "for a reader, from the frames"));
   return out;
 }
