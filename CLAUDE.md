@@ -216,6 +216,18 @@ whole board a note is written with its own row's sentence. The app writes a note
 at the end of the writing; the card keeps room for the whole note from the start. The film's record names a note
 each time it grows, with its words so far. An ordinary board never has one: its request is unchanged.
 
+**The dim line while it thinks.** The quick line is drafted by the fast model while he is still talking
+(`drafts.ts`). Each time a draft's line is written, and the draft had heard `openerDraftLeast` words or more, and the
+line could be said (not empty, not past `openerMaxWords`, nothing `cores/fit.ts` refuses), the mind sends it to the app
+as a `thought` line: its words, how many of his words its draft had heard, and the mind's clock when it was sent. The
+app shows the newest one stamped at or before his finger lifting, in stone under his words, from that moment until
+the first line of that hold is heard. The mind hears of the release only after the microphone's grace, so both sides
+go by the stamp and cannot disagree (`SeenMoment.swift`). What he then hears is that same line when its draft fits
+his final words; when it does not, the fixed line is said and no other draft is used or asked for, so a dim line is
+never followed by a different line of its own. With no line shown the quick line is chosen as before. There is none
+for a short question, an ask he taps or types, or while a wrong line of his is open (nothing is drafted then). No
+request is added. The film's record names it (`what: "thought"`, the bubble's box, `says`) and says when it goes.
+
 **Working an exercise through (a switch, off).** `workThrough` is off unless the mind is started with
 `PARAL_WORK_THROUGH=1` (`PARAL_WORK_THROUGH=1 ./run`, or before `./flow`). Off, nothing changes. On, an ask whose
 words ask for it (`workThroughAsks`: "walk me through", "what happens next", "then what" ...) while a measured sheet

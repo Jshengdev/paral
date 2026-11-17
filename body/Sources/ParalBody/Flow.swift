@@ -71,7 +71,7 @@ public final class Flow {
             guard let self else { return }
             if case .ready(let settings) = seen { self.settings = settings }
             self.got.append(seen)
-            self.scene.take(seen, at: self.clock())
+            self.scene.take(seen, at: seen.belongs(now: self.clock(), zero: self.began.timeIntervalSince1970 * 1000))
         }
         wire.onRefused = { why in FileHandle.standardError.write(Data("flow: refused a line from the mind (\(why))\n".utf8)) }
         wire.start()

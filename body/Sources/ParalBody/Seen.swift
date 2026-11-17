@@ -49,6 +49,8 @@ public enum Seen {
     case screen(display: DisplayPlace, lines: [ReadLine])
     case state(name: String, detail: String?)
     case heard(text: String, final: Bool)
+    /// The dim line: a draft's line the mind sent while he talked, with the mind's stamp of when (`SeenMoment.swift`).
+    case thought(text: String, at: Double?)
     /// `trail` is nil for a line of an answer he asked for. A line said without being asked carries the steps paral took,
     /// and `keep` when it shows a date he can ask to keep: its card then offers "Add to calendar" (false when absent).
     /// `offer` is one thing any line offers to do, as its card's button; it wins over `keep`.
@@ -149,6 +151,9 @@ public enum Seen {
         case "state":
             guard let name = s("name") else { return .failure(Refused("state.name: missing")) }
             return .success(.state(name: name, detail: s("detail")))
+        case "thought":
+            guard let text = s("text"), !text.isEmpty else { return .failure(Refused("thought: text is needed")) }
+            return .success(.thought(text: text, at: n("at")))
         case "heard":
             guard let text = s("text"), let final = f["final"] as? Bool else { return .failure(Refused("heard: text and final are needed")) }
             return .success(.heard(text: text, final: final))

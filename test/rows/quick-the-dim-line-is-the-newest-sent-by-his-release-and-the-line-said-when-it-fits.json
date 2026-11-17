@@ -1,0 +1,215 @@
+{
+ "name": "quick: the dim line and the line then said, as the build is set (a draft may be shown from six words; a draft fits from half his words), with the clock stood in for. (1) Of three drafts the one that heard four words is never sent; the seven-word one is sent when written, the thirteen-word one is written after he lets go and is stamped after it: the app shows the seven-word line, and since its draft does not hear half of his 24 words the fixed line is said, with no other draft used, though the thirteen-word draft fits and is written. (2) The same hold, but the thirteen-word line is written before he lets go: it is the newest by the release, it fits, and it is the line said, ahead of nothing else. (3) A line too long to be said is not sent, so nothing is shown and the quick line is chosen as it always was: the first draft that fits. (4) A short question, no draft of six words: nothing is sent, and the quick line is chosen as it always was. (5) An older draft whose line is written after a newer one's has gone is not sent. (6) Two drafts fit his thirteen words and both lines are written before he lets go: the one shown is the newer, and it is the one said, where the older, written first, was said before this change",
+ "run": "quick.dimLine",
+ "in": {
+  "cases": [
+   {
+    "heard": [
+     [
+      900,
+      "this is the plan"
+     ],
+     [
+      1600,
+      "this is the plan for the app"
+     ],
+     [
+      3300,
+      "this is the plan for the app does it look right to you"
+     ]
+    ],
+    "lines": {
+     "this is the plan": "Line from 4 words.",
+     "this is the plan for the app": "Line from 7 words.",
+     "this is the plan for the app does it look right to you": "Line from 13 words.",
+     "this is the plan for the app does it look right to you and is there anything in the file layout i should worry": "Line from 24 words.",
+     "this is the plan for the app does it look right to you and is there anything in the file layout i should worry about": "Line from his whole question."
+    },
+    "takes": 900,
+    "release": 4000,
+    "final": "this is the plan for the app does it look right to you and is there anything in the file layout i should worry about"
+   },
+   {
+    "heard": [
+     [
+      900,
+      "this is the plan"
+     ],
+     [
+      1600,
+      "this is the plan for the app"
+     ],
+     [
+      2600,
+      "this is the plan for the app does it look right to you"
+     ]
+    ],
+    "lines": {
+     "this is the plan": "Line from 4 words.",
+     "this is the plan for the app": "Line from 7 words.",
+     "this is the plan for the app does it look right to you": "Line from 13 words.",
+     "this is the plan for the app does it look right to you and is there anything in the file layout i should worry": "Line from 24 words.",
+     "this is the plan for the app does it look right to you and is there anything in the file layout i should worry about": "Line from his whole question."
+    },
+    "takes": 900,
+    "release": 4000,
+    "final": "this is the plan for the app does it look right to you and is there anything in the file layout i should worry about"
+   },
+   {
+    "heard": [
+     [
+      900,
+      "this is the plan"
+     ],
+     [
+      1600,
+      "this is the plan for the app does it look right to you"
+     ]
+    ],
+    "lines": {
+     "this is the plan": "Line from 4 words.",
+     "this is the plan for the app does it look right to you": "This line runs on and on, well past the twelve words a quick line may have at the most.",
+     "this is the plan for the app does it look right to you and is there anything in the file layout i should worry about": "Line from his whole question."
+    },
+    "takes": 900,
+    "release": 4000,
+    "final": "this is the plan for the app does it look right to you and is there anything in the file layout i should worry about"
+   },
+   {
+    "heard": [
+     [
+      600,
+      "why is this"
+     ],
+     [
+      1000,
+      "why is this wrong"
+     ]
+    ],
+    "lines": {
+     "why is this": "Line from three words.",
+     "why is this wrong": "Line from his whole question."
+    },
+    "takes": 900,
+    "release": 1400,
+    "final": "why is this wrong"
+   },
+   {
+    "heard": [
+     [
+      1000,
+      "this is the plan for the app"
+     ],
+     [
+      1400,
+      "this is the plan for the app does it look right to you"
+     ]
+    ],
+    "lines": {
+     "this is the plan": "Line from 4 words.",
+     "this is the plan for the app": "Line from 7 words.",
+     "this is the plan for the app does it look right to you": "Line from 13 words.",
+     "this is the plan for the app does it look right to you and is there anything in the file layout i should worry": "Line from 24 words.",
+     "this is the plan for the app does it look right to you and is there anything in the file layout i should worry about": "Line from his whole question."
+    },
+    "takes": {
+     "this is the plan for the app": 2000,
+     "this is the plan for the app does it look right to you": 600
+    },
+    "release": 4000,
+    "final": "this is the plan for the app does it look right to you and is there anything in the file layout i should worry about"
+   },
+   {
+    "heard": [
+     [
+      1600,
+      "this is the plan for the app"
+     ],
+     [
+      2600,
+      "this is the plan for the app does it look"
+     ]
+    ],
+    "lines": {
+     "this is the plan for the app": "Line from 7 words.",
+     "this is the plan for the app does it look": "Line from 10 words.",
+     "this is the plan for the app does it look right to you": "Line from his whole question."
+    },
+    "takes": 900,
+    "release": 4000,
+    "final": "this is the plan for the app does it look right to you"
+   }
+  ]
+ },
+ "out": [
+  {
+   "sent": [
+    {
+     "text": "Line from 7 words.",
+     "heard": 7,
+     "at": 2500
+    },
+    {
+     "text": "Line from 13 words.",
+     "heard": 13,
+     "at": 4200
+    }
+   ],
+   "shown": "Line from 7 words.",
+   "quickLine": null
+  },
+  {
+   "sent": [
+    {
+     "text": "Line from 7 words.",
+     "heard": 7,
+     "at": 2500
+    },
+    {
+     "text": "Line from 13 words.",
+     "heard": 13,
+     "at": 3500
+    }
+   ],
+   "shown": "Line from 13 words.",
+   "quickLine": "Line from 13 words."
+  },
+  {
+   "sent": [],
+   "shown": null,
+   "quickLine": "This line runs on and on, well past the twelve words a quick line may have at the most."
+  },
+  {
+   "sent": [],
+   "shown": null,
+   "quickLine": "Line from three words."
+  },
+  {
+   "sent": [
+    {
+     "text": "Line from 13 words.",
+     "heard": 13,
+     "at": 2000
+    }
+   ],
+   "shown": "Line from 13 words.",
+   "quickLine": "Line from 13 words."
+  },
+  {
+   "sent": [
+    {
+     "text": "Line from 7 words.",
+     "heard": 7,
+     "at": 2500
+    },
+    {
+     "text": "Line from 10 words.",
+     "heard": 10,
+     "at": 3500
+    }
+   ],
+   "shown": "Line from 10 words.",
+   "quickLine": "Line from 10 words."
+  }
+ ]
+}

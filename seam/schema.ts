@@ -76,6 +76,13 @@ export const FromMind = z.discriminatedUnion("type", [
     opening: z.string().min(1).optional(),
   }),
   z.object({ v, type: z.literal("state"), name: z.enum(["idle", "listening", "thinking", "failed"]), detail: z.string().optional() }),
+  /**
+   * The dim line: a draft of the quick line whose line is written while he is still talking. `heard` is how many of
+   * his words that draft had heard and `at` the mind's clock when it was sent, the same clock as a key line's `at`.
+   * The app shows the newest one stamped at or before his finger lifting, from that moment until the first line of
+   * that hold is said. It is never said from here.
+   */
+  z.object({ v, type: z.literal("thought"), text: z.string().min(1), heard: z.number().int().positive(), at: z.number() }),
   z.object({ v, type: z.literal("heard"), text: z.string(), final: z.boolean() }),
   z.object({
     v,

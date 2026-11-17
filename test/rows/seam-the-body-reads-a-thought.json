@@ -1,0 +1,33 @@
+{
+ "name": "seam: the body reads the dim line with the mind's stamp of when it was sent, reads one with no stamp too, and refuses one with no words",
+ "run": "body.seen",
+ "in": {
+  "lines": [
+   {
+    "v": 1,
+    "type": "thought",
+    "text": "Let's look through your plan.",
+    "heard": 7,
+    "at": 1794700012000
+   },
+   {
+    "v": 1,
+    "type": "thought",
+    "text": "Let's look through your plan.",
+    "heard": 7
+   },
+   {
+    "v": 1,
+    "type": "thought",
+    "text": "",
+    "heard": 7,
+    "at": 1794700012000
+   }
+  ]
+ },
+ "out": [
+  "took thought(text: \"Let\\'s look through your plan.\", at: Optional(1794700012000.0))",
+  "took thought(text: \"Let\\'s look through your plan.\", at: nil)",
+  "refused thought: text is needed"
+ ]
+}

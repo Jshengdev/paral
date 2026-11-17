@@ -194,6 +194,8 @@ public struct Painter {
         if let cross = pill.cross { drawn.append(Drawn(what: "cross", id: nil, box: cross)) }
         if let bubble = pill.bubble { drawn.append(Drawn(what: "bubble", id: nil, box: bubble)) }
         if let label = label(spoken, ctx) { drawn.append(Drawn(what: "label", id: nil, box: label, says: spoken.label)) }
+        // The dim line is the bubble's: it is named with the bubble's box and its own words, so a film's record says when it stood.
+        if let thought = spoken.thought, let bubble = pill.bubble { drawn.append(Drawn(what: "thought", id: nil, box: bubble, says: thought)) }
         // The orb's square of light, while it is drawn: the overlay draws only that square again while nothing else moves.
         if let orb = pill.orb { drawn.append(Drawn(what: "orb", id: nil, box: orb)) }
         return drawn

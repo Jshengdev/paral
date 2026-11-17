@@ -1,0 +1,12 @@
+{
+ "name": "seam: a thought that does not say how many words its draft had heard, or when it was sent, is refused: the app could not tell whether to show it",
+ "run": "seam.read",
+ "in": {
+  "from": "mind",
+  "text": "{\"v\": 1, \"type\": \"thought\", \"text\": \"Let's look through your plan.\"}"
+ },
+ "out": {
+  "ok": false,
+  "why": "heard: Invalid input: expected number, received undefined"
+ }
+}

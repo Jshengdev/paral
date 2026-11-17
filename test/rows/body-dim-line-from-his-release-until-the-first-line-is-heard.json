@@ -1,0 +1,242 @@
+{
+ "name": "body: the dim line. Three lines are sent while he holds the key, the third stamped after his finger lifts (it crosses before the key-up line does, which is sent after the microphone's grace). While he talks there is none. From the moment he lets go the bubble holds, under his words, the newest line stamped by then, and not the later one; it still stands when the quick line's words have come and its sound has not; it goes at that line's first sound and is not there between the quick line and the answer, nor at rest. The film's record has one row with its words, at the release, and one with its words null in the first frame after the first sound",
+ "run": "body.dim",
+ "in": {
+  "rows": [
+   {
+    "at": 1000,
+    "line": {
+     "type": "key.down",
+     "at": 500000
+    }
+   },
+   {
+    "at": 1001,
+    "line": {
+     "type": "state",
+     "name": "listening"
+    }
+   },
+   {
+    "at": 1700,
+    "line": {
+     "type": "heard",
+     "text": "can you tell me where",
+     "final": false
+    }
+   },
+   {
+    "at": 2501,
+    "line": {
+     "type": "thought",
+     "text": "Let's look at the booking page.",
+     "heard": 6,
+     "at": 501500
+    }
+   },
+   {
+    "at": 3200,
+    "line": {
+     "type": "heard",
+     "text": "can you tell me where to book a room for my club",
+     "final": false
+    }
+   },
+   {
+    "at": 3501,
+    "line": {
+     "type": "thought",
+     "text": "Let's find where rooms are booked.",
+     "heard": 9,
+     "at": 502500
+    }
+   },
+   {
+    "at": 4201,
+    "line": {
+     "type": "thought",
+     "text": "Let's look at room booking again.",
+     "heard": 11,
+     "at": 503200
+    }
+   },
+   {
+    "at": 4300,
+    "line": {
+     "type": "key.up",
+     "at": 503000
+    }
+   },
+   {
+    "at": 4301,
+    "line": {
+     "type": "state",
+     "name": "thinking"
+    }
+   },
+   {
+    "at": 4430,
+    "line": {
+     "type": "heard",
+     "text": "can you tell me where to book a room for my club",
+     "final": true
+    }
+   },
+   {
+    "at": 4440,
+    "line": {
+     "type": "say",
+     "id": "a1",
+     "beat": -1,
+     "text": "Let's find where rooms are booked.",
+     "aside": true
+    }
+   },
+   {
+    "at": 4550,
+    "line": {
+     "type": "voice",
+     "id": "a1",
+     "beat": -1,
+     "amp": 8000,
+     "ms": 1200,
+     "last": true
+    }
+   },
+   {
+    "at": 4550,
+    "line": {
+     "type": "words",
+     "id": "a1",
+     "beat": -1,
+     "start": [
+      0,
+      0.2,
+      0.4,
+      0.6,
+      0.8,
+      1
+     ],
+     "end": [
+      0.2,
+      0.4,
+      0.6,
+      0.8,
+      1,
+      1.2
+     ]
+    }
+   },
+   {
+    "at": 6500,
+    "line": {
+     "type": "say",
+     "id": "a1",
+     "beat": 0,
+     "text": "You book it on EngageSC."
+    }
+   },
+   {
+    "at": 6500,
+    "line": {
+     "type": "voice",
+     "id": "a1",
+     "beat": 0,
+     "amp": 8000,
+     "ms": 1000,
+     "last": true
+    }
+   },
+   {
+    "at": 6500,
+    "line": {
+     "type": "words",
+     "id": "a1",
+     "beat": 0,
+     "start": [
+      0,
+      0.2,
+      0.4,
+      0.6,
+      0.75
+     ],
+     "end": [
+      0.2,
+      0.4,
+      0.6,
+      0.75,
+      1
+     ]
+    }
+   },
+   {
+    "at": 7700,
+    "line": {
+     "type": "state",
+     "name": "idle"
+    }
+   }
+  ],
+  "at": [
+   3000,
+   3990,
+   4005,
+   4250,
+   4500,
+   4560,
+   6000,
+   6600,
+   9500
+  ]
+ },
+ "out": {
+  "seen": [
+   {
+    "look": "listening",
+    "dimLine": null
+   },
+   {
+    "look": "listening",
+    "dimLine": null
+   },
+   {
+    "look": "thinking",
+    "dimLine": "Let's find where rooms are booked."
+   },
+   {
+    "look": "thinking",
+    "dimLine": "Let's find where rooms are booked."
+   },
+   {
+    "look": "thinking",
+    "dimLine": "Let's find where rooms are booked."
+   },
+   {
+    "look": "speaking",
+    "dimLine": null
+   },
+   {
+    "look": "thinking",
+    "dimLine": null
+   },
+   {
+    "look": "speaking",
+    "dimLine": null
+   },
+   {
+    "look": "rest",
+    "dimLine": null
+   }
+  ],
+  "record": [
+   {
+    "at": 4000,
+    "says": "Let's find where rooms are booked."
+   },
+   {
+    "at": 4567,
+    "says": null
+   }
+  ]
+ }
+}

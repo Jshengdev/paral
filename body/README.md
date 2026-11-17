@@ -470,6 +470,12 @@ taken on the cross's own circle and nowhere else.
   same. A line said without being asked is the nudge card's, not the bubble's (below). A failure is FAILED in
   cardinal and bold and the reason after it, as before. It rises out of the pill as the pill opens (`bubble.rise`, on
   `arrive`) and goes in `bubble.leaveMs` (160, the handoff's exit) as the pill shuts, holding its last words while it goes.
+- **The dim line.** While it thinks, and until the first line of that hold is heard, the bubble shows under his
+  words the newest `thought` the mind sent while he held the key: in stone, at the bubble's own size, on two lines at
+  most. Which one is newest is told by the mind's own stamp against the moment his finger lifted
+  (`SeenMoment.swift`), so a line stamped after the release is never shown though it crosses before the key-up line
+  does. It is not there while he talks, once any line has begun to sound, or at rest. The film's record names it
+  (`what: "thought"`, the bubble's box, `says`), and writes a row with `says` null when it goes, as for the label.
 - **The label** (`PainterLabel.swift`), a quiet chip under the open pill (mist, written in stone, DM Sans Medium 11,
   `capsule.labelPadX` 9 across and `capsule.labelPadY` 3 up and down), midway in the 28 between the pill's foot and
   the floor and centred on the pill. For the moment after he lets go it says paral is working (`strings.thinking`);

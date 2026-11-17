@@ -29,6 +29,7 @@ public struct Scene {
     var read: [String] = []
     var holds: [Hold] = []
     var heard: [(word: String, at: Double)] = []
+    var thoughts: [(text: String, at: Double)] = []  // the dim lines the mind sent, each at the moment it belongs to
     var asks: [Ask] = []
     var marks: [Mark] = []
     var boards: [Board] = []
@@ -108,6 +109,8 @@ public struct Scene {
             if name == "idle" { idleAt = at }
             // The ask the card's button made is over and no date was opened: the card does not wait any longer.
             if name == "idle" || name == "failed" { goes(at, onlyAnswered: true) }
+        case .thought(let text, _):
+            thoughts.append((text, at))
         case .heard(let text, _):
             let words = text.split(separator: " ").map(String.init)
             heard = words.enumerated().map { i, word in i < heard.count && heard[i].word == word ? heard[i] : (word, at) }

@@ -1,0 +1,174 @@
+{
+ "name": "turn: the written line speaks about him and not to him, so it may not be said: it is not shown dim either, and the fixed line is said",
+ "run": "turn",
+ "in": {
+  "tape": "spoken.json",
+  "tapeSet": {
+   "opener": "The student wants to know whether the plan for the app looks right.",
+   "answers": {
+    "this is the plan for the app does it look right": [
+     {
+      "problem": "The plan for the app",
+      "breakLine": null,
+      "result": null,
+      "beats": [
+       {
+        "say": "The plan holds together.",
+        "mark": null
+       }
+      ]
+     }
+    ]
+   }
+  },
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": "now"
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": "now",
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Solve for x: 2(x + 3) = 14",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 48
+       }
+      },
+      {
+       "text": "2x + 6 = 14, so x = 10",
+       "box": {
+        "x": 200,
+        "y": 460,
+        "w": 700,
+        "h": 48
+       }
+      }
+     ]
+    },
+    {
+     "say": "this is the plan for the app does it look right"
+    },
+    {
+     "until": "heard"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": "now"
+    },
+    {
+     "until": "say"
+    }
+   ]
+  ]
+ },
+ "out": [
+  {
+   "v": 1,
+   "type": "state",
+   "name": "listening"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "this is the plan for the app does it look right",
+   "final": false
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "thinking"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "this is the plan for the app does it look right",
+   "final": true
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t1",
+   "beat": -1,
+   "text": "Okay, let me look.",
+   "aside": true
+  },
+  {
+   "v": 1,
+   "type": "words",
+   "id": "t1",
+   "beat": -1,
+   "count": 4,
+   "ends": 1.2
+  },
+  {
+   "v": 1,
+   "type": "voice",
+   "id": "t1",
+   "beat": -1,
+   "bytes": 57600
+  },
+  {
+   "v": 1,
+   "type": "voice",
+   "id": "t1",
+   "beat": -1,
+   "bytes": 0,
+   "last": true
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t1",
+   "beat": 0,
+   "text": "The plan holds together."
+  },
+  {
+   "v": 1,
+   "type": "words",
+   "id": "t1",
+   "beat": 0,
+   "count": 4,
+   "ends": 1.2
+  },
+  {
+   "v": 1,
+   "type": "voice",
+   "id": "t1",
+   "beat": 0,
+   "bytes": 57600
+  },
+  {
+   "v": 1,
+   "type": "voice",
+   "id": "t1",
+   "beat": 0,
+   "bytes": 0,
+   "last": true
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "idle"
+  }
+ ]
+}

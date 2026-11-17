@@ -71,7 +71,10 @@ extension Scene {
             return t < restAt ? open(.speaking, whole, of: ask.id) : rest(since: restAt, of: ask.id)
         }
         if done, let idle = idleAt { return rest(since: idle) }
-        return thinking
+        // No line of this hold has begun: the newest dim line sent while he talked stands under his words until one does.
+        var waiting = thinking
+        waiting.thought = thoughts.last { $0.at >= hold.down && $0.at <= up }?.text
+        return waiting
     }
 
     /// Words step from dim to bright as they are said. Text never fades or slides.

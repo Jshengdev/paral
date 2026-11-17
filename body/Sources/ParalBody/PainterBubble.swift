@@ -18,6 +18,8 @@ extension Painter {
         switch c.look {
         case .listening, .thinking:
             lines = [words.isEmpty ? [inked(c.note ?? "", size: size, color: stone)] : newest(words, room: room - caret, size: size)]
+            // The dim line, under his words: what paral takes the page to be, in stone, on two lines at most.
+            if let thought = c.thought { lines += laid(thought.split(separator: " ").map { inked(String($0), size: size, color: stone) }, room: room, size: size).prefix(2) }
         case .failed:
             let reason = (c.note ?? "").split(separator: " ").map { inked(String($0), size: size - 3, color: ink, weight: .medium) }
             lines = Array(laid([inked(tokens.strings.failed, size: size, color: cardinal, weight: .bold)] + reason, room: room, size: size).prefix(3))

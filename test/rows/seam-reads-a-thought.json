@@ -1,0 +1,18 @@
+{
+ "name": "seam: the mind may send the dim line: a thought with its words, how many of his words its draft had heard, and the mind's clock when it was sent; the wire only grew",
+ "run": "seam.read",
+ "in": {
+  "from": "mind",
+  "text": "{\"v\": 1, \"type\": \"thought\", \"text\": \"Let's look through your plan.\", \"heard\": 7, \"at\": 1794700012000}"
+ },
+ "out": {
+  "ok": true,
+  "line": {
+   "v": 1,
+   "type": "thought",
+   "text": "Let's look through your plan.",
+   "heard": 7,
+   "at": 1794700012000
+  }
+ }
+}

@@ -28,7 +28,7 @@ import { keptLook, keptVoice, standIn } from "./runners/adapters.ts";
 import { warmed } from "./runners/warm.ts";
 import { capsule, cardOnFilm, filmed, landing, pressedAgain, sameToTheWatcher } from "./runners/body.ts";
 import { pill } from "./runners/pill.ts";
-import { label, labelOnFilm, labelRecord } from "./runners/label.ts";
+import { dim, label, labelOnFilm, labelRecord } from "./runners/label.ts";
 import { dragged, dragOnFilm, dragWithin } from "./runners/drag.ts";
 import { noted, notedRecord, notesOnFilm } from "./runners/boardnotes.ts";
 import { orbLight, orbWakes } from "./runners/orb.ts";
@@ -50,6 +50,7 @@ import { marks } from "./runners/marks.ts";
 import { bank, centre } from "./runners/centre.ts";
 import { sheetPlace } from "./runners/sheet.ts";
 import { quickDeadline } from "./runners/quickline.ts";
+import { dimLine } from "./runners/dimline.ts";
 
 // A row is JSON on disk: its "in" is whatever its runner takes, so it is typed where the runner reads it.
 type Row = { name: string; run: string; in: any; out: unknown };
@@ -108,7 +109,7 @@ const runs: Record<string, (input: any) => unknown> = {
   "body.noted": noted, "body.notedRecord": notedRecord, "body.notesOnFilm": notesOnFilm,
   "notes.lifted": (input) => input.boards.map((board: string[][]) => liftedNotes(board, input.most, input.words)),
   "notes.when": (input) => ({ onAColumn: columnNotes(input.notes, input.beats), onABoardThatGrows: rowNotes(input.notes, input.beats) }),
-  "body.pillOnInk": pillOnInk, "body.label": label, "body.labelRecord": labelRecord, "body.labelOnFilm": labelOnFilm,
+  "body.pillOnInk": pillOnInk, "body.label": label, "body.dim": dim, "body.labelRecord": labelRecord, "body.labelOnFilm": labelOnFilm,
   "body.linesToTheMind": linesToTheMind,
   "body.boardType": boardType,
   "body.boardFits": boardFits,
@@ -159,6 +160,7 @@ const runs: Record<string, (input: any) => unknown> = {
   "catch.fits": (input) => input.cases.map(([drafted, final]: [string, string]) => fits(drafted, final, { share: input.share, least: input.least ?? 0, small: input.small ?? [] })),
   "catch.used": (input) => input.cases.map(([drafted, final]: [string, string]) => fits(drafted, final, { share: settings.openerDraftShare.value, least: settings.openerDraftLeast.value, small: settings.openerSmallWords.value })),
   "quick.deadline": quickDeadline,
+  "quick.dimLine": dimLine,
   "you.said": (input) => input.cases.map(([said, sources]: [string, string[]]) => toHim(said, sources)),
   circle: (input) =>
     Object.fromEntries(

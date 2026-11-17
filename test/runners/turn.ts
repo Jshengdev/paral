@@ -19,6 +19,8 @@ function shorter(line: any) {
   if (type === "ready") return (({ cues: _cues, opening: _opening, ...rest }) => rest)(line);
   if (type === "voice") return { v, type, id, beat, bytes: Buffer.from(line.pcm, "base64").length, ...(line.last ? { last: true } : {}) };
   if (type === "words") return { v, type, id, beat, count: line.words.length, ends: Number(line.end.at(-1).toFixed(2)) };
+  // A dim line is stamped with the clock's own time, which no row can hold: its words and what its draft had heard are held.
+  if (type === "thought") return { v, type, text: line.text, heard: line.heard };
   // The file sits in this machine's temporary folder, so a row holds its name and what is in it. The notes page is
   // held as he reads it: its words a line each, and the pictures it shows.
   if (type === "open" && line.path.endsWith(".html")) return { v, type, id, file: basename(line.path), label: line.label, reads: read(readFileSync(line.path, "utf8")), pictures: [...readFileSync(line.path, "utf8").matchAll(/<img class="thumb" src="([^"]+)"/g)].map((m) => m[1]) };
@@ -67,7 +69,7 @@ export async function playTurn(input: { tape: string; tapeSet?: Record<string, u
         if (step.until) await until((line) => line.type === step.until, `a "${step.until}" line`);
         else if (step.release) played.release(typeof step.release === "string" ? step.release : undefined);
         else if (step.say) socket.write(JSON.stringify({ v: 1, type: "mic", pcm: Buffer.from(step.say).toString("base64"), at: 0 }) + "\n");
-        else socket.write(JSON.stringify(step) + "\n");
+        else socket.write(JSON.stringify(step.at === "now" ? { ...step, at: Date.now() } : step) + "\n");
       }
       // A look he did not ask for, and a click, end in no state line; a group with one says itself what it waits for,
       // unless it also holds an ask, which settles like any other.

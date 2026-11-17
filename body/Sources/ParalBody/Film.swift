@@ -40,7 +40,7 @@ public enum Film {
             // film does too: the stamp is carried over to the record's clock by way of the key-down before it.
             let stamp = (fields["at"] as? NSNumber)?.doubleValue
             if case .keyDown = seen, let stamp { down = (at, stamp) }
-            if case .keyUp = seen, let stamp, let down { at = min(at, down.record + (stamp - down.stamp)) }
+            if seen.carriesItsMoment, let stamp, let down { at = min(at, down.record + (stamp - down.stamp)) }
             pages.take(fields, at: at)
             if case .screen(let display, let lines) = seen, let read = ((fields["picture"] as? [String: Any])?["w"] as? NSNumber)?.doubleValue {
                 let share = Layout.inkFrom(width: w, height: h - inset, tokens: tokens) / max(h, 1)
@@ -150,7 +150,7 @@ public enum Film {
             }
             let image = render(pages.pictures[page], w, h) { ctx in placed = painter.paint(picture, into: ctx) }
             try save(image, to: frames.appendingPathComponent(String(format: "f_%05d.png", frame)))
-            if let stood = lastBox["label/"], !placed.contains(where: { $0.what == "label" }) { drawn += try gone("label", stood, at: t); lastBox["label/"] = nil; lastSays["label/"] = nil }
+            for what in ["label", "thought"] { if let stood = lastBox[what + "/"], !placed.contains(where: { $0.what == what }) { drawn += try gone(what, stood, at: t); lastBox[what + "/"] = nil; lastSays[what + "/"] = nil } }
             for item in placed {
                 let key = item.what + "/" + (item.id ?? "")
                 let box = Box(x: (item.box.x * 2).rounded() / 2, y: (item.box.y * 2).rounded() / 2, w: (item.box.w * 2).rounded() / 2, h: (item.box.h * 2).rounded() / 2)

@@ -1,0 +1,174 @@
+{
+ "name": "turn: the only draft heard four words (\"why is this wrong\"): its line is written while he talks and is not sent to be shown dim, and the quick line is said as it always was",
+ "run": "turn",
+ "in": {
+  "tape": "spoken.json",
+  "tapeSet": {
+   "opener": "Let me look at that last line.",
+   "answers": {
+    "why is this wrong": [
+     {
+      "problem": "The plan for the app",
+      "breakLine": null,
+      "result": null,
+      "beats": [
+       {
+        "say": "The plan holds together.",
+        "mark": null
+       }
+      ]
+     }
+    ]
+   }
+  },
+  "asks": [
+   [
+    {
+     "v": 1,
+     "type": "key.down",
+     "at": "now"
+    },
+    {
+     "v": 1,
+     "type": "screen",
+     "at": "now",
+     "display": {
+      "id": 1,
+      "scale": 2,
+      "x": 0,
+      "y": 0
+     },
+     "picture": {
+      "path": "/tmp/paral-row.png",
+      "w": 3456,
+      "h": 2234
+     },
+     "lines": [
+      {
+       "text": "Solve for x: 2(x + 3) = 14",
+       "box": {
+        "x": 200,
+        "y": 300,
+        "w": 900,
+        "h": 48
+       }
+      },
+      {
+       "text": "2x + 6 = 14, so x = 10",
+       "box": {
+        "x": 200,
+        "y": 460,
+        "w": 700,
+        "h": 48
+       }
+      }
+     ]
+    },
+    {
+     "say": "why is this wrong"
+    },
+    {
+     "until": "heard"
+    },
+    {
+     "v": 1,
+     "type": "key.up",
+     "at": "now"
+    },
+    {
+     "until": "say"
+    }
+   ]
+  ]
+ },
+ "out": [
+  {
+   "v": 1,
+   "type": "state",
+   "name": "listening"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "why is this wrong",
+   "final": false
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "thinking"
+  },
+  {
+   "v": 1,
+   "type": "heard",
+   "text": "why is this wrong",
+   "final": true
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t1",
+   "beat": -1,
+   "text": "Let me look at that last line.",
+   "aside": true
+  },
+  {
+   "v": 1,
+   "type": "words",
+   "id": "t1",
+   "beat": -1,
+   "count": 7,
+   "ends": 2.1
+  },
+  {
+   "v": 1,
+   "type": "voice",
+   "id": "t1",
+   "beat": -1,
+   "bytes": 100800
+  },
+  {
+   "v": 1,
+   "type": "voice",
+   "id": "t1",
+   "beat": -1,
+   "bytes": 0,
+   "last": true
+  },
+  {
+   "v": 1,
+   "type": "say",
+   "id": "t1",
+   "beat": 0,
+   "text": "The plan holds together."
+  },
+  {
+   "v": 1,
+   "type": "words",
+   "id": "t1",
+   "beat": 0,
+   "count": 4,
+   "ends": 1.2
+  },
+  {
+   "v": 1,
+   "type": "voice",
+   "id": "t1",
+   "beat": 0,
+   "bytes": 57600
+  },
+  {
+   "v": 1,
+   "type": "voice",
+   "id": "t1",
+   "beat": 0,
+   "bytes": 0,
+   "last": true
+  },
+  {
+   "v": 1,
+   "type": "state",
+   "name": "idle"
+  }
+ ]
+}

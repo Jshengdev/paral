@@ -52,7 +52,7 @@ final class App: NSObject, NSApplicationDelegate {
 
     private func clock() -> Double { Date().timeIntervalSince(began) * 1000 }
     private func stamp() -> Double { (Date().timeIntervalSince1970 * 1000).rounded() }
-    func tell(_ seen: Seen) { centre.saw(seen); watch.saw(seen); scene.take(seen, at: clock()) }
+    func tell(_ seen: Seen) { centre.saw(seen); watch.saw(seen); scene.take(seen, at: seen.belongs(now: clock(), zero: began.timeIntervalSince1970 * 1000)) }
     private func failed(_ why: String) { tell(.state(name: "failed", detail: why)) }
 
     func applicationDidFinishLaunching(_ note: Notification) {

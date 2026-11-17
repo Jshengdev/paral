@@ -65,7 +65,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
   /** "Show me": the walk through what is ahead, one step each time he says it. */
   const showing = shows(hands, glancing, keeping.found);
   /** The opener, drafted from his words while he is still talking. With no fast model there is no opener at all. */
-  const drafting = ports.opener && drafts(ports.opener, settings, () => screen?.lines.map((read) => read.text).filter(Boolean) ?? []);
+  const drafting = ports.opener && drafts(ports.opener, settings, () => screen?.lines.map((read) => read.text).filter(Boolean) ?? [], { show: (thought) => send({ v, type: "thought", ...thought }), log });
 
   /** A press of the key. With `typed`, an ask whose words were tapped or typed: no ear, and the words are these. */
   function down(at: number, typed?: string) {
@@ -104,6 +104,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
     const mine = running;
     const ears = listening;
     listening = null;
+    drafting?.heldUp();
     if (!mine || !ears || mine.signal.aborted) return;
     send({ v, type: "state", name: "thinking" });
     try {
@@ -145,7 +146,7 @@ export function turns(ports: Ports, settings: Settings, toBody: Send, log: Log) 
       }
       if (await showing.asked(id, words.text, ahead, screen, onPage, mine.signal)) return;
       // The quick line: none with no fast model.
-      const opener = drafting ? drafting.line(lesson.breakLine !== null, words.text, mine.signal) : null;
+      const opener = drafting ? drafting.line(lesson.breakLine !== null, words.text, mine.signal, at) : null;
       const around = circled(path, screen.lines, screen.display, settings.circleLeast.value);
       if (path.length > 0) log(drewAround(id, path.length, around, drawn, screen.lines));
       const asking = { id, words: words.text, seen: screen, circled: around, lesson, ahead, markUp, releasedAt: at, opener, signal: mine.signal };

@@ -72,3 +72,15 @@ export function labelOnFilm(input: { lines: string[]; tape: string; asks: string
   const noLabelWhileHeTalked = !rows.some((item) => item.what === "label" && item.says != null && talked.some(([from, to]) => item.at >= from && item.at < to));
   return { theKeyTheMindNamed: ready?.holdKey ?? null, onceHeLetGo: under("thinking"), whileItAnswered: under("speaking"), atRest: under("rest"), noLabelWhileHeTalked };
 }
+
+/**
+ * The dim line in the bubble, on a hand-written run: at each moment the capsule's look and the dim line's words
+ * (null: none is shown); then what a film of the same run records of it, each row with its words, null for the row
+ * that says it is gone.
+ */
+export function dim(input: { rows: Written[]; at: number[] }) {
+  const dir = handWritten("dim", sounded([...started("rightOption"), ...input.rows]));
+  const seen = at(dir, input.at).map(({ placed, capsule }) => ({ look: capsule.look, dimLine: placed.find((item) => item.what === "thought")?.says ?? null }));
+  execFileSync(headless, ["film", dir, join(root, "body", "tokens.json")], { encoding: "utf8" });
+  return { seen, record: record(dir).filter((item) => item.what === "thought").map((item) => ({ at: item.at, says: item.says ?? null })) };
+}
